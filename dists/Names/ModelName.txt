@@ -1,0 +1,95 @@
+c1000 Invisible
+c1001 Invisible
+c1010 Basic Soldier
+c1012 Hanbei
+c1020 Samurai General
+c1021 Seven Ashina Spears
+c1030 Centipede
+c1040 Centipede Boss
+c1050 Shinobi Hunter
+c1060 Twinblade Monks
+c1070 Drunkard
+c1080 Shichimen Warrior
+c1100 Lizard
+c1110 Old Woman with Candle
+c1111 Old Woman with Candle
+c1120 Watchman
+c1130 Armored Warrior
+c1140 Ghost Wall Spearman
+c1150 Dog
+c1151 Fountainhead Palace Dog
+c1180 Large Brute
+c1181 Large Brute
+c1190 Gun Fort Gunner
+c1191 Snake Eyes
+c1200 Centipede Monk
+c1210 Immortal Monk
+c1211 Cricket
+c1220 Monk
+c1240 Rooster
+c1250 Monkey
+c1260 Folding Screen Monkey
+c1300 Fountainhead Noble
+c1310 Okami Warrior
+c1320 Treasure Carp
+c1321 Treasure Carp
+c1340 Underwater Headless
+c1350 Headless
+c1360 Senpou Assassin
+c1361 Senpou Assassin
+c1370 Blazing Bull
+c1380 Sakura Bull of the Palace
+c1400 Ashina Samurai
+c1450 Nightjar
+c1460 Kite Nightjar
+c1470 Lone Shadow Swordsman
+c1500 Mibu Villager
+c1501 Mibu Villager
+c1520 Zombie
+c1550 Basic Swordsman
+c1700 Ministry Samurai
+c5000 Corrupted Monk
+c5001 Headless Ape's Centipede
+c5005 Corrupted Monk Illusion
+c5010 Great Serpent
+c5020 Chained Ogre
+c5021 Feeding Grounds Attendant
+c5040 Giant Rope Guy
+c5050 Giant Carp
+c5060 Owl
+c5070 An Actual Owl
+c5080 Gyoubu Oniwa
+c5090 Lady Butterfly
+c5100 Guardian Ape
+c5200 Divine Dragon
+c5300 Old Dragon
+c5320 Tree Dragon
+c5400 Sword Saint Isshin
+c5410 Isshin
+c5420 Isshin
+c5430 Tengu of Ashina
+c7000 O'Rin
+c7010 Sculptor
+c7020 Demon of Hatred
+c7100 Genichiro Ashina
+c7110 Genichiro, Way of Tomoe
+c7200 Kuro
+c7210 Memory Kuro
+c7300 Divine Child
+c7400 Emma
+c7410 Jinzaemon Kumano
+c7420 Anayama the Peddler
+c7430 Fujioka the Info Broker
+c7440 Old Praying Woman
+c7450 Inosuke's Mother
+c7460 Inosuke
+c7470 Kotaro
+c7480 Head Priest
+c7490 Doujun
+c7510 Black Badger
+c7500 Memorial Mob
+c7540 Memorial Mob
+c7550 Memorial Mob
+c7560 Memorial Mob
+c7590 Memorial Mob
+c7600 Memorial Mob

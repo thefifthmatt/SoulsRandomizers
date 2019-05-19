@@ -1,0 +1,1871 @@
+0 [Unused/Unknown] ?ITEM? (0:100000) 29.41%, ?ITEM? (1:10000) 2x 14.71%, ?ITEM? (3:240) 99x 29.41%, ?ITEM? (0:101000) 14.71%, ?ITEM? (1:11000) 2x 11.76%
+1 [Unused/Unknown] ?ITEM? (3:240) 14.29%, ?ITEM? (3:240) 14.29%, ?ITEM? (3:2001) 42.86%, ?ITEM? (3:240) 14.29%, ?ITEM? (3:240) 14.29%
+2 [Unused/Unknown] ?ITEM? (3:1010) 2x 3.2%, ?ITEM? (3:1010) 4.8%, ?ITEM? (3:1013) 2x 3.2%, ?ITEM? (3:1013) 4.8%, ?ITEM? (3:1023) 8%, Red Spirit Emblem 3x 8%, Red Spirit Emblem 8%
+10 [Unused/Unknown] ?ITEM? (3:400)
+1000 [Unused/Unknown] ?ITEM? (3:2200)
+1010 [Unused/Unknown] Prayer Bead
+1020 [Unused/Unknown] Prayer Bead
+1030 [Unused/Unknown] First Prayer Necklace
+1040 [Unused/Unknown] First Prayer Necklace
+1050 [Unused/Unknown] First Prayer Necklace
+1060 [Unused/Unknown] Prayer Bead
+1070 [Unused/Unknown] First Prayer Necklace
+1140 [Unused/Unknown] Prayer Bead
+1500 [Unused/Unknown] Prayer Bead
+1510 [Unused/Unknown] Flame Vent
+1520 [Unused/Unknown] ?ITEM? (3:4200)
+1530 [Unused/Unknown] ?ITEM? (3:4201)
+1550 [Unused/Unknown] Shinobi Firecracker
+1560 [Unused/Unknown] Prayer Bead
+1980 [Unused NPC] Ceramic Shard 50%, Antidote Powder 50%
+1990 [Unused NPC] Ceramic Shard 50%, Antidote Powder 50%
+2000 [Gyoubu Oniwa: Ashina Outskirts] Mechanical Barrel
+2001 [Gyoubu Oniwa: Ashina Outskirts] Memory: Gyoubu Oniwa
+2002 [Gyoubu Oniwa: Ashina Outskirts] Memory
+2010 [Guardian Ape: Sunken Valley] Slender Finger
+2011 [Guardian Ape: Sunken Valley] Memory: Guardian Ape
+2012 [Guardian Ape: Sunken Valley] Memory
+2014 [Unused/Unknown] Precious Bait
+2015 [Guardian Ape: Sunken Valley] Prayer Bead
+2016 [Guardian Ape: Sunken Valley] Prayer Bead
+2017 [Guardian Ape: Sunken Valley] Memory: Headless Ape
+2018 [Guardian Ape: Sunken Valley] Memory
+2020 [Invisible: Senpou Temple] Puppeteer Ninjutsu
+2021 [Invisible: Senpou Temple] Memory: Screen Monkeys
+2022 [Invisible: Senpou Temple] Memory
+2030 [Lady Butterfly: Hirata Estate] Sakura Droplet
+2031 [Lady Butterfly: Hirata Estate] Memory: Lady Butterfly
+2032 [Lady Butterfly: Hirata Estate] Memory
+2040 [Demon of Hatred: Ashina Outskirts] Lapis Lazuli 2x
+2041 [Demon of Hatred: Ashina Outskirts] Memory: Hatred Demon
+2042 [Demon of Hatred: Ashina Outskirts] Memory
+2050 [Corrupted Monk: Mibu Village] Mibu Breathing Technique
+2051 [Corrupted Monk: Mibu Village] Memory: Corrupted Monk
+2052 [Corrupted Monk: Mibu Village] Memory
+2060 [Corrupted Monk: Fountainhead Palace] Dragon's Tally Board
+2061 [Corrupted Monk: Fountainhead Palace] Memory: True Monk
+2062 [Corrupted Monk: Fountainhead Palace] Memory
+2070 [Divine Dragon: Fountainhead Palace] Divine Dragon's Tears
+2071 [Divine Dragon: Fountainhead Palace] Memory: Divine Dragon
+2072 [Divine Dragon: Fountainhead Palace] Memory
+2080 [Genichiro, Way of Tomoe: Ashina Castle] Bloodsmoke Ninjutsu
+2081 [Genichiro, Way of Tomoe: Ashina Castle] Memory: Genichiro
+2082 [Genichiro, Way of Tomoe: Ashina Castle] Memory
+2090 [Owl: Ashina Castle] Aromatic Branch
+2091 [Owl: Ashina Castle] Memory: Great Shinobi
+2092 [Owl: Ashina Castle] Memory
+2100 [Owl: Hirata Estate] Aromatic Flower
+2101 [Owl: Hirata Estate] Memory: Foster Father
+2102 [Owl: Hirata Estate] Memory
+2120 [Tengu of Ashina: Ashina Castle] One Mind
+2121 [Tengu of Ashina: Ashina Castle] Memory: Isshin Ashina
+2122 [Tengu of Ashina: Ashina Castle] Memory
+2130 [Sword Saint Isshin: Ashina Reservoir] Dragon Flash
+2131 [Sword Saint Isshin: Ashina Reservoir] Memory: Saint Isshin 
+2132 [Sword Saint Isshin: Ashina Reservoir] Memory
+2200 [Headless Ape's Centipede: Sunken Valley] Bestowal Ninjutsu
+2499 [Unused/Unknown] Regenerative Power 2x
+3000 [Unused/Unknown] <?null?>
+3001 [Unused/Unknown] Kusabimaru
+3001 [Scripted: Ashina Reservoir] Kusabimaru
+3010 [Scripted: Global] Resurrection
+3011 [Scripted: Global] Temporary Regenerative Power
+3015 [Unused/Unknown] Loaded Shuriken
+3020 [Unused/Unknown] Mortal Blade
+3030 [Unused/Unknown] Shelter Stone
+3040 [Unused/Unknown] ?ITEM? (3:2410)
+3050 [Unused/Unknown] Pellet 3x
+3060 [Scripted: Ashina Outskirts] Shinobi Prosthetic
+3070 [Scripted: Ashina Outskirts] Shinobi Prosthetic (cosmetic)
+3080 [Scripted: Ashina Reservoir] Shirt after Kurabimaru (cosmetic)
+3090 [Scripted: Senpou Temple] Shirt after Mortal Blade (cosmetic)
+3100 [Unused/Unknown] One Mind
+3200 [Scripted: Global] Sabimaru Memo
+3210 [Scripted: Global] Valley Apparitions Memo
+3220 [Scripted: Global] Three-story Pagoda Memo
+3300 [Scripted: Ashina Reservoir] Kuro's Charm
+3400 [Scripted: Senpou Temple] Bell Demon
+3410 [Unused/Unknown] ?ITEM? (3:3731)
+3420 [Unused/Unknown] ?ITEM? (3:3732)
+3430 [Unused/Unknown] ?ITEM? (3:3733)
+3500 [Scripted: Global] Rot Essence: Sculptor
+3510 [Scripted: Global] Rot Essence: Newcomer
+3520 [Scripted: Global] Rot Essence: Black Hat
+3530 [Scripted: Global] Rot Essence: Lost Child
+3540 [Scripted: Global] Rot Essence: Charmed One
+3550 [Scripted: Global] Rot Essence: Surgeons
+3600 [Scripted: Global] Rot Essence: Fine Son
+3610 [Scripted: Global] Rot Essence: Thirsty One
+3650 [Scripted: Global] Rot Essence: Timid Maid
+3660 [Scripted: Global] Rot Essence: Faithful One
+3700 [Scripted: Global] Rot Essence: Crow Mob
+3710 [Scripted: Global] Rot Essence: Wartorn Mob
+3720 [Scripted: Global] Rot Essence: Jail Mob
+3730 [Scripted: Global] Rot Essence: Toxic Mob
+3740 [Scripted: Global] Rot Essence: Pious Mob
+3750 [Scripted: Global] Rot Essence: Drunk Mob
+3760 [Scripted: Global] Rot Essence: Info Broker
+3800 [Scripted: Global] Dancing Dragon Mask
+5000 [Unused/Unknown] Spirit Emblem 10%, ?ITEM? (3:1010) 25%, ?ITEM? (3:1020) 25%, ?ITEM? (3:1030) 10%, ?ITEM? (3:1040) 10%, ?ITEM? (3:1050) 10%, ?ITEM? (3:380) 5%, ?ITEM? (3:376) 5%
+5010 [Unused/Unknown] ?ITEM? (3:109)
+5020 [Unused/Unknown] ?ITEM? (3:374)
+5030 [Unused/Unknown] ?ITEM? (3:375)
+5040 [Unused/Unknown] Temporary Regenerative Power
+5200 [Unused/Unknown] ?ITEM? (3:2)
+5210 [Unused/Unknown] ?ITEM? (3:3)
+5220 [Unused/Unknown] ?ITEM? (3:6)
+5230 [Unused/Unknown] ?ITEM? (3:10)
+5240 [Unused/Unknown] ?ITEM? (3:20)
+5250 [Unused/Unknown] ?ITEM? (3:30)
+5260 [Unused/Unknown] ?ITEM? (3:40)
+5270 [Unused/Unknown] ?ITEM? (3:50)
+5280 [Unused/Unknown] ?ITEM? (3:100)
+5500 [Unused/Unknown] 
+5510 [Unused/Unknown] ?ITEM? (3:500)
+5520 [Unused/Unknown] ?ITEM? (3:500)
+5530 [Unused/Unknown] ?ITEM? (3:373)
+5540 [Unused/Unknown] ?ITEM? (3:368)
+5550 [Unused/Unknown] ?ITEM? (3:372)
+5560 [Unused/Unknown] ?ITEM? (3:374)
+5570 [Unused/Unknown] ?ITEM? (3:369)
+5580 [Unused/Unknown] ?ITEM? (3:366)
+5590 [Unused/Unknown] 
+5600 [Unused/Unknown] ?ITEM? (3:367)
+5610 [Unused/Unknown] 
+9000 [Unused/Unknown] ?ITEM? (3:500)
+9010 [Unused/Unknown] ?ITEM? (3:500) 4x
+9020 [Unused/Unknown] ?ITEM? (3:501)
+9030 [Unused/Unknown] ?ITEM? (3:330)
+10000 [Unused/Unknown] Skill Point
+10100 [Unused/Unknown] Skill Point
+20000 [Unused/Unknown] 
+20010 [Unused/Unknown] 
+20020 [Unused/Unknown] 
+20030 [Unused/Unknown] 
+20040 [Unused/Unknown] 
+20050 [Unused/Unknown] 
+21000 [Unused/Unknown] ?ITEM? (3:500)
+21010 [Unused/Unknown] ?ITEM? (3:500)
+21020 [Unused/Unknown] ?ITEM? (3:500)
+21030 [Unused/Unknown] ?ITEM? (3:500)
+51000 [Sculptor: Ashina Outskirts, Ashina Reservoir] 
+51100 [Kuro: Ashina Castle, Ashina Reservoir] 
+51200 [Owl: Ashina Castle] 
+51300 [Hanbei: Ashina Outskirts] Hidden Tooth
+51400 [Black Badger: Ashina Castle] 
+51410 [Black Badger: Senpou Temple] 
+51420 [Black Badger: Senpou Temple] 
+51430 [Black Badger: Ashina Castle] Mibu Pilgrimage Balloon
+51500 [Unused/Unknown] 
+51600 [Inosuke's Mother: Ashina Outskirts] Young Lord's Bell Charm
+51610 [Inosuke's Mother: Hirata Estate] 
+51700 [Anayama the Peddler: Ashina Outskirts] Flame Barrel Memo
+51710 [Anayama the Peddler: Ashina Outskirts] Flame Barrel Memo
+51800 [Inosuke: Ashina Outskirts] 
+51810 [Inosuke: Ashina Outskirts] 
+51820 [Inosuke: Hirata Estate] 
+52000 [Unused/Unknown] 
+52100 [Ashina Samurai: Hirata Estate] 
+52200 [Divine Child: Senpou Temple] 
+52300 [Emma: Ashina Castle, Ashina Outskirts] 
+52400 [Isshin, Tengu of Ashina: Ashina Castle, Ashina Outskirts] 
+52500 [Feeding Grounds Attendant: Fountainhead Palace] Treasure Carp Scale
+52501 [Feeding Grounds Attendant: Fountainhead Palace] Treasure Carp Scale 3x
+52600 [Kotaro: Senpou Temple] 
+52610 [Kotaro: Senpou Temple] 
+52620 [Kotaro: Ashina Outskirts] 
+52630 [Kotaro: Ashina Outskirts] 
+52640 [Kotaro: Abandoned Dungeon] 
+52650 [Kotaro: Abandoned Dungeon] Red Lump
+52700 [Memorial Mob: Mibu Village] 
+52710 [Memorial Mob: Mibu Village] 
+52800 [Head Priest: Mibu Village] 
+52810 [Fountainhead Noble: Mibu Village] Treasure Carp Scale 5x
+52900 [Unused NPC] 
+53000 [Unused/Unknown] 
+53010 [Unused/Unknown] 
+53020 [Unused/Unknown] 
+53030 [Unused/Unknown] 
+53040 [Unused/Unknown] 
+53050 [Jinzaemon Kumano: Abandoned Dungeon] Red Lump
+53100 [Doujun: Abandoned Dungeon] 
+53110 [Doujun: Abandoned Dungeon] Academics' Red Lump
+53120 [Doujun: Abandoned Dungeon] 
+53200 [Immortal Monk: Senpou Temple] 
+53300 [Unused/Unknown] 
+53400 [Unused/Unknown] 
+53500 [Unused/Unknown] 
+53600 [Fountainhead Noble: Hirata Estate] 
+53610 [Treasure Carp: Hirata Estate] 
+53650 [Fountainhead Noble: Fountainhead Palace] 
+53660 [Treasure Carp: Fountainhead Palace] 
+54100 [Memorial Mob: Ashina Outskirts] 
+54200 [Memorial Mob: Ashina Outskirts] 
+54300 [Unused NPC] 
+54400 [Memorial Mob: Sunken Valley] 
+54500 [Memorial Mob: Senpou Temple] 
+54600 [Memorial Mob: Mibu Village] 
+54700 [Fujioka the Info Broker: Ashina Castle] Nightjar Beacon Memo
+54710 [Fujioka the Info Broker: Ashina Outskirts] Nightjar Beacon Memo
+54800 [Unused/Unknown] 
+55000 [Unused/Unknown] 
+60000 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] ?ITEM? (3:500)
+60100 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] First Prayer Necklace
+60110 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Second Prayer Necklace
+60120 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Third Prayer Necklace
+60130 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Fourth Prayer Necklace
+60140 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Fifth Prayer Necklace
+60150 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Sixth Prayer Necklace
+60160 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Seventh Prayer Necklace
+60170 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Eighth Prayer Necklace
+60180 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Ninth Prayer Necklace
+60190 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Final Prayer Necklace
+60200 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60210 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: Gyoubu
+60211 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60220 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: Lady Butterfly 
+60221 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60230 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: Genichiro
+60231 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60240 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: Screen Monkeys
+60241 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60250 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: Guardian Ape
+60251 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60260 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: Corrupted Monk
+60261 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60270 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: Great Shinobi
+60271 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60280 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: Foster Father
+60281 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60290 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: True Monk
+60291 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60300 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: Divine Dragon
+60301 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60310 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: Hatred Demon
+60311 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60320 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: Saint Isshin
+60321 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60330 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: Isshin Ashina
+60331 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+60340 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Remnant: Headless Ape
+60341 [Invisible: Ashina Castle, Ashina Outskirts, Ashina Reservoir, Hirata Estate] Memory
+61000 [Invisible, Sculptor, Unknown Dialogue: Ashina Outskirts, Global] Shinobi Esoteric Text
+61004 [Invisible, Sculptor, Unknown Dialogue: Ashina Outskirts, Global] Prosthetic Esoteric Text
+61006 [Invisible, Sculptor: Ashina Outskirts] Kuro's Charm
+61007 [Invisible, Sculptor: Ashina Outskirts] ?ITEM? (3:500) 99x
+61100 [Kuro: Ashina Reservoir] Healing Gourd
+61102 [Kuro: Ashina Castle] Immortal Severance Text
+61104 [Kuro: Ashina Castle] Sweet Rice Ball 2x
+61106 [Kuro: Ashina Castle] Page's Diary
+61108 [Kuro: Ashina Castle] Okami's Ancient Text
+61110 [Kuro: Ashina Castle] Fragrant Flower Note
+61112 [Kuro: Ashina Castle] Divine Grass
+61114 [Kuro: Ashina Castle] Sweet Rice Ball
+61200 [Owl: Hirata Estate] Hidden Temple Key
+61400 [Treasure: Ashina Castle] Iron Fortress
+61600 [Inosuke's Mother: Ashina Outskirts] Young Lord's Bell Charm
+61700 [Anayama the Peddler: Ashina Outskirts] Flame Barrel Memo
+61710 [Anayama the Peddler: Ashina Outskirts] Oil 2x
+61720 [Anayama the Peddler: Ashina Outskirts] Divine Grass
+61800 [Inosuke: Hirata Estate] Snap Seed
+62000 [Invisible: Hirata Estate] Antidote Powder 2x
+62200 [Scripted: Senpou Temple] Mortal Blade
+62202 [Scripted: Senpou Temple] Mortal Draw
+62204 [Scripted: Senpou Temple] Empowered Mortal Draw
+62208 [Divine Child: Senpou Temple] Rice
+62210 [Divine Child: Senpou Temple] Rice for Kuro
+62212 [Divine Child: Senpou Temple] Frozen Tears
+62214 [Divine Child: Senpou Temple] Fine Snow
+62302 [Emma: Ashina Castle, Ashina Outskirts] Father's Bell Charm
+62304 [Emma: Ashina Castle, Ashina Outskirts] Mushin Esoteric Text
+62306 [Emma: Ashina Castle, Ashina Outskirts] Secret Passage Key
+62308 [Emma: Ashina Castle, Ashina Outskirts] Tomoe's Note
+62310 [Emma: Ashina Castle, Ashina Outskirts] Ashina Sake
+62312 [Emma: Ashina Castle, Ashina Outskirts] Immortal Severance Scrap
+62320 [Emma: Ashina Castle, Ashina Outskirts] Recovery Charm
+62321 [Emma: Ashina Castle, Ashina Outskirts] Dragon's Blood Droplet
+62400 [Isshin: Ashina Castle] Unrefined Sake
+62402 [Tengu of Ashina: Ashina Outskirts] Rat Description
+62404 [Isshin, Tengu of Ashina: Ashina Castle, Ashina Outskirts] Ashina Esoteric Text
+62406 [Isshin, Tengu of Ashina: Ashina Castle] Mushin Esoteric Text
+62500 [Feeding Grounds Attendant: Fountainhead Palace] Treasure Carp Scale
+62510 [Feeding Grounds Attendant: Fountainhead Palace] Treasure Carp Scale 3x
+62511 [Feeding Grounds Attendant: Fountainhead Palace] Treasure Carp Scale
+62520 [Feeding Grounds Attendant: Fountainhead Palace] Divine Grass
+62600 [Kotaro: Senpou Temple] Taro Persimmon
+62610 [Kotaro: Ashina Outskirts] Fistful of Ash
+62700 [Unused/Unknown] 
+62800 [Head Priest: Mibu Village] Dragonspring Sake
+62900 [Old Praying Woman: Ashina Castle, Senpou Temple, Sunken Valley] Ungo's Sugar
+62910 [Old Praying Woman: Ashina Castle, Senpou Temple, Sunken Valley] Ako's Sugar
+62920 [Old Praying Woman: Ashina Castle, Senpou Temple, Sunken Valley] Divine Confetti
+63000 [Jinzaemon Kumano: Mibu Village] Jinza's Jizo Statue
+63100 [Doujun: Abandoned Dungeon] Surgeon's Bloody Letter
+63110 [Doujun: Abandoned Dungeon] Lump of Fat Wax 3x
+63120 [Doujun: Abandoned Dungeon] Surgeon's Stained Letter
+63130 [Doujun: Abandoned Dungeon] Lump of Grave Wax 2x
+63200 [Immortal Monk: Senpou Temple] Holy Chapter: Infested
+63600 [Fountainhead Noble, Treasure Carp: Hirata Estate] Truly Precious Bait
+63610 [Treasure: Hirata Estate] Lapis Lazuli
+63650 [Fountainhead Noble, Treasure Carp: Fountainhead Palace] Truly Precious Bait
+63660 [Treasure: Fountainhead Palace] Lapis Lazuli
+64100 [Unused/Unknown] 
+64200 [Unused/Unknown] 
+64300 [Unused/Unknown] 
+64400 [Unused/Unknown] 
+64500 [Memorial Mob: Senpou Temple] Persimmon
+64600 [Unused/Unknown] 
+64700 [Fujioka the Info Broker: Ashina Castle] Nightjar Beacon Memo
+64710 [Fujioka the Info Broker: Ashina Outskirts] Fistful of Ash
+67000 [Unused/Unknown] Spirit Emblem 3x
+69900 [Anayama the Peddler, Black Badger, Doujun, Fujioka the Info Broker, Inosuke, Inosuke's Mother, Jinzaemon Kumano, Kotaro, Memorial Mob, Old Praying Woman, Unknown Dialogue: Abandoned Dungeon, Ashina Castle, Ashina Outskirts, Ashina Reservoir, Global, Mibu Village, Senpou Temple, Sunken Valley] Dragonrot Blood Sample
+1000000 [Treasure: Hirata Estate] Flame Barrel
+1000005 [Treasure: Hirata Estate] Fistful of Ash 3x
+1000010 [Treasure: Hirata Estate] Shinobi Axe of the Monkey
+1000015 [Treasure: Hirata Estate] Bundled Jizo Statue
+1000020 [Treasure: Hirata Estate] Mist Raven's Feathers
+1000025 [Treasure: Hirata Estate] Bundled Jizo Statue
+1000030 [Treasure: Hirata Estate] Pellet 2x
+1000040 [Treasure: Hirata Estate] Dousing Powder 2x
+1000050 [Treasure: Hirata Estate] Mibu Possession Balloon
+1000060 [Treasure: Hirata Estate] Light Coin Purse
+1000070 [Treasure: Hirata Estate] Ungo's Sugar 3x
+1000080 [Treasure: Hirata Estate] Ako's Sugar
+1000090 [Treasure: Hirata Estate] Pellet 2x
+1000100 [Treasure: Hirata Estate] Ceramic Shard 3x
+1000110 [Treasure: Hirata Estate] Fistful of Ash 3x
+1000120 [Treasure: Hirata Estate] Fistful of Ash
+1000130 [Treasure: Hirata Estate] Pellet
+1000140 [Treasure: Hirata Estate] Light Coin Purse
+1000150 [Treasure: Hirata Estate] Ungo's Sugar 3x
+1000160 [Treasure: Hirata Estate] Oil
+1000170 [Treasure: Hirata Estate] Mibu Possession Balloon
+1000180 [Treasure: Hirata Estate] Dousing Powder 2x
+1000190 [Treasure: Hirata Estate] Dousing Powder
+1000200 [Treasure: Hirata Estate] Divine Confetti 2x
+1000210 [Treasure: Hirata Estate] Light Coin Purse
+1000220 [Treasure: Hirata Estate] Dousing Powder 2x
+1000230 [Treasure: Hirata Estate] Pellet 2x
+1000240 [Treasure: Hirata Estate] Light Coin Purse
+1000250 [Treasure: Hirata Estate] Pellet 2x
+1000260 [Treasure: Hirata Estate] Fistful of Ash 2x
+1000270 [Treasure: Hirata Estate] Ceramic Shard
+1000280 [Treasure: Hirata Estate] Treasure Carp Scale
+1000290 [Treasure: Hirata Estate] Ceramic Shard 2x
+1000300 [Treasure: Hirata Estate] Mibu Balloon of Wealth
+1000310 [Treasure: Hirata Estate] Dousing Powder
+1000320 [Unused/Unknown] Mibu Balloon of Wealth 2x
+1000330 [Treasure: Hirata Estate] Gokan's Sugar
+1000340 [Treasure: Hirata Estate] Mibu Balloon of Soul
+1000350 [Treasure: Hirata Estate] Bundled Jizo Statue
+1000360 [Treasure: Hirata Estate] Pellet 2x
+1000370 [Treasure: Hirata Estate] Mibu Possession Balloon
+1000380 [Treasure: Hirata Estate] Fistful of Ash
+1000390 [Treasure: Hirata Estate] Contact Medicine
+1000400 [Treasure: Hirata Estate] Pellet 2x
+1000410 [Treasure: Hirata Estate] Oil 2x
+1000420 [Treasure: Hirata Estate] Oil
+1000430 [Treasure: Hirata Estate] Divine Confetti 2x
+1000440 [Treasure: Hirata Estate] Light Coin Purse
+1000450 [Treasure: Hirata Estate] Mibu Balloon of Wealth
+1000460 [Treasure: Hirata Estate] Mibu Balloon of Soul
+1000500 [Treasure: Hirata Estate] Prayer Bead
+1000505 [Treasure: Hirata Estate] Bundled Jizo Statue
+1000600 [Treasure: Hirata Estate] Fulminated Mercury
+1000610 [Treasure: Hirata Estate] Adamantite Scrap
+1000620 [Treasure: Hirata Estate] Adamantite Scrap
+1000630 [Treasure: Hirata Estate] Fulminated Mercury
+1000640 [Treasure: Hirata Estate] Mibu Balloon of Wealth 2x
+1000650 [Treasure: Hirata Estate] Fistful of Ash
+1000660 [Treasure: Hirata Estate] Light Coin Purse
+1000670 [Treasure: Hirata Estate] Ashina Sake
+1000680 [Treasure: Hirata Estate] Pellet 3x
+1000690 [Treasure: Hirata Estate] Gokan's Sugar 2x
+1100000 [Treasure: Ashina Outskirts] Shuriken Wheel
+1100010 [Treasure: Ashina Outskirts] Snap Seed 5x
+1100020 [Treasure: Ashina Outskirts] Pellet 2x
+1100030 [Treasure: Ashina Outskirts] Light Coin Purse
+1100040 [Treasure: Ashina Outskirts] Pellet
+1100050 [Treasure: Ashina Outskirts] Ungo's Sugar
+1100060 [Treasure: Ashina Outskirts] Ceramic Shard
+1100070 [Treasure: Ashina Outskirts] Ungo's Sugar 2x
+1100080 [Treasure: Ashina Outskirts] Ceramic Shard 2x
+1100090 [Treasure: Ashina Outskirts] Fistful of Ash 2x
+1100100 [Treasure: Ashina Outskirts] Pellet 3x
+1100110 [Treasure: Ashina Outskirts] Ceramic Shard 3x
+1100120 [Treasure: Ashina Outskirts] Mibu Balloon of Wealth
+1100130 [Treasure: Ashina Outskirts] Gachiin's Sugar 3x
+1100140 [Treasure: Ashina Outskirts] Light Coin Purse
+1100150 [Treasure: Ashina Outskirts] Light Coin Purse
+1100160 [Treasure: Ashina Outskirts] Light Coin Purse
+1100170 [Treasure: Ashina Outskirts] Fistful of Ash
+1100180 [Treasure: Ashina Outskirts] Pellet
+1100190 [Treasure: Ashina Outskirts] Mibu Balloon of Wealth
+1100200 [Treasure: Ashina Outskirts] Gourd Seed
+1100205 [Treasure: Ashina Outskirts] Divine Grass
+1100210 [Treasure: Ashina Outskirts] Ceramic Shard 2x
+1100220 [Treasure: Ashina Outskirts] Gachiin's Sugar 2x
+1100230 [Treasure: Ashina Outskirts] Antidote Powder
+1100240 [Treasure: Ashina Outskirts] Divine Grass
+1100250 [Treasure: Ashina Outskirts] Pellet 2x
+1100260 [Treasure: Ashina Outskirts] Ungo's Sugar
+1100270 [Treasure: Ashina Outskirts] Heavy Coin Purse
+1100280 [Treasure: Ashina Outskirts] Fistful of Ash 2x
+1100290 [Treasure: Ashina Outskirts] Pellet 2x
+1100300 [Treasure: Ashina Outskirts] Ako's Sugar
+1100310 [Treasure: Ashina Outskirts] Prayer Bead
+1100315 [Treasure: Ashina Outskirts] Bundled Jizo Statue
+1100320 [Treasure: Ashina Outskirts] Fistful of Ash 2x
+1100330 [Treasure: Ashina Outskirts] Nightjar Monocular
+1100340 [Treasure: Ashina Outskirts] Scrap Iron
+1100350 [Treasure: Ashina Outskirts] Bundled Jizo Statue
+1100360 [Treasure: Ashina Outskirts] Light Coin Purse
+1100370 [Treasure: Ashina Outskirts] Pellet 2x
+1100380 [Treasure: Ashina Outskirts] Ako's Sugar
+1100390 [Treasure: Ashina Outskirts] Pellet
+1100400 [Treasure: Ashina Outskirts] Ceramic Shard 2x
+1100410 [Treasure: Ashina Outskirts] Scrap Iron
+1100420 [Treasure: Ashina Outskirts] Rat Description
+1100430 [Treasure: Ashina Outskirts] Mibu Possession Balloon
+1100440 [Treasure: Ashina Outskirts] Mibu Possession Balloon
+1100450 [Treasure: Ashina Outskirts] Gachiin's Sugar 2x
+1100460 [Treasure: Ashina Outskirts] Divine Confetti
+1100470 [Treasure: Ashina Outskirts] Gachiin's Sugar
+1100480 [Treasure: Ashina Outskirts] Ceramic Shard
+1100490 [Treasure: Ashina Outskirts] Mibu Balloon of Wealth 3x
+1100500 [Treasure: Ashina Outskirts] Ceramic Shard
+1100510 [Treasure: Ashina Outskirts] Light Coin Purse
+1100520 [Treasure: Ashina Outskirts] Pellet 2x
+1100700 [Treasure: Ashina Outskirts] Adamantite Scrap
+1100710 [Treasure: Ashina Outskirts] Adamantite Scrap
+1100720 [Treasure: Ashina Outskirts] Adamantite Scrap
+1100730 [Treasure: Ashina Outskirts] Fulminated Mercury
+1100740 [Treasure: Ashina Outskirts] Fulminated Mercury
+1100750 [Treasure: Ashina Outskirts] Lump of Grave Wax
+1100760 [Treasure: Ashina Outskirts] Lump of Grave Wax
+1100770 [Treasure: Ashina Outskirts] Ministry Dousing Powder 2x
+1100780 [Treasure: Ashina Outskirts] Gachiin's Sugar 2x
+1100790 [Treasure: Ashina Outskirts] Heavy Coin Purse
+1100800 [Treasure: Ashina Outskirts] Pellet 2x
+1100810 [Treasure: Ashina Outskirts] Fistful of Ash 3x
+1100820 [Treasure: Ashina Outskirts] Gachiin's Sugar 3x
+1100830 [Treasure: Ashina Outskirts] Ministry Dousing Powder 2x
+1100840 [Treasure: Ashina Outskirts] Pellet 3x
+1100850 [Treasure: Ashina Outskirts] Dragon's Blood Droplet
+1100950 [Treasure: Ashina Outskirts] Shinobi Esoteric Text
+1100951 [Treasure: Ashina Outskirts] Prosthetic Esoteric Text
+1110000 [Treasure: Ashina Castle] Eel Liver 3x
+1110010 [Treasure: Ashina Castle] Sabimaru
+1110020 [Treasure: Ashina Castle] Gourd Seed
+1110030 [Treasure: Ashina Castle] Light Coin Purse
+1110040 [Treasure: Ashina Castle] Pellet 2x
+1110050 [Treasure: Ashina Castle] Ceramic Shard
+1110060 [Treasure: Ashina Castle] Light Coin Purse
+1110070 [Treasure: Ashina Castle] Eel Liver 3x
+1110080 [Treasure: Ashina Castle] Mibu Possession Balloon 2x
+1110090 [Treasure: Ashina Castle] Pellet 2x
+1110100 [Treasure: Ashina Castle] Fistful of Ash 2x
+1110110 [Treasure: Ashina Castle] Heavy Coin Purse
+1110120 [Treasure: Ashina Castle] Pellet
+1110130 [Treasure: Ashina Castle] Fistful of Ash 3x
+1110140 [Treasure: Ashina Castle] Gachiin's Sugar
+1110150 [Treasure: Ashina Castle] Pellet 2x
+1110160 [Treasure: Ashina Castle] Ako's Sugar
+1110170 [Treasure: Ashina Castle] Prayer Bead
+1110180 [Treasure: Ashina Castle] Gokan's Sugar
+1110190 [Treasure: Ashina Castle] Scrap Iron 2x
+1110200 [Treasure: Ashina Castle] Mibu Balloon of Spirit
+1110210 [Treasure: Ashina Castle] Gachiin's Sugar
+1110220 [Treasure: Ashina Castle] Mibu Possession Balloon
+1110230 [Treasure: Ashina Castle] Scrap Magnetite
+1110240 [Treasure: Ashina Castle] Eel Liver 2x
+1110250 [Treasure: Ashina Castle] Ceramic Shard
+1110260 [Treasure: Ashina Castle] Ako's Sugar 2x
+1110270 [Treasure: Ashina Castle] Light Coin Purse
+1110280 [Treasure: Ashina Castle] Mibu Balloon of Wealth
+1110290 [Treasure: Ashina Castle] Ceramic Shard
+1110300 [Treasure: Ashina Castle] Black Gunpowder
+1110310 [Treasure: Ashina Castle] Gokan's Sugar
+1110320 [Treasure: Ashina Castle] Scrap Iron
+1110330 [Treasure: Ashina Castle] Gachiin's Sugar 2x
+1110340 [Treasure: Ashina Castle] Pellet 2x
+1110350 [Treasure: Ashina Castle] Gachiin's Sugar
+1110360 [Treasure: Ashina Castle] Scrap Iron
+1110370 [Treasure: Ashina Castle] Light Coin Purse
+1110380 [Treasure: Ashina Castle] Ungo's Sugar 2x
+1110390 [Treasure: Ashina Castle] Scrap Magnetite
+1110400 [Treasure: Ashina Castle] Ceramic Shard
+1110410 [Treasure: Ashina Castle] Pellet
+1110420 [Treasure: Ashina Castle] Ceramic Shard 2x
+1110430 [Treasure: Ashina Castle] Scrap Iron
+1110440 [Treasure: Ashina Castle] Heavy Coin Purse
+1110450 [Treasure: Ashina Castle] Scrap Iron
+1110460 [Treasure: Ashina Castle] Treasure Carp Scale
+1110470 [Treasure: Ashina Castle] Mibu Possession Balloon 2x
+1110480 [Treasure: Ashina Castle] Heavy Coin Purse
+1110490 [Treasure: Ashina Castle] Heavy Coin Purse
+1110500 [Treasure: Ashina Castle] Yashariku's Sugar
+1110510 [Treasure: Ashina Castle] Mibu Possession Balloon
+1110520 [Treasure: Ashina Castle] Dragon's Blood Droplet
+1110530 [Treasure: Ashina Castle] Adamantite Scrap
+1110540 [Treasure: Ashina Castle] Pellet 3x
+1110550 [Treasure: Ashina Castle] Antidote Powder
+1110560 [Treasure: Ashina Castle] Adamantite Scrap
+1110570 [Treasure: Ashina Castle] Adamantite Scrap
+1110580 [Treasure: Ashina Castle] Oil 5x
+1110590 [Treasure: Ashina Castle] Light Coin Purse
+1110600 [Treasure: Ashina Castle] Yashariku's Sugar
+1110610 [Treasure: Ashina Castle] Fistful of Ash
+1110620 [Treasure: Ashina Castle] Ministry Dousing Powder
+1110630 [Treasure: Ashina Castle] Ako's Sugar 3x
+1110640 [Treasure: Ashina Castle] Fulminated Mercury
+1110650 [Treasure: Ashina Castle] Yashariku's Sugar 2x
+1110660 [Treasure: Ashina Castle] Pellet 3x
+1110670 [Treasure: Ashina Castle] Ceramic Shard
+1110680 [Treasure: Ashina Castle] Mibu Balloon of Wealth
+1110690 [Treasure: Ashina Castle] Pellet
+1110700 [Treasure: Ashina Castle] Ungo's Sugar
+1110710 [Treasure: Ashina Castle] Ceramic Shard
+1110720 [Treasure: Ashina Castle] Divine Grass
+1110740 [Treasure: Ashina Castle] Black Gunpowder
+1110750 [Treasure: Ashina Castle] Gokan's Sugar 3x
+1110760 [Treasure: Ashina Castle] Isshin's Letter
+1110770 [Treasure: Ashina Castle] Bundled Jizo Statue
+1110780 [Treasure: Ashina Castle] Bundled Jizo Statue
+1110790 [Treasure: Ashina Castle] Divine Grass
+1110800 [Treasure: Ashina Castle] Heavy Coin Purse
+1110810 [Treasure: Ashina Castle] Ashina Esoteric Text
+1110830 [Treasure: Ashina Castle] Scrap Iron
+1110840 [Treasure: Ashina Castle] Gachiin's Sugar 2x
+1110850 [Treasure: Ashina Castle] Fistful of Ash
+1110860 [Treasure: Ashina Castle] Gun Fort Shrine Key
+1110870 [Treasure: Ashina Castle] Pellet
+1110880 [Treasure: Ashina Castle] Black Scroll
+1110890 [Treasure: Ashina Castle] Fistful of Ash
+1110900 [Treasure: Ashina Castle] Eel Liver 2x
+1110910 [Treasure: Ashina Castle] Pellet 2x
+1110920 [Treasure: Ashina Castle] Scrap Magnetite 2x
+1110930 [Treasure: Ashina Castle] Yashariku's Sugar
+1110940 [Treasure: Ashina Castle] Dragon's Blood Droplet
+1110950 [Treasure: Ashina Castle] Oil 2x
+1110952 [Treasure: Ashina Castle] Oil 2x
+1110954 [Treasure: Ashina Castle] Black Gunpowder 3x
+1110956 [Treasure: Ashina Castle] Adamantite Scrap
+1110958 [Treasure: Ashina Castle] Adamantite Scrap 2x
+1120000 [Treasure: Ashina Reservoir] Ornamental Letter
+1120010 [Treasure: Ashina Reservoir] Gyoubu's Broken Horn
+1120020 [Treasure: Ashina Reservoir] Scrap Iron
+1120030 [Treasure: Ashina Reservoir] Scrap Iron
+1120040 [Treasure: Ashina Reservoir] Pellet
+1120050 [Treasure: Ashina Reservoir] Pellet
+1120060 [Treasure: Ashina Reservoir] Ceramic Shard 2x
+1120070 [Treasure: Ashina Reservoir] Fistful of Ash
+1120080 [Treasure: Ashina Reservoir] Scrap Iron
+1120090 [Treasure: Ashina Reservoir] Fulminated Mercury
+1120100 [Treasure: Ashina Reservoir] Pellet 3x
+1120110 [Treasure: Ashina Reservoir] Heavy Coin Purse
+1120120 [Treasure: Ashina Reservoir] Bundled Jizo Statue
+1120130 [Treasure: Ashina Reservoir] Mibu Balloon of Soul
+1120140 [Treasure: Ashina Reservoir] Pellet
+1120150 [Treasure: Ashina Reservoir] Fistful of Ash 2x
+1120160 [Treasure: Ashina Reservoir] Heavy Coin Purse
+1120170 [Treasure: Ashina Reservoir] Bundled Jizo Statue
+1120180 [Treasure: Ashina Reservoir] Mibu Balloon of Spirit
+1120190 [Treasure: Ashina Reservoir] Ministry Dousing Powder 2x
+1300000 [Treasure: Abandoned Dungeon] Dosaku's Note
+1300010 [Treasure: Abandoned Dungeon] Rotting Prisoner's Note
+1300020 [Treasure: Abandoned Dungeon] Pacifying Agent 2x
+1300030 [Treasure: Abandoned Dungeon] Pacifying Agent 2x
+1300040 [Treasure: Abandoned Dungeon] Pacifying Agent 3x
+1300050 [Treasure: Abandoned Dungeon] Oil
+1300060 [Treasure: Abandoned Dungeon] Mibu Balloon of Soul
+1300070 [Treasure: Abandoned Dungeon] Oil
+1300080 [Treasure: Abandoned Dungeon] Mibu Balloon of Soul 3x
+1300090 [Treasure: Abandoned Dungeon] Red Lump
+1300100 [Treasure: Abandoned Dungeon] Ako's Sugar 2x
+1300110 [Treasure: Abandoned Dungeon] Light Coin Purse
+1300120 [Treasure: Abandoned Dungeon] Bite Down
+1300130 [Treasure: Abandoned Dungeon] Pacifying Agent
+1300140 [Treasure: Abandoned Dungeon] Bulging Coin Purse
+1300150 [Treasure: Abandoned Dungeon] Light Coin Purse
+1300160 [Treasure: Abandoned Dungeon] Ceramic Shard
+1300170 [Treasure: Abandoned Dungeon] Mibu Balloon of Soul 2x
+1300180 [Treasure: Abandoned Dungeon] Fistful of Ash 2x
+1300190 [Treasure: Abandoned Dungeon] Mibu Balloon of Soul
+1300200 [Treasure: Abandoned Dungeon] Pacifying Agent 5x
+1300210 [Unused/Unknown] Ceramic Shard
+1300220 [Treasure: Abandoned Dungeon] Black Gunpowder
+1300230 [Treasure: Abandoned Dungeon] Scrap Magnetite
+1300240 [Treasure: Abandoned Dungeon] Scrap Iron
+1300250 [Treasure: Abandoned Dungeon] Black Gunpowder
+1300260 [Treasure: Abandoned Dungeon] Light Coin Purse
+1300270 [Treasure: Abandoned Dungeon] Light Coin Purse
+1500000 [Treasure: Mibu Village] Pine Resin Ember
+1500005 [Treasure: Mibu Village] Bundled Jizo Statue
+1500010 [Treasure: Mibu Village] Gourd Seed
+1500015 [Treasure: Mibu Village] Divine Grass
+1500020 [Treasure: Mibu Village] Heavy Coin Purse
+1500030 [Treasure: Mibu Village] Ashina Sake
+1500040 [Treasure: Mibu Village] Prayer Bead
+1500045 [Treasure: Mibu Village] Bundled Jizo Statue
+1500050 [Treasure: Mibu Village] Shelter Stone
+1500060 [Treasure: Mibu Village] Ceramic Shard 2x
+1500070 [Treasure: Mibu Village] Mibu Balloon of Wealth 3x
+1500080 [Treasure: Mibu Village] Scrap Iron 5x
+1500090 [Treasure: Mibu Village] Pellet
+1500100 [Treasure: Mibu Village] Mibu Balloon of Soul
+1500110 [Treasure: Mibu Village] Pellet
+1500120 [Treasure: Mibu Village] Light Coin Purse
+1500130 [Treasure: Mibu Village] Oil
+1500140 [Treasure: Mibu Village] Ceramic Shard 2x
+1500150 [Treasure: Mibu Village] Contact Medicine 2x
+1500160 [Treasure: Mibu Village] Bite Down
+1500170 [Treasure: Mibu Village] Light Coin Purse
+1500180 [Treasure: Mibu Village] Yashariku's Sugar
+1500190 [Treasure: Mibu Village] Adamantite Scrap
+1500200 [Treasure: Mibu Village] Snap Seed 3x
+1500210 [Treasure: Mibu Village] Fistful of Ash
+1500220 [Treasure: Mibu Village] Pellet 3x
+1500230 [Treasure: Mibu Village] Treasure Carp Scale
+1500240 [Treasure: Mibu Village] Mibu Balloon of Soul
+1500250 [Treasure: Mibu Village] Pacifying Agent
+1500260 [Treasure: Mibu Village] Mibu Balloon of Wealth 2x
+1500270 [Treasure: Mibu Village] Fistful of Ash 5x
+1500280 [Treasure: Mibu Village] Pellet 3x
+1500290 [Treasure: Mibu Village] Contact Medicine 2x
+1500300 [Treasure: Mibu Village] Yellow Gunpowder
+1500310 [Treasure: Mibu Village] Mibu Balloon of Soul 2x
+1500320 [Treasure: Mibu Village] Prayer Bead
+1500325 [Treasure: Mibu Village] Bundled Jizo Statue
+1500330 [Treasure: Mibu Village] Light Coin Purse
+1500340 [Treasure: Mibu Village] Light Coin Purse
+1500350 [Treasure: Mibu Village] Precious Bait
+1500360 [Treasure: Mibu Village] Pellet 2x
+1500370 [Treasure: Mibu Village] Contact Medicine
+1500380 [Treasure: Mibu Village] Fistful of Ash 3x
+1500390 [Treasure: Mibu Village] Light Coin Purse
+1500400 [Treasure: Mibu Village] Pellet 2x
+1500410 [Treasure: Mibu Village] Yashariku's Sugar 3x
+1500420 [Treasure: Mibu Village] Divine Confetti
+1500430 [Treasure: Mibu Village] Scrap Magnetite
+1500440 [Treasure: Mibu Village] Scrap Magnetite
+1500450 [Treasure: Mibu Village] Adamantite Scrap
+1500460 [Treasure: Mibu Village] Red Lump 2x
+1500470 [Treasure: Mibu Village] Adamantite Scrap
+1500480 [Treasure: Mibu Village] Black Gunpowder 2x
+1500490 [Treasure: Mibu Village] Yellow Gunpowder
+1500500 [Treasure: Mibu Village] Lump of Fat Wax
+1500510 [Treasure: Mibu Village] Lump of Fat Wax
+1500520 [Treasure: Mibu Village] Lump of Fat Wax
+1500530 [Treasure: Mibu Village] Adamantite Scrap
+1500540 [Treasure: Mibu Village] Lump of Fat Wax
+1500550 [Treasure: Mibu Village] Mibu Balloon of Soul 2x
+1500560 [Treasure: Mibu Village] Mibu Balloon of Soul
+1500570 [Treasure: Mibu Village] Divine Confetti 5x
+1500580 [Treasure: Mibu Village] Bite Down
+1500590 [Treasure: Mibu Village] Oil
+1500600 [Unused/Unknown] Ceramic Shard 3x
+1500610 [Treasure: Mibu Village] Divine Grass
+1500620 [Treasure: Mibu Village] Heavy Coin Purse
+1500630 [Treasure: Mibu Village] Light Coin Purse
+1500640 [Treasure: Mibu Village] Pellet
+1700000 [Treasure: Sunken Valley] Lotus of the Palace
+1700010 [Treasure: Sunken Valley] Large Fan
+1700015 [Treasure: Sunken Valley] Bundled Jizo Statue
+1700020 [Treasure: Sunken Valley] Prayer Bead
+1700025 [Treasure: Sunken Valley] Bundled Jizo Statue
+1700030 [Treasure: Sunken Valley] Prayer Bead
+1700035 [Treasure: Sunken Valley] Bundled Jizo Statue
+1700040 [Treasure: Sunken Valley] Prayer Bead
+1700045 [Treasure: Sunken Valley] Bundled Jizo Statue
+1700050 [Treasure: Sunken Valley] Pellet 2x
+1700060 [Treasure: Sunken Valley] Divine Grass
+1700070 [Treasure: Sunken Valley] Antidote Powder
+1700080 [Treasure: Sunken Valley] Snap Seed 3x
+1700090 [Treasure: Sunken Valley] Pacifying Agent
+1700100 [Treasure: Sunken Valley] Pacifying Agent 2x
+1700110 [Treasure: Sunken Valley] Mibu Balloon of Soul
+1700120 [Treasure: Sunken Valley] Divine Confetti 3x
+1700130 [Treasure: Sunken Valley] Black Gunpowder
+1700140 [Treasure: Sunken Valley] Antidote Powder
+1700150 [Treasure: Sunken Valley] Gokan's Sugar
+1700160 [Treasure: Sunken Valley] Ungo's Sugar
+1700170 [Unused/Unknown] Pacifying Agent 2x
+1700180 [Treasure: Sunken Valley] Oil 3x
+1700190 [Unused/Unknown] Fistful of Ash 2x
+1700200 [Treasure: Sunken Valley] Scrap Magnetite
+1700210 [Treasure: Sunken Valley] Scrap Magnetite
+1700220 [Treasure: Sunken Valley] Scrap Magnetite
+1700230 [Treasure: Sunken Valley] Snap Seed 2x
+1700240 [Unused/Unknown] Snap Seed 4x
+1700250 [Unused/Unknown] Snap Seed 3x
+1700260 [Treasure: Sunken Valley] Dragon's Blood Droplet
+1700270 [Unused/Unknown] Ceramic Shard 2x
+1700280 [Unused/Unknown] Ceramic Shard
+1700290 [Treasure: Sunken Valley] Ungo's Sugar
+1700300 [Treasure: Sunken Valley] Mibu Balloon of Soul 3x
+1700310 [Treasure: Sunken Valley] Pacifying Agent
+1700320 [Treasure: Sunken Valley] Mibu Balloon of Soul
+1700330 [Treasure: Sunken Valley] Scrap Magnetite
+1700340 [Treasure: Sunken Valley] Divine Confetti 3x
+1700350 [Treasure: Sunken Valley] Black Gunpowder 2x
+1700360 [Treasure: Sunken Valley] Snap Seed
+1700370 [Treasure: Sunken Valley] Heavy Coin Purse
+1700380 [Treasure: Sunken Valley] Light Coin Purse
+1700390 [Treasure: Sunken Valley] Scrap Magnetite
+1700400 [Treasure: Sunken Valley] Snap Seed 3x
+1700410 [Treasure: Sunken Valley] Fistful of Ash 2x
+1700420 [Treasure: Sunken Valley] Scrap Magnetite
+1700430 [Treasure: Sunken Valley] Ako's Sugar 2x
+1700440 [Treasure: Sunken Valley] Ceramic Shard
+1700450 [Treasure: Sunken Valley] Adamantite Scrap
+1700460 [Treasure: Sunken Valley] Scrap Magnetite
+1700470 [Treasure: Sunken Valley] Antidote Powder 2x
+1700480 [Treasure: Sunken Valley] Fistful of Ash 2x
+1700490 [Treasure: Sunken Valley] Fulminated Mercury
+1700500 [Treasure: Sunken Valley] Scrap Magnetite
+1700510 [Treasure: Sunken Valley] Scrap Magnetite
+1700520 [Treasure: Sunken Valley] Bulging Coin Purse
+1700530 [Treasure: Sunken Valley] Scrap Magnetite
+1700540 [Treasure: Sunken Valley] Yellow Gunpowder
+1700550 [Treasure: Sunken Valley] Yellow Gunpowder
+1700560 [Treasure: Sunken Valley] Fistful of Ash 2x
+1700570 [Treasure: Sunken Valley] Yellow Gunpowder
+1700580 [Treasure: Sunken Valley] Yellow Gunpowder
+1700590 [Treasure: Sunken Valley] Yellow Gunpowder
+1700600 [Treasure: Sunken Valley] Yellow Gunpowder
+1700610 [Treasure: Sunken Valley] Heavy Coin Purse
+1700620 [Treasure: Sunken Valley] Yashariku's Sugar
+1700630 [Treasure: Sunken Valley] Pacifying Agent
+1700640 [Treasure: Sunken Valley] Contact Medicine 3x
+1700650 [Treasure: Sunken Valley] Scrap Magnetite
+1700660 [Treasure: Sunken Valley] Contact Medicine 3x
+1700670 [from entity: Global] Monkey Booze
+1700680 [Treasure: Sunken Valley] Ungo's Sugar
+1700690 [Treasure: Sunken Valley] Scrap Magnetite 2x
+1700700 [Treasure: Sunken Valley] Mibu Balloon of Soul
+1700710 [Treasure: Sunken Valley] Pellet 2x
+1700720 [Treasure: Sunken Valley] Fistful of Ash
+1700730 [Unused/Unknown] Mibu Possession Balloon 3x
+1700740 [Treasure: Sunken Valley] Mibu Possession Balloon 3x
+1700750 [Unused/Unknown] Heavy Coin Purse
+1700760 [Treasure: Sunken Valley] Black Gunpowder 2x
+1700770 [Unused/Unknown] Mibu Balloon of Wealth
+1700780 [Treasure: Sunken Valley] Pellet 2x
+1700790 [Treasure: Sunken Valley] Heavy Coin Purse
+1700800 [Unused/Unknown] Mibu Balloon of Wealth
+1700810 [Treasure: Sunken Valley] Dried Serpent Viscera
+1700820 [Treasure: Sunken Valley] Gourd Seed
+1700825 [Treasure: Sunken Valley] Divine Grass
+1700830 [Treasure: Sunken Valley] Monkey Booze
+1700840 [Treasure: Sunken Valley] Precious Bait
+1700850 [Treasure: Sunken Valley] Pacifying Agent 3x
+1700860 [Treasure: Sunken Valley] Contact Medicine
+1700870 [Treasure: Sunken Valley] Adamantite Scrap
+1700880 [Treasure: Sunken Valley] Scrap Iron 3x
+1700890 [Treasure: Sunken Valley] Lump of Grave Wax
+1700900 [Treasure: Sunken Valley] Mibu Balloon of Soul
+1700910 [Treasure: Sunken Valley] Bundled Jizo Statue
+1700920 [Treasure: Sunken Valley] Treasure Carp Scale
+1700930 [Treasure: Sunken Valley] Gachiin's Sugar 3x
+2000000 [Treasure: Senpou Temple] Senpou Esoteric Text
+2000005 [Treasure: Senpou Temple] Bundled Jizo Statue
+2000010 [Treasure: Senpou Temple] Holy Chapter: Dragon's Return
+2000020 [Treasure: Senpou Temple] Monkey Booze
+2000030 [Treasure: Senpou Temple] Red and White Pinwheel
+2000040 [Treasure: Senpou Temple] Prayer Bead
+2000045 [Treasure: Senpou Temple] Bundled Jizo Statue
+2000050 [Treasure: Senpou Temple] Mibu Balloon of Spirit 3x
+2000060 [Scripted: Senpou Temple] Illusive Hall Bell
+2000070 [Treasure: Senpou Temple] Gachiin's Sugar
+2000080 [Treasure: Senpou Temple] Antidote Powder 2x
+2000090 [Treasure: Senpou Temple] Gokan's Sugar
+2000100 [Treasure: Senpou Temple] Ungo's Sugar
+2000110 [Treasure: Senpou Temple] Ceramic Shard 2x
+2000120 [Treasure: Senpou Temple] Mibu Balloon of Spirit
+2000130 [Treasure: Senpou Temple] Mibu Balloon of Spirit
+2000140 [Treasure: Senpou Temple] Lump of Fat Wax
+2000150 [Unused/Unknown] Ceramic Shard
+2000160 [Treasure: Senpou Temple] Gokan's Sugar
+2000170 [Treasure: Senpou Temple] White Pinwheel
+2000180 [Treasure: Senpou Temple] Scrap Iron 2x
+2000190 [Treasure: Senpou Temple] Ako's Sugar
+2000200 [Treasure: Senpou Temple] Mibu Balloon of Spirit
+2000210 [Treasure: Senpou Temple] Ungo's Sugar 3x
+2000220 [Unused/Unknown] Ceramic Shard
+2000230 [Treasure: Senpou Temple] Gokan's Sugar
+2000240 [Treasure: Senpou Temple] Gachiin's Sugar
+2000250 [Treasure: Senpou Temple] Pellet 2x
+2000260 [Treasure: Senpou Temple] Pellet
+2000270 [Treasure: Senpou Temple] Pellet
+2000280 [Treasure: Senpou Temple] Heavy Coin Purse
+2000290 [Unused/Unknown] Ceramic Shard
+2000300 [Unused/Unknown] Ceramic Shard
+2000310 [Treasure: Senpou Temple] Gachiin's Sugar
+2000320 [Unused/Unknown] Fistful of Ash
+2000330 [Treasure: Senpou Temple] Ceramic Shard 3x
+2000340 [Unused/Unknown] Oil
+2000350 [Treasure: Senpou Temple] Black Gunpowder 2x
+2000360 [Treasure: Senpou Temple] Mibu Possession Balloon 2x
+2000370 [Treasure: Senpou Temple] Mibu Balloon of Spirit
+2000380 [Unused/Unknown] Lump of Fat Wax
+2000390 [Treasure: Senpou Temple] Fistful of Ash
+2000400 [Treasure: Senpou Temple] Light Coin Purse
+2000410 [Treasure: Senpou Temple] Ungo's Sugar
+2000420 [Treasure: Senpou Temple] Ceramic Shard 2x
+2000430 [Treasure: Senpou Temple] Heavy Coin Purse
+2000440 [Treasure: Senpou Temple] Ako's Sugar
+2000450 [Treasure: Senpou Temple] Snap Seed 2x
+2000460 [Treasure: Senpou Temple] Ako's Sugar
+2000470 [Treasure: Senpou Temple] Mibu Balloon of Spirit
+2000480 [Treasure: Senpou Temple] Black Gunpowder
+2000490 [Unused/Unknown] Scrap Magnetite
+2000500 [Treasure: Senpou Temple] Antidote Powder
+2000510 [Treasure: Senpou Temple] Scrap Magnetite
+2000520 [Treasure: Senpou Temple] Scrap Magnetite
+2000530 [Treasure: Senpou Temple] Black Gunpowder
+2000540 [Treasure: Senpou Temple] Black Gunpowder
+2000550 [Unused/Unknown] Ceramic Shard
+2000560 [Treasure: Senpou Temple] Lump of Fat Wax
+2000570 [Treasure: Senpou Temple] Ceramic Shard 4x
+2000580 [Treasure: Senpou Temple] Pellet
+2000590 [Treasure: Senpou Temple] Heavy Coin Purse
+2000600 [Treasure: Senpou Temple] Pellet 2x
+2000610 [Treasure: Senpou Temple] Fistful of Ash 3x
+2000620 [Treasure: Senpou Temple] Mibu Possession Balloon
+2000630 [Unused/Unknown] Ceramic Shard
+2000640 [Unused/Unknown] Ceramic Shard
+2000650 [Treasure: Senpou Temple] Light Coin Purse
+2000660 [Treasure: Senpou Temple] Ungo's Sugar
+2000670 [Treasure: Senpou Temple] Fistful of Ash 5x
+2000680 [Treasure: Senpou Temple] Mibu Balloon of Spirit
+2000690 [Treasure: Senpou Temple] Gokan's Sugar
+2000700 [Treasure: Senpou Temple] Bundled Jizo Statue
+2000710 [Treasure: Senpou Temple] Persimmon
+2000720 [Treasure: Senpou Temple] Dragon's Blood Droplet
+2000730 [Treasure: Senpou Temple] Gourd Seed
+2000735 [Treasure: Senpou Temple] Divine Grass
+2000740 [Treasure: Senpou Temple] Lump of Fat Wax
+2000750 [Treasure: Senpou Temple] Pacifying Agent
+2000760 [Treasure: Senpou Temple] Pellet
+2000770 [Treasure: Senpou Temple] Light Coin Purse
+2000780 [Treasure: Senpou Temple] Gachiin's Sugar
+2000790 [Treasure: Senpou Temple] Mibu Balloon of Spirit 2x
+2000800 [Treasure: Senpou Temple] Mibu Balloon of Spirit
+2000810 [Unused/Unknown] Pellet 2x
+2000820 [Treasure: Senpou Temple] Holy Chapter: Infested
+2000830 [Treasure: Senpou Temple] Antidote Powder
+2000840 [Treasure: Senpou Temple] Heavy Coin Purse
+2000850 [Treasure: Senpou Temple] Light Coin Purse
+2500000 [Treasure: Fountainhead Palace] Gourd Seed
+2500005 [Treasure: Fountainhead Palace] Divine Grass
+2500020 [Treasure: Fountainhead Palace] Prayer Bead
+2500025 [Treasure: Fountainhead Palace] Bundled Jizo Statue
+2500030 [Treasure: Fountainhead Palace] Mibu Balloon of Soul
+2500040 [Treasure: Fountainhead Palace] Light Coin Purse
+2500050 [Treasure: Fountainhead Palace] Mibu Balloon of Wealth
+2500060 [Treasure: Fountainhead Palace] Eel Liver 2x
+2500070 [Treasure: Fountainhead Palace] Ungo's Sugar
+2500080 [Treasure: Fountainhead Palace] Heavy Coin Purse
+2500090 [Treasure: Fountainhead Palace] Yashariku's Sugar 2x
+2500100 [Treasure: Fountainhead Palace] Treasure Carp Scale
+2500110 [Treasure: Fountainhead Palace] Bite Down 2x
+2500120 [Treasure: Fountainhead Palace] Treasure Carp Scale
+2500130 [Treasure: Fountainhead Palace] Pellet
+2500140 [Treasure: Fountainhead Palace] Ako's Sugar 3x
+2500150 [Treasure: Fountainhead Palace] Eel Liver 3x
+2500160 [Treasure: Fountainhead Palace] Divine Confetti 2x
+2500170 [Treasure: Fountainhead Palace] Yellow Gunpowder 4x
+2500180 [Treasure: Fountainhead Palace] Adamantite Scrap
+2500190 [Treasure: Fountainhead Palace] Divine Grass
+2500200 [Treasure: Fountainhead Palace] Divine Confetti 3x
+2500210 [Treasure: Fountainhead Palace] Adamantite Scrap
+2500220 [Treasure: Fountainhead Palace] Yashariku's Sugar 3x
+2500230 [Treasure: Fountainhead Palace] Bulging Coin Purse
+2500240 [Treasure: Fountainhead Palace] Pellet 2x
+2500250 [Treasure: Fountainhead Palace] Mibu Balloon of Soul
+2500260 [Treasure: Fountainhead Palace] Mibu Balloon of Soul
+2500270 [Treasure: Fountainhead Palace] Ceramic Shard 3x
+2500280 [Treasure: Fountainhead Palace] Adamantite Scrap
+2500290 [Treasure: Fountainhead Palace] Light Coin Purse
+2500300 [Treasure: Fountainhead Palace] Heavy Coin Purse
+2500310 [Treasure: Fountainhead Palace] Bundled Jizo Statue
+2500320 [Treasure: Fountainhead Palace] Eel Liver 2x
+2500330 [Treasure: Fountainhead Palace] Mibu Possession Balloon
+2500340 [Treasure: Fountainhead Palace] Mibu Possession Balloon
+2500350 [Treasure: Fountainhead Palace] Pellet 2x
+2500360 [Treasure: Fountainhead Palace] Gokan's Sugar 3x
+2500370 [Treasure: Fountainhead Palace] Divine Confetti 2x
+2500380 [Treasure: Fountainhead Palace] Light Coin Purse
+2500390 [Treasure: Fountainhead Palace] Scrap Magnetite 3x
+2500400 [Treasure: Fountainhead Palace] Red Lump
+2500410 [Treasure: Fountainhead Palace] Precious Bait
+2500420 [Treasure: Fountainhead Palace] Bulging Coin Purse
+2500430 [Treasure: Fountainhead Palace] Ceramic Shard 2x
+2500440 [Treasure: Fountainhead Palace] Treasure Carp Scale
+2500450 [Treasure: Fountainhead Palace] Treasure Carp Scale
+2500460 [Treasure: Fountainhead Palace] Treasure Carp Scale
+2500470 [Treasure: Fountainhead Palace] Precious Bait
+2500480 [Treasure: Fountainhead Palace] Treasure Carp Scale
+2500490 [Treasure: Fountainhead Palace] Treasure Carp Scale
+2500500 [Treasure: Fountainhead Palace] Precious Bait
+2500510 [Treasure: Fountainhead Palace] Light Coin Purse
+2500520 [Treasure: Fountainhead Palace] Adamantite Scrap
+2500530 [Treasure: Fountainhead Palace] Mibu Balloon of Soul 3x
+2500540 [Treasure: Fountainhead Palace] Dragon's Blood Droplet
+2500550 [Treasure: Fountainhead Palace] Heavy Coin Purse
+2500560 [Treasure: Fountainhead Palace] Light Coin Purse
+2500570 [Treasure: Fountainhead Palace] Treasure Carp Scale
+2500580 [Treasure: Fountainhead Palace] Adamantite Scrap
+2500590 [Treasure: Fountainhead Palace] Adamantite Scrap
+2500600 [Treasure: Fountainhead Palace] Pellet 2x
+2500610 [Treasure: Fountainhead Palace] Lump of Grave Wax
+2500620 [Treasure: Fountainhead Palace] Lump of Grave Wax
+2500630 [Treasure: Fountainhead Palace] Lump of Grave Wax
+2500640 [Treasure: Fountainhead Palace] Lump of Grave Wax
+2500650 [Treasure: Fountainhead Palace] Water of the Palace
+2500660 [Treasure: Fountainhead Palace] Ceramic Shard 3x
+2500670 [Treasure: Fountainhead Palace] Ako's Sugar 2x
+2500680 [Treasure: Fountainhead Palace] Ungo's Sugar 2x
+9990000 [Unused/Unknown] Gourd Seed
+9990010 [Unused/Unknown] Malcontent's Ring
+9990020 [Unused/Unknown] Pellet 5x
+9990030 [Unused/Unknown] Pellet
+9990040 [Unused/Unknown] Pellet
+9990050 [Unused/Unknown] Pellet
+9990060 [Unused/Unknown] Pellet
+10100000 [Basic Soldier: Ashina Castle, Ashina Outskirts] Ceramic Shard 15%
+10100001 [Basic Soldier: Ashina Castle, Ashina Outskirts] 
+10100011 [Basic Soldier: Ashina Castle, Ashina Outskirts] Scrap Iron 9%
+10100021 [Basic Soldier: Ashina Castle, Ashina Outskirts] Scrap Iron 18%
+10100031 [Basic Soldier: Ashina Castle, Ashina Outskirts] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+10100041 [Basic Soldier: Ashina Castle, Ashina Outskirts] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+10100100 [Basic Soldier: Ashina Castle, Ashina Outskirts] Ceramic Shard 15%
+10100101 [Basic Soldier: Ashina Castle, Ashina Outskirts] 
+10100111 [Basic Soldier: Ashina Castle, Ashina Outskirts] Scrap Iron 9%
+10100121 [Basic Soldier: Ashina Castle, Ashina Outskirts] Scrap Iron 18%
+10100131 [Basic Soldier: Ashina Castle, Ashina Outskirts] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+10100141 [Basic Soldier: Ashina Castle, Ashina Outskirts] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+10100200 [Basic Soldier: Ashina Outskirts] Ceramic Shard 15%
+10100201 [Basic Soldier: Ashina Outskirts] 
+10100211 [Basic Soldier: Ashina Outskirts] Scrap Iron 9%
+10100221 [Basic Soldier: Ashina Outskirts] Scrap Iron 18%
+10100231 [Basic Soldier: Ashina Outskirts] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+10100241 [Basic Soldier: Ashina Outskirts] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+10100300 [Basic Soldier: Ashina Outskirts] Fistful of Ash 20%
+10100301 [Basic Soldier: Ashina Outskirts] 
+10100311 [Basic Soldier: Ashina Outskirts] Black Gunpowder 9%
+10100321 [Basic Soldier: Ashina Outskirts] Black Gunpowder 18%
+10100331 [Basic Soldier: Ashina Outskirts] Black Gunpowder 14%, Black Gunpowder 2x 4%, Yellow Gunpowder 7%
+10100341 [Basic Soldier: Ashina Outskirts] Black Gunpowder 14%, Black Gunpowder 2x 6%, Yellow Gunpowder 9%
+10100400 [Unused/Unknown] Pellet
+10100500 [Basic Soldier: Ashina Outskirts] Ceramic Shard 15%, Pellet 10%, Pellet 3x 5%
+10100501 [Basic Soldier: Ashina Outskirts] 
+10100511 [Basic Soldier: Ashina Outskirts] Scrap Iron 20%
+10100521 [Basic Soldier: Ashina Outskirts] Scrap Iron 30%, Scrap Iron 2x 10%
+10100531 [Basic Soldier: Ashina Outskirts] Scrap Iron 40%, Scrap Iron 2x 20%, Scrap Magnetite 10%
+10100541 [Basic Soldier: Ashina Outskirts] Scrap Iron 30%, Scrap Iron 2x 20%, Scrap Magnetite 20%
+10101000 [Basic Soldier: Ashina Castle, Ashina Reservoir] Ceramic Shard 15%
+10101001 [Basic Soldier: Ashina Castle, Ashina Reservoir] 
+10101011 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 9%
+10101021 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 18%
+10101031 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+10101041 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+10101100 [Basic Soldier: Ashina Castle, Ashina Reservoir] Ceramic Shard 15%
+10101101 [Basic Soldier: Ashina Castle, Ashina Reservoir] 
+10101111 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 9%
+10101121 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 18%
+10101131 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+10101141 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+10101200 [Basic Soldier: Ashina Castle, Ashina Reservoir] Ceramic Shard 15%
+10101201 [Basic Soldier: Ashina Castle, Ashina Reservoir] 
+10101211 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 9%
+10101221 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 18%
+10101231 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+10101241 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+10101300 [Basic Soldier: Ashina Castle, Ashina Reservoir] Fistful of Ash 20%
+10101301 [Basic Soldier: Ashina Castle, Ashina Reservoir] 
+10101311 [Basic Soldier: Ashina Castle, Ashina Reservoir] Black Gunpowder 9%
+10101321 [Basic Soldier: Ashina Castle, Ashina Reservoir] Black Gunpowder 18%
+10101331 [Basic Soldier: Ashina Castle, Ashina Reservoir] Black Gunpowder 14%, Black Gunpowder 2x 4%, Yellow Gunpowder 7%
+10101341 [Basic Soldier: Ashina Castle, Ashina Reservoir] Black Gunpowder 14%, Black Gunpowder 2x 6%, Yellow Gunpowder 9%
+10101400 [Basic Soldier, Treasure: Ashina Castle] Gatehouse Key
+10101500 [Basic Soldier: Ashina Castle, Ashina Reservoir] Ceramic Shard 15%, Pellet 10%, Pellet 3x 5%
+10101501 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 5%
+10101511 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 20%, Scrap Iron 2x 5%
+10101521 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 25%, Scrap Iron 2x 15%
+10101531 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 30%, Scrap Iron 2x 25%, Scrap Magnetite 15%
+10101541 [Basic Soldier: Ashina Castle, Ashina Reservoir] Scrap Iron 20%, Scrap Iron 2x 25%, Scrap Magnetite 25%
+10102000 [Unused/Unknown] Pacifying Agent 28%
+10102001 [Unused/Unknown] 
+10102011 [Unused/Unknown] Scrap Iron 9%
+10102021 [Unused/Unknown] Scrap Iron 18%
+10102031 [Unused/Unknown] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+10102041 [Unused/Unknown] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+10102100 [Basic Soldier: Abandoned Dungeon] Pacifying Agent 28%
+10102101 [Basic Soldier: Abandoned Dungeon] 
+10102111 [Basic Soldier: Abandoned Dungeon] Scrap Iron 9%
+10102121 [Basic Soldier: Abandoned Dungeon] Scrap Iron 18%
+10102131 [Basic Soldier: Abandoned Dungeon] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+10102141 [Basic Soldier: Abandoned Dungeon] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+10102200 [Basic Soldier: Abandoned Dungeon] Pacifying Agent 28%
+10102201 [Basic Soldier: Abandoned Dungeon] 
+10102211 [Basic Soldier: Abandoned Dungeon] Scrap Iron 9%
+10102221 [Basic Soldier: Abandoned Dungeon] Scrap Iron 18%
+10102231 [Basic Soldier: Abandoned Dungeon] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+10102241 [Basic Soldier: Abandoned Dungeon] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+10102300 [Basic Soldier: Abandoned Dungeon] Pacifying Agent 28%
+10102301 [Basic Soldier: Abandoned Dungeon] 
+10102311 [Basic Soldier: Abandoned Dungeon] Black Gunpowder 9%
+10102321 [Basic Soldier: Abandoned Dungeon] Black Gunpowder 18%
+10102331 [Basic Soldier: Abandoned Dungeon] Black Gunpowder 14%, Black Gunpowder 2x 4%, Yellow Gunpowder 7%
+10102341 [Basic Soldier: Abandoned Dungeon] Black Gunpowder 14%, Black Gunpowder 2x 6%, Yellow Gunpowder 9%
+10102400 [Unused/Unknown] Pacifying Agent 28%, Pellet 10%, Pellet 3x 5%
+10102401 [Unused/Unknown] 
+10102411 [Unused/Unknown] Scrap Iron 20%
+10102421 [Unused/Unknown] Scrap Iron 30%, Scrap Iron 2x 10%
+10102431 [Unused/Unknown] Scrap Iron 40%, Scrap Iron 2x 20%, Scrap Magnetite 10%
+10102441 [Unused/Unknown] Scrap Iron 30%, Scrap Iron 2x 20%, Scrap Magnetite 20%
+10109000 [Unused/Unknown] Fistful of Ash 30%
+10109100 [Unused/Unknown] Fistful of Ash 20%, Ungo's Sugar 10%
+10109200 [Unused/Unknown] Fistful of Ash 20%, Ungo's Sugar 30%
+10109300 [Unused/Unknown] Fistful of Ash 50%
+10200000 [Samurai General: Ashina Outskirts] Prayer Bead
+10200001 [Samurai General: Ashina Outskirts] Gourd Seed
+10200005 [Samurai General: Ashina Outskirts] Heavy Coin Purse
+10200100 [Samurai General: Ashina Outskirts] Prayer Bead
+10200105 [Samurai General: Ashina Outskirts] Heavy Coin Purse
+10202000 [Samurai General: Ashina Castle] Prayer Bead
+10202005 [Samurai General: Ashina Castle] Heavy Coin Purse
+10203000 [Samurai General: Ashina Reservoir] Pellet
+10204000 [Unused/Unknown] Pellet 92%, Pellet 3x 8%
+10204001 [Unused/Unknown] Scrap Iron 10%
+10204011 [Unused/Unknown] Scrap Iron 20%, Scrap Iron 3x 10%
+10204021 [Unused/Unknown] Scrap Iron 80%, Scrap Iron 3x 20%
+10204031 [Unused/Unknown] Scrap Iron 70%, Scrap Iron 3x 20%, Scrap Magnetite 10%
+10204041 [Unused/Unknown] Scrap Iron 55.56%, Scrap Iron 3x 27.78%, Scrap Magnetite 16.67%
+10205000 [Samurai General: Ashina Reservoir] Pellet 88%, Pellet 3x 12%
+10205001 [Samurai General: Ashina Reservoir] Scrap Iron 70%, Scrap Iron 2x 20%, Scrap Magnetite 10%
+10205031 [Samurai General: Ashina Reservoir] Scrap Iron 2x 70%, Scrap Magnetite 2x 20%, Adamantite Scrap 10%
+10205041 [Samurai General: Ashina Reservoir] Scrap Iron 2x 60%, Scrap Magnetite 2x 25%, Adamantite Scrap 15%
+10212000 [Seven Ashina Spears: Ashina Reservoir] Prayer Bead
+10212005 [Seven Ashina Spears: Ashina Reservoir] Heavy Coin Purse
+10212100 [Seven Ashina Spears: Ashina Reservoir] Prayer Bead
+10212105 [Seven Ashina Spears: Ashina Reservoir] Heavy Coin Purse
+10300000 [Centipede: Senpou Temple] Ako's Sugar 10%
+10300001 [Centipede: Senpou Temple] 
+10300011 [Centipede: Senpou Temple] Black Gunpowder 12%
+10300021 [Centipede: Senpou Temple] Black Gunpowder 15%, Yellow Gunpowder 5%
+10300031 [Centipede: Senpou Temple] Black Gunpowder 2x 17%, Yellow Gunpowder 8%
+10300041 [Centipede: Senpou Temple] Black Gunpowder 2x 18%, Yellow Gunpowder 12%
+10300100 [Centipede: Senpou Temple] Ungo's Sugar 10%
+10300101 [Centipede: Senpou Temple] 
+10300111 [Centipede: Senpou Temple] Black Gunpowder 12%
+10300121 [Centipede: Senpou Temple] Black Gunpowder 15%, Yellow Gunpowder 5%
+10300131 [Centipede: Senpou Temple] Black Gunpowder 2x 17%, Yellow Gunpowder 8%
+10300141 [Centipede: Senpou Temple] Black Gunpowder 2x 18%, Yellow Gunpowder 12%
+10301000 [Centipede: Sunken Valley] Antidote Powder 15%
+10301001 [Centipede: Sunken Valley] 
+10301011 [Centipede: Sunken Valley] Scrap Iron 12%
+10301021 [Centipede: Sunken Valley] Scrap Iron 15%, Scrap Magnetite 5%
+10301031 [Centipede: Sunken Valley] Scrap Iron 2x 17%, Scrap Magnetite 8%
+10301041 [Centipede: Sunken Valley] Scrap Iron 2x 18%, Scrap Magnetite 12%
+10301100 [Unused NPC] Antidote Powder 15%
+10301101 [Unused NPC] 
+10301111 [Unused NPC] Scrap Iron 12%
+10301121 [Unused NPC] Scrap Iron 15%, Scrap Magnetite 5%
+10301131 [Unused NPC] Scrap Iron 2x 17%, Scrap Magnetite 8%
+10301141 [Unused NPC] Scrap Iron 2x 18%, Scrap Magnetite 12%
+10400000 [Centipede Boss: Senpou Temple] Prayer Bead
+10400001 [Centipede Boss: Senpou Temple] Yellow Gunpowder 2x
+10400005 [Centipede Boss: Senpou Temple] Heavy Coin Purse 2x
+10400100 [Unused/Unknown] 
+10401000 [Unused/Unknown] 
+10401100 [Centipede Boss: Sunken Valley] Prayer Bead
+10401101 [Centipede Boss: Sunken Valley] Yellow Gunpowder 2x
+10401105 [Centipede Boss: Sunken Valley] Heavy Coin Purse
+10500000 [Shinobi Hunter: Hirata Estate] Prayer Bead
+10500005 [Shinobi Hunter: Hirata Estate] Heavy Coin Purse
+10500100 [from entity: Global] Bulging Coin Purse
+10500200 [Shinobi Hunter: Hirata Estate] Gokan's Sugar 95%, Light Coin Purse 5%
+10500201 [Shinobi Hunter: Hirata Estate] Scrap Iron 8%
+10500211 [Shinobi Hunter: Hirata Estate] Scrap Iron 92%, Scrap Iron 2x 8%
+10500221 [Shinobi Hunter: Hirata Estate] Scrap Iron 80%, Scrap Iron 2x 10%, Scrap Magnetite 10%
+10500231 [Shinobi Hunter: Hirata Estate] Scrap Magnetite 2x 80%, Scrap Magnetite 10%, Adamantite Scrap 10%
+10500241 [Shinobi Hunter: Hirata Estate] Scrap Magnetite 2x 75%, Scrap Magnetite 2x 10%, Adamantite Scrap 15%
+10501000 [Shinobi Hunter: Ashina Castle] Gokan's Sugar 95%, Light Coin Purse 5%
+10501001 [Shinobi Hunter: Ashina Castle] Scrap Iron 8%
+10501011 [Shinobi Hunter: Ashina Castle] Scrap Iron 92%, Scrap Iron 2x 8%
+10501021 [Shinobi Hunter: Ashina Castle] Scrap Iron 80%, Scrap Iron 2x 10%, Scrap Magnetite 10%
+10501031 [Shinobi Hunter: Ashina Castle] Scrap Magnetite 2x 80%, Scrap Magnetite 10%, Adamantite Scrap 10%
+10501041 [Shinobi Hunter: Ashina Castle] Scrap Magnetite 2x 75%, Scrap Magnetite 2x 10%, Adamantite Scrap 15%
+10501100 [Shinobi Hunter: Ashina Castle] Heavy Coin Purse
+10502000 [Unused NPC] Divine Confetti 2x
+10503000 [Shinobi Hunter: Hirata Estate] Gokan's Sugar 90%, Light Coin Purse 10%
+10503001 [Shinobi Hunter: Hirata Estate] Scrap Iron 8%
+10503011 [Shinobi Hunter: Hirata Estate] Scrap Iron 92%, Scrap Iron 2x 8%
+10503021 [Shinobi Hunter: Hirata Estate] Scrap Iron 80%, Scrap Iron 2x 10%, Scrap Magnetite 10%
+10503031 [Shinobi Hunter: Hirata Estate] Scrap Magnetite 2x 75%, Scrap Magnetite 13%, Adamantite Scrap 12%
+10503041 [Shinobi Hunter: Hirata Estate] Scrap Magnetite 2x 66.67%, Scrap Magnetite 2x 16.19%, Adamantite Scrap 17.14%
+10600000 [Twinblade Monks: Senpou Temple] Heavy Coin Purse
+10600100 [Twinblade Monks: Senpou Temple] Bulging Coin Purse
+10600200 [Twinblade Monks: Senpou Temple] Gokan's Sugar 94.74%, Light Coin Purse 5.26%
+10600201 [Twinblade Monks: Senpou Temple] Scrap Iron 8%
+10600211 [Twinblade Monks: Senpou Temple] Scrap Iron 92%, Scrap Iron 2x 8%
+10600221 [Twinblade Monks: Senpou Temple] Scrap Iron 80%, Scrap Iron 2x 10%, Scrap Magnetite 10%
+10600231 [Twinblade Monks: Senpou Temple] Scrap Magnetite 2x 75%, Scrap Magnetite 13%, Adamantite Scrap 12%
+10600241 [Twinblade Monks: Senpou Temple] Scrap Magnetite 2x 66.67%, Scrap Magnetite 2x 16.19%, Adamantite Scrap 17.14%
+10700000 [Drunkard: Hirata Estate] Prayer Bead
+10700001 [Drunkard: Hirata Estate] Unrefined Sake
+10700005 [Drunkard: Hirata Estate] Heavy Coin Purse
+10700100 [Drunkard: Hirata Estate] Prayer Bead
+10700105 [Drunkard: Hirata Estate] Heavy Coin Purse
+10701000 [Drunkard: Ashina Outskirts] Prayer Bead
+10701005 [Drunkard: Ashina Outskirts] Heavy Coin Purse
+10702000 [Drunkard: Mibu Village] Prayer Bead
+10702001 [Drunkard: Mibu Village] Unrefined Sake
+10702005 [Drunkard: Mibu Village] Heavy Coin Purse
+10702006 [Drunkard: Mibu Village] Unrefined Sake
+10800000 [Shichimen Warrior: Abandoned Dungeon] Ceremonial Tanto
+10800005 [Shichimen Warrior: Abandoned Dungeon] Bulging Coin Purse
+10801000 [Shichimen Warrior: Fountainhead Palace] Lapis Lazuli
+10802000 [Shichimen Warrior: Sunken Valley] Malcontent's Ring
+10802005 [Shichimen Warrior: Sunken Valley] Bulging Coin Purse
+11101000 [Old Woman with Candle: Sunken Valley] Antidote Powder 30%
+11101001 [Old Woman with Candle: Sunken Valley] 
+11101011 [Old Woman with Candle: Sunken Valley] 
+11101021 [Old Woman with Candle: Sunken Valley] Lump of Fat Wax 4%
+11101031 [Old Woman with Candle: Sunken Valley] Lump of Fat Wax 8%
+11101041 [Old Woman with Candle: Sunken Valley] Lump of Fat Wax 8%, Lump of Fat Wax 4%
+11105000 [Old Woman with Candle: Ashina Castle] Ungo's Sugar 5%
+11105001 [Old Woman with Candle: Ashina Castle] 
+11105011 [Old Woman with Candle: Ashina Castle] 
+11105021 [Old Woman with Candle: Ashina Castle] Lump of Fat Wax 4%
+11105031 [Old Woman with Candle: Ashina Castle] Lump of Fat Wax 8%
+11105041 [Old Woman with Candle: Ashina Castle] Lump of Fat Wax 8%, Lump of Fat Wax 2x 4%
+11109000 [Unused NPC] Fistful of Ash
+11200000 [Watchman: Ashina Castle, Ashina Outskirts] Fistful of Ash 30%
+11200001 [Watchman: Ashina Castle, Ashina Outskirts] 
+11200011 [Watchman: Ashina Castle, Ashina Outskirts] 
+11200021 [Watchman: Ashina Castle, Ashina Outskirts] Lump of Fat Wax 4%
+11200031 [Watchman: Ashina Castle, Ashina Outskirts] Lump of Fat Wax 8%
+11200041 [Watchman: Ashina Castle, Ashina Outskirts] Lump of Fat Wax 8%, Lump of Fat Wax 2x 4%
+11201000 [Watchman: Ashina Outskirts] Ministry Dousing Powder 30%
+11201001 [Watchman: Ashina Outskirts] Scrap Iron 20%
+11201041 [Watchman: Ashina Outskirts] Scrap Iron 20%, Scrap Iron 2x 10%
+11202000 [Unused NPC] Fistful of Ash 30%
+11202001 [Unused NPC] 
+11202011 [Unused NPC] 
+11202021 [Unused NPC] Lump of Fat Wax 4%
+11202031 [Unused NPC] Lump of Fat Wax 8%
+11202041 [Unused NPC] Lump of Fat Wax 8%, Lump of Fat Wax 2x 4%
+11204000 [Watchman: Ashina Reservoir] Fistful of Ash 30%
+11204001 [Watchman: Ashina Reservoir] 
+11204011 [Watchman: Ashina Reservoir] 
+11204021 [Watchman: Ashina Reservoir] Lump of Fat Wax 4%
+11204031 [Watchman: Ashina Reservoir] Lump of Fat Wax 8%
+11204041 [Watchman: Ashina Reservoir] Lump of Fat Wax 8%, Lump of Fat Wax 2x 4%
+11300000 [Armored Warrior: Senpou Temple] Prayer Bead
+11300001 [Armored Warrior: Senpou Temple] Breath of Nature: Shadow
+11300005 [Armored Warrior: Senpou Temple] Heavy Coin Purse
+11400000 [Ghost Wall Spearman: Sunken Valley] Antidote Powder 30%
+11400001 [Ghost Wall Spearman: Sunken Valley] Scrap Iron 30%
+11400011 [Ghost Wall Spearman: Sunken Valley] Scrap Iron 30%, Scrap Magnetite 10%
+11400021 [Ghost Wall Spearman: Sunken Valley] Scrap Iron 35%, Scrap Magnetite 15%
+11400031 [Ghost Wall Spearman: Sunken Valley] Scrap Magnetite 92%, Scrap Magnetite 2x 8%
+11400041 [Ghost Wall Spearman: Sunken Valley] Scrap Magnetite 84%, Scrap Magnetite 2x 16%
+11510000 [Fountainhead Palace Dog: Fountainhead Palace] Precious Bait 2%
+11800000 [Large Brute: Ashina Castle, Ashina Outskirts] Mibu Possession Balloon 20%, Pellet 2x 4%
+11800001 [Large Brute: Ashina Castle, Ashina Outskirts] 
+11800011 [Large Brute: Ashina Castle, Ashina Outskirts] Scrap Iron 2x 20%
+11800021 [Large Brute: Ashina Castle, Ashina Outskirts] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11800031 [Large Brute: Ashina Castle, Ashina Outskirts] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11800041 [Large Brute: Ashina Castle, Ashina Outskirts] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11800100 [Large Brute: Ashina Outskirts] Mibu Possession Balloon 20%, Pellet 2x 4%
+11800101 [Large Brute: Ashina Outskirts] 
+11800111 [Large Brute: Ashina Outskirts] Scrap Iron 2x 20%
+11800121 [Large Brute: Ashina Outskirts] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11800131 [Large Brute: Ashina Outskirts] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11800141 [Large Brute: Ashina Outskirts] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11801000 [Large Brute: Ashina Castle] Scrap Magnetite
+11801100 [Unused NPC] Mibu Possession Balloon 20%, Pellet 2x 4%
+11801101 [Unused NPC] 
+11801111 [Unused NPC] Scrap Iron 2x 20%
+11801121 [Unused NPC] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11801131 [Unused NPC] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11801141 [Unused NPC] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11801200 [Large Brute: Ashina Castle] Mibu Possession Balloon 22%, Pellet 2x 8%
+11801201 [Large Brute: Ashina Castle] 
+11801211 [Large Brute: Ashina Castle] Scrap Iron 2x 20%
+11801221 [Large Brute: Ashina Castle] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11801231 [Large Brute: Ashina Castle] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11801241 [Large Brute: Ashina Castle] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11802000 [Large Brute: Senpou Temple] Scrap Magnetite
+11803100 [Large Brute: Senpou Temple] Mibu Balloon of Spirit 20%, Pellet 2x 4%
+11803101 [Large Brute: Senpou Temple] 
+11803111 [Large Brute: Senpou Temple] Scrap Iron 2x 20%
+11803121 [Large Brute: Senpou Temple] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11803131 [Large Brute: Senpou Temple] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11803141 [Large Brute: Senpou Temple] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11803200 [Large Brute: Senpou Temple] Mibu Balloon of Spirit 20%, Pellet 2x 4%
+11803201 [Large Brute: Senpou Temple] 
+11803211 [Large Brute: Senpou Temple] Scrap Iron 2x 20%
+11803221 [Large Brute: Senpou Temple] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11803231 [Large Brute: Senpou Temple] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11803241 [Large Brute: Senpou Temple] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11803400 [Large Brute: Senpou Temple] Mibu Balloon of Spirit 22%, Pellet 2x 8%
+11803401 [Large Brute: Senpou Temple] 
+11803411 [Large Brute: Senpou Temple] Scrap Iron 2x 20%
+11803421 [Large Brute: Senpou Temple] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11803431 [Large Brute: Senpou Temple] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11803441 [Large Brute: Senpou Temple] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11804000 [Large Brute: Ashina Reservoir] Mibu Possession Balloon 20%, Pellet 2x 4%
+11804001 [Large Brute: Ashina Reservoir] 
+11804011 [Large Brute: Ashina Reservoir] Scrap Iron 2x 20%
+11804021 [Large Brute: Ashina Reservoir] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11804031 [Large Brute: Ashina Reservoir] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11804041 [Large Brute: Ashina Reservoir] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11804100 [Large Brute: Ashina Reservoir] Mibu Possession Balloon 20%, Pellet 2x 4%
+11804101 [Large Brute: Ashina Reservoir] 
+11804111 [Large Brute: Ashina Reservoir] Scrap Iron 2x 20%
+11804121 [Large Brute: Ashina Reservoir] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11804131 [Large Brute: Ashina Reservoir] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11804141 [Large Brute: Ashina Reservoir] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11805000 [Unused NPC] Mibu Balloon of Wealth 20%, Pellet 2x 4%
+11805001 [Unused NPC] 
+11805011 [Unused NPC] Scrap Iron 2x 20%
+11805021 [Unused NPC] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11805031 [Unused NPC] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11805041 [Unused NPC] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11805100 [Large Brute: Hirata Estate] Mibu Balloon of Wealth 22%, Pellet 2x 8%
+11805101 [Large Brute: Hirata Estate] 
+11805111 [Large Brute: Hirata Estate] Scrap Iron 2x 20%
+11805121 [Large Brute: Hirata Estate] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11805131 [Large Brute: Hirata Estate] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11805141 [Large Brute: Hirata Estate] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11806000 [Large Brute: Ashina Castle] Mibu Possession Balloon 46%, Pellet 2x 4%
+11806001 [Large Brute: Ashina Castle] 
+11806011 [Large Brute: Ashina Castle] Scrap Iron 2x 20%
+11806021 [Large Brute: Ashina Castle] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11806031 [Large Brute: Ashina Castle] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11806041 [Large Brute: Ashina Castle] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11806100 [Large Brute: Ashina Castle] Mibu Possession Balloon 46%, Pellet 2x 4%
+11806101 [Large Brute: Ashina Castle] 
+11806111 [Large Brute: Ashina Castle] Scrap Iron 2x 20%
+11806121 [Large Brute: Ashina Castle] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11806131 [Large Brute: Ashina Castle] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11806141 [Large Brute: Ashina Castle] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11807000 [Unused NPC] Mibu Balloon of Wealth 20%, Pellet 2x 4%
+11807001 [Unused NPC] 
+11807011 [Unused NPC] Scrap Iron 2x 20%
+11807021 [Unused NPC] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11807031 [Unused NPC] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11807041 [Unused NPC] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11807100 [Large Brute: Hirata Estate] Mibu Balloon of Wealth 20%, Pellet 2x 4%
+11807101 [Large Brute: Hirata Estate] 
+11807111 [Large Brute: Hirata Estate] Scrap Iron 2x 20%
+11807121 [Large Brute: Hirata Estate] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11807131 [Large Brute: Hirata Estate] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11807141 [Large Brute: Hirata Estate] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11807200 [Large Brute: Hirata Estate] Mibu Balloon of Wealth 22%, Pellet 2x 8%
+11807201 [Large Brute: Hirata Estate] 
+11807211 [Large Brute: Hirata Estate] Scrap Iron 2x 20%
+11807221 [Large Brute: Hirata Estate] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11807231 [Large Brute: Hirata Estate] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11807241 [Large Brute: Hirata Estate] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11807300 [Large Brute: Hirata Estate] Mibu Balloon of Wealth 22%, Pellet 2x 8%
+11807301 [Large Brute: Hirata Estate] 
+11807311 [Large Brute: Hirata Estate] Scrap Iron 2x 20%
+11807321 [Large Brute: Hirata Estate] Scrap Iron 2x 20%, Scrap Magnetite 10%
+11807331 [Large Brute: Hirata Estate] Scrap Iron 2x 80%, Scrap Magnetite 20%
+11807341 [Large Brute: Hirata Estate] Scrap Magnetite 80%, Scrap Magnetite 2x 12%, Adamantite Scrap 8%
+11810000 [Large Brute: Mibu Village] Mibu Balloon of Soul 10%, Pellet 2x 2%
+11810001 [Large Brute: Mibu Village] 
+11810011 [Large Brute: Mibu Village] Lump of Fat Wax 3%
+11810021 [Large Brute: Mibu Village] Lump of Fat Wax 6%
+11810031 [Large Brute: Mibu Village] Lump of Fat Wax 8%, Lump of Fat Wax 2x 2%, Lump of Grave Wax 2%
+11810041 [Large Brute: Mibu Village] Lump of Fat Wax 10%, Lump of Fat Wax 2x 4%, Lump of Grave Wax 4%
+11810100 [Unused NPC] Mibu Balloon of Soul 10%, Pellet 2x 2%
+11810101 [Unused NPC] 
+11810111 [Unused NPC] Lump of Fat Wax 3%
+11810121 [Unused NPC] Lump of Fat Wax 6%
+11810131 [Unused NPC] Lump of Fat Wax 8%, Lump of Fat Wax 2x 2%, Lump of Grave Wax 2%
+11810141 [Unused NPC] Lump of Fat Wax 10%, Lump of Fat Wax 2x 4%, Lump of Grave Wax 4%
+11810200 [Large Brute: Mibu Village] Mibu Balloon of Soul 10%, Pellet 2x 2%
+11810201 [Large Brute: Mibu Village] 
+11810211 [Large Brute: Mibu Village] Lump of Fat Wax 3%
+11810221 [Large Brute: Mibu Village] Lump of Fat Wax 6%
+11810231 [Large Brute: Mibu Village] Lump of Fat Wax 8%, Lump of Fat Wax 2x 2%, Lump of Grave Wax 2%
+11810241 [Large Brute: Mibu Village] Lump of Fat Wax 10%, Lump of Fat Wax 2x 4%, Lump of Grave Wax 4%
+11810300 [Unused NPC] Mibu Balloon of Soul 10%, Pellet 2x 2%
+11810301 [Unused NPC] 
+11810311 [Unused NPC] Lump of Fat Wax 3%
+11810321 [Unused NPC] Lump of Fat Wax 6%
+11810331 [Unused NPC] Lump of Fat Wax 8%, Lump of Fat Wax 2x 2%, Lump of Grave Wax 2%
+11810341 [Unused NPC] Lump of Fat Wax 10%, Lump of Fat Wax 2x 4%, Lump of Grave Wax 4%
+11900000 [Snake Eyes: Sunken Valley] Prayer Bead
+11900005 [Snake Eyes: Sunken Valley] Heavy Coin Purse
+11900100 [Gun Fort Gunner: Sunken Valley] Antidote Powder 20%
+11900101 [Gun Fort Gunner: Sunken Valley] 
+11900111 [Gun Fort Gunner: Sunken Valley] Black Gunpowder 10%
+11900121 [Gun Fort Gunner: Sunken Valley] Black Gunpowder 14%, Yellow Gunpowder 4%
+11900131 [Gun Fort Gunner: Sunken Valley] Black Gunpowder 2x 14%, Yellow Gunpowder 6%, Fulminated Mercury 4%
+11900141 [Gun Fort Gunner: Sunken Valley] Black Gunpowder 2x 20%, Yellow Gunpowder 8%, Fulminated Mercury 6%
+11900210 [Gun Fort Gunner: Sunken Valley] Yellow Gunpowder 3x
+11900300 [Unused/Unknown] Antidote Powder 24%, Pellet 6%
+11900301 [Unused/Unknown] 
+11900311 [Unused/Unknown] Black Gunpowder 10%
+11900321 [Unused/Unknown] Black Gunpowder 14%, Yellow Gunpowder 4%
+11900331 [Unused/Unknown] Black Gunpowder 2x 14%, Yellow Gunpowder 6%, Fulminated Mercury 4%
+11900341 [Unused/Unknown] Black Gunpowder 2x 20%, Yellow Gunpowder 8%, Fulminated Mercury 6%
+11900400 [Unused/Unknown] 
+11900500 [Gun Fort Gunner: Sunken Valley] Antidote Powder 24%, Pellet 6%
+11900501 [Gun Fort Gunner: Sunken Valley] 
+11900511 [Gun Fort Gunner: Sunken Valley] Black Gunpowder 10%
+11900521 [Gun Fort Gunner: Sunken Valley] Black Gunpowder 14%, Yellow Gunpowder 4%
+11900531 [Gun Fort Gunner: Sunken Valley] Black Gunpowder 2x 14%, Yellow Gunpowder 6%, Fulminated Mercury 4%
+11900541 [Gun Fort Gunner: Sunken Valley] Black Gunpowder 2x 20%, Yellow Gunpowder 8%, Fulminated Mercury 6%
+11901000 [Gun Fort Gunner: Ashina Outskirts] Antidote Powder 30%
+11901001 [Gun Fort Gunner: Ashina Outskirts] 
+11901011 [Gun Fort Gunner: Ashina Outskirts] Black Gunpowder 10%
+11901021 [Gun Fort Gunner: Ashina Outskirts] Black Gunpowder 14%, Yellow Gunpowder 4%
+11901031 [Gun Fort Gunner: Ashina Outskirts] Black Gunpowder 2x 14%, Yellow Gunpowder 6%, Fulminated Mercury 4%
+11901041 [Gun Fort Gunner: Ashina Outskirts] Black Gunpowder 2x 20%, Yellow Gunpowder 8%, Fulminated Mercury 6%
+11901100 [Snake Eyes: Sunken Valley] Prayer Bead
+11901105 [Snake Eyes: Sunken Valley] Heavy Coin Purse
+11901200 [Unused/Unknown] 
+11901300 [Gun Fort Gunner: Sunken Valley] Antidote Powder 24%, Pellet 6%
+11901301 [Gun Fort Gunner: Sunken Valley] 
+11901311 [Gun Fort Gunner: Sunken Valley] Black Gunpowder 10%
+11901321 [Gun Fort Gunner: Sunken Valley] Black Gunpowder 14%, Yellow Gunpowder 4%
+11901331 [Gun Fort Gunner: Sunken Valley] Black Gunpowder 2x 14%, Yellow Gunpowder 6%, Fulminated Mercury 4%
+11901341 [Gun Fort Gunner: Sunken Valley] Black Gunpowder 2x 20%, Yellow Gunpowder 8%, Fulminated Mercury 6%
+11902000 [Gun Fort Gunner: Ashina Outskirts] Black Gunpowder
+11903000 [Gun Fort Gunner: Ashina Castle] Antidote Powder 24%, Light Coin Purse 6%
+11903001 [Gun Fort Gunner: Ashina Castle] 
+11903011 [Gun Fort Gunner: Ashina Castle] Black Gunpowder 10%
+11903021 [Gun Fort Gunner: Ashina Castle] Black Gunpowder 14%, Yellow Gunpowder 4%
+11903031 [Gun Fort Gunner: Ashina Castle] Black Gunpowder 2x 14%, Yellow Gunpowder 6%, Fulminated Mercury 4%
+11903041 [Gun Fort Gunner: Ashina Castle] Black Gunpowder 2x 20%, Yellow Gunpowder 8%, Fulminated Mercury 6%
+12000000 [Centipede Monk: Senpou Temple] Contact Medicine 30%
+12001001 [Unused/Unknown] 
+12001011 [Unused/Unknown] Lump of Fat Wax 12%
+12001021 [Unused/Unknown] Lump of Fat Wax 18%
+12001031 [Unused/Unknown] Lump of Fat Wax 16%, Lump of Fat Wax 3x 6%
+12001041 [Unused/Unknown] Lump of Fat Wax 16%, Lump of Fat Wax 3x 6%, Lump of Grave Wax 8%
+12100000 [Immortal Monk: Senpou Temple] Contact Medicine 30%
+12100001 [Immortal Monk: Senpou Temple] 
+12100011 [Immortal Monk: Senpou Temple] Lump of Fat Wax 12%
+12100021 [Immortal Monk: Senpou Temple] Lump of Fat Wax 18%
+12100031 [Immortal Monk: Senpou Temple] Lump of Fat Wax 16%, Lump of Fat Wax 2x 6%
+12100041 [Immortal Monk: Senpou Temple] Lump of Fat Wax 20%, Lump of Fat Wax 2x 6%
+12200000 [Monk: Senpou Temple] Ako's Sugar 16%, Ako's Sugar 3x 4%
+12200001 [Monk: Senpou Temple] 
+12200011 [Monk: Senpou Temple] Lump of Fat Wax 8%
+12200021 [Monk: Senpou Temple] Lump of Fat Wax 12%, Lump of Fat Wax 2x 4%
+12200031 [Monk: Senpou Temple] Lump of Fat Wax 14%, Lump of Fat Wax 2x 8%
+12200041 [Monk: Senpou Temple] Lump of Fat Wax 14%, Lump of Fat Wax 2x 8%, Lump of Grave Wax 8%
+12200100 [Monk: Senpou Temple] Oil 16%, Oil 3x 4%
+12200101 [Monk: Senpou Temple] 
+12200111 [Monk: Senpou Temple] Black Gunpowder 10%
+12200121 [Monk: Senpou Temple] Black Gunpowder 14%, Black Gunpowder 2x 6%
+12200131 [Monk: Senpou Temple] Black Gunpowder 14%, Black Gunpowder 2x 6%, Yellow Gunpowder 6%
+12200141 [Monk: Senpou Temple] Black Gunpowder 14%, Black Gunpowder 2x 8%, Yellow Gunpowder 8%
+12200200 [Monk: Senpou Temple] Ungo's Sugar 16%, Ungo's Sugar 3x 4%
+12200201 [Monk: Senpou Temple] 
+12200211 [Monk: Senpou Temple] Lump of Fat Wax 8%
+12200221 [Monk: Senpou Temple] Lump of Fat Wax 12%, Lump of Fat Wax 2x 4%
+12200231 [Monk: Senpou Temple] Lump of Fat Wax 14%, Lump of Fat Wax 2x 8%
+12200241 [Monk: Senpou Temple] Lump of Fat Wax 14%, Lump of Fat Wax 2x 8%, Lump of Grave Wax 8%
+12500000 [Monkey: Sunken Valley] Yellow Gunpowder
+12500005 [Monkey: Sunken Valley] Yellow Gunpowder
+12500100 [Monkey: Sunken Valley] Ceramic Shard 10%, Fistful of Ash 10%, Fistful of Ash 10%
+12500110 [Unused/Unknown] Monkey Booze
+12501100 [Monkey: Sunken Valley] Ceramic Shard 3x 3%, Fistful of Ash 3x 3%, Fistful of Ash 3x 3%
+12501200 [Monkey: Sunken Valley] Mibu Balloon of Wealth 6%, Mibu Balloon of Wealth 2x 2%
+12501300 [Monkey: Sunken Valley] Mibu Possession Balloon 6%, Mibu Possession Balloon 2x 2%
+12501400 [Monkey: Sunken Valley] Pellet 79%, Pellet 2x 18%, Gokan's Sugar 3%
+12501401 [Monkey: Sunken Valley] Scrap Iron 8%
+12501411 [Monkey: Sunken Valley] Scrap Iron 8%, Scrap Iron 2x 6%, Scrap Magnetite 6%
+12501421 [Monkey: Sunken Valley] Scrap Iron 80%, Scrap Iron 2x 10%, Scrap Magnetite 10%
+12501431 [Monkey: Sunken Valley] Scrap Iron 68%, Scrap Iron 2x 14%, Scrap Magnetite 12%, Adamantite Scrap 6%
+12501441 [Monkey: Sunken Valley] Scrap Iron 58%, Scrap Iron 2x 18%, Scrap Magnetite 14%, Adamantite Scrap 10%
+12502100 [Monkey: Sunken Valley] Snap Seed 7%
+12502101 [Monkey: Sunken Valley] 
+12502111 [Monkey: Sunken Valley] Yellow Gunpowder 3%
+12502121 [Monkey: Sunken Valley] Yellow Gunpowder 6%
+12502131 [Monkey: Sunken Valley] Yellow Gunpowder 12%
+12502141 [Monkey: Sunken Valley] Yellow Gunpowder 16%
+12502200 [Unused NPC] Snap Seed 7%
+12502201 [Unused NPC] 
+12502211 [Unused NPC] Yellow Gunpowder 3%
+12502221 [Unused NPC] Yellow Gunpowder 6%
+12502231 [Unused NPC] Yellow Gunpowder 12%
+12502241 [Unused NPC] Yellow Gunpowder 16%
+12502300 [Monkey: Sunken Valley] Snap Seed 7%
+12502301 [Monkey: Sunken Valley] 
+12502311 [Monkey: Sunken Valley] Yellow Gunpowder 3%
+12502321 [Monkey: Sunken Valley] Yellow Gunpowder 6%
+12502331 [Monkey: Sunken Valley] Yellow Gunpowder 12%
+12502341 [Monkey: Sunken Valley] Yellow Gunpowder 25%
+12503000 [Monkey: Senpou Temple] Pellet 18%
+12503100 [Monkey: Senpou Temple] Persimmon 7%
+12504000 [from entity: Global] Bundled Jizo Statue
+12505000 [Monkey: Ashina Castle] Eel Liver 3%
+12506000 [Monkey: Ashina Castle] Ceramic Shard 3x 3%, Fistful of Ash 3x 3%, Fistful of Ash 3x 3%, Yashariku's Sugar 2%
+12506100 [Monkey: Ashina Castle] Mibu Balloon of Wealth 6.06%, Mibu Balloon of Wealth 2x 2.02%, Yashariku's Sugar 2.02%
+12506200 [Monkey: Ashina Castle] Mibu Possession Balloon 6.06%, Mibu Possession Balloon 2x 2.02%, Yashariku's Sugar 2.02%
+12506300 [Monkey: Ashina Castle] Pellet 74%, Pellet 2x 18%, Gokan's Sugar 3%, Yashariku's Sugar 5%
+12506301 [Monkey: Ashina Castle] Scrap Iron 8%
+12506311 [Monkey: Ashina Castle] Scrap Iron 8%, Scrap Iron 2x 6%, Scrap Magnetite 6%
+12506321 [Monkey: Ashina Castle] Scrap Iron 80%, Scrap Iron 2x 10%, Scrap Magnetite 10%
+12506331 [Monkey: Ashina Castle] Scrap Iron 68%, Scrap Iron 2x 14%, Scrap Magnetite 12%, Adamantite Scrap 6%
+12506341 [Monkey: Ashina Castle] Scrap Iron 58%, Scrap Iron 2x 18%, Scrap Magnetite 14%, Adamantite Scrap 10%
+12507000 [Unused NPC] Pellet 8%, Pellet 2x 4%
+12507100 [Monkey: Mibu Village] Pellet 8%, Pellet 2x 4%
+12507200 [Monkey: Mibu Village] Pellet 8%, Pellet 2x 4%
+13000000 [Fountainhead Noble: Fountainhead Palace] Pellet 20%
+13000001 [Fountainhead Noble: Fountainhead Palace] Lump of Fat Wax 17%, Lump of Grave Wax 9%
+13000041 [Fountainhead Noble: Fountainhead Palace] Lump of Fat Wax 19%, Lump of Grave Wax 9%, Lump of Grave Wax 2x 2%
+13000100 [Fountainhead Noble: Fountainhead Palace] Pellet 12%
+13000101 [Fountainhead Noble: Fountainhead Palace] Lump of Fat Wax 10%
+13000141 [Fountainhead Noble: Fountainhead Palace] Lump of Fat Wax 14%
+13001000 [Fountainhead Noble: Mibu Village] Lump of Grave Wax
+13100000 [Okami Warrior: Fountainhead Palace] Prayer Bead
+13100005 [Okami Warrior: Fountainhead Palace] Heavy Coin Purse
+13100100 [Okami Warrior: Fountainhead Palace] Dragonspring Sake
+13100200 [Okami Warrior: Fountainhead Palace] Mibu Balloon of Soul 14%, Eel Liver 10%
+13100201 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 10%, Scrap Magnetite 2x 6%, Adamantite Scrap 4%
+13100241 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 12%, Scrap Magnetite 2x 8%, Adamantite Scrap 6%
+13100300 [Okami Warrior: Fountainhead Palace] Mibu Balloon of Soul 14%, Eel Liver 10%
+13100301 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 10%, Scrap Magnetite 2x 6%, Adamantite Scrap 4%
+13100341 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 12%, Scrap Magnetite 2x 8%, Adamantite Scrap 6%
+13100400 [Okami Warrior: Fountainhead Palace] Mibu Balloon of Soul 14%, Eel Liver 10%
+13100401 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 10%, Scrap Magnetite 2x 6%, Adamantite Scrap 4%
+13100441 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 12%, Scrap Magnetite 2x 8%, Adamantite Scrap 6%
+13100500 [Okami Warrior: Fountainhead Palace] Mibu Balloon of Soul 14%, Eel Liver 10%
+13100501 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 10%, Scrap Magnetite 2x 6%, Adamantite Scrap 4%
+13100541 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 12%, Scrap Magnetite 2x 8%, Adamantite Scrap 6%
+13100600 [Okami Warrior: Fountainhead Palace] Mibu Balloon of Soul 14%, Eel Liver 14%
+13100601 [Okami Warrior: Fountainhead Palace] Pellet 88%, Pellet 2x 12%
+13100602 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 84%, Adamantite Scrap 16%
+13100642 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 80%, Adamantite Scrap 16%, Adamantite Scrap 2x 4%
+13100700 [Okami Warrior: Fountainhead Palace] Mibu Balloon of Soul 14%, Eel Liver 14%
+13100701 [Okami Warrior: Fountainhead Palace] Pellet 88%, Pellet 2x 12%
+13100702 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 84%, Adamantite Scrap 16%
+13100742 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 80%, Adamantite Scrap 16%, Adamantite Scrap 2x 4%
+13100800 [Okami Warrior: Fountainhead Palace] Mibu Balloon of Soul 14%, Eel Liver 14%
+13100801 [Okami Warrior: Fountainhead Palace] Pellet 88%, Pellet 2x 12%
+13100802 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 84%, Adamantite Scrap 16%
+13100842 [Okami Warrior: Fountainhead Palace] Scrap Magnetite 80%, Adamantite Scrap 16%, Adamantite Scrap 2x 4%
+13200000 [Treasure Carp: Ashina Castle, Fountainhead Palace, Hirata Estate, Mibu Village, Senpou Temple, Sunken Valley] Treasure Carp Scale
+13200100 [Treasure Carp: Mibu Village] Red Carp Eyes
+13400000 [Underwater Headless: Ashina Castle] Ungo's Spiritfall
+13400005 [Underwater Headless: Ashina Castle] Bulging Coin Purse
+13401000 [Underwater Headless: Fountainhead Palace] Yashariku's Spiritfall
+13401005 [Underwater Headless: Fountainhead Palace] Bulging Coin Purse
+13500000 [Headless: Mibu Village] Gachiin's Spiritfall
+13500005 [Headless: Mibu Village] Bulging Coin Purse
+13501000 [Headless: Ashina Outskirts] Ako's Spiritfall
+13501005 [Headless: Ashina Outskirts] Bulging Coin Purse
+13502000 [Headless: Sunken Valley] Gokan's Spiritfall
+13502005 [Headless: Sunken Valley] Bulging Coin Purse
+13600000 [Senpou Assassin: Senpou Temple] Gachiin's Sugar 19%
+13600001 [Senpou Assassin: Senpou Temple] 
+13600011 [Senpou Assassin: Senpou Temple] Scrap Iron 10%
+13600021 [Senpou Assassin: Senpou Temple] Scrap Iron 14%, Scrap Magnetite 4%
+13600031 [Senpou Assassin: Senpou Temple] Scrap Iron 2x 14%, Scrap Magnetite 8%
+13600041 [Senpou Assassin: Senpou Temple] Scrap Iron 2x 14%, Scrap Magnetite 12%
+13600100 [Senpou Assassin: Senpou Temple] Gachiin's Sugar 12%
+13600101 [Senpou Assassin: Senpou Temple] 
+13600111 [Senpou Assassin: Senpou Temple] Scrap Iron 6%
+13600121 [Senpou Assassin: Senpou Temple] Scrap Iron 13%
+13600131 [Senpou Assassin: Senpou Temple] Scrap Iron 17%
+13600141 [Senpou Assassin: Senpou Temple] Scrap Iron 20%, Scrap Magnetite 4%
+13600200 [Senpou Assassin: Senpou Temple] Gachiin's Sugar 2x 19%, Contact Medicine 3x 13%
+13600201 [Senpou Assassin: Senpou Temple] 
+13600211 [Senpou Assassin: Senpou Temple] Scrap Iron 10%
+13600221 [Senpou Assassin: Senpou Temple] Scrap Iron 14%, Scrap Magnetite 4%
+13600231 [Senpou Assassin: Senpou Temple] Scrap Iron 2x 14%, Scrap Magnetite 8%
+13600241 [Senpou Assassin: Senpou Temple] Scrap Iron 2x 14%, Scrap Magnetite 12%
+13600300 [Senpou Assassin: Senpou Temple] Gachiin's Sugar 19%, Pellet 18%
+13600301 [Senpou Assassin: Senpou Temple] Scrap Iron 7%
+13600311 [Senpou Assassin: Senpou Temple] Scrap Iron 8%, Scrap Iron 3x 6%
+13600321 [Senpou Assassin: Senpou Temple] Scrap Iron 11.65%, Scrap Iron 3x 5.83%, Scrap Magnetite 2.91%
+13600331 [Senpou Assassin: Senpou Temple] Scrap Iron 84%, Scrap Iron 3x 10%, Scrap Magnetite 6%
+13600341 [Senpou Assassin: Senpou Temple] Scrap Iron 76%, Scrap Iron 3x 12%, Scrap Magnetite 12%
+13601000 [Senpou Assassin: Ashina Outskirts, Ashina Reservoir] Gachiin's Sugar 19%
+13601001 [Senpou Assassin: Ashina Outskirts, Ashina Reservoir] 
+13601011 [Senpou Assassin: Ashina Outskirts, Ashina Reservoir] Scrap Iron 10%
+13601021 [Senpou Assassin: Ashina Outskirts, Ashina Reservoir] Scrap Iron 14%, Scrap Magnetite 4%
+13601031 [Senpou Assassin: Ashina Outskirts, Ashina Reservoir] Scrap Iron 2x 14%, Scrap Magnetite 8%
+13601041 [Senpou Assassin: Ashina Outskirts, Ashina Reservoir] Scrap Iron 2x 14%, Scrap Magnetite 12%
+13601100 [Unused NPC] Gachiin's Sugar 12%
+13601101 [Unused NPC] 
+13601111 [Unused NPC] Scrap Iron 6%
+13601121 [Unused NPC] Scrap Iron 13%
+13601131 [Unused NPC] Scrap Iron 17%
+13601141 [Unused NPC] Scrap Iron 20%, Scrap Magnetite 4%
+13601200 [Senpou Assassin: Ashina Castle, Ashina Reservoir] Gachiin's Sugar 2x 19%, Contact Medicine 3x 13%
+13601201 [Senpou Assassin: Ashina Castle, Ashina Reservoir] 
+13601211 [Senpou Assassin: Ashina Castle, Ashina Reservoir] Scrap Iron 10%
+13601221 [Senpou Assassin: Ashina Castle, Ashina Reservoir] Scrap Iron 14%, Scrap Magnetite 4%
+13601231 [Senpou Assassin: Ashina Castle, Ashina Reservoir] Scrap Iron 2x 14%, Scrap Magnetite 8%
+13601241 [Senpou Assassin: Ashina Castle, Ashina Reservoir] Scrap Iron 2x 14%, Scrap Magnetite 12%
+13601300 [Senpou Assassin: Ashina Castle, Ashina Reservoir] Gachiin's Sugar 19%, Pellet 18%
+13601301 [Senpou Assassin: Ashina Castle, Ashina Reservoir] Scrap Iron 7%
+13601311 [Senpou Assassin: Ashina Castle, Ashina Reservoir] Scrap Iron 8%, Scrap Iron 3x 6%
+13601321 [Senpou Assassin: Ashina Castle, Ashina Reservoir] Scrap Iron 11.65%, Scrap Iron 3x 5.83%, Scrap Magnetite 2.91%
+13601331 [Senpou Assassin: Ashina Castle, Ashina Reservoir] Scrap Iron 84%, Scrap Iron 3x 10%, Scrap Magnetite 6%
+13601341 [Senpou Assassin: Ashina Castle, Ashina Reservoir] Scrap Iron 76%, Scrap Iron 3x 12%, Scrap Magnetite 12%
+13602000 [Senpou Assassin: Ashina Castle] Gachiin's Sugar 12%, Oil 2x 18%
+13602001 [Senpou Assassin: Ashina Castle] Black Gunpowder 17%
+13602031 [Senpou Assassin: Ashina Castle] Black Gunpowder 12%, Black Gunpowder 2x 6%, Yellow Gunpowder 8%
+13602041 [Senpou Assassin: Ashina Castle] Black Gunpowder 78%, Black Gunpowder 2x 10%, Yellow Gunpowder 12%
+13602100 [Senpou Assassin: Ashina Castle] Gachiin's Sugar 12%, Oil 2x 18%
+13602101 [Senpou Assassin: Ashina Castle] Black Gunpowder 17%
+13602131 [Senpou Assassin: Ashina Castle] Black Gunpowder 12%, Black Gunpowder 2x 6%, Yellow Gunpowder 8%
+13602141 [Senpou Assassin: Ashina Castle] Black Gunpowder 78%, Black Gunpowder 2x 10%, Yellow Gunpowder 12%
+13603000 [Senpou Assassin: Ashina Outskirts] Gachiin's Sugar 12%, Ministry Dousing Powder 18%
+13603001 [Senpou Assassin: Ashina Outskirts] Black Gunpowder 17%
+13603031 [Senpou Assassin: Ashina Outskirts] Black Gunpowder 12%, Black Gunpowder 2x 6%, Yellow Gunpowder 8%
+13603041 [Senpou Assassin: Ashina Outskirts] Black Gunpowder 78%, Black Gunpowder 2x 10%, Yellow Gunpowder 12%
+13603100 [Unused NPC] Gachiin's Sugar 12%, Ministry Dousing Powder 18%
+13603101 [Unused NPC] Black Gunpowder 17%
+13603131 [Unused NPC] Black Gunpowder 12%, Black Gunpowder 2x 6%, Yellow Gunpowder 8%
+13603141 [Unused NPC] Black Gunpowder 78%, Black Gunpowder 2x 10%, Yellow Gunpowder 12%
+13604000 [Senpou Assassin: Ashina Outskirts] Herb Catalogue Scrap
+13605000 [Unused/Unknown] Anti-air Deathblow Text
+13605100 [Senpou Assassin: Ashina Castle] Black Gunpowder
+13605200 [Senpou Assassin: Ashina Castle] Heavy Coin Purse
+13700000 [Blazing Bull: Ashina Castle] Prayer Bead
+13700001 [Blazing Bull: Ashina Castle] Shinobi Medicine Rank 2
+13700005 [Blazing Bull: Ashina Castle] Heavy Coin Purse
+13800000 [Sakura Bull of the Palace: Fountainhead Palace] Prayer Bead
+13800001 [Sakura Bull of the Palace: Fountainhead Palace] A Beast's Karma
+13800005 [Sakura Bull of the Palace: Fountainhead Palace] Heavy Coin Purse
+14000000 [Ashina Samurai: Ashina Castle] Prayer Bead
+14000005 [Ashina Samurai: Ashina Castle] Heavy Coin Purse
+14000100 [Ashina Samurai: Ashina Castle] Pellet 14%, Divine Confetti 6%
+14000101 [Ashina Samurai: Ashina Castle] 
+14000111 [Ashina Samurai: Ashina Castle] Scrap Iron 9%, Scrap Iron 2x 3%, Scrap Magnetite 3%
+14000121 [Ashina Samurai: Ashina Castle] Scrap Iron 12%, Scrap Iron 2x 3%, Scrap Magnetite 5%
+14000131 [Ashina Samurai: Ashina Castle] Scrap Iron 12%, Scrap Iron 2x 5%, Scrap Magnetite 8%
+14000141 [Ashina Samurai: Ashina Castle] Scrap Iron 76%, Scrap Iron 2x 8%, Scrap Magnetite 10%, Adamantite Scrap 6%
+14000200 [Ashina Samurai: Ashina Castle] Pellet 14%, Divine Confetti 6%
+14000201 [Ashina Samurai: Ashina Castle] 
+14000211 [Ashina Samurai: Ashina Castle] Scrap Iron 9%, Scrap Iron 2x 3%, Scrap Magnetite 3%
+14000221 [Ashina Samurai: Ashina Castle] Scrap Iron 12%, Scrap Iron 2x 3%, Scrap Magnetite 5%
+14000231 [Ashina Samurai: Ashina Castle] Scrap Iron 12%, Scrap Iron 2x 5%, Scrap Magnetite 8%
+14000241 [Ashina Samurai: Ashina Castle] Scrap Iron 76%, Scrap Iron 2x 8%, Scrap Magnetite 10%, Adamantite Scrap 6%
+14001000 [Ashina Samurai: Ashina Castle] Prayer Bead
+14001005 [Ashina Samurai: Ashina Castle] Heavy Coin Purse
+14500000 [Nightjar: Ashina Castle] Pellet 2x 8%
+14500001 [Nightjar: Ashina Castle] 
+14500011 [Nightjar: Ashina Castle] Scrap Iron 13%
+14500021 [Nightjar: Ashina Castle] Scrap Iron 9%, Scrap Iron 2x 6%, Scrap Magnetite 6%
+14500031 [Nightjar: Ashina Castle] Scrap Iron 10%, Scrap Iron 2x 8%, Scrap Magnetite 8%
+14500041 [Nightjar: Ashina Castle] Scrap Iron 10%, Scrap Iron 2x 12%, Scrap Magnetite 2x 8%
+14500100 [Nightjar: Ashina Castle] Bite Down 12%
+14500200 [Nightjar: Ashina Castle] Pellet 2x 8%
+14500201 [Nightjar: Ashina Castle] 
+14500211 [Nightjar: Ashina Castle] Scrap Iron 13%
+14500221 [Nightjar: Ashina Castle] Scrap Iron 9%, Scrap Iron 2x 6%, Scrap Magnetite 6%
+14500231 [Nightjar: Ashina Castle] Scrap Iron 10%, Scrap Iron 2x 8%, Scrap Magnetite 8%
+14500241 [Nightjar: Ashina Castle] Scrap Iron 10%, Scrap Iron 2x 12%, Scrap Magnetite 2x 8%
+14500300 [Nightjar: Ashina Castle] Pellet 2x 8%, Oil 3x 15%
+14500301 [Nightjar: Ashina Castle] 
+14500311 [Nightjar: Ashina Castle] Black Gunpowder 13%
+14500321 [Nightjar: Ashina Castle] Black Gunpowder 9%, Black Gunpowder 2x 6%, Yellow Gunpowder 6%
+14500331 [Nightjar: Ashina Castle] Black Gunpowder 10%, Black Gunpowder 2x 8%, Yellow Gunpowder 8%
+14500341 [Nightjar: Ashina Castle] Black Gunpowder 10%, Black Gunpowder 2x 12%, Yellow Gunpowder 2x 8%
+14500400 [Nightjar: Ashina Castle] Pellet 2x 10%
+14500401 [Nightjar: Ashina Castle] 
+14500411 [Nightjar: Ashina Castle] Scrap Iron 13%
+14500421 [Nightjar: Ashina Castle] Scrap Iron 9%, Scrap Iron 2x 6%, Scrap Magnetite 6%
+14500431 [Nightjar: Ashina Castle] Scrap Iron 10%, Scrap Iron 2x 8%, Scrap Magnetite 8%
+14500441 [Nightjar: Ashina Castle] Scrap Iron 10%, Scrap Iron 2x 12%, Scrap Magnetite 2x 8%
+14500500 [Unused NPC] Pellet 2x 10%
+14500501 [Unused NPC] 
+14500511 [Unused NPC] Scrap Iron 13%
+14500521 [Unused NPC] Scrap Iron 9%, Scrap Iron 2x 6%, Scrap Magnetite 6%
+14500531 [Unused NPC] Scrap Iron 10%, Scrap Iron 2x 8%, Scrap Magnetite 8%
+14500541 [Unused NPC] Scrap Iron 10%, Scrap Iron 2x 12%, Scrap Magnetite 2x 8%
+14501000 [Nightjar: Sunken Valley] Pellet 2x 8%, Contact Medicine 92%
+14501001 [Nightjar: Sunken Valley] 
+14501011 [Nightjar: Sunken Valley] Scrap Iron 13%
+14501021 [Nightjar: Sunken Valley] Scrap Iron 9%, Scrap Iron 2x 6%, Scrap Magnetite 6%
+14501031 [Nightjar: Sunken Valley] Scrap Iron 10%, Scrap Iron 2x 8%, Scrap Magnetite 8%
+14501041 [Nightjar: Sunken Valley] Scrap Iron 10%, Scrap Iron 2x 12%, Scrap Magnetite 2x 8%
+14501100 [Nightjar: Sunken Valley] Pellet 2x 8%, Contact Medicine 92%
+14501101 [Nightjar: Sunken Valley] 
+14501111 [Nightjar: Sunken Valley] Scrap Iron 13%
+14501121 [Nightjar: Sunken Valley] Scrap Iron 9%, Scrap Iron 2x 6%, Scrap Magnetite 6%
+14501131 [Nightjar: Sunken Valley] Scrap Iron 10%, Scrap Iron 2x 8%, Scrap Magnetite 8%
+14501141 [Nightjar: Sunken Valley] Scrap Iron 10%, Scrap Iron 2x 12%, Scrap Magnetite 2x 8%
+14501200 [Nightjar: Sunken Valley] Pellet 2x 8%, Oil 3x 15%, Contact Medicine 77%
+14501201 [Nightjar: Sunken Valley] 
+14501211 [Nightjar: Sunken Valley] Black Gunpowder 13%
+14501221 [Nightjar: Sunken Valley] Black Gunpowder 9%, Black Gunpowder 2x 6%, Yellow Gunpowder 6%
+14501231 [Nightjar: Sunken Valley] Black Gunpowder 10%, Black Gunpowder 2x 8%, Yellow Gunpowder 8%
+14501241 [Nightjar: Sunken Valley] Black Gunpowder 10%, Black Gunpowder 2x 12%, Yellow Gunpowder 2x 8%
+14502000 [Nightjar: Ashina Castle] Pellet 2x 8%
+14502001 [Nightjar: Ashina Castle] 
+14502011 [Nightjar: Ashina Castle] Scrap Iron 13%
+14502021 [Nightjar: Ashina Castle] Scrap Iron 9%, Scrap Iron 2x 6%, Scrap Magnetite 6%
+14502031 [Nightjar: Ashina Castle] Scrap Iron 10%, Scrap Iron 2x 8%, Scrap Magnetite 8%
+14502041 [Nightjar: Ashina Castle] Scrap Iron 10%, Scrap Iron 2x 12%, Scrap Magnetite 2x 8%
+14502100 [Nightjar: Ashina Castle] Bite Down 12%
+14502200 [Unused/Unknown] Pellet 2x 8%
+14502201 [Unused/Unknown] 
+14502211 [Unused/Unknown] Scrap Iron 13%
+14502221 [Unused/Unknown] Scrap Iron 9%, Scrap Iron 2x 6%, Scrap Magnetite 6%
+14502231 [Unused/Unknown] Scrap Iron 10%, Scrap Iron 2x 8%, Scrap Magnetite 8%
+14502241 [Unused/Unknown] Scrap Iron 10%, Scrap Iron 2x 12%, Scrap Magnetite 2x 8%
+14502300 [Nightjar: Ashina Castle] Pellet 2x 8%, Oil 3x 15%
+14502301 [Nightjar: Ashina Castle] 
+14502311 [Nightjar: Ashina Castle] Black Gunpowder 13%
+14502321 [Nightjar: Ashina Castle] Black Gunpowder 9%, Black Gunpowder 2x 6%, Yellow Gunpowder 6%
+14502331 [Nightjar: Ashina Castle] Black Gunpowder 10%, Black Gunpowder 2x 8%, Yellow Gunpowder 8%
+14502341 [Nightjar: Ashina Castle] Black Gunpowder 10%, Black Gunpowder 2x 12%, Yellow Gunpowder 2x 8%
+14503000 [Unused/Unknown] Pellet 2x 8%
+14503001 [Unused/Unknown] 
+14503011 [Unused/Unknown] Scrap Iron 13%
+14503021 [Unused/Unknown] Scrap Iron 9%, Scrap Iron 2x 6%, Scrap Magnetite 6%
+14503031 [Unused/Unknown] Scrap Iron 10%, Scrap Iron 2x 8%, Scrap Magnetite 8%
+14503041 [Unused/Unknown] Scrap Iron 10%, Scrap Iron 2x 12%, Scrap Magnetite 2x 8%
+14503100 [Unused NPC] Pellet 2x 8%
+14503101 [Unused NPC] 
+14503111 [Unused NPC] Scrap Iron 13%
+14503121 [Unused NPC] Scrap Iron 9%, Scrap Iron 2x 6%, Scrap Magnetite 6%
+14503131 [Unused NPC] Scrap Iron 10%, Scrap Iron 2x 8%, Scrap Magnetite 8%
+14503141 [Unused NPC] Scrap Iron 10%, Scrap Iron 2x 12%, Scrap Magnetite 2x 8%
+14503200 [Unused/Unknown] Pellet 2x 8%, Oil 3x 15%
+14503201 [Unused/Unknown] 
+14503211 [Unused/Unknown] Black Gunpowder 13%
+14503221 [Unused/Unknown] Black Gunpowder 9%, Black Gunpowder 2x 6%, Yellow Gunpowder 6%
+14503231 [Unused/Unknown] Black Gunpowder 10%, Black Gunpowder 2x 8%, Yellow Gunpowder 8%
+14503241 [Unused/Unknown] Black Gunpowder 10%, Black Gunpowder 2x 12%, Yellow Gunpowder 2x 8%
+14503300 [Nightjar: Ashina Castle] Red Lump 12%, Bite Down 88%
+14503301 [Nightjar: Ashina Castle] Scrap Magnetite 14%, Scrap Magnetite 2x 6%, Adamantite Scrap 4%
+14503341 [Nightjar: Ashina Castle] Scrap Magnetite 14%, Scrap Magnetite 2x 8%, Adamantite Scrap 8%
+14503400 [Unused/Unknown] Red Lump 12%, Bite Down 88%
+14503401 [Unused/Unknown] Scrap Magnetite 14%, Scrap Magnetite 2x 6%, Adamantite Scrap 4%
+14503441 [Unused/Unknown] Scrap Magnetite 14%, Scrap Magnetite 2x 8%, Adamantite Scrap 8%
+14700000 [Lone Shadow Swordsman: Ashina Castle] Prayer Bead
+14700001 [Lone Shadow Swordsman: Ashina Castle] Lump of Fat Wax 2x
+14700005 [Lone Shadow Swordsman: Ashina Castle] Heavy Coin Purse
+14700100 [Lone Shadow Swordsman: Ashina Castle] Pellet 2x 22%, Gokan's Sugar 8%
+14700101 [Lone Shadow Swordsman: Ashina Castle] Scrap Iron 2x 12%, Scrap Magnetite 8%, Scrap Magnetite 3x 3%
+14700131 [Lone Shadow Swordsman: Ashina Castle] Scrap Iron 2x 12%, Scrap Magnetite 12%, Scrap Magnetite 3x 3%, Adamantite Scrap 3%
+14700141 [Lone Shadow Swordsman: Ashina Castle] Scrap Iron 2x 73%, Scrap Magnetite 16%, Scrap Magnetite 3x 3%, Adamantite Scrap 8%
+14700200 [Lone Shadow Swordsman: Ashina Castle] Contact Medicine 2x 22%, Gokan's Sugar 8%
+14700201 [Lone Shadow Swordsman: Ashina Castle] Black Gunpowder 2x 12%, Yellow Gunpowder 8%, Yellow Gunpowder 3x 3%
+14700231 [Lone Shadow Swordsman: Ashina Castle] Black Gunpowder 2x 12%, Yellow Gunpowder 12%, Yellow Gunpowder 3x 3%, Fulminated Mercury 3%
+14700241 [Lone Shadow Swordsman: Ashina Castle] Black Gunpowder 2x 73%, Yellow Gunpowder 16%, Yellow Gunpowder 3x 3%, Fulminated Mercury 8%
+14701000 [Lone Shadow Swordsman: Ashina Castle] Prayer Bead
+14701001 [Lone Shadow Swordsman: Ashina Castle] Yellow Gunpowder 2x
+14701005 [Lone Shadow Swordsman: Ashina Castle] Heavy Coin Purse
+14702000 [Lone Shadow Swordsman: Ashina Reservoir] Prayer Bead
+14702001 [Lone Shadow Swordsman: Ashina Reservoir] Scrap Magnetite 2x
+14702005 [Lone Shadow Swordsman: Ashina Reservoir] Heavy Coin Purse
+14703000 [Lone Shadow Swordsman: Hirata Estate] Scrap Iron
+14703010 [Lone Shadow Swordsman: Hirata Estate] Pellet 2x 28%, Dousing Powder 3x 72%
+14703100 [Lone Shadow Swordsman: Hirata Estate] Prayer Bead
+14703101 [Lone Shadow Swordsman: Hirata Estate] Adamantite Scrap 2x
+14703105 [Lone Shadow Swordsman: Hirata Estate] Heavy Coin Purse
+14703200 [Lone Shadow Swordsman: Hirata Estate] Pellet 2x 22%, Gokan's Sugar 8%, Dousing Powder 70%
+14703201 [Lone Shadow Swordsman: Hirata Estate] Scrap Iron 2x 12%, Scrap Magnetite 8%, Scrap Magnetite 3x 3%
+14703231 [Lone Shadow Swordsman: Hirata Estate] Scrap Iron 2x 12%, Scrap Magnetite 12%, Scrap Magnetite 3x 3%, Adamantite Scrap 3%
+14703241 [Lone Shadow Swordsman: Hirata Estate] Scrap Iron 2x 73%, Scrap Magnetite 16%, Scrap Magnetite 3x 3%, Adamantite Scrap 8%
+14703300 [Lone Shadow Swordsman: Hirata Estate] Contact Medicine 2x 22%, Gokan's Sugar 8%, Dousing Powder 70%
+14703301 [Lone Shadow Swordsman: Hirata Estate] Black Gunpowder 2x 12%, Yellow Gunpowder 8%, Yellow Gunpowder 3x 3%
+14703331 [Lone Shadow Swordsman: Hirata Estate] Black Gunpowder 2x 12%, Yellow Gunpowder 12%, Yellow Gunpowder 3x 3%, Fulminated Mercury 3%
+14703341 [Lone Shadow Swordsman: Hirata Estate] Black Gunpowder 2x 73%, Yellow Gunpowder 16%, Yellow Gunpowder 3x 3%, Fulminated Mercury 8%
+14704000 [Lone Shadow Swordsman: Mibu Village] Scrap Magnetite
+14704100 [Lone Shadow Swordsman: Mibu Village] Contact Medicine 2x 22%, Gokan's Sugar 8%, Pacifying Agent 70%
+14704101 [Lone Shadow Swordsman: Mibu Village] Lump of Fat Wax 9%
+14704111 [Lone Shadow Swordsman: Mibu Village] Lump of Fat Wax 14%
+14704121 [Lone Shadow Swordsman: Mibu Village] Lump of Fat Wax 16%, Lump of Fat Wax 2x 4%
+14704131 [Lone Shadow Swordsman: Mibu Village] Lump of Fat Wax 18%, Lump of Fat Wax 2x 6%
+14704141 [Lone Shadow Swordsman: Mibu Village] Lump of Fat Wax 21%, Lump of Fat Wax 2x 9%
+14705000 [Lone Shadow Swordsman: Ashina Castle] Pellet 2x 22%, Gokan's Sugar 8%, Ministry Dousing Powder 70%
+14705001 [Lone Shadow Swordsman: Ashina Castle] Scrap Iron 2x 12%, Scrap Magnetite 8%, Scrap Magnetite 3x 3%
+14705031 [Lone Shadow Swordsman: Ashina Castle] Scrap Iron 2x 12%, Scrap Magnetite 12%, Scrap Magnetite 3x 3%, Adamantite Scrap 3%
+14705041 [Lone Shadow Swordsman: Ashina Castle] Scrap Iron 2x 73%, Scrap Magnetite 16%, Scrap Magnetite 3x 3%, Adamantite Scrap 8%
+14705100 [Lone Shadow Swordsman: Ashina Castle] Contact Medicine 2x 22%, Gokan's Sugar 8%, Ministry Dousing Powder 70%
+14705101 [Lone Shadow Swordsman: Ashina Castle] Black Gunpowder 2x 12%, Yellow Gunpowder 8%, Yellow Gunpowder 3x 3%
+14705131 [Lone Shadow Swordsman: Ashina Castle] Black Gunpowder 2x 12%, Yellow Gunpowder 12%, Yellow Gunpowder 3x 3%, Fulminated Mercury 3%
+14705141 [Lone Shadow Swordsman: Ashina Castle] Black Gunpowder 2x 73%, Yellow Gunpowder 16%, Yellow Gunpowder 3x 3%, Fulminated Mercury 8%
+15000000 [Mibu Villager: Mibu Village] Ceramic Shard 16%, Fistful of Ash 12%
+15000001 [Mibu Villager: Mibu Village] 
+15000011 [Mibu Villager: Mibu Village] Lump of Fat Wax 2%
+15000021 [Mibu Villager: Mibu Village] Lump of Fat Wax 4%
+15000031 [Mibu Villager: Mibu Village] Lump of Fat Wax 7%
+15000041 [Mibu Villager: Mibu Village] Lump of Fat Wax 7%, Lump of Fat Wax 3x 2%
+15000100 [Mibu Villager: Mibu Village] Pellet 13%, Pacifying Agent 15%
+15000101 [Mibu Villager: Mibu Village] 
+15000111 [Mibu Villager: Mibu Village] Black Gunpowder 3%, Lump of Fat Wax 2%
+15000121 [Mibu Villager: Mibu Village] Black Gunpowder 5%, Lump of Fat Wax 4%
+15000131 [Mibu Villager: Mibu Village] Black Gunpowder 8%, Lump of Fat Wax 6%
+15000141 [Mibu Villager: Mibu Village] Black Gunpowder 10%, Lump of Fat Wax 8%
+15000200 [Mibu Villager: Mibu Village] Ceramic Shard 3x 12%, Fistful of Ash 3x 8%, Mibu Balloon of Soul 8%
+15000201 [Mibu Villager: Mibu Village] 
+15000211 [Mibu Villager: Mibu Village] Lump of Fat Wax 2%
+15000221 [Mibu Villager: Mibu Village] Lump of Fat Wax 4%
+15000231 [Mibu Villager: Mibu Village] Lump of Fat Wax 7%
+15000241 [Mibu Villager: Mibu Village] Lump of Fat Wax 7%, Lump of Fat Wax 3x 2%
+15200000 [Zombie: Abandoned Dungeon] Pacifying Agent 72%, Pacifying Agent 2x 20%, Bite Down 8%
+15500000 [Basic Swordsman: Hirata Estate] Oil 20%, Dousing Powder 8%
+15500001 [Basic Swordsman: Hirata Estate] 
+15500011 [Basic Swordsman: Hirata Estate] Scrap Iron 9%
+15500021 [Basic Swordsman: Hirata Estate] Scrap Iron 18%
+15500031 [Basic Swordsman: Hirata Estate] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+15500041 [Basic Swordsman: Hirata Estate] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+15500100 [Basic Swordsman: Hirata Estate, Senpou Temple] Pellet 9%, Dousing Powder 8%
+15500101 [Basic Swordsman: Hirata Estate, Senpou Temple] 
+15500111 [Basic Swordsman: Hirata Estate, Senpou Temple] Scrap Iron 9%
+15500121 [Basic Swordsman: Hirata Estate, Senpou Temple] Scrap Iron 18%
+15500131 [Basic Swordsman: Hirata Estate, Senpou Temple] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+15500141 [Basic Swordsman: Hirata Estate, Senpou Temple] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+15500200 [Basic Swordsman: Hirata Estate] Oil 20%, Dousing Powder 8%
+15500201 [Basic Swordsman: Hirata Estate] 
+15500211 [Basic Swordsman: Hirata Estate] Scrap Iron 9%
+15500221 [Basic Swordsman: Hirata Estate] Scrap Iron 18%
+15500231 [Basic Swordsman: Hirata Estate] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+15500241 [Basic Swordsman: Hirata Estate] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+15500300 [Basic Swordsman: Hirata Estate] Pellet 12%
+15500301 [Basic Swordsman: Hirata Estate] 
+15500311 [Basic Swordsman: Hirata Estate] Scrap Iron 9%
+15500321 [Basic Swordsman: Hirata Estate] Scrap Iron 18%
+15500331 [Basic Swordsman: Hirata Estate] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+15500341 [Basic Swordsman: Hirata Estate] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+15500400 [Basic Swordsman: Hirata Estate] Oil 20%, Dousing Powder 8%
+15500401 [Basic Swordsman: Hirata Estate] 
+15500411 [Basic Swordsman: Hirata Estate] Black Gunpowder 9%
+15500421 [Basic Swordsman: Hirata Estate] Black Gunpowder 18%
+15500431 [Basic Swordsman: Hirata Estate] Black Gunpowder 14%, Black Gunpowder 2x 4%, Yellow Gunpowder 7%
+15500441 [Basic Swordsman: Hirata Estate] Black Gunpowder 14%, Black Gunpowder 2x 6%, Yellow Gunpowder 9%
+15500500 [Basic Swordsman: Hirata Estate] Pellet 12%, Dousing Powder 8%, Mibu Balloon of Wealth 2x 10%
+15500501 [Basic Swordsman: Hirata Estate] 
+15500511 [Basic Swordsman: Hirata Estate] Scrap Iron 20%
+15500521 [Basic Swordsman: Hirata Estate] Scrap Iron 30%, Scrap Iron 2x 10%
+15500531 [Basic Swordsman: Hirata Estate] Scrap Iron 40%, Scrap Iron 2x 20%, Scrap Magnetite 10%
+15500541 [Basic Swordsman: Hirata Estate] Scrap Iron 30%, Scrap Iron 2x 20%, Scrap Magnetite 20%
+15501000 [Basic Swordsman: Hirata Estate] Oil 20%, Dousing Powder 8%
+15501001 [Basic Swordsman: Hirata Estate] 
+15501011 [Basic Swordsman: Hirata Estate] Scrap Iron 9%
+15501021 [Basic Swordsman: Hirata Estate] Scrap Iron 18%
+15501031 [Basic Swordsman: Hirata Estate] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+15501041 [Basic Swordsman: Hirata Estate] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+15501100 [Basic Swordsman: Hirata Estate] Pellet 9%, Dousing Powder 8%
+15501101 [Basic Swordsman: Hirata Estate] 
+15501111 [Basic Swordsman: Hirata Estate] Scrap Iron 9%
+15501121 [Basic Swordsman: Hirata Estate] Scrap Iron 18%
+15501131 [Basic Swordsman: Hirata Estate] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+15501141 [Basic Swordsman: Hirata Estate] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+15501200 [Basic Swordsman: Hirata Estate] Oil 20%, Dousing Powder 8%
+15501201 [Basic Swordsman: Hirata Estate] 
+15501211 [Basic Swordsman: Hirata Estate] Scrap Iron 9%
+15501221 [Basic Swordsman: Hirata Estate] Scrap Iron 18%
+15501231 [Basic Swordsman: Hirata Estate] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+15501241 [Basic Swordsman: Hirata Estate] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+15501300 [Unused NPC] Pellet 12%
+15501301 [Unused NPC] 
+15501311 [Unused NPC] Scrap Iron 9%
+15501321 [Unused NPC] Scrap Iron 18%
+15501331 [Unused NPC] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+15501341 [Unused NPC] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+15501400 [Basic Swordsman: Hirata Estate] Oil 20%, Dousing Powder 8%
+15501401 [Basic Swordsman: Hirata Estate] 
+15501411 [Basic Swordsman: Hirata Estate] Black Gunpowder 9%
+15501421 [Basic Swordsman: Hirata Estate] Black Gunpowder 18%
+15501431 [Basic Swordsman: Hirata Estate] Black Gunpowder 14%, Black Gunpowder 2x 4%, Yellow Gunpowder 7%
+15501441 [Basic Swordsman: Hirata Estate] Black Gunpowder 14%, Black Gunpowder 2x 6%, Yellow Gunpowder 9%
+15501500 [Unused NPC] Pellet 12%, Dousing Powder 8%, Mibu Balloon of Wealth 2x 10%
+15501501 [Unused NPC] 
+15501511 [Unused NPC] Scrap Iron 20%
+15501521 [Unused NPC] Scrap Iron 30%, Scrap Iron 2x 10%
+15501531 [Unused NPC] Scrap Iron 40%, Scrap Iron 2x 20%, Scrap Magnetite 10%
+15501541 [Unused NPC] Scrap Iron 30%, Scrap Iron 2x 20%, Scrap Magnetite 20%
+15501600 [Basic Swordsman: Hirata Estate] Contact Medicine 20%
+15501601 [Basic Swordsman: Hirata Estate] 
+15501611 [Basic Swordsman: Hirata Estate] Black Gunpowder 9%
+15501621 [Basic Swordsman: Hirata Estate] Black Gunpowder 18%
+15501631 [Basic Swordsman: Hirata Estate] Black Gunpowder 14%, Black Gunpowder 2x 4%, Yellow Gunpowder 7%
+15501641 [Basic Swordsman: Hirata Estate] Black Gunpowder 14%, Black Gunpowder 2x 6%, Yellow Gunpowder 9%
+15502000 [Unused NPC] Oil 20%, Mibu Balloon of Wealth 3%
+15502001 [Unused NPC] 
+15502011 [Unused NPC] Scrap Iron 9%
+15502021 [Unused NPC] Scrap Iron 18%
+15502031 [Unused NPC] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+15502041 [Unused NPC] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+15502100 [Unused NPC] Pellet 12%, Mibu Balloon of Wealth 3%
+15502101 [Unused NPC] 
+15502111 [Unused NPC] Scrap Iron 9%
+15502121 [Unused NPC] Scrap Iron 18%
+15502131 [Unused NPC] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+15502141 [Unused NPC] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+15502200 [Basic Swordsman: Senpou Temple] Oil 20%, Mibu Balloon of Wealth 3%
+15502201 [Basic Swordsman: Senpou Temple] 
+15502211 [Basic Swordsman: Senpou Temple] Scrap Iron 9%
+15502221 [Basic Swordsman: Senpou Temple] Scrap Iron 18%
+15502231 [Basic Swordsman: Senpou Temple] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+15502241 [Basic Swordsman: Senpou Temple] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+15502300 [Basic Swordsman: Senpou Temple] Pellet 12%, Mibu Balloon of Wealth 3%
+15502301 [Basic Swordsman: Senpou Temple] 
+15502311 [Basic Swordsman: Senpou Temple] Scrap Iron 9%
+15502321 [Basic Swordsman: Senpou Temple] Scrap Iron 18%
+15502331 [Basic Swordsman: Senpou Temple] Scrap Iron 14%, Scrap Iron 2x 4%, Scrap Magnetite 7%
+15502341 [Basic Swordsman: Senpou Temple] Scrap Iron 14%, Scrap Iron 2x 6%, Scrap Magnetite 9%
+15502400 [Basic Swordsman: Senpou Temple] Oil 21.05%, Mibu Balloon of Wealth 3.16%
+15502401 [Basic Swordsman: Senpou Temple] 
+15502411 [Basic Swordsman: Senpou Temple] Black Gunpowder 9%
+15502421 [Basic Swordsman: Senpou Temple] Black Gunpowder 18%
+15502431 [Basic Swordsman: Senpou Temple] Black Gunpowder 14%, Black Gunpowder 2x 4%, Yellow Gunpowder 7%
+15502441 [Basic Swordsman: Senpou Temple] Black Gunpowder 14%, Black Gunpowder 2x 6%, Yellow Gunpowder 9%
+15502500 [Unused/Unknown] Pellet 14%, Mibu Balloon of Wealth 2x 6%
+15502501 [Unused/Unknown] 
+15502511 [Unused/Unknown] Scrap Iron 20%
+15502521 [Unused/Unknown] Scrap Iron 30%, Scrap Iron 2x 10%
+15502531 [Unused/Unknown] Scrap Iron 40%, Scrap Iron 2x 20%, Scrap Magnetite 10%
+15502541 [Unused/Unknown] Scrap Iron 30%, Scrap Iron 2x 20%, Scrap Magnetite 20%
+15502600 [Unused NPC] Contact Medicine 20%, Mibu Balloon of Wealth 3%
+15502601 [Unused NPC] 
+15502611 [Unused NPC] Black Gunpowder 9%
+15502621 [Unused NPC] Black Gunpowder 18%
+15502631 [Unused NPC] Black Gunpowder 14%, Black Gunpowder 2x 4%, Yellow Gunpowder 7%
+15502641 [Unused NPC] Black Gunpowder 14%, Black Gunpowder 2x 6%, Yellow Gunpowder 9%
+17000000 [Ministry Samurai: Ashina Castle] Pellet 2x 9%, Gachiin's Sugar 14%
+17000001 [Ministry Samurai: Ashina Castle] Scrap Magnetite 14%
+17000031 [Ministry Samurai: Ashina Castle] Scrap Magnetite 16%, Scrap Magnetite 2x 5%
+17000041 [Ministry Samurai: Ashina Castle] Scrap Magnetite 18%, Scrap Magnetite 2x 9%
+17001000 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Pellet 3x 17%, Ministry Dousing Powder 21%
+17001001 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Scrap Magnetite 38%, Adamantite Scrap 12%
+17001041 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Scrap Magnetite 66%, Scrap Magnetite 2x 17%, Adamantite Scrap 17%
+17001100 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Pellet 12%, Ministry Dousing Powder 15%
+17001101 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Scrap Magnetite 14%, Adamantite Scrap 5%
+17001141 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Scrap Iron 18%, Adamantite Scrap 8%
+17001200 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Pellet 2x 9%, Ministry Dousing Powder 15%, Gachiin's Sugar 14%
+17001201 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Scrap Magnetite 16%, Scrap Magnetite 2x 5%
+17001241 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Scrap Magnetite 18%, Scrap Magnetite 2x 9%
+17001300 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Oil 70%, Oil 3x 9%, Ministry Dousing Powder 2x 21%
+17001301 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Yellow Gunpowder 17%, Fulminated Mercury 8%
+17001341 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Yellow Gunpowder 21%, Fulminated Mercury 12%
+17001400 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Oil 85%, Ministry Dousing Powder 2x 15%
+17001401 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Yellow Gunpowder 14%, Fulminated Mercury 5%
+17001441 [Ministry Samurai: Ashina Castle, Ashina Outskirts] Yellow Gunpowder 18%, Fulminated Mercury 8%
+20000000 [Ashina Samurai, Gun Fort Gunner, Mibu Villager, Monkey, Nightjar: Mibu Village, Senpou Temple, Sunken Valley] Yashariku's Sugar 4%
+20000100 [Monkey, Snake Eyes: Mibu Village, Senpou Temple] Yashariku's Sugar 30%
+50100000 [Great Serpent: Sunken Valley] Fresh Serpent Viscera
+50200000 [Chained Ogre: Ashina Castle] Prayer Bead
+50200001 [Chained Ogre: Ashina Castle] Shinobi Medicine Rank 3
+50200005 [Chained Ogre: Ashina Castle] Heavy Coin Purse
+50201000 [Chained Ogre: Ashina Outskirts] Prayer Bead
+50201001 [Chained Ogre: Ashina Outskirts] Shinobi Medicine Rank 1
+50201005 [Chained Ogre: Ashina Outskirts] Heavy Coin Purse
+50204000 [Unused/Unknown] Pellet
+50500000 [Scripted, Treasure: Sunken Valley] Great White Whisker
+70000000 [O'Rin: Mibu Village] Prayer Bead
+70000001 [O'Rin: Mibu Village] Breath of Life: Shadow
+70000005 [O'Rin: Mibu Village] Heavy Coin Purse

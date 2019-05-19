@@ -1,0 +1,16 @@
+1 UNUSED
+30000 Ludleth
+40000 Yuria
+50000 Yoel
+110000 Shrine Handmaid
+119900 Untended Graves Handmaid
+120000 Greirat
+130100 Orbeck spells
+140000 Cornyx
+140100 Cornyx spells
+150100 Karla spells
+160000 Irina
+160100 Irina spells
+200000 Patches
+760000 Stone-humped Hag
+900000 UNUSED

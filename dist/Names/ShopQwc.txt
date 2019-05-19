@@ -1,0 +1,126 @@
+1058 after giving Yuria's Ashes and reloading
+1138 after completing Sirris' questline
+1158 after killing Leonhard
+1238 after giving Orbeck's Ashes and reloading
+1318 after killing Eygon of Carim or defeating Dragonslayer Armour
+1358 after completing Anri's questline or killing Anri
+1498 after killing Horace the Hushed
+1818 after completing Lapp's questline or killing Lapp
+6300 after defeating Dancer of the Boreal Valley
+6301 after defeating Vordt of the Boreal Valley
+6302 after defeating Oceiros, the Consumed King
+6303 after defeating Curse-Rotted Greatwood
+6304 after defeating Nameless King
+6306 after defeating Crystal Sage
+6307 after defeating Abyss Watchers
+6308 after defeating Dragonslayer Armour
+6309 after defeating Lothric, Younger Prince
+6311 after defeating Deacons of the Deep
+6312 after killing Leonhard
+6313 after defeating Pontiff Sulyvahn
+6314 after defeating Aldrich, Devourer of Gods
+6315 after defeating High Lord Wolnir
+6317 after defeating Old Demon King
+6318 after defeating Yhorm the Giant
+6320 after defeating Champion Gundyr
+6321 after defeating Soul of Cinder
+6322 after defeating Sister Friede
+6324 after defeating Demon Prince
+6326 after defeating Darkeater Midir
+6327 after defeating Slave Knight Gael
+6330 after entering Undead Settlement
+6331 after entering Road of Sacrifices
+9210 after placing all Cinders of a Lord on their thrones
+9300 after defeating Dancer of the Boreal Valley
+9304 after defeating Nameless King
+9306 after defeating Crystal Sage
+9307 after defeating Abyss Watchers
+9309 after defeating Lothric, Younger Prince
+9314 after defeating Aldrich, Devourer of Gods
+9315 after defeating High Lord Wolnir
+9320 after defeating Champion Gundyr
+9322 after defeating Sister Friede
+13410202 after killing Lion Knight Albert
+13410204 after killing Black Hand Kumai
+13800398 after killing Knight Slayer Tsorig in Smouldering Lake
+53700990 after killing Sulyvahn's Beasts in Water Reserve
+70000100 after giving Mortician's Ashes
+70000101 after giving Dreamchaser's Ashes
+70000102 after giving Paladin's Ashes
+70000103 after giving Grave Warden's Ashes
+70000104 after giving Excrement-covered Ashes
+70000105 after giving Prisoner Chief's Ashes
+70000106 after giving Xanthous Ashes
+70000107 after giving Hollow's Ashes
+70000108 after giving Dragon Chaser's Ashes
+70000109 after giving Easterner's Ashes
+70000110 after giving Greirat's Ashes
+70000111 after giving Orbeck's Ashes
+70000112 after giving Cornyx's Ashes
+70000113 after giving Karla's Ashes
+70000114 after giving Irina's Ashes
+70000115 after giving Patches' Ashes
+70000116 after giving Yuria's Ashes
+70000117 after giving Dreamchaser's Ashes, saying where they were found
+70000118 after receiving Silvercat Ring from Sirris and defeating Aldrich
+70000119 after killing the exiles just before Farron Keep
+70000120 after giving Captain's Ashes
+70000121 after giving Old Woman's Ashes
+70000125 before giving Paladin's Ashes
+70000126 after giving Dreamchaser's Ashes, before giving Xanthous Ashes
+70000127 after giving Paladin's Ashes, before giving Excrement-covered Ashes
+70000128 before giving Greirat's Ashes
+70000129 before giving Greirat's Ashes
+70000130 after giving Mortician's Ashes, before giving Patches' Ashes
+70000131 after giving Dreamchaser's Ashes, before giving Grave Warden's Ashes
+70000132 after giving Captain's Ashes, before giving Dragon Chaser's Ashes
+70000133 after giving Old Woman's Ashes, before giving Patches' Ashes
+70000150 after sending Greirat to pillage Undead Settlement
+70000151 after sending Greirat to pillage Irithyll
+70000152 after sending Greirat to Lothric Castle (unused by Greirat)
+70000153 after sending Greirat to pillage Irithyll, before sending Greirat to pillage Lothric Castle
+70000175 after sending Greirat to pillage Undead Settlement
+70000176 after sending Greirat to pillage Irithyll
+70000177 after sending Greirat to Lothric Castle (unused by Greirat)
+70000178 after sending Greirat to pillage Irithyll, before sending Greirat to pillage Lothric Castle
+70000200 after giving Orbeck any scroll
+70000201 after giving Orbeck the Sage's Scroll
+70000202 after giving Orbeck the Logan's Scroll
+70000203 after giving Orbeck the Crystal Scroll
+70000204 after giving Orbeck the Golden Scroll
+70000225 after giving Orbeck any scroll
+70000226 after giving Orbeck the Sage's Scroll
+70000227 after giving Orbeck the Logan's Scroll
+70000228 after giving Orbeck the Crystal Scroll
+70000229 after giving Orbeck the Golden Scroll
+70000250 after giving Cornyx the Great Swamp Pyromancy Tome
+70000251 after giving Cornyx the Carthus Pyromancy Tome
+70000252 after giving Cornyx the Izalith Pyromancy Tome
+70000275 after giving Cornyx the Great Swamp Pyromancy Tome
+70000276 after giving Cornyx the Carthus Pyromancy Tome
+70000277 after giving Cornyx the Izalith Pyromancy Tome
+70000300 after giving Karla the Quelana Pyromancy Tome
+70000301 after giving Karla the Grave Warden Pyromancy Tome
+70000302 after giving Karla the Deep Braille Divine Tome
+70000303 after giving Karla the Londor Braille Divine Tome
+70000325 after giving Karla the Quelana Pyromancy Tome
+70000326 after giving Karla the Grave Warden Pyromancy Tome
+70000327 after giving Karla the Deep Braille Divine Tome
+70000328 after giving Karla the Londor Braille Divine Tome
+70000350 after giving Irina the Braille Divine Tome of Carim
+70000351 after giving Irina the Braille Divine Tome of Lothric
+70000352 after giving Irina the Deep Braille Divine Tome
+70000353 after giving Irina the Londor Braille Divine Tome
+70000375 after giving Irina the Braille Divine Tome of Carim
+70000376 after giving Irina the Braille Divine Tome of Lothric
+70000377 after giving Irina the Deep Braille Divine Tome
+70000378 after giving Irina the Londor Braille Divine Tome
+70000400 after Patches moves to Firelink Shrine
+70000401 after sending Greirat to pillage Lothric Castle, telling Patches, and Patches returning
+70000402 while Greirat is in Firelink Shrine
+70000403 while Patches has Siegward's armor
+70000425 after Patches moves to Firelink Shrine
+70000426 after sending Greirat to pillage Lothric Castle, telling Patches, and Patches returning
+70000427 while Greirat is in Firelink Shrine
+70000450 after using Draw Out True Strength
+70000475 after using Draw Out True Strength
