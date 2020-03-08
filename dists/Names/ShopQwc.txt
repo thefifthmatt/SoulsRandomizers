@@ -1,0 +1,47 @@
+6021 after Dragon's Tally Board
+6205 after fitting first prosthetic
+59 in NG+
+1642 after using Harunga's Truly Precious Bait
+9090 until purchased and Dragonrot restoration occurs
+9091 until purchased and Dragonrot restoration occurs
+9092 until purchased and Dragonrot restoration occurs
+9093 until purchased and Dragonrot restoration occurs
+9094 until purchased and Dragonrot restoration occurs
+9095 after sold out of the first droplet and Dragonrot restoration occurs
+9096 after sold out of the first droplets and Dragonrot restoration occurs
+9097 after sold out of the first droplet and Dragonrot restoration occurs
+9098 after sold out of the first droplet and Dragonrot restoration occurs
+9099 after sold out of the first droplets and Dragonrot restoration occurs
+9041 after telling Anayama about salt and having Dragon's Tally Board
+71100253 after telling Anayama about salt
+71100254 after sending Kotaro to Anayama
+71100277 after unknown/unused event
+8307 after Shichimen Warrior spawns in Headless Ape's arena
+9020 after the first Ashina Castle invasion, if not purchased from Blackhat Badger
+9021 after the first Ashina Castle invasion, if General Kuranosuke Matsumoto has not been defeated
+9022 after the first Ashina Castle invasion, if Ashina Elite Jinsuke Saze has not been defeated
+9023 after the second Ashina Castle invasion, if not already picked up
+9024 after the second Ashina Castle invasion, if not already picked up
+9025 after the second Ashina Castle invasion, if General Naomori Kawarada has not been defeated
+9026 after the second Ashina Castle invasion, if not purchased from Anayama
+9027 after the second Ashina Castle invasion, if General Naomori Kawarada has not been defeated
+9028 after the second Ashina Castle invasion, if General Tenzen Yamauchi has not been defeated
+9029 after the second Ashina Castle invasion, if Seven Ashina Spears Shikibu Toshikatsu Yamauchi has not been defeated
+9030 after both Ashina Outskirt Memorial Mobs die of Dragonrot, if not purchased - unused
+9031 after both Ashina Outskirt Memorial Mobs die of Dragonrot, if not purchased - unused
+9032 after both Crow Memorial Mob and Dungeon Memorial Mob die of Dragonrot, if not purchased - unused
+9033 after both Crow Memorial Mob and Dungeon Memorial Mob die of Dragonrot, if not purchased - unused
+9034 after Blackhat Badger dies, if not purchased
+9035 after the second Ashina Castle invasion, if Lone Shadow Masanaga the Spear-bearer has not been defeated in Great Serpent Shrine
+6500 after Shuriken Wheel acquired
+6501 after Robert's Firecrackers acquired
+6502 after Flame Barrel acquired
+6503 after Shinobi Axe of the Monkey acquired
+6504 after Mist Raven's Feathers acquired
+6505 after Sabimaru acquired
+6506 after Iron Fortress acquired
+6507 after Large Fan acquired
+6508 after Gyoubu's Broken Horn acquired
+6509 after Slender Finger acquired
+9400 after unknown/unused event
+1622 after using Koremori's Truly Precious Bait

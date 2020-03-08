@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomizerCommon", "RandomizerCommon\RandomizerCommon.csproj", "{153B7DAC-12FC-4F0F-B5DC-3FCFE546C50C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{22C664BD-877B-44DF-8ECF-2808522469A8} = {22C664BD-877B-44DF-8ECF-2808522469A8}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoulsFormats", "..\SoulsFormats\SoulsFormats\SoulsFormats.csproj", "{22C664BD-877B-44DF-8ECF-2808522469A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoulsIds", "..\SoulsIds\SoulsIds\SoulsIds.csproj", "{C46D537C-54DC-48BF-B824-8A950DD9D4F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SekiroRandomizer", "SekiroRandomizer\SekiroRandomizer.csproj", "{17F220BA-034B-4BA3-97E2-32763D9F61A8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{153B7DAC-12FC-4F0F-B5DC-3FCFE546C50C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{153B7DAC-12FC-4F0F-B5DC-3FCFE546C50C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{153B7DAC-12FC-4F0F-B5DC-3FCFE546C50C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{153B7DAC-12FC-4F0F-B5DC-3FCFE546C50C}.Debug|x64.Build.0 = Debug|Any CPU
+		{153B7DAC-12FC-4F0F-B5DC-3FCFE546C50C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{153B7DAC-12FC-4F0F-B5DC-3FCFE546C50C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{153B7DAC-12FC-4F0F-B5DC-3FCFE546C50C}.Release|x64.ActiveCfg = Release|Any CPU
+		{153B7DAC-12FC-4F0F-B5DC-3FCFE546C50C}.Release|x64.Build.0 = Release|Any CPU
+		{22C664BD-877B-44DF-8ECF-2808522469A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22C664BD-877B-44DF-8ECF-2808522469A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22C664BD-877B-44DF-8ECF-2808522469A8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{22C664BD-877B-44DF-8ECF-2808522469A8}.Debug|x64.Build.0 = Debug|Any CPU
+		{22C664BD-877B-44DF-8ECF-2808522469A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22C664BD-877B-44DF-8ECF-2808522469A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22C664BD-877B-44DF-8ECF-2808522469A8}.Release|x64.ActiveCfg = Release|Any CPU
+		{22C664BD-877B-44DF-8ECF-2808522469A8}.Release|x64.Build.0 = Release|Any CPU
+		{C46D537C-54DC-48BF-B824-8A950DD9D4F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C46D537C-54DC-48BF-B824-8A950DD9D4F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C46D537C-54DC-48BF-B824-8A950DD9D4F8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C46D537C-54DC-48BF-B824-8A950DD9D4F8}.Debug|x64.Build.0 = Debug|Any CPU
+		{C46D537C-54DC-48BF-B824-8A950DD9D4F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C46D537C-54DC-48BF-B824-8A950DD9D4F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C46D537C-54DC-48BF-B824-8A950DD9D4F8}.Release|x64.ActiveCfg = Release|Any CPU
+		{C46D537C-54DC-48BF-B824-8A950DD9D4F8}.Release|x64.Build.0 = Release|Any CPU
+		{17F220BA-034B-4BA3-97E2-32763D9F61A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17F220BA-034B-4BA3-97E2-32763D9F61A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17F220BA-034B-4BA3-97E2-32763D9F61A8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{17F220BA-034B-4BA3-97E2-32763D9F61A8}.Debug|x64.Build.0 = Debug|Any CPU
+		{17F220BA-034B-4BA3-97E2-32763D9F61A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17F220BA-034B-4BA3-97E2-32763D9F61A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17F220BA-034B-4BA3-97E2-32763D9F61A8}.Release|x64.ActiveCfg = Release|Any CPU
+		{17F220BA-034B-4BA3-97E2-32763D9F61A8}.Release|x64.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54BAE5E6-586A-4D69-8B4D-29AB80ADCDFA}
+	EndGlobalSection
+EndGlobal

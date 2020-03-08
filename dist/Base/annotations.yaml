@@ -1490,7 +1490,7 @@ Slots:
   - Large Titanite Shard - 31410000[Ancient Wyvern [c3141_0000] @ highwall]
   Text: Drop from getting the fire-breathing wyvern down to 20% health
   Area: highwall
-  Tags: enemy veryunfair
+  Tags: enemy veryunfair missable
 - Key: '01,0:53010955::'
   DebugText:
   - Magic Stoneplate Ring - 11901120[Cathedral Knight [c1190_0000] @ highwall]
@@ -6002,7 +6002,7 @@ Slots:
   DebugText:
   - Titanite Slab - 4700[Father Ariandel [c6010_0000] @ ariandel]
   Text: One-time drop after killing Father Ariandel and Friede (phase 2) for the first time.
-  Area: ariandel
+  Area: ariandel_friede
   Tags: boss
 - Key: '11,0:50006520::'
   DebugText:
