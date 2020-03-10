@@ -6767,6 +6767,8 @@ EnemyEvents:
     Entity: 1110850
     EndCond: -1
     EndCond2: -2
+    Add:
+    - Cmd: Force Character Death (1110850,0)
   DebugInfo:
   - 1110850 (c5060_0000 - Owl)
   DebugCommands:
@@ -7004,6 +7006,8 @@ EnemyEvents:
   Template:
   - Type: start
     Entity: 1110900
+    Add:
+    - Cmd: Set Character Immortality (1110900,1)
   DebugInfo:
   - 1110900 (c7400_0001 - Emma)
   - 1110722 (c5060_0001 - Owl - not random)
@@ -12064,6 +12068,12 @@ EnemyEvents:
   - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
   - + Clear SpEffect (Entity ID = 2000804*, SpEffect ID = 3126071)
   - END Unconditionally (Execution End Type = 1)
+- ID: 12005835
+  Comment: Restoring lockon point for invisible monkey if randomized. TODO add more monkey events, and add a way to only randomize if a target, rather than source
+  Template:
+  - Type: loc
+    # Entity: 2000804
+    Remove: Set Lock On Point
 - ID: 12005885
   Comment: Using illusion hall bell
   Template:

@@ -35,7 +35,7 @@ https://media.discordapp.net/attachments/319013592332763136/685713250062565383/s
 
 6. Run the randomizer. There is an experimental option to merge files from your 'mods' directory, if you have one, and those mod files will get added into the 'randomizer' directory. For some files this is a simple copy, but for others it has to merge them.
 
-7. Make sure that the randomizer succeeds (shows "Done" in the status bar), and then start up Sekiro and create a new save file.
+7. Make sure that the randomizer succeeds (shows "Done" in the status bar), and then *close Sekiro if you have it open*, and start up Sekiro for changes to be reflected, and create a new save file.
 
 To uninstall, change back modOverrideDirectory="\mods", or delete the randomizer directory. The new version of mod engine will also work for previous mods, if you don't mind the extra memory allocation.
 

@@ -36,6 +36,9 @@
     <Prefer32Bit>false</Prefer32Bit>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>death.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -79,6 +82,9 @@
       <Project>{153b7dac-12fc-4f0f-b5dc-3fcfe546c50c}</Project>
       <Name>RandomizerCommon</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="death.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

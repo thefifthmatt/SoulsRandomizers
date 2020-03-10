@@ -3454,7 +3454,7 @@ Slots:
   - 'Treasure Carp Scale - 52810[Palace Noble (c1300_0000 #1500704) mibuvillage] 5x'
   Text: Dropped by the Head Priest after you give him Water of the Palace, reload, and kill him
   Area: mibuvillage
-  Tags: nokey  # xx can be a key item, but it's a bit iffy, and interfers with current ashes-based approach
+  Tags: nokey  # xx can be a key item, but it's a bit iffy, and interferes with current ashes-based approach
   QuestReqs: waterofthepalace
 - Key: '05,0:50006300::'
   DebugText:

@@ -54,6 +54,7 @@
             this.difficultyL = new System.Windows.Forms.Label();
             this.difficultyAmtL = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.enemytoitem = new System.Windows.Forms.CheckBox();
@@ -97,7 +98,6 @@
             this.itemPic = new System.Windows.Forms.PictureBox();
             this.mascot = new System.Windows.Forms.PictureBox();
             this.title = new System.Windows.Forms.PictureBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -416,6 +416,16 @@
             this.groupBox5.Size = new System.Drawing.Size(422, 134);
             this.groupBox5.TabIndex = 10;
             this.groupBox5.TabStop = false;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(23, 65);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(264, 13);
+            this.label10.TabIndex = 26;
+            this.label10.Text = "Experimental. Won\'t work if the mods are incompatible.";
             // 
             // label5
             // 
@@ -929,16 +939,6 @@
             this.title.Click += new System.EventHandler(this.title_Click);
             this.title.DoubleClick += new System.EventHandler(this.title_Click);
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(23, 65);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(264, 13);
-            this.label10.TabIndex = 26;
-            this.label10.Text = "Experimental. Won\'t work if the mods are incompatible.";
-            // 
             // SekiroForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -962,7 +962,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SekiroForm";
-            this.Text = "Sekiro Enemy and Item Randomizer v0.1";
+            this.Text = "Sekiro Enemy and Item Randomizer v0.1.1";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

@@ -56,9 +56,9 @@ namespace RandomizerCommon
         private Dictionary<string, (int, int)> docByName;
         private Dictionary<EMEDF.InstrDoc, List<int>> funcBytePositions;
         // Take free event flags from Abandoned Dungeon
-        private int tmpBase = 11305750;  // until 6000, then it's not tmp anymore
+        private int tmpBase = 11315000; // 11305750;  // until 6000, then it's not tmp anymore
+        private int maxTmp = 11396000;
         private int permBase = 11306000;  // until at least 7000
-        private int maxTmp = 11306000;
         private int maxPerm = 11307000;
 
         public readonly EventConfig Config;
@@ -180,6 +180,11 @@ namespace RandomizerCommon
         public int NewID(bool temp)
         {
             int newId = temp ? tmpBase++ : permBase++;
+            if (!IsTemp(tmpBase) && tmpBase % 10000 == 6000)
+            {
+                tmpBase -= 1000;
+                tmpBase += 10000;
+            }
             if (tmpBase > maxTmp || permBase > maxPerm) throw new Exception($"event {newId} hit event limit");
             return newId;
         }
@@ -206,17 +211,16 @@ namespace RandomizerCommon
             return newEvent;
         }
 
-        public void CopyInit(Instr instr, EMEVD.Event newEvent)
+        public Instr CopyInit(Instr instr, EMEVD.Event newEvent)
         {
-            instr.Val = CopyInstruction(instr.Val);
-            if (instr.Val.Bank == 2000 && instr.Val.ID == 0)
+            Instr newInstr = Parse(CopyInstruction(instr.Val));
+            if (newInstr.Val.Bank == 2000 && newInstr.Val.ID == 0)
             {
                 if (newEvent == null) throw new Exception($"Internal error: Event not provided for copying {string.Join(",", instr.Args)}");
-                instr[0] = 0;
-                instr[1] = (uint)newEvent.ID;
-                // Is this needed?
-                instr.Save();
+                newInstr[0] = 0;
+                newInstr[1] = (uint)newEvent.ID;
             }
+            return newInstr;
         }
 
         // Preserving parameters after adding/removing instructions
@@ -551,7 +555,7 @@ namespace RandomizerCommon
             // What to do with regions if a chr command - chrpoint (exact), arenapoint (center/random), arenabox10 (random), arena (bgm), arenasfx (center), or dist10.
             public List<string> Regions { get; set; }
             // Check for doing nothing
-            public bool IsDefault() => DefeatFlag == 0 && AppearFlag == 0 && StartFlag == 0 && EndCond == null && EndCond2 == null && StartCmd == null && Remove == null && Replace == null && Add == null && Regions == null;
+            public bool IsDefault() => Entity == 0 && DefeatFlag == 0 && AppearFlag == 0 && StartFlag == 0 && EndCond == null && EndCond2 == null && StartCmd == null && Remove == null && Replace == null && Add == null && Regions == null;
             [YamlIgnore]
             public EMEVD.Event Inner { get; set; }
         }

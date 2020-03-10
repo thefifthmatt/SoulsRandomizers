@@ -296,8 +296,10 @@ namespace RandomizerCommon
                 string path = $@"{outPath}\event\{entry.Key}.emevd.dcx";
                 writeFile(path);
                 entry.Value.Write(path, (DCX.Type)DCX.DefaultType.Sekiro);
+#if DEBUG
                 // This is only needed for easier use of EventScriptTool
-                // entry.Value.Write($@"{outPath}\event\{entry.Key}.emevd", DCX.Type.None);
+                entry.Value.Write($@"{outPath}\event\{entry.Key}.emevd", DCX.Type.None);
+#endif
             }
             {
                 string basePath = $@"{dir}\Base\gameparam.parambnd.dcx";
@@ -690,6 +692,12 @@ namespace RandomizerCommon
         // Some helper functionality things
         public void SearchParamInt(uint id, string field=null)
         {
+            bool matches(string cell)
+            {
+                if (cell == id.ToString()) return true;
+                if (int.TryParse(cell, out int val)) return val >= 11000000 && val <= 13000000 && (val / 1000) % 10 == 5;
+                return false;
+            }
             Console.WriteLine($"-- Searching params for {id}");
             foreach (KeyValuePair<string, PARAM> param in Params)
             {
@@ -701,7 +709,7 @@ namespace RandomizerCommon
                     }
                     foreach (PARAM.Cell cell in row.Cells)
                     {
-                        if ((field == null || cell.Def.InternalName == field) && cell.Value != null && cell.Value.ToString() == id.ToString())
+                        if ((field == null || cell.Def.InternalName == field) && cell.Value != null && matches(cell.Value.ToString()))
                         {
                             Console.WriteLine($"{param.Key}[{row.ID}].{cell.Def.InternalName} = {cell.Value}");
                         }

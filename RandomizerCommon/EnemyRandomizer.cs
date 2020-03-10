@@ -104,7 +104,6 @@ namespace RandomizerCommon
                 }
             }
 
-
             // Process config
             HashSet<string> norandom = new HashSet<string> { };
             bool isRandom(EnemyInfo info, string model)
@@ -308,13 +307,22 @@ namespace RandomizerCommon
             // Force mapping from target to source. This does disrupt the seed, but only way to avoid that would be with potentially extensive swapping.
             // TODO: Add a config to load this in, for people with custom preferences, and validate it
             Dictionary<int, int> forceMap = new Dictionary<int, int>();
+            foreach (EnemyInfo info in ann.Enemies)
+            {
+                break;
+                if (info.Class == EnemyClass.Miniboss || info.Class == EnemyClass.Basic)
+                {
+                    // forceMap[info.ID] = 1500690;
+                }
+            }
 
             HashSet<int> forceMapSources = new HashSet<int>(forceMap.Values);
             Dictionary<EnemyClass, EnemyPermutation> silos = new Dictionary<EnemyClass, EnemyPermutation>();
+            List<EnemyClass> randomizedTypes = new List<EnemyClass> { EnemyClass.Basic, EnemyClass.Miniboss, EnemyClass.Boss, EnemyClass.FoldingMonkey };
             // TODO: Make this a bit more formal in the future... the currently randomized silos exclude 0 (no random) and 4 (minion)
-            for (int i = 1; i <= 3; i++)
+            foreach (EnemyClass type in randomizedTypes)
             {
-                silos[(EnemyClass)i] = new EnemyPermutation { Type = i };
+                silos[type] = new EnemyPermutation { Type = type };
             }
             foreach (EnemyInfo info in ann.Enemies)
             {
@@ -509,17 +517,34 @@ namespace RandomizerCommon
             };
             foreach (EnemyPermutation silo in silos.Values)
             {
-                EnemyClass siloType = (EnemyClass)silo.Type;
+                EnemyClass siloType = silo.Type;
+                if (debugPlacement) Console.WriteLine($"Found {silo.Sources.Count} sources and {silo.Targets.Count} targets for {siloType}");
+                if (siloType == EnemyClass.FoldingMonkey)
+                {
+                    // Special behavior for folding monkeys
+                    Shuffle(new Random(seed + (int)silo.Type), silo.Sources);
+
+                    // Get some random early game bosses
+                    List<EnemyInfo> minibosses = infos.Values.Where(s => s.Class == EnemyClass.Miniboss && s.HasTag("early")).ToList();
+                    Shuffle(new Random(seed + (int)silo.Type), minibosses);
+                    minibosses = minibosses.GroupBy(e => e.EnemyType ?? e.ID.ToString()).Select(g => g.First()).ToList();
+                    Shuffle(new Random(seed + (int)silo.Type), minibosses);
+                    for (int i = 0; i < silo.Targets.Count; i++)
+                    {
+                        silo.Mapping[silo.Targets[i]] = minibosses[i % minibosses.Count].ID;
+                    }
+                    continue;
+                }
                 for (int i = 0; i < silo.Targets.Count; i++)
                 {
-                    silo.Mapping[silo.Targets[i]] = silo.Sources[i];
+                    silo.Mapping[silo.Targets[i]] = silo.Sources[i % silo.Sources.Count];
                 }
                 if (randomizeOpt.TryGetValue(siloType, out string optName) && !opt[optName]) continue;
 
-                Shuffle(new Random(seed + silo.Type), silo.Sources);
+                Shuffle(new Random(seed + (int)silo.Type), silo.Sources);
                 for (int i = 0; i < silo.Targets.Count; i++)
                 {
-                    silo.Mapping[silo.Targets[i]] = silo.Sources[i];
+                    silo.Mapping[silo.Targets[i]] = silo.Sources[i % silo.Sources.Count];
                 }
 
                 // Fixup pass
@@ -612,7 +637,7 @@ namespace RandomizerCommon
                 else if (b is MSBS.Region.Region0 rt) msb.Regions.Region0s.Add(rt);
                 else throw new Exception($"Internal error: unknown region type {b}, entity id {id}");
                 // Except shape is a nested field which is modified, so do that
-                MSBS.Shape shape = (MSBS.Shape)Activator.CreateInstance(a.GetType());
+                MSBS.Shape shape = (MSBS.Shape)Activator.CreateInstance(b.Shape.GetType());
                 CopyAll(b.Shape, shape);
                 b.Shape = shape;
                 // Hopefully this isn't used much
@@ -1088,9 +1113,9 @@ namespace RandomizerCommon
                     OldParams initOld = OldParams.Preprocess(e);
                     for (int i = 0; i < e.Instructions.Count; i++)
                     {
-                        Instr init = events.Parse(e.Instructions[i]);
-                        if (!init.Init) continue;
-                        int callee = init.Callee;
+                        Instr originalInit = events.Parse(e.Instructions[i]);
+                        if (!originalInit.Init) continue;
+                        int callee = originalInit.Callee;
                         if (!templates.TryGetValue(callee, out EventSpec ev)) continue;
                         if (ev.Template.Count == 0) throw new Exception($"event {callee} has no templates");
                         // chr, multichr, loc, start, end, startphase, endphase, remove
@@ -1118,10 +1143,10 @@ namespace RandomizerCommon
                             }
                             int entity = t.Entity;
                             // Include dummy enemies for now, otherwise it will detect no entity
-                            int argEntity = init.Args.Skip(init.Offset).Where(a => a is int ai && (infos.ContainsKey(ai) || ignoreEnemies.Contains(ai))).FirstOrDefault() is int aj ? aj : 0;
+                            int argEntity = originalInit.Args.Skip(originalInit.Offset).Where(a => a is int ai && (infos.ContainsKey(ai) || ignoreEnemies.Contains(ai))).FirstOrDefault() is int aj ? aj : 0;
                             if (entity <= 0)
                             {
-                                if (argEntity == 0) throw new Exception($"No entity found in {init}) args");
+                                if (argEntity == 0) throw new Exception($"No entity found in {originalInit}) args");
                                 entity = argEntity;
                             }
                             if (!mapping.TryGetValue(entity, out List<int> targets))
@@ -1179,6 +1204,7 @@ namespace RandomizerCommon
                             // Main entities to replace
                             Dictionary<int, int> reloc = new Dictionary<int, int>();
                             Dictionary<int, int> distReplace = new Dictionary<int, int>();
+                            Instr init = originalInit;
                             if (entity != 0)
                             {
                                 reloc[entity] = target;
@@ -1214,7 +1240,7 @@ namespace RandomizerCommon
                                     }
                                 }
                                 // Also we need to make a copy of the instruction at this point, so we don't edit the original
-                                events.CopyInit(init, e2);
+                                init = events.CopyInit(init, e2);
                             }
                             // Add all edits
                             EventEdits edits = new EventEdits();
@@ -1242,13 +1268,28 @@ namespace RandomizerCommon
                                 EnemyInfo targetInfo = infos[target];
                                 if (t.DefeatFlag != 0)
                                 {
-                                    if (targetInfo.DefeatFlag == 0) throw new Exception($"{mapping[entity]} has no defeat flag defined, but was randomized to {entity} in {callee}");
-                                    events.ReplaceMacro(edits, t.DefeatFlag.ToString(), targetInfo.DefeatFlag.ToString());
+                                    if (targetInfo.DefeatFlag == 0)
+                                    {
+                                        if (targetInfo.Class == EnemyClass.Boss || targetInfo.Class == EnemyClass.Miniboss) throw new Exception($"{string.Join(",", mapping[entity])} has no defeat flag defined, but was randomized to {entity} in {callee}");
+                                        // This will probably work for minibosses -> enemies, but will it work for bosses -> enemies? Should a temp flag be set up?
+                                        events.RemoveMacro(edits, t.DefeatFlag.ToString());
+                                    }
+                                    else
+                                    {
+                                        events.ReplaceMacro(edits, t.DefeatFlag.ToString(), targetInfo.DefeatFlag.ToString());
+                                    }
                                 }
                                 if (t.StartFlag != 0)
                                 {
-                                    if (targetInfo.StartFlag == 0) throw new Exception($"{mapping[entity]} has no start flag defined, but was randomized to {entity} in {callee}");
-                                    events.ReplaceMacro(edits, t.StartFlag.ToString(), targetInfo.StartFlag.ToString());
+                                    if (targetInfo.StartFlag == 0)
+                                    {
+                                        if (targetInfo.Class == EnemyClass.Boss || targetInfo.Class == EnemyClass.Miniboss) throw new Exception($"{string.Join(",", mapping[entity])} has no start flag defined, but was randomized to {entity} in {callee}");
+                                        events.RemoveMacro(edits, t.StartFlag.ToString());
+                                    }
+                                    else
+                                    {
+                                        events.ReplaceMacro(edits, t.StartFlag.ToString(), targetInfo.StartFlag.ToString());
+                                    }
                                 }
                                 // This won't add appear flag is none was there previously. Do that if it becomes a problem
                                 if (t.AppearFlag != 0)
@@ -1598,7 +1639,8 @@ namespace RandomizerCommon
             Miniboss = 2,
             Boss = 3,
             Helper = 4,
-            Headless = 5
+            Headless = 5,
+            FoldingMonkey = 6,
         }
         public class EnemyData
         {
@@ -1620,7 +1662,7 @@ namespace RandomizerCommon
 
         public class EnemyPermutation
         {
-            public int Type { get; set; }
+            public EnemyClass Type { get; set; }
             // For now, entity IDs are unique and not collapsed (e.g. if two enemies are the same in different positions).
             public List<int> Sources = new List<int>();
             public List<int> Targets = new List<int>();

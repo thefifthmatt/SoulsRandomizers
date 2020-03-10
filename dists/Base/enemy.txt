@@ -2830,7 +2830,7 @@ Enemies:
   Events: IF Number of Character Health Bars; Display Boss Health Bar; Change Character Enable State; Set Character Animation State; Set Character Backread State; Force Character Death; Set Character AI State; Set Character Team Type; Set Character HP Bar Display; Request Character AI Re-plan; Set Network Update Rate; Set Character Immortality; IF Character Posture Ratio
   Class: 3
   OwnedBy: 1120860
-  StartFlag: 11115921
+  StartFlag: 11125831
   OwlArena: -385.464 -45.979 174.957 -2 76 30 140
   Phases: 1
 - ID: 1120700
@@ -3349,7 +3349,7 @@ Enemies:
 - ID: 1500704
   DebugText: m15_00_00_00 - c1300_0000 - id 1500704 - Palace Noble
   Events: IF Character Dead/Alive; IF Character Has SpEffect; Change Character Enable State; Set Character Backread State; Force Character Treasure; EzState Instruction Request
-  Class: 1
+  Class: 1  # This is the Head Priest. His NpcParam has a unique drop so leave him alone. TODO for 'oops all' mode
 - ID: 1500200
   DebugText: m15_00_00_00 - c1300_0001 - id 1500200 - Palace Noble
   Events: Change Character Enable State; Set Character Animation State; Force Character Death; IF Character HP Value; Spawn Oneshot SFX; Set Character Invincibility; Set Character AI State; Request Character AI Re-plan; IF Character Dead/Alive; IF Character AI State; IF Character Backread Status; IF Entity Loaded; Display Miniboss Health Bar; Set Network Update Rate; IF Character Has SpEffect; Request Character AI Command; SKIP IF Character Has SpEffect; Set SpEffect; IF Entity In/Outside Radius Of Entity; Force Character Target; Clear SpEffect; Set Character Backread State; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State
@@ -5212,19 +5212,19 @@ Enemies:
 - ID: 2000801
   DebugText: m20_00_00_00 - c1260_0000 - id 2000801 (2005800) - Folding Screen Monkey
   Events: Set Network Update Rate; Set Character Default Backread State; IF Character Dead/Alive; Force Character Death; Change Character Enable State; Set Character Animation State; IF Character AI State; IF In/Outside Area; IF Character Has SpEffect; Set SpEffect; Set Character AI ID; Warp Character and Set Floor; END IF Character Has SpEffect; IF Entity In/Outside Radius Of Entity; Set NPC Part SE and SFX; Clear SpEffect; Create NPC Part
-  Class: 0
+  Class: 6
 - ID: 2000802
   DebugText: m20_00_00_00 - c1260_0001 - id 2000802 (2005800) - Folding Screen Monkey
   Events: IF Character Dead/Alive; Force Character Death; Change Character Enable State; Set Character Animation State; IF Character AI State; IF In/Outside Area; Set Character AI ID; IF Character Has SpEffect; Force Animation Playback; Set SpEffect; Warp Character and Set Floor; Set Network Update Rate; Set Character Default Backread State; END IF Character Has SpEffect; IF Entity In/Outside Radius Of Entity; Set NPC Part SE and SFX; Clear SpEffect; Create NPC Part
-  Class: 0
+  Class: 6
 - ID: 2000803
   DebugText: m20_00_00_00 - c1260_0002 - id 2000803 (2005800) - Folding Screen Monkey
   Events: IF Character Dead/Alive; Force Character Death; Change Character Enable State; Set Character Animation State; IF Character AI State; IF Character Has SpEffect; Set SpEffect; Warp Character and Set Floor; Set Network Update Rate; Set Character Default Backread State; IF In/Outside Area; END IF Character Has SpEffect; IF Entity In/Outside Radius Of Entity; Set NPC Part SE and SFX; Clear SpEffect; Create NPC Part
-  Class: 0
+  Class: 6
 - ID: 2000804
   DebugText: m20_00_00_00 - c1260_0003 - id 2000804 (2005800) - Folding Screen Monkey
   Events: IF Character Dead/Alive; Force Character Death; Change Character Enable State; Set Character Animation State; IF Character AI State; IF Player Is Looking At Entity; Set SpEffect; Clear SpEffect; Set Lock On Point; IF Character HP Ratio; IF Entity In/Outside Radius Of Entity; IF Character Has SpEffect; Warp Character and Copy Floor; IF In/Outside Area; Warp Character and Set Floor; Set Network Update Rate; Set Character Default Backread State; END IF Character Has SpEffect
-  Class: 0
+  Class: 6
 - ID: 2000690
   DebugText: m20_00_00_00 - c1320_0000 - id 2000690 - Treasure Carp
   Events: IF Character Dead/Alive; IF Entity In/Outside Radius Of Entity; IF Character AI State; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
