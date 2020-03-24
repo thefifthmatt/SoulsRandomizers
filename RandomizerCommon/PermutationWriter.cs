@@ -64,6 +64,9 @@ namespace RandomizerCommon
                 Console.WriteLine();
             }
             Console.WriteLine("-- End of hints");
+#if !DEBUG
+            for (int i = 0; i < 30; i++) Console.WriteLine();
+#endif
 
             // Gather all potential prices to select from
             // TODO: More model stuff for Sekiro
@@ -201,7 +204,8 @@ namespace RandomizerCommon
                 }
             }
 
-            HashSet<int> spiritfalls = new HashSet<int> { 51100950, 51300910, 51700990, 51500910, 51110973, 52500940 };
+            // TODO: Make this work for DS3 again.
+            List<int> spiritfalls = new List<int> { 51100950, 51300910, 51700990, 51500910, 51110973, 52500940 };
             bool isPermanent(int eventFlag)
             {
                 return eventFlag >= 6500 && eventFlag < 6800 || eventFlag == 6022 || spiritfalls.Contains(eventFlag);
@@ -226,6 +230,26 @@ namespace RandomizerCommon
                 }
                 throw new Exception($"{itemLot}, found at index {index}, can't event a dang flag");
             }
+            int start = 71103000;
+            int shopFlagForPermanentFlag(int flag)
+            {
+                int offset;
+                if (flag >= 6700 && flag < 6800)
+                {
+                    offset = flag - 6700;
+                }
+                else if (flag >= 6500 && flag < 6510)
+                {
+                    offset = 100 + (flag - 6500);
+                }
+                else if (spiritfalls.Contains(flag))
+                {
+                    offset = 110 + spiritfalls.IndexOf(flag);
+                }
+                else throw new Exception($"Internal error: can't place {flag} in shop");
+                return start + offset * 10;
+            }
+            // foreach (int flag in shops.Rows.Select(r => (int)r["EventFlag"].Value).Where(f => f > 1000).Distinct().OrderBy(f => f)) Console.WriteLine($"shop {flag}");
             // Mapping from old permanent event flag to slot key
             Dictionary<SlotKey, int> permanentSlots = new Dictionary<SlotKey, int>();
             foreach (KeyValuePair<ItemKey, ItemLocations> item in data.Data)
@@ -291,7 +315,6 @@ namespace RandomizerCommon
             List<string> raceModeInfo = new List<string>();
             Dictionary<int, int> rewrittenFlags = new Dictionary<int, int>();
             Dictionary<int, int> shopPermanentFlags = new Dictionary<int, int>();
-            for (int i = 0; i < 20; i++) Console.WriteLine();
             Console.WriteLine($"-- Spoilers:");
             foreach (KeyValuePair<RandomSilo, SiloPermutation> siloEntry in permutation.Silos)
             {
@@ -400,9 +423,16 @@ namespace RandomizerCommon
                                 int shopEventFlag = (int)shops[target.ID]["EventFlag"].Value;
                                 if (permanentSlots.TryGetValue(sourceKey, out int permanentFlag))
                                 {
-                                    shopPermanentFlags[shopEventFlag] = permanentFlag;
+                                    // Way too many event flags involved here.
+                                    // There is permanent flag (persists across NG, applies to item only)
+                                    // There is shop permanent flag (previously unused, always set with permanent flag)
+                                    // There is old shop flag (does not apply to item)
+                                    int shopPermanentFlag = shopFlagForPermanentFlag(permanentFlag);
+                                    rewrittenFlags[shopEventFlag] = shopPermanentFlag;
+                                    shopPermanentFlags[shopPermanentFlag] = permanentFlag;
+                                    shopEventFlag = shopPermanentFlag;
                                 }
-                                shopCells["EventFlag"] = infiniteMixed ? -1 : shopEventFlag; // (int) lotCells["getItemFlagId"];
+                                shopCells["EventFlag"] = infiniteMixed ? -1 : shopEventFlag;
                                 setEventFlag = (int)shopCells["EventFlag"];
                                 int baseShop = target.ID / 100;
                                 if (price == -1)
@@ -461,6 +491,7 @@ namespace RandomizerCommon
                 }
             }
             itemLots.Rows = itemLots.Rows.OrderBy(r => r.ID).ToList();
+            Console.WriteLine("-- End of item spoilers");
             Console.WriteLine();
 
             // Hacky convenience function for generating race mode list
@@ -569,18 +600,14 @@ namespace RandomizerCommon
                 Dictionary<int, EventSpec> templates = events.Config.ItemEvents.ToDictionary(e => e.ID, e => e);
 
                 HashSet<ItemTemplate> completedTemplates = new HashSet<ItemTemplate>();
-                bool argSpec(string arg, out int pos)
-                {
-                    pos = 0;
-                    if (arg.StartsWith("X") && int.TryParse(arg.Substring(1), out pos))
-                    {
-                        pos /= 4;
-                        return true;
-                    }
-                    return false;
-                }
                 foreach (KeyValuePair<string, EMEVD> entry in emevds)
                 {
+                    HashSet<long> ids = new HashSet<long>();
+                    foreach (EMEVD.Event e in entry.Value.Events)
+                    {
+                        if (ids.Contains(e.ID)) Console.WriteLine($"Duplicate!!! {e.ID} in {entry.Key}");
+                        ids.Add(e.ID);
+                    }
                     Dictionary<int, EMEVD.Event> fileEvents = entry.Value.Events.ToDictionary(e => (int)e.ID, e => e);
                     foreach (EMEVD.Event e in entry.Value.Events)
                     {
@@ -609,7 +636,7 @@ namespace RandomizerCommon
                                 }
                                 int argFlag = 0;
                                 int flag;
-                                if (argSpec(t.EventFlag, out int pos))
+                                if (events.ParseArgSpec(t.EventFlag, out int pos))
                                 {
                                     argFlag = (int)init.Args[init.Offset + pos];
                                     if (argFlag == 0) continue;
@@ -671,8 +698,8 @@ namespace RandomizerCommon
                                 }
                                 if (t.Type == "carp")
                                 {
-                                    if (!argSpec(t.Entity, out int entityPos)) throw new Exception($"{callee}");
-                                    if (!argSpec(t.ItemLot, out int lotPos)) throw new Exception($"{callee}");
+                                    if (!events.ParseArgSpec(t.Entity, out int entityPos)) throw new Exception($"{callee}");
+                                    if (!events.ParseArgSpec(t.ItemLot, out int lotPos)) throw new Exception($"{callee}");
                                     if (data.NewEntityLots.TryGetValue((int)init[init.Offset + entityPos], out int newLot))
                                     {
                                         reloc[(int)init[init.Offset + lotPos]] = newLot;
@@ -701,7 +728,7 @@ namespace RandomizerCommon
                                 }
                                 if (t.RemoveArg != null)
                                 {
-                                    if (!argSpec(t.RemoveArg, out int removePos)) throw new Exception($"{callee} {t.RemoveArg}");
+                                    if (!events.ParseArgSpec(t.RemoveArg, out int removePos)) throw new Exception($"{callee} {t.RemoveArg}");
                                     init[init.Offset + removePos] = 0;
                                 }
 
@@ -765,9 +792,11 @@ namespace RandomizerCommon
 
                         EMEVD.Event memEv = new EMEVD.Event(930, EMEVD.Event.RestBehaviorType.Default);
                         memEv.Instructions.Add(new EMEVD.Instruction(1003, 2, new List<object> { (byte)0, (byte)1, (byte)2, 0 }));  // End if self event flag + slot
-                        memEv.Instructions.Add(new EMEVD.Instruction(3, 0, new List<object> { (byte)0, (byte)1, (byte)0, 0 }));  // If flag
+                        memEv.Instructions.Add(new EMEVD.Instruction(3, 0, new List<object> { (byte)0, (byte)0, (byte)0, 0 }));  // If flag off
+                        memEv.Instructions.Add(new EMEVD.Instruction(3, 0, new List<object> { (byte)0, (byte)1, (byte)0, 0 }));  // If flag on
                         memEv.Instructions.Add(new EMEVD.Instruction(2003, 4, new List<object> { memoryLot }));  // Grant item lot
                         memEv.Parameters.Add(new EMEVD.Parameter(1, 4, 0, 4));
+                        memEv.Parameters.Add(new EMEVD.Parameter(2, 4, 0, 4));
                         entry.Value.Events.Add(memEv);
                         
                         int slot = 0;
@@ -780,6 +809,7 @@ namespace RandomizerCommon
                         entry.Value.Events[0].Instructions.Add(new EMEVD.Instruction(2000, 0, new List<object> { 6, (uint)460, (uint)11100621, (uint)2420, (uint)610 }));
 
                         // Add permanent shop placement flags
+                        // Don't use this mechanism for the time being, so NG+ works better
                         slot = 0;
                         foreach (KeyValuePair<int, int> shop in shopPermanentFlags)
                         {

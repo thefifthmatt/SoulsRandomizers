@@ -51,10 +51,12 @@
             this.phases = new System.Windows.Forms.CheckBox();
             this.difficulty = new System.Windows.Forms.TrackBar();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.difficultyL = new System.Windows.Forms.Label();
             this.difficultyAmtL = new System.Windows.Forms.Label();
+            this.difficultyL = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.edittext = new System.Windows.Forms.CheckBox();
+            this.openstart = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.enemytoitem = new System.Windows.Forms.CheckBox();
@@ -68,6 +70,8 @@
             this.randomizeL = new System.Windows.Forms.TextBox();
             this.warningL = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.veryearlyhirata = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.earlyhirata = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -98,6 +102,8 @@
             this.itemPic = new System.Windows.Forms.PictureBox();
             this.mascot = new System.Windows.Forms.PictureBox();
             this.title = new System.Windows.Forms.PictureBox();
+            this.preset = new System.Windows.Forms.Button();
+            this.presetL = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -283,7 +289,7 @@
             this.groupBox3.Controls.Add(this.phases);
             this.groupBox3.Location = new System.Drawing.Point(5, 224);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(411, 163);
+            this.groupBox3.Size = new System.Drawing.Size(411, 140);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Progression";
@@ -292,23 +298,21 @@
             // 
             this.soulsprogressionL.AutoSize = true;
             this.soulsprogressionL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.soulsprogressionL.Location = new System.Drawing.Point(22, 129);
+            this.soulsprogressionL.Location = new System.Drawing.Point(22, 117);
             this.soulsprogressionL.Name = "soulsprogressionL";
-            this.soulsprogressionL.Size = new System.Drawing.Size(340, 26);
+            this.soulsprogressionL.Size = new System.Drawing.Size(374, 13);
             this.soulsprogressionL.TabIndex = 8;
-            this.soulsprogressionL.Text = "Minibosses before Ashina Castle are taken from early-to-mid game only.\r\nDisable t" +
-    "his for more challenging early minibosses";
+            this.soulsprogressionL.Text = "Try to prevent minibosses before Ashina Castle from being unreasonably tanky";
             // 
             // estusprogressionL
             // 
             this.estusprogressionL.AutoSize = true;
             this.estusprogressionL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.estusprogressionL.Location = new System.Drawing.Point(22, 82);
+            this.estusprogressionL.Location = new System.Drawing.Point(22, 81);
             this.estusprogressionL.Name = "estusprogressionL";
-            this.estusprogressionL.Size = new System.Drawing.Size(340, 26);
+            this.estusprogressionL.Size = new System.Drawing.Size(282, 13);
             this.estusprogressionL.TabIndex = 13;
-            this.estusprogressionL.Text = "For instance, try to prevent Guardian Ape from being Demon of Hatred.\r\nDisable th" +
-    "is for more challenging early bosses";
+            this.estusprogressionL.Text = "Try to prevent early bosses from being unreasonable tanky";
             // 
             // weaponprogressionL
             // 
@@ -325,7 +329,7 @@
             this.earlyreq.AutoSize = true;
             this.earlyreq.Checked = true;
             this.earlyreq.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.earlyreq.Location = new System.Drawing.Point(6, 110);
+            this.earlyreq.Location = new System.Drawing.Point(6, 98);
             this.earlyreq.Name = "earlyreq";
             this.earlyreq.Size = new System.Drawing.Size(242, 20);
             this.earlyreq.TabIndex = 10;
@@ -371,8 +375,8 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.difficultyL);
             this.groupBox4.Controls.Add(this.difficultyAmtL);
+            this.groupBox4.Controls.Add(this.difficultyL);
             this.groupBox4.Controls.Add(this.difficulty);
             this.groupBox4.Location = new System.Drawing.Point(6, 30);
             this.groupBox4.Name = "groupBox4";
@@ -380,17 +384,6 @@
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Bias";
-            // 
-            // difficultyL
-            // 
-            this.difficultyL.AutoSize = true;
-            this.difficultyL.BackColor = System.Drawing.Color.Transparent;
-            this.difficultyL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.difficultyL.Location = new System.Drawing.Point(9, 56);
-            this.difficultyL.Name = "difficultyL";
-            this.difficultyL.Size = new System.Drawing.Size(140, 32);
-            this.difficultyL.TabIndex = 4;
-            this.difficultyL.Text = "Location selection info\r\nKey item chaining info";
             // 
             // difficultyAmtL
             // 
@@ -403,29 +396,66 @@
             this.difficultyAmtL.Text = "0%";
             this.difficultyAmtL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // difficultyL
+            // 
+            this.difficultyL.AutoSize = true;
+            this.difficultyL.BackColor = System.Drawing.Color.Transparent;
+            this.difficultyL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.difficultyL.Location = new System.Drawing.Point(9, 56);
+            this.difficultyL.Name = "difficultyL";
+            this.difficultyL.Size = new System.Drawing.Size(140, 32);
+            this.difficultyL.TabIndex = 4;
+            this.difficultyL.Text = "Location selection info\r\nKey item chaining info";
+            // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.label10);
+            this.groupBox5.Controls.Add(this.label11);
+            this.groupBox5.Controls.Add(this.edittext);
+            this.groupBox5.Controls.Add(this.openstart);
             this.groupBox5.Controls.Add(this.label5);
             this.groupBox5.Controls.Add(this.label1);
             this.groupBox5.Controls.Add(this.enemytoitem);
             this.groupBox5.Controls.Add(this.mergemods);
             this.groupBox5.Controls.Add(this.headlesswalk);
-            this.groupBox5.Location = new System.Drawing.Point(13, 578);
+            this.groupBox5.Location = new System.Drawing.Point(13, 552);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(422, 134);
+            this.groupBox5.Size = new System.Drawing.Size(422, 174);
             this.groupBox5.TabIndex = 10;
             this.groupBox5.TabStop = false;
             // 
-            // label10
+            // label11
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(23, 65);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(264, 13);
-            this.label10.TabIndex = 26;
-            this.label10.Text = "Experimental. Won\'t work if the mods are incompatible.";
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(22, 109);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(336, 13);
+            this.label11.TabIndex = 27;
+            this.label11.Text = "Allow early access to Ashina Castle and coming back for Gyoubu later";
+            // 
+            // edittext
+            // 
+            this.edittext.AutoSize = true;
+            this.edittext.Location = new System.Drawing.Point(6, 66);
+            this.edittext.Name = "edittext";
+            this.edittext.Size = new System.Drawing.Size(200, 20);
+            this.edittext.TabIndex = 10;
+            this.edittext.Text = "Edit names (English text only)";
+            this.edittext.UseVisualStyleBackColor = true;
+            this.edittext.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
+            // openstart
+            // 
+            this.openstart.AutoSize = true;
+            this.openstart.Checked = true;
+            this.openstart.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.openstart.Location = new System.Drawing.Point(6, 88);
+            this.openstart.Name = "openstart";
+            this.openstart.Size = new System.Drawing.Size(294, 20);
+            this.openstart.TabIndex = 11;
+            this.openstart.Text = "Open Bell Demon\'s Temple doors at the start";
+            this.openstart.UseVisualStyleBackColor = true;
+            this.openstart.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
             // label5
             // 
@@ -441,7 +471,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(23, 103);
+            this.label1.Location = new System.Drawing.Point(22, 144);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(359, 26);
             this.label1.TabIndex = 15;
@@ -453,7 +483,7 @@
             this.enemytoitem.AutoSize = true;
             this.enemytoitem.Checked = true;
             this.enemytoitem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enemytoitem.Location = new System.Drawing.Point(7, 82);
+            this.enemytoitem.Location = new System.Drawing.Point(6, 125);
             this.enemytoitem.Name = "enemytoitem";
             this.enemytoitem.Size = new System.Drawing.Size(385, 20);
             this.enemytoitem.TabIndex = 14;
@@ -464,7 +494,7 @@
             // mergemods
             // 
             this.mergemods.AutoSize = true;
-            this.mergemods.Location = new System.Drawing.Point(6, 43);
+            this.mergemods.Location = new System.Drawing.Point(6, 44);
             this.mergemods.Name = "mergemods";
             this.mergemods.Size = new System.Drawing.Size(277, 20);
             this.mergemods.TabIndex = 9;
@@ -477,9 +507,9 @@
             this.headlesswalk.AutoSize = true;
             this.headlesswalk.Location = new System.Drawing.Point(6, 23);
             this.headlesswalk.Name = "headlesswalk";
-            this.headlesswalk.Size = new System.Drawing.Size(201, 20);
+            this.headlesswalk.Size = new System.Drawing.Size(253, 20);
             this.headlesswalk.TabIndex = 7;
-            this.headlesswalk.Text = "Remove Headless slow walk";
+            this.headlesswalk.Text = "Remove Headless-induced slow walk";
             this.headlesswalk.UseVisualStyleBackColor = true;
             this.headlesswalk.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
@@ -554,6 +584,8 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.label10);
+            this.groupBox6.Controls.Add(this.veryearlyhirata);
             this.groupBox6.Controls.Add(this.label6);
             this.groupBox6.Controls.Add(this.earlyhirata);
             this.groupBox6.Controls.Add(this.label7);
@@ -561,10 +593,33 @@
             this.groupBox6.Controls.Add(this.headlessignore);
             this.groupBox6.Location = new System.Drawing.Point(6, 281);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(331, 139);
+            this.groupBox6.Size = new System.Drawing.Size(666, 139);
             this.groupBox6.TabIndex = 4;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Misc";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(353, 116);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(295, 13);
+            this.label10.TabIndex = 26;
+            this.label10.Text = "Shinobi Prosthetic can be placed in Hirata (does not softlock)";
+            // 
+            // veryearlyhirata
+            // 
+            this.veryearlyhirata.AutoSize = true;
+            this.veryearlyhirata.Checked = true;
+            this.veryearlyhirata.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.veryearlyhirata.Location = new System.Drawing.Point(337, 93);
+            this.veryearlyhirata.Name = "veryearlyhirata";
+            this.veryearlyhirata.Size = new System.Drawing.Size(160, 20);
+            this.veryearlyhirata.TabIndex = 25;
+            this.veryearlyhirata.Text = "Allow very early Hirata";
+            this.veryearlyhirata.UseVisualStyleBackColor = true;
+            this.veryearlyhirata.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
             // label6
             // 
@@ -587,6 +642,7 @@
             this.earlyhirata.TabIndex = 2;
             this.earlyhirata.Text = "Quick Hirata";
             this.earlyhirata.UseVisualStyleBackColor = true;
+            this.earlyhirata.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
             // label7
             // 
@@ -629,7 +685,7 @@
             this.enemyGroup.Controls.Add(this.groupBox3);
             this.enemyGroup.Location = new System.Drawing.Point(12, 178);
             this.enemyGroup.Name = "enemyGroup";
-            this.enemyGroup.Size = new System.Drawing.Size(423, 394);
+            this.enemyGroup.Size = new System.Drawing.Size(423, 368);
             this.enemyGroup.TabIndex = 0;
             this.enemyGroup.TabStop = false;
             // 
@@ -671,17 +727,18 @@
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(28, 402);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(202, 13);
+            this.label9.Size = new System.Drawing.Size(237, 13);
             this.label9.TabIndex = 15;
-            this.label9.Text = "Bell charm available before Chained Ogre";
+            this.label9.Text = "Bell charm always available before Chained Ogre";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.label2.Location = new System.Drawing.Point(343, 294);
+            this.label2.Location = new System.Drawing.Point(341, 300);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(329, 80);
+            this.label2.Size = new System.Drawing.Size(329, 64);
             this.label2.TabIndex = 24;
             this.label2.Text = resources.GetString("label2.Text");
             // 
@@ -796,6 +853,7 @@
             this.healthprogression.TabIndex = 3;
             this.healthprogression.Text = "Item availability similar to base game";
             this.healthprogression.UseVisualStyleBackColor = true;
+            this.healthprogression.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
             // defaultC
             // 
@@ -858,6 +916,7 @@
             this.weaponprogression.TabIndex = 3;
             this.weaponprogression.Text = "Item availability similar to base game";
             this.weaponprogression.UseVisualStyleBackColor = true;
+            this.weaponprogression.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
             // defaultB
             // 
@@ -939,12 +998,35 @@
             this.title.Click += new System.EventHandler(this.title_Click);
             this.title.DoubleClick += new System.EventHandler(this.title_Click);
             // 
+            // preset
+            // 
+            this.preset.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.preset.Location = new System.Drawing.Point(450, 680);
+            this.preset.Name = "preset";
+            this.preset.Size = new System.Drawing.Size(171, 31);
+            this.preset.TabIndex = 33;
+            this.preset.Text = "Select preset...";
+            this.preset.UseVisualStyleBackColor = true;
+            this.preset.Click += new System.EventHandler(this.preset_Click);
+            // 
+            // presetL
+            // 
+            this.presetL.AutoSize = true;
+            this.presetL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.presetL.Location = new System.Drawing.Point(451, 713);
+            this.presetL.Name = "presetL";
+            this.presetL.Size = new System.Drawing.Size(84, 16);
+            this.presetL.TabIndex = 25;
+            this.presetL.Text = "Preset name";
+            // 
             // SekiroForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1134, 761);
+            this.Controls.Add(this.presetL);
+            this.Controls.Add(this.preset);
             this.Controls.Add(this.catPic);
             this.Controls.Add(this.itemPic);
             this.Controls.Add(this.mascot);
@@ -962,7 +1044,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SekiroForm";
-            this.Text = "Sekiro Enemy and Item Randomizer v0.1.1";
+            this.Text = "Sekiro Enemy and Item Randomizer v0.2";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -1067,7 +1149,13 @@
         private System.Windows.Forms.PictureBox mascot;
         private System.Windows.Forms.PictureBox itemPic;
         private System.Windows.Forms.PictureBox catPic;
+        private System.Windows.Forms.CheckBox openstart;
+        private System.Windows.Forms.Button preset;
+        private System.Windows.Forms.Label presetL;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.CheckBox veryearlyhirata;
+        private System.Windows.Forms.CheckBox edittext;
+        private System.Windows.Forms.Label label11;
     }
 }
 

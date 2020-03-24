@@ -34,7 +34,7 @@ ItemTalks:
     Machine: x31
     EventFlag: 50006251
 - ID: 110171
-  Comment: Flame Barrel Memo from Anayama
+  Comment: Flame Barrel Memo, Promissory Note, and Yellow Gunpowder from Anayama
   ItemTemplate:
   - Type: loc
     Machine: x45
@@ -45,6 +45,24 @@ ItemTalks:
   - Type: loc
     Machine: x55
     EventFlag: 50006170
+  - Type: loc
+    Machine: 2000
+    EventFlag: 71101800
+  - Type: loc
+    Machine: x39
+    EventFlag: 71101800
+  - Type: loc
+    Machine: x45
+    EventFlag: 71101510
+- ID: 111140
+  Comment: Iron Fortress from Blackhat Badger
+  ItemTemplate:
+  - Type: loc
+    Machine: x39
+    EventFlag: 71111500
+  - Type: loc
+    Machine: x43
+    EventFlag: 71111500
 - ID: 150280
   Comment: Sake from Head Priest
   ItemTemplate:
@@ -121,7 +139,7 @@ ItemEvents:
   - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
   - END Unconditionally (Execution End Type = 1)
 - ID: 420
-  Comment: Interchange between having spiritfalls and the event flags for them. As part of this, these flags should be moved around as well.
+  Comment: Interchange between having spiritfalls and the event flags for them. As part of this, these flags should be moved around with the item, in addition to permanent flags.
   ItemTemplate:
   - Type: item
   DebugInfo:
@@ -290,10 +308,36 @@ ItemEvents:
   - Remove Item From Player (Item Type = 3, Item ID = 5502, Number = 1)
   - + Set Event Flag (Event Flag ID = 6022*, Flag State = 1)
 - ID: 714
-  Comment: Setting the event flag for offering box item display based on getting items, and shop qwc flags/purchase flags. But only needs to depend on the latter.
+  Comment: Setting the event flag for offering box item display based on getting items, and shop qwc flags/purchase flags. But only needs to depend on the latter. Purchase flags may change.
   ItemTemplate:
   - Type: item
     Remove: END IF Condition Group State (Uncompiled)
+  - Type: loc
+    EventFlag: 71102200
+  - Type: loc
+    EventFlag: 71102200
+  - Type: loc
+    EventFlag: 71102210
+  - Type: loc
+    EventFlag: 71102220
+  - Type: loc
+    EventFlag: 71102230
+  - Type: loc
+    EventFlag: 71102240
+  - Type: loc
+    EventFlag: 71102250
+  - Type: loc
+    EventFlag: 71102260
+  - Type: loc
+    EventFlag: 71102270
+  - Type: loc
+    EventFlag: 71102280
+  - Type: loc
+    EventFlag: 71102290
+  - Type: loc
+    EventFlag: 71102340
+  - Type: loc
+    EventFlag: 71102350
   DebugInfo:
   - flag 6719 (Anti-air Deathblow Text)
   - flag 6766 (Prayer Bead)
@@ -413,7 +457,7 @@ ItemEvents:
   - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
   - END Unconditionally (Execution End Type = 1)
 - ID: 720
-  Comment: Offering box item qwc management, based on trigger event flags and item event flag
+  Comment: Offering box item qwc management, based on trigger event flags (X8 and X12) and item event flag (X0)
   ItemTemplate:
   - Type: loc
     EventFlag: X0
@@ -477,7 +521,7 @@ ItemEvents:
   - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
   - Set Event Flag (Event Flag ID = X4_4, Flag State = 1)
 - ID: 750
-  Comment: Setting permanent item flags if shop flag is set, and vice versa. This is removed so that replacements can be added back manually, as these items can appear with potentially any shop flag.
+  Comment: Setting permanent item flags if shop flag is set, and vice versa. This messes with rerandomization so remove it, instead editing shop flags (does this work?)
   ItemTemplate:
   - Type: remove
   DebugInfo:
@@ -559,24 +603,14 @@ ItemEvents:
     Add:
     - Cmd: IF Event Flag (1,1,0,8400)
       Before: IF Condition Group (0,1,1)
-  - Type: any
-    Add:
     - Cmd: IF Player In/Out Map (1,0,11,0)
       Before: IF Condition Group (0,1,1)
-  - Type: any
-    Add:
     - Cmd: IF Player In/Out Map (1,0,11,1)
       Before: IF Condition Group (0,1,1)
-  - Type: any
-    Add:
     - Cmd: IF Player In/Out Map (1,0,11,2)
       Before: IF Condition Group (0,1,1)
-  - Type: any
-    Add:
     - Cmd: IF Player In/Out Map (1,0,13,0)
       Before: IF Condition Group (0,1,1)
-  - Type: any
-    Add:
     - Cmd: Set Event Flag (61110602,1)
       Before: Save Request (0)
   DebugInfo:
@@ -684,6 +718,132 @@ ItemEvents:
   - + Set Event Flag (Event Flag ID = 51000015*, Flag State = 1)
   - Set Event Flag (Event Flag ID = 51001015, Flag State = 0)
   - END Unconditionally (Execution End Type = 0)
+- ID: 11005610
+  Comment: Flames going fwoosh after talking to Owl. Make this not depend only on having the key.
+  ItemTemplate:
+  - Type: any
+    Remove: IF Condition Group (-1,1,1)
+  DebugInfo:
+  - 1000590 (c5060_0000 - Owl - not random)
+  DebugCommands:
+  - GOTO IF Event Flag (Label = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11000610)
+  - GOTO IF Event Flag (Label = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 8304)
+  - Set Lighting + UNKNOWN (Time of Day = 1, Unknown = 0)
+  - (De)activate Object (Target Object Entity ID = 1001610, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001611, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001612, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001613, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001614, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001615, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001616, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001617, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001618, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001619, State = 1)
+  - Reproduce Object Animation (Target Object Entity ID = 1001620, Animation ID = 10)
+  - Reproduce Object Animation (Target Object Entity ID = 1001621, Animation ID = 10)
+  - Reproduce Object Animation (Target Object Entity ID = 1001622, Animation ID = 10)
+  - Reproduce Object Animation (Target Object Entity ID = 1001623, Animation ID = 10)
+  - Reproduce Object Animation (Target Object Entity ID = 1001624, Animation ID = 10)
+  - Reproduce Object Animation (Target Object Entity ID = 1001625, Animation ID = 10)
+  - Reproduce Object Animation (Target Object Entity ID = 1001626, Animation ID = 10)
+  - Reproduce Object Animation (Target Object Entity ID = 1001627, Animation ID = 10)
+  - Reproduce Object Animation (Target Object Entity ID = 1001628, Animation ID = 10)
+  - Reproduce Object Animation (Target Object Entity ID = 1001629, Animation ID = 10)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 2)
+  - (De)activate Object (Target Object Entity ID = 1001620, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001621, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001622, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001623, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001624, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001625, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001626, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001627, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001628, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001629, State = 0)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 3)
+  - IF Player Has/Doesn't Have Item (Result Condition Group = 1, Item Type = 3, Item ID = 9403, Desired Possession State = 1)
+  - IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 10000, SpEffect ID = 30700, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = -1, Desired Condition Group State = 1, Target Condition Group = 1)
+  - IF Event Flag (Result Condition Group = -1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 71000100)
+  - + IF Character HP Ratio (Result Condition Group = -1, Target Entity ID = 1000590*, Comparison Type = 0, Target HP Ratio = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
+  - Set Event Flag (Event Flag ID = 11005610, Flag State = 1)
+  - Set Event Flag (Event Flag ID = 11000610, Flag State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001620, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001621, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001622, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001623, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001624, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001625, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001626, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001627, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001628, State = 1)
+  - (De)activate Object (Target Object Entity ID = 1001629, State = 1)
+  - Force Animation Playback (Entity ID = 1001620, Animation ID = 1, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001621, Animation ID = 1, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001622, Animation ID = 1, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001623, Animation ID = 1, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001624, Animation ID = 1, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001625, Animation ID = 1, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001626, Animation ID = 1, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001627, Animation ID = 1, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001628, Animation ID = 1, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001629, Animation ID = 1, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Set Lighting + UNKNOWN (Time of Day = 2, Unknown = 3)
+  - Activate Hit (Hit Entity ID = 1004620, State = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.66)
+  - Force Animation Playback (Entity ID = 1001620, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001621, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001622, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001623, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001624, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001625, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001626, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
+  - Force Animation Playback (Entity ID = 1001620, Animation ID = 20, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Create Object-following SFX (Object Entity ID = 1001620, Dummypoly ID = 201, SFX ID = 810151)
+  - (De)activate Object (Target Object Entity ID = 1001610, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001611, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001612, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001613, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001614, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001615, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001616, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001617, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001618, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1001619, State = 0)
+  - Set Event Flag (Event Flag ID = 11000695, Flag State = 1)
+  - END Unconditionally (Execution End Type = 0)
+  - Label 0 ()
+  - SKIP IF Event Flag (Number Of Skipped Lines = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9302)
+  - Set Lighting + UNKNOWN (Time of Day = 2, Unknown = 3)
+  - SKIP IF Event Flag (Number Of Skipped Lines = 1, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 9302)
+  - Set Lighting + UNKNOWN (Time of Day = 4, Unknown = 3)
+  - (De)activate Object (Target Object Entity ID = 1006610, State = 0)
+  - (De)activate Object (Target Object Entity ID = 1006620, State = 1)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - GOTO IF Event Flag (Label = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 8304)
+  - GOTO IF Event Flag (Label = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11000611)
+  - IF Player Standing On Hit (Result Condition Group = -2, Hit Entity ID = 1004210)
+  - IF Player Standing On Hit (Result Condition Group = -2, Hit Entity ID = 1004410)
+  - IF Player Standing On Hit (Result Condition Group = -2, Hit Entity ID = 1004411)
+  - GOTO IF Condition Group State (Uncompiled) (Label = 1, Desired Condition Group State = 0, Target Condition Group = -2)
+  - Force Animation Playback (Entity ID = 1001620, Animation ID = 20, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Create Object-following SFX (Object Entity ID = 1001620, Dummypoly ID = 201, SFX ID = 810151)
+  - Activate Hit (Hit Entity ID = 1004620, State = 1)
+  - GOTO Unconditionally (Label = 2)
+  - Label 1 ()
+  - Force Animation Playback (Entity ID = 1001620, Animation ID = 20, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Activate Hit (Hit Entity ID = 1004621, State = 1)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - Set Event Flag (Event Flag ID = 11000611, Flag State = 1)
+  - Label 2 ()
+  - Force Animation Playback (Entity ID = 1001621, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001622, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001623, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001624, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001625, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Force Animation Playback (Entity ID = 1001626, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
 - ID: 11105700
   Comment: Sets an animation for Inosuke's mother based on getting the item or not
   ItemTemplate:
@@ -918,6 +1078,21 @@ ItemEvents:
   - + (De)activate Object (Target Object Entity ID = X12_4*, State = 1)
   - + Set Object Treasure State (Target Object Entity ID = X12_4*, State = 1)
   - END Unconditionally (Execution End Type = 0)
+- ID: 11115773
+  Comment: Showing Iron Fortress if not purchased in the store
+  ItemTemplate:
+  - Type: loc
+    EventFlag: 71111500
+  DebugInfo:
+  - treasure 1111730 (o000100_0081 - Treasure)
+  - flag 71111500 (Iron Fortress)
+  DebugCommands:
+  - + Set Object Treasure State (Target Object Entity ID = 1111730*, State = 0)
+  - + (De)activate Object (Target Object Entity ID = 1111730*, State = 0)
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 1380)
+  - + (De)activate Object (Target Object Entity ID = 1111730*, State = 1)
+  - + SKIP IF Event Flag (Number Of Skipped Lines = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 71111500*)
+  - + Set Object Treasure State (Target Object Entity ID = 1111730*, State = 1)
 - ID: 11120704
   Comment: Kuro bugging you to equip healing gourd
   ItemTemplate:
@@ -2853,7 +3028,8 @@ EnemyEvents:
 - ID: 2005391
   Comment: Prevent walking off a col in an area. Mist Raven Lone Shadow, and player while Inosuke's mother is alive. xx does lone shadow replacement work? may need to move spawn point
   Template:
-  - Type: loc
+  # Prevent bug of enemy floating in middle of nowhere
+  - Type: remove
   DebugInfo:
   - 1000350 (c1470_0000 - Lone Shadow)
   - region 1002350 (event_孤影衆_落下防止無効)
@@ -2985,7 +3161,7 @@ EnemyEvents:
 - ID: 11005410
   Comment: Spawns hounds when Lone Shadow whistles (speffect 3147111)
   Template:
-  - Type: multichr
+  - Type: multichronly
     Entity: 1000353
     Regions:
     - arg arenagen 1003410 1003411 1003412 1003413 1003414 1003415
@@ -3043,11 +3219,12 @@ EnemyEvents:
   - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 7)
   - + Set SpEffect (Entity ID = 1000353*, SpEffect ID = 3147112)
 - ID: 11005415
-  Comment: Some details for hound spawning, including enabling AI and targeting player
+  Comment: Some details for hound spawning, including enabling AI and targeting player. Perhaps remove force animation since they just jump forward upon spawning.
   Template:
   - Type: multichr
     Entity: 1000353
     DefeatFlag: 11000353
+    Remove: Force Animation Playback
   DebugInfo:
   - 1000410 (c1150_0010 - Hound)
   - 1000411 (c1150_0011 - Hound)
@@ -3384,6 +3561,9 @@ EnemyEvents:
   Template:
   - Type: start
     Entity: 1000800
+    Camera: 500
+    Invincibility: 1000800
+    Name: entity
   DebugInfo:
   - 1000800 (c5090_0000 - Lady Butterfly)
   - 1000840 (c7210_0000 - Memory Kuro - not random)
@@ -3438,6 +3618,8 @@ EnemyEvents:
     Remove: Force Animation Playback; IF Character Has SpEffect; Request Character AI Command
     Add:
     - Cmd: Set Character Immortality (1000810,1)
+    Camera: 500
+    Name: entity
   - Type: endphase
     Entity: 1000800
     EndCond: -1
@@ -3446,14 +3628,10 @@ EnemyEvents:
     Add:
     - Cmd: WAIT Fixed Time (Seconds) (4)
       Before: Change Character Enable State (1000800,0)
-  - Type: loc
-    Add:
-    - Cmd: Force Character Death (1000800,0)
-      Before: Change Character Enable State (1000800,0)
-  - Type: loc
-    Add:
-    - Cmd: WAIT Fixed Time (Frames) (3)
-      Before: Change Character Enable State (1000800,0)
+  #  - Cmd: Force Character Death (1000800,0)
+  #    Before: Change Character Enable State (1000800,0)
+  #  - Cmd: WAIT Fixed Time (Frames) (3)
+  #    Before: Change Character Enable State (1000800,0)
   DebugInfo:
   - 1000800 (c5090_0000 - Lady Butterfly)
   - 1000810 (c5090_0001 - Lady Butterfly)
@@ -3490,10 +3668,11 @@ EnemyEvents:
 - ID: 11005820
   Comment: Spawn illusions in Lady Butterfly fight in their regions, based on speffects.
   Template:
-  - Type: multichr
+  - Type: multichronly
     Entity: 1000810
     DefeatFlag: 9302
     StartFlag: 11005801
+    # ProgressFlag: 11005840 11005841 11005842 11005843 11005844 11005845 11005846 11005847
     Regions:
     - arg arenapoint 1002860 1002861 1002862 1002863 1002864 1002865 1002866 1002867
     - arg arenagen 1002890 1002891 1002892 1002893 1002894 1002895 1002896 1002897
@@ -3576,7 +3755,7 @@ EnemyEvents:
   - Spawn Map SFX (Entity ID = 1003800)
   - END Unconditionally (Execution End Type = 0)
 - ID: 11005851
-  Comment: Sets event flags during butterfly phase 2. These enable map sfx, and happen based only on boss health, so it can be loc.
+  Comment: Sets event flags during butterfly phase 2. These enable map sfx, and happen based only on boss health, so it can be loc? TODO check this out vvvv
   Template:
   - Type: loc
   DebugInfo:
@@ -3604,6 +3783,7 @@ EnemyEvents:
     Entity: 1000810
     DefeatFlag: 9302
     Remove: 11020800
+    Deathblow: 1000810
   DebugInfo:
   - 1000810 (c5090_0001 - Lady Butterfly)
   DebugInit:
@@ -3656,9 +3836,18 @@ EnemyEvents:
   - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = 3509010, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
   - + Set Character Immortality (Entity ID = X0_4*, Disabled/Enabled = 0)
 - ID: 11005858
-  Comment: Sets camera sub ids based on butterfly speffects. This will basically never proc, but most other camera events are loc, so this should be to avoid conflict.
+  Comment: Sets camera sub ids based on butterfly speffects
   Template:
-  - Type: loc
+  - Type: chr
+    Entity: 1000800
+    DefeatFlag: 9302
+    StartFlag: 11005801
+    Camera: 500; 501
+  - Type: chr
+    Entity: 1000810
+    DefeatFlag: 9302
+    StartFlag: 11005801
+    Camera: 500; 501
   DebugInfo:
   - 1000800 (c5090_0000 - Lady Butterfly)
   - 1000810 (c5090_0001 - Lady Butterfly)
@@ -3677,10 +3866,11 @@ EnemyEvents:
 - ID: 11005860
   Comment: Sets event flags based on illusion behavior
   Template:
-  - Type: multichr
+  - Type: multichronly
     Entity: 1000810
     DefeatFlag: 9302
     StartFlag: 11005801
+    # ProgressFlag: 11005840 11005841 11005842 11005843 11005844 11005845 11005846 11005847
   DebugInfo:
   - 1000810 (c5090_0001 - Lady Butterfly)
   - 1000820 (c1510_0000 - Mibu Villager Illusion)
@@ -3712,7 +3902,7 @@ EnemyEvents:
 - ID: 11005870
   Comment: Kills illusions when butterfly dies
   Template:
-  - Type: multichr
+  - Type: multichronly
     Entity: 1000810
     DefeatFlag: 9302
   DebugInfo:
@@ -3785,6 +3975,7 @@ EnemyEvents:
   - Type: chr
     Entity: 1000810
     DefeatFlag: 9302
+    # ProgressFlag: 11005840 11005841 11005842 11005843 11005844 11005845 11005846 11005847
   DebugInfo:
   - 1000810 (c5090_0001 - Lady Butterfly)
   DebugCommands:
@@ -3850,6 +4041,8 @@ EnemyEvents:
   - Type: start
     Entity: 1000900
     Remove: Force Animation Playback
+    Camera: 510
+    Name: entity
     # StartCmd: 402
   DebugInfo:
   - 1000900 (c5060_0001 - Owl)
@@ -3918,6 +4111,7 @@ EnemyEvents:
     Entity: 1000900
     DefeatFlag: 9317
     AppearFlag: 8304
+    ProgressFlag: 11005934 11005902
     Add:
     - Cmd: Set Character Immortality (1000901,1)
   DebugInfo:
@@ -3962,12 +4156,14 @@ EnemyEvents:
   - + Set Character Animation State (Entity ID = 1000900*, Disabled/Enabled = 1)
   - Set Event Flag (Event Flag ID = 11005914, Flag State = 1)
 - ID: 11005920
-  Comment: Used for ending boss fight
+  Comment: Owl 2 deathblow
   Template:
   - Type: chr
     Entity: 1000900
     DefeatFlag: 9317
     AppearFlag: 8304
+    Deathblow: 1000900
+    ProgressFlag: 11005902
   DebugInfo:
   - 1000900 (c5060_0001 - Owl)
   DebugCommands:
@@ -4050,6 +4246,7 @@ EnemyEvents:
     Entity: 1000900
     DefeatFlag: 9317
     AppearFlag: 8304
+    ProgressFlag: 11005934
     Add:
     - Cmd: IF Character HP Ratio (0,1000901,0,1,0,1)
       Before: Set SpEffect (1000900,3506030)
@@ -4084,6 +4281,7 @@ EnemyEvents:
     Entity: 1000900
     DefeatFlag: 9317
     AppearFlag: 8304
+    ProgressFlag: 11005934
   DebugInfo:
   - 1000901 (c5070_0000 - An Actual Owl)
   - 1000900 (c5060_0001 - Owl)
@@ -4122,6 +4320,7 @@ EnemyEvents:
     Entity: 1000900
     DefeatFlag: 9317
     AppearFlag: 8304
+    ProgressFlag: 11005934 11005902
   DebugInfo:
   - 1000900 (c5060_0001 - Owl)
   - 1000901 (c5070_0000 - An Actual Owl)
@@ -4150,6 +4349,7 @@ EnemyEvents:
     Entity: 1000900
     DefeatFlag: 9317
     AppearFlag: 8304
+    ProgressFlag: 11005902
   DebugInfo:
   - 1000900 (c5060_0001 - Owl)
   - 1000901 (c5070_0000 - An Actual Owl)
@@ -4395,6 +4595,8 @@ EnemyEvents:
   - Type: start
     Entity: 1100800
     Remove: IF Character Has Event Message; Request Character AI Command
+    Camera: 500
+    Name: entity
   DebugInfo:
   - region 1102810 (event_領域_ボス戦開始_親)
   - 1100800 (c5080_0000 - Gyoubu Oniwa)
@@ -4465,9 +4667,13 @@ EnemyEvents:
   - + Set Lock On Point (Entity ID = 1100800*, Lock On Dummypoly ID = 220, Desired State = 1)
   - + Set Lock On Point (Entity ID = 1100800*, Lock On Dummypoly ID = 221, Desired State = 0)
 - ID: 11105840
-  Comment: Setting camera. It is speffect based, but should be loc for compatibility with other events
+  Comment: Setting camera based on speffect
   Template:
-  - Type: loc
+  - Type: chr
+    Entity: 1100800
+    DefeatFlag: 9301
+    StartFlag: 11105801
+    Camera: 500; 501
   DebugInfo:
   - 1100800 (c5080_0000 - Gyoubu Oniwa)
   DebugCommands:
@@ -4484,9 +4690,13 @@ EnemyEvents:
   - Set Area CameraSetParam SubID (CameraSetParam SubID = 500)
   - END Unconditionally (Execution End Type = 1)
 - ID: 11105841
-  Comment: Setting camera. It is other speffect based, but should be loc for compatibility with other events
+  Comment: Setting camera based on speffect
   Template:
-  - Type: loc
+  - Type: chr
+    Entity: 1100800
+    DefeatFlag: 9301
+    StartFlag: 11105801
+    Camera: 500; 502
   DebugInfo:
   - 1100800 (c5080_0000 - Gyoubu Oniwa)
   DebugCommands:
@@ -4591,6 +4801,8 @@ EnemyEvents:
   - Type: start
     Entity: 1100900
     Remove: Request Character AI Command; Set Character AI State
+    Camera: 510
+    Name: entity
   DebugInfo:
   - 1100900 (c7020_0000 - Demon of Hatred)
   - group 1105405 [1100405 (c1700_0005 - Red Guard), 1100406 (c1700_0006 - Red Guard), 1100408 (c1700_0008 - Red Guard)]
@@ -4642,6 +4854,7 @@ EnemyEvents:
     Entity: 1100900
     DefeatFlag: 9313
     AppearFlag: 8302
+    ProgressFlag: 11105902
   - Type: loc
   DebugInfo:
   - 1100900 (c7020_0000 - Demon of Hatred)
@@ -4673,12 +4886,13 @@ EnemyEvents:
   - + IF Character Has Event Message (New) (Result Condition Group = 0, Target Entity ID = 1100900*, Target Event Message ID = 10, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
   - + Set Character Immortality (Entity ID = 1100900*, Disabled/Enabled = 0)
 - ID: 11105921
-  Comment: Some event message logic for DoH (may not activate due to ESD move, but needs speffect anyway)
+  Comment: DoH deathblow
   Template:
   - Type: chr
     Entity: 1100900
     DefeatFlag: 9313
     AppearFlag: 8302
+    Deathblow: 1100900
   DebugInfo:
   - 1100900 (c7020_0000 - Demon of Hatred)
   DebugCommands:
@@ -4764,7 +4978,11 @@ EnemyEvents:
 - ID: 11105970
   Comment: Setting camera id
   Template:
-  - Type: loc
+  - Type: chr
+    Entity: 1100900
+    DefeatFlag: 9313
+    StartFlag: 11105901
+    Camera: 510; 511
   DebugInfo:
   - 1100900 (c7020_0000 - Demon of Hatred)
   DebugCommands:
@@ -4783,7 +5001,11 @@ EnemyEvents:
 - ID: 11105971
   Comment: More setting camera id
   Template:
-  - Type: loc
+  - Type: chr
+    Entity: 1100900
+    DefeatFlag: 9313
+    StartFlag: 11105901
+    Camera: 510; 512
   DebugInfo:
   - 1100900 (c7020_0000 - Demon of Hatred)
   DebugCommands:
@@ -4800,9 +5022,13 @@ EnemyEvents:
   - Set Area CameraSetParam SubID (CameraSetParam SubID = 510)
   - END Unconditionally (Execution End Type = 1)
 - ID: 11105972
-  Comment: Even more setting camera id, though speffect based
+  Comment: Even more setting camera id
   Template:
-  - Type: loc
+  - Type: chr
+    Entity: 1100900
+    DefeatFlag: 9313
+    StartFlag: 11105901
+    Camera: 510; 513
   DebugInfo:
   - 1100900 (c7020_0000 - Demon of Hatred)
   DebugCommands:
@@ -5111,6 +5337,7 @@ EnemyEvents:
   Template:
   - Type: loc
     Remove: Force Animation Playback (1110210,20000,0,0,0,0,1)
+    Invincibility: 1110210
   DebugInfo:
   - region 1112445 (Event_火牛_広場領域_複合)
   - 1110203 (c1010_0012 - Ashina Soldier)
@@ -5206,6 +5433,7 @@ EnemyEvents:
   Comment: Also Blazing Bull activation
   Template:
   - Type: loc
+    Invincibility: 1110440
   DebugInfo:
   - 1110440 (c1370_0000 - Blazing Bull)
   - region 1112442 (Event_火牛_ロジック起動領域_複合)
@@ -5269,12 +5497,10 @@ EnemyEvents:
   - Set Object Interaction (Object Entity ID = 1111442, Interaction = 0, Desired State = 1)
   - Set Object Interaction (Object Entity ID = 1111442, Interaction = 10, Desired State = 0)
 - ID: 11115210
-  Comment: Woooooo guy 1. Doesn't work to replace nightjar unfortunately
+  Comment: Woooooo guy 1
   Template:
   - Type: multichr
     Entity: 1110536
-    #Regions:
-    #- event dist10 1112266
   DebugInfo:
   - 1110536 (c1450_0006 - Nightjar Ninja)
   - 1110537 (c1460_0002 - Kite Nightjar Ninja - not random)
@@ -5312,13 +5538,11 @@ EnemyEvents:
   - + Set Network Update Rate (Entity ID = 1110536*, Use Fixed Frequency = 0, Update Frequency = 0)
   - END Unconditionally (Execution End Type = 0)
 - ID: 11115214
-  Comment: Woooooo guy 2. Doesn't work to replace nightjar
+  Comment: Woooooo guy 2
   Template:
   - Type: multichr
     Entity: 1110549
     Remove: 1112550
-    #Regions:
-    #- event dist10 1112549
   DebugInfo:
   - 1110549 (c1450_0018 - Nightjar Ninja)
   - 1110550 (c1460_0003 - Kite Nightjar Ninja - not random)
@@ -5359,7 +5583,7 @@ EnemyEvents:
   - + Request Character AI Re-plan (Entity ID = 1110549*)
   - END Unconditionally (Execution End Type = 0)
 - ID: 11115220
-  Comment: Mass enemy speffects based on player location
+  Comment: Mass enemy speffects based on player location, maybe Jinsuke fight
   Template:
   - Type: loc
   DebugInfo:
@@ -5387,6 +5611,7 @@ EnemyEvents:
   Comment: Some kind of mass coordination among enemies
   Template:
   - Type: loc
+    Remove: Request Character AI Command
   DebugInfo:
   - 1110532 (c1450_0002 - Nightjar Ninja)
   - 1110533 (c1450_0003 - Nightjar Ninja)
@@ -5775,6 +6000,7 @@ EnemyEvents:
   Comment: Some interaction between hound and lone shadow on the roof. May get lost
   Template:
   - Type: loc
+    Remove: Request Character AI Command
   DebugInfo:
   - 1110317 (c1470_0017 - Lone Shadow)
   - 1110332 (c1150_0009 - Hound)
@@ -5904,6 +6130,7 @@ EnemyEvents:
   Comment: Fighting between characters
   Template:
   - Type: loc
+    Remove: Request Character AI Command
   DebugInfo:
   - 1110312 (c1470_0012 - Lone Shadow)
   - region 1112240 (Event_巡回起動領域_渓谷側橋_落武者)
@@ -5942,6 +6169,7 @@ EnemyEvents:
   Comment: Hound activation based on any hound spotting player
   Template:
   - Type: loc
+    Remove: Request Character AI Command
   DebugInfo:
   - 1110335 (c1150_0015 - Hound)
   - 1110336 (c1150_0016 - Hound)
@@ -6546,6 +6774,8 @@ EnemyEvents:
   - Type: start
     Entity: 1110800
     Remove: Force Animation Playback
+    Camera: 500
+    Name: entity
   - Type: loc
     Entity: 1110801
   DebugInfo:
@@ -6670,11 +6900,13 @@ EnemyEvents:
   Template:
   - Type: startphase
     Entity: 1110801
+    Name: entity
     Add:
     - Cmd: Set Character AI State (1110801,1)
   - Type: endphase
     Entity: 1110800
     EndCond: IF Number of Character Health Bars
+    Name: entity
   DebugInfo:
   - 1110800 (c7100_0000 - Genichiro Ashina)
   - 1110801 (c7110_0001 - Genichiro, Way of Tomoe)
@@ -6734,6 +6966,9 @@ EnemyEvents:
   - Type: chr
     Entity: 1110801
     DefeatFlag: 9303
+    # Always allow this to run for normal enemies, until stopped otherwise
+    RemoveDupe: END Unconditionally (0)
+    Deathblow: 1110801
   DebugInfo:
   - 1110801 (c7110_0001 - Genichiro, Way of Tomoe)
   DebugCommands:
@@ -6799,6 +7034,9 @@ EnemyEvents:
   Template:
   - Type: start
     Entity: 1110850
+    Camera: 520
+    Name: entity
+    Remove: Change Character DispMask
   DebugInfo:
   - region 1112851 (Event_カットシーン後出現位置_忍軍の長出現時の長出現位置)
   - 1110850 (c5060_0000 - Owl)
@@ -6899,11 +7137,15 @@ EnemyEvents:
   - + Display Boss Health Bar (Disabled/Enabled = 1, Entity ID = X0_4*, Slot Number = 0, Name ID = 905060)
   - END Unconditionally (Execution End Type = 0)
 - ID: 11115870
-  Comment: One-time phase 2 fakeout
+  Comment: One-time phase 2 fakeout using flag 11110860
   Template:
   - Type: chr
     Entity: 1110850
     DefeatFlag: 9308
+    ProgressFlag: 11115852
+    Remove: Display Boss Health Bar  # TODO: Make chr boss renamings work
+    RemoveDupe: 11115853  # Display Boss Health Bar
+    Name: entity
   DebugInfo:
   - 1110850 (c5060_0000 - Owl)
   DebugCommands:
@@ -6932,6 +7174,9 @@ EnemyEvents:
     Entity: 1110850
     DefeatFlag: 9308
     AppearFlag: 8301
+    ProgressFlag: 11115852
+    Deathblow: 1110850
+    RemoveDupe: END Unconditionally (0)
   DebugInfo:
   - 1110850 (c5060_0000 - Owl)
   DebugCommands:
@@ -6960,13 +7205,24 @@ EnemyEvents:
   - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = 1110850*, SpEffect ID = 3506050, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
   - + Set Character Immortality (Entity ID = 1110850*, Disabled/Enabled = 0)
 - ID: 11115873
-  Comment: Spawn an sfx after an event
+  Comment: Spawn an sfx after an event. It's on by default, so we have to remove it.
   Template:
   - Type: chr
     Entity: 1110850
     DefeatFlag: 9308
     Regions:
     - event arenasfx 1114833
+    Add:
+    - Cmd: Delete Map SFX (1114833,0)  # For partial effect: 1
+      Before: END IF Event Flag (0,1,0,9308)
+    #- Cmd: WAIT Fixed Time (Seconds) (4)
+    #  Before: END IF Event Flag (0,1,0,9308)
+    #- Cmd: Spawn Map SFX (1114833)
+    #  Before: END IF Event Flag (0,1,0,9308)
+    #- Cmd: WAIT Fixed Time (Seconds) (1000)
+    #  Before: END IF Event Flag (0,1,0,9308)
+    #- Cmd: END Unconditionally (1)
+    #  Before: END IF Event Flag (0,1,0,9308)
   DebugInfo:
   - 1110850 (c5060_0000 - Owl)
   DebugCommands:
@@ -7006,6 +7262,7 @@ EnemyEvents:
   Template:
   - Type: start
     Entity: 1110900
+    Name: entity
     Add:
     - Cmd: Set Character Immortality (1110900,1)
   DebugInfo:
@@ -7103,6 +7360,8 @@ EnemyEvents:
   Template:
   - Type: startphase
     Entity: 1110920
+    Camera: 510
+    Name: entity
   DebugInfo:
   - 1110920 (c5430_0000 - Isshin)
   - 1110921 (c1000_0006 - Invisible - not random)
@@ -7181,6 +7440,8 @@ EnemyEvents:
     Entity: 1110920
     DefeatFlag: 9316
     Remove: 8300
+    Deathblow: 1110920
+    RemoveDupe: END Unconditionally (0)
   DebugInfo:
   - 1110920 (c5430_0000 - Isshin)
   DebugCommands:
@@ -7812,6 +8073,7 @@ EnemyEvents:
   Comment: Activating enemy as part of tutorial
   Template:
   - Type: loc
+    Remove: Request Character AI Command
   DebugInfo:
   - 1120203 (c1011_0003 - Tutorial Ashina Soldier)
   DebugCommands:
@@ -7881,6 +8143,7 @@ EnemyEvents:
   Comment: Tutorial enemy behavior
   Template:
   - Type: loc
+    Remove: Request Character AI Command
   DebugInfo:
   - 1120207 (c1011_0007 - Tutorial Ashina Soldier)
   - 1120208 (c1011_0008 - Tutorial Ashina Soldier)
@@ -7903,6 +8166,7 @@ EnemyEvents:
   Comment: More tutorial enemy behavior
   Template:
   - Type: loc
+    Remove: Request Character AI Command
   DebugInfo:
   - 1120207 (c1011_0007 - Tutorial Ashina Soldier)
   - 1120208 (c1011_0008 - Tutorial Ashina Soldier)
@@ -8570,12 +8834,373 @@ EnemyEvents:
   - + IF Character Posture Ratio (Result Condition Group = 1, Target Entity ID = X0_4*, Comparison Type = 5, Target Posture Ratio = 0.5, Comparison Type = 0, Number of Target Characters = 1)
   - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
   - Set Event Flag (Event Flag ID = 71120320, Flag State = 1)
+- ID: 11125800
+  Comment: End Tutorial Genichiro. The endcond doesn't work elsewhere because of event flag, but he is not going anywhere else
+  Template:
+  - Type: end
+    Entity: 1120800
+    EndCond: 2
+    Name: entity
+    Add:
+    - Cmd: IF Event Flag (0,1,0,11125810)
+      After: END IF Event Flag (0,1,0,9300)
+  DebugInfo:
+  - 1120800 (c7100_0000 - Genichiro Ashina)
+  - region 1122802 (Event_不死効果領域_ライバル（1回目）)
+  - region 1124101 (SFX:ススキ_カメラ前_ID811010_0001)
+  - region 1102621 (event_荒れ寺開始地点)
+  DebugCommands:
+  - IF Event Flag (Result Condition Group = 11, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 8306)
+  - IF Event Flag (Result Condition Group = 11, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9300)
+  - GOTO IF Condition Group State (Uncompiled) (Label = 2, Desired Condition Group State = 1, Target Condition Group = 11)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9300)
+  - + IF Damage Type (Result Condition Group = -10, Target Entity ID = 10000, Attacker Entity ID = 1120800*, Damage Type = 0)
+  - IF Character Has SpEffect (Result Condition Group = -10, Target Entity ID = 10000, SpEffect ID = 3291, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Character Has SpEffect (Result Condition Group = -10, Target Entity ID = 10000, SpEffect ID = 9040, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Character Has SpEffect (Result Condition Group = -10, Target Entity ID = 10000, SpEffect ID = 3800, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 1, Desired Condition Group State = 1, Target Condition Group = -10)
+  - IF Character HP Value (Result Condition Group = 1, Target Entity ID = 10000, Comparison Type = 0, Target HP = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 1122802*, Number of Target Characters = 1)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11125810)
+  - IF Condition Group (Result Condition Group = -1, Desired Condition Group State = 1, Target Condition Group = 1)
+  - + IF Number of Character Health Bars (Result Condition Group = 2, Target Entity ID = 1120800*, Comparison Type = 0, Target Number of Health Bars = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Event Flag (Result Condition Group = 2, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11125810)
+  - IF Condition Group (Result Condition Group = -1, Desired Condition Group State = 1, Target Condition Group = 2)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
+  - SKIP IF Condition Group State (Compiled) (Number Of Skipped Lines = 1, Desired Condition Group State = 1, Target Condition Group = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 2)
+  - + Delete Map SFX (Entity ID = 1124101*, Only Delete Root = 1)
+  - Set Event Flag (Event Flag ID = 11120800, Flag State = 1)
+  - Set Event Flag (Event Flag ID = 9300, Flag State = 1)
+  - Set Event Flag (Event Flag ID = 6800, Flag State = 1)
+  - + Display Boss Health Bar (Disabled/Enabled = 0, Entity ID = 1120800*, Slot Number = 0, Name ID = 907101)
+  - Set Event Flag (Event Flag ID = 9200, Flag State = 0)
+  - + Set Player Respawn Point (Respawn Point Entity ID = 1102621*)
+  - Save Request (Dummy = 0)
+  - Batch Set Event Flags (Event Flag ID Start = 1020, Event Flag ID End = 1034, Flag State = 0)
+  - Set Event Flag (Event Flag ID = 1027, Flag State = 1)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - GOTO IF Condition Group State (Compiled) (Label = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - + Play Cutscene and Warp Player With Lighting 2002[13] (Cutscene ID = 11020001, Playback Method = 0, Point Entity ID = 1102621*, Area ID = 11, Block ID = 0, Player Entity ID = 10000, Time of Day = 1, Desired State = 1)
+  - Set Event Flag (Event Flag ID = 11120803, Flag State = 1)
+  - Save Request (Dummy = 0)
+  - GOTO Unconditionally (Label = 1)
+  - Label 0 ()
+  - + Play Cutscene and Warp Player With Lighting 2002[13] (Cutscene ID = 11020000, Playback Method = 0, Point Entity ID = 1102621*, Area ID = 11, Block ID = 0, Player Entity ID = 10000, Time of Day = 1, Desired State = 1)
+  - Set Event Flag (Event Flag ID = 11120802, Flag State = 1)
+  - Save Request (Dummy = 0)
+  - GOTO Unconditionally (Label = 1)
+  - Label 1 ()
+  - Set Event Flag (Event Flag ID = 11120801, Flag State = 1)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3021)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3051)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3061)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3062)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3071)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3076)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3081)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3086)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3203)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3212)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3214)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3222)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3231)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3242)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3291)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3302)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3312)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3322)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3351)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3361)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3371)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3381)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3391)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3401)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3411)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3421)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3431)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3441)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3451)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3452)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3453)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3454)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3520)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3601)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3611)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3621)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3631)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3641)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3643)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3645)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3647)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 9040)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 9050)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106020)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106030)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106031)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106040)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106050)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106060)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106070)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106080)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107610)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107611)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107612)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107700)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107702)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107704)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107706)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107715)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107716)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107717)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107718)
+  - END Unconditionally (Execution End Type = 0)
+  - Label 2 ()
+  - + Change Character Enable State (Entity ID = 1120800*, Disabled/Enabled = 0)
+  - + Set Character Animation State (Entity ID = 1120800*, Disabled/Enabled = 0)
+  - Activate Hit (Hit Entity ID = 1124400, State = 0)
+  - Activate Hit (Hit Entity ID = 1124401, State = 0)
+  - Activate Hit (Hit Entity ID = 1124402, State = 0)
+  - Activate Hit (Hit Entity ID = 1124403, State = 0)
+  - Activate Hit (Hit Entity ID = 1124404, State = 0)
+  - Activate Hit (Hit Entity ID = 1124410, State = 1)
+  - Activate Hit (Hit Entity ID = 1124411, State = 1)
+  - Activate Hit (Hit Entity ID = 1124412, State = 1)
+  - Activate Hit (Hit Entity ID = 1124413, State = 1)
+  - Activate Hit (Hit Entity ID = 1124414, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124410, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124411, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124412, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124413, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124414, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124400, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124401, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124402, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124403, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124404, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124410, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124411, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124412, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124413, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124414, State = 1)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3021)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3051)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3061)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3062)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3071)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3076)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3081)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3086)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3203)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3212)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3214)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3222)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3231)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3242)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3291)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3302)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3312)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3322)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3351)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3361)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3371)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3381)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3391)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3401)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3411)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3421)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3431)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3441)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3451)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3452)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3453)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3454)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3520)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3601)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3611)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3621)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3631)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3641)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3643)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3645)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3647)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 9040)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 9050)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106020)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106030)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106031)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106040)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106050)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106060)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106070)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 106080)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107610)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107611)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107612)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107700)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107702)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107704)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107706)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107715)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107716)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107717)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 107718)
+  - GOTO IF Event Flag (Label = 3, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11120802)
+  - GOTO IF Event Flag (Label = 4, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11120803)
+  - Label 3 ()
+  - + Play Cutscene and Warp Player With Lighting 2002[13] (Cutscene ID = 11020000, Playback Method = 0, Point Entity ID = 1102621*, Area ID = 11, Block ID = 0, Player Entity ID = 10000, Time of Day = 1, Desired State = 1)
+  - Set Event Flag (Event Flag ID = 11120802, Flag State = 1)
+  - Save Request (Dummy = 0)
+  - END Unconditionally (Execution End Type = 0)
+  - Label 4 ()
+  - + Play Cutscene and Warp Player With Lighting 2002[13] (Cutscene ID = 11020001, Playback Method = 0, Point Entity ID = 1102621*, Area ID = 11, Block ID = 0, Player Entity ID = 10000, Time of Day = 1, Desired State = 1)
+  - Set Event Flag (Event Flag ID = 11120803, Flag State = 1)
+  - Save Request (Dummy = 0)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 11125810
+  Comment: Start Tutorial Genichiro
+  Template:
+  - Type: start
+    Entity: 1120800
+    Remove: Force Animation Playback
+    Camera: 500
+    Name: entity
+  - Type: loc
+    Entity: 1120800
+    Remove: Request Character Animation Reset
+  DebugInfo:
+  - 1120800 (c7100_0000 - Genichiro Ashina)
+  - region 1122831 (event_ボス関連_ボス_ボス起動領域_複合)
+  - region 1124101 (SFX:ススキ_カメラ前_ID811010_0001)
+  - 1120701 (c7200_0001 - Kuro - not random)
+  - region 1122803 (event_ボス関連_ライバル（1回目）_ライバル初期位置)
+  - region 1122801 (event_ボス関連_ライバル（1回目）_PC初期位置)
+  DebugCommands:
+  - Batch Set Event Flags (Event Flag ID Start = 1685, Event Flag ID End = 1686, Flag State = 0)
+  - + Set Character AI State (Entity ID = 1120800*, Disabled/Enabled = 0)
+  - + Force Animation Playback (Entity ID = 1120800*, Animation ID = 21000, Should Loop = 1, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - + Set Character Animation State (Entity ID = 1120800*, Disabled/Enabled = 0)
+  - + Set Character HP Bar Display (Entity ID = 1120800*, Disabled/Enabled = 0)
+  - + Set Character Team Type (Entity ID = 1120800*, Team Type = 26)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9300)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 1122831*, Number of Target Characters = 1)
+  - IF Batch Event Flags (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Starting Target Event Flag ID = 9800, Ending Target Event Flag ID = 9803)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 8306)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - + Delete Map SFX (Entity ID = 1124101*, Only Delete Root = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.33)
+  - IF Character HP Value (Result Condition Group = 0, Target Entity ID = 10000, Comparison Type = 2, Target HP = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - + Set Character Backread State (Entity ID = 1120800*, Removed = 0)
+  - Set Menu Fade (Fade = 1, Fade Time (s) = 0.5)
+  - Set SpEffect (Entity ID = 10000, SpEffect ID = 4702)
+  - Set Character Invincibility (Entity ID = 10000, Disabled/Enabled = 1)
+  - Activate Hit (Hit Entity ID = 1124400, State = 0)
+  - Activate Hit (Hit Entity ID = 1124401, State = 0)
+  - Activate Hit (Hit Entity ID = 1124402, State = 0)
+  - Activate Hit (Hit Entity ID = 1124403, State = 0)
+  - Activate Hit (Hit Entity ID = 1124404, State = 0)
+  - Activate Hit (Hit Entity ID = 1124410, State = 1)
+  - Activate Hit (Hit Entity ID = 1124411, State = 1)
+  - Activate Hit (Hit Entity ID = 1124412, State = 1)
+  - Activate Hit (Hit Entity ID = 1124413, State = 1)
+  - Activate Hit (Hit Entity ID = 1124414, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124410, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124411, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124412, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124413, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124414, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124400, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124401, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124402, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124403, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124404, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124410, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124411, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124412, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124413, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124414, State = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.6)
+  - + Change Character Enable State (Entity ID = 1120701*, Disabled/Enabled = 0)
+  - + Set Character Animation State (Entity ID = 1120701*, Disabled/Enabled = 0)
+  - + Set Character Backread State (Entity ID = 1120701*, Removed = 1)
+  - + Request Character Animation Reset (Entity ID = 1120800*, Interpolation Method = 1)
+  - + Issue Short Warp Request (Entity ID = 1120800*, Warp Type = 1, Warp Destination Entity ID = 1122803*, Dummypoly ID = -1)
+  - Request Object Restoration (Entity ID = 1126310)
+  - IF Game Is Loading (Result Condition Group = 0)
+  - Set Menu Fade (Fade = 0, Fade Time (s) = 0.5)
+  - + Play Cutscene and Warp Player (Cutscene ID = 11020010, Playback Method = 16, Point Entity ID = 1122801*, Area ID = 11, Block ID = 2, Player Entity ID = 10000)
+  - IF Ongoing Cutscene Finished (Result Condition Group = 0, Cutscene ID = 11020010)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 4702)
+  - Set Character Invincibility (Entity ID = 10000, Disabled/Enabled = 0)
+  - Activate Hit (Hit Entity ID = 1124400, State = 0)
+  - Activate Hit (Hit Entity ID = 1124401, State = 0)
+  - Activate Hit (Hit Entity ID = 1124402, State = 0)
+  - Activate Hit (Hit Entity ID = 1124403, State = 0)
+  - Activate Hit (Hit Entity ID = 1124404, State = 0)
+  - Activate Hit (Hit Entity ID = 1124410, State = 1)
+  - Activate Hit (Hit Entity ID = 1124411, State = 1)
+  - Activate Hit (Hit Entity ID = 1124412, State = 1)
+  - Activate Hit (Hit Entity ID = 1124413, State = 1)
+  - Activate Hit (Hit Entity ID = 1124414, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124410, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124411, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124412, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124413, State = 1)
+  - Activate HitRes (Hit Entity ID = 1124414, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124400, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124401, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124402, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124403, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124404, State = 0)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124410, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124411, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124412, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124413, State = 1)
+  - Activate Hit and Create Navimesh (Hit Entity ID = 1124414, State = 1)
+  - Set Event Flag (Event Flag ID = 11120810, Flag State = 1)
+  - Set Event Flag (Event Flag ID = 11125810, Flag State = 1)
+  - + Spawn Map SFX (Entity ID = 1124101*)
+  - + Set Character AI State (Entity ID = 1120800*, Disabled/Enabled = 1)
+  - + Change Character Enable State (Entity ID = 1120800*, Disabled/Enabled = 1)
+  - + Set Character Animation State (Entity ID = 1120800*, Disabled/Enabled = 1)
+  - + Set Character Team Type (Entity ID = 1120800*, Team Type = 6)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = 500)
+  - + Display Boss Health Bar (Disabled/Enabled = 1, Entity ID = 1120800*, Slot Number = 0, Name ID = 907101)
+  - Batch Set Event Flags (Event Flag ID Start = 1685, Event Flag ID End = 1686, Flag State = 0)
+  - Set Event Flag (Event Flag ID = 1686, Flag State = 1)
+- ID: 11125812
+  Comment: Managing Tutorial Genichiro immortality. But it also manages player's, so only do that
+  Template:
+  - Type: loc
+    Entity: 1120800
+    Remove: 1120800
+  DebugInfo:
+  - region 1122802 (Event_不死効果領域_ライバル（1回目）)
+  - 1120800 (c7100_0000 - Genichiro Ashina)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 8306)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11125810)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 1122802*, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - Set Character Immortality (Entity ID = 10000, Disabled/Enabled = 1)
+  - + Set Character Immortality (Entity ID = 1120800*, Disabled/Enabled = 1)
+  - IF Event Flag (Result Condition Group = 2, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11125810)
+  - + IF In/Outside Area (Result Condition Group = 2, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 1122802*, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = -2, Desired Condition Group State = 0, Target Condition Group = 2)
+  - IF Event Flag (Result Condition Group = -2, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9300)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -2)
+  - Set Character Immortality (Entity ID = 10000, Disabled/Enabled = 0)
+  - + Set Character Immortality (Entity ID = 1120800*, Disabled/Enabled = 0)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9300)
+  - END Unconditionally (Execution End Type = 1)
 - ID: 11125830
   Comment: Phase change from Genichiro to Isshin. But mostly for Genichiro parts
   Template:
   - Type: endphase
     Entity: 1120830
     EndCond: 1
+    Name: entity
   DebugInfo:
   - 1120830 (c7110_0000 - Genichiro, Way of Tomoe)
   - 1120860 (c5400_0000 - Sword Saint Isshin)
@@ -8613,6 +9238,8 @@ EnemyEvents:
   Template:
   - Type: start
     Entity: 1120830
+    Camera: 500
+    Name: entity
   DebugInfo:
   - 1120830 (c7110_0000 - Genichiro, Way of Tomoe)
   - 1120703 (c7200_0004 - Kuro - not random)
@@ -8736,6 +9363,8 @@ EnemyEvents:
   Template:
   - Type: startphase
     Entity: 1120860
+    Camera: 510
+    Name: entity
   DebugInfo:
   - 1120860 (c5400_0000 - Sword Saint Isshin)
   DebugCommands:
@@ -8783,7 +9412,7 @@ EnemyEvents:
   - Type: chr
     Entity: 1120860
     DefeatFlag: 9312
-    Remove: Spawn Map SFX; Delete Map SFX; Set Map Sound State; Activate Map Part; Set Area Gparam Sub ID
+    Remove: Spawn Map SFX; Delete Map SFX; Set Map Sound State; Activate Map Part; Set Area Gparam Sub ID; 11125862; 11125872
   DebugInfo:
   - 1120860 (c5400_0000 - Sword Saint Isshin)
   DebugCommands:
@@ -8812,6 +9441,7 @@ EnemyEvents:
   - Type: chr
     Entity: 1120860
     DefeatFlag: 9312
+    Remove: 1120861
   DebugInfo:
   - 1120860 (c5400_0000 - Sword Saint Isshin)
   DebugCommands:
@@ -8823,11 +9453,13 @@ EnemyEvents:
   - + Set Character Immortality (Entity ID = 1120860*, Disabled/Enabled = 0)
   - END Unconditionally (Execution End Type = 0)
 - ID: 11125874
-  Comment: Some Isshin interaction, in spear phase. Phase flag is set by other event.
+  Comment: Sword Saint Isshin deathblow, in spear phase. Phase flag is set by other event. But we can likely take it out (TODO verify this)
   Template:
   - Type: chr
     Entity: 1120860
     DefeatFlag: 9312
+    Deathblow: 1120860
+    Remove: 11125862
   DebugInfo:
   - 1120860 (c5400_0000 - Sword Saint Isshin)
   DebugCommands:
@@ -8841,7 +9473,7 @@ EnemyEvents:
   - IF Character Has Event Message (New) (Result Condition Group = 0, Target Entity ID = 10000, Target Event Message ID = 10, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
   - END Unconditionally (Execution End Type = 1)
 - ID: 11125875
-  Comment: Seems to stop SSI music, as well as some event message interactions. xx this should maybe be end cond 1
+  Comment: Seems to stop SSI music, as well as some event message interactions.
   Template:
   - Type: end
     Entity: 1120860
@@ -9022,11 +9654,16 @@ EnemyEvents:
   - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = 220600)
   - + Request Character AI Re-plan (Entity ID = X0_4*)
 - ID: 11305350
-  Comment: Activation for crickets
+  Comment: Activation for crickets. Remove depenency on event flag for chr, otherwise remove chr-specific things for loc
   Template:
   - Type: chr
     Regions:
     - event dist4 1302302
+    Add:
+    - Cmd: GOTO Unconditionally (1)
+      Before: GOTO IF Event Flag (1,1,0,51300010)
+  - Type: loc
+    Remove: Force Animation Playback
   DebugInfo:
   - region 1302302 (コオロギ_宝部屋_降り注ぐ)
   - 1300228 (c1211_0019 - Cricket)
@@ -9253,6 +9890,7 @@ EnemyEvents:
   Comment: Mist Noble initialization
   Template:
   - Type: loc
+    Invincibility: 1500200
   DebugInfo:
   - 1500200 (c1300_0001 - Palace Noble)
   - region 1502430 (Event_Box：領域_廃寺内部判定)
@@ -9870,13 +10508,16 @@ EnemyEvents:
   - + Force Animation Playback (Entity ID = X0_4*, Animation ID = 400, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
   - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 30210)
 - ID: 11505721
-  Comment: O'Rin activation. (xx is anything needed for chr? todo replace regions with distances, and maybe take our event flags? they are 5xxx though)
+  Comment: O'Rin activation. 1502700, on bridge side. 1502704, small box around arena. 1502706, on idol side.
   Template:
   - Type: loc
   - Type: chr
     Entity: 1500690
-    Remove: 11507690
+    Remove: 11507690; 11505725  # Unneeded event flag; set by ESD
     DefeatFlag: 11500690
+    Regions:
+    - event dist8 1502704
+    - event dist-10 1502700
   DebugInfo:
   - region 1502704 (Event_Box：女奏者_近づいたと見なす領域)
   - region 1502700 (Event_Box：女奏者_強制戦闘開始領域)
@@ -9953,6 +10594,7 @@ EnemyEvents:
   - Type: start
     Entity: 1500800
     Remove: Force Animation Playback
+    Name: entity
   DebugInfo:
   - 1500800 (c5000_0000 - Corrupted Monk)
   DebugCommands:
@@ -9980,6 +10622,7 @@ EnemyEvents:
     Entity: 1500800
     DefeatFlag: 9306
     Replace: END Unconditionally (0->1)
+    Remove: 11505803
   DebugInfo:
   - 1500800 (c5000_0000 - Corrupted Monk)
   DebugCommands:
@@ -9989,7 +10632,7 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 11505803, Flag State = 1)
   - END Unconditionally (Execution End Type = 0)
 - ID: 11505814
-  Comment: Some cool Monk behavior
+  Comment: Corrupted Monk and snap seeds. This is a bit expensive to be a progress flag, so let it happen 3 times globally without flag reset
   Template:
   - Type: chr
     Entity: 1500800
@@ -10089,6 +10732,7 @@ EnemyEvents:
   Comment: Centipede activation
   Template:
   - Type: loc
+    Invincibility: 1700425
   DebugInfo:
   - 1700425 (c1040_0000 - Centipede Boss)
   - region 1702426 (ムカデ大_ボス戦起動領域_親)
@@ -10430,7 +11074,7 @@ EnemyEvents:
     - Cmd: Set Event Flag (11700810,1)
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
-  - 1700801 (c5001_0000 - Headless Ape's Centipede)
+  - 1700801 (c5001_0000 - Immortal Centipede)
   DebugCommands:
   - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9304)
   - + IF Character Has SpEffect (Result Condition Group = -5, Target Entity ID = 1700800*, SpEffect ID = 201000, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
@@ -10455,9 +11099,11 @@ EnemyEvents:
     Entity: 1700800
     Remove: Force Animation Playback
     StartCmd: Set Lock On Point
+    Camera: 500
+    Name: entity
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
-  - 1700801 (c5001_0000 - Headless Ape's Centipede)
+  - 1700801 (c5001_0000 - Immortal Centipede)
   - region 1702825 (Ev_夜叉猿菩薩湖_特殊待機解除領域_複合)
   DebugCommands:
   - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.1)
@@ -10495,12 +11141,16 @@ EnemyEvents:
   - + Display Boss Health Bar (Disabled/Enabled = 1, Entity ID = 1700800*, Slot Number = 0, Name ID = 905100)
   - Set Area CameraSetParam SubID (CameraSetParam SubID = 500)
 - ID: 11705820
-  Comment: Ape deathblow
+  Comment: Ape deathblow. This seems to be for both phases. As a result, don't allow it while another deathblow is happening, or else it will force the ape into an unkillable mix of the two phases.
   Template:
   - Type: chr
     Entity: 1700800
     DefeatFlag: 9304
     StartFlag: 11705801
+    Deathblow: 1700800
+    Add:
+    - Cmd: SKIP IF Event Flag (2,1,0,11705889)
+      Before: EzState Instruction Request (1700800,20200,1)
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
   DebugCommands:
@@ -10514,11 +11164,15 @@ EnemyEvents:
   - IF Character Has Event Message (Result Condition Group = 0, Target Entity ID = 10000, Target Event Message ID = 10, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
   - END Unconditionally (Execution End Type = 1)
 - ID: 11705821
-  Comment: Guardian Ape phase 2
+  Comment: Guardian Ape phase 2. Use a custom flag for this, since used by other events
   Template:
   - Type: chr
     Entity: 1700800
     DefeatFlag: 9304
+    ProgressFlag: 11705821
+    Add:
+    - Cmd: Set Event Flag (11705821,1)
+      Before: END Unconditionally (0)
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
   DebugCommands:
@@ -10540,6 +11194,9 @@ EnemyEvents:
   - Type: chr
     Entity: 1700800
     DefeatFlag: 9304
+    Remove: Display Boss Health Bar  # TODO: Make chr renamings work
+    # RemoveDupe: Display Boss Health Bar
+    Name: entity
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
   DebugCommands:
@@ -10603,7 +11260,7 @@ EnemyEvents:
   - Type: remove
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
-  - 1700801 (c5001_0000 - Headless Ape's Centipede)
+  - 1700801 (c5001_0000 - Immortal Centipede)
   DebugCommands:
   - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 8303)
   - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9314)
@@ -10657,11 +11314,12 @@ EnemyEvents:
   - + Set NPC Part SE and SFX (Entity ID = 1700800*, NPC Part ID = 1, Defense Material SE ID = 110, Defense Material SFX ID = 110)
   - END Unconditionally (Execution End Type = 0)
 - ID: 11705829
-  Comment: NPC part interaction for guardian ape
+  Comment: NPC part interaction for guardian ape. Only for phase 1
   Template:
   - Type: chr
     Entity: 1700800
     DefeatFlag: 9304
+    ProgressFlag: 11705821
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
   DebugCommands:
@@ -10712,9 +11370,12 @@ EnemyEvents:
   - + Clear SpEffect (Entity ID = 1700800*, SpEffect ID = 3510030)
   - END Unconditionally (Execution End Type = 1)
 - ID: 11705832
-  Comment: Area-specific camera thing, not randomized currently
+  Comment: Area-specific camera thing
   Template:
-  - Type: loc
+  - Type: chr
+    Entity: 1700800
+    DefeatFlag: 9304
+    Camera: 500; 501
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
   DebugCommands:
@@ -10763,12 +11424,19 @@ EnemyEvents:
   - + Request Character AI Command (Entity ID = 1700800*, Command ID = -1, Slot Number = 0)
   - END Unconditionally (Execution End Type = 1)
 - ID: 11705835
-  Comment: Guardian Ape phase 2 things, including fakeout banner. The flag seems to be only used for music
+  Comment: Guardian Ape phase 2 things, including fakeout banner. The flag seems to be only used for music. Also add flag for use by deathblow race conditions.
   Template:
   - Type: chr
     Entity: 1700800
     DefeatFlag: 9304
-    Remove: 11700810
+    Remove: 11700810; 11705802; Display Boss Health Bar  # TODO: Make chr renamings work
+    RemoveDupe: Display Banner  # Display Boss Health Bar
+    Name: entity
+    Add:
+    - Cmd: Set Event Flag (11705889,1)
+      After: WAIT Fixed Time (Seconds) (7.5)
+    - Cmd: Set Event Flag (11705889,0)
+      After: WAIT Fixed Time (Seconds) (10.5)
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
   DebugCommands:
@@ -10800,7 +11468,10 @@ EnemyEvents:
 - ID: 11705838
   Comment: More camera id things
   Template:
-  - Type: loc
+  - Type: chr
+    Entity: 1700800
+    DefeatFlag: 9304
+    Camera: 500; 502
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
   DebugCommands:
@@ -10840,6 +11511,8 @@ EnemyEvents:
     Remove: Force Animation Playback; 9307 # ; Set Lock On Point
     Replace: 9314 -> 9307
     StartCmd: Set Lock On Point
+    Camera: 500
+    Name: entity
   - Type: multichr
     Entity: 1700850
     Remove: 9307; 1700850; 1700852
@@ -10850,7 +11523,7 @@ EnemyEvents:
     AppearFlag: 8303
   DebugInfo:
   - 1700850 (c5100_0001 - Guardian Ape)
-  - 1700851 (c5001_0001 - Headless Ape's Centipede)
+  - 1700851 (c5001_0001 - Immortal Centipede)
   - 1700852 (c5100_0002 - Guardian Ape)
   - region 1702862 (Event_夜叉猿（首無し）のビクビク待機ポイント)
   - region 1702870 (Ev_夜叉猿（二体戦）_複合ボス起動領域)
@@ -10921,10 +11594,14 @@ EnemyEvents:
   - + Force Character Target (Targeter Entity ID = 1700850*, Targeted Entity ID = 10000)
   - Set Area CameraSetParam SubID (CameraSetParam SubID = 500)
 - ID: 11705862
-  Comment: Guardian apes interaction. Except only sets camera param, so remove
+  Comment: Guardian apes interaction. Only sets camera param. Right now uses event flag which will change so disable camera change also.
   Template:
-  - Type: remove
+  - Type: chr
     Entity: 1700850
+    DefeatFlag: 9314
+    AppearFlag: 8303
+    ProgressFlag: 11705880
+    Camera: 500; 501; 510; 511
   DebugInfo:
   - 1700850 (c5100_0001 - Guardian Ape)
   - 1700852 (c5100_0002 - Guardian Ape)
@@ -10985,7 +11662,7 @@ EnemyEvents:
     AppearFlag: 8303
   DebugInfo:
   - 1700850 (c5100_0001 - Guardian Ape)
-  - 1700851 (c5001_0001 - Headless Ape's Centipede)
+  - 1700851 (c5001_0001 - Immortal Centipede)
   - 1700852 (c5100_0002 - Guardian Ape)
   DebugCommands:
   - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9307)
@@ -11003,7 +11680,7 @@ EnemyEvents:
     Entity: 1700850
   DebugInfo:
   - 1700850 (c5100_0001 - Guardian Ape)
-  - 1700851 (c5001_0001 - Headless Ape's Centipede)
+  - 1700851 (c5001_0001 - Immortal Centipede)
   DebugCommands:
   - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9314)
   - END IF Event Flag (Execution End Type = 0, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 8303)
@@ -11056,8 +11733,12 @@ EnemyEvents:
 - ID: 11705876
   Comment: Some more speffect interaction, but just camera id
   Template:
-  - Type: remove
+  - Type: chr
     Entity: 1700850
+    DefeatFlag: 9314
+    AppearFlag: 8303
+    ProgressFlag: 11705880
+    Camera: 500; 502; 510; 512
   DebugInfo:
   - 1700850 (c5100_0001 - Guardian Ape)
   - 1700852 (c5100_0002 - Guardian Ape)
@@ -11080,14 +11761,27 @@ EnemyEvents:
   - Set Area CameraSetParam SubID (CameraSetParam SubID = 510)
   - END Unconditionally (Execution End Type = 1)
 - ID: 11705880
-  Comment: Enabling ape 2. This one is special wrt use of flags. The region is moved in enemy config as it's also used by AI.
+  Comment: Enabling ape 2. This one is special wrt use of flags. The region is moved in enemy config as it's also used by AI. Or, just remove it...
   Template:
   - Type: multichr
     Entity: 1700850
     DefeatFlag: 9307
     AppearFlag: 8303
-    Remove: 9314
+    Remove: 9314; Set Area CameraSetParam SubID; 1702871; Request Character AI Command (1700850,10,0)
+    # RemoveDupe: 1702871; Request Character AI Command (1700850,10,0)
     StartFlag: 11705851
+    ProgressFlag: 11705880
+    Add:
+    - After: Label 0 ()
+      Cmd: Force Character Death (1700852,0)
+    - After: Set Area CameraSetParam SubID (510)
+      Cmd: Set Event Flag (11705880,1)
+  - Type: chr  # For standalone
+    Entity: 1700852
+    Remove: 1700850; 1702871; GOTO IF Event Flag; IF Event Flag; Set Area CameraSetParam SubID; WAIT Fixed Time (Seconds) (3)
+    Add:
+    - Cmd: IF Entity In/Outside Radius Of Entity (1,1,10000,1700852,10,1)
+      Before: IF Condition Group (0,1,1)
   DebugInfo:
   - 1700852 (c5100_0002 - Guardian Ape)
   - 1700850 (c5100_0001 - Guardian Ape)
@@ -11138,6 +11832,11 @@ EnemyEvents:
     Entity: 1700850
     AppearFlag: 8303
     StartFlag: 11705851
+    Deathblow: 1700852
+    # Add condition for deathblow dependent on character
+    Add:
+    - Cmd: IF Number of Character Health Bars (1,1700852,0,0,0,1)
+      Before: IF Condition Group (0,1,1)
   DebugInfo:
   - 1700852 (c5100_0002 - Guardian Ape)
   DebugCommands:
@@ -11239,8 +11938,66 @@ EnemyEvents:
   - + IF Character AI State (Result Condition Group = -1, Target Entity ID = X0_4*, AI State = 1, Comparison Type = 0, Number of Target Characters = 1)
   - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
   - Set Event Flag (Event Flag ID = 12005451, Flag State = 1)
+- ID: 12005210
+  Comment: Warp to folding screen monkeys boss fight
+  Template:
+  - Type: loc
+  DebugInfo:
+  - 2000801 (c1260_0000 - Folding Screen Monkey)
+  - region 2002200 (無限回廊ワープ後_初期位置)
+  DebugCommands:
+  - SKIP IF Event Flag (Number Of Skipped Lines = 1, Desired Flag State = 1, Target Event Flag Type = 2, Target Event Flag ID = 0)
+  - Activate Map Part (Map Part Entity ID = 8907085, State = 0)
+  - GOTO IF Event Flag (Label = 2, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 8400)
+  - (De)activate Object (Target Object Entity ID = 2001200, State = 0)
+  - END Unconditionally (Execution End Type = 0)
+  - Label 2 ()
+  - IF Action Button (Result Condition Group = 0, Action Button Parameter ID = 2000680, Target Entity ID = 2001200)
+  - (De)activate Object (Target Object Entity ID = 2001201, State = 0)
+  - GOTO IF Event Flag (Label = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 62000705)
+  - Set Area Gparam Sub ID (Area ID = 20, Block ID = 0, Gparam Sub ID = 10, Change Time (s) = 3)
+  - Label 0 ()
+  - Activate Map Part (Map Part Entity ID = 8907000, State = 0)
+  - Activate Map Part (Map Part Entity ID = 8907010, State = 0)
+  - Activate Map Part (Map Part Entity ID = 8907015, State = 0)
+  - Activate Map Part (Map Part Entity ID = 8907020, State = 0)
+  - Activate Map Part (Map Part Entity ID = 8907030, State = 0)
+  - Activate Map Part (Map Part Entity ID = 8907040, State = 0)
+  - Activate Map Part (Map Part Entity ID = 8907050, State = 0)
+  - Activate Map Part (Map Part Entity ID = 8907060, State = 0)
+  - Activate Map Part (Map Part Entity ID = 8907070, State = 0)
+  - Activate Map Part (Map Part Entity ID = 8907075, State = 0)
+  - Activate Map Part (Map Part Entity ID = 8907080, State = 0)
+  - Activate Map Part (Map Part Entity ID = 8907090, State = 0)
+  - Activate Map Part (Map Part Entity ID = 8907100, State = 0)
+  - (De)activate Object (Target Object Entity ID = 8901000, State = 0)
+  - Activate Map Part (Map Part Entity ID = 8907085, State = 1)
+  - GOTO IF Event Flag (Label = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9305)
+  - Set Event Flag (Event Flag ID = 9200, Flag State = 1)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - + Set Network Update Rate (Entity ID = 2000801*, Use Fixed Frequency = 1, Update Frequency = 0)
+  - + Set Character Default Backread State (Entity ID = 2000801*, Disabled/Enabled = 1)
+  - Set Event Flag (Event Flag ID = 9200, Flag State = 1)
+  - + Play Cutscene and Warp Player (Cutscene ID = 20000000, Playback Method = 0, Point Entity ID = 2002200*, Area ID = 20, Block ID = 0, Player Entity ID = 10000)
+  - IF Ongoing Cutscene Finished (Result Condition Group = 0, Cutscene ID = 20000000)
+  - Award Item Lot (Item Lot ID = 2000060)
+  - (De)activate Object (Target Object Entity ID = 2001201, State = 1)
+  - END Unconditionally (Execution End Type = 1)
+  - Label 1 ()
+  - Set SpEffect (Entity ID = 10000, SpEffect ID = 4700)
+  - Set SpEffect (Entity ID = 10000, SpEffect ID = 4701)
+  - Set SpEffect (Entity ID = 10000, SpEffect ID = 4702)
+  - Spawn Oneshot SFX (Type = 2, Entity ID = 10000, Dummypoly ID = 2, SFX ID = 820130)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.1)
+  - Play SE (Entity ID = 10000, Sound Type = 1, Sound ID = 4031)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 2.1)
+  - + Fade Out and Warp Player (Point Entity ID = 2002200*, Area ID = 20, Block ID = 0)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 4700)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 4701)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 4702)
+  - END Unconditionally (Execution End Type = 1)
 - ID: 12005223
-  Comment: Some behavior for the taro troop behind the statue. xx is this common
+  Comment: Some behavior for the taro troop behind the statue. xx is this common speffect
   Template:
   - Type: chr
     Entity: 2000673
@@ -11578,6 +12335,7 @@ EnemyEvents:
   Comment: Cricker seeker interactions
   Template:
   - Type: loc
+    Remove: Request Character AI Command
   DebugInfo:
   - 2000281 (c1211_0005 - Cricket)
   - 2000601 (c1210_0001 - Infested Seeker)
@@ -11654,6 +12412,7 @@ EnemyEvents:
   Comment: Cricker seeker interactions
   Template:
   - Type: loc
+    Remove: Request Character AI Command; Force Animation Playback
   DebugInfo:
   - 2000281 (c1211_0005 - Cricket)
   - 2000601 (c1210_0001 - Infested Seeker)
@@ -11782,7 +12541,10 @@ EnemyEvents:
     DefeatFlag: 12000400
     Remove: END Unconditionally
     Add:
+    - Cmd: Set Event Flag (12005453,1)
+      After: IF Character Has SpEffect
     - Cmd: Force Character Death (2000400,0)
+    - Cmd: Set Event Flag (12005453,0)
     Regions:
     - event arena 2002401
   DebugInfo:
@@ -11797,9 +12559,15 @@ EnemyEvents:
   - + Set Camera Vibration (Vibration ID = 110, Type = 1, Entity ID = 2002401*, Dummypoly ID = -1, Decay Start Distance = 999, Decay End Distance = 999)
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005457
-  Comment: Update rate
+  Comment: Update rate. But also try to abuse this to add roberto
   Template:
   - Type: loc
+    Remove: END Unconditionally
+    Entity: 2000400
+    # TODO: Make t200500_x5 not depend on CheckSelfDeath
+    Add:
+    - Cmd: IF Character Dead/Alive (0,2000400,1,0,1)
+    - Cmd: Set SpEffect (2000400,30009)
   DebugInfo:
   - region 2002401 (南蛮甲冑_PCが領域内にいると更新頻度を常に更新)
   - 2000400 (c1130_0000 - Armored Warrior)
@@ -11813,6 +12581,7 @@ EnemyEvents:
   Comment: Armored Warrior allow lockon/damage
   Template:
   - Type: loc
+    Invincibility: 2000400
   DebugInfo:
   - 2000400 (c1130_0000 - Armored Warrior)
   - region 2002400 (Ev_南蛮甲冑_巡回と霧壁起動領域)
@@ -11892,10 +12661,10 @@ EnemyEvents:
   - Type: loc
   DebugInfo:
   - 2000800 (c1000_0009 - Invisible - not random)
-  - 2000801 (c1260_0000 - Folding Screen Monkey - not random)
-  - 2000802 (c1260_0001 - Folding Screen Monkey - not random)
-  - 2000803 (c1260_0002 - Folding Screen Monkey - not random)
-  - 2000804 (c1260_0003 - Folding Screen Monkey - not random)
+  - 2000801 (c1260_0000 - Folding Screen Monkey)
+  - 2000802 (c1260_0001 - Folding Screen Monkey)
+  - 2000803 (c1260_0002 - Folding Screen Monkey)
+  - 2000804 (c1260_0003 - Folding Screen Monkey)
   - 2000805 (c1250_0001 - Valley Monkey)
   - 2000806 (c1250_0002 - Valley Monkey)
   - 2000807 (c1250_0003 - Valley Monkey)
@@ -11957,10 +12726,10 @@ EnemyEvents:
   Template:
   - Type: loc
   DebugInfo:
-  - 2000801 (c1260_0000 - Folding Screen Monkey - not random)
-  - 2000802 (c1260_0001 - Folding Screen Monkey - not random)
-  - 2000803 (c1260_0002 - Folding Screen Monkey - not random)
-  - 2000804 (c1260_0003 - Folding Screen Monkey - not random)
+  - 2000801 (c1260_0000 - Folding Screen Monkey)
+  - 2000802 (c1260_0001 - Folding Screen Monkey)
+  - 2000803 (c1260_0002 - Folding Screen Monkey)
+  - 2000804 (c1260_0003 - Folding Screen Monkey)
   - 2000805 (c1250_0001 - Valley Monkey)
   - 2000806 (c1250_0002 - Valley Monkey)
   - 2000807 (c1250_0003 - Valley Monkey)
@@ -11999,6 +12768,39 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 12005801, Flag State = 1)
   - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
   - + Display Boss Health Bar (Disabled/Enabled = 1, Entity ID = 2000800*, Slot Number = 0, Name ID = 901260)
+- ID: 12005820
+  Comment: Changing screens when a folding monkey dies
+  Template:
+  - Type: loc
+  DebugInfo:
+  - 2000800 (c1000_0009 - Invisible - not random)
+  - 2000801 (c1260_0000 - Folding Screen Monkey)
+  - region 2002640 (Ev_屏風切り替えSFX発生ポイント_見る猿)
+  - 2000802 (c1260_0001 - Folding Screen Monkey)
+  - region 2002642 (Ev_屏風切り替えSFX発生ポイント_聞く猿)
+  - 2000803 (c1260_0002 - Folding Screen Monkey)
+  - region 2002641 (Ev_屏風切り替えSFX発生ポイント_言う猿)
+  - 2000804 (c1260_0003 - Folding Screen Monkey)
+  - region 2002643 (Ev_屏風切り替えSFX発生ポイント_見え猿)
+  DebugInit:
+  - Initialize Event (0, 12005820, X0_4 = 2000801*, X4_4 = 2001830, X8_4 = 2001840, X12_4 = 2002640*)
+  - Initialize Event (1, 12005820, X0_4 = 2000802*, X4_4 = 2001832, X8_4 = 2001842, X12_4 = 2002642*)
+  - Initialize Event (2, 12005820, X0_4 = 2000803*, X4_4 = 2001831, X8_4 = 2001841, X12_4 = 2002641*)
+  - Initialize Event (3, 12005820, X0_4 = 2000804*, X4_4 = 2001833, X8_4 = 2001843, X12_4 = 2002643*)
+  DebugCommands:
+  - (De)activate Object (Target Object Entity ID = X4_4, State = 0)
+  - (De)activate Object (Target Object Entity ID = X8_4, State = 1)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9305)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9405)
+  - (De)activate Object (Target Object Entity ID = X8_4, State = 0)
+  - (De)activate Object (Target Object Entity ID = X4_4, State = 1)
+  - + IF Character Dead/Alive (Result Condition Group = 0, Target Entity ID = X0_4*, Desired Life State = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + Set SpEffect (Entity ID = 2000800*, SpEffect ID = 3126010)
+  - + Spawn Oneshot SFX (Type = 1, Entity ID = X12_4*, Dummypoly ID = -1, SFX ID = 256001)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.5)
+  - (De)activate Object (Target Object Entity ID = X4_4, State = 0)
+  - (De)activate Object (Target Object Entity ID = X8_4, State = 1)
+  - END Unconditionally (Execution End Type = 0)
 - ID: 12005815
   Comment: Helper monkeys initialization in fight
   Template:
@@ -12008,8 +12810,44 @@ EnemyEvents:
   DebugCommands:
   - + Change Character Enable State (Entity ID = 2005810*, Disabled/Enabled = 0)
   - + Set Character Animation State (Entity ID = 2005810*, Disabled/Enabled = 0)
+- ID: 12005827
+  Comment: Setting speffect on player when in certain areas and looking at invisible monkey
+  Template:
+  - Type: loc
+  DebugInfo:
+  - region 2002551 (稚児猿_木の上領域①)
+  - region 2002552 (稚児猿_木の上領域②)
+  - region 2002553 (稚児猿_鐘リアクション領域)
+  - region 2002558 (稚児猿_梁の上領域_右)
+  - region 2002559 (稚児猿_梁の上領域_左)
+  - region 2002563 (稚児猿_煙突の狭い足場領域_ｙ21)
+  - region 2002564 (稚児猿_煙突の狭い足場領域_ｙ24)
+  - 2000804 (c1260_0003 - Folding Screen Monkey)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9405)
+  - + IF In/Outside Area (Result Condition Group = -1, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 2002551*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = -1, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 2002552*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = -1, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 2002553*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = -1, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 2002558*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = -1, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 2002559*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = -1, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 2002563*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = -1, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 2002564*, Number of Target Characters = 1)
+  - + IF Player Is Looking At Entity (Result Condition Group = -1, Looking = 1, Looking Entity ID = 2000804*, Target Entity ID = 10000, Angle? = 100, Angle? = 100)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
+  - Set SpEffect (Entity ID = 10000, SpEffect ID = 3126070)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 0, Target Entity ID = 10000, Area Entity ID = 2002551*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 0, Target Entity ID = 10000, Area Entity ID = 2002552*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 0, Target Entity ID = 10000, Area Entity ID = 2002553*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 0, Target Entity ID = 10000, Area Entity ID = 2002558*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 0, Target Entity ID = 10000, Area Entity ID = 2002559*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 0, Target Entity ID = 10000, Area Entity ID = 2002563*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 0, Target Entity ID = 10000, Area Entity ID = 2002564*, Number of Target Characters = 1)
+  - + IF Player Is Looking At Entity (Result Condition Group = 1, Looking = 0, Looking Entity ID = 2000804*, Target Entity ID = 10000, Angle? = 100, Angle? = 100)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3126070)
+  - END Unconditionally (Execution End Type = 1)
 - ID: 12005828
-  Comment: Helper monkeys behavior in fight
+  Comment: Setting speffect for invisible monkey that prevents it from warping, if player is in some areas or near a terror monkey
   Template:
   - Type: loc
   DebugInfo:
@@ -12029,7 +12867,7 @@ EnemyEvents:
   - region 2002559 (稚児猿_梁の上領域_左)
   - region 2002563 (稚児猿_煙突の狭い足場領域_ｙ21)
   - region 2002564 (稚児猿_煙突の狭い足場領域_ｙ24)
-  - 2000804 (c1260_0003 - Folding Screen Monkey - not random)
+  - 2000804 (c1260_0003 - Folding Screen Monkey)
   DebugCommands:
   - + IF Entity In/Outside Radius Of Entity (Result Condition Group = -1, Desired State = 1, Target Entity A ID = 10000, Target Entity B ID = 2000805*, Target Distance = 15, Minimum Number of Targets = 1)
   - + IF Entity In/Outside Radius Of Entity (Result Condition Group = -1, Desired State = 1, Target Entity A ID = 10000, Target Entity B ID = 2000806*, Target Distance = 15, Minimum Number of Targets = 1)
@@ -12068,12 +12906,309 @@ EnemyEvents:
   - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
   - + Clear SpEffect (Entity ID = 2000804*, SpEffect ID = 3126071)
   - END Unconditionally (Execution End Type = 1)
+- ID: 12005830
+  Comment: Some speffect for non-invisible monkeys. Likely only applies to them?
+  Template:
+  - Type: chr
+    DefeatFlag: 9405
+  DebugInfo:
+  - 2000801 (c1260_0000 - Folding Screen Monkey)
+  - 2000802 (c1260_0001 - Folding Screen Monkey)
+  - 2000803 (c1260_0002 - Folding Screen Monkey)
+  DebugInit:
+  - Initialize Event (0, 12005830, X0_4 = 2000801*, X4_4 = 5091)
+  - Initialize Event (1, 12005830, X0_4 = 2000802*, X4_4 = 5092)
+  - Initialize Event (2, 12005830, X0_4 = 2000803*, X4_4 = 5093)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9405)
+  - + IF Entity In/Outside Radius Of Entity (Result Condition Group = 0, Desired State = 0, Target Entity A ID = 10000, Target Entity B ID = X0_4*, Target Distance = 7, Minimum Number of Targets = 1)
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 300320)
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 300330)
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 300340)
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 5319)
+  - + Set NPC Part SE and SFX (Entity ID = X0_4*, NPC Part ID = X4_4, Defense Material SE ID = 133, Defense Material SFX ID = 133)
+  - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = 400245)
+  - + IF Entity In/Outside Radius Of Entity (Result Condition Group = 0, Desired State = 1, Target Entity A ID = 10000, Target Entity B ID = X0_4*, Target Distance = 7, Minimum Number of Targets = 1)
+  - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = 300320)
+  - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = 300330)
+  - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = 300340)
+  - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = 5319)
+  - + Set NPC Part SE and SFX (Entity ID = X0_4*, NPC Part ID = X4_4, Defense Material SE ID = 132, Defense Material SFX ID = 132)
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 400245)
+  - END Unconditionally (Execution End Type = 1)
 - ID: 12005835
-  Comment: Restoring lockon point for invisible monkey if randomized. TODO add more monkey events, and add a way to only randomize if a target, rather than source
+  Comment: Restoring lockon point for invisible monkey if randomized, plus probably making it visible
   Template:
   - Type: loc
-    # Entity: 2000804
+    Entity: 2000804
     Remove: Set Lock On Point
+  DebugInfo:
+  - 2000804 (c1260_0003 - Folding Screen Monkey)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9405)
+  - + Set Lock On Point (Entity ID = 2000804*, Lock On Dummypoly ID = 220, Desired State = 0)
+  - + IF Character HP Ratio (Result Condition Group = 0, Target Entity ID = 2000804*, Comparison Type = 5, Target HP Ratio = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - + Clear SpEffect (Entity ID = 2000804*, SpEffect ID = 3126040)
+  - + Clear SpEffect (Entity ID = 2000804*, SpEffect ID = 3126041)
+  - + Set Lock On Point (Entity ID = 2000804*, Lock On Dummypoly ID = 220, Desired State = 1)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 12005838
+  Comment: Setting AI of hearing monkey while it's in certain area
+  Template:
+  - Type: loc
+    Entity: 2000802
+    Remove: Set Character AI ID
+  DebugInfo:
+  - 2000802 (c1260_0001 - Folding Screen Monkey)
+  - region 2002830 (稚児猿_Ｈ12)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9405)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 1, Target Entity ID = 2000802*, Area Entity ID = 2002830*, Number of Target Characters = 1)
+  - + Set Character AI ID (Entity ID = 2000802*, AI ID = 12600011)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 0, Target Entity ID = 2000802*, Area Entity ID = 2002830*, Number of Target Characters = 1)
+  - + Set Character AI ID (Entity ID = 2000802*, AI ID = 12600010)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12005840
+  Comment: Creates NPC parts for non-invisible monkeys
+  Template:
+  - Type: chr
+    DefeatFlag: 9405
+  DebugInfo:
+  - 2000801 (c1260_0000 - Folding Screen Monkey)
+  - 2000802 (c1260_0001 - Folding Screen Monkey)
+  - 2000803 (c1260_0002 - Folding Screen Monkey)
+  DebugInit:
+  - Initialize Event (0, 12005840, X0_4 = 2000801*, X4_4 = 5091)
+  - Initialize Event (1, 12005840, X0_4 = 2000802*, X4_4 = 5092)
+  - Initialize Event (2, 12005840, X0_4 = 2000803*, X4_4 = 5093)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9405)
+  - + Create NPC Part (Entity ID = X0_4*, NPC Part ID = X4_2, NPC Part Group IDx = 1, NPC Part HP = 100000, Damage Correction = 1, Body Damage Compensation = 1, Is Invincible = 0, Start In Stopped State = 0)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 12005845
+  Comment: Setting some speffect on seeing monkey while in area
+  Template:
+  - Type: loc
+  DebugInfo:
+  - region 2002880 (稚児猿_Ｈ31)
+  - 2000801 (c1260_0000 - Folding Screen Monkey)
+  DebugInit:
+  - Initialize Event (0, 12005845, X0_4 = 10000, X4_4 = 2002880*, X8_4 = 3126050)
+  - Initialize Event (1, 12005845, X0_4 = 2000801*, X4_4 = 2002880*, X8_4 = 3126002)
+  DebugCommands:
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 1, Target Entity ID = X0_4*, Area Entity ID = X4_4*, Number of Target Characters = 1)
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = X8_4)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 0, Target Entity ID = X0_4*, Area Entity ID = X4_4*, Number of Target Characters = 1)
+  - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = X8_4)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12005850
+  Comment: Setting some speffect on seeing monkey when the door is opened and it is in that area
+  Template:
+  - Type: loc
+  DebugInfo:
+  - 2000801 (c1260_0000 - Folding Screen Monkey)
+  - region 2002870 (稚児猿_Ｈ24)
+  DebugInit:
+  - Initialize Event (0, 12005850, X0_4 = 2000801*, X4_4 = 2002870*, X8_4 = 3126002)
+  DebugCommands:
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12005854)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 1, Target Entity ID = X0_4*, Area Entity ID = X4_4*, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = X8_4)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 0, Target Entity ID = X0_4*, Area Entity ID = X4_4*, Number of Target Characters = 1)
+  - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = X8_4)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12005855
+  Comment: Event for opening the door
+  Template:
+  - Type: loc
+  DebugInfo:
+  - region 2004800 (環境音_無限回廊扉ガタガタ)
+  - region 2001810 (SFX:蝋燭_ID811020_8000)
+  - region 2001811 (SFX:蝋燭_ID811020_8001)
+  - region 2001812 (SFX:蝋燭_ID811020_8002)
+  - region 2001813 (SFX:蝋燭_ID811020_8003)
+  - region 2002806 (稚児猿_風吹きこむループ再生用ポイント)
+  - 2000801 (c1260_0000 - Folding Screen Monkey)
+  - region 2002870 (稚児猿_Ｈ24)
+  DebugCommands:
+  - GOTO IF Event Flag (Label = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 62000705)
+  - IF ObjAct Event Flag (Result Condition Group = 0, ObjAct Event Flag = 12000810)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 3)
+  - + Set Map Sound State (Entity ID = 2004800*, Enable/Disable = 0)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 7)
+  - Label 0 ()
+  - + Set Map Sound State (Entity ID = 2004800*, Enable/Disable = 0)
+  - + Delete Map SFX (Entity ID = 2001810*, Only Delete Root = 1)
+  - + Delete Map SFX (Entity ID = 2001811*, Only Delete Root = 1)
+  - + Delete Map SFX (Entity ID = 2001812*, Only Delete Root = 1)
+  - + Delete Map SFX (Entity ID = 2001813*, Only Delete Root = 1)
+  - + Spawn Map SFX (Entity ID = 2002806*)
+  - Set Area Gparam Sub ID (Area ID = 20, Block ID = 0, Gparam Sub ID = 0, Change Time (s) = 3)
+  - Set Event Flag (Event Flag ID = 12005854, Flag State = 1)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 1, Target Entity ID = 2000801*, Area Entity ID = 2002870*, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 2000801*, SpEffect ID = 5020, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 2000801*, SpEffect ID = 200004, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 2)
+  - + Set SpEffect (Entity ID = 2000801*, SpEffect ID = 5026)
+  - + IF Character AI State (Result Condition Group = 0, Target Entity ID = 2000801*, AI State = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.5)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 0, Target Entity ID = 2000801*, Area Entity ID = 2002870*, Number of Target Characters = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12005858
+  Comment: Another event for making seeing monkey confused
+  Template:
+  - Type: loc
+  DebugInfo:
+  - 2000801 (c1260_0000 - Folding Screen Monkey)
+  - region 2002880 (稚児猿_Ｈ31)
+  DebugCommands:
+  - + IF Character Dead/Alive (Result Condition Group = 2, Target Entity ID = 2000801*, Desired Life State = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - END IF Condition Group State (Uncompiled) (Execution End Type = 0, Desired Condition Group State = 1, Target Condition Group = 2)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 1, Target Entity ID = 2000801*, Area Entity ID = 2002880*, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 2000801*, SpEffect ID = 5020, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 2000801*, SpEffect ID = 200004, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 2)
+  - + Set SpEffect (Entity ID = 2000801*, SpEffect ID = 5026)
+  - + IF Character AI State (Result Condition Group = 0, Target Entity ID = 2000801*, AI State = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.5)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 0, Target Entity ID = 2000801*, Area Entity ID = 2002880*, Number of Target Characters = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12005860
+  Comment: Hearing monkey getting bamboozled
+  Template:
+  - Type: loc
+    Entity: 2000802
+    Remove: Force Animation Playback
+  DebugInfo:
+  - 2000802 (c1260_0001 - Folding Screen Monkey)
+  - region 2002553 (稚児猿_鐘リアクション領域)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9405)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 1, Target Entity ID = 2000802*, Area Entity ID = 2002553*, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 2000802*, SpEffect ID = 3126060, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF ObjAct Event Flag (Result Condition Group = 1, ObjAct Event Flag = 12000825)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 2.8)
+  - + Force Animation Playback (Entity ID = 2000802*, Animation ID = 20011, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 2.6)
+  - + Force Animation Playback (Entity ID = 2000802*, Animation ID = 21000, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 8)
+  - + Force Animation Playback (Entity ID = 2000802*, Animation ID = 20012, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Label 0 ()
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 2)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12005865
+  Comment: Some speffect for hearing monkey in area
+  Template:
+  - Type: loc
+    Entity: 2000802
+    Remove: Force Animation Playback
+  DebugInfo:
+  - 2000802 (c1260_0001 - Folding Screen Monkey)
+  - region 2002830 (稚児猿_Ｈ12)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9405)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 2000802*, SpEffect ID = 5021, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character AI State (Result Condition Group = 1, Target Entity ID = 2000802*, AI State = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 1, Target Entity ID = 2000802*, Area Entity ID = 2002830*, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - + Force Animation Playback (Entity ID = 2000802*, Animation ID = 20013, Should Loop = 0, Should Wait For Completion = 1, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 0, Target Entity ID = 2000802*, Area Entity ID = 2002830*, Number of Target Characters = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12005870
+  Comment: Speaking monkey notifying the others. (Should probably remove AI IDs if either entity is different, not just one of them)
+  Template:
+  - Type: loc
+    Entity: 2000803
+    Remove: Set Character AI ID
+  DebugInfo:
+  - 2000803 (c1260_0002 - Folding Screen Monkey)
+  - 2000801 (c1260_0000 - Folding Screen Monkey)
+  - 2000802 (c1260_0001 - Folding Screen Monkey)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9405)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 2000803*, SpEffect ID = 5022, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 2000803*, SpEffect ID = 5027, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - + Set Character AI ID (Entity ID = 2000801*, AI ID = 12600052)
+  - + Set Character AI ID (Entity ID = 2000802*, AI ID = 12600052)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
+  - + Set Character AI ID (Entity ID = 2000801*, AI ID = 12600000)
+  - + Set Character AI ID (Entity ID = 2000802*, AI ID = 12600010)
+  - + IF Character AI State (Result Condition Group = -1, Target Entity ID = 2000803*, AI State = 2, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character AI State (Result Condition Group = -1, Target Entity ID = 2000803*, AI State = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12005873
+  Comment: Warping to player location for invisible monkey. Also add condition so that Armored Warrior doesn't kill the player by falling on them. TODO check this works
+  Template:
+  - Type: loc
+    Entity: 2000804
+    Add:
+    - Cmd: END IF Event Flag (0,1,0,12005453)
+      After: END IF Condition Group State (Uncompiled) (0,1,2)
+    # Remove: Set Character Animation State  # This doesn't seem to make a big difference either way
+  DebugInfo:
+  - region 2002805 (Ev_無限回廊でワイヤーセット変更)
+  - 2000804 (c1260_0003 - Folding Screen Monkey)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9405)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 2002805*, Number of Target Characters = 1)
+  - + IF Entity In/Outside Radius Of Entity (Result Condition Group = 1, Desired State = 0, Target Entity A ID = 10000, Target Entity B ID = 2000804*, Target Distance = 30, Minimum Number of Targets = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 2000804*, SpEffect ID = 3126060, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 2000804*, SpEffect ID = 3126071, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 10000, SpEffect ID = 9481, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - + IF Character HP Ratio (Result Condition Group = 2, Target Entity ID = 2000804*, Comparison Type = 5, Target HP Ratio = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - END IF Condition Group State (Uncompiled) (Execution End Type = 0, Desired Condition Group State = 1, Target Condition Group = 2)
+  - + Set Character Animation State (Entity ID = 2000804*, Disabled/Enabled = 0)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - + Warp Character and Copy Floor (Entity ID = 2000804*, Warp Type = 2, Warp Destination Entity ID = 10000, Dummypoly ID = 169, Entity ID to Copy Floor From = 10000)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.1)
+  - + IF Entity In/Outside Radius Of Entity (Result Condition Group = 0, Desired State = 0, Target Entity A ID = 10000, Target Entity B ID = 2000804*, Target Distance = 5, Minimum Number of Targets = 1)
+  - + Set Character Animation State (Entity ID = 2000804*, Disabled/Enabled = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12005874
+  Comment: Another event for setting speffect while player is looking at invisible monkey
+  Template:
+  - Type: loc
+  DebugInfo:
+  - 2000804 (c1260_0003 - Folding Screen Monkey)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9405)
+  - + IF Player Is Looking At Entity (Result Condition Group = 0, Looking = 1, Looking Entity ID = 2000804*, Target Entity ID = 10000, Angle? = 100, Angle? = 100)
+  - Set SpEffect (Entity ID = 10000, SpEffect ID = 3126070)
+  - + IF Player Is Looking At Entity (Result Condition Group = 0, Looking = 0, Looking Entity ID = 2000804*, Target Entity ID = 10000, Angle? = 100, Angle? = 100)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 3126070)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12005875
+  Comment: Change speffect on invisible folding monkey if it's in one of the closer two towers. Doesn't seem to change visibility if it already has one of them. But does affect other entities
+  Template:
+  - Type: loc
+    Entity: 2000804
+    Add:
+    - Cmd: IF Character Has SpEffect (0,2000804,3126040,1,0,1)
+      After: END IF Event Flag (0,1,0,9405)
+  DebugInfo:
+  - 2000804 (c1260_0003 - Folding Screen Monkey)
+  - region 2002820 (稚児猿_Ｈ11)
+  - region 2002830 (稚児猿_Ｈ12)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9405)
+  - + IF In/Outside Area (Result Condition Group = -1, Desired State = 1, Target Entity ID = 2000804*, Area Entity ID = 2002820*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = -1, Desired State = 1, Target Entity ID = 2000804*, Area Entity ID = 2002830*, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
+  - + Set SpEffect (Entity ID = 2000804*, SpEffect ID = 3126041)
+  - + Clear SpEffect (Entity ID = 2000804*, SpEffect ID = 3126040)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 0, Target Entity ID = 2000804*, Area Entity ID = 2002820*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 0, Target Entity ID = 2000804*, Area Entity ID = 2002830*, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - + Set SpEffect (Entity ID = 2000804*, SpEffect ID = 3126040)
+  - + Clear SpEffect (Entity ID = 2000804*, SpEffect ID = 3126041)
+  - END Unconditionally (Execution End Type = 1)
 - ID: 12005885
   Comment: Using illusion hall bell
   Template:
@@ -12081,13 +13216,13 @@ EnemyEvents:
   DebugInfo:
   - region 2002805 (Ev_無限回廊でワイヤーセット変更)
   - region 2002200 (無限回廊ワープ後_初期位置)
-  - 2000801 (c1260_0000 - Folding Screen Monkey - not random)
-  - 2000802 (c1260_0001 - Folding Screen Monkey - not random)
-  - 2000803 (c1260_0002 - Folding Screen Monkey - not random)
+  - 2000801 (c1260_0000 - Folding Screen Monkey)
+  - 2000802 (c1260_0001 - Folding Screen Monkey)
+  - 2000803 (c1260_0002 - Folding Screen Monkey)
   - region 2002869 (稚児猿_PY23)
   - region 2002898 (稚児猿_WP1)
   - region 2002827 (稚児猿_ＣＰY11_12)
-  - 2000804 (c1260_0003 - Folding Screen Monkey - not random)
+  - 2000804 (c1260_0003 - Folding Screen Monkey)
   - region 2002571 (稚児猿_見え猿_リスポン位置)
   - 2000805 (c1250_0001 - Valley Monkey)
   - 2000806 (c1250_0002 - Valley Monkey)
@@ -12307,9 +13442,20 @@ EnemyEvents:
   - + IF Character Dead/Alive (Result Condition Group = 0, Target Entity ID = X0_4*, Desired Life State = 1, Comparison Type = 0, Number of Target Characters = 1)
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005940
-  Comment: Monkeys moving around
+  Comment: Warping monkeys if they fall off. The three warp locations are center island, back left top, and back right hallway. But some enemies are very difficult to fight on the center, so make it random.
   Template:
   - Type: loc
+    Remove: 2002551; 2002552; IF Character Has SpEffect (-3,0,5023,1,0,1)
+    Add:
+    - Cmd: Batch Set Event Flags (12005955,12005957,0)
+      After: IF Condition Group (0,1,-1)
+    # Note that demon of hatred will get trapped in the 3rd location (first event flag). But it will rarely happen that we get two... right...
+    - Cmd: Randomly Set Event Flag In Range (12005955,12005957,1)
+      After: IF Condition Group (0,1,-1)
+    - Cmd: IF Event Flag (-3,1,0,12005955)
+      Before: GOTO IF Condition Group State (Uncompiled) (1,1,-3)
+    - Cmd: IF Event Flag (-2,1,0,12005956)
+      Before: GOTO IF Condition Group State (Uncompiled) (0,1,-2)
   DebugInfo:
   - region 2002572 (稚児猿_ダメージ落下以外でワープで復帰①)
   - region 2002573 (稚児猿_ダメージ落下以外でワープで復帰②)
@@ -12318,10 +13464,10 @@ EnemyEvents:
   - region 2002898 (稚児猿_WP1)
   - region 2002869 (稚児猿_PY23)
   - region 2002858 (稚児猿_P22)
-  - 2000801 (c1260_0000 - Folding Screen Monkey - not random)
-  - 2000802 (c1260_0001 - Folding Screen Monkey - not random)
-  - 2000803 (c1260_0002 - Folding Screen Monkey - not random)
-  - 2000804 (c1260_0003 - Folding Screen Monkey - not random)
+  - 2000801 (c1260_0000 - Folding Screen Monkey)
+  - 2000802 (c1260_0001 - Folding Screen Monkey)
+  - 2000803 (c1260_0002 - Folding Screen Monkey)
+  - 2000804 (c1260_0003 - Folding Screen Monkey)
   - 2000805 (c1250_0001 - Valley Monkey)
   - 2000806 (c1250_0002 - Valley Monkey)
   - 2000807 (c1250_0003 - Valley Monkey)
@@ -12403,6 +13549,8 @@ EnemyEvents:
   Comment: Okami warrior initialization
   Template:
   - Type: loc
+    Entity: 2500406
+    Name: entity
   DebugInfo:
   - 2500406 (c1310_0006 - Okami Warrior)
   - region 2502345 (Event_Box_蹴鞠BGM)
@@ -12999,21 +14147,26 @@ EnemyEvents:
   - Set Area Gparam Sub ID (Area ID = 25, Block ID = 0, Gparam Sub ID = 0, Change Time (s) = 6)
   - Set Area CameraSetParam SubID (CameraSetParam SubID = -1)
 - ID: 12505960
-  Comment: Start of corrupted monk fight. Immortality is managed elsewhere, so add it explicitly here, since it's a boss
+  Comment: Start true monk. Immortality is managed elsewhere, so add it explicitly here, since it's a boss
   Template:
   - Type: start
     Entity: 2500850
     Remove: Force Animation Playback
+    Camera: 550
+    Name: entity
     Add:
     - Cmd: Set Character Immortality (2500850,1)
   - Type: multichr
     Entity: 2500850
     DefeatFlag: 9309
-    Remove: 2500850; Set Area CameraSetParam SubID; Display Boss Health Bar; Set Event Flag
+    Remove: Set Area CameraSetParam SubID; Display Boss Health Bar; Set Event Flag
+    RemoveDupe: Change Character Enable State; Set Character Animation State; Force Character Death; END Unconditionally (0)
+    Regions:
+    - event dist10 2502850
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   - 2500851 (c5005_0000 - Corrupted Monk Illusion)
-  - 2500852 (c5001_0000 - Headless Ape's Centipede)
+  - 2500852 (c5001_0000 - Immortal Centipede)
   - 2500853 (c5005_0001 - Corrupted Monk Illusion)
   - 2500854 (c5005_0002 - Corrupted Monk Illusion)
   - region 2502850 (event_破戒僧登場領域)
@@ -13051,6 +14204,7 @@ EnemyEvents:
   - Type: multichr
     Entity: 2500850
     DefeatFlag: 9309
+    # ProgressFlag: 12505952
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   - 2500851 (c5005_0000 - Corrupted Monk Illusion)
@@ -13069,11 +14223,12 @@ EnemyEvents:
   - + Change Character Enable State (Entity ID = 2500854*, Disabled/Enabled = 1)
   - + Set Character Animation State (Entity ID = 2500854*, Disabled/Enabled = 1)
 - ID: 12505962
-  Comment: speffect interaction, last phase
+  Comment: speffect interaction, second-to-last phase
   Template:
   - Type: chr
     Entity: 2500850
     DefeatFlag: 9309
+    # ProgressFlag: 12505952 12505953
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   DebugCommands:
@@ -13097,6 +14252,8 @@ EnemyEvents:
   - Type: chr
     Entity: 2500850
     DefeatFlag: 9309
+    Deathblow: 2500850
+    # ProgressFlag: 12505953 12505954
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   DebugCommands:
@@ -13115,6 +14272,7 @@ EnemyEvents:
   - Type: chr
     Entity: 2500850
     DefeatFlag: 9309
+    # ProgressFlag: 12505954 12505955
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   DebugCommands:
@@ -13132,9 +14290,10 @@ EnemyEvents:
   - Type: multichr
     Entity: 2500850
     DefeatFlag: 9309
+    RemoveDupe: 12505956
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
-  - 2500852 (c5001_0000 - Headless Ape's Centipede)
+  - 2500852 (c5001_0000 - Immortal Centipede)
   DebugCommands:
   - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9309)
   - + IF Character Has Event Message (Result Condition Group = 0, Target Entity ID = 2500850*, Target Event Message ID = 10, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
@@ -13147,14 +14306,10 @@ EnemyEvents:
 - ID: 12505970
   Comment: Illusions spawning and attacking. PC regions 6 and 8 apply for X12-X32 (0-2), and 7 and 9 apply to X36-X56 (3-5).
   Template:
-  - Type: multichr
+  - Type: multichronly
     Entity: 2500850
     DefeatFlag: 9309
     Remove: Issue Short Warp Request
-    #Regions:
-    #- arenapartition 2502856 2502857
-    #- inside 2502856 2502860 2502861 2502862
-    #- inside 2502857 2502863 2502864 2502865
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   - region 2502856 (event_破戒僧_幻術_PC位置判定用_1)
@@ -13255,7 +14410,10 @@ EnemyEvents:
   - Type: chr
     Entity: 2500850
     DefeatFlag: 9309
-    Remove: IF In/Outside Area
+    Regions:
+    - event dist-6 2502854
+    #Remove: IF In/Outside Area
+    #RemoveDupe: Set SpEffect; Set Character Animation State
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   DebugCommands:
@@ -13272,13 +14430,14 @@ EnemyEvents:
   - + Set Character Animation State (Entity ID = 2500850*, Disabled/Enabled = 1)
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505981
-  Comment: Warp monk to a specific place during phase 2 illusion part
+  Comment: Warp monk to a specific place during phase 2 illusion part. Except maybe leave her in place for more strategy with first deathblow.
   Template:
   - Type: chr
     Entity: 2500850
     DefeatFlag: 9309
-    Regions:
-    - event arenapoint 2502888
+    Remove: Issue Short Warp Request
+    #Regions:
+    #- event arenapoint 2502888
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   - region 2502888 (event_幻術_本体ワープポイント02_中央)
@@ -13349,7 +14508,8 @@ EnemyEvents:
 - ID: 12505984
   Comment: speffect management for illusions
   Template:
-  - Type: chr
+  - Type: multichronly
+    Entity: 2500850
   DebugInfo:
   - 2500851 (c5005_0000 - Corrupted Monk Illusion)
   - 2500853 (c5005_0001 - Corrupted Monk Illusion)
@@ -13372,13 +14532,16 @@ EnemyEvents:
   - Type: multichr
     Entity: 2500850
     DefeatFlag: 9309
-    Remove: Force Animation Playback; Set Map Ceremony
+    Remove: Set Map Ceremony
+    #Add:
+    #- Cmd: WAIT Fixed Time (Frames) (1)
+    #- Cmd: Force Animation Playback (2500850,21000,1,0,0,0,1)
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   - 2500851 (c5005_0000 - Corrupted Monk Illusion)
   - 2500853 (c5005_0001 - Corrupted Monk Illusion)
   - 2500854 (c5005_0002 - Corrupted Monk Illusion)
-  - 2500852 (c5001_0000 - Headless Ape's Centipede)
+  - 2500852 (c5001_0000 - Immortal Centipede)
   DebugCommands:
   - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9309)
   - Set Map Ceremony (Area ID = 25, Block ID = 0, Ceremony ID = 10)
@@ -13458,9 +14621,10 @@ EnemyEvents:
   - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
   - END Unconditionally (Execution End Type = 1)
 - ID: 20004106
-  Comment: Activating character AI and disabling invincibility upon entering certain regions
+  Comment: Activating character AI and disabling invincibility upon entering certain regions (phantoms). But remove invincibility to allow bosses to go there.
   Template:
-  - Type: loc
+  - Type: common
+    Remove: Set Character Invincibility
   DebugInfo:
   - 1500600 (c1450_0000 - Nightjar Ninja)
   - region 1502420 (Event_Box：復讐霊領域_00_霧の森の入口1)
@@ -13527,9 +14691,10 @@ EnemyEvents:
   - + Set Character Invincibility (Entity ID = X4_4*, Disabled/Enabled = 0)
   - END Unconditionally (Execution End Type = 0)
 - ID: 20004107
-  Comment: Enabling/disabling AI and invincibility, but based on drawgroup state
+  Comment: Enabling/disabling AI and invincibility, but based on drawgroup state. Perhaps also phantoms
   Template:
-  - Type: loc
+  - Type: common
+    Remove: Set Character Invincibility
   DebugInfo:
   - group 1505211 [1500608 (c1450_0008 - Nightjar Ninja), 1500609 (c1450_0009 - Nightjar Ninja), 1500610 (c1450_0010 - Nightjar Ninja)]
   - 1500490 (c1070_0000 - Shura Samurai)
@@ -15306,9 +16471,10 @@ EnemyEvents:
   - + IF Character AI State (Result Condition Group = 0, Target Entity ID = X0_4*, AI State = 3, Comparison Type = 0, Number of Target Characters = 1)
   - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = 5000)
 - ID: 20005330
-  Comment: Manages music for minibosses
+  Comment: Manages music and health bar display for minibosses
   Template:
-  - Type: loc
+  - Type: commonarg
+    Name: X0 X4
   DebugInfo:
   - 1000300 (c1070_0000 - Shura Samurai)
   - 1000301 (c1070_0001 - Shura Samurai)
@@ -16238,6 +17404,7 @@ EnemyEvents:
   Comment: NPC part for Shigekichi
   Template:
   - Type: chr
+  - Type: common
   DebugInfo:
   - 1100480 (c1070_0000 - Shura Samurai)
   DebugInit:
@@ -16425,7 +17592,7 @@ EnemyEvents:
   - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = 300340)
   - END Unconditionally (Execution End Type = 1)
 - ID: 20005433
-  Comment: Headless warping event, but based on player area. For now, will just avoid warping
+  Comment: Headless warping event, but based on player area. Right now dist replace is not possible on common events, but do this eventually.
   Template:
   - Type: chr
   DebugInfo:

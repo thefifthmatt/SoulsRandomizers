@@ -7,7 +7,7 @@ namespace RandomizerCommon
     {
         private static Properties.Settings settings = Properties.Settings.Default;
 
-        public void Randomize(RandomizerOptions options, Action<string> notify=null, string outPath = null, bool sekiro=false)
+        public void Randomize(RandomizerOptions options, Action<string> notify=null, string outPath = null, bool sekiro=false, Preset preset=null)
         {
             // sekiro = false;
             string distDir = sekiro ? "dists" : "dist";
@@ -39,7 +39,22 @@ namespace RandomizerCommon
             }
             GameData game = new GameData(distDir, sekiro);
             game.Load(modDir);
+            // game.SearchParamInt(20000); return;
             if (modDir != null) Console.WriteLine();
+
+            // Prologue
+            if (options["enemy"])
+            {
+                Console.WriteLine("Ctrl+F 'Boss placements' or 'Miniboss placements' or 'Basic placements' to see enemy placements.");
+            }
+            if (options["item"])
+            {
+                Console.WriteLine("Ctrl+F 'Hints' to see item placement hints, or Ctrl+F for a specific item name.");
+            }
+            Console.WriteLine();
+#if !DEBUG
+            for (int i = 0; i < 50; i++) Console.WriteLine();
+#endif
 
             // Slightly different high-level algorithm for each game. As always, can try to merge more in the future.
             if (sekiro)
@@ -50,7 +65,7 @@ namespace RandomizerCommon
                 if (options["enemy"])
                 {
                     notify?.Invoke("Randomizing enemies");
-                    locations = new EnemyRandomizer(game, events).Run(options);
+                    locations = new EnemyRandomizer(game, events).Run(options, preset);
                     if (!options["enemytoitem"])
                     {
                         locations = null;
@@ -65,7 +80,7 @@ namespace RandomizerCommon
                     anns.Load(options);
                     anns.AddEnemyLocations(locations);
                     Permutation perm = new Permutation(game, data, anns, explain: false);
-                    perm.Logic(new Random(seed), options);
+                    perm.Logic(new Random(seed), options, preset);
 
                     notify?.Invoke("Editing game files");
                     PermutationWriter write = new PermutationWriter(game, data, anns, events);
@@ -96,7 +111,7 @@ namespace RandomizerCommon
                 notify?.Invoke("Randomizing");
                 Random random = new Random(seed);
                 Permutation permutation = new Permutation(game, data, ann, explain: false);
-                permutation.Logic(random, options);
+                permutation.Logic(random, options, null);
 
                 notify?.Invoke("Editing game files");
                 random = new Random(seed + 1);

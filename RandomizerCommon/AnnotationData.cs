@@ -121,7 +121,7 @@ namespace RandomizerCommon
                 {
                     if (item.ConfigName == null)
                     {
-                        item.ConfigName = Regex.Replace(item.Name.ToLower(), @"[^a-z]", "");
+                        item.ConfigName = Regex.Replace(item.Name.ToLowerInvariant(), @"[^a-z]", "");
                     }
                     item.Key = itemForAnnotation(item);
                     if (!configItems.NoConfigNames)
@@ -516,7 +516,7 @@ namespace RandomizerCommon
         }
         public string GetLocationHint(SlotKey key, SortedSet<string> specialLocation=null)
         {
-            Func<string, string> capitalize = s => $"{s[0]}".ToUpper() + s.Substring(1);
+            Func<string, string> capitalize = s => $"{s[0]}".ToUpperInvariant() + s.Substring(1);
             ItemLocation loc = data.Location(key);
             LocationScope scope = loc.LocScope;
             List<SlotKey> sources = data.Location(scope);
@@ -837,6 +837,10 @@ namespace RandomizerCommon
                             TagList.Add("missable");
                         }
                     }
+                }
+                if (TagList.Contains("carp") && !opt["carpsanity"])
+                {
+                    TagList.Add("norandom");
                 }
                 // Boss implies late, unless specified otherwise
                 if (TagList.Contains("boss") && !TagList.Contains("early") && !TagList.Contains("mid"))

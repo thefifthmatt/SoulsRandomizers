@@ -1,0 +1,3 @@
+Description: "The same as regular randomization but prevent Demon of Hatred from appearing, duplicating a different boss instead."
+
+RemoveSource: Demon of Hatred

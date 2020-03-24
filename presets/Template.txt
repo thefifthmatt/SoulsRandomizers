@@ -1,0 +1,1312 @@
+# This is a default template for a preset. It uses YAML as a configuration format.
+# See README.txt for more info, and other examples in this directory.
+# Using a preset is very likely to completely change a seed from what it was previously.
+
+# This will be shown in the UI upon selecting the preset.
+Description: "Custom preset"
+
+# Whether to enable all pools in the UI upon selecting this preset
+RecommendFullRandomization: false
+# Whether to disable all progression options in the UI upon selecting this preset
+RecommendNoEnemyProgression: false            
+
+# Switch for "oops all" mode. In this mode, every enemy in the game (when allowed by randomization settings) is turned into a specific enemy or enemy type.
+# See README.txt for all allowed names.
+# This option is equivalent to changing all default pools (when they are randomized) to that enemy, but they can be overridden per-pool below.
+OopsAll: none
+
+# More specific configurations for which enemies can go to different categories of targets.
+# Weights can be used to select multiple different alternatives within a pool.
+# Each pool group can consist of several names separated by a semicolon. By default, selection will be random across
+# all eligible enemies, but you can specify 'RandomByType: true' to select randomly from the list itself.
+# Additionally, placements will be restricted or disabled entirely if those randomizer options are enabled/disabled.
+# See the example presets.
+
+# Which enemies can be used as sources for bosses?
+# The default for this is other bosses.
+# There are 16 bosses in the game.
+Boss:
+- Weight: 100
+  Pool: default
+
+# Which enemies can be used as sources for minibosses?
+# The default for this is other minibosses.
+# There are 32 minibosses in the game (plus 3 headless).
+Miniboss:
+- Weight: 100
+  Pool: default
+
+# Which enemies can be used as sources for all other enemies?
+# The default for this is other regular enemies.
+# There are ~1100 basic enemies in the game.
+Basic:
+- Weight: 100
+  Pool: default
+
+# Which enemies can be used as sources for adds in miniboss fights?
+# The default for this is the same pool as 'basic' but with most multiphase enemies taken out.
+Add:
+- Weight: 100
+  Pool: default
+
+# Which enemies can be used as sources for folding screen monkeys?
+# The default for this early game minibosses, although it is treated as a separate pool from the miniboss pool.
+FoldingMonkey:
+- Weight: 100
+  Pool: default
+
+# When turning a regular enemy into a boss or miniboss, whether to add an appropriate number of phases and HP to match
+BuffBasicEnemiesAsBosses: true
+
+# A semicolon-separated list of enemies or enemy types to not randomize (assign to themselves).
+# It is taken out of its default pool and also custom pools in this case.
+# It can still be assigned to individual enemies below.
+DontRandomize: none
+
+# A semicolon-separated list of enemies or enemy types to remove from all pools.
+# It can still be assigned to individual enemies below.
+# This is overridden by directives to not randomized enemies.
+RemoveSource: none
+
+# Specific assignments for individual randomizable enemies. This overrides any of the above configuration.
+# To use it, change "any" to something else, which specifies which enemy will replace it.
+# This can be the name or number of another enemy; see README for all allowed names.
+# Using a boss as another boss, or a miniboss as another miniboss, takes the source enemy out of the default pool for that category, so each enemy will still be used once if possible. However, the enemy can still appear more than once if used in a custom pool.
+
+# Finally there are some special target names:
+# any: This is the default and allows any enemy in the pool to appear there.
+# norandom: Assigns an enemy to itself. This has the same effect as adding the enemy name to DontRandomize above.
+
+Enemies:
+  # Bosses
+  # Hirata Estate
+  Owl (Father) 1000900: any
+  Lady Butterfly 1 1000800: any
+  Lady Butterfly 2 1000810: any
+  # Ashina Outskirts
+  Gyoubu Oniwa 1100800: any
+  Demon of Hatred 1100900: any
+  # Ashina Castle
+  Great Shinobi Owl 1110850: any
+  Isshin Ashina 1110920: any
+  Genichiro Ashina 1110800: any
+  Genichiro, Way of Tomoe (Lightning) 1110801: any
+  Emma 1110900: any
+  # Ashina Reservoir
+  Genichiro Ashina (Tutorial) 1120800: any
+  Sword Saint Isshin 1120860: any
+  Genichiro, Way of Tomoe (Mortal Blade) 1120830: any
+  # Ashina Depths
+  Corrupted Monk 1500800: any
+  # Sunken Valley
+  Guardian Ape 1700800: any
+  Headless Ape 1700850: any
+  # Senpou Temple
+  Folding Screen Monkey (Seeing) 2000801: any
+  Folding Screen Monkey (Hearing) 2000802: any
+  Folding Screen Monkey (Speaking) 2000803: any
+  Folding Screen Monkey (Invisible) 2000804: any
+  # Fountainhead Palace
+  True Monk 2500850: any
+
+  # Minibosses
+  # Hirata Estate
+  Shinobi Hunter 1000330: any
+  Juzou the Drunkard 1000300: any
+  Juzou the Drunkard 2 1000301: any
+  Lone Shadow Masanaga the Spear-Bearer (Hirata) 1000353: any
+  # Ashina Outskirts
+  General Naomori Kawarada 1100300: any
+  General Tenzen Yamauchi 1100301: any
+  Shigekichi of the Red Guard 1100480: any
+  Headless 1100330: any
+  Chained Ogre 1100310: any
+  # Ashina Castle
+  General Kuranosuke Matsomoto 1110410: any
+  Blazing Bull 1110440: any
+  Ashina Elite Jinsuke Saze 1110504: any
+  Ashina Elite Ujinari Mizuo 1110511: any
+  Lone Shadow Vilehand 1110305: any
+  Lone Shadow Masanaga the Spear-Bearer (Ashina Castle) 1110316: any
+  Chained Ogre 1110610: any
+  # Ashina Reservoir
+  Leader Shigenori Yamauchi 1120250: any
+  Seven Ashina Spears 2 1120521: any
+  Seven Ashina Spears 1 1120530: any
+  Lone Shadow Longswordsman 1120300: any
+  # Abandoned Dungeon
+  Shichimen Warrior 1300200: any
+  # Ashina Depths
+  Tokujiro the Glutton 1500490: any
+  Mist Noble 1500200: any
+  Headless 1500680: any
+  O'Rin 1500690: any
+  # Sunken Valley
+  Long-arm Centipede Giraffe 1700425: any
+  Shichimen Warrior 1700520: any
+  Snake Eyes Shirafuji 1700200: any
+  Snake Eyes Shirahagi 1700201: any
+  Headless 1700500: any
+  # Senpou Temple
+  Long-arm Centipede Sen'un 2000279: any
+  Armored Warrior 2000400: any
+  # Fountainhead Palace
+  Shichimen Warrior 2500580: any
+  Okami Leader Shizu 2500406: any
+  Sakura Bull of the Palace 2500570: any
+
+  # Basic
+  # Hirata Estate
+  Shinobi Hunter 1000331: any
+  Shinobi Hunter 1000332: any
+  Shinobi Hunter 1000333: any
+  Shinobi Hunter 1000334: any
+  Hound 1000400: any
+  Hound 1000401: any
+  Hound 1000402: any
+  Hound 1000403: any
+  Hound 1000404: any
+  Hound 1000407: any
+  Hound 1000408: any
+  Taro Troop 1000360: any
+  Taro Troop 1000361: any
+  Taro Troop 1000362: any
+  Taro Troop 1000363: any
+  Gamefowl 1000370: any
+  Gamefowl 1000371: any
+  Gamefowl 1000372: any
+  Gamefowl 1000373: any
+  Gamefowl 1000374: any
+  Lone Shadow 1000350: any
+  Lone Shadow 1000351: any
+  Lone Shadow 1000352: any
+  Lone Shadow 1000354: any
+  Lone Shadow 1000355: any
+  Bandit 1000200: any
+  Bandit 1000201: any
+  Bandit 1000202: any
+  Bandit 1000203: any
+  Bandit 1000204: any
+  Bandit 1000205: any
+  Bandit 1000206: any
+  Bandit 1000207: any
+  Bandit 1000208: any
+  Bandit 1000209: any
+  Bandit 1000210: any
+  Bandit 1000211: any
+  Bandit 1000212: any
+  Bandit 1000213: any
+  Bandit 1000214: any
+  Bandit 1000215: any
+  Bandit 1000216: any
+  Bandit 1000217: any
+  Bandit 1000218: any
+  Bandit 1000219: any
+  Bandit 1000220: any
+  Bandit 1000221: any
+  Bandit 1000222: any
+  Bandit 1000223: any
+  Bandit 1000224: any
+  Bandit 1000225: any
+  Bandit 1000226: any
+  Bandit 1000227: any
+  Bandit 1000228: any
+  Bandit 1000229: any
+  Bandit 1000230: any
+  Bandit 1000232: any
+  Bandit 1000233: any
+  Bandit 1000234: any
+  Bandit 1000236: any
+  Bandit 1000237: any
+  Bandit 1000238: any
+  Bandit 1000239: any
+  Bandit 1000240: any
+  Bandit 1000241: any
+  Bandit 1000242: any
+  Bandit 1000243: any
+  Bandit 1000244: any
+  Bandit 1000245: any
+  Bandit 1000246: any
+  Bandit 1000247: any
+  Bandit 1000248: any
+  Bandit 1000249: any
+  Bandit 1000250: any
+  Bandit 1000251: any
+  Bandit 1000252: any
+  Bandit 1000253: any
+  Bandit 1000254: any
+  Bandit 1000255: any
+  Bandit 1000256: any
+  Bandit 1000257: any
+  Bandit 1000258: any
+  Bandit 1000259: any
+  Bandit 1000260: any
+  Bandit 1000261: any
+  Bandit 1000262: any
+  Bandit 1000263: any
+  Bandit 1000264: any
+  Bandit 1000265: any
+  Bandit 1000266: any
+  Bandit 1000267: any
+  Bandit 1000269: any
+  Bandit 1000270: any
+  Bandit 1000271: any
+  Bandit 1000272: any
+  Bandit 1000273: any
+  Bandit 1000274: any
+  Bandit 1000275: any
+  Bandit 1000276: any
+  Bandit 1000277: any
+  Bandit 1000278: any
+  Bandit 1000279: any
+  Bandit 1000281: any
+  Bandit 1000282: any
+  Bandit 1000283: any
+  Bandit 1000284: any
+  Bandit 1000285: any
+  Bandit 1000288: any
+  Bandit 1000289: any
+  Bandit 1000290: any
+  Bandit 1000291: any
+  Bandit 1000292: any
+  Bandit 1000293: any
+  Bandit 1000294: any
+  # Ashina Outskirts
+  Ashina Soldier 1100200: any
+  Ashina Soldier 1100201: any
+  Ashina Soldier 1100202: any
+  Ashina Soldier 1100203: any
+  Ashina Soldier 1100204: any
+  Ashina Soldier 1100205: any
+  Ashina Soldier 1100206: any
+  Ashina Soldier 1100207: any
+  Ashina Soldier 1100208: any
+  Ashina Soldier 1100209: any
+  Ashina Soldier 1100211: any
+  Ashina Soldier 1100212: any
+  Ashina Soldier 1100214: any
+  Ashina Soldier 1100215: any
+  Ashina Soldier 1100216: any
+  Ashina Soldier 1100217: any
+  Ashina Soldier 1100218: any
+  Ashina Soldier 1100221: any
+  Ashina Soldier 1100225: any
+  Ashina Soldier 1100226: any
+  Ashina Soldier 1100227: any
+  Ashina Soldier 1100228: any
+  Ashina Soldier 1100229: any
+  Ashina Soldier 1100230: any
+  Ashina Soldier 1100233: any
+  Ashina Soldier 1100234: any
+  Ashina Soldier 1100235: any
+  Ashina Soldier 1100236: any
+  Ashina Soldier 1100238: any
+  Ashina Soldier 1100239: any
+  Ashina Soldier 1100243: any
+  Ashina Soldier 1100244: any
+  Ashina Soldier 1100245: any
+  Ashina Soldier 1100246: any
+  Ashina Soldier 1100247: any
+  Ashina Soldier 1100248: any
+  Ashina Soldier 1100249: any
+  Ashina Soldier 1100250: any
+  Ashina Soldier 1100251: any
+  Ashina Soldier 1100252: any
+  Ashina Soldier 1100254: any
+  Gecko 1100321: any
+  Gecko 1100322: any
+  Gecko 1100323: any
+  Sentry 1100341: any
+  Sentry 1100342: any
+  Hound 1100350: any
+  Hound 1100351: any
+  Hound 1100352: any
+  Taro Troop 1100360: any
+  Taro Troop 1100361: any
+  Sunken Valley Clan 1100370: any
+  Gamefowl 1100380: any
+  Gamefowl 1100381: any
+  Gamefowl 1100382: any
+  Gamefowl 1100383: any
+  Assassin (Senpou) 1100450: any
+  Assassin (Interior Ministry) 1100452: any
+  Assassin (Interior Ministry) 1100453: any
+  Assassin (Interior Ministry) 1100454: any
+  Assassin (Interior Ministry) 1100455: any
+  Assassin (Interior Ministry) 1100456: any
+  Assassin (Interior Ministry) 1100457: any
+  Assassin (Interior Ministry) 1100458: any
+  Red Guard 1100405: any
+  Red Guard 1100406: any
+  Red Guard 1100408: any
+  Red Guard 1100409: any
+  Red Guard 1100410: any
+  Red Guard 1100411: any
+  Red Guard 1100413: any
+  Red Guard 1100414: any
+  Red Guard 1100415: any
+  Red Guard 1100416: any
+  Red Guard 1100417: any
+  Red Guard 1100418: any
+  Red Guard 1100419: any
+  Red Guard 1100420: any
+  Red Guard 1100421: any
+  Red Guard 1100422: any
+  Red Guard 1100423: any
+  Red Guard 1100424: any
+  Red Guard 1100425: any
+  Red Guard 1100427: any
+  Red Guard 1100429: any
+  Red Guard 1100430: any
+  Red Guard 1100431: any
+  Red Guard 1100432: any
+  Red Guard 1100433: any
+  Red Guard 1100434: any
+  Red Guard 1100435: any
+  Red Guard 1100436: any
+  Red Guard 1100437: any
+  Red Guard 1100438: any
+  Chained Ogre 1100312: any
+  # Ashina Castle
+  Ashina Soldier 1110241: any
+  Ashina Soldier 1110242: any
+  Ashina Soldier 1110243: any
+  Ashina Soldier 1110244: any
+  Ashina Soldier 1110246: any
+  Ashina Soldier 1110200: any
+  Ashina Soldier 1110201: any
+  Ashina Soldier 1110282: any
+  Ashina Soldier 1110202: any
+  Ashina Soldier 1110283: any
+  Ashina Soldier 1110203: any
+  Ashina Soldier 1110204: any
+  Ashina Soldier 1110287: any
+  Ashina Soldier 1110680: any
+  Ashina Soldier 1110681: any
+  Ashina Soldier 1110207: any
+  Ashina Soldier 1110210: any
+  Ashina Soldier 1110217: any
+  Ashina Soldier 1110216: any
+  Ashina Soldier 1110211: any
+  Ashina Soldier 1110212: any
+  Ashina Soldier 1110223: any
+  Ashina Soldier 1110224: any
+  Ashina Soldier 1110225: any
+  Ashina Soldier 1110226: any
+  Ashina Soldier 1110227: any
+  Ashina Soldier 1110229: any
+  Ashina Soldier 1110230: any
+  Ashina Soldier 1110231: any
+  Ashina Soldier 1110233: any
+  Ashina Soldier 1110234: any
+  Ashina Soldier 1110235: any
+  Ashina Soldier 1110236: any
+  Ashina Soldier 1110240: any
+  Ashina Soldier 1110248: any
+  Ashina Soldier 1110254: any
+  Ashina Soldier 1110255: any
+  Ashina Soldier 1110256: any
+  Ashina Soldier 1110258: any
+  Ashina Soldier 1110260: any
+  Ashina Soldier 1110261: any
+  Ashina Soldier 1110262: any
+  Ashina Soldier 1110264: any
+  Ashina Soldier 1110265: any
+  Ashina Soldier 1110266: any
+  Ashina Soldier 1110267: any
+  Ashina Soldier 1110269: any
+  Ashina Soldier 1110271: any
+  Ashina Soldier 1110272: any
+  Ashina Soldier 1110273: any
+  Ashina Soldier 1110274: any
+  Ashina Soldier 1110276: any
+  Ashina Soldier 1110277: any
+  Ashina Soldier 1110278: any
+  Ashina Soldier 1110279: any
+  Ashina Soldier 1110280: any
+  Ashina Soldier 1110285: any
+  Ashina Soldier 1110286: any
+  Ashina Soldier 1110288: any
+  Ashina Soldier 1110289: any
+  Ashina Soldier 1110290: any
+  Ashina Soldier 1110291: any
+  Ashina Soldier 1110292: any
+  Ashina Soldier 1110293: any
+  Ashina Soldier 1110294: any
+  Ashina Soldier 1110295: any
+  Ashina Soldier 1110296: any
+  Ashina Soldier 1110297: any
+  Ashina Soldier 1110298: any
+  Ashina Soldier 1110299: any
+  Ashina Soldier 1110686: any
+  Samurai General 1110411: any
+  Samurai General 1110412: any
+  Samurai General 1110413: any
+  Samurai General 1110414: any
+  Samurai General 1110415: any
+  Shinobi Hunter 1110460: any
+  Shinobi Hunter 1110461: any
+  Shinobi Hunter 1110462: any
+  Gecko 1110580: any
+  Gecko 1110581: any
+  Gecko 1110582: any
+  Gecko 1110583: any
+  Gecko 1110585: any
+  Gecko 1110586: any
+  Gecko 1110587: any
+  Gecko 1110588: any
+  Gecko 1110589: any
+  Gecko 1110590: any
+  Gecko 1110591: any
+  Gecko 1110592: any
+  Gecko 1110593: any
+  Gecko 1110594: any
+  Gecko 1110595: any
+  Gecko 1110596: any
+  Old Maid 1110630: any
+  Old Maid 1110631: any
+  Sentry 1110670: any
+  Hound 1110400: any
+  Hound 1110401: any
+  Hound 1110402: any
+  Hound 1110330: any
+  Hound 1110331: any
+  Hound 1110403: any
+  Hound 1110406: any
+  Hound 1110405: any
+  Hound 1110404: any
+  Hound 1110332: any
+  Hound 1110333: any
+  Hound 1110334: any
+  Hound 1110407: any
+  Hound 1110408: any
+  Hound 1110409: any
+  Hound 1110335: any
+  Hound 1110336: any
+  Hound 1110337: any
+  Hound 1110338: any
+  Hound 1110339: any
+  Taro Troop 1110430: any
+  Taro Troop 1110431: any
+  Taro Troop 1110432: any
+  Taro Troop 1110433: any
+  Taro Troop 1110434: any
+  Taro Troop 1110435: any
+  Sunken Valley Clan 1110600: any
+  Sunken Valley Clan 1110601: any
+  Valley Monkey 1110450: any
+  Valley Monkey 1110451: any
+  Valley Monkey 1110452: any
+  Valley Monkey 1110453: any
+  Valley Monkey 1110456: any
+  Valley Monkey 1110457: any
+  Valley Monkey 1110458: any
+  Valley Monkey 1110459: any
+  Valley Monkey 1110469: any
+  Valley Monkey 1110470: any
+  Valley Monkey 1110464: any
+  Valley Monkey 1110465: any
+  Valley Monkey 1110466: any
+  Valley Monkey 1110467: any
+  Assassin (Senpou) 1110640: any
+  Assassin (Senpou) 1110645: any
+  Assassin (Senpou) 1110646: any
+  Assassin (Senpou) 1110647: any
+  Assassin (Interior Ministry) 1110642: any
+  Assassin (Interior Ministry) 1110643: any
+  Assassin (Interior Ministry) 1110644: any
+  Assassin (Interior Ministry) 1110648: any
+  Assassin (Interior Ministry) 1110649: any
+  Assassin (Interior Ministry) 1110653: any
+  Assassin (Interior Ministry) 1110654: any
+  Fencer 1110500: any
+  Fencer 1110501: any
+  Fencer 1110502: any
+  Fencer 1110503: any
+  Fencer 1110505: any
+  Fencer 1110507: any
+  Fencer 1110508: any
+  Fencer 1110509: any
+  Fencer 1110510: any
+  Fencer 1110513: any
+  Fencer 1110514: any
+  Fencer 1110515: any
+  Fencer 1110516: any
+  Nightjar Ninja 1110530: any
+  Nightjar Ninja 1110532: any
+  Nightjar Ninja 1110533: any
+  Nightjar Ninja 1110534: any
+  Kite Nightjar Ninja 1110536: any
+  Nightjar Ninja 1110544: any
+  Nightjar Ninja 1110545: any
+  Nightjar Ninja 1110546: any
+  Nightjar Ninja 1110547: any
+  Nightjar Ninja 1110548: any
+  Kite Nightjar Ninja 1110549: any
+  Nightjar Ninja 1110560: any
+  Nightjar Ninja 1110561: any
+  Nightjar Ninja 1110562: any
+  Nightjar Ninja 1110563: any
+  Nightjar Ninja 1110564: any
+  Nightjar Ninja 1110565: any
+  Exploding Nightjar Ninja 1110566: any
+  Nightjar Ninja 1110567: any
+  Nightjar Ninja 1110569: any
+  Nightjar Ninja 1110570: any
+  Nightjar Ninja 1110571: any
+  Nightjar Ninja 1110572: any
+  Nightjar Ninja 1110573: any
+  Nightjar Ninja 1110575: any
+  Nightjar Ninja 1110576: any
+  Nightjar Ninja 1110577: any
+  Lone Shadow 1110300: any
+  Lone Shadow 1110302: any
+  Lone Shadow 1110303: any
+  Lone Shadow 1110304: any
+  Lone Shadow 1110308: any
+  Lone Shadow 1110309: any
+  Lone Shadow 1110310: any
+  Lone Shadow 1110312: any
+  Lone Shadow 1110317: any
+  Lone Shadow 1110318: any
+  Lone Shadow 1110319: any
+  Lone Shadow 1110321: any
+  Lone Shadow 1110322: any
+  Lone Shadow 1110323: any
+  Lone Shadow 1110324: any
+  Lone Shadow 1110326: any
+  Red Guard 1110355: any
+  Red Guard 1110360: any
+  Red Guard 1110361: any
+  Red Guard 1110351: any
+  Red Guard 1110353: any
+  Red Guard 1110365: any
+  Red Guard 1110371: any
+  Red Guard 1110372: any
+  Red Guard 1110373: any
+  Red Guard 1110374: any
+  Red Guard 1110375: any
+  Red Guard 1110376: any
+  Red Guard 1110377: any
+  Red Guard 1110378: any
+  Red Guard 1110379: any
+  Red Guard 1110381: any
+  # Ashina Reservoir
+  Ashina Soldier 1120350: any
+  Ashina Soldier 1120351: any
+  Ashina Soldier 1120352: any
+  Ashina Soldier 1120353: any
+  Ashina Soldier 1120354: any
+  Ashina Soldier 1120355: any
+  Ashina Soldier 1120356: any
+  Ashina Soldier 1120357: any
+  Ashina Soldier 1120212: any
+  Ashina Soldier 1120213: any
+  Ashina Soldier 1120211: any
+  Ashina Soldier 1120358: any
+  Tutorial Ashina Soldier 1120204: any
+  Tutorial Ashina Soldier 1120201: any
+  Tutorial Ashina Soldier 1120202: any
+  Tutorial Ashina Soldier 1120203: any
+  Tutorial Ashina Soldier 1120205: any
+  Tutorial Ashina Soldier 1120206: any
+  Tutorial Ashina Soldier 1120207: any
+  Tutorial Ashina Soldier 1120208: any
+  Tutorial Ashina Soldier 1120209: any
+  Tutorial Ashina Soldier 1120210: any
+  Samurai General 1120510: any
+  Gecko 1120550: any
+  Gecko 1120551: any
+  Gecko 1120552: any
+  Sentry 1120430: any
+  Hound 1120460: any
+  Hound 1120461: any
+  Taro Troop 1120450: any
+  Taro Troop 1120451: any
+  Assassin (Senpou) 1120422: any
+  Assassin (Senpou) 1120424: any
+  Assassin (Senpou) 1120425: any
+  Assassin (Senpou) 1120426: any
+  # Abandoned Dungeon
+  Ashina Soldier 1300300: any
+  Ashina Soldier 1300301: any
+  Ashina Soldier 1300302: any
+  Ashina Soldier 1300303: any
+  Ashina Soldier 1300304: any
+  Gecko 1300350: any
+  Gecko 1300351: any
+  Aggressive Cricket 1300211: any
+  Passive Cricket 1300212: any
+  Aggressive Cricket 1300215: any
+  Aggressive Cricket 1300216: any
+  Passive Cricket 1300217: any
+  Aggressive Cricket 1300218: any
+  Aggressive Cricket 1300219: any
+  Aggressive Cricket 1300220: any
+  Aggressive Cricket 1300222: any
+  Aggressive Cricket 1300239: any
+  Aggressive Cricket 1300223: any
+  Aggressive Cricket 1300224: any
+  Aggressive Cricket 1300225: any
+  Aggressive Cricket 1300226: any
+  Aggressive Cricket 1300228: any
+  Aggressive Cricket 1300229: any
+  Aggressive Cricket 1300230: any
+  Aggressive Cricket 1300233: any
+  Aggressive Cricket 1300234: any
+  Aggressive Cricket 1300235: any
+  Aggressive Cricket 1300236: any
+  Aggressive Cricket 1300240: any
+  Passive Cricket 1300238: any
+  Test Subject 1300280: any
+  Test Subject 1300281: any
+  Test Subject 1300282: any
+  Test Subject 1300283: any
+  Test Subject 1300284: any
+  Test Subject 1300285: any
+  Test Subject 1300291: any
+  # Ashina Depths
+  Hound 1500510: any
+  Hound 1500511: any
+  Hound 1500512: any
+  Hound 1500513: any
+  Hound 1500514: any
+  Hound 1500515: any
+  Hound 1500516: any
+  Hound 1500517: any
+  Hound 1500518: any
+  Hound 1500519: any
+  Hound 1500520: any
+  Hound 1500521: any
+  Hound 1500522: any
+  Taro Troop (Mibu) 1500482: any
+  Taro Troop (Mibu) 1500480: any
+  Taro Troop (Mibu) 1500481: any
+  Taro Troop (Mibu) 1500483: any
+  Taro Troop (Mibu) 1500484: any
+  Taro Troop (Mibu) 1500485: any
+  Sunken Valley Clan 1500620: any
+  Sunken Valley Clan 1500621: any
+  Sunken Valley Clan 1500622: any
+  Sunken Valley Clan 1500623: any
+  Sunken Valley Clan 1500624: any
+  Sunken Valley Clan 1500626: any
+  Sunken Valley Clan 1500627: any
+  Sunken Valley Clan 1500628: any
+  Snake Eyes 1500636: any
+  Snake Eyes 1500637: any
+  Snake Eyes 1500638: any
+  Gamefowl 1500440: any
+  Gamefowl 1500441: any
+  Gamefowl 1500442: any
+  Gamefowl 1500443: any
+  Gamefowl 1500444: any
+  Gamefowl 1500449: any
+  Gamefowl 1500450: any
+  Gamefowl 1500451: any
+  Gamefowl 1500453: any
+  Valley Monkey 1500640: any
+  Valley Monkey 1500641: any
+  Valley Monkey 1500642: any
+  Valley Monkey 1500643: any
+  Valley Monkey 1500644: any
+  Valley Monkey 1500645: any
+  Valley Monkey 1500646: any
+  Valley Monkey 1500647: any
+  Valley Monkey 1500648: any
+  Fencer 1500616: any
+  Nightjar Ninja 1500600: any
+  Nightjar Ninja 1500601: any
+  Nightjar Ninja 1500602: any
+  Nightjar Ninja 1500603: any
+  Nightjar Ninja 1500604: any
+  Nightjar Ninja 1500605: any
+  Nightjar Ninja 1500606: any
+  Nightjar Ninja 1500607: any
+  Nightjar Ninja 1500608: any
+  Nightjar Ninja 1500609: any
+  Nightjar Ninja 1500610: any
+  Lone Shadow 1500495: any
+  Mibu Villager 1500380: any
+  Mibu Villager 1500301: any
+  Mibu Villager 1500302: any
+  Mibu Villager 1500381: any
+  Mibu Villager 1500347: any
+  Mibu Villager 1500306: any
+  Mibu Villager 1500309: any
+  Mibu Villager 1500311: any
+  Grabbing Mibu Villager 1500260: any
+  Grabbing Mibu Villager 1500261: any
+  Grabbing Mibu Villager 1500264: any
+  Grabbing Mibu Villager 1500265: any
+  Grabbing Mibu Villager 1500266: any
+  Grabbing Mibu Villager 1500267: any
+  Grabbing Mibu Villager 1500268: any
+  Grabbing Mibu Villager 1500271: any
+  Grabbing Mibu Villager 1500273: any
+  Grabbing Mibu Villager 1500274: any
+  Grabbing Mibu Villager 1500275: any
+  Grabbing Mibu Villager 1500276: any
+  Grabbing Mibu Villager 1500277: any
+  Grabbing Mibu Villager 1500278: any
+  Grabbing Mibu Villager 1500282: any
+  Grabbing Mibu Villager 1500290: any
+  Mibu Villager 1500327: any
+  Mibu Villager 1500329: any
+  Mibu Villager 1500331: any
+  Mibu Villager 1500332: any
+  Mibu Villager 1500333: any
+  Mibu Villager 1500334: any
+  Mibu Villager 1500335: any
+  Mibu Villager 1500336: any
+  Mibu Villager 1500338: any
+  Mibu Villager 1500340: any
+  Mibu Villager 1500342: any
+  Mibu Villager 1500344: any
+  Mibu Villager 1500345: any
+  Mibu Villager 1500346: any
+  Mibu Villager 1500350: any
+  Mibu Villager 1500354: any
+  Mibu Villager 1500357: any
+  Mibu Villager 1500360: any
+  Mibu Villager 1500361: any
+  Mibu Villager 1500366: any
+  Mibu Villager 1500367: any
+  Mibu Villager 1500368: any
+  Mibu Villager 1500369: any
+  Mibu Villager 1500372: any
+  Mibu Villager 1500374: any
+  Mibu Villager 1500379: any
+  Mibu Villager 1500376: any
+  Mibu Villager 1500377: any
+  Mibu Villager 1500337: any
+  Mibu Villager 1500363: any
+  Mibu Villager 1500371: any
+  Mibu Villager 1500375: any
+  Mibu Villager 1500356: any
+  Mibu Villager 1500341: any
+  Mibu Villager 1500339: any
+  Mibu Villager 1500328: any
+  Mibu Villager 1500330: any
+  Mibu Villager 1500359: any
+  Mibu Villager 1500304: any
+  Mibu Villager 1500300: any
+  Mibu Villager 1500370: any
+  Mibu Villager 1500378: any
+  Mibu Villager 1500382: any
+  Bandit 1500400: any
+  Bandit 1500401: any
+  Bandit 1500402: any
+  Bandit 1500403: any
+  Bandit 1500404: any
+  Bandit 1500405: any
+  Bandit 1500406: any
+  Bandit 1500410: any
+  Bandit 1500411: any
+  Bandit 1500412: any
+  Bandit 1500414: any
+  Bandit 1500415: any
+  Bandit 1500416: any
+  Bandit 1500417: any
+  Bandit 1500418: any
+  Bandit 1500419: any
+  Bandit 1500420: any
+  Bandit 1500421: any
+  Bandit 1500422: any
+  Bandit 1500423: any
+  Bandit 1500424: any
+  Bandit 1500425: any
+  Bandit 1500431: any
+  Bandit 1500432: any
+  Bandit 1500433: any
+  Bandit 1500434: any
+  Bandit 1500435: any
+  Bandit 1500436: any
+  Bandit 1500437: any
+  Bandit 1500438: any
+  Bandit 1500439: any
+  # Sunken Valley
+  Centipede 1700426: any
+  Centipede 1700427: any
+  Centipede 1700428: any
+  Gecko 1700400: any
+  Gecko 1700224: any
+  Gecko 1700225: any
+  Gecko 1700410: any
+  Gecko 1700411: any
+  Gecko 1700412: any
+  Gecko 1700413: any
+  Gecko 1700414: any
+  Gecko 1700415: any
+  Gecko 1700416: any
+  Gecko 1700390: any
+  Gecko 1700391: any
+  Gecko 1700408: any
+  Gecko 1700393: any
+  Gecko 1700399: any
+  Gecko 1700409: any
+  Gecko 1700226: any
+  Gecko 1700227: any
+  Gecko 1700228: any
+  Gecko 1700229: any
+  Gecko 1700230: any
+  Gecko 1700423: any
+  Gecko 1700403: any
+  Gecko 1700404: any
+  Gecko 1700405: any
+  Gecko 1700406: any
+  Gecko 1700407: any
+  Gecko 1700231: any
+  Gecko 1700232: any
+  Gecko 1700233: any
+  Old Maid (Sunken Valley) 1700460: any
+  Rock Diver 1700430: any
+  Rock Diver 1700431: any
+  Rock Diver 1700432: any
+  Rock Diver 1700433: any
+  Sunken Valley Clan 1700480: any
+  Sunken Valley Clan 1700250: any
+  Sunken Valley Clan 1700204: any
+  Sunken Valley Clan 1700252: any
+  Sniper Sunken Valley Clan 1700211: any
+  Sunken Valley Clan 1700212: any
+  Sniper Sunken Valley Clan 1700205: any
+  Sniper Sunken Valley Clan 1700206: any
+  Sniper Sunken Valley Clan 1700213: any
+  Sniper Sunken Valley Clan 1700214: any
+  Sunken Valley Clan 1700202: any
+  Sunken Valley Clan 1700203: any
+  Sunken Valley Clan 1700251: any
+  Sunken Valley Clan 1700470: any
+  Sunken Valley Clan 1700215: any
+  Sunken Valley Clan 1700216: any
+  Sunken Valley Clan 1700217: any
+  Sunken Valley Clan 1700218: any
+  Sunken Valley Clan 1700209: any
+  Sunken Valley Clan 1700210: any
+  Sunken Valley Clan 1700471: any
+  Sunken Valley Clan 1700219: any
+  Sunken Valley Clan 1700208: any
+  Sunken Valley Clan 1700220: any
+  Sunken Valley Clan 1700221: any
+  Sunken Valley Clan 1700222: any
+  Sunken Valley Clan 1700223: any
+  Valley Monkey 1700352: any
+  Valley Monkey 1700353: any
+  Valley Monkey 1700365: any
+  Valley Monkey 1700366: any
+  Valley Monkey 1700310: any
+  Valley Monkey 1700338: any
+  Valley Monkey 1700350: any
+  Valley Monkey 1700311: any
+  Valley Monkey 1700312: any
+  Valley Monkey 1700313: any
+  Valley Monkey 1700316: any
+  Valley Monkey 1700305: any
+  Valley Monkey 1700317: any
+  Valley Monkey 1700318: any
+  Valley Monkey 1700319: any
+  Valley Monkey 1700320: any
+  Valley Monkey 1700364: any
+  Valley Monkey 1700321: any
+  Valley Monkey 1700314: any
+  Valley Monkey 1700359: any
+  Valley Monkey 1700322: any
+  Valley Monkey 1700323: any
+  Valley Monkey 1700315: any
+  Valley Monkey 1700324: any
+  Valley Monkey 1700339: any
+  Valley Monkey 1700301: any
+  Valley Monkey 1700360: any
+  Valley Monkey 1700354: any
+  Valley Monkey 1700355: any
+  Valley Monkey 1700325: any
+  Valley Monkey 1700326: any
+  Valley Monkey 1700327: any
+  Valley Monkey 1700328: any
+  Valley Monkey 1700329: any
+  Valley Monkey 1700333: any
+  Valley Monkey 1700334: any
+  Valley Monkey 1700361: any
+  Valley Monkey 1700362: any
+  Valley Monkey 1700363: any
+  Valley Monkey 1700340: any
+  Valley Monkey 1700351: any
+  Valley Monkey 1700367: any
+  Fencer 1700660: any
+  Fencer 1700661: any
+  Fencer 1700662: any
+  Fencer 1700688: any
+  Fencer 1700689: any
+  Nightjar Ninja 1700690: any
+  Nightjar Ninja 1700691: any
+  Nightjar Ninja 1700692: any
+  Nightjar Ninja 1700693: any
+  Nightjar Ninja 1700358: any
+  Nightjar Ninja 1700356: any
+  Nightjar Ninja 1700357: any
+  Mibu Villager 1700260: any
+  Mibu Villager 1700685: any
+  Mibu Villager 1700686: any
+  Mibu Villager 1700687: any
+  Mibu Villager 1700670: any
+  Mibu Villager 1700671: any
+  Mibu Villager 1700672: any
+  Mibu Villager 1700673: any
+  Mibu Villager 1700674: any
+  Mibu Villager 1700675: any
+  Mibu Villager 1700676: any
+  Mibu Villager 1700677: any
+  Mibu Villager 1700678: any
+  Mibu Villager 1700679: any
+  Mibu Villager 1700680: any
+  Mibu Villager 1700681: any
+  Mibu Villager 1700682: any
+  Mibu Villager 1700683: any
+  Mibu Villager 1700684: any
+  # Senpou Temple
+  Centipede 2000261: any
+  Centipede 2000218: any
+  Centipede 2000263: any
+  Centipede 2000219: any
+  Centipede 2000264: any
+  Centipede 2000265: any
+  Centipede 2000220: any
+  Centipede 2000262: any
+  Centipede 2000221: any
+  Centipede 2000222: any
+  Centipede 2000223: any
+  Centipede 2000224: any
+  Centipede 2000225: any
+  Centipede 2000226: any
+  Centipede 2000227: any
+  Spear Adept 2000650: any
+  Spear Adept 2000466: any
+  Spear Adept 2000467: any
+  Spear Adept 2000468: any
+  Spear Adept 2000651: any
+  Gecko 2000228: any
+  Gecko 2000229: any
+  Gecko 2000230: any
+  Gecko 2000231: any
+  Gecko 2000232: any
+  Gecko 2000202: any
+  Gecko 2000203: any
+  Gecko 2000233: any
+  Gecko 2000234: any
+  Hound 2000313: any
+  Hound 2000314: any
+  Hound 2000315: any
+  Hound 2000316: any
+  Hound 2000317: any
+  Hound 2000318: any
+  Hound 2000319: any
+  Hound 2000320: any
+  Hound 2000321: any
+  Hound 2000322: any
+  Hound 2000323: any
+  Hound 2000324: any
+  Hound 2000325: any
+  Taro Troop 2000670: any
+  Taro Troop 2000671: any
+  Taro Troop 2000672: any
+  Taro Troop 2000673: any
+  Sunken Valley Clan 2000326: any
+  Sunken Valley Clan 2000327: any
+  Sunken Valley Clan 2000328: any
+  Sunken Valley Clan 2000329: any
+  Sunken Valley Clan 2000330: any
+  Sunken Valley Clan 2000331: any
+  Sunken Valley Clan 2000332: any
+  Sunken Valley Clan 2000333: any
+  Sunken Valley Clan 2000334: any
+  Sunken Valley Clan 2000335: any
+  Infested Seeker (Parasite) 2000649: any
+  Infested Seeker (Parasite) 2000648: any
+  Infested Seeker (Parasite) 2000647: any
+  Infested Seeker (Parasite) 2000646: any
+  Infested Seeker 2000601: any
+  Infested Seeker 2000630: any
+  Infested Seeker 2000631: any
+  Infested Seeker 2000632: any
+  Passive Cricket 2000280: any
+  Passive Cricket 2000296: any
+  Passive Cricket 2000293: any
+  Passive Cricket 2000294: any
+  Passive Cricket 2000295: any
+  Passive Cricket 2000281: any
+  Passive Cricket 2000282: any
+  Passive Cricket 2000283: any
+  Passive Cricket 2000284: any
+  Passive Cricket 2000285: any
+  Passive Cricket 2000286: any
+  Passive Cricket 2000287: any
+  Passive Cricket 2000288: any
+  Passive Cricket 2000289: any
+  Passive Cricket 2000290: any
+  Passive Cricket 2000291: any
+  Passive Cricket 2000292: any
+  Passive Cricket 2000297: any
+  Passive Cricket 2000298: any
+  Passive Cricket 2000299: any
+  Passive Cricket 2000213: any
+  Passive Cricket 2000214: any
+  Passive Cricket 2000215: any
+  Passive Cricket 2000212: any
+  Passive Cricket 2000216: any
+  Passive Cricket 2000217: any
+  Passive Cricket 2000210: any
+  Passive Cricket 2000211: any
+  Passive Cricket 2000634: any
+  Passive Cricket 2000635: any
+  Passive Cricket 2000636: any
+  Seeker 2000450: any
+  Seeker 2000451: any
+  Seeker 2000336: any
+  Seeker 2000337: any
+  Seeker 2000338: any
+  Seeker 2000339: any
+  Seeker 2000340: any
+  Seeker 2000303: any
+  Seeker 2000453: any
+  Seeker 2000341: any
+  Seeker 2000301: any
+  Seeker 2000342: any
+  Seeker 2000343: any
+  Seeker 2000344: any
+  Seeker 2000302: any
+  Seeker 2000460: any
+  Seeker 2000345: any
+  Seeker 2000346: any
+  Seeker 2000347: any
+  Seeker 2000458: any
+  Seeker 2000348: any
+  Seeker 2000349: any
+  Seeker 2000350: any
+  Seeker 2000351: any
+  Seeker 2000352: any
+  Seeker 2000353: any
+  Seeker 2000354: any
+  Seeker 2000304: any
+  Seeker 2000305: any
+  Seeker 2000306: any
+  Seeker 2000355: any
+  Seeker 2000356: any
+  Seeker 2000357: any
+  Seeker 2000311: any
+  Seeker 2000307: any
+  Seeker 2000358: any
+  Seeker 2000359: any
+  Seeker 2000308: any
+  Seeker 2000309: any
+  Seeker 2000312: any
+  Valley Monkey 2000360: any
+  Terror Valley Monkey 2000805: any
+  Terror Valley Monkey 2000806: any
+  Terror Valley Monkey 2000807: any
+  Valley Monkey 2000510: any
+  Valley Monkey 2000512: any
+  Valley Monkey 2000361: any
+  Valley Monkey 2000363: any
+  Valley Monkey 2000364: any
+  Valley Monkey 2000365: any
+  Valley Monkey 2000366: any
+  Valley Monkey 2000367: any
+  Valley Monkey 2000368: any
+  Valley Monkey 2000369: any
+  Valley Monkey 2000370: any
+  Valley Monkey 2000371: any
+  Valley Monkey 2000372: any
+  Valley Monkey 2000373: any
+  Valley Monkey 2000374: any
+  Terror Valley Monkey 2000808: any
+  Terror Valley Monkey 2000809: any
+  Terror Valley Monkey 2000814: any
+  Terror Valley Monkey 2000811: any
+  Terror Valley Monkey 2000812: any
+  Terror Valley Monkey 2000813: any
+  Assassin (Senpou) 2000455: any
+  Assassin (Senpou) 2000375: any
+  Assassin (Senpou) 2000456: any
+  Assassin (Senpou) 2000376: any
+  Assassin (Senpou) 2000377: any
+  Assassin (Senpou) 2000465: any
+  Assassin (Senpou) 2000378: any
+  Assassin (Senpou) 2000253: any
+  Assassin (Senpou) 2000379: any
+  Assassin (Senpou) 2000241: any
+  Fencer 2000380: any
+  Fencer 2000381: any
+  Fencer 2000382: any
+  Fencer 2000383: any
+  Fencer 2000384: any
+  Fencer 2000385: any
+  Fencer 2000386: any
+  Nightjar Ninja 2000387: any
+  Nightjar Ninja 2000388: any
+  Nightjar Ninja 2000389: any
+  Nightjar Ninja 2000401: any
+  Nightjar Ninja 2000402: any
+  Nightjar Ninja 2000403: any
+  Nightjar Ninja 2000404: any
+  Nightjar Ninja 2000405: any
+  Nightjar Ninja 2000406: any
+  Mibu Villager 2000407: any
+  Mibu Villager 2000573: any
+  Mibu Villager 2000575: any
+  Mibu Villager 2000576: any
+  Mibu Villager 2000577: any
+  Mibu Villager 2000578: any
+  Mibu Villager 2000408: any
+  Mibu Villager 2000409: any
+  Mibu Villager 2000410: any
+  Mibu Villager 2000411: any
+  Mibu Villager 2000412: any
+  Mibu Villager 2000413: any
+  Mibu Villager 2000414: any
+  Mibu Villager 2000415: any
+  Mibu Villager 2000416: any
+  Mibu Villager 2000417: any
+  Mibu Villager 2000418: any
+  Mibu Villager 2000419: any
+  Mibu Villager 2000420: any
+  Mibu Villager 2000421: any
+  Mibu Villager 2000422: any
+  Mibu Villager 2000423: any
+  Mibu Villager 2000424: any
+  Bandit 2000390: any
+  Bandit 2000425: any
+  Bandit 2000454: any
+  Bandit 2000391: any
+  # Fountainhead Palace
+  Gecko 2500500: any
+  Gecko 2500501: any
+  Gecko 2500502: any
+  Gecko 2500503: any
+  Gecko 2500504: any
+  Gecko 2500505: any
+  Gecko 2500506: any
+  Gecko 2500507: any
+  Gecko 2500508: any
+  Gecko 2500509: any
+  Palace Hound 2500353: any
+  Palace Hound 2500354: any
+  Palace Hound 2500356: any
+  Palace Hound 2500357: any
+  Palace Hound 2500358: any
+  Palace Hound 2500359: any
+  Palace Hound 2500360: any
+  Palace Hound 2500361: any
+  Palace Hound 2500362: any
+  Palace Hound 2500363: any
+  Palace Hound 2500364: any
+  Palace Hound 2500365: any
+  Palace Hound 2500366: any
+  Palace Hound 2500367: any
+  Palace Hound 2500368: any
+  Palace Hound 2500369: any
+  Palace Hound 2500370: any
+  Palace Hound 2500371: any
+  Palace Hound 2500372: any
+  Palace Hound 2500373: any
+  Palace Hound 2500374: any
+  Palace Hound 2500375: any
+  Palace Hound 2500379: any
+  Palace Hound 2500380: any
+  Palace Hound 2500384: any
+  Palace Hound 2500385: any
+  Palace Hound 2500386: any
+  Palace Hound 2500387: any
+  Blue Palace Noble 2500200: any
+  Blue Palace Noble 2500201: any
+  Blue Palace Noble 2500202: any
+  Blue Palace Noble 2500203: any
+  Blue Palace Noble 2500204: any
+  Blue Palace Noble 2500205: any
+  Blue Palace Noble 2500206: any
+  Blue Palace Noble 2500207: any
+  Blue Palace Noble 2500208: any
+  Red Palace Noble 2500209: any
+  Red Palace Noble 2500210: any
+  Red Palace Noble 2500211: any
+  Red Palace Noble 2500212: any
+  Red Palace Noble 2500213: any
+  Blue Palace Noble 2500214: any
+  Blue Palace Noble 2500215: any
+  Blue Palace Noble 2500216: any
+  Blue Palace Noble 2500217: any
+  Blue Palace Noble 2500218: any
+  Blue Palace Noble 2500219: any
+  Blue Palace Noble 2500220: any
+  Blue Palace Noble 2500221: any
+  Red Palace Noble 2500222: any
+  Red Palace Noble 2500714: any
+  Okami Warrior 2500400: any
+  Okami Warrior 2500401: any
+  Okami Warrior 2500402: any
+  Okami Warrior 2500403: any
+  Okami Warrior 2500404: any
+  Okami Warrior 2500405: any
+  Okami Warrior 2500407: any
+  Okami Warrior 2500408: any
+  Okami Warrior 2500410: any
+  Okami Warrior 2500411: any
+  Okami Warrior 2500412: any
+  Okami Warrior 2500413: any
+  Okami Warrior 2500414: any
+  Okami Warrior 2500415: any
+  Okami Warrior 2500416: any
+  Okami Warrior 2500417: any
+  Okami Warrior 2500418: any
+  Okami Warrior 2500419: any
+  Okami Warrior 2500421: any
+  Okami Warrior 2500422: any
+  Okami Warrior 2500423: any
+  Okami Warrior 2500424: any
+  Okami Warrior 2500425: any
+  Okami Warrior 2500426: any
+  Okami Warrior 2500427: any
+  Okami Warrior 2500428: any
+  Okami Warrior 2500429: any
+  Okami Warrior 2500432: any
+  Okami Warrior 2500433: any
+  Okami Warrior 2500434: any
+  Okami Warrior 2500435: any
+  Okami Warrior 2500437: any
+  Okami Warrior 2500438: any
+  Okami Warrior 2500439: any
+  Okami Warrior 2500440: any
+  Okami Warrior 2500441: any
+  Okami Warrior 2500442: any
+  Okami Warrior 2500443: any
+  Okami Warrior 2500444: any
+  Okami Warrior 2500445: any
+  Okami Warrior 2500446: any
+  Okami Warrior 2500447: any
+  Okami Warrior 2500449: any
+  Okami Warrior 2500450: any
+  Okami Warrior 2500451: any
+  Okami Warrior 2500452: any
+  Okami Warrior 2500453: any
+
+# Simple feature for key item placements.
+# Right now, allows placing items in logical areas or events, which are listed near the top of the item randomizer config (dists\Base\annotations.txt).
+# Examples of these are areas like ashinacastle_invasion1 or fountainhead_surface.
+# This can easily produce an unsolvable seed with the wrong settings or an impossible dependency, so do be careful.
+# The randomizer should at least fail if it can't solve the seed.
+Items:
+  fathersbellcharm: any
+  gatehousekey: any
+  gunfortshrinekey: any
+  hiddentemplekey: any
+  lotusofthepalace: any
+  mibubreathingtechnique: any
+  mistravensfeathers: any
+  mortalblade: any
+  puppeteerninjutsu: any
+  secretpassagekey: any
+  shelterstone: any
+  shinobiprosthetic: any
+  trulypreciousbait1: any
+  trulypreciousbait2: any
+  younglordsbellcharm: any

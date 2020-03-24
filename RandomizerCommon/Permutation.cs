@@ -145,7 +145,7 @@ namespace RandomizerCommon
             double newEnd = start * Math.Pow(2, subdivs * (index + 1) / total);
             return (newStart, newEnd);
         }
-        public void Logic(Random random, RandomizerOptions options)
+        public void Logic(Random random, RandomizerOptions options, Preset preset)
         {
             // Randomize all chests.
             SortedDictionary<string, HashSet<(LocationScope, EntityId)>> chestSlots = new SortedDictionary<string, HashSet<(LocationScope, EntityId)>>();
@@ -217,9 +217,14 @@ namespace RandomizerCommon
                 ann.Slots[swap.Value] = s1;
             }
 
+            if (preset != null)
+            {
+                preset.ProcessItemPreset(ann);
+            }
+
             // Calculate key items, including area lateness ranking
             KeyItemsPermutation keyItems = new KeyItemsPermutation(options, data, ann, null, explain);
-            assign = keyItems.AssignItems(random, options);
+            assign = keyItems.AssignItems(random, options, preset);
             foreach (KeyValuePair<ItemKey, HashSet<string>> entry in assign.Assign)
             {
                 ItemKey key = entry.Key;
@@ -439,7 +444,7 @@ namespace RandomizerCommon
                         {
                             Slots = pendingSlotsFromPlacement(restrict.Unique, key, null),
                         };
-                        bool debug = game.Name(key) == "Flame Barr";
+                        bool debug = game.Name(key) == "Memory: Oniwa";
                         pending.Explain = debug;
                         if (debug) Console.WriteLine($"- Partitions for {game.Name(key)}");
                         pending.AddPartitions();
@@ -705,25 +710,13 @@ namespace RandomizerCommon
             public List<PendingItemSlotPartition> Alternates { get; set; }
             public HashSet<string> AllAreas { get; set; }
             public bool Explain { get; set; }
-            public int CountSlots(List<PendingItemSlot> taken) {
+            public int CountSlots(List<PendingItemSlot> taken)
+            {
                 return Slots.Except(taken).Select(s => s.Amount).DefaultIfEmpty().Max();
             }
             public int CountMoreRestrictiveSlots(List<PendingItemSlot> taken, bool debug)
             {
-                int amt = 0;
-                // An location is more restrictive if it satisfies more slots than this one.
-                // Usually this is just a single chain, where areas earlier in the game satisfy more slots (have x of item by location y).
-                // If there are multiple partitions in MoreRestrictive, satisfying one may not satisfy the other, so take their sum to be safe.
-                foreach (PendingItemSlotPartition more in MoreRestrictive)
-                {
-                    amt += Math.Max(more.CountSlots(taken), more.CountMoreRestrictiveSlots(taken, debug));
-                }
-                return amt;
-            }
-            public bool PlaceItem(int remainingAmount, int quantity, bool debug)
-            {
-                // Refuse to fill this slot if there would not be enough left for slots in more restrictive nodes.
-                int moreSlots = CountMoreRestrictiveSlots(Slots, debug);
+                // New approach
                 // Other approach
                 List<PendingItemSlotPartition> children = new List<PendingItemSlotPartition>();
                 void addChildren(PendingItemSlotPartition part)
@@ -735,12 +728,18 @@ namespace RandomizerCommon
                     }
                 }
                 addChildren(this);
+                if (debug) Console.WriteLine($"For {this}, found {children.Count} total child slots: {string.Join(",", children.Select(c => c.CountSlots(Slots)))}");
+                return children.Count == 0 ? 0 : children.Select(c => c.CountSlots(Slots)).Max();
+            }
+            public bool PlaceItem(int remainingAmount, int quantity, bool debug)
+            {
+                // Refuse to fill this slot if there would not be enough left for slots in more restrictive nodes.
+                int moreSlots = CountMoreRestrictiveSlots(Slots, debug);
                 foreach (PendingItemSlotPartition alt in Alternates)
                 {
                     moreSlots = Math.Max(moreSlots, alt.CountMoreRestrictiveSlots(Slots, debug));
                 }
-                if (debug) Console.WriteLine($"Found {children.Count} total child slots");
-                if (debug) Console.WriteLine($"For {this}, writing if amount {remainingAmount} > more restrictive slots {moreSlots}");
+                if (debug) Console.WriteLine($"Writing if amount {remainingAmount} > more restrictive slots {moreSlots}");
                 if (remainingAmount <= moreSlots)
                 {
                     return false;
@@ -810,6 +809,7 @@ namespace RandomizerCommon
                         if (slot.Amount == 0) return false;
                         if (slot.AllowedLocations != null)
                         {
+                            // TODO: effectiveLoc is not good for key item placement, for non-missable items. Just make them all areas with WeightBases.
                             if (!slot.AllowedLocations.Contains(ev ?? effectiveLoc))
                             {
                                 if (debugFlag) Console.WriteLine($"- Excluded because of location {effectiveLoc} (ev {ev}) not in {string.Join(",", slot.AllowedLocations)}");
@@ -1147,7 +1147,7 @@ namespace RandomizerCommon
             if (explain && queue.Queue.Count != 0) Console.WriteLine($"Couldn't satisfy {queue.Queue.Count} restricted items");
             pushedLocations.Reverse();
             otherItems.AddRange(queue.Queue);
-            if (partialLocations && otherItems.Count > 0) throw new Exception($"Could not place all key items... giving up now. This can happen with full race mode. Try again with a different seed.");
+            if (partialLocations && otherItems.Count > 0) throw new Exception($"Could not place all key items... giving up now. This can happen with full race mode.");
             if (explain) Console.WriteLine($"Attempting to satisfy {pushedLocations.Count} remaining locations with {otherItems.Count} items");
             foreach (SlotKey sourceKey in otherItems)
             {

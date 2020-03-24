@@ -1,0 +1,9 @@
+Description: "Replace all enemies in the game with the selected enemy. These may be broken and/or impossible."
+
+RecommendFullRandomization: true
+RecommendNoEnemyProgression: true
+
+# This is filled in by the UI from the enemy config
+# OopsAll: <insert enemy here>
+
+BuffBasicEnemiesAsBosses: true

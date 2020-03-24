@@ -51,15 +51,21 @@ namespace RandomizerCommon
                     throw new Exception($"Unrecognized arg type {type}");
             }
         }
+        private static string TextArg(object arg)
+        {
+            return arg is float f ? f.ToString(CultureInfo.InvariantCulture) : arg.ToString();
+        }
 
         private EMEDF doc;
         private Dictionary<string, (int, int)> docByName;
         private Dictionary<EMEDF.InstrDoc, List<int>> funcBytePositions;
         // Take free event flags from Abandoned Dungeon
         private int tmpBase = 11315000; // 11305750;  // until 6000, then it's not tmp anymore
-        private int maxTmp = 11396000;
+        private int tmpBaseMax = 11496000;
+        private int tmpJump = 11515000;
+        private int tmpMax = 11696000; // 11396000; ?
         private int permBase = 11306000;  // until at least 7000
-        private int maxPerm = 11307000;
+        private int permMax = 11307000;
 
         public readonly EventConfig Config;
 
@@ -166,7 +172,7 @@ namespace RandomizerCommon
                 }
             }
 
-            public override string ToString() => $"{Name} ({string.Join(",", Args)})";
+            public override string ToString() => $"{Name} ({string.Join(",", Args.Select(a => TextArg(a)))})";
         }
 
         public int IndexFromByteOffset(Instr instr, int offset)
@@ -185,7 +191,8 @@ namespace RandomizerCommon
                 tmpBase -= 1000;
                 tmpBase += 10000;
             }
-            if (tmpBase > maxTmp || permBase > maxPerm) throw new Exception($"event {newId} hit event limit");
+            if (tmpBase >= tmpBaseMax && tmpBase < tmpJump) tmpBase = tmpJump;
+            if (tmpBase > tmpMax || permBase > permMax) throw new Exception($"event {newId} hit event limit.");
             return newId;
         }
 
@@ -258,30 +265,30 @@ namespace RandomizerCommon
         // Editing macros
         public class EventEdits
         {
-            public Dictionary<string, InstrEdit> NameEdits { get; set; }
-            public Dictionary<string, InstrEdit> ArgEdits { get; set; }
-            public Dictionary<string, Dictionary<string, InstrEdit>> NameArgEdits { get; set; }
+            public Dictionary<string, List<InstrEdit>> NameEdits { get; set; }
+            public Dictionary<string, List<InstrEdit>> ArgEdits { get; set; }
+            public Dictionary<(string, string), List<InstrEdit>> NameArgEdits { get; set; }
             public HashSet<InstrEdit> PendingEdits = new HashSet<InstrEdit>();
             public Dictionary<int, List<InstrEdit>> PendingAdds = new Dictionary<int, List<InstrEdit>>();
 
             // Returns all applicable edits
             public List<InstrEdit> GetMatches(Instr instr)
             {
-                InstrEdit nameEdit = null;
+                List<InstrEdit> nameEdit = null;
                 if (NameEdits != null && !NameEdits.TryGetValue(instr.Name, out nameEdit) && ArgEdits == null && NameArgEdits == null) return null;
-                List<string> strArgs = instr.Args.Select(a => a.ToString()).ToList();
+                List<string> strArgs = instr.Args.Select(a => TextArg(a)).ToList();
                 List<InstrEdit> edits = new List<InstrEdit>();
                 if (ArgEdits != null)
                 {
-                    edits.AddRange(strArgs.SelectMany(s => ArgEdits.TryGetValue(s, out InstrEdit edit) ? new[] { edit } : new InstrEdit[] { }));
+                    edits.AddRange(strArgs.SelectMany(s => ArgEdits.TryGetValue(s, out List<InstrEdit> edit) ? edit : new List<InstrEdit>()));
                 }
                 if (nameEdit != null)
                 {
-                    edits.Add(nameEdit);
+                    edits.AddRange(nameEdit);
                 }
-                if (NameArgEdits != null && NameArgEdits.TryGetValue(instr.Name, out var args) && args.TryGetValue(string.Join(",", strArgs), out InstrEdit nameArgEdit))
+                if (NameArgEdits != null && NameArgEdits.TryGetValue((instr.Name, string.Join(",", strArgs)), out List<InstrEdit> nameArgEdit))
                 {
-                    edits.Add(nameArgEdit);
+                    edits.AddRange(nameArgEdit);
                 }
                 return edits;
             }
@@ -322,7 +329,7 @@ namespace RandomizerCommon
                         {
                             for (int i = 0; i < instr.Args.Count; i++)
                             {
-                                if (edit.ValEdit.TryGetValue(instr[i].ToString(), out string replace))
+                                if (edit.ValEdit.TryGetValue(TextArg(instr[i]), out string replace))
                                 {
                                     instr[i] = replace;
                                 }
@@ -337,20 +344,20 @@ namespace RandomizerCommon
             {
                 if (int.TryParse(toFind, out var _))
                 {
-                    if (ArgEdits == null) ArgEdits = new Dictionary<string, InstrEdit>();
-                    ArgEdits[toFind] = edit;
+                    if (ArgEdits == null) ArgEdits = new Dictionary<string, List<InstrEdit>>();
+                    AddMulti(ArgEdits, toFind, edit);
                 }
                 else if (docName(toFind))
                 {
                     // If this isn't a name, it will come up later as an unused pending edit
-                    if (NameEdits == null) NameEdits = new Dictionary<string, InstrEdit>();
-                    NameEdits[toFind] = edit;
+                    if (NameEdits == null) NameEdits = new Dictionary<string, List<InstrEdit>>();
+                    AddMulti(NameEdits, toFind, edit);
                 }
                 else
                 {
                     (string cmd, List<string> addArgs) = ParseCommandString(toFind);
-                    if (NameArgEdits == null) NameArgEdits = new Dictionary<string, Dictionary<string, InstrEdit>>();
-                    AddMulti(NameArgEdits, cmd, string.Join(",", addArgs), edit);
+                    if (NameArgEdits == null) NameArgEdits = new Dictionary<(string, string), List<InstrEdit>>();
+                    AddMulti(NameArgEdits, (cmd, string.Join(",", addArgs)), edit);
                 }
                 PendingEdits.Add(edit);
             }
@@ -363,8 +370,8 @@ namespace RandomizerCommon
                     string[] parts = toVal == null ? Regex.Split(toFind, @"\s*->\s*") : new[] { toFind, toVal };
                     edit.ValEdit = new Dictionary<string, string>();
                     edit.ValEdit[parts[0]] = parts[1];
-                    if (ArgEdits == null) ArgEdits = new Dictionary<string, InstrEdit>();
-                    ArgEdits[parts[0]] = edit;
+                    if (ArgEdits == null) ArgEdits = new Dictionary<string, List<InstrEdit>>();
+                    AddMulti(ArgEdits, parts[0], edit);
                 }
                 else
                 {
@@ -380,8 +387,8 @@ namespace RandomizerCommon
                             edit.PosEdit[i] = parts[1];
                         }
                     }
-                    if (NameArgEdits == null) NameArgEdits = new Dictionary<string, Dictionary<string, InstrEdit>>();
-                    AddMulti(NameArgEdits, cmd, string.Join(",", addArgs), edit);
+                    if (NameArgEdits == null) NameArgEdits = new Dictionary<(string, string), List<InstrEdit>>();
+                    AddMulti(NameArgEdits, (cmd, string.Join(",", addArgs)), edit);
                 }
                 PendingEdits.Add(edit);
             }
@@ -399,7 +406,7 @@ namespace RandomizerCommon
 
         public void AddMacro(EventEdits edits, List<EventAddCommand> adds)
         {
-            foreach (EventAddCommand add in adds)
+            foreach (EventAddCommand add in Enumerable.Reverse(adds))
             {
                 if (add.Before == null && add.After == null)
                 {
@@ -407,7 +414,7 @@ namespace RandomizerCommon
                 }
                 else
                 {
-                    AddMacro(edits, add.After ?? add.Before, add.After != null, add.Cmd);
+                    AddMacro(edits, add.After ?? (add.Before == "start" ? null : add.Before), add.After != null, add.Cmd);
                 }
             }
         }
@@ -419,7 +426,8 @@ namespace RandomizerCommon
             {
                 if (lineEdit.Key == -1)
                 {
-                    foreach (InstrEdit addEdit in lineEdit.Value)
+                    // At the end. This is not being inserted at the start, but rather the end, so reverse the order
+                    foreach (InstrEdit addEdit in Enumerable.Reverse(lineEdit.Value))
                     {
                         e.Instructions.Add(addEdit.Add);
                         edits.PendingEdits.Remove(addEdit);
@@ -455,7 +463,7 @@ namespace RandomizerCommon
             if (toFind == null)
             {
                 edits.PendingEdits.Add(edit);
-                AddMulti(edits.PendingAdds, -1, edit);
+                AddMulti(edits.PendingAdds, addAfter ? -1 : 0, edit);
             }
             else
             {
@@ -507,6 +515,72 @@ namespace RandomizerCommon
             return new EMEVD.Instruction(docId.Item1, docId.Item2, addArgs.Select((a, j) => ParseArg(a, argTypes[j])));
         }
 
+        // Condition rewriting
+        public List<int> FindCond(EMEVD.Event e, string req)
+        {
+            List<int> cond = new List<int>();
+            bool isGroup = int.TryParse(req, out int _);
+            for (int i = 0; i < e.Instructions.Count; i++)
+            {
+                Instr instr = Parse(e.Instructions[i]);
+                if (isGroup && instr.Name.StartsWith("IF") && instr[0].ToString() == req)
+                {
+                    cond.Add(i);
+                    continue;
+                }
+                else if (isGroup && instr.Name == "IF Condition Group" && instr[2].ToString() == req)
+                {
+                    cond.Add(i);
+                    return cond;
+                }
+                else if (!isGroup && instr.Name == req && instr[0].ToString() == "0")
+                {
+                    cond.Add(i);
+                    return cond;
+                }
+            }
+            throw new Exception($"Couldn't find ending condition '{req}', group {isGroup}, in event {e.ID}");
+        }
+        public List<EMEVD.Instruction> RewriteCondGroup(List<EMEVD.Instruction> after, Dictionary<int, int> reloc, int target)
+        {
+            sbyte targetCond = (sbyte)target;
+            sbyte sourceCond = 0;
+            return after.Select(afterInstr =>
+            {
+                Instr instr = Parse(CopyInstruction(afterInstr));
+                if (instr.Name == "IF Condition Group")
+                {
+                    if (sourceCond == 0) throw new Exception($"Internal error: can't infer condition group for {instr}");
+                    instr[0] = targetCond;
+                    instr[2] = (sbyte)(sourceCond > 0 ? 12 : -12);
+                }
+                else
+                {
+                    if (sourceCond == 0)
+                    {
+                        sourceCond = (sbyte)instr[0];
+                    }
+                    // This is way too hacky... can add more semantic info if it becomes fragile
+                    instr[0] = after.Count == 1 ? targetCond : (sbyte)(sourceCond > 0 ? 12 : -12);
+                }
+                RewriteInts(instr, reloc);
+                instr.Save();
+                return instr.Val;
+            }).ToList();
+        }
+
+        public bool ParseArgSpec(string arg, out int pos)
+        {
+            // For event initializations with int args specified as X0, X4, X8, etc., return the arg position, e.g. 0, 1, 2
+            pos = 0;
+            if (arg.StartsWith("X") && int.TryParse(arg.Substring(1), out pos))
+            {
+                pos /= 4;
+                return true;
+            }
+            return false;
+        }
+
         // All the various config classes
         public class EventConfig
         {
@@ -533,29 +607,45 @@ namespace RandomizerCommon
             public string Type { get; set; }
             // The affected entities, if a chr command or if conds/cmds are used below which need to be transplanted
             public int Entity { get; set; }
+            // The other entity involved. The source for locs, or the target for chrs. (Currently only works for loc)
+            public int Transfer { get; set; }
             // A flag which ends this event when on, if chr
             public int DefeatFlag { get; set; }
             // A flag which ends this event when off, if chr
             public int AppearFlag { get; set; }
             // A 5xxx flag which this event waits for (phase change or boss fight), or the flag itself if start event
             public int StartFlag { get; set; }
+            // 5xxx flags which are both set and read as chr, and should be isolated for the target entity if it is duplicated
+            public string ProgressFlag { get; set; }
             // The condition groups used to end a boss fight, first for music flag and second for permanent flag. Either a group or a command name (with cond group 0)
             public string EndCond { get; set; }
             public string EndCond2 { get; set; }
+            // Moving CameraSetParam ids between regions
+            public string Camera { get; set; }
+            // A finisher deathblow, to add conditions to stop it from proccing unnecessarily
+            public int Deathblow { get; set; }
+            // This character's invincibility is managed here, so after they lose it, their immortality may need to be reset if an immortal boss
+            public int Invincibility { get; set; }
+            // Replacing boss/miniboss health bar names
+            public string Name { get; set; }
             // Commands used when starting a boss fight for this entity, especially related to disp mask or lockon points.
             // Usually not needed for minibosses and other enemies, when those are standalone chr events.
             // Maybe should automatically remove (or transplant for boss starts) Set Lock On Point, Force Animation Playback, Set Dispmask, Set AI ID
             public string StartCmd { get; set; }
             // Commands to unconditionally remove.
             public string Remove { get; set; }
+            // Commands to unconditionally remove when enemy is not unique
+            public string RemoveDupe { get; set; }
             // Args to replace
             public string Replace { get; set; }
             // Commands to add to an event, before randomizing it
             public List<EventAddCommand> Add { get; set; }
             // What to do with regions if a chr command - chrpoint (exact), arenapoint (center/random), arenabox10 (random), arena (bgm), arenasfx (center), or dist10.
             public List<string> Regions { get; set; }
-            // Check for doing nothing
-            public bool IsDefault() => Entity == 0 && DefeatFlag == 0 && AppearFlag == 0 && StartFlag == 0 && EndCond == null && EndCond2 == null && StartCmd == null && Remove == null && Replace == null && Add == null && Regions == null;
+            // Check for doing nothing. Maybe should just have a type for nothing
+            public bool IsDefault() =>
+                Entity == 0 && DefeatFlag == 0 && AppearFlag == 0 && StartFlag == 0 && EndCond == null && EndCond2 == null && StartCmd == null && Remove == null && RemoveDupe == null && Replace == null
+                    && Add == null && Regions == null && Camera == null && Invincibility == 0 && Deathblow == 0 && ProgressFlag == null && Name == null;
             [YamlIgnore]
             public EMEVD.Event Inner { get; set; }
         }
@@ -720,7 +810,15 @@ namespace RandomizerCommon
         }
         private HashSet<int> processEventsOverride = new HashSet<int> { };
         // Old Dragons: 2500810, 2500811, 2500812, 2500813, 2500814, 2500815, 2500816, 2500817, 2500818, 2500819, 2500820, 2500821, 2500822, 2500823, 2500824, 2500825
-        private HashSet<int> processEntitiesOverride = new HashSet<int> { };
+        // Tree Dragons: 2500930, 2500933, 2500934, 2500884, 2500880, 2500881, 2500882, 2500883
+        // Divine Dragon: 2500800
+        // Monkeys: 2000800, 2000801, 2000802, 2000803, 2000804 
+        private HashSet<int> processEntitiesOverride = new HashSet<int>
+        {
+            2500800,
+            2500810, 2500811, 2500812, 2500813, 2500814, 2500815, 2500816, 2500817, 2500818, 2500819, 2500820, 2500821, 2500822, 2500823, 2500824, 2500825,
+            2500930, 2500933, 2500934, 2500884, 2500880, 2500881, 2500882, 2500883,
+        };
         public void WriteEventConfig(string fileName, SortedDictionary<int, EventDebug> eventInfos, Predicate<int> eligibleFilter, Func<int, string> quickId, bool enemies)
         {
             List<EventSpec> toWrite = new List<EventSpec>();
@@ -766,6 +864,7 @@ namespace RandomizerCommon
                 }
                 toWrite.Add(spec);
             }
+            Console.WriteLine(string.Join(",", toWrite.Select(e => e.ID)));
             ISerializer serializer = new SerializerBuilder().DisableAliases().Build();
             if (fileName == null)
             {

@@ -9,6 +9,7 @@ Config:
 - Oneof:
   - earlyhirata
   - latehirata
+- Opt: veryearlyhirata
 - Oneof:
   - noracemode_health
   - racemode_health
@@ -267,7 +268,7 @@ Events:
   Text: Central Forces
   Req: fountainhead  # divinedragon
 - Name: hirata2
-  Req: ashinaoutskirts_temple AND ladybutterfly AND fathersbellcharm
+  Req: ashinaoutskirts_temple AND ladybutterfly AND fathersbellcharm AND hiddentemplekey AND shinobiprosthetic  # extra items added for father drop
 
 # Boss locations. Ideally put these in slots themselves
 - Name: chainedogre
@@ -398,7 +399,7 @@ Areas:
   Req: invasion2  # ashinacastle
 - Name: hirata
   Text: Hirata Estate
-  Req: ashinaoutskirts_temple AND younglordsbellcharm # AND (latehirata OR ashinaoutskirts_stairway)
+  Req: ashinaoutskirts_temple AND younglordsbellcharm AND (veryearlyhirata OR ashinaoutskirts_stairway)
 - Name: hirata_underwater
   Text: Hirata Estate
   Req: hirata AND mibubreathingtechnique
@@ -418,8 +419,9 @@ Areas:
   Text: Hirata Estate
   Req: hirata_thicketslope
   Until: hirata2
+  WeightBase: hirata
 - Name: hirata_beforetemple
-  Text: Hirata Audience Chamber
+  Text: Hirata Estate
   Req: hirata_sidepath AND juzou  # Until: courtyard2, After: temple2
 - Name: hirata_temple1
   Text: Hirata Estate Hidden Temple
@@ -428,7 +430,7 @@ Areas:
   Text: Hirata Estate Revisited
   Req: hirata2
 - Name: hirata_temple2
-  Text: Hirata Estate Hidden Temple Revisited
+  Text: Hirata Estate Revisited
   Req: hirata_courtyard2 AND juzou2
 - Name: dungeon
   Text: Abandoned Dungeon
@@ -481,7 +483,7 @@ Areas:
   Text: Sunken Valley Passage Shrine
   Req: sunkenvalley_passage AND (cavesnakeskip OR mistravensfeathers OR puppeteerninjutsu)
 - Name: sunkenvalley_senpou
-  Text: Sunken Valley Passage after Snake Deathblow
+  Text: Sunken Valley Passage after Cavern
   Req: senpou_cavern AND sunkenvalley_passage
   WeightBase: senpou_cavern
 - Name: sunkenvalley_poisonpool
@@ -567,17 +569,6 @@ PlacementRestrictions:
 - Includes: memories
   Switch: weaponprogression
   Unique:  # 14 total
-#  - Amount: 2
-#    Before: ashinacastle hirata_sidepath
-#  - Amount: 4
-#    After: ashinacastle
-#    UpTo: ashinacastle_kuro1 guardianape senpou_grounds
-#  - Amount: 3
-#    After: ashinacastle_kuro1 guardianape senpou_grounds
-#    UpTo: ashinacastle_invasion1
-#  - Amount: 3
-#    After: ashinacastle_kuro2
-#    Before: ashinacastle_invasion2
   - Amount: 1
     Before: gyoubu
   - Amount: 1
@@ -585,11 +576,9 @@ PlacementRestrictions:
   - Amount: 5
     UpTo: sunkenvalley_flower
   - Amount: 5
-    UpTo: senpou_sanctum
-  - Amount: 10
+    UpTo: ashinacastle_kuro1
+  - Amount: 9
     Before: fountainhead_bridge
-  - Amount: 2
-    After: fountainhead_bridge
   - After: ashinaoutskirts_temple
 - Includes: texts
   Switch: skillprogression
@@ -668,7 +657,7 @@ PlacementRestrictions:
   Switch: skillprogression
   Unique:
   - Amount: 5
-    Before: shichimen_location shichimen2_location shichimen3_location headless_outskirts_location headless_forest_location headless_sunken_location
+    Before: shichimen_location shichimen2_location shichimen3_location headless_outskirts_location headless_forest_location headless_sunken_location sakurabull_location
   - After: ashinaoutskirts_temple
 SpecialModes:
 - RaceSwitch: racemode
@@ -844,61 +833,61 @@ Slots:
 - Key: '00,0:-1:6500,1101000:'
   DebugText:
   - Loaded Shuriken - 1101000[Fit New Prosthetic Tool after Shuriken Wheel acquired (1) for 1 Shuriken Wheel - event 71101600]
-  Text: auto
+  Text: Given after fitting Shuriken Wheel
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '00,0:-1:6501,1101000:'
   DebugText:
   - Shinobi Firecracker - 1101001[Fit New Prosthetic Tool after Robert's Firecrackers acquired (1) for 1 Robert's Firecrackers - event 71101610]
-  Text: auto
+  Text: Given after fitting Robert's Firecrackers
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '00,0:-1:6502,1101000:'
   DebugText:
   - Flame Vent - 1101002[Fit New Prosthetic Tool after Flame Barrel acquired (1) for 1 Flame Barrel - event 71101620]
-  Text: auto
+  Text: Given after fitting Flame Barrel
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '00,0:-1:6503,1101000:'
   DebugText:
   - Loaded Axe - 1101003[Fit New Prosthetic Tool after Shinobi Axe of the Monkey acquired (1) for 1 Shinobi Axe of the Monkey - event 71101630]
-  Text: auto
+  Text: Given after fitting Shinobi Axe of the Monkey
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '00,0:-1:6504,1101000:'
   DebugText:
   - Mist Raven - 1101004[Fit New Prosthetic Tool after Mist Raven's Feathers acquired (1) for 1 Mist Raven's Feathers - event 71101640]
-  Text: auto
+  Text: Given after fitting Mist Raven's Feathers
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '00,0:-1:6505,1101000:'
   DebugText:
   - Sabimaru - 1101005[Fit New Prosthetic Tool after Sabimaru acquired (1) for 1 Sabimaru - event 71101650]
-  Text: auto
+  Text: Given after fitting Sabimaru
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '00,0:-1:6506,1101000:'
   DebugText:
   - Loaded Umbrella - 1101006[Fit New Prosthetic Tool after Iron Fortress acquired (1) for 1 Iron Fortress - event 71101660]
-  Text: auto
+  Text: Given after fitting Iron Fortress
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '00,0:-1:6507,1101000:'
   DebugText:
   - Divine Abduction - 1101007[Fit New Prosthetic Tool after Large Fan acquired (1) for 1 Large Fan - event 71101670]
-  Text: auto
+  Text: Given after fitting Large Fan
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '00,0:-1:6508,1101000:'
   DebugText:
   - Loaded Spear - 1101008[Fit New Prosthetic Tool after Gyoubu's Broken Horn acquired (1) for 1 Gyoubu's Broken Horn - event 71101680]
-  Text: auto
+  Text: Given after fitting Gyoubu's Broken Horn
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '00,0:-1:6509,1101000:'
   DebugText:
   - Finger Whistle - 1101009[Fit New Prosthetic Tool after Slender Finger acquired (1) for 1 Slender Finger - event 71101690]
-  Text: auto
+  Text: Given after fitting Slender Finger
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '00,0:-1:8307,1100400:'
@@ -954,7 +943,7 @@ Slots:
 - Key: '00,0:50002001::'
   DebugText:
   - 'Memory: Gyoubu Oniwa - 2001[Gyoubu Oniwa (c5080_0000 #1100800,1105600) ashinaoutskirts]'
-  Text: auto
+  Text: Dropped by Gyoubu Oniwa
   Area: ashinaoutskirts_fortress1
   Tags: boss
   Event: gyoubu
@@ -962,25 +951,25 @@ Slots:
 - Key: '00,0:50002002::'
   DebugText:
   - 'Memory - 2002[Gyoubu Oniwa (c5080_0000 #1100800,1105600) ashinaoutskirts] (hidden)'
-  Text: auto
+  Text: Dropped by Gyoubu Oniwa
   Area: ashinaoutskirts_fortress1
   Tags: norandom
 - Key: '00,0:50002040::'
   DebugText:
   - 'Lapis Lazuli - 2040[Demon of Hatred (c7020_0000 #1100900,1105610) ashinaoutskirts] 2x'
-  Text: auto
+  Text: Dropped by Demon of Hatred
   Area: ashinaoutskirts_invasion2
   Tags: boss outoftheway
 - Key: '00,0:50002041::'
   DebugText:
   - 'Memory: Hatred Demon - 2041[Demon of Hatred (c7020_0000 #1100900,1105610) ashinaoutskirts]'
-  Text: auto
+  Text: Dropped by Demon of Hatred
   Area: ashinaoutskirts_invasion2
   Tags: boss outoftheway
 - Key: '00,0:50002042::'
   DebugText:
   - 'Memory - 2042[Demon of Hatred (c7020_0000 #1100900,1105610) ashinaoutskirts] (hidden)'
-  Text: auto
+  Text: Dropped by Demon of Hatred
   Area: ashinaoutskirts_invasion2
   Tags: norandom
 - Key: '00,0:50003060::'
@@ -992,14 +981,14 @@ Slots:
 - Key: '00,0:50003070::'
   DebugText:
   - Shinobi Prosthetic (cosmetic) - 3070[Scripted ashinaoutskirts]
-  Text: auto
+  Text: Given upon arriving in Dilapidated Temple
   Area: ashinaoutskirts_temple
   # xx Can this be given and equipped alongside the prosthetic? based on item ownership
   Tags: norandom
 - Key: '00,0:50006106::'
   DebugText:
   - "Kuro's Charm - 61006[Invisible (c1001_0021 #1100721,1105610) ashinaoutskirts, Sculptor (c7010_0000 #1100720,1105600) ashinaoutskirts]"
-  Text: auto
+  Text: Given by the Sculptor if Kuro's Charm was previously given to Kuro
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '00,0:50006130::'
@@ -1044,7 +1033,7 @@ Slots:
   Text: Cut Dragonrot content
   Area: ashinaoutskirts_stairway
   Tags: unused norandom
-  QuestReqs: senpou redandwhitepinwheel
+  # QuestReqs: senpou redandwhitepinwheel
 - Key: '00,0:50006471::'
   DebugText:
   - 'Fistful of Ash - 64710[Fujioka the Info Broker (c7430_0002 #1100708) ashinaoutskirts]'
@@ -1150,7 +1139,7 @@ Slots:
 - Key: '00,0:51100205::'
   DebugText:
   - 'Divine Grass - 1100205[Treasure (o000100_0060 #1101260) ashinaoutskirts]'
-  Text: auto
+  Text: Replaces Gourd Seed in NG+
   Area: ashinaoutskirts_courtyard
   Tags: ng+
 - Key: '00,0:51100210::'
@@ -1209,7 +1198,7 @@ Slots:
 - Key: '00,0:51100315::'
   DebugText:
   - 'Bundled Jizo Statue - 1100315[Chest (o005300_0001 #1101515) ashinaoutskirts]'
-  Text: auto
+  Text: Replaces Prayer Bead in NG+
   Area: ashinaoutskirts_fortress2
   Tags: ng+
 - Key: '00,0:51100320::'
@@ -1407,19 +1396,19 @@ Slots:
 - Key: '00,0:51100905::'
   DebugText:
   - 'Heavy Coin Purse - 10200005[Samurai General (c1020_0000 #1100300,1105600) ashinaoutskirts]'
-  Text: auto
+  Text: Dropped by General in NG+
   Area: ashinaoutskirts_gatepath
   Tags: ng+
 - Key: '00,0:51100915::'
   DebugText:
   - 'Heavy Coin Purse - 10200105[Samurai General (c1020_0001 #1100301,1105600) ashinaoutskirts]'
-  Text: auto
+  Text: Dropped by General in NG+
   Area: ashinaoutskirts_courtyard
   Tags: ng+
 - Key: '00,0:51100925::'
   DebugText:
   - 'Heavy Coin Purse - 50201005[Chained Ogre (c5020_0000 #1100310,1105600) ashinaoutskirts]'
-  Text: auto
+  Text: Dropped by Chained Ogre in NG+
   Area: ashinaoutskirts_stairway
   Tags: ng+
 - Key: '00,0:51100930::'
@@ -1437,19 +1426,19 @@ Slots:
 - Key: '00,0:51100950::'
   DebugText:
   - "Ako's Spiritfall - 13501000[Headless (c1350_0000 #1100330) ashinaoutskirts]"
-  Text: auto
+  Text: Dropped by Headless
   Area: ashinaoutskirts_courtyard  # xx is this fine
   Tags: ng headless
 - Key: '00,0:51100955::'
   DebugText:
   - 'Bulging Coin Purse - 13501005[Headless (c1350_0000 #1100330) ashinaoutskirts]'
-  Text: auto
+  Text: Dropped by Headless in NG+
   Area: ashinaoutskirts_courtyard
   Tags: ng+
 - Key: '00,0:51100965::'
   DebugText:
   - 'Heavy Coin Purse - 10701005[Shura Samurai (c1070_0000 #1100480,1105610,1105400) ashinaoutskirts]'
-  Text: auto
+  Text: Dropped by Shigekichi of the Red Guard in NG+
   Area: ashinaoutskirts_invasion2
   Tags: ng+
 - Key: '00,0:6500:9023,1100500:'
@@ -1478,7 +1467,7 @@ Slots:
 - Key: '00,0:6710::'
   DebugText:
   - 'Shinobi Medicine Rank 1 - 50201001[Chained Ogre (c5020_0000 #1100310,1105600) ashinaoutskirts] (hidden)'
-  Text: auto
+  Text: Dropped by Chained Ogre
   Area: ashinaoutskirts_stairway
   Tags: miniboss
   Event: chainedogre
@@ -1498,7 +1487,7 @@ Slots:
 - Key: '00,0:6740::'
   DebugText:
   - 'Mechanical Barrel - 2000[Gyoubu Oniwa (c5080_0000 #1100800,1105600) ashinaoutskirts]'
-  Text: auto
+  Text: Dropped by Gyoubu Oniwa
   Area: ashinaoutskirts_fortress1
   Tags: boss
 - Key: '00,0:6760:9027,1100500:'
@@ -1510,7 +1499,7 @@ Slots:
 - Key: '00,0:6761::'
   DebugText:
   - 'Prayer Bead - 50201000[Chained Ogre (c5020_0000 #1100310,1105600) ashinaoutskirts]'
-  Text: auto
+  Text: Dropped by Chained Ogre
   Area: ashinaoutskirts_stairway
   Tags: miniboss
   Event: chainedogre
@@ -1550,13 +1539,13 @@ Slots:
 - Key: '01,0:50002131::'
   DebugText:
   - 'Memory: Saint Isshin  - 2131[Sword Saint Isshin (c5400_0000 #1120860) ashinareservoir]'
-  Text: auto
+  Text: Dropped by Sword Saint Isshin
   Area: ashinareservoir_end
   Tags: boss end
 - Key: '01,0:50002132::'
   DebugText:
   - 'Memory - 2132[Sword Saint Isshin (c5400_0000 #1120860) ashinareservoir] (hidden)'
-  Text: auto
+  Text: Dropped by Sword Saint Isshin
   Area: ashinareservoir
   Tags: norandom
 - Key: '01,0:50003080::'
@@ -1581,13 +1570,13 @@ Slots:
 - Key: '01,0:51112900::'
   DebugText:
   - 'Heavy Coin Purse - 10212005[Seven Ashina Spears (c1021_0002 #1120530) ashinareservoir]'
-  Text: auto
+  Text: Dropped by Seven Ashina Spears Shikibu Toshikatsu Yamauchi in NG+
   Area: ashinareservoir
   Tags: ng+
 - Key: '01,0:51112910::'
   DebugText:
   - 'Heavy Coin Purse - 10212105[Seven Ashina Spears (c1021_0001 #1120521) ashinareservoir]'
-  Text: auto
+  Text: Dropped by Seven Ashina Separs Shume Masaji Oniwa in NG+
   Area: ashinareservoir_invasion2
   Tags: ng+
 - Key: '01,0:51112920::'
@@ -1601,14 +1590,14 @@ Slots:
 - Key: '01,0:51112930::'
   DebugText:
   - 'Scrap Magnetite - 14702001[Lone Shadow (c1470_0000 #1120300) ashinareservoir] 2x'
-  Text: auto
+  Text: Dropped by Lone Shadow Longswordsman
   Area: ashinareservoir
-  Tags: ng
+  Tags: ng missable
   Until: always
 - Key: '01,0:51112931::'
   DebugText:
   - 'Heavy Coin Purse - 14702005[Lone Shadow (c1470_0000 #1120300) ashinareservoir]'
-  Text: auto
+  Text: Dropped by Lone Shadow Longswordsman in NG+
   Area: ashinareservoir
   Tags: ng+
 - Key: '01,0:51120000::'
@@ -1700,7 +1689,7 @@ Slots:
 - Key: '01,0:51120170::'
   DebugText:
   - 'Bundled Jizo Statue - 1120170[Chest (o005300_0000 #1121682) ashinareservoir]'
-  Text: auto
+  Text: In the chest with Gyoubu's Broken Horn in NG+
   Area: ashinareservoir
   Tags: ng+
 - Key: '01,0:51120180::'
@@ -1722,7 +1711,7 @@ Slots:
 - Key: '01,0:6700::'
   DebugText:
   - 'Dragon Flash - 2130[Sword Saint Isshin (c5400_0000 #1120860) ashinareservoir] (hidden)'
-  Text: auto
+  Text: Dropped by Sword Saint Isshin
   Area: ashinareservoir_end
   Tags: boss end
 - Key: '01,0:6720::'
@@ -1766,7 +1755,7 @@ Slots:
   - 'Mask Fragment: Dragon - 1110001[Dungeon Memorial Mob (1) for 5000 Sen - event 71111010], 1110051[Dungeon Memorial Mob (1) for 4500 Sen - event 71111010]'
   Text: Unique item sold by Dungeon Memorial Mob
   Area: dungeon
-  Tags: norandom:lightcoinpurse norandom:heavycoinpurse
+  Tags: racemode norandom:lightcoinpurse norandom:heavycoinpurse
 - Key: '02,0:-1:1111400:'
   DebugText:
   - Bite Down - 1111404[Blackhat Badger (2) for 30 Sen - event 71111540], 1111454[Blackhat Badger (2) for 27 Sen - event 71111540]
@@ -1801,37 +1790,37 @@ Slots:
 - Key: '02,0:50002082::'
   DebugText:
   - 'Memory - 2082[Genichiro, Way of Tomoe (c7110_0001 #1110801) ashinacastle] (hidden)'
-  Text: auto
+  Text: Dropped by Genichiro
   Area: ashinacastle
   Tags: norandom
 - Key: '02,0:50002090::'
   DebugText:
   - 'Aromatic Branch - 2090[Owl (c5060_0000 #1110850) ashinacastle]'
-  Text: auto
+  Text: Dropped by Owl
   Area: ashinacastle_invasion1
   Tags: boss
 - Key: '02,0:50002091::'
   DebugText:
   - 'Memory: Great Shinobi - 2091[Owl (c5060_0000 #1110850) ashinacastle]'
-  Text: auto
+  Text: Dropped by Owl
   Area: ashinacastle_invasion1
   Tags: boss
 - Key: '02,0:50002092::'
   DebugText:
   - 'Memory - 2092[Owl (c5060_0000 #1110850) ashinacastle] (hidden)'
-  Text: auto
+  Text: Dropped by Owl
   Area: ashinacastle
   Tags: norandom
 - Key: '02,0:50002121::'
   DebugText:
   - 'Memory: Isshin Ashina - 2121[Tengu of Ashina (c5430_0000 #1110920) ashinacastle]'
-  Text: auto
+  Text: Dropped by Isshin in Shura ending
   Area: ashinacastle_invasion1
   Tags: missable exclusive end
 - Key: '02,0:50002122::'
   DebugText:
   - 'Memory - 2122[Tengu of Ashina (c5430_0000 #1110920) ashinacastle] (hidden)'
-  Text: auto
+  Text: Dropped by Isshin in Shura ending
   Area: ashinacastle
   Tags: norandom
 - Key: '02,0:50006111::'
@@ -1839,7 +1828,7 @@ Slots:
   - 'Fragrant Flower Note - 61110[Kuro (c7200_0000 #1110701) ashinacastle]'
   Text: Given by Kuro upon asking about the flower
   Area: ashinacastle_kuro1
-  Tags: missable
+  Tags: missable  # Just in case
 - Key: '02,0:50006112::'
   DebugText:
   - 'Immortal Severance Text - 61102[Kuro (c7200_0000 #1110701) ashinacastle]'
@@ -1862,13 +1851,15 @@ Slots:
 - Key: '02,0:50006116::'
   DebugText:
   - "Page's Diary - 61106[Kuro (c7200_0000 #1110701) ashinacastle]"
-  Text: Given by Kuro after he recruits you to achieve Immortal Severence, to ask Emma about the Mortal Blade
+  Text: Given by Kuro after he recruits you to achieve Immortal Severence and you show him Lotus of the Palace, to ask Emma about the Mortal Blade
   Area: ashinacastle_kuro1
+  Tags: missable
 - Key: '02,0:50006118::'
   DebugText:
   - "Okami's Ancient Text - 61108[Kuro (c7200_0000 #1110701) ashinacastle]"
-  Text: Given by Kuro after he recruits you to achieve Immortal Severence, describing Ashina Depths
+  Text: Given by Kuro after he recruits you to achieve Immortal Severence and you show him Lotus of the Palace, describing Ashina Depths
   Area: ashinacastle_kuro1
+  Tags: missable
 - Key: '02,0:50006119::'
   DebugText:
   - 'Divine Grass - 61112[Kuro (c7200_0000 #1110701) ashinacastle]'
@@ -1894,6 +1885,7 @@ Slots:
   - 'Immortal Severance Scrap - 62312[Emma (c7400_0000 #1100722,1105600) ashinaoutskirts, Emma (c7400_0000 #1110700) ashinacastle, Emma (c7400_0002 #1110712) ashinacastle, Emma (c7400_0004 #1110716) ashinacastle, Emma (c7400_0005 #1110718) ashinacastle]'
   Text: Given by Emma when asking her about Immortal Severence at Kuro's prompting
   Area: ashinacastle_kuro1
+  Tags: missable  # requires Lotus of the Palace
 - Key: '02,0:50006232::'
   DebugText:
   - "Father's Bell Charm - 62302[Emma (c7400_0000 #1100722,1105600) ashinaoutskirts, Emma (c7400_0000 #1110700) ashinacastle, Emma (c7400_0002 #1110712) ashinacastle, Emma (c7400_0004 #1110716) ashinacastle, Emma (c7400_0005 #1110718) ashinacastle]"
@@ -2350,19 +2342,19 @@ Slots:
 - Key: '02,0:51110770::'
   DebugText:
   - 'Bundled Jizo Statue - 1110770[Chest (o005300_0005 #1111507) ashinacastle]'
-  Text: auto
+  Text: In the spot of the Prayer Bead in the chest in NG+
   Area: ashinacastle
   Tags: ng+
 - Key: '02,0:51110780::'
   DebugText:
   - 'Bundled Jizo Statue - 1110780[Chest (o005300_0006 #1111508) ashinacastle]'
-  Text: auto
+  Text: In the spot of Sabimaru in NG+
   Area: ashinacastle
   Tags: ng+
 - Key: '02,0:51110790::'
   DebugText:
   - 'Divine Grass - 1110790[Chest (o005300_0007 #1111509) ashinacastle]'
-  Text: auto
+  Text: In the spot of the Gourd Seed in the chest in NG+
   Area: ashinacastle
   Tags: ng+
 - Key: '02,0:51110800::'
@@ -2464,7 +2456,7 @@ Slots:
 - Key: '02,0:51110970::'
   DebugText:
   - 'Heavy Coin Purse - 10202005[Samurai General (c1020_0000 #1110410) ashinacastle]'
-  Text: auto
+  Text: Dropped by General Kuranosuke Matsomoto in NG+
   Area: ashinacastle
   Tags: ng+
 - Key: '02,0:51110971::'
@@ -2482,7 +2474,7 @@ Slots:
 - Key: '02,0:51110973::'
   DebugText:
   - "Ungo's Spiritfall - 13400000[Underwater Headless (c1340_0000 #1110660) ashinacastle]"
-  Text: auto
+  Text: Dropped by Underwater Headless
   Area: ashinacastle_underwater
   Tags: headless
 - Key: '02,0:51110975::'
@@ -2494,51 +2486,51 @@ Slots:
 - Key: '02,0:51110976::'
   DebugText:
   - 'Heavy Coin Purse - 13700005[Blazing Bull (c1370_0000 #1110440) ashinacastle]'
-  Text: auto
+  Text: Dropped by Blazing Bull in NG+
   Area: ashinacastle_gate
   Tags: ng+
 - Key: '02,0:51110977::'
   DebugText:
   - 'Heavy Coin Purse - 14000005[Fencer (c1400_0004 #1110504,1115170) ashinacastle]'
-  Text: auto
+  Text: Dropped by Ashina Elite Jinsuke Saze in NG+
   Area: ashinacastle
   Tags: ng+
 - Key: '02,0:51110978::'
   DebugText:
   - 'Heavy Coin Purse - 14001005[Fencer (c1400_0011 #1110511,1115170) ashinacastle]'
-  Text: auto
+  Text: Dropped by Ashina Elite Ujinari Mizuo in NG+
   Area: ashinacastle_invasion2
   Tags: ng+
 - Key: '02,0:51110979::'
   DebugText:
   - 'Lump of Fat Wax - 14700001[Lone Shadow (c1470_0005 #1110305,1115170) ashinacastle] 2x'
-  Text: auto
+  Text: Dropped by Lone Shadow Vilehand
   Area: ashinacastle_invasion1
-  Tags: ng
+  Tags: ng missable
 - Key: '02,0:51110980::'
   DebugText:
   - 'Heavy Coin Purse - 14700005[Lone Shadow (c1470_0005 #1110305,1115170) ashinacastle]'
-  Text: auto
+  Text: Dropped by Lone Shadow Vilehand in NG+
   Area: ashinacastle_invasion1
   Tags: ng+
 - Key: '02,0:51110981::'
   DebugText:
   - 'Yellow Gunpowder - 14701001[Lone Shadow (c1470_0016 #1110316) ashinacastle] 2x'
-  Text: auto
+  Text: Dropped by Lone Shadow Masanaga the Spear-Bearer
   Area: ashinacastle_invasion1
-  Tags: ng
+  Tags: ng missable
   Until: invasion2
 - Key: '02,0:51110982::'
   DebugText:
   - 'Heavy Coin Purse - 14701005[Lone Shadow (c1470_0016 #1110316) ashinacastle]'
-  Text: auto
+  Text: Dropped by Lone Shadow Masanaga the Spear-Bearer in NG+
   Area: ashinacastle_invasion1
   Tags: ng+
   Until: invasion2
 - Key: '02,0:51110983::'
   DebugText:
   - 'Heavy Coin Purse - 50200005[Chained Ogre (c5020_0000 #1110610) ashinacastle]'
-  Text: auto
+  Text: Dropped by Chained Ogre in NG+
   Area: ashinacastle_invasion1
   Tags: ng+
 - Key: '02,0:51110984::'
@@ -2563,7 +2555,7 @@ Slots:
 - Key: '02,0:51110988::'
   DebugText:
   - 'Bulging Coin Purse - 13400005[Underwater Headless (c1340_0000 #1110660) ashinacastle]'
-  Text: auto
+  Text: Dropped by Underwater Headless in NG+
   Area: ashinacastle_underwater
   Tags: ng+
 - Key: '02,0:52500966::'
@@ -2571,7 +2563,7 @@ Slots:
   - 'Treasure Carp Scale - 13200030[Treasure Carp (c1320_0000 #1110650) ashinacastle]'
   Text: Dropped by the underwater Treasure Carp in the moat below the Ashina Castle Sculptor's Idol
   Area: ashinacastle_underwater
-  Tags: enemy nokey  # XX When does this dude spawn?
+  Tags: enemy nokey carp  # XX When does this dude spawn?
 - Key: '02,0:6505::'
   DebugText:
   - 'Sabimaru - 1110010[Chest (o005300_0001 #1111501) ashinacastle]'
@@ -2587,7 +2579,7 @@ Slots:
 - Key: '02,0:6711::'
   DebugText:
   - 'Shinobi Medicine Rank 2 - 13700001[Blazing Bull (c1370_0000 #1110440) ashinacastle] (hidden)'
-  Text: auto
+  Text: Dropped by Blazing Bull
   Area: ashinacastle_gate
   Tags: miniboss nokey  # Due to bull skip, treat bull as mostly non-missable, except for key items
   Event: blazingbull
@@ -2595,7 +2587,7 @@ Slots:
 - Key: '02,0:6712::'
   DebugText:
   - 'Shinobi Medicine Rank 3 - 50200001[Chained Ogre (c5020_0000 #1110610) ashinacastle] (hidden)'
-  Text: auto
+  Text: Dropped by Chained Ogre
   Area: ashinacastle_invasion1
   Tags: miniboss
 - Key: '02,0:6726::'
@@ -2613,7 +2605,7 @@ Slots:
 - Key: '02,0:6765::'
   DebugText:
   - 'Prayer Bead - 13700000[Blazing Bull (c1370_0000 #1110440) ashinacastle]'
-  Text: auto
+  Text: Dropped by Blazing Bull
   Area: ashinacastle_gate
   Tags: miniboss nokey  # Due to bull skip, treat bull as mostly non-missable, except for key items
   Event: blazingbull
@@ -2633,7 +2625,7 @@ Slots:
 - Key: '02,0:6778::'
   DebugText:
   - 'Prayer Bead - 50200000[Chained Ogre (c5020_0000 #1110610) ashinacastle]'
-  Text: auto
+  Text: Dropped by Chained Ogre
   Area: ashinacastle_invasion1
   Tags: miniboss
 - Key: '02,0:6779::'
@@ -2709,33 +2701,33 @@ Slots:
 - Key: '03,0:50002031::'
   DebugText:
   - 'Memory: Lady Butterfly - 2031[Lady Butterfly (c5090_0000 #1000800) hirata]'
-  Text: auto
+  Text: Dropped by Lady Butterfly
   Area: hirata_temple1
   Tags: boss
 - Key: '03,0:50002032::'
   DebugText:
   - 'Memory - 2032[Lady Butterfly (c5090_0000 #1000800) hirata] (hidden)'
-  Text: auto
+  Text: Dropped by Lady Butterfly
   Area: hirata
   Tags: norandom
 - Key: '03,0:50002100::'
   DebugText:
   - 'Aromatic Flower - 2100[Owl (c5060_0001 #1000900) hirata]'
-  Text: auto
+  Text: Dropped by Owl
   Area: hirata_temple2
   Tags: boss
   Event: owl2
 - Key: '03,0:50002101::'
   DebugText:
   - 'Memory: Foster Father - 2101[Owl (c5060_0001 #1000900) hirata]'
-  Text: auto
+  Text: Dropped by Owl
   Area: hirata_temple2
   Tags: boss
   Event: owl2
 - Key: '03,0:50002102::'
   DebugText:
   - 'Memory - 2102[Owl (c5060_0001 #1000900) hirata] (hidden)'
-  Text: auto
+  Text: Dropped by Owl
   Area: hirata_temple2
   Tags: norandom
 - Key: '03,0:50006120::'
@@ -2743,6 +2735,7 @@ Slots:
   - 'Hidden Temple Key - 61200[Owl (c5060_0000 #1000590) hirata]'
   Text: Given by dying Owl in the courtyard up Bamboo Thicket Slope
   Area: hirata_courtyard1
+  Tags: racemode
 - Key: '03,0:50006180::'
   DebugText:
   - 'Snap Seed - 61800[Inosuke (c7460_0000 #1000712) hirata]'
@@ -2773,19 +2766,19 @@ Slots:
 - Key: '03,0:51000005::'
   DebugText:
   - 'Fistful of Ash - 1000005[Treasure (o000100_0070 #1001270) hirata] 3x'
-  Text: auto
+  Text: Replaces Flame Barrel in NG+
   Area: hirata
   Tags: ng+
 - Key: '03,0:51000015::'
   DebugText:
   - 'Bundled Jizo Statue - 1000015[Treasure (o000100_0071 #1001271) hirata]'
-  Text: auto
+  Text: Replaces Shinobi Axe of the Monkey in NG+
   Area: hirata
   Tags: ng+
 - Key: '03,0:51000025::'
   DebugText:
   - 'Bundled Jizo Statue - 1000025[Treasure (o000100_0072 #1001272) hirata]'
-  Text: auto
+  Text: Replaces Mist Raven's Feathers in NG+
   Area: hirata
   Tags: ng+
 - Key: '03,0:51000030::'
@@ -3016,8 +3009,8 @@ Slots:
 - Key: '03,0:51000505::'
   DebugText:
   - 'Bundled Jizo Statue - 1000505[Chest (o005300_0001 #1001501) hirata]'
-  Text: auto
-  Area: hirata
+  Text: Replaces Prayer Bead in NG+
+  Area: hirata_beforetemple
   Tags: ng+
 - Key: '03,0:51000600::'
   DebugText:
@@ -3073,19 +3066,19 @@ Slots:
 - Key: '03,0:51000911::'
   DebugText:
   - 'Unrefined Sake - 10700001[Shura Samurai (c1070_0000 #1000300,1005300) hirata]'
-  Text: auto
+  Text: Dropped by Juzou the Drunkard
   Area: hirata_sidepath
-  Tags: ng
+  Tags: ng missable
 - Key: '03,0:51000915::'
   DebugText:
   - 'Heavy Coin Purse - 10700005[Shura Samurai (c1070_0000 #1000300,1005300) hirata]'
-  Text: auto
+  Text: Dropped by Juzou the Drunkard in NG+
   Area: hirata_sidepath
   Tags: ng+
 - Key: '03,0:51000925::'
   DebugText:
   - 'Heavy Coin Purse - 10500005[Shinobi Hunter (c1050_0000 #1000330) hirata]'
-  Text: auto
+  Text: Dropped by Shinobi Hunter in NG+
   Area: hirata
   Tags: ng+
 - Key: '03,0:51000930::'
@@ -3103,57 +3096,57 @@ Slots:
 - Key: '03,0:51000955::'
   DebugText:
   - 'Heavy Coin Purse - 10700105[Shura Samurai (c1070_0001 #1000301) hirata]'
-  Text: auto
-  Area: hirata
-  Tags: ng
+  Text: Dropped by Juzou the Drunkard
+  Area: hirata_courtyard2
+  Tags: ng+
 - Key: '03,0:51000961::'
   DebugText:
   - 'Adamantite Scrap - 14703101[Lone Shadow (c1470_0003 #1000353) hirata] 2x'
-  Text: auto
-  Area: hirata
-  Tags: ng
+  Text: Dropped by Lone Shadow Masanaga the Spear-Bearer
+  Area: hirata_courtyard2
+  Tags: ng missable
 - Key: '03,0:51000965::'
   DebugText:
   - 'Heavy Coin Purse - 14703105[Lone Shadow (c1470_0003 #1000353) hirata]'
-  Text: auto
-  Area: hirata
+  Text: Dropped by Lone Shadow Masanaga the Spear-Bearer in NG+
+  Area: hirata_courtyard2
   Tags: ng+
 - Key: '03,0:52500960::'
   DebugText:
   - 'Treasure Carp Scale - 13200000[Treasure Carp (c1320_0000 #1000450) hirata]'
   Text: Dropped by Treasure Carp on the surface of the Dragonspring lake, near the bridge
   Area: hirata
-  Tags: enemy
+  Tags: enemy carp
 - Key: '03,0:52500961::'
   DebugText:
   - 'Treasure Carp Scale - 13200005[Treasure Carp (c1320_0001 #1000451) hirata]'
   Text: Dropped by Treasure Carp on the surface of the Dragonspring lake, near Pot Noble Harunaga
   Area: hirata
-  Tags: enemy
+  Tags: enemy carp
 - Key: '03,0:52500962::'
   DebugText:
   - 'Treasure Carp Scale - 13200010[Treasure Carp (c1320_0002 #1000452) hirata]'
   Text: Dropped by Treasure Carp on the surface of the river under the Bamboo Thicket Slope bridge
   Area: hirata
-  Tags: enemy
+  Tags: enemy carp
 - Key: '03,0:52500963::'
   DebugText:
   - 'Treasure Carp Scale - 13200015[Treasure Carp (c1320_0003 #1000453) hirata]'
   Text: Dropped by underwater Treasure Carp in the river under the Bamboo Thicket Slope bridge
   Area: hirata_underwater
-  Tags: enemy
+  Tags: enemy carp
 - Key: '03,0:52500964::'
   DebugText:
   - 'Treasure Carp Scale - 13200020[Treasure Carp (c1320_0009 #1000459) hirata]'
   Text: Dropped by one of the two underwater Treasure Carp in Dragonspring lake
   Area: hirata_underwater
-  Tags: enemy
+  Tags: enemy carp
 - Key: '03,0:52500965::'
   DebugText:
   - 'Treasure Carp Scale - 13200025[Treasure Carp (c1320_0010 #1000460) hirata]'
   Text: Dropped by one of the two underwater Treasure Carp in Dragonspring lake
   Area: hirata_underwater
-  Tags: enemy
+  Tags: enemy carp
 - Key: '03,0:6502::'
   DebugText:
   - 'Flame Barrel - 1000000[Treasure (o000100_0000 #1001210) hirata]'
@@ -3171,11 +3164,11 @@ Slots:
   - "Mist Raven's Feathers - 1000020[Treasure (o000100_0002 #1001212) hirata]"
   Text: In the Three-Story Pagoda guarded by a Lone Shadow
   Area: hirata_pagoda
-  Tags: outoftheway
+  Tags: racemode outoftheway
 - Key: '03,0:6750::'
   DebugText:
   - 'Sakura Droplet - 2030[Lady Butterfly (c5090_0000 #1000800) hirata]'
-  Text: auto
+  Text: Dropped by Lady Butterfly
   Area: hirata_temple1
   Tags: boss
 - Key: '03,0:6763::'
@@ -3336,9 +3329,8 @@ Slots:
 - Key: '04,0:51300140::'
   DebugText:
   - Bulging Coin Purse - 1300140[Treasure (o000100_0014) dungeon]
-  Text: auto
+  Text: Before the Bottomless Hole Sculptor's Idol, coming from Ashina Reservoir
   Area: dungeon
-  Tags: Before the Bottomless Hole Sculptor's Idol, coming from Ashina Reservoir
 - Key: '04,0:51300150::'
   DebugText:
   - Light Coin Purse - 1300150[Treasure (o000100_0015) dungeon]
@@ -3402,14 +3394,14 @@ Slots:
 - Key: '04,0:51300910::'
   DebugText:
   - 'Ceremonial Tanto - 10800000[Shichimen Warrior (c1080_0000 #1300200) dungeon]'
-  Text: auto
+  Text: Dropped by Shichimen Warrior
   Area: dungeon
   Tags: miniboss
   Event: shichimen
 - Key: '04,0:51300915::'
   DebugText:
   - 'Bulging Coin Purse - 10800005[Shichimen Warrior (c1080_0000 #1300200) dungeon]'
-  Text: auto
+  Text: Dropped by Shichimen Warrior in NG+
   Area: dungeon
   Tags: ng+
 - Key: '05,0:-1:1500000:'
@@ -3428,19 +3420,19 @@ Slots:
 - Key: '05,0:50002050::'
   DebugText:
   - 'Mibu Breathing Technique - 2050[Corrupted Monk (c5000_0000 #1500800) mibuvillage]'
-  Text: auto
+  Text: Dropped by Corrupted Monk
   Area: mibuvillage
   Tags: boss
 - Key: '05,0:50002051::'
   DebugText:
   - 'Memory: Corrupted Monk - 2051[Corrupted Monk (c5000_0000 #1500800) mibuvillage]'
-  Text: auto
+  Text: Dropped by Corrupted Monk
   Area: mibuvillage
   Tags: boss
 - Key: '05,0:50002052::'
   DebugText:
   - 'Memory - 2052[Corrupted Monk (c5000_0000 #1500800) mibuvillage] (hidden)'
-  Text: auto
+  Text: Dropped by Corrupted Monk
   Area: mibuvillage
   Tags: norandom
 - Key: '05,0:50006280::'
@@ -3448,6 +3440,7 @@ Slots:
   - 'Dragonspring Sake - 62800[Head Priest (c7480_0000 #1500701) mibuvillage]'
   Text: Given by the Head Priest after you give him Water of the Palace
   Area: mibuvillage
+  Tags: nokey  # Until questreqs handling is fixed
   QuestReqs: waterofthepalace
 - Key: '05,0:50006281::'
   DebugText:
@@ -3465,13 +3458,13 @@ Slots:
 - Key: '05,0:51500005::'
   DebugText:
   - 'Bundled Jizo Statue - 1500005[Treasure (o000100_0060 #1501390) mibuvillage]'
-  Text: auto
+  Text: Replaces Pine Resin Ember in NG+
   Area: mibuvillage
   Tags: ng+
 - Key: '05,0:51500015::'
   DebugText:
   - 'Divine Grass - 1500015[Treasure (o000100_0061 #1501391) mibuvillage]'
-  Text: auto
+  Text: Replaces Gourd Seed in NG+
   Area: mibuvillage
   Tags: ng+
 - Key: '05,0:51500020::'
@@ -3488,7 +3481,7 @@ Slots:
 - Key: '05,0:51500045::'
   DebugText:
   - 'Bundled Jizo Statue - 1500045[Shiny Treasure (o000101_0001 #1501394) mibuvillage]'
-  Text: auto
+  Text: Replaces Head Priest's Prayer Bead in NG+
   Area: mibuvillage
   Tags: ng+
 - Key: '05,0:51500050::'
@@ -3633,8 +3626,8 @@ Slots:
 - Key: '05,0:51500325::'
   DebugText:
   - 'Bundled Jizo Statue - 1500325[Underwater Chest (o005400_0001 #1501510) mibuvillage]'
-  Text: auto
-  Area: mibuvillage
+  Text: Replaces underwater Prayer Bead in NG+
+  Area: mibuvillage_underwater
   Tags: ng+
 - Key: '05,0:51500330::'
   DebugText:
@@ -3810,31 +3803,31 @@ Slots:
 - Key: '05,0:51500910::'
   DebugText:
   - "Gachiin's Spiritfall - 13500000[Headless (c1350_0000 #1500680) mibuvillage]"
-  Text: auto
+  Text: Dropped by Headless
   Area: hiddenforest
   Tags: headless
 - Key: '05,0:51500915::'
   DebugText:
   - 'Bulging Coin Purse - 13500005[Headless (c1350_0000 #1500680) mibuvillage]'
-  Text: auto
+  Text: Dropped by Headless in NG+
   Area: hiddenforest
   Tags: ng+
 - Key: '05,0:51500925::'
   DebugText:
   - "Heavy Coin Purse - 70000005[O'Rin (c7000_0000 #1500690) mibuvillage]"
-  Text: auto
-  Area: hiddenforest
+  Text: Dropped by O'Rin in NG+
+  Area: mibuvillage
   Tags: ng+
 - Key: '05,0:51500931::'
   DebugText:
   - 'Unrefined Sake - 10702001[Shura Samurai (c1070_0000 #1500490) mibuvillage]'
-  Text: auto
+  Text: Dropped by Tokujiro the Glutton
   Area: hiddenforest
-  Tags: ng
+  Tags: ng missable
 - Key: '05,0:51500935::'
   DebugText:
   - 'Heavy Coin Purse - 10702005[Shura Samurai (c1070_0000 #1500490) mibuvillage]'
-  Text: auto
+  Text: Dropped by Tokujiro the Glutton in NG+
   Area: hiddenforest
   Tags: ng+
 - Key: '05,0:51500940::'
@@ -3848,11 +3841,11 @@ Slots:
   - 'Treasure Carp Scale - 13200035[Treasure Carp (c1320_0021 #1500562) mibuvillage]'
   Text: Dropped by an underwater Treasure Carp up the river from the Water Mill Sculptor's Idol
   Area: mibuvillage_underwater
-  Tags: enemy
+  Tags: enemy carp
 - Key: '05,0:6714::'
   DebugText:
   - "Breath of Life: Shadow - 70000001[O'Rin (c7000_0000 #1500690) mibuvillage] (hidden)"
-  Text: auto
+  Text: Dropped by O'Rin
   Area: mibuvillage
   Tags: miniboss
 - Key: '05,0:6728::'
@@ -3876,7 +3869,7 @@ Slots:
 - Key: '05,0:6777::'
   DebugText:
   - "Prayer Bead - 70000000[O'Rin (c7000_0000 #1500690) mibuvillage]"
-  Text: auto
+  Text: Dropped by O'Rin
   Area: mibuvillage
   Tags: miniboss
 - Key: '05,0:6795::'
@@ -3904,7 +3897,7 @@ Slots:
   - Heavy Coin Purse - 1700004[Toxic Memorial Mob (5) for 550 Sen - event 71701040], 1700054[Toxic Memorial Mob (5) for 500 Sen - event 71701040]
   - Yellow Gunpowder - 1700003[Toxic Memorial Mob (2) for 270 Sen - event 71701030], 1700053[Toxic Memorial Mob (2) for 243 Sen - event 71701030]
   Text: Unique item sold by Toxic Memorial Mob
-  Area: sunkenvalley
+  Area: sunkenvalley_passage
   Tags: norandom:heavycoinpurse
 - Key: '06,0:-1:9094,1700000:'
   DebugText:
@@ -3916,26 +3909,26 @@ Slots:
 - Key: '06,0:50002011::'
   DebugText:
   - 'Memory: Guardian Ape - 2011[Guardian Ape (c5100_0000 #1700800) sunkenvalley]'
-  Text: auto
+  Text: Dropped by Guardian Ape
   Area: sunkenvalley_passage
   Tags: boss
 - Key: '06,0:50002012::'
   DebugText:
   - 'Memory - 2012[Guardian Ape (c5100_0000 #1700800) sunkenvalley] (hidden)'
-  Text: auto
-  Area: sunkenvalley
+  Text: Dropped by Guardian Ape
+  Area: sunkenvalley_passage
   Tags: norandom
 - Key: '06,0:50002017::'
   DebugText:
   - 'Memory: Headless Ape - 2017[Guardian Ape (c5100_0001 #1700850) sunkenvalley]'
-  Text: Unique drop from Headless Ape
+  Text: Dropped by Headless Ape
   Area: sunkenvalley_burrow2
   Tags: boss
 - Key: '06,0:50002018::'
   DebugText:
   - 'Memory - 2018[Guardian Ape (c5100_0001 #1700850) sunkenvalley] (hidden)'
-  Text: auto
-  Area: sunkenvalley
+  Text: Dropped by Headless Ape
+  Area: sunkenvalley_burrow2
   Tags: norandom
 - Key: '06,0:51700000::'
   DebugText:
@@ -3946,26 +3939,26 @@ Slots:
 - Key: '06,0:51700015::'
   DebugText:
   - 'Bundled Jizo Statue - 1700015[Treasure (o000100_0067 #1701341) sunkenvalley]'
-  Text: auto
+  Text: Replaces Large Fan in NG+
   Area: sunkenvalley
   Tags: ng+
 - Key: '06,0:51700025::'
   DebugText:
   - 'Bundled Jizo Statue - 1700025[Treasure (o000100_0025 #1701301) sunkenvalley]'
-  Text: auto
+  Text: Replaces Prayer Bead in NG+
   Area: sunkenvalley
   Tags: ng+
 - Key: '06,0:51700035::'
   DebugText:
   - 'Bundled Jizo Statue - 1700035[Treasure (o000100_0085 #1701311) sunkenvalley]'
-  Text: auto
+  Text: Replaces Prayer Bead in NG+
   Area: sunkenvalley
   Tags: ng+
 - Key: '06,0:51700045::'
   DebugText:
   - 'Bundled Jizo Statue - 1700045[Treasure (o000100_0086 #1701321) sunkenvalley]'
-  Text: auto
-  Area: sunkenvalley
+  Text: Replaces Prayer Bead in NG+
+  Area: sunkenvalley_burrow1
   Tags: ng+
 - Key: '06,0:51700050::'
   DebugText:
@@ -4062,7 +4055,7 @@ Slots:
 - Key: '06,0:51700260::'
   DebugText:
   - Dragon's Blood Droplet - 1700260[Treasure (o000100_0022) sunkenvalley]
-  Text: In the cave
+  Text: In the cave after killing the Great Serpent
   Area: sunkenvalley_senpou
   Tags: missable
 - Key: '06,0:51700290::'
@@ -4326,7 +4319,7 @@ Slots:
 - Key: '06,0:51700825::'
   DebugText:
   - 'Divine Grass - 1700825[Treasure (o000100_0056 #1701331) sunkenvalley]'
-  Text: auto
+  Text: Replaces Gourd Seed in NG+
   Area: sunkenvalley
   Tags: ng+
 - Key: '06,0:51700830::'
@@ -4370,13 +4363,13 @@ Slots:
 - Key: '06,0:51700900::'
   DebugText:
   - Mibu Balloon of Soul - 1700900[Treasure (o000100_0015) sunkenvalley]
-  Text: Overlooking the lake below
+  Text: Overlooking the lake below after killing the Great Serpent
   Area: sunkenvalley_senpou
   Tags: missable
 - Key: '06,0:51700910::'
   DebugText:
   - Bundled Jizo Statue - 1700910[Treasure (o000100_0020) sunkenvalley]
-  Text: In the cave
+  Text: In the cave after killing the Great Serpent
   Area: sunkenvalley_senpou
   Tags: missable
 - Key: '06,0:51700920::'
@@ -4409,19 +4402,19 @@ Slots:
 - Key: '06,0:51700940::'
   DebugText:
   - 'Fresh Serpent Viscera - 50100000[Great Serpent (c5010_0000 #1700600) sunkenvalley]'
-  Text: auto
+  Text: Dropped by plunging onto Great Serpent, after both grappling the kite in Senpou Temple and using Gun Fort Shrine Key
   Area: sunkenvalley_senpou
   Tags: racemode
 - Key: '06,0:51700961::'
   DebugText:
   - 'Yellow Gunpowder - 10401101[Centipede Boss (c1040_0000 #1700425) sunkenvalley] 2x'
-  Text: auto
+  Text: Dropped by Long-arm Centipede Giraffe
   Area: sunkenvalley
-  Tags: ng
+  Tags: ng missable
 - Key: '06,0:51700965::'
   DebugText:
   - 'Heavy Coin Purse - 10401105[Centipede Boss (c1040_0000 #1700425) sunkenvalley]'
-  Text: auto
+  Text: Dropped by Long-arm Centipede Giraffe in NG+
   Area: sunkenvalley
   Tags: ng+
 - Key: '06,0:51700970::'
@@ -4439,25 +4432,25 @@ Slots:
 - Key: '06,0:51700995::'
   DebugText:
   - 'Bulging Coin Purse - 13502005[Headless (c1350_0000 #1700500) sunkenvalley]'
-  Text: auto
+  Text: Dropped by Headless in NG+
   Area: sunkenvalley_cave
   Tags: ng+
 - Key: '06,0:51701015::'
   DebugText:
   - 'Heavy Coin Purse - 11900005[Snake Eyes (c1191_0000 #1700200) sunkenvalley]'
-  Text: auto
-  Area: sunkenvalley
+  Text: Dropped by Snake Eyes Shirafuji in NG+
+  Area: sunkenvalley_poisonpool
   Tags: ng+
 - Key: '06,0:51701025::'
   DebugText:
   - 'Heavy Coin Purse - 11901105[Snake Eyes (c1191_0001 #1700201) sunkenvalley]'
-  Text: auto
-  Area: sunkenvalley_poisonpool
+  Text: Dropped by Snake Eyes Shirahagi in NG+
+  Area: sunkenvalley
   Tags: ng+
 - Key: '06,0:51701030::'
   DebugText:
   - 'Bulging Coin Purse - 10802005[Shichimen Warrior (c1080_0000 #1700520) sunkenvalley]'
-  Text: auto
+  Text: Dropped by Shichimen Warrior in NG+
   Area: sunkenvalley_burrow3
   Tags: ng+
 - Key: '06,0:52500968::'
@@ -4465,13 +4458,13 @@ Slots:
   - 'Treasure Carp Scale - 13200040[Treasure Carp (c1320_0000 #1700450) sunkenvalley]'
   Text: Dropped by the underwater Treasure Carp closer to the Riven Cave entrance
   Area: sunkenvalley_passage
-  Tags: enemy
+  Tags: enemy carp
 - Key: '06,0:52500969::'
   DebugText:
   - 'Treasure Carp Scale - 13200045[Treasure Carp (c1320_0001 #1700451) sunkenvalley]'
   Text: Dropped by the underwater Treasure Carp farther from the Riven Cave entrance
   Area: sunkenvalley_passage
-  Tags: enemy
+  Tags: enemy carp
 - Key: '06,0:6507::'
   DebugText:
   - 'Large Fan - 1700010[Treasure (o000100_0001 #1701340) sunkenvalley]'
@@ -4481,7 +4474,7 @@ Slots:
 - Key: '06,0:6509::'
   DebugText:
   - 'Slender Finger - 2010[Guardian Ape (c5100_0000 #1700800) sunkenvalley]'
-  Text: auto
+  Text: Dropped by Guardian Ape
   Area: sunkenvalley_passage
   Tags: boss
 - Key: '06,0:6724::'
@@ -4493,17 +4486,16 @@ Slots:
 - Key: '06,0:6743::'
   DebugText:
   - "Malcontent's Ring - 10802000[Shichimen Warrior (c1080_0000 #1700520) sunkenvalley]"
-  Text: auto
+  Text: Dropped by Shichimen Warrior
   Area: sunkenvalley_burrow3
   Tags: miniboss
   Event: shichimen2
 - Key: '06,0:6747::'
   DebugText:
-  - "Bestowal Ninjutsu - 2200[Headless Ape's Centipede (c5001_0000 #1700801) sunkenvalley]"
-  Text: auto
-  Area: sunkenvalley_burrow2
+  - "Bestowal Ninjutsu - 2200[Immortal Centipede (c5001_0000 #1700801) sunkenvalley]"
+  Text: Dropped by Headless Ape upon deathblow
+  Area: sunkenvalley_burrow3  # Causes burrow3 to spawn (slender finger requirement removed)
   Tags: boss  # It should be fine to allow key items here. Enemy rando accounts for this and awards it upon regular headless ape death.
-  QuestReqs: mortalblade
 - Key: '06,0:6773::'
   DebugText:
   - 'Prayer Bead - 11900000[Snake Eyes (c1191_0000 #1700200) sunkenvalley]'
@@ -4545,13 +4537,13 @@ Slots:
 - Key: '06,0:6798::'
   DebugText:
   - 'Prayer Bead - 2015[Guardian Ape (c5100_0001 #1700850) sunkenvalley]'
-  Text: Unique drop from Headless Ape
+  Text: Dropped by Headless Ape
   Area: sunkenvalley_burrow2
   Tags: boss
 - Key: '06,0:6799::'
   DebugText:
   - 'Prayer Bead - 2016[Guardian Ape (c5100_0001 #1700850) sunkenvalley]'
-  Text: Unique drop from Headless Ape
+  Text: Dropped by Headless Ape
   Area: sunkenvalley_burrow2
   Tags: boss
 - Key: '06,3:-1:1100400,1700000:'
@@ -4583,19 +4575,19 @@ Slots:
 - Key: '07,0:50002021::'
   DebugText:
   - 'Memory: Screen Monkeys - 2021[Invisible (c1000_0009 #2000800) senpou]'
-  Text: Unique drop from Folding Screen Monkeys
+  Text: Dropped by Folding Screen Monkeys
   Area: senpou_sanctum
   Tags: boss
 - Key: '07,0:50002022::'
   DebugText:
   - 'Memory - 2022[Invisible (c1000_0009 #2000800) senpou] (hidden)'
-  Text: auto
+  Text: Dropped by Folding Screen Monkeys
   Area: senpou_sanctum
   Tags: norandom
 - Key: '07,0:50003090::'
   DebugText:
   - Shirt after Mortal Blade (cosmetic) - 3090[Scripted senpou]
-  Text: auto
+  Text: Equipped after being given the Mortal Blade from the Divine Child
   Area: senpou_sanctum
   Tags: norandom
 - Key: '07,0:50006224::'
@@ -4633,7 +4625,7 @@ Slots:
 - Key: '07,0:52000005::'
   DebugText:
   - 'Bundled Jizo Statue - 2000005[Treasure (o000100_0001 #2001301) senpou]'
-  Text: auto
+  Text: Replaces Senpou Esoteric Text in NG+
   Area: senpou_grounds
   Tags: ng+
 - Key: '07,0:52000010::'
@@ -4641,6 +4633,7 @@ Slots:
   - "Holy Chapter: Dragon's Return - 2000010[o205910 (o205910_0000 #2001250) senpou]"
   Text: On the corpse of the blue-robed Master of Senpou Temple after visiting the Divine Child in the Halls of Illusion, late in her questline
   Area: senpou_grounds
+  Tags: nokey  # Until questreqs is fixed
   QuestReqs: senpou_sanctum holychapterinfested
 - Key: '07,0:52000020::'
   DebugText:
@@ -4656,7 +4649,7 @@ Slots:
 - Key: '07,0:52000045::'
   DebugText:
   - 'Bundled Jizo Statue - 2000045[Treasure (o000100_0011 #2001321) senpou]'
-  Text: auto
+  Text: Replaces Prayer Bead in NG+
   Area: senpou_underwater
   Tags: ng+
 - Key: '07,0:52000050::'
@@ -4667,7 +4660,7 @@ Slots:
 - Key: '07,0:52000060::'
   DebugText:
   - Illusive Hall Bell - 2000060[Scripted senpou]
-  Text: auto
+  Text: Given at the start of Folding Screen Monkeys
   Area: senpou
   Tags: norandom
 - Key: '07,0:52000070::'
@@ -4960,7 +4953,7 @@ Slots:
 - Key: '07,0:52000735::'
   DebugText:
   - 'Divine Grass - 2000735[Treasure (o000100_0003 #2001311) senpou]'
-  Text: auto
+  Text: Replaces Gourd Seed in NG+
   Area: senpou
   Tags: ng+
 - Key: '07,0:52000740::'
@@ -5032,7 +5025,7 @@ Slots:
 - Key: '07,0:52000925::'
   DebugText:
   - 'Heavy Coin Purse - 11300005[Armored Warrior (c1130_0000 #2000400) senpou]'
-  Text: auto
+  Text: Dropped by Armored Warrior in NG+
   Area: senpou
   Tags: ng+
 - Key: '07,0:52000930::'
@@ -5044,13 +5037,13 @@ Slots:
 - Key: '07,0:52000941::'
   DebugText:
   - 'Yellow Gunpowder - 10400001[Centipede Boss (c1040_0000 #2000279) senpou] 2x'
-  Text: auto
+  Text: Dropped by Long-arm Centipede Sen'un
   Area: senpou
-  Tags: ng
+  Tags: ng missable
 - Key: '07,0:52000945::'
   DebugText:
   - 'Heavy Coin Purse - 10400005[Centipede Boss (c1040_0000 #2000279) senpou] 2x'
-  Text: auto
+  Text: Dropped by Long-arm Centipede Sen'un in NG+
   Area: senpou
   Tags: ng+
 - Key: '07,0:52500970::'
@@ -5058,23 +5051,23 @@ Slots:
   - 'Treasure Carp Scale - 13200050[Treasure Carp (c1320_0000 #2000690) senpou]'
   Text: Dropped by a Treasure Carp on the surface of the Temple Grounds pond
   Area: senpou_grounds
-  Tags: enemy
+  Tags: enemy carp
 - Key: '07,0:52500971::'
   DebugText:
   - 'Treasure Carp Scale - 13200055[Treasure Carp (c1320_0001 #2000691) senpou]'
   Text: Dropped by a Treasure Carp on the surface of the Temple Grounds pond
   Area: senpou_grounds
-  Tags: enemy
+  Tags: enemy carp
 - Key: '07,0:6708::'
   DebugText:
   - 'Senpou Esoteric Text - 2000000[Treasure (o000100_0000 #2001300) senpou]'
-  Text: Inside of the pagoda after the cave acessible near the Main Hall side entrance
+  Text: Inside of the pagoda after the cave accessible near the Main Hall side entrance
   Area: senpou_grounds
   Tags: outoftheway racemode
 - Key: '07,0:6715::'
   DebugText:
   - 'Breath of Nature: Shadow - 11300001[Armored Warrior (c1130_0000 #2000400) senpou] (hidden)'
-  Text: auto
+  Text: Dropped by Armored Warrior
   Area: senpou
   Tags: miniboss
   Event: armoredwarrior
@@ -5087,13 +5080,13 @@ Slots:
 - Key: '07,0:6746::'
   DebugText:
   - 'Puppeteer Ninjutsu - 2020[Invisible (c1000_0009 #2000800) senpou]'
-  Text: Unique drop from Folding Screen Monkeys
+  Text: Dropped by Folding Screen Monkeys
   Area: senpou_sanctum
   Tags: boss
 - Key: '07,0:6771::'
   DebugText:
   - 'Prayer Bead - 11300000[Armored Warrior (c1130_0000 #2000400) senpou]'
-  Text: auto
+  Text: Dropped by Armored Warrior
   Area: senpou
   Tags: miniboss
   Event: armoredwarrior
@@ -5112,32 +5105,32 @@ Slots:
 - Key: '08,0:50002061::'
   DebugText:
   - 'Memory: True Monk - 2061[Corrupted Monk (c5000_0000 #2500850) fountainhead]'
-  Text: Unique drop from True Monk
+  Text: Dropped by True Monk
   Area: fountainhead_bridge
   Tags: boss
   Event: truemonk
 - Key: '08,0:50002062::'
   DebugText:
   - 'Memory - 2062[Corrupted Monk (c5000_0000 #2500850) fountainhead] (hidden)'
-  Text: auto
+  Text: Dropped by True Monk
   Area: fountainhead_bridge
   Tags: norandom
 - Key: '08,0:50002070::'
   DebugText:
   - "Divine Dragon's Tears - 2070[Divine Dragon (c5200_0000 #2500800) fountainhead]"
-  Text: auto
+  Text: Dropped by Divine Dragon
   Area: fountainhead
   Tags: boss
 - Key: '08,0:50002071::'
   DebugText:
   - 'Memory: Divine Dragon - 2071[Divine Dragon (c5200_0000 #2500800) fountainhead]'
-  Text: auto
+  Text: Dropped by Divine Dragon
   Area: fountainhead
   Tags: boss
 - Key: '08,0:50002072::'
   DebugText:
   - 'Memory - 2072[Divine Dragon (c5200_0000 #2500800) fountainhead] (hidden)'
-  Text: auto
+  Text: Dropped by Divine Dragon
   Area: fountainhead
   Tags: norandom
 - Key: '08,0:50006250::'
@@ -5175,13 +5168,13 @@ Slots:
 - Key: '08,0:52500005::'
   DebugText:
   - 'Divine Grass - 2500005[Fountainhead Chest (o255300_0002 #2501510) fountainhead]'
-  Text: auto
+  Text: Replaces Gourd Seed in NG+
   Area: fountainhead
   Tags: ng+
 - Key: '08,0:52500025::'
   DebugText:
   - 'Bundled Jizo Statue - 2500025[Underwater Chest (o005400_0001 #2501512) fountainhead]'
-  Text: auto
+  Text: Replaces Prayer Bead in NG+
   Area: fountainhead
   Tags: ng+
 - Key: '08,0:52500030::'
@@ -5540,32 +5533,32 @@ Slots:
 - Key: '08,0:52500905::'
   DebugText:
   - 'Heavy Coin Purse - 13100005[Okami Warrior (c1310_0006 #2500406,2505441) fountainhead]'
-  Text: auto
-  Area: fountainhead
+  Text: Dropped by Okami Leader Shizu in NG+
+  Area: fountainhead_surface
   Tags: ng+
 - Key: '08,0:52500925::'
   DebugText:
   - 'Heavy Coin Purse - 13800005[Sakura Bull of the Palace (c1380_0000 #2500570) fountainhead]'
-  Text: auto
-  Area: fountainhead
+  Text: Dropped by Sakura Bull of the Palace in NG+
+  Area: fountainhead_surface
   Tags: ng+
 - Key: '08,0:52500930::'
   DebugText:
   - 'Lapis Lazuli - 10801000[Shichimen Warrior (c1080_0000 #2500580,2505440) fountainhead]'
-  Text: auto
+  Text: Dropped by Shichimen Warrior
   Area: fountainhead
   Tags: miniboss unfair
   Event: shichimen3
 - Key: '08,0:52500940::'
   DebugText:
   - "Yashariku's Spiritfall - 13401000[Underwater Headless (c1340_0000 #2500550) fountainhead]"
-  Text: auto
+  Text: Dropped by Underwater Headless
   Area: fountainhead
   Tags: headless
 - Key: '08,0:52500945::'
   DebugText:
   - 'Bulging Coin Purse - 13401005[Underwater Headless (c1340_0000 #2500550) fountainhead]'
-  Text: auto
+  Text: Dropped by Underwater Headless in NG+
   Area: fountainhead
   Tags: ng+
 - Key: '08,0:52500950::'
@@ -5579,49 +5572,49 @@ Slots:
   - 'Treasure Carp Scale - 13200060[Treasure Carp (c1320_0000 #2500600,2505300) fountainhead]'
   Text: Dropped by a underwater Treasure Carp near the bridge where the Okami Warrior is dancing
   Area: fountainhead
-  Tags: enemy
+  Tags: enemy carp
 - Key: '08,0:52500973::'
   DebugText:
   - 'Treasure Carp Scale - 13200065[Treasure Carp (c1320_0001 #2500601,2505300) fountainhead]'
   Text: Dropped by an underwater Treasure Carp between the bridge where the Okami Warrior is dancing and the massive abov-ewater roof
   Area: fountainhead
-  Tags: enemy
+  Tags: enemy carp
 - Key: '08,0:52500974::'
   DebugText:
   - 'Treasure Carp Scale - 13200070[Treasure Carp (c1320_0002 #2500602,2505300) fountainhead]'
   Text: Dropped by an underwater Treasure Carp underneath Feeding Grounds
   Area: fountainhead
-  Tags: enemy
+  Tags: enemy carp
 - Key: '08,0:52500975::'
   DebugText:
   - 'Treasure Carp Scale - 13200075[Treasure Carp (c1320_0011 #2500611,2505300) fountainhead]'
   Text: Dropped by an underwater Treasure Carp before the completely submerged building on the right wall of the lake
   Area: fountainhead
-  Tags: enemy
+  Tags: enemy carp
 - Key: '08,0:52500976::'
   DebugText:
   - 'Treasure Carp Scale - 13200080[Treasure Carp (c1320_0012 #2500612,2505300) fountainhead]'
   Text: Dropped by an underwater Treasure Carp near the first house with the Palace Nobles
   Area: fountainhead
-  Tags: enemy
+  Tags: enemy carp
 - Key: '08,0:52500977::'
   DebugText:
   - 'Treasure Carp Scale - 13200085[Treasure Carp (c1320_0013 #2500613,2505300) fountainhead]'
   Text: Dropped by an underwater Treasure Carp underneath the Great Sakura branch
   Area: fountainhead
-  Tags: enemy
+  Tags: enemy carp
 - Key: '08,0:52500978::'
   DebugText:
   - 'Treasure Carp Scale - 13200090[Treasure Carp (c1320_0017 #2500617,2505300) fountainhead]'
   Text: Dropped by an underwater Treasure Carp in the middle of the lake above the Underwater Headless area
   Area: fountainhead
-  Tags: enemy
+  Tags: enemy carp
 - Key: '08,0:6713::'
   DebugText:
   - "A Beast's Karma - 13800001[Sakura Bull of the Palace (c1380_0000 #2500570) fountainhead] (hidden)"
-  Text: auto
-  Area: fountainhead
-  Tags: ng
+  Text: Dropped by Sakura Bull of the Palace
+  Area: fountainhead_surface
+  Tags: miniboss
 - Key: '08,0:6729::'
   DebugText:
   - 'Gourd Seed - 2500000[Fountainhead Chest (o255300_0000 #2501500) fountainhead]'
@@ -5638,13 +5631,13 @@ Slots:
 - Key: '08,0:6783::'
   DebugText:
   - 'Prayer Bead - 13800000[Sakura Bull of the Palace (c1380_0000 #2500570) fountainhead]'
-  Text: auto
+  Text: Dropped by Sakura Bull of the Palace
   Area: fountainhead_surface
   Tags: miniboss
 - Key: '08,0:6784::'
   DebugText:
   - 'Prayer Bead - 13100000[Okami Warrior (c1310_0006 #2500406,2505441) fountainhead]'
-  Text: Unique drop from Okami Leader Shizu
+  Text: Dropped by Okami Leader Shizu
   Area: fountainhead
   Tags: miniboss
 - Key: '08,0:6797::'
@@ -5656,36 +5649,36 @@ Slots:
 - Key: '99,0:50003010::'
   DebugText:
   - Resurrection - 3010[Scripted] (hidden)
-  Text: auto
+  Text: Given after first dying after the tutorial
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '99,0:50003011::'
   DebugText:
   - Temporary Regenerative Power - 3011[Scripted] (hidden)
-  Text: auto
+  Text: Used for managing resurrections
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '99,0:50003200::'
   DebugText:
   - Sabimaru Memo - 3200[Scripted]
-  Text: auto
+  Text: The version of Sabimaru Memo with information on it, given after acquiring the other one
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '99,0:50003210::'
   DebugText:
   - Valley Apparitions Memo - 3210[Scripted]
-  Text: auto
+  Text: The version of Valley Apparitions Memo with information on it, given after acquiring the other one
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '99,0:50003220::'
   DebugText:
   - Three-story Pagoda Memo - 3220[Scripted]
-  Text: auto
+  Text: The version of Three-story Pagoda Memo with information on it, given after acquiring the other one
   Area: ashinaoutskirts_temple
   Tags: norandom
 - Key: '99,0:6022::'
   DebugText:
   - Dancing Dragon Mask - 3800[Scripted]
-  Text: auto
+  Text: Given after collecting all 3 mask pieces
   Area: ashinaoutskirts_temple
   Tags: norandom

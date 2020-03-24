@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RandomizerCommon.Properties;
+using static RandomizerCommon.Preset;
 using static RandomizerCommon.Util;
 
 namespace RandomizerCommon
@@ -13,6 +14,7 @@ namespace RandomizerCommon
     public partial class SekiroForm : Form
     {
         private RandomizerOptions options = new RandomizerOptions(true);
+        private HashSet<string> previousOpts = new HashSet<string>();
         private bool simultaneousUpdate;
         private bool working;
         private bool error;
@@ -32,11 +34,21 @@ namespace RandomizerCommon
             DateTime now = DateTime.Now;
             statusL.Text = "Created by thefifthmatt. Art by Souv" + (now.Month == 3 && now.Day == 22 ? ". Happy Birthday Sekiro!" : "");
             randomizeL.TabStop = false;
+            presetL.Text = "";
             // The rest of initialization
             string defaultOpts = Settings.Default.Options;
+            bool english = false;
+            try
+            {
+                english = System.Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "en";
+            }
+            catch (Exception)
+            {
+            }
             if (string.IsNullOrWhiteSpace(defaultOpts))
             {
                 options.Difficulty = difficulty.Value;
+                if (english) edittext.Checked = true;
                 SetControlFlags(this);
                 randomizeL.Text = "";
             }
@@ -44,12 +56,41 @@ namespace RandomizerCommon
             {
                 HashSet<string> validOptions = new HashSet<string>();
                 GetAllControlNames(this, validOptions);
-                options = RandomizerOptions.Parse(defaultOpts.Split(' ').Where(s => validOptions.Contains(s) || uint.TryParse(s, out var ignored)), true);
+                bool isValidOption(string s)
+                {
+                    if (validOptions.Contains(s)) return true;
+                    if (uint.TryParse(s, out var ignored)) return true;
+                    return false;
+                }
+                previousOpts = new HashSet<string>(defaultOpts.Split(' '));
+                options = RandomizerOptions.Parse(previousOpts, true, isValidOption);
+                if (previousOpts.Contains("v1"))
+                {
+                    // New defaults
+                    options["veryearlyhirata"] = true;
+                    options["openstart"] = true;
+                    if (english) options["edittext"] = true;
+                }
+
                 simultaneousUpdate = true;
                 InsertControlFlags(this);
                 difficulty.Value = options.Difficulty;
                 simultaneousUpdate = false;
+
                 randomizeL.Text = options.Seed == 0 ? "" : $"Last used seed: {options.Seed}";
+                if (options.Preset != null)
+                {
+                    try
+                    {
+                        Preset preset = LoadPreset(options.Preset, extractOopsAll: true);
+                        SetPreset(preset);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        SetPreset(null);
+                    }
+                }
             }
             UpdateEnabled();
             UpdateLabels();
@@ -163,7 +204,7 @@ namespace RandomizerCommon
 
         private void SetWarning()
         {
-            MiscSetup.CheckSekiroModEngine(out string err);
+            bool fatal = MiscSetup.CheckSekiroModEngine(out string err);
             if (!MiscSetup.CheckSFX())
             {
                 List<string> maps = Directory.GetFiles(@"dists\Base", "*.msb.dcx").Select(m => Path.GetFileName(m).Replace(".msb.dcx", "")).ToList();
@@ -173,7 +214,7 @@ namespace RandomizerCommon
                     err = err == null ? sfx : $"{err}\r\n{sfx}";
                 }
             }
-            SetError(err);
+            SetError(err, fatal);
         }
         private void SetError(string text, bool fatal = false)
         {
@@ -188,7 +229,7 @@ namespace RandomizerCommon
 
         private void SaveOptions()
         {
-            Settings.Default.Options = options.ToString();
+            Settings.Default.Options = options.ConfigString(includeSeed: true, includePreset: true);
             Settings.Default.Save();
         }
 
@@ -333,16 +374,16 @@ namespace RandomizerCommon
             // if (options.GetNum("veryunfairweight") > 0.5) unfairText = " and very unfair";
             // else if (options.GetNum("unfairweight") > 0.5) unfairText = " and unfair";
             string loc;
-            if (options.GetNum("allitemdifficulty") > 0.7) loc = $"Much better rewards for difficult and late{unfairText} locations.";
-            else if (options.GetNum("allitemdifficulty") > 0.3) loc = $"Better rewards for difficult and late{unfairText} locations.";
-            else if (options.GetNum("allitemdifficulty") > 0.1) loc = $"Slightly better rewards for difficult and late{unfairText} locations.";
-            else if (options.GetNum("allitemdifficulty") > 0.001) loc = "Most locations for items are equally likely.";
-            else loc = "All possible locations for items are equally likely.";
+            if (options.GetNum("allitemdifficulty") > 0.86) loc = $"Much better rewards for difficult and late{unfairText} locations.";
+            else if (options.GetNum("allitemdifficulty") > 0.55) loc = $"Better rewards for difficult and late{unfairText} locations.";
+            else if (options.GetNum("allitemdifficulty") > 0.3) loc = $"Slightly better rewards for difficult and late{unfairText} locations.";
+            else if (options.GetNum("allitemdifficulty") > 0.001) loc = "Most locations for items are equally likely. Often results in a lot of early memories and prayer beads.";
+            else loc = "All locations for items are equally likely. Often results in a lot of early memories and prayer beads.";
             string chain = "";
             if (!options["norandom"])
             {
-                if (options.GetNum("keyitemchainweight") == 1) chain = "Key items may depend on each other.";
-                else if (options.GetNum("keyitemchainweight") <= 4.001) chain = "Key items will usually be in different areas and depend on each other.";
+                if (options.GetNum("keyitemchainweight") <= 3) chain = "Key items will usually be easy to find and not require much side content.";
+                else if (options.GetNum("keyitemchainweight") <= 6) chain = "Key items will usually be in different areas and depend on each other.";
                 // else if (options.GetNum("keyitemchainweight") <= 10) chain = "Key items will usually form long chains across different areas.";
                 else chain = "Key items will usually be in different areas and form interesting chains.";
             }
@@ -354,6 +395,40 @@ namespace RandomizerCommon
         {
             statusL.Text = msg;
             statusStrip1.BackColor = error ? Color.IndianRed : (success ? Color.PaleGreen : SystemColors.Control);
+        }
+
+        private Preset selectedPreset;
+        private void preset_Click(object sender, EventArgs e)
+        {
+            using (PresetForm presetForm = new PresetForm())
+            {
+                DialogResult result = presetForm.ShowDialog(this);
+                if (result == DialogResult.OK)
+                {
+                    bool prevNull = selectedPreset == null;
+                    SetPreset(presetForm.Preset);
+                    // Rewrite options based on preset selection, when done from UI, if not going from none -> none
+                    if (!(prevNull && selectedPreset == null))
+                    {
+                        bool fullRando = selectedPreset == null ? false : selectedPreset.RecommendFullRandomization;
+                        bool progression = selectedPreset == null ? true : !selectedPreset.RecommendNoEnemyProgression;
+                        bosses.Checked = true;
+                        minibosses.Checked = true;
+                        headlessmove.Checked = fullRando;
+                        enemies.Checked = true;
+                        phases.Checked = progression;
+                        phasebuff.Checked = progression;
+                        earlyreq.Checked = progression;
+                    }
+                }
+            }
+        }
+        private void SetPreset(Preset preset = null)
+        {
+            selectedPreset = preset;
+            presetL.Text = selectedPreset == null ? "" : "Preset: " + selectedPreset.DisplayName;
+            options.Preset = selectedPreset?.DisplayName;
+            SaveOptions();
         }
 
         private async void randomize_Click(object sender, EventArgs e)
@@ -379,6 +454,7 @@ namespace RandomizerCommon
             SaveOptions();
             RandomizerOptions rand = options.Copy();
             rand.Seed = options.Seed;
+            rand.Preset = options.Preset;
             working = true;
             randomize.Text = $"Randomizing...";
             randomize.BackColor = Color.LightYellow;
@@ -387,22 +463,22 @@ namespace RandomizerCommon
             bool success = false;
             Randomizer randomizer = new Randomizer();
             await Task.Factory.StartNew(() => {
-                Directory.CreateDirectory("runs");
+                Directory.CreateDirectory("spoiler_logs");
                 string runId = $"{DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss")}_log_{rand.Seed}_{rand.ConfigHash()}.txt";
-                TextWriter log = File.CreateText($@"runs\{runId}");
+                TextWriter log = File.CreateText($@"spoiler_logs\{runId}");
                 TextWriter stdout = Console.Out;
                 Console.SetOut(log);
                 try
                 {
-                    randomizer.Randomize(rand, status => { SetStatus(status); }, sekiro: true);
-                    SetStatus($"Done. Hints and spoilers in 'runs' directory as {runId}", success: true);
+                    randomizer.Randomize(rand, status => { SetStatus(status); }, sekiro: true, preset: selectedPreset);
+                    SetStatus($"Done! Hints and spoilers in spoiler_logs directory as {runId} - Restart your game!!", success: true);
                     success = true;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
-                    SetError($"Error encountered: {ex.Message}\r\nAlso see most recent file in the 'runs' directory for more error info");
-                    SetStatus($"Error! Partial log in 'runs' directory as {runId}", true);
+                    SetError($"Error encountered: {ex.Message}\r\nIt may work to try again with a different seed. See most recent file in spoiler_logs directory for the full error.");
+                    SetStatus($"Error! Partial log in spoiler_logs directory as {runId}", true);
                 }
                 finally
                 {

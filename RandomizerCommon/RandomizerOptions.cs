@@ -12,7 +12,7 @@ namespace RandomizerCommon
 
         public RandomizerOptions Copy()
         {
-            // Copies most things, except not the seed (maybe can revisit this when revisiting DS3)
+            // Copies most things, except not the seed and preset (maybe can revisit this when revisiting DS3)
             return new RandomizerOptions(Sekiro)
             {
                 opt = new SortedDictionary<string, bool>(opt),
@@ -24,27 +24,49 @@ namespace RandomizerCommon
         public RandomizerOptions(bool Sekiro)
         {
             this.Sekiro = Sekiro;
+            if (Sekiro)
+            {
+                opt["v1"] = false;
+                opt["v2"] = true;
+            }
         }
 
-        public static RandomizerOptions Parse(IEnumerable<string> args, bool Sekiro)
+        public static RandomizerOptions Parse(IEnumerable<string> args, bool Sekiro, Predicate<string> optionsFilter = null)
         {
             RandomizerOptions options = new RandomizerOptions(Sekiro);
             uint seed = 0;
             int difficulty = -1;
+            List<string> preset = new List<string>();
+            string op = null;
             foreach (string arg in args)
             {
-                if (uint.TryParse(arg, out uint num))
+                if (arg == "--preset")
+                {
+                    op = "preset";
+                    continue;
+                }
+                else if (arg.StartsWith("--"))
+                {
+                    op = null;
+                }
+                if (op == "preset")
+                {
+                    preset.Add(arg);
+                }
+                else if (uint.TryParse(arg, out uint num))
                 {
                     if (difficulty == -1) difficulty = (int)num;
                     else seed = num;
                 }
                 else
                 {
+                    if (optionsFilter != null && !optionsFilter(arg)) continue;
                     options[arg] = true;
                 }
             }
             options.Difficulty = difficulty;
             options.Seed = seed;
+            if (preset.Count > 0) options.Preset = string.Join(" ", preset);
             return options;
         }
 
@@ -101,19 +123,22 @@ namespace RandomizerCommon
 
         public bool Sekiro { get; set; }
         public uint Seed { get; set; }
+        public string Preset { get; set; }
 
         public float GetNum(string name)
         {
             return num[name];
         }
 
-        public HashSet<string> GetEnabled()
+        private static HashSet<string> logiclessOptions = new HashSet<string> { "mergemods" };
+        public HashSet<string> GetLogicOptions()
         {
-            return new HashSet<string>(opt.Where(e => e.Value).Select(e => e.Key));
+            return new HashSet<string>(opt.Where(e => e.Value && !logiclessOptions.Contains(e.Key)).Select(e => e.Key));
         }
 
-        public override string ToString() => $"{string.Join(" ", GetEnabled())} {Difficulty} {Seed}";
-        public string ConfigHash() => (JavaStringHash($"{string.Join(" ", GetEnabled())} {Difficulty}") % 99999).ToString().PadLeft(5, '0');
+        public string ConfigString(bool includeSeed = false, bool includePreset = false) => $"{string.Join(" ", GetLogicOptions())} {Difficulty}{(includeSeed ? $" {Seed}" : "")}{(!string.IsNullOrEmpty(Preset) && includePreset ? $" --preset {Preset}" : "")}";
+        public override string ToString() => ConfigString(true, true);
+        public string ConfigHash() => (JavaStringHash(ConfigString(false, true)) % 99999).ToString().PadLeft(5, '0');
 
         private static uint JavaStringHash(string s)
         {

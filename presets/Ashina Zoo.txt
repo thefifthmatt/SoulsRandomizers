@@ -1,0 +1,48 @@
+Description: "Replace all enemies and bosses with animals and occasionally some animal caretakers. Relatively manageable."
+
+RecommendFullRandomization: true
+
+Boss:
+- Weight: 15
+  Pool: Guardian Ape; Headless Ape; Gyoubu Oniwa; Sakura Bull of the Palace; Elder Valley Monkey
+  RandomByType: true
+- Weight: 1
+  Pool: Demon of Hatred
+
+Miniboss:
+- Weight: 3
+  Pool: Blazing Bull
+- Weight: 1
+  Pool: Lone Shadow Masanaga the Spear-Bearer (Hirata)
+- Weight: 4
+  Pool: Guardian Ape; Headless Ape; Gyoubu Oniwa
+- Weight: 8
+  Pool: Folding Screen Monkey; Gamefowl; Palace Hound; Valley Monkey; Elder Valley Monkey
+  RandomByType: true
+
+Basic:
+- Weight: 15
+  Pool: Blazing Bull; Guardian Ape; Headless Ape; Gyoubu Oniwa
+- Weight: 1
+  Pool: Lone Shadow Masanaga the Spear-Bearer (Hirata)
+- Weight: 1
+  Pool: Demon of Hatred
+- Weight: 5
+  Pool: Elder Valley Monkey
+- Weight: 2
+  Pool: Infested Seeker (Parasite)
+- Weight: 60
+  Pool: Aggressive Cricket; Gecko; Hound; Palace Hound; Folding Screen Monkey; Gamefowl; Valley Monkey
+  RandomByType: true
+
+Add:
+- Weight: 100
+  Pool: Aggressive Cricket; Gecko; Hound; Palace Hound; Folding Screen Monkey; Gamefowl; Terror Valley Monkey
+  RandomByType: true
+
+FoldingMonkey:
+- Weight: 100
+  Pool: Guardian Ape; Headless Ape; Elder Valley Monkey
+  RandomByType: true
+
+BuffBasicEnemiesAsBosses: true

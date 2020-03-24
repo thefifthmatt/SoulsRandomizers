@@ -49,6 +49,8 @@ namespace RandomizerCommon
         private Dictionary<string, MSB3> maps = new Dictionary<string, MSB3>();
         public Dictionary<string, MSBS> Smaps = new Dictionary<string, MSBS>();
         public Dictionary<string, EMEVD> Emevds = new Dictionary<string, EMEVD>();
+        public Dictionary<string, FMG> BaseItemFMGs = new Dictionary<string, FMG>();
+        public Dictionary<string, FMG> ItemFMGs = new Dictionary<string, FMG>();
         private HashSet<string> editedMaps = new HashSet<string>();
         private Dictionary<string, Dictionary<string, ESD>> talk = new Dictionary<string, Dictionary<string, ESD>>();
         private Dictionary<string, List<(uint, uint)>> scriptChanges = new Dictionary<string, List<(uint, uint)>>();
@@ -311,6 +313,17 @@ namespace RandomizerCommon
                 string path = $@"{outPath}\param\gameparam\gameparam.parambnd.dcx";
                 writeFile(path);
                 Editor.OverrideBnd(basePath, $@"{outPath}\param\gameparam", Params, f => f.Write());
+            }
+            {
+                string basePath = $@"{dir}\Base\item.msgbnd.dcx";
+                if (modDir != null)
+                {
+                    string modPath = $@"{modDir}\msg\engus\item.msgbnd.dcx";
+                    if (File.Exists(modPath)) basePath = modPath;
+                }
+                string path = $@"{outPath}\msg\engus\item.msgbnd.dcx";
+                writeFile(path);
+                Editor.OverrideBnd(basePath, $@"{outPath}\msg\engus", ItemFMGs, f => f.Write());
             }
             Console.WriteLine("Processing extra mod files...");
             bool work = false;
@@ -637,37 +650,45 @@ namespace RandomizerCommon
 
         private void LoadText()
         {
-            foreach (string path in Directory.GetFiles($@"{dir}\Base", "*.msgbnd.dcx"))
+            if (Sekiro)
             {
-                string name = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
-                try
+                BaseItemFMGs = ItemFMGs = Editor.LoadBnd($@"{dir}\Base\item.msgbnd.dcx", (data, path) => FMG.Read(data));
+                ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
+            }
+            else
+            {
+                foreach (string path in Directory.GetFiles($@"{dir}\Base", "*.msgbnd.dcx"))
                 {
-                    // Maybe just undcx it first
-                    BND4 bnd = BND4.Read(path);
-                    foreach (BinderFile file in bnd.Files)
+                    string name = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
+                    try
                     {
-                        string uname = System.Text.RegularExpressions.Regex.Replace(file.Name, @"[^\x00-\x7F]", c => string.Format(@"\u{0:x4}", (int)c.Value[0]));
-                        string fileName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(file.Name));
-                        if (msgFiles.ContainsKey(fileName))
+                        // Maybe just undcx it first
+                        BND4 bnd = BND4.Read(path);
+                        foreach (BinderFile file in bnd.Files)
                         {
-                            MsgFile ftype = msgFiles[fileName];
-                            if (!Messages.ContainsKey(ftype))
+                            string uname = System.Text.RegularExpressions.Regex.Replace(file.Name, @"[^\x00-\x7F]", c => string.Format(@"\u{0:x4}", (int)c.Value[0]));
+                            string fileName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(file.Name));
+                            if (msgFiles.ContainsKey(fileName))
                             {
-                                Messages[ftype] = new Dictionary<string, FMG>();
+                                MsgFile ftype = msgFiles[fileName];
+                                if (!Messages.ContainsKey(ftype))
+                                {
+                                    Messages[ftype] = new Dictionary<string, FMG>();
+                                }
+                                FMG fmg = FMG.Read(file.Bytes);
+                                Messages[ftype][name] = fmg;
                             }
-                            FMG fmg = FMG.Read(file.Bytes);
-                            Messages[ftype][name] = fmg;
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception($"Failed to load file: {name}: {path}\r\n\r\n{ex}");
+                    catch (Exception ex)
+                    {
+                        throw new Exception($"Failed to load file: {name}: {path}\r\n\r\n{ex}");
+                    }
                 }
             }
         }
 
-        // TODO: Instead of doing this, make the paths themselves more editable
+        // TODO: Instead of doing this, make the paths themselves more editable?
         private T MaybeOverrideFromModDir<T>(T original, string path, Func<string, T> parser)
         {
             if (modDir == null) return original;
@@ -695,7 +716,7 @@ namespace RandomizerCommon
             bool matches(string cell)
             {
                 if (cell == id.ToString()) return true;
-                if (int.TryParse(cell, out int val)) return val >= 11000000 && val <= 13000000 && (val / 1000) % 10 == 5;
+                // if (int.TryParse(cell, out int val)) return val >= 11000000 && val <= 13000000 && (val / 1000) % 10 == 5;
                 return false;
             }
             Console.WriteLine($"-- Searching params for {id}");

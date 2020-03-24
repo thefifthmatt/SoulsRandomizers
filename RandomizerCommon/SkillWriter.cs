@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Globalization;
-using System.Numerics;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using SoulsFormats;
 using SoulsIds;
-using YamlDotNet.Serialization;
 using static RandomizerCommon.AnnotationData;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.Util;
-using static SoulsFormats.EMEVD.Instruction;
 
 namespace RandomizerCommon
 {
@@ -76,6 +68,7 @@ namespace RandomizerCommon
                     Flag = (int)r["EventFlagId"].Value,
                     Placeholder = (int)r["Unk5"].Value,
                     SpEffects = new[] { (int)r["Unk2"].Value, (int)r["Unk3"].Value },
+                    EmblemChange = (byte)r["Unk10"].Value != 0,
                 };
                 data.Key = new ItemKey(ItemType.WEAPON, data.Item);
                 skillItems[data.Key] = data;
@@ -108,6 +101,7 @@ namespace RandomizerCommon
                 r["Unk2"].Value = data.SpEffects[0];
                 r["Unk3"].Value = data.SpEffects[0];
                 r["Unk5"].Value = data.Placeholder;
+                r["Unk10"].Value = (byte)(data.EmblemChange ? 1 : 0);
             }
             SlotKey getTargetKey(ItemKey key)
             {
@@ -205,6 +199,8 @@ namespace RandomizerCommon
                     mat["ItemNum01"].Value = (sbyte)newCost;
                 }
             }
+
+            Console.WriteLine("-- Skills placements");
             for (int i = 0; i <= 3; i++)
             {
                 ItemKey text = texts[i];
@@ -307,6 +303,7 @@ namespace RandomizerCommon
             }
 
             // Log the infos
+            Console.WriteLine("-- Prosthetics placements");
             Dictionary<int, int> revMap = prostheticMapping.ToDictionary(e => e.Value, e => e.Key);
             foreach (SkillSlot slot in slotOrder)
             {
@@ -323,6 +320,7 @@ namespace RandomizerCommon
             public int Flag { get; set; }
             public int Placeholder { get; set; }
             public int[] SpEffects { get; set; }
+            public bool EmblemChange { get; set; }
             public ItemKey Key { get; set; }
         }
         public class SkillSlot

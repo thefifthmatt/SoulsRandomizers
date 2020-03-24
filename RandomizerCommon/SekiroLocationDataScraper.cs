@@ -798,7 +798,7 @@ namespace RandomizerCommon
             1500460,
         };
         // Item event flags with equivalent items, of which it is only possible to get one
-        private static readonly Dictionary<int, int> equivalentEvents = new Dictionary<int, int>()
+        public static readonly Dictionary<int, int> equivalentEvents = new Dictionary<int, int>()
         {
             // Droplet shop items
             { 9095, 9090 },

@@ -105,6 +105,7 @@
     <Compile Include="AnnotationData.cs" />
     <Compile Include="CharacterWriter.cs" />
     <Compile Include="EMEDF.cs" />
+    <Compile Include="EnemyAnnotations.cs" />
     <Compile Include="EnemyLocations.cs" />
     <Compile Include="EnemyRandomizer.cs" />
     <Compile Include="Events.cs" />
@@ -112,6 +113,14 @@
     <Compile Include="KeyItemsPermutation.cs" />
     <Compile Include="LocationData.cs" />
     <Compile Include="LocationDataScraper.cs" />
+    <Compile Include="PresetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PresetForm.Designer.cs">
+      <DependentUpon>PresetForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Preset.cs" />
+    <Compile Include="ReverseEnemyOrder.cs" />
     <Compile Include="SekiroForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,6 +143,9 @@
     <Compile Include="MiscSetup.cs" />
     <Compile Include="SkillWriter.cs" />
     <Compile Include="Util.cs" />
+    <EmbeddedResource Include="PresetForm.resx">
+      <DependentUpon>PresetForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SekiroForm.resx">
       <DependentUpon>SekiroForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -29,10 +30,20 @@ namespace RandomizerCommon
                 {
                     options.Seed = (uint)new Random().Next();
                 }
+                Preset preset = null;
+                if (options.Preset != null)
+                {
+                    preset = Preset.LoadPreset(options.Preset, extractOopsAll: true);
+                }
+                if (preset == null && File.Exists("Dev.txt"))
+                {
+                    options.Preset = "Dev";
+                    preset = Preset.LoadPreset("Dev", filename: "Dev.txt");
+                }
                 string outPath = sekiro
                     ? @"C:\Program Files (x86)\Steam\steamapps\common\Sekiro\randomizer"
                     : @"C:\Program Files (x86)\Steam\steamapps\common\DARK SOULS III\Game\randomizer";
-                new Randomizer().Randomize(options, status => Console.WriteLine("## " + status), outPath, sekiro);
+                new Randomizer().Randomize(options, status => Console.WriteLine("## " + status), outPath, sekiro, preset);
                 Application.Exit();
             }
             else
@@ -42,7 +53,6 @@ namespace RandomizerCommon
 #endif
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                // Application.Run(new MainForm());
                 Application.Run(new SekiroForm());
             }
         }

@@ -64,18 +64,19 @@ namespace RandomizerCommon
             return ret == null;
         }
 
+        // Note: Doesn't return error or not (use ret != null for that), returns if fatal or not
         public static bool CheckSekiroModEngine(out string ret)
         {
             ret = null;
             if (!File.Exists(@"..\Sekiro.exe"))
             {
-                ret = "Warning: Sekiro.exe not found in parent directory\r\nFor randomization to work, move the randomizer folder to your Sekiro install location";
-                return false;
+                ret = "Error: Sekiro.exe not found in parent directory\r\nFor randomization to work, move the randomizer folder to your Sekiro install location";
+                return true;
             }
             if (!File.Exists(@"..\dinput8.dll") || !File.Exists(@"..\modengine.ini"))
             {
-                ret = "Warning: Sekiro Mod Engine not found in parent directory\r\nDownload dinput8.dll and modengine.ini from the Sekiro Randomizer Files section";
-                return false;
+                ret = "Error: Sekiro Mod Engine not found in parent directory\r\nDownload dinput8.dll and modengine.ini from the Sekiro Randomizer Files section";
+                return true;
             }
             // Check Mod Engine version
             string modEngineHash = GetMD5Hash(@"..\dinput8.dll");
@@ -84,14 +85,9 @@ namespace RandomizerCommon
                 // TODO: Fix this up when it official releases
                 // return $"Sekiro Mod Engine is out of date (needs version >= 420)\r\nDownload the latest version or else enemy randomization will definitely crash the game";
                 // ret = "Sekiro Mod Engine needs the latest version (not yet officially released)\r\nCopy dinput8.dll into parent dir or else enemy randomization will definitely crash the game";
-                ret = "Warning: Sekiro Mod Engine needs to be the unofficial version from the Sekiro Randomizer Files section\r\nCopy its dinput8.dll into parent dir or else enemy randomization will definitely crash the game";
+                ret = "Error: Sekiro Mod Engine needs to be the unofficial version from the Sekiro Randomizer Files section\r\nCopy its dinput8.dll into parent dir or else enemy randomization will definitely crash the game!";
                 // "Unrecognized version of Sekiro Mod Engine\r\nEither use the one packaged with the randomizer (see install instructions) or copy."
-                return false;
-            }
-            else if (!justWorksModEngines.Contains(modEngineHash))
-            {
-                ret = "Warning: Unknown version of Sekiro Mod Engine detected\r\nUse the one from the files section of Sekiro Randomizer, and update the randomizer if there is an update";
-                return false;
+                return true;
             }
             // Check ini variables
             string ini = new FileInfo(@"..\modengine.ini").FullName.ToString();
@@ -106,12 +102,18 @@ namespace RandomizerCommon
             GetPrivateProfileString("files", "modOverrideDirectory", "", modDir, 255, ini);
             string dirName = new DirectoryInfo(Directory.GetCurrentDirectory()).Name;
             string expected = $@"\{dirName}";
-            if (modDir.ToString() != expected)
+            if (modDir.ToString().ToLowerInvariant() != expected.ToLowerInvariant())
             {
                 ret = $"Warning: Set modOverrideDirectory to \"{expected}\" in modengine.ini\r\nOtherwise, randomization may not apply to game";
                 return false;
             }
-            return true;
+            // Finally a check for future versions of mod engine. This will probably result in a bunch of user issue reports either way.
+            if (!justWorksModEngines.Contains(modEngineHash))
+            {
+                ret = "Warning: Unknown version of Sekiro Mod Engine detected\r\nUse the one from the files section of Sekiro Randomizer, and update the randomizer if there is an update";
+                return false;
+            }
+            return false;
         }
 
         private static readonly MD5 MD5 = MD5.Create();

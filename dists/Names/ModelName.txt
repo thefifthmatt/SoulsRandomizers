@@ -44,7 +44,7 @@ c1370 Blazing Bull
 c1380 Sakura Bull of the Palace
 c1400 Fencer
 c1450 Nightjar Ninja
-c1460 Kite Nightjar Ninja
+c1460 Kite
 c1470 Lone Shadow
 c1500 Mibu Villager
 c1501 Mibu Villager
@@ -53,7 +53,7 @@ c1520 Test Subject
 c1550 Bandit
 c1700 Red Guard
 c5000 Corrupted Monk
-c5001 Headless Ape's Centipede
+c5001 Immortal Centipede
 c5005 Corrupted Monk Illusion
 c5010 Great Serpent
 c5020 Chained Ogre

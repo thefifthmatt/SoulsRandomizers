@@ -30,7 +30,7 @@ namespace RandomizerCommon
             this.ann = ann;
             this.explain = explain;
 
-            Dictionary<string, bool> config = ann.GetConfig(options.GetEnabled());
+            Dictionary<string, bool> config = ann.GetConfig(options.GetLogicOptions());
             Dictionary<string, Expr> configExprs = config.ToDictionary(e => e.Key, e => e.Value ? Expr.TRUE : Expr.FALSE);
 
             Dictionary<LocationScope, (UniqueCategory, int)> counts = ann.GetUniqueCounts();
@@ -225,7 +225,7 @@ namespace RandomizerCommon
             public readonly Dictionary<string, HashSet<string>> IncludedAreas = new Dictionary<string, HashSet<string>>();
         }
 
-        public Assignment AssignItems(Random random, RandomizerOptions options)
+        public Assignment AssignItems(Random random, RandomizerOptions options, Preset preset)
         {
             List<string> itemOrder = new List<string>(items);
 
@@ -301,6 +301,13 @@ namespace RandomizerCommon
                     ItemLocation loc = data.Data[itemKey].Locations.Values.First();
                     SlotAnnotation sn = ann.Slot(loc.LocScope);
                     forcemap[item] = sn.Area;
+                }
+            }
+            else if (preset?.Items != null)
+            {
+                foreach (KeyValuePair<string, string> entry in preset.Items)
+                {
+                    forcemap[entry.Key] = entry.Value;
                 }
             }
 

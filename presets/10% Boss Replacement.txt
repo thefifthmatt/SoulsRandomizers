@@ -1,0 +1,20 @@
+Description: "The same as regular randomization except that 10% of enemies are upgraded to bosses."
+
+# Boss pool is unchanged.
+Boss:
+- Weight: 100
+  Pool: default
+
+# Miniboss pool can get 3-4 bosses
+Miniboss:
+- Weight: 90
+  Pool: default
+- Weight: 10
+  Pool: Bosses
+
+# Regular enemies can become bosses
+Basic:
+- Weight: 90
+  Pool: default
+- Weight: 10
+  Pool: Bosses
