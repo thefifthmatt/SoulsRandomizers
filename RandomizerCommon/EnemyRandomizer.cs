@@ -90,6 +90,8 @@ namespace RandomizerCommon
                 EnemyClass.FoldingMonkey,
                 EnemyClass.TutorialBoss,
             };
+            // Mapping from target entity to map name
+            Dictionary<int, string> ownerMap = new Dictionary<int, string>();
             foreach (KeyValuePair<string, MSBS> entry in maps)
             {
                 if (!SekiroLocationDataScraper.locations.ContainsKey(entry.Key)) continue;
@@ -107,6 +109,7 @@ namespace RandomizerCommon
                         NPC = e.NPCParamID,
                         Think = e.ThinkParamID,
                     };
+                    ownerMap[e.EntityID] = entry.Key;
                     // Set all boss/miniboss default teams to be aggressive toward player
                     // TODO: This doesn't work for blazing bull for some reason, or at least it damages other enemies
                     if (e.NPCParamID > 0 && (infos[e.EntityID].Class == EnemyClass.Boss || infos[e.EntityID].Class == EnemyClass.Miniboss))
@@ -497,7 +500,7 @@ namespace RandomizerCommon
                 {
                     if (targetInfo.Tags != null && targetInfo.HasTag("earlyreq"))
                     {
-                        if (sourceInfo.Tags == null || !sourceInfo.HasTag("early"))
+                        if (sourceInfo.HasTag("mid") || sourceInfo.HasTag("late"))
                         {
                             if (explain) Console.WriteLine($"Not adding {ename(source)} to {ename(target)} because it's not an early enemy");
                             return false;
@@ -613,6 +616,7 @@ namespace RandomizerCommon
                 [EnemyClass.Basic] = "enemies",
             };
             Dictionary<int, bool> singletons = infos.Values.Where(i => i.HasTag("singleton")).ToDictionary(i => i.ID, i => false);
+
             foreach (EnemyPermutation silo in silos.Values)
             {
                 EnemyClass siloType = silo.Type;
@@ -692,18 +696,21 @@ namespace RandomizerCommon
                 int sourceIndex = 0;
                 for (int i = 0; i < silo.Targets.Count; i++)
                 {
-                    if (adds != null && infos[silo.Targets[i]].Add != 0)
+                    int target = silo.Targets[i];
+                    int source;
+                    if (adds != null && infos[target].Add != 0)
                     {
-                        silo.Mapping[silo.Targets[i]] = adds.Next(singletons);
+                        source = adds.Next(singletons);
                     }
                     else if (custom != null)
                     {
-                        silo.Mapping[silo.Targets[i]] = custom.Next(singletons);
+                        source = custom.Next(singletons);
                     }
                     else
                     {
-                        silo.Mapping[silo.Targets[i]] = sources[(sourceIndex++) % sources.Count];
+                        source = sources[(sourceIndex++) % sources.Count];
                     }
+                    silo.Mapping[target] = source;
                 }
                 if (siloType == EnemyClass.Boss) printPermutation(silo);
 
@@ -1144,10 +1151,7 @@ namespace RandomizerCommon
             Dictionary<int, int> revMapping = new Dictionary<int, int>();
             // Mapping of new helpers, from original owner and original helper to target
             Dictionary<(int, int), int> helperMapping = new Dictionary<(int, int), int>();
-            // Mapping from target entity to map name
-            Dictionary<int, string> ownerMap = new Dictionary<int, string>();
 
-            bool multichrSwitch = true;
             Dictionary<int, int> totalTargetCounts = silos.Values.SelectMany(s => s.Mapping).GroupBy(e => e.Value).ToDictionary(e => e.Key, e => e.Count());
             bool withinMaxAllowed(int source, int target, int amount, bool lenient = false)
             {
@@ -1162,6 +1166,7 @@ namespace RandomizerCommon
                 }
                 return true;
             }
+            bool multichrSwitch = true;
             bool enableMultichr(int source, int target)
             {
                 if (!multichrSwitch) return false;
@@ -1170,6 +1175,9 @@ namespace RandomizerCommon
                 if (source == 1000810 && !withinMaxAllowed(source, target, 40)) return false;
                 return true;
             }
+            int partsNeeded = totalTargetCounts.Where(s => infos[s.Key].HasTag("npcpart")).Sum(s => s.Value);
+            // This seems to be a safe global limit. There can be no more than a handful of npc parts loaded at once.
+            bool partsRestricted = partsNeeded >= 48;
 
             foreach (KeyValuePair<string, MSBS> entry in maps)
             {
@@ -1249,6 +1257,14 @@ namespace RandomizerCommon
                             if (source == 1110900 || source == 1700850 || source == 1110801)
                             {
                                 e.Position = new Vector3(-239.089f, -787.188f, 583.271f);
+                            }
+                        }
+                        // Seven Spears can get some big enemies stuck in the Moon-View Tower
+                        if (target == 1120530)
+                        {
+                            if (source == 1700800 || source == 1700850 || source == 1100800 || source == 1100900)
+                            {
+                                e.Position = new Vector3(-189.066f, -37.287f, 345.113f);
                             }
                         }
                         if (target == 1700200)
@@ -1446,6 +1462,9 @@ namespace RandomizerCommon
             int GetCleverName(int id, int source, int target)
             {
                 if (!opt["edittext"]) return id;
+                if (source == target) return id;
+                // If they have the same full name, keep it as is to avoid duplication
+                if (infos[source].FullName != null && infos[source].FullName == infos[target].FullName) return id;
 
                 if (!nameIds.TryGetValue((target, id), out int nameId))
                 {
@@ -1525,22 +1544,39 @@ namespace RandomizerCommon
                                 if (argEntity == 0) throw new Exception($"No entity found in {originalInit}) args");
                                 entity = argEntity;
                             }
-                            // This must randomize to some targets
-                            if (!mapping.TryGetValue(entity, out List<int> targets))
+                            // Find targets
+                            if (mapping.TryGetValue(entity, out List<int> targets))
                             {
-                                // Keep it only if the entity remains the same. This should be equivalent to revMapping not containing it.
-                                if (!revMapping.ContainsKey(entity))
+                                targets = targets.ToList();
+                            }
+                            else
+                            {
+                                targets = new List<int>();
+                            }
+                            // If the entity remains the same, don't remove the original... unless it's a deathblow, in which case it must be rewritten
+                            if (!revMapping.ContainsKey(entity))
+                            {
+                                if (t.Deathblow == 0)
                                 {
                                     canRemove = false;
                                 }
-                                continue;
+                                else
+                                {
+                                    targets.Add(entity);
+                                }
                             }
                             // # of events should not be a problem, since there is a global multichr limit for some enemies, but we'll see
                             if (t.Type == "multichronly")
                             {
-                                targets = targets.ToList();
                                 targets.RemoveAll(target => !enableMultichr(entity, target));
                             }
+                            if (t.Type == "chrpart" && partsRestricted)
+                            {
+                                targets.RemoveAll(target => !infos[target].IsNamedTarget);
+                            }
+                            // If no targets left at this point, nothing to do
+                            if (targets.Count == 0) continue;
+
                             if (fileEvents.TryGetValue(callee, out EMEVD.Event theEvent))
                             {
                                 foreach (int target in targets) eventCopies.Add((entity, target, events.CopyEvent(theEvent), t));
@@ -1561,11 +1597,12 @@ namespace RandomizerCommon
 
                             if (t.Entity > 0)
                             {
-                                // Something must be randomized to this target
+                                // Something must be randomized to this target if entity is specified
                                 if (!revMapping.TryGetValue(t.Entity, out int source))
                                 {
                                     continue;
                                 }
+                                // Unused feature: source-target pair. This was needed at some point, but keeping it in any case.
                                 if (t.Transfer > 0 && t.Transfer != source)
                                 {
                                     continue;
@@ -1604,14 +1641,15 @@ namespace RandomizerCommon
                                 {
                                     foreach (int helper in helpers)
                                     {
-                                        if (!enableMultichr(entity, target))
+                                        if (infos[helper].Class != EnemyClass.Helper) continue;
+                                        if (helperMapping.TryGetValue((target, helper), out int helperTarget))
+                                        {
+                                            reloc[helper] = helperTarget;
+                                        }
+                                        else
                                         {
                                             reloc[helper] = helper;
-                                            continue;
                                         }
-                                        if (infos[helper].Class != EnemyClass.Helper) continue;
-                                        // If entity has mapping, its helpers should also
-                                        reloc[helper] = helperMapping[(target, helper)];
                                     }
                                 }
                                 // TODO: Find a better way to get rid of regions in the templates themselves
@@ -1870,13 +1908,20 @@ namespace RandomizerCommon
                                     }
                                     if (t.Name == "entity" && (instr.Name == "Display Boss Health Bar" || instr.Name == "Display Miniboss Health Bar"))
                                     {
+                                        int nameEntity = (int)instr[1];
                                         if (t.Type.Contains("chr"))
                                         {
-                                            instr[3] = GetCleverName((int)instr[3], entity, target);
+                                            if (entity == nameEntity)
+                                            {
+                                                instr[3] = GetCleverName((int)instr[3], entity, target);
+                                            }
                                         }
                                         else if (revMapping.TryGetValue(t.Entity, out int nameSource))
                                         {
-                                            instr[3] = GetCleverName((int)instr[3], nameSource, t.Entity);
+                                            if (t.Entity == nameEntity)
+                                            {
+                                                instr[3] = GetCleverName((int)instr[3], nameSource, t.Entity);
+                                            }
                                         }
                                         instr.Save();
                                     }

@@ -29,8 +29,8 @@ Enemies:
   Sword Saint Isshin 1120860: Gyoubu Oniwa 1100800
 
   Leader Shigenori Yamauchi 1120250: Seven Ashina Spears 2 1120521
-  General Naomori Kawarada 1100300: Shigekichi of the Red Guard 1100480
-  Chained Ogre 1100310: Ashina Elite Ujinari Mizuo 1110511
+  General Naomori Kawarada 1100300: Ashina Elite Ujinari Mizuo 1110511  # Swap
+  Chained Ogre 1100310: Shigekichi of the Red Guard 1100480
   General Tenzen Yamauchi 1100301: Juzou the Drunkard 2 1000301
   Shinobi Hunter 1000330: Lone Shadow Masanaga the Spear-Bearer (Hirata) 1000353
   Juzou the Drunkard 1000300: Shichimen Warrior 2500580

@@ -297,7 +297,7 @@ Enemies:
   DebugText: m10_00_00_00 - c1180_0001 - npc 11807400 - think 11800400 - id 1000361 (1005601) - Taro Troop
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; IF Character Has SpEffect; Change Character DispMask; Set SpEffect; Force Animation Playback; Clear SpEffect
   Class: Basic
-  Tags: unique
+  Tags: unique npcpart
 - ID: 1000362
   DebugText: m10_00_00_00 - c1180_0002 - npc 11807100 - think 11800100 - id 1000362 (1005601) - Taro Troop
   Class: Basic
@@ -305,7 +305,7 @@ Enemies:
   DebugText: m10_00_00_00 - c1180_0003 - npc 11807101 - think 11800100 - id 1000363 (1005601) - Taro Troop
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; Set SpEffect; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect
   Class: Basic
-  Tags: unique
+  Tags: unique npcpart
 - ID: 1000370
   DebugText: m10_00_00_00 - c1240_0000 - npc 12402000 - think 12400000 - id 1000370 - Gamefowl
   Class: Basic
@@ -503,11 +503,13 @@ Enemies:
   DebugText: m10_00_00_00 - c1550_0008 - npc 15500304 - think 15500305 - id 1000208 (1005600,1005300) - Bandit
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; Set SpEffect; Set Character AI State; IF Character Has SpEffect; IF Damage Type; IF Character Damaged By
   Class: Basic
+  Tags: npcpart
   Add: 1000300
 - ID: 1000209
   DebugText: m10_00_00_00 - c1550_0009 - npc 15500306 - think 15500305 - id 1000209 - Bandit
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; Set SpEffect; Set Character AI State; IF Character Has SpEffect; IF Damage Type; IF Character Damaged By; Change Character Enable State; Set Character Animation State; Set Character Backread State
   Class: Basic
+  Tags: npcpart
   Add: 1000300
 - ID: 1000210
   DebugText: m10_00_00_00 - c1550_0010 - npc 15500201 - think 15500205 - id 1000210 (1005600,1005300) - Bandit
@@ -532,10 +534,12 @@ Enemies:
   DebugText: m10_00_00_00 - c1550_0015 - npc 15500305 - think 15500301 - id 1000215 - Bandit
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; Set SpEffect
   Class: Basic
+  Tags: npcpart
 - ID: 1000216
   DebugText: m10_00_00_00 - c1550_0016 - npc 15500306 - think 15500301 - id 1000216 - Bandit
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; Set SpEffect
   Class: Basic
+  Tags: npcpart
 - ID: 1000217
   DebugText: m10_00_00_00 - c1550_0017 - npc 15500202 - think 15500200 - id 1000217 - Bandit
   Class: Basic
@@ -660,11 +664,13 @@ Enemies:
   DebugText: m10_00_00_00 - c1550_0052 - npc 15500306 - think 15500300 - id 1000252 - Bandit
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; Set SpEffect
   Class: Basic
+  Tags: npcpart
   Add: 1000330
 - ID: 1000253
   DebugText: m10_00_00_00 - c1550_0053 - npc 15500304 - think 15500300 - id 1000253 - Bandit
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; Set SpEffect
   Class: Basic
+  Tags: npcpart
   Add: 1000330
 - ID: 1000254
   DebugText: m10_00_00_00 - c1550_0054 - npc 15500202 - think 15500200 - id 1000254 - Bandit
@@ -1160,7 +1166,7 @@ Enemies:
   DebugText: m11_00_00_00 - c1070_0000 - npc 10701000 - think 10700000 - id 1100480 (1105610,1105400) - Shura Samurai
   Events: Set Character AI State; IF Entity In/Outside Radius Of Entity; IF Character Has SpEffect; IF Damage Type; IF Character Damaged By; Force Animation Playback; Set Character Gravity; Set Character MapHit; IF Character Backread Status; IF Character AI State; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target; IF Character Dead/Alive; IF Entity Loaded; Display Miniboss Health Bar; Set Network Update Rate; Request Character AI Command; Set SpEffect; Clear SpEffect; Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; Change Character DispMask; Shoot Bullet; Change Character Enable State; Set Character Animation State; Set Character Backread State; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; Force Character Death
   Class: Miniboss
-  Tags: late noisland
+  Tags: late noisland npcpart
   ItemName: redguard
   ExtraName: Shigekichi of the Red Guard
   FullName: $1 of the Red Guard
@@ -1233,10 +1239,10 @@ Enemies:
   DebugText: m11_00_00_00 - c1350_0000 - npc 13500000 - think 13500000 - id 1100330 - Headless
   Events: Set Character Gravity; Set Character MapHit; Force Animation Playback; IF Character Backread Status; IF Character Has SpEffect; IF Character AI State; IF Damage Type; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target; IF Character Dead/Alive; IF Entity Loaded; Display Miniboss Health Bar; Set Network Update Rate; Request Character AI Command; Set SpEffect; IF Entity In/Outside Radius Of Entity; Clear SpEffect; Create NPC Part; Request Character AI Re-plan; IF Character Has Event Message; Shoot Bullet; Set NPC Part SE and SFX; Warp Character and Copy Floor; Change Character Enable State; Set Character Animation State; Set Character Backread State; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; Force Character Death
   Class: Headless
+  Tags: mid npcpart
   ItemName: headless_outskirts
   FullName: Headless $1
   PartName: Headless
-  Tags: mid
   EnemyType: headless
   Arena: 236.731 -122.881 203.226 20 10 5 5 0 12
 - ID: 1100450
@@ -2064,12 +2070,12 @@ Enemies:
   DebugText: m11_01_00_00 - c1180_0002 - npc 11801100 - think 11800200 - id 1110432 - Taro Troop
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; Set SpEffect; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; Set Character Gravity; Set Character MapHit; IF Entity In/Outside Radius Of Entity; IF Character Backread Status; IF Character Has SpEffect; IF Character AI State; IF Damage Type; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target; Change Character Enable State; Set Character Animation State; Set Character Backread State; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; Force Character Death
   Class: Basic
-  Tags: unique
+  Tags: unique npcpart
 - ID: 1110433
   DebugText: m11_01_00_00 - c1180_0003 - npc 11801100 - think 11800200 - id 1110433 - Taro Troop
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; Set SpEffect; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; Set Character Gravity; Set Character MapHit; IF Character Backread Status; IF Character Has SpEffect; IF Character AI State; IF Damage Type; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target; Change Character Enable State; Set Character Animation State; Set Character Backread State; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; Force Character Death
   Class: Basic
-  Tags: unique
+  Tags: unique npcpart
 - ID: 1110434
   DebugText: m11_01_00_00 - c1180_0004 - npc 11806110 - think 11800110 - id 1110434 - Taro Troop
   Events: IF Character Backread Status; IF Character Dead/Alive; Set SpEffect; IF Character AI State; IF Character Has SpEffect; IF Damage Type; Clear SpEffect; Force Character Target
@@ -2078,7 +2084,7 @@ Enemies:
   DebugText: m11_01_00_00 - c1180_0005 - npc 11806010 - think 11800010 - id 1110435 - Taro Troop
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; Set SpEffect; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; IF Character Backread Status; IF Character Dead/Alive; IF Character AI State; IF Character Has SpEffect; IF Damage Type; Force Character Target
   Class: Basic
-  Tags: unique
+  Tags: unique npcpart
 - ID: 1110600
   DebugText: m11_01_00_00 - c1190_0000 - npc 11902300 - think 11900310 - id 1110600 - Sunken Valley Clan
   Class: Basic
@@ -2157,6 +2163,7 @@ Enemies:
   ESDs: 111602,10,0,0,0,0,0,0
   Events: IF Character Dead/Alive; Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; Set SpEffect; Set Character Gravity; Set Character MapHit; IF Character Backread Status; IF Character Has SpEffect; IF Character AI State; IF Damage Type; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target; SKIP IF Comparison; Change Character Enable State; Set Character Animation State; Set Character Backread State; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; Force Character Death
   Class: Basic  # One of early rats
+  Tags: npcpart
   Add: 1110645
 - ID: 1110645
   DebugText: m11_01_00_00 - c1360_0001 - npc 13605010 - think 13600000 - id 1110645 - Assassin (Senpou)
@@ -2166,11 +2173,13 @@ Enemies:
   ESDs: 111602,10,0,0,0,0,0,0
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; Set SpEffect; SKIP IF Comparison; IF Character AI State; Set Character Gravity; Set Character MapHit; IF Character Backread Status; IF Character Has SpEffect; IF Damage Type; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target
   Class: Basic  # One of the early rats
+  Tags: npcpart
   Add: 1110645
 - ID: 1110647
   DebugText: m11_01_00_00 - c1360_0003 - npc 13605100 - think 13600010 - id 1110647 - Assassin (Senpou)
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; Set SpEffect
   Class: Basic
+  Tags: npcpart
 - ID: 1110641
   DebugText: m11_01_00_00 - c1361_0000 - npc 13610100 - think 13600021 - id 1110641 - Assassin (Interior Ministry)
   ESDs: 111606,0,0,0,0,0,0,0
@@ -2946,6 +2955,7 @@ Enemies:
   DebugText: m11_02_00_00 - c1360_0006 - npc 13601100 - think 13600010 - id 1120426 - Assassin (Senpou)
   Events: SKIP IF Comparison; IF Character AI State; Set Character Gravity; Set Character MapHit; Force Animation Playback; IF Character Backread Status; IF Character Has SpEffect; IF Damage Type; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target; Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; Change Character DispMask; Clear SpEffect; Set SpEffect
   Class: Basic
+  Tags: npcpart
 - ID: 1120300
   DebugText: m11_02_00_00 - c1470_0000 - npc 14704000 - think 14703000 - id 1120300 - Lone Shadow
   ESDs: 112490,0,0,0,0,0,0,0
@@ -3091,7 +3101,7 @@ Enemies:
   DebugText: m13_00_00_00 - c1080_0000 - npc 10800000 - think 10800000 - id 1300200 - Shichimen Warrior
   Events: IF Character AI State; Force Character Target; IF Character Dead/Alive; IF Character Backread Status; IF Entity Loaded; Display Miniboss Health Bar; Set Network Update Rate; IF Character Has SpEffect; Set Character Gravity; Set Character MapHit; Force Animation Playback; IF Damage Type; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Change Character Enable State; Set Character Animation State; Set Character Backread State; Set SpEffect; IF Character HP Ratio; IF Number of Character Health Bars (Other); Clear SpEffect; IF Character DrawGroup State; Force Character Death; Request Character AI Command; IF Entity In/Outside Radius Of Entity; Create NPC Part; Set NPC Part SE and SFX; IF Character Has Event Message; Shoot Bullet; IF Number of Character Health Bars; Request Character AI Re-plan; Set Lock On Point; Warp Character and Copy Floor
   Class: Miniboss
-  Tags: mid
+  Tags: mid npcpart
   ItemName: shichimen
   FullName: Shichimen $1
   PartName: Shichimen Warrior
@@ -3620,7 +3630,7 @@ Enemies:
   ItemName: headless_forest
   FullName: Headless $1
   PartName: Headless
-  Tags: mid
+  Tags: mid npcpart
   EnemyType: headless
   Arena: -116.138 -382.834 807.903 -159 10 5 7
 - ID: 1500616
@@ -4065,7 +4075,7 @@ Enemies:
   ESDs: 150150,0,0,0,0,0,0,0
   Events: Change Character Enable State; Set Character Animation State; Set Character Backread State; Set SpEffect; IF Character HP Ratio; IF Number of Character Health Bars; Clear SpEffect; IF Character Has SpEffect; IF Character Dead/Alive; GOTO IF Character Has SpEffect; Force Character Death; IF Character AI State; IF Character Backread Status; IF Entity Loaded; Display Miniboss Health Bar; Set Network Update Rate; Request Character AI Command; SKIP IF Character Has SpEffect; IF Entity In/Outside Radius Of Entity; Force Character Target; Create NPC Part; Set NPC Part SE and SFX; IF Damage Type; Set Character Team Type; END IF Character Has SpEffect; Force Animation Playback
   Class: Miniboss
-  Tags: mid
+  Tags: mid npcpart
   FullName: $1 of the Water
   PartName: O'Rin
   Arena: -149.93 -411.988 1282.5 -31 22 10 24
@@ -4172,7 +4182,7 @@ Enemies:
   DebugText: m17_00_00_00 - c1080_0000 - npc 10802000 - think 10800001 - id 1700520 - Shichimen Warrior
   Events: Change Character Enable State; Set Character Animation State; Set Character Gravity; Set Character MapHit; Force Animation Playback; IF Entity In/Outside Radius Of Entity; IF Character Backread Status; IF Character Has SpEffect; IF Character AI State; IF Damage Type; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target; IF Character Dead/Alive; IF Entity Loaded; Display Miniboss Health Bar; Set Network Update Rate; Create NPC Part; Set NPC Part SE and SFX; Set SpEffect; Clear SpEffect; IF Character Has Event Message; Shoot Bullet; IF Number of Character Health Bars; Request Character AI Re-plan; Set Lock On Point; Warp Character and Copy Floor; Request Character AI Command; Set Character Backread State; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; Force Character Death
   Class: Miniboss
-  Tags: mid
+  Tags: mid npcpart
   ItemName: shichimen2
   FullName: Shichimen $1
   PartName: Shichimen Warrior
@@ -4637,7 +4647,7 @@ Enemies:
   ItemName: headless_sunken
   FullName: Headless $1
   PartName: Headless
-  Tags: late
+  Tags: late npcpart
   EnemyType: headless
   Arena: -9.964 -71.081 348.518 -40 7 10 20
 - ID: 1700700
@@ -4773,7 +4783,7 @@ Enemies:
   DebugText: m17_00_00_00 - c5100_0000 - npc 51000000 - think 51000000 - id 1700800 - Guardian Ape
   Events: IF Character Has SpEffect; IF Character Dead/Alive; IF Character Has Event Message; Handle Boss Defeat; Set SpEffect; Change Character Enable State; Set Character Animation State; Set Lock On Point; Set Character Immortality; Set Character HP Bar Display; Force Animation Playback; IF Character AI State; IF Entity In/Outside Radius Of Entity; Set Character Backread State; Set Network Update Rate; Set Character AI State; Force Character Target; Display Boss Health Bar; IF Number of Character Health Bars; EzState Instruction Request; Set Character AI ID; Request Character AI Re-plan; Clear SpEffect; Play SE; Issue Short Warp Request; IF Character Backread Status; Create NPC Part; Set NPC Part HP; Set NPC Part SE and SFX; IF NPC Part HP; Set NPC Part Damaging Prosthetic; IF Character In View Range; Request Character AI Command
   Class: Boss
-  Tags: early
+  Tags: early npcpart
   ItemName: guardianape
   ExtraName: Guardian Ape
   FullName: Guardian $1
@@ -4786,7 +4796,7 @@ Enemies:
   DebugText: m17_00_00_00 - c5100_0001 - npc 51000100 - think 51000100 - id 1700850 - Guardian Ape
   Events: IF Character Has SpEffect; IF Character Dead/Alive; IF Character Has Event Message; Handle Boss Defeat; Change Character Enable State; Set Character Animation State; Force Character Death; Set Lock On Point; Warp Character and Copy Floor; Force Animation Playback; Change Character DispMask; Set Character HP Bar Display; Set SpEffect; Set Character Immortality; Set Character AI State; Set Character Backread State; Set Network Update Rate; Display Boss Health Bar; Force Character Target; EzState Instruction Request; Issue Short Warp Request; Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; IF Character In View Range; Clear SpEffect; IF Number of Character Health Bars; Request Character AI Command; IF In/Outside Area; Request Character AI Re-plan; Set Character Event Target
   Class: Boss
-  Tags: mid nerfloc buffphase  # Add phase to source, as friend makes it a bit harder than most other 2 phases in some arenas
+  Tags: mid npcpart nerfloc buffphase  # Add phase to source, as friend makes it a bit harder than most other 2 phases in some arenas
   ExtraName: Headless Ape
   ItemName: headlessape
   FullName: Guardian $1
@@ -5057,6 +5067,7 @@ Enemies:
   DebugText: m20_00_00_00 - c1180_0000 - npc 11803400 - think 11800400 - id 2000670 (2005256) - Taro Troop
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; IF Character Has SpEffect; Change Character DispMask; Set SpEffect; Force Animation Playback; Clear SpEffect; Change Character Enable State; Set Character Animation State; Set Character Backread State; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: Basic
+  Tags: npcpart
 - ID: 2000671
   DebugText: m20_00_00_00 - c1180_0001 - npc 11803000 - think 11800000 - id 2000671 - Taro Troop
   Events: Set Character Gravity; Set Character MapHit; Force Animation Playback; IF Entity In/Outside Radius Of Entity; IF Character Backread Status; IF Character Has SpEffect; IF Character AI State; IF Damage Type; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target
@@ -5103,18 +5114,22 @@ Enemies:
   DebugText: m20_00_00_00 - c1200_0000 - npc 12000000 - think 12000000 - id 2000649 - Infested Seeker (Parasite)
   Events: Set SpEffect; IF In/Outside Area; Set Network Update Rate; IF Character Dead/Alive; IF Damage Type; IF NPC Part HP; IF Character Has SpEffect; Force Animation Playback; Change Character HitMask; Create NPC Part; Set NPC Part SE and SFX; Set NPC Part HP; Set Character Gravity; Set Character MapHit; IF Entity In/Outside Radius Of Entity; IF Character Backread Status; IF Character AI State; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target; Set Character AI State; IF Character Damaged By
   Class: Basic
+  Tags: npcpart
 - ID: 2000648
   DebugText: m20_00_00_00 - c1200_0002 - npc 12000000 - think 12000000 - id 2000648 - Infested Seeker (Parasite)
   Events: Set SpEffect; IF In/Outside Area; Set Network Update Rate; IF Character Dead/Alive; IF Damage Type; IF NPC Part HP; IF Character Has SpEffect; Force Animation Playback; Change Character HitMask; Create NPC Part; Set NPC Part SE and SFX; Set NPC Part HP; Set Character Gravity; Set Character MapHit; IF Entity In/Outside Radius Of Entity; IF Character Backread Status; IF Character AI State; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target; Set Character AI State; IF Character Damaged By
   Class: Basic
+  Tags: npcpart
 - ID: 2000647
   DebugText: m20_00_00_00 - c1200_0003 - npc 12000000 - think 12000000 - id 2000647 - Infested Seeker (Parasite)
   Events: Set SpEffect; IF In/Outside Area; Set Network Update Rate; IF Character Dead/Alive; IF Damage Type; IF NPC Part HP; IF Character Has SpEffect; Force Animation Playback; Change Character HitMask; Create NPC Part; Set NPC Part SE and SFX; Set NPC Part HP; Set Character Gravity; Set Character MapHit; IF Entity In/Outside Radius Of Entity; IF Character Backread Status; IF Character AI State; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target; Set Character AI State; IF Character Damaged By
   Class: Basic
+  Tags: npcpart
 - ID: 2000646
   DebugText: m20_00_00_00 - c1200_0004 - npc 12000000 - think 12000000 - id 2000646 - Infested Seeker (Parasite)
   Events: IF Character Dead/Alive; IF Damage Type; IF NPC Part HP; IF Character Has SpEffect; Force Animation Playback; Change Character HitMask; Create NPC Part; Set NPC Part SE and SFX; Set NPC Part HP; Set Character Gravity; Set Character MapHit; IF Entity In/Outside Radius Of Entity; IF Character Backread Status; IF Character AI State; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target; Set Character AI State; IF Character Damaged By
   Class: Basic
+  Tags: npcpart
 - ID: 2000703
   DebugText: m20_00_00_00 - c1210_0000 - npc 12102080 - think 12102080 - id 2000703 - Infested Seeker
   ESDs: 200320,0,0,0,0,0,0,0
@@ -5531,7 +5546,7 @@ Enemies:
   DebugText: m20_00_00_00 - c1260_0000 - npc 12600000 - think 12600000 - id 2000801 (2005800) - Folding Screen Monkey
   Events: Set Network Update Rate; Set Character Default Backread State; IF Character Dead/Alive; Force Character Death; Change Character Enable State; Set Character Animation State; IF Character AI State; IF In/Outside Area; IF Character Has SpEffect; Set SpEffect; Set Character AI ID; Warp Character and Set Floor; END IF Character Has SpEffect; IF Entity In/Outside Radius Of Entity; Set NPC Part SE and SFX; Clear SpEffect; Create NPC Part
   Class: FoldingMonkey
-  Tags: early
+  Tags: early npcpart
   DefeatFlag: 9305
   ExtraName: Folding Screen Monkey (Seeing)
   Arena: -943.354 -820.826 558.416 -35.100 20 10 5  # TODO: Make more specific arenas
@@ -5539,7 +5554,7 @@ Enemies:
   DebugText: m20_00_00_00 - c1260_0001 - npc 12600010 - think 12600010 - id 2000802 (2005800) - Folding Screen Monkey
   Events: IF Character Dead/Alive; Force Character Death; Change Character Enable State; Set Character Animation State; IF Character AI State; IF In/Outside Area; Set Character AI ID; IF Character Has SpEffect; Force Animation Playback; Set SpEffect; Warp Character and Set Floor; Set Network Update Rate; Set Character Default Backread State; END IF Character Has SpEffect; IF Entity In/Outside Radius Of Entity; Set NPC Part SE and SFX; Clear SpEffect; Create NPC Part
   Class: FoldingMonkey
-  Tags: island early
+  Tags: island early npcpart
   DefeatFlag: 9305
   ExtraName: Folding Screen Monkey (Hearing)
   Arena: -943.354 -820.826 558.416 -35.100 20 10 5
@@ -5547,7 +5562,7 @@ Enemies:
   DebugText: m20_00_00_00 - c1260_0002 - npc 12600020 - think 12600020 - id 2000803 (2005800) - Folding Screen Monkey
   Events: IF Character Dead/Alive; Force Character Death; Change Character Enable State; Set Character Animation State; IF Character AI State; IF Character Has SpEffect; Set SpEffect; Warp Character and Set Floor; Set Network Update Rate; Set Character Default Backread State; IF In/Outside Area; END IF Character Has SpEffect; IF Entity In/Outside Radius Of Entity; Set NPC Part SE and SFX; Clear SpEffect; Create NPC Part
   Class: FoldingMonkey
-  Tags: early
+  Tags: early npcpart
   DefeatFlag: 9305
   ExtraName: Folding Screen Monkey (Speaking)
   Arena: -943.354 -820.826 558.416 -35.100 20 10 5
@@ -5606,6 +5621,7 @@ Enemies:
   DebugText: m20_00_00_00 - c1360_0012 - npc 13600100 - think 13600010 - id 2000241 - Assassin (Senpou)
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; Set SpEffect
   Class: Basic
+  Tags: npcpart
 - ID: 2000380
   DebugText: m20_00_00_00 - c1400_0000 - npc 14005000 - think 14000000 - id 2000380 (2005200,2005225) - Fencer
   Class: Basic
@@ -5727,6 +5743,7 @@ Enemies:
   DebugText: m20_00_00_00 - c1550_0000 - npc 15506300 - think 15502300 - id 2000390 - Bandit
   Events: Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; Change Character DispMask; Force Animation Playback; Clear SpEffect; Set SpEffect; Set Character Gravity; Set Character MapHit; IF Entity In/Outside Radius Of Entity; IF Character Backread Status; IF Character Has SpEffect; IF Character AI State; IF Damage Type; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Force Character Target
   Class: Basic
+  Tags: npcpart
 - ID: 2000425
   DebugText: m20_00_00_00 - c1550_0001 - npc 15506400 - think 15502400 - id 2000425 (2005236) - Bandit
   Class: Basic
@@ -5858,7 +5875,7 @@ Enemies:
   DebugText: m25_00_00_00 - c1080_0000 - npc 10801000 - think 10800000 - id 2500580 (2505440) - Shichimen Warrior
   Events: IF Character Dead/Alive; IF Character AI State; IF Character Backread Status; IF Entity Loaded; Display Miniboss Health Bar; Set Network Update Rate; IF Character Has SpEffect; Request Character AI Command; SKIP IF Character Has SpEffect; Set SpEffect; IF Entity In/Outside Radius Of Entity; Force Character Target; Clear SpEffect; Set Character Gravity; Set Character MapHit; Force Animation Playback; IF Damage Type; IF Character Posture Ratio; GOTO IF Character Has SpEffect; Create NPC Part; Set NPC Part SE and SFX; IF Character Has Event Message; Shoot Bullet; IF Number of Character Health Bars; Request Character AI Re-plan; Set Character Animation State; Set Lock On Point; Warp Character and Copy Floor; Change Character Enable State; Set Character Backread State; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; Force Character Death
   Class: Miniboss
-  Tags: late
+  Tags: late npcpart
   ItemName: shichimen3
   FullName: Shichimen $1
   PartName: Shichimen Warrior
@@ -6413,12 +6430,13 @@ Enemies:
   DebugText: m25_00_00_00 - c1340_0000 - npc 13401000 - think 13401000 - id 2500550 - Underwater Headless
   Events: Change Character Enable State; Set Character Animation State; Set Character Backread State; Create NPC Part; Set NPC Part SE and SFX; IF Number of Character Health Bars; IF Character Dead/Alive; IF Character AI State; IF Character Backread Status; IF Entity Loaded; Display Miniboss Health Bar; Set Network Update Rate; IF Character Has SpEffect; Request Character AI Command; SKIP IF Character Has SpEffect; Set SpEffect; IF Entity In/Outside Radius Of Entity; Force Character Target; Clear SpEffect; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; Force Character Death
   Class: None  # Cannot be deathblown abovewater, and replacements can't be deathblown underwater
-  Tags: late
+  Tags: late npcpart
   Arena: -33.375 -5.450 348.270 50 10 10 6 0 -8
 - ID: 2500551
   DebugText: m25_00_00_00 - c1340_0001 - npc 13401001 - think 13401001 - id 2500551 - Underwater Headless
   Events: Change Character Enable State; Set Character Animation State; Set Character Backread State; Create NPC Part; Set NPC Part SE and SFX; Force Character Death; Request Character AI Command; SKIP IF Character Has SpEffect; Set SpEffect; IF Character Has SpEffect; IF Entity In/Outside Radius Of Entity; IF Character AI State; IF Entity Loaded; IF Character Backread Status; IF Character Dead/Alive; Force Character Target; Clear SpEffect
   Class: None
+  Tags: npcpart
 - ID: 2500570
   DebugText: m25_00_00_00 - c1380_0000 - npc 13800000 - think 13800000 - id 2500570 - Sakura Bull of the Palace
   Events: IF Character AI State; IF Character Dead/Alive; IF Character HP Ratio; IF Character Has Event Message; Clear SpEffect; Set SpEffect; IF Character Backread Status; IF Entity Loaded; Display Miniboss Health Bar; Set Network Update Rate; IF Character Has SpEffect; Request Character AI Command; SKIP IF Character Has SpEffect; IF Entity In/Outside Radius Of Entity; Force Character Target; Change Character Patrol Behavior; Request Character AI Re-plan; Set Character AI State; IF Damage Type; IF Character Damaged By; Force Animation Playback; Change Character Enable State; Set Character Animation State; Set Character Backread State; IF Number of Character Health Bars (Other); IF Character DrawGroup State; Force Character Death

@@ -535,7 +535,7 @@
             this.fixedseed.Location = new System.Drawing.Point(769, 682);
             this.fixedseed.Name = "fixedseed";
             this.fixedseed.Size = new System.Drawing.Size(188, 26);
-            this.fixedseed.TabIndex = 20;
+            this.fixedseed.TabIndex = 34;
             // 
             // randomize
             // 
@@ -543,7 +543,7 @@
             this.randomize.Location = new System.Drawing.Point(984, 681);
             this.randomize.Name = "randomize";
             this.randomize.Size = new System.Drawing.Size(138, 31);
-            this.randomize.TabIndex = 25;
+            this.randomize.TabIndex = 35;
             this.randomize.Text = "Randomize!";
             this.randomize.UseVisualStyleBackColor = true;
             this.randomize.Click += new System.EventHandler(this.randomize_Click);
@@ -565,7 +565,7 @@
             this.randomizeL.Name = "randomizeL";
             this.randomizeL.ReadOnly = true;
             this.randomizeL.Size = new System.Drawing.Size(200, 15);
-            this.randomizeL.TabIndex = 30;
+            this.randomizeL.TabIndex = 36;
             this.randomizeL.Text = "Previous seed: 7777777778";
             this.randomizeL.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -1015,9 +1015,9 @@
             this.presetL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.presetL.Location = new System.Drawing.Point(451, 713);
             this.presetL.Name = "presetL";
-            this.presetL.Size = new System.Drawing.Size(84, 16);
+            this.presetL.Size = new System.Drawing.Size(410, 16);
             this.presetL.TabIndex = 25;
-            this.presetL.Text = "Preset name";
+            this.presetL.Text = "Preset: Oops All Lone Shadow Masanaga the Spear-Bearer (Hirata)";
             // 
             // SekiroForm
             // 
@@ -1044,7 +1044,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SekiroForm";
-            this.Text = "Sekiro Enemy and Item Randomizer v0.2";
+            this.Text = "Sekiro Enemy and Item Randomizer v0.2.1";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

@@ -3026,9 +3026,8 @@ EnemyEvents:
   - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -5)
   - END Unconditionally (Execution End Type = 1)
 - ID: 2005391
-  Comment: Prevent walking off a col in an area. Mist Raven Lone Shadow, and player while Inosuke's mother is alive. xx does lone shadow replacement work? may need to move spawn point
+  Comment: Prevent walking off a col in an area. Mist Raven Lone Shadow, and player while Inosuke's mother is alive. However, disabling gravity is a separate issue for lone shadow
   Template:
-  # Prevent bug of enemy floating in middle of nowhere
   - Type: remove
   DebugInfo:
   - 1000350 (c1470_0000 - Lone Shadow)
@@ -6242,6 +6241,7 @@ EnemyEvents:
     Remove: 1110248
   - Type: loc
     Remove: Force Animation Playback
+    Entity: 1110365
   DebugInfo:
   - 1110365 (c1700_0015 - Red Guard)
   - 1110248 (c1010_0051 - Ashina Soldier)
@@ -9405,6 +9405,7 @@ EnemyEvents:
   Comment: SSI phase 2 and 3. Includes chr transitions, but also some map stuff. Note - event flag controls music, will this be an issue for randomizations?
   Template:
   - Type: loc
+    Entity: 1120860
     Remove: IF Character Has SpEffect; Set Character AI ID  # to test - Set Area Gparam Sub ID xx
     Add:
     - Cmd: IF Event Flag (0,1,0,11125870)
@@ -10492,6 +10493,7 @@ EnemyEvents:
   Comment: Some O'Rin initialization.
   Template:
   - Type: loc
+    Entity: 1500690
     Remove: Force Animation Playback
   - Type: chr
     Entity: 1500690
@@ -10511,6 +10513,7 @@ EnemyEvents:
   Comment: O'Rin activation. 1502700, on bridge side. 1502704, small box around arena. 1502706, on idol side.
   Template:
   - Type: loc
+    Entity: 1500690
   - Type: chr
     Entity: 1500690
     Remove: 11507690; 11505725  # Unneeded event flag; set by ESD
@@ -11301,7 +11304,7 @@ EnemyEvents:
 - ID: 11705828
   Comment: NPC part setup for guardian ape
   Template:
-  - Type: chr
+  - Type: chrpart
     Entity: 1700800
     DefeatFlag: 9304
   DebugInfo:
@@ -11338,7 +11341,7 @@ EnemyEvents:
 - ID: 11705830
   Comment: Guardian Ape spear interaction
   Template:
-  - Type: chr
+  - Type: chrpart
     Entity: 1700800
     DefeatFlag: 9304
   DebugInfo:
@@ -11674,7 +11677,7 @@ EnemyEvents:
   - + Set SpEffect (Entity ID = 1700852*, SpEffect ID = 3510200)
   - END Unconditionally (Execution End Type = 0)
 - ID: 11705873
-  Comment: Headless ape centipede deathblow. xx exclude this from the game by attaching 9314 to 9307.
+  Comment: Headless ape centipede deathblow. Removed, since 9307 gives 9314 instead, if the entity is randomized
   Template:
   - Type: remove
     Entity: 1700850
@@ -11695,7 +11698,7 @@ EnemyEvents:
 - ID: 11705874
   Comment: Headless ape spear thing
   Template:
-  - Type: chr
+  - Type: chrpart
     Entity: 1700850
     DefeatFlag: 9314
     AppearFlag: 8303
@@ -11776,7 +11779,7 @@ EnemyEvents:
       Cmd: Force Character Death (1700852,0)
     - After: Set Area CameraSetParam SubID (510)
       Cmd: Set Event Flag (11705880,1)
-  - Type: chr  # For standalone
+  - Type: chr  # For standalone. But partner is still way too passive
     Entity: 1700852
     Remove: 1700850; 1702871; GOTO IF Event Flag; IF Event Flag; Set Area CameraSetParam SubID; WAIT Fixed Time (Seconds) (3)
     Add:
@@ -12135,7 +12138,7 @@ EnemyEvents:
 - ID: 12005335
   Comment: Setup and parts for other infested seekers
   Template:
-  - Type: chr
+  - Type: chrpart
   DebugInfo:
   - 2000647 (c1200_0003 - Infested Seeker (Parasite))
   - 2000648 (c1200_0002 - Infested Seeker (Parasite))
@@ -12971,7 +12974,7 @@ EnemyEvents:
 - ID: 12005840
   Comment: Creates NPC parts for non-invisible monkeys
   Template:
-  - Type: chr
+  - Type: chrpart
     DefeatFlag: 9405
   DebugInfo:
   - 2000801 (c1260_0000 - Folding Screen Monkey)
@@ -13585,12 +13588,13 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 9201, Flag State = 0)
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505216
-  Comment: Lightning. Although it seems to not work too well as chr. As loc, it prevents backstab?
+  Comment: Lightning. Although it seems to not work too well as chr. As loc, it prevents backstab? I guess not.
   Template:
   - Type: chr
     Entity: 2500406
     DefeatFlag: 12500215
   - Type: loc
+    Entity: 2500406
   DebugInfo:
   - 2500406 (c1310_0006 - Okami Warrior)
   DebugCommands:
@@ -13772,7 +13776,7 @@ EnemyEvents:
   - + IF In/Outside Area (Result Condition Group = 0, Desired State = 0, Target Entity ID = 10000, Area Entity ID = 2502440*, Number of Target Characters = 1)
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505500
-  Comment: Ties these two characters together. Also NPC part initialization
+  Comment: Ties these two characters together. Also NPC part initialization. (These are not randomized, so don't try to remove them)
   Template:
   - Type: multichr
     Entity: 2500550
@@ -17297,7 +17301,7 @@ EnemyEvents:
 - ID: 20005400
   Comment: Creating NPC parts which are breakable by prosthetic tools
   Template:
-  - Type: chr
+  - Type: chrpart
   DebugInfo:
   - 1000208 (c1550_0008 - Bandit)
   - 1000209 (c1550_0009 - Bandit)
@@ -17341,7 +17345,7 @@ EnemyEvents:
 - ID: 20005401
   Comment: NPC part for greatshield taro troop
   Template:
-  - Type: chr
+  - Type: chrpart
   DebugInfo:
   - 1000361 (c1180_0001 - Taro Troop)
   - 2000670 (c1180_0000 - Taro Troop)
@@ -17369,7 +17373,7 @@ EnemyEvents:
 - ID: 20005410
   Comment: NPC part for Taro troops with poor-fitting armor
   Template:
-  - Type: chr
+  - Type: chrpart
   DebugInfo:
   - 1000363 (c1180_0003 - Taro Troop)
   - 1110432 (c1180_0002 - Taro Troop)
@@ -17403,8 +17407,7 @@ EnemyEvents:
 - ID: 20005411
   Comment: NPC part for Shigekichi
   Template:
-  - Type: chr
-  - Type: common
+  - Type: chrpart
   DebugInfo:
   - 1100480 (c1070_0000 - Shura Samurai)
   DebugInit:
@@ -17515,7 +17518,7 @@ EnemyEvents:
 - ID: 20005430
   Comment: Headless event
   Template:
-  - Type: chr
+  - Type: chrpart
   DebugInfo:
   - 1100330 (c1350_0000 - Headless)
   - 1500680 (c1350_0000 - Headless)
@@ -17630,7 +17633,7 @@ EnemyEvents:
 - ID: 20005440
   Comment: Shichimen event
   Template:
-  - Type: chr
+  - Type: chrpart
   DebugInfo:
   - 1300200 (c1080_0000 - Shichimen Warrior)
   - 1700520 (c1080_0000 - Shichimen Warrior)
@@ -17852,7 +17855,7 @@ EnemyEvents:
 - ID: 20005460
   Comment: NPC part for O'Rin
   Template:
-  - Type: chr
+  - Type: chrpart
   DebugInfo:
   - 1500690 (c7000_0000 - O'Rin)
   DebugInit:

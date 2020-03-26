@@ -7,8 +7,8 @@ Config:
   - earlykusabimaru
   - latekusabimaru
 - Oneof:
-  - earlyhirata
   - latehirata
+  - earlyhirata
 - Opt: veryearlyhirata
 - Oneof:
   - noracemode_health
