@@ -17,22 +17,16 @@ namespace RandomizerCommon
         public readonly Dictionary<RandomSilo, SiloPermutation> Silos = new Dictionary<RandomSilo, SiloPermutation>();
         public readonly Dictionary<ItemKey, double> ItemLateness = new Dictionary<ItemKey, double>();
         public readonly HashSet<ItemKey> KeyItems = new HashSet<ItemKey>();
-        public readonly Dictionary<EntityId, EntityId> EntitySwaps = new Dictionary<EntityId, EntityId>();
+        public readonly Dictionary<ItemKey, ItemKey> SkillAssignment = new Dictionary<ItemKey, ItemKey>();
         public readonly Dictionary<SlotKey, string> LogOrder = new Dictionary<SlotKey, string>();
         // public readonly SortedDictionary<HintCategory, Dictionary<SlotKey, SlotKey>> Hints = new SortedDictionary<HintCategory, Dictionary<SlotKey, SlotKey>>();\
         public readonly Dictionary<string, Dictionary<SlotKey, SlotKey>> Hints = new Dictionary<string, Dictionary<SlotKey, SlotKey>>();
         public Dictionary<string, HashSet<string>> IncludedAreas => assign.IncludedAreas;
+        public HashSet<ItemKey> NotRequiredKeyItems => assign.NotRequiredKeyItems;
         // Only in logic runs
         private KeyItemsPermutation.Assignment assign;
         private readonly Dictionary<ItemKey, SlotKey> specialAssign = new Dictionary<ItemKey, SlotKey>();
 
-        // Extremely hacky, but necessary for chest rando. Values are used by permutation writer.
-        // Needed because some chests don't have collision names in-game - they just float in place. But enemies can't.
-        public static readonly Dictionary<EntityId, string> ChestCollisionNames = new Dictionary<EntityId, string>
-        {
-            { new EntityId("catacombs", "o000200_9000"), "h010600" },
-            { new EntityId("irithyll", "o000200_0007"), "h002500" },
-        };
         public Permutation(GameData game, LocationData data, AnnotationData ann, bool explain=false)
         {
             this.game = game;
@@ -57,8 +51,11 @@ namespace RandomizerCommon
                     if (slotAnn.TagItems != null && slotAnn.TagItems.TryGetValue("norandom", out List<ItemKey> items)) norandoms.AddRange(items);
                     // Crow targets get special handling
                     crow = slotAnn.TagList.Contains("crow");
-                    // Just remove NG+ lots. Use centralized feature of this.
-                    removeSlot = slotAnn.TagList.Contains("ng+");
+                    // Just remove NG+ in Sekiro.
+                    if (game.Sekiro)
+                    {
+                        removeSlot = slotAnn.TagList.Contains("ng+");
+                    }
                 }
                 // Add items
                 bool hasSource = false;
@@ -147,76 +144,6 @@ namespace RandomizerCommon
         }
         public void Logic(Random random, RandomizerOptions options, Preset preset)
         {
-            // Randomize all chests.
-            SortedDictionary<string, HashSet<(LocationScope, EntityId)>> chestSlots = new SortedDictionary<string, HashSet<(LocationScope, EntityId)>>();
-            List<string> v = new List<string>();
-            Func<EntityId, bool> isMimic = id => "c2120".Equals(id.ModelName);
-            foreach (KeyValuePair<ItemKey, ItemLocations> entry in data.Data)
-            {
-                foreach (ItemLocation loc in entry.Value.Locations.Values)
-                {
-                    // A bit hacky - assume that each mimic entity has one and exactly norandom slot. Could relax this invariant by grouping by entity id, but not needed now
-                    LocationScope locScope = loc.LocScope;
-                    if (!ann.Slots.ContainsKey(locScope) || ann.Slots[locScope].GetTags().Contains("norandom")) continue;
-                    List<EntityId> chests = loc.Keys.SelectMany(k => k.Entities).Where(e => "o000200".Equals(e.ModelName) || "c2120".Equals(e.ModelName)).ToList();
-                    foreach (EntityId chest in chests)
-                    {
-                        // Console.WriteLine($"Found chest {chest.EntityName} in {chest.MapName}");
-                        AddMulti(chestSlots, chest.MapName, (locScope, chest));
-                    }
-                }
-            }
-            Dictionary<LocationScope, LocationScope> locSwaps = new Dictionary<LocationScope, LocationScope>();
-            // Only do swaps if we can write to maps
-            if (!options["unreliableenemyplacement"])
-            {
-                foreach (KeyValuePair<string, HashSet<(LocationScope, EntityId)>> entry in chestSlots)
-                {
-                    List<(LocationScope, EntityId)> oldChests = entry.Value.ToList();
-                    oldChests.Sort();
-                    List<(LocationScope, EntityId)> chests = new List<(LocationScope, EntityId)>(oldChests);
-                    Shuffle(random, chests);
-                    List<(LocationScope, EntityId)> newMimics = new List<(LocationScope, EntityId)>();
-                    for (int i = 0; i < chests.Count; i++)
-                    {
-                        if (isMimic(chests[i].Item2) && !isMimic(oldChests[i].Item2))
-                        {
-                            newMimics.Add(chests[i]);
-                        }
-                    }
-                    int moved = 0;
-                    for (int i = 0; i < chests.Count; i++)
-                    {
-                        if (!isMimic(chests[i].Item2) && isMimic(oldChests[i].Item2))
-                        {
-                            locSwaps[chests[i].Item1] = newMimics[moved].Item1;
-                            EntitySwaps[chests[i].Item2] = newMimics[moved].Item2;
-                            if (explain)
-                            {
-                                Console.WriteLine($"Swapping chests:");
-                                Console.WriteLine($"- {ann.Slots[chests[i].Item1].Text}");
-                                Console.WriteLine($"- {ann.Slots[newMimics[moved].Item1].Text}");
-                            }
-                            moved++;
-                        }
-                    }
-                }
-            }
-            HashSet<string> nonswapTags = new HashSet<string> { "norandom", "enemy", "miniboss", "boss" };
-            foreach (KeyValuePair<LocationScope, LocationScope> swap in locSwaps)
-            {
-                // The only thing that gets swapped in the end is the physical location of the chests.
-                // So interchange attributes related to location.
-                SlotAnnotation s1 = ann.Slots[swap.Key];
-                SlotAnnotation s2 = ann.Slots[swap.Value];
-                HashSet<string> s1Tags = new HashSet<string>(s1.TagList.Where(t => nonswapTags.Contains(t)).Concat(s2.TagList.Where(t => !nonswapTags.Contains(t))));
-                HashSet<string> s2Tags = new HashSet<string>(s2.TagList.Where(t => nonswapTags.Contains(t)).Concat(s1.TagList.Where(t => !nonswapTags.Contains(t))));
-                s1.TagList = s2Tags;
-                s2.TagList = s1Tags;
-                ann.Slots[swap.Key] = s2;
-                ann.Slots[swap.Value] = s1;
-            }
-
             if (preset != null)
             {
                 preset.ProcessItemPreset(ann);
@@ -283,6 +210,7 @@ namespace RandomizerCommon
                 { "reqevent", 3 },
                 { "ambush", 4 },
                 { "miniboss", 5 },
+                { "minibossrespawn", 5 },
                 { "boss", 6 },
                 { "deadend", 6 },
                 { "premium", 6 },
@@ -300,6 +228,7 @@ namespace RandomizerCommon
             if (options.GetNum("keyitemdifficulty") > 0.9)
             {
                 difficultyTags["miniboss"]--;
+                difficultyTags["minibossrespawn"]--;
                 difficultyTags["boss"]--;
                 difficultyTags["deadend"]--;
             }
@@ -310,8 +239,8 @@ namespace RandomizerCommon
             {
                 SlotAnnotation slot = entry.Value;
                 HashSet<string> tags = new HashSet<string>(slot.GetTags());
-                // If have to kill NPC to acquire, deprioritize the location
-                if (tags.Contains("death"))
+                // If have to kill NPC to acquire, or is an early required boss, deprioritize the location
+                if (tags.Contains("death") || tags.Contains("boring"))
                 {
                     continue;
                 }
@@ -333,7 +262,7 @@ namespace RandomizerCommon
                     (location, maxItemLocation) = ann.Areas[slot.BaseArea].GetSubAreaIndex(slot.Area, location);
                 }
                 // Oof hardcoding... but these areas are so small, it's more of a challenge to put the item anywhere in the area, for key items
-                if (gameLocation == "firelink" || gameLocation == "highwall" || tags.Contains("deadend")) location = maxItemLocation - 1;
+                if (gameLocation.StartsWith("firelink") || gameLocation == "highwall" || tags.Contains("deadend")) location = maxItemLocation - 1;
                 keyWeight = GetSubRange(keyWeight, location, maxItemLocation);
                 // Weights for all items (lateness within game)
                 maxWeight = Math.Pow(2, desirableDifficulty);
@@ -444,7 +373,7 @@ namespace RandomizerCommon
                         {
                             Slots = pendingSlotsFromPlacement(restrict.Unique, key, null),
                         };
-                        bool debug = game.Name(key) == "Memory: Oniwa";
+                        bool debug = game.Name(key) == "No item";
                         pending.Explain = debug;
                         if (debug) Console.WriteLine($"- Partitions for {game.Name(key)}");
                         pending.AddPartitions();
@@ -597,20 +526,13 @@ namespace RandomizerCommon
                 if (ann.ItemGroups["keyitems"].Contains(key)) hintItems[key] = "key items";
                 if (ann.ItemGroups["questitems"].Contains(key)) hintItems[key] = "quest items";
             }
-            if (game.Sekiro)
+            foreach (KeyValuePair<string, string> hintGroup in ann.HintGroups)
             {
-                foreach (KeyValuePair<string, string> hintGroup in ann.HintGroups)
+                if (hintGroup.Key == "keyitems") continue;
+                foreach (ItemKey key in ann.ItemGroups[hintGroup.Key])
                 {
-                    foreach (ItemKey key in ann.ItemGroups[hintGroup.Key])
-                    {
-                        hintItems[key] = hintGroup.Value;
-                    }
+                    hintItems[key] = hintGroup.Value;
                 }
-            }
-            else
-            {
-                foreach (ItemKey key in ann.ItemGroups["upgradehints"]) hintItems[key] = "upgrade items";
-                foreach (ItemKey key in ann.ItemGroups["estushints"]) hintItems[key] = "estus items";
             }
             foreach (string type in ann.HintCategories)
             {
@@ -695,6 +617,16 @@ namespace RandomizerCommon
         public string GetLogOrder(SlotKey key)
         {
             return LogOrder.ContainsKey(key) ? LogOrder[key] : $"z{key}";
+        }
+        public SlotKey GetFiniteTargetKey(ItemKey key)
+        {
+            SlotKey target = Silos[RandomSilo.FINITE].Mapping.Where(e => e.Value.Any(s => s.Item.Equals(key))).Select(e => e.Key).FirstOrDefault();
+            if (target == null)
+            {
+                // If not randomized, try to get a vanilla location
+                return new SlotKey(key, data.Data[key].Locations.Keys.First());
+            }
+            return target;
         }
 
         // A partition of areas an item can go to, out of all areas, based on the slots it fills.
@@ -791,7 +723,6 @@ namespace RandomizerCommon
             public override string ToString() => $"{FreeAmount} left exclude:[{string.Join(",", ExcludeTags ?? new HashSet<string>())}] from <{string.Join(", ", Slots)}>";
             public bool PlaceItem(HashSet<string> tags, string effectiveLoc, string actualLoc, string ev, int quantity, bool debugFlag=false)
             {
-                if (debugFlag && effectiveLoc == "fountainhead_carp") Console.WriteLine("blahblah");
                 if (ExcludeTags != null && ExcludeTags.Any(t => tags.Contains(t)))
                 {
                     if (debugFlag) Console.WriteLine($"- Excluded because of tags [{string.Join(",", tags)}] containing [{string.Join(",", ExcludeTags)}], in location {effectiveLoc}");
@@ -952,7 +883,8 @@ namespace RandomizerCommon
                 {
                     SlotKey slot = node.Value;
                     ItemKey key = slot.Item;
-                    if (!tried.Contains(key)) {
+                    if (!tried.Contains(key))
+                    {
                         if (predicate(slot))
                         {
                             Queue.Remove(node);
@@ -999,7 +931,7 @@ namespace RandomizerCommon
                 return false;
             }
             // Special restriction to make scale shop items better
-            if (ann.Slots.TryGetValue(loc, out SlotAnnotation prem) && prem.TagList.Contains("premium") && !ann.ItemGroups["premium"].Contains(item))
+            if (ann.Slots.TryGetValue(loc, out SlotAnnotation prem) && prem.TagList.Contains("premium") && ann.ItemGroups.ContainsKey("premium") && !ann.ItemGroups["premium"].Contains(item))
             {
                 return false;
             }
@@ -1024,7 +956,7 @@ namespace RandomizerCommon
             int minQuant = sourceLoc.Keys.Select(k => k.Quantity).Where(k => k > 0).DefaultIfEmpty(1).Min();
             // Also, premium shop items should be singletons
             if (slotAnn.TagList.Contains("premium") && minQuant > 1) return false;
-            bool debug = false;
+            bool debug = game.Name(item) == "No item";
             bool result = pending.PlaceItem(slotAnn.TagList, location, slotAnn.GetArea(), slotAnn.Event, minQuant, debug);
             if (pending.Explain || debug)
             {
@@ -1129,6 +1061,14 @@ namespace RandomizerCommon
                     if (GetAvailableSlot(silo, targetKey) == null)
                     {
                         SlotKey victim = silo.Mapping[targetKey][0];
+                        // Special hack to avoid moving around key items.
+                        // This can happen if an area has 1 quest slot and 1 key slot, but the quest slot cannot be satisfied due to tags.
+                        // Really this pass-based system should be rewritten to avoid such destructive behavior, or at least make better decisions naturally.
+                        if (ann.ItemGroups["keyitems"].Contains(victim.Item))
+                        {
+                            queue.Enqueue(fromQueue);
+                            continue;
+                        }
                         silo.Mapping[targetKey].RemoveAt(0);
                         if (queue.Restrict.ContainsKey(victim.Item))
                         {

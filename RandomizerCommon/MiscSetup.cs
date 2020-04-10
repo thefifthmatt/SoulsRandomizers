@@ -64,6 +64,20 @@ namespace RandomizerCommon
             return ret == null;
         }
 
+        public static bool CheckRequiredDS3Files(out string ret)
+        {
+            ret = null;
+            if (!Directory.Exists("dist"))
+            {
+                ret = "Error: Can't find required metadata files.\r\nFor the randomizer to work, you must unpack it to disk and keep all of the files together";
+            }
+            else if (File.Exists("DarkSoulsIII.exe"))
+            {
+                ret = "Error: Running from same directory as Sekiro.exe\r\nThe randomizer and its files must be in a subdirectory";
+            }
+            return ret == null;
+        }
+
         // Note: Doesn't return error or not (use ret != null for that), returns if fatal or not
         public static bool CheckSekiroModEngine(out string ret)
         {
@@ -113,6 +127,51 @@ namespace RandomizerCommon
                 ret = "Warning: Unknown version of Sekiro Mod Engine detected\r\nUse the one from the files section of Sekiro Randomizer, and update the randomizer if there is an update";
                 return false;
             }
+            return false;
+        }
+
+        public static bool CheckDS3ModEngine(out string ret, out bool encrypted)
+        {
+            encrypted = true;
+            ret = null;
+            if (!File.Exists(@"..\DarkSoulsIII.exe"))
+            {
+                ret = "Error: DarkSoulsIII.exe not found in parent directory\r\nFor randomization to work, move the randomizer folder to your DS3 install location";
+                return true;
+            }
+            if (!File.Exists(@"..\dinput8.dll") || !File.Exists(@"..\modengine.ini"))
+            {
+                ret = "Error: DS3 Mod Engine not found in parent directory\r\ndinput8.dll and modengine.ini must be present";
+                return true;
+            }
+            // Check ini variables
+            string ini = new FileInfo(@"..\modengine.ini").FullName.ToString();
+
+            StringBuilder loadLoose = new StringBuilder(255);
+            GetPrivateProfileString("files", "loadLooseParams", "", loadLoose, 255, ini);
+            if (loadLoose.ToString() == "1")
+            {
+                encrypted = false;
+            }
+
+            StringBuilder useMods = new StringBuilder(255);
+            GetPrivateProfileString("files", "useModOverrideDirectory", "", useMods, 255, ini);
+            if (useMods.ToString() != "1")
+            {
+                ret = "Warning: Set useModOverrideDirectory to 1 in modengine.ini\r\nOtherwise, randomization may not apply to game";
+                return false;
+            }
+
+            StringBuilder modDir = new StringBuilder(255);
+            GetPrivateProfileString("files", "modOverrideDirectory", "", modDir, 255, ini);
+            string dirName = new DirectoryInfo(Directory.GetCurrentDirectory()).Name;
+            string expected = $@"\{dirName}";
+            if (modDir.ToString().ToLowerInvariant() != expected.ToLowerInvariant())
+            {
+                ret = $"Warning: Set modOverrideDirectory to \"{expected}\" in modengine.ini\r\nOtherwise, randomization may not apply to game";
+                return false;
+            }
+
             return false;
         }
 
@@ -212,7 +271,8 @@ namespace RandomizerCommon
             return true;
         }
 
-        public static void SekiroCommonPass(GameData game, Events events, RandomizerOptions opt) {
+        public static void SekiroCommonPass(GameData game, Events events, RandomizerOptions opt)
+        {
             Dictionary<string, PARAM> Params = game.Params;
 
             // Snap (for convenience, but can also softlock the player)
@@ -273,8 +333,13 @@ namespace RandomizerCommon
             }
         }
 
+        private static List<string> langs = new List<string>
+        {
+            "engus", "frafr", "itait", "jpnjp", "korkr", "polpl", "porbr", "rusru", "spaar", "spaes", "thath", "zhocn", "zhotw",
+        };
         private static List<string> fileDirs = new List<string>
         {
+            @".",
             @"action",
             @"action\script",
             @"chr",
@@ -286,18 +351,9 @@ namespace RandomizerCommon
             @"menu\hi\mapimage",
             @"menu\low",
             @"menu\low\mapimage",
-            @"msg\engus",
-            @"msg\frafr",
-            @"msg\itait",
-            @"msg\jpnjp",
-            @"msg\korkr",
-            @"msg\polpl",
-            @"msg\porbr",
-            @"msg\rusru",
-            @"msg\spaes",
-            @"msg\thath",
-            @"msg\zhocn",
-            @"msg\zhotw",
+            @"menu\knowledge",
+            @"menu\$lang",
+            @"msg\$lang",
             @"mtd",
             @"obj",
             @"other",
@@ -305,18 +361,17 @@ namespace RandomizerCommon
             @"param\gameparam",
             @"param\graphicsconfig",
             @"parts",
-            // Exclude script, because we combine it ourselves
+            @"script",  // This should be a no-op in Sekiro
             @"script\talk",
-            // Exclude SFX, because we combine it ourselves
+            @"sfx",  // This should be a no-op in Sekiro
             @"shader",
             @"sound",
-        };
+        }.SelectMany(t => t.Contains("$lang") ? langs.Select(l => t.Replace("$lang", l)) : new[] { t }).ToList();
         private static List<string> extensions = new List<string>
         {
-            ".hks", ".dcx", ".gfx", ".dds", ".fsb", ".fev", ".itl"
+            ".hks", ".dcx", ".gfx", ".dds", ".fsb", ".fev", ".itl", ".tpf", ".entryfilelist", ".hkxbdt", ".hkxbhd", "Data0.bdt"
         };
         private static Regex extensionRe = new Regex(string.Join("|", extensions.Select(e => e + "$")));
-        // directories: chr, param/gameparam, msg/[lang], sfx, parts, sound, event, map/mapstudio, script/talk, menu/hi, 
         public static List<string> GetGameFiles(string dir)
         {
             List<string> allFiles = new List<string>();

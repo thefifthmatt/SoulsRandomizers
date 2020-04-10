@@ -7,7 +7,7 @@ namespace RandomizerCommon
     {
         private static Properties.Settings settings = Properties.Settings.Default;
 
-        public void Randomize(RandomizerOptions options, Action<string> notify=null, string outPath = null, bool sekiro=false, Preset preset=null)
+        public void Randomize(RandomizerOptions options, Action<string> notify = null, string outPath = null, bool sekiro = false, Preset preset = null, bool encrypted = true)
         {
             // sekiro = false;
             string distDir = sekiro ? "dists" : "dist";
@@ -33,7 +33,8 @@ namespace RandomizerCommon
             string modDir = null;
             if (options["mergemods"])
             {
-                DirectoryInfo modDirInfo = new DirectoryInfo($@"{outPath}\..\mods");
+                string modPath = sekiro ? "mods" : "mod";
+                DirectoryInfo modDirInfo = new DirectoryInfo($@"{outPath}\..\{modPath}");
                 if (!modDirInfo.Exists) throw new Exception($"Can't merge mods: {modDirInfo.FullName} not found");
                 modDir = modDirInfo.FullName;
             }
@@ -47,7 +48,7 @@ namespace RandomizerCommon
             {
                 Console.WriteLine("Ctrl+F 'Boss placements' or 'Miniboss placements' or 'Basic placements' to see enemy placements.");
             }
-            if (options["item"])
+            if (options["item"] || !sekiro)
             {
                 Console.WriteLine("Ctrl+F 'Hints' to see item placement hints, or Ctrl+F for a specific item name.");
             }
@@ -59,7 +60,7 @@ namespace RandomizerCommon
             // Slightly different high-level algorithm for each game. As always, can try to merge more in the future.
             if (sekiro)
             {
-                Events events = new Events();
+                Events events = new Events(true);
 
                 EnemyLocations locations = null;
                 if (options["enemy"])
@@ -90,6 +91,11 @@ namespace RandomizerCommon
                         SkillWriter skills = new SkillWriter(game, data, anns);
                         skills.RandomizeTrees(new Random(seed + 2), perm);
                     }
+                    if (options["edittext"])
+                    {
+                        HintWriter hints = new HintWriter(game, data, anns);
+                        hints.Write(options, perm);
+                    }
                 }
                 MiscSetup.SekiroCommonPass(game, events, options);
 
@@ -102,6 +108,8 @@ namespace RandomizerCommon
             }
             else
             {
+                Events events = new Events(false);
+
                 LocationDataScraper scraper = new LocationDataScraper(logUnused: false);
                 LocationData data = scraper.FindItems(game);
                 AnnotationData ann = new AnnotationData(game, data);
@@ -115,7 +123,7 @@ namespace RandomizerCommon
 
                 notify?.Invoke("Editing game files");
                 random = new Random(seed + 1);
-                PermutationWriter writer = new PermutationWriter(game, data, ann, null);
+                PermutationWriter writer = new PermutationWriter(game, data, ann, events);
                 writer.Write(random, permutation, options);
                 random = new Random(seed + 2);
                 CharacterWriter characters = new CharacterWriter(game, data);
@@ -124,7 +132,7 @@ namespace RandomizerCommon
                 notify?.Invoke("Writing game files");
                 if (!options["dryrun"])
                 {
-                    game.SaveDS3(outPath, editMaps: !options["unreliableenemyplacement"]);
+                    game.SaveDS3(outPath, encrypted);
                 }
             }
         }

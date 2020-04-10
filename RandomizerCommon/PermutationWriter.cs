@@ -56,10 +56,14 @@ namespace RandomizerCommon
             foreach (string hintType in ann.HintCategories)
             {
                 Console.WriteLine($"-- Hints for {hintType}:");
-                foreach (KeyValuePair<SlotKey, SlotKey> assign in permutation.Hints[hintType].OrderBy(e => (game.Name(e.Key.Item), permutation.GetLogOrder(e.Value))))
+                foreach (KeyValuePair<SlotKey, SlotKey> assign in permutation.Hints[hintType].OrderBy(e => (game.DisplayName(e.Key.Item), permutation.GetLogOrder(e.Value))))
                 {
                     LocationScope scope = data.Location(assign.Value).LocScope;
-                    Console.WriteLine($"{game.Name(assign.Key.Item)}: {ann.GetLocationHint(assign.Value, permutation.SpecialLocation(scope))}");
+                    Console.WriteLine($"{game.DisplayName(assign.Key.Item)}: {ann.GetLocationHint(assign.Value, permutation.SpecialLocation(scope))}");
+                    if (opt["fullhint"])
+                    {
+                        Console.WriteLine($"- {ann.GetLocationDescription(assign.Value)}");
+                    }
                 }
                 Console.WriteLine();
             }
@@ -252,19 +256,45 @@ namespace RandomizerCommon
             // foreach (int flag in shops.Rows.Select(r => (int)r["EventFlag"].Value).Where(f => f > 1000).Distinct().OrderBy(f => f)) Console.WriteLine($"shop {flag}");
             // Mapping from old permanent event flag to slot key
             Dictionary<SlotKey, int> permanentSlots = new Dictionary<SlotKey, int>();
-            foreach (KeyValuePair<ItemKey, ItemLocations> item in data.Data)
+            if (game.Sekiro)
             {
-                foreach (ItemLocation loc in item.Value.Locations.Values)
+                foreach (KeyValuePair<ItemKey, ItemLocations> item in data.Data)
                 {
-                    if (loc.Scope.Type == ScopeType.EVENT)
+                    foreach (ItemLocation loc in item.Value.Locations.Values)
                     {
-                        int eventFlag = loc.Scope.ID;
-                        if (isPermanent(eventFlag))
+                        if (loc.Scope.Type == ScopeType.EVENT)
                         {
-                            // Console.WriteLine($"Permanent {eventFlag}: {game.Name(item.Key)}");
-                            SlotKey source = new SlotKey(item.Key, loc.Scope);
-                            if (permanentSlots.ContainsKey(source)) throw new Exception($"{eventFlag}");
-                            permanentSlots[source] = eventFlag;
+                            int eventFlag = loc.Scope.ID;
+                            if (isPermanent(eventFlag))
+                            {
+                                // Console.WriteLine($"Permanent {eventFlag}: {game.Name(item.Key)}");
+                                SlotKey source = new SlotKey(item.Key, loc.Scope);
+                                if (permanentSlots.ContainsKey(source)) throw new Exception($"{eventFlag}");
+                                permanentSlots[source] = eventFlag;
+                            }
+                        }
+                    }
+                }
+            }
+            Dictionary<int, ItemKey> randomMaterialItems = new Dictionary<int, ItemKey>();
+            Dictionary<ItemKey, int> randomMaterialEventFlags = new Dictionary<ItemKey, int>();
+            if (!game.Sekiro)
+            {
+                Dictionary<int, PARAM.Row> materials = game.Params["EquipMtrlSetParam"].Rows.ToDictionary(e => (int)e.ID, e => e);
+                foreach (PARAM.Row row in shops.Rows)
+                {
+                    int mat = (int)row["mtrlId"].Value;
+                    if (mat > 0)
+                    {
+                        if (materials.TryGetValue(mat, out PARAM.Row mtrl))
+                        {
+                            int matGood = (int)mtrl["MaterialId01"].Value;
+                            if (matGood >= 700 && matGood < 800)
+                            {
+                                ItemKey matItem = new ItemKey(ItemType.GOOD, matGood);
+                                randomMaterialItems[mat] = matItem;
+                                randomMaterialEventFlags[matItem] = -1;
+                            }
                         }
                     }
                 }
@@ -332,13 +362,22 @@ namespace RandomizerCommon
                         ItemKey item = sourceKey.Item;
                         int quantity = data.Location(sourceKey).Quantity;
                         string quantityStr = quantity == 1 ? "" : $" {quantity}x";
-                        Console.WriteLine($"{game.Name(item)}{quantityStr}{ann.GetLocationDescription(targetKey, targetLocation.Keys)}");
+                        Console.WriteLine($"{game.DisplayName(item)}{quantityStr}{ann.GetLocationDescription(targetKey, targetLocation.Keys)}");
                         if (opt["racemodeinfo"])
                         {
-                            string desc = ann.GetLocationDescription(targetKey, targetLocation.Keys, true);
+                            HashSet<string> filterTags = ann.RaceModeTags;
+                            filterTags = new HashSet<string> { "lizard" };
+                            string desc = ann.GetLocationDescription(targetKey, targetLocation.Keys, filterTags);
                             if (!string.IsNullOrEmpty(desc)) raceModeInfo.Add(desc);
                         }
                         bool isDragon = !game.Sekiro && item.Equals(new ItemKey(ItemType.GOOD, 9030));
+                        // Don't need to add own item if there is a separate carrier for the event flag
+                        if (isDragon && mapping.Value.Count > 1)
+                        {
+                            dragonFlag = eventFlag;
+                            continue;
+                        }
+
                         ItemSource source = newRows[sourceKey];
                         Dictionary<string, object> shopCells = null;
                         Dictionary<string, object> lotCells = null;
@@ -483,8 +522,10 @@ namespace RandomizerCommon
                             {
                                 if (setEventFlag == -1) throw new Exception("Path of the Dragon added to lot without event flag");
                                 dragonFlag = setEventFlag;
-                                // Don't need to add own item if there is a separate carrier for the event flag
-                                if (mapping.Value.Count > 1) continue;
+                            }
+                            if (randomMaterialEventFlags.ContainsKey(item) && setEventFlag > 0)
+                            {
+                                randomMaterialEventFlags[item] = setEventFlag;
                             }
                         }
                     }
@@ -502,18 +543,18 @@ namespace RandomizerCommon
                 {
                     if (!visited.Add(areaAnn.Text)) continue;
                     List<string> items = raceModeInfo.Where(r => r != null && r.StartsWith($" in {areaAnn.Text}:")).ToList();
-                    foreach (string item in items)
+                    foreach (string item in Enumerable.Reverse(items.Distinct()))
                     {
                         Console.WriteLine("In" + item.Substring(3));
                     }
                 }
-                // raceModeInfo
             }
 
             // Events
             if (game.Sekiro)
             {
-                Dictionary<string, Dictionary<string, ESD>> talks = game.Talk();
+                // Sekiro edits
+                Dictionary<string, Dictionary<string, ESD>> talks = game.Talk;
                 Dictionary<int, EventSpec> talkTemplates = events.Config.ItemTalks.ToDictionary(e => e.ID, e => e);
                 bool parseMachineName(string mIdStr, out int mId)
                 {
@@ -818,38 +859,159 @@ namespace RandomizerCommon
                     }
                 }
             }
-            // Misc DS3 edits
-            if (!game.Sekiro)
+            else
             {
+                // DS3 edits
+                if (dragonFlag <= 0 && !opt["norandom"])
+                {
+                    throw new Exception("Internal error: Path of the dragon not assigned to any location, but key items are randomized");
+                }
+
                 // Remove Storm Ruler infinite shiny (gives Storm Ruler if got the original but somehow dropped it). This lot is not randomized
                 itemLots[4600]["LotItemNum1"].Value = (byte)0;
                 // Disable Firelink Shrine bonfire without Coiled Sword, with special event flag
-                game.Param("ActionButtonParam")[9351]["grayoutFlag"].Value = 14005108;
+                game.Params["ActionButtonParam"][9351]["grayoutFlag"].Value = 14005108;
+
                 // Description for path of the dragon so it's not ?GoodsInfo?
+                FMG goodsShort = game.ItemFMGs["アイテム説明"];
+                FMG goodsLong = game.ItemFMGs["アイテムうんちく"];
                 string dragonInfo = "A gesture of meditation channeling the eternal essence of the ancient dragons";
-                string dragonCap = $"{dragonInfo}.\n\nThe path to ascendence can be achieved only by the most resolute of seekers. Proper utilization of this technique can grant deep inner focus.";
-                game.SetMessage(GameData.MsgFile.GOODS_INFO, 9030, dragonInfo);
-                game.SetMessage(GameData.MsgFile.GOODS_CAPTION, 9030, dragonCap);
+                goodsShort[9030] = dragonInfo;
+                goodsLong[9030] = $"{dragonInfo}.\n\nThe path to ascendence can be achieved only by the most resolute of seekers. Proper utilization of this technique can grant deep inner focus.";
+                // Make it appear as a key item in shops
+                game.Params["EquipParamGoods"][9030]["goodsType"].Value = (byte)1;
 
-                // Do the Path of the Dragon swap
-                if (dragonFlag == 0) throw new Exception("Path of the Dragon not assigned to an event");
-                game.ReplaceScript("common", 0x2BADCAFE, (uint)dragonFlag);
-            }
+                // Replace transpose qwc flags with soul get flags
+                foreach (PARAM.Row row in shops.Rows)
+                {
+                    int mat = (int)row["mtrlId"].Value;
+                    if (mat > 0 && randomMaterialItems.TryGetValue(mat, out ItemKey soul) && randomMaterialEventFlags.TryGetValue(soul, out int soulFlag) && soulFlag > 0)
+                    {
+                        row["qwcID"].Value = soulFlag;
+                    }
+                }
 
-            // Swap chests
-            foreach (KeyValuePair<EntityId, EntityId> swap in permutation.EntitySwaps)
-            {
-                EntityId e1 = swap.Key;
-                EntityId e2 = swap.Value;
-                if (e1.MapName != e2.MapName) throw new Exception($"Different maps for entities to swap {e1}, {e2}");
-                string col1 = ChestCollisionNames.ContainsKey(e1) ? ChestCollisionNames[e1] : null;
-                string col2 = ChestCollisionNames.ContainsKey(e2) ? ChestCollisionNames[e2] : null;
-                MSB3 msb = game.EditMap(RevLocationNames[e1.MapName]);
-                MSB3.Part thing1 = msb.Parts.Objects.Find(p => p.Name == e1.EntityName);
-                MSB3.Part thing2 = msb.Parts.Enemies.Find(p => p.Name == e2.EntityName);
-                BasicLocation tmp = BasicLocation.Get(thing2, col2);
-                BasicLocation.Get(thing1, col1).Set(thing2);
-                tmp.Set(thing1);
+                Dictionary<string, EMEVD> emevds = game.Emevds;
+
+                // Do this all manually for the moment, rather than from config
+                // Can revisit this later if it needs to scale up
+                List<string> toEdit = new List<string> { "common", "common_func", "m30_00_00_00", "m30_01_00_00", "m31_00_00_00", "m40_00_00_00" };
+                foreach (KeyValuePair<string, EMEVD> entry in emevds)
+                {
+                    if (!toEdit.Contains(entry.Key)) continue;
+                    string map = entry.Key;
+                    EMEVD emevd = entry.Value;
+                    foreach (EMEVD.Event ev in emevd.Events)
+                    {
+                        EventEdits edits = null;
+                        if (ev.ID == 0 && map == "m30_00_00_00" && dragonFlag > 0)
+                        {
+                            // Remove visual sfx for Path of the Dragon pickup
+                            ev.Instructions.RemoveAll(i =>
+                            {
+                                Instr instr = events.Parse(i);
+                                return instr.Init && instr.Callee == 13000901;
+                            });
+                        }
+                        else if (ev.ID == 0 && map == "m30_01_00_00")
+                        {
+                            // Fix Lothric Castle Crystal Lizard so one doesn't despawn when the other one gets killed (use new event flag)
+                            foreach (EMEVD.Instruction i in ev.Instructions)
+                            {
+                                Instr instr = events.Parse(i);
+                                if (instr.Init && instr.Callee == 20005341 && (int)instr.Args[instr.Offset + 1] == 3010311)
+                                {
+                                    instr[instr.Offset] = 13010594;
+                                    instr.Save();
+                                }
+                            }
+                        }
+                        else if (ev.ID == 0 && map == "m31_00_00_00")
+                        {
+                            // Remove Undead Settlement birch tree, which is a duplicate pickup which makes one unavailable
+                            ev.Instructions.RemoveAll(i =>
+                            {
+                                Instr instr = events.Parse(i);
+                                return instr.Init && instr.Callee == 20005525 && (int)instr.Args[instr.Offset] == 53100660;
+                            });
+                        }
+                        else if (ev.ID == 710)
+                        {
+                            edits = new EventEdits();
+                            events.RemoveMacro(edits, "END IF Condition Group State (Uncompiled) (0,1,15)");
+                        }
+                        else if (ev.ID == 14005102)
+                        {
+                            // Small convenience: Shorten the Firelink Shrine fog gate wait times significantly
+                            foreach (EMEVD.Instruction i in ev.Instructions)
+                            {
+                                Instr instr = events.Parse(i);
+                                if (instr.Name == "IF Elapsed Seconds" && instr.Args[1] is float wait)
+                                {
+                                    instr[1] = Math.Min(wait, 5f);
+                                    instr.Save();
+                                }
+                            }
+                        }
+                        else if (ev.ID == 20005523)
+                        {
+                            if (opt["ngplusrings"])
+                            {
+                                edits = new EventEdits();
+                                events.AddMacro(edits, null, false, "GOTO Unconditionally (0)");
+                            }
+                        }
+                        if (edits != null)
+                        {
+                            OldParams pre = OldParams.Preprocess(ev);
+                            for (int j = 0; j < ev.Instructions.Count; j++)
+                            {
+                                Instr instr = events.Parse(ev.Instructions[j]);
+                                if (instr.Init) continue;
+                                edits.ApplyEdits(instr, j);
+                                instr.Save();
+                                ev.Instructions[j] = instr.Val;
+                            }
+                            events.ApplyAdds(edits, ev);
+                            pre.Postprocess();
+
+                            if (edits.PendingEdits.Count != 0)
+                            {
+                                throw new Exception($"{ev.ID} has unapplied edits: {string.Join("; ", edits.PendingEdits)}");
+                            }
+                        }
+                    }
+                    if (map == "common" && dragonFlag > 0)
+                    {
+                        // Do the Path of the Dragon swap
+                        EMEVD.Event pathEvent = new EMEVD.Event(13000904, EMEVD.Event.RestBehaviorType.Default);
+                        pathEvent.Instructions.AddRange(new string[]
+                        {
+                            "END IF Event Flag (0,1,0,6079)",
+                            $"IF Event Flag (0,1,0,{dragonFlag})",
+                            "Remove Item From Player (3,9030,1)",
+                            "Award Gesture Item (29,3,9030)",
+                            "Set Event Flag (6079,1)",
+                        }
+                        .Select(t => events.ParseAdd(t)));
+                        emevd.Events.Add(pathEvent);
+                        emevd.Events[0].Instructions.Add(new EMEVD.Instruction(2000, 0, new List<object> { 0, (uint)13000904, (uint)0 }));
+                    }
+                    if (map == "m40_00_00_00")
+                    {
+                        // Make Firelink Shrine greyed out by default, without having the Coiled Sword, in combination with param change above
+                        EMEVD.Event swordEvent = new EMEVD.Event(14005107, EMEVD.Event.RestBehaviorType.Default);
+                        swordEvent.Instructions.AddRange(new string[]
+                        {
+                            "Set Event Flag (14005108,1)",
+                            "IF Player Has/Doesn't Have Item (0,3,2137,1)",
+                            "Set Event Flag (14005108,0)",
+                        }
+                        .Select(t => events.ParseAdd(t)));
+                        emevd.Events.Add(swordEvent);
+                        emevd.Events[0].Instructions.Add(new EMEVD.Instruction(2000, 0, new List<object> { 0, (uint)14005107, (uint)0 }));
+                    }
+                }
             }
         }
         private class BasicLocation

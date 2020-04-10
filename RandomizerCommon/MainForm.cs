@@ -1,44 +1,131 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using RandomizerCommon.Properties;
 
 namespace RandomizerCommon
 {
     public partial class MainForm : Form
     {
         private RandomizerOptions options = new RandomizerOptions(false);
+        private string defaultOpts = null;
+        private HashSet<string> previousOpts = new HashSet<string>();
         private Color initialColor;
         private Color dangerColor = Color.IndianRed;
         private bool simultaneousUpdate;
+        private bool working;
+        private bool error;
+        private bool encrypted;
 
         public MainForm()
         {
             InitializeComponent();
             initialColor = BackColor;
-            // One-time initialization for directory position
-            if (File.Exists("DarkSoulsIII.exe"))
+
+            if (!MiscSetup.CheckRequiredDS3Files(out string req))
+            {
+                SetError(req, true);
+            }
+            else
+            {
+                SetWarning();
+            }
+            SetStatus(null);
+
+            // The rest of initialization
+            RandomizerOptions initialOpts = new RandomizerOptions(false);
+            SetControlFlags(this, initialOpts);
+            defaultOpts = initialOpts.FullString();
+
+            string existingOpts = Settings.Default.Options;
+
+            if (string.IsNullOrWhiteSpace(existingOpts))
+            {
+                options.Difficulty = difficulty.Value;
+                SetControlFlags(this);
+            }
+            else
+            {
+                SetOptionsString(existingOpts);
+                if (options.Seed != 0)
+                {
+                    defaultReroll.Enabled = true;
+                    defaultReroll.Checked = false;
+                }
+            }
+            SetStatus(null);
+
+            UpdateEnabled();
+            UpdateLabels();
+        }
+
+        private void SetOptionsString(string defaultOpts)
+        {
+            HashSet<string> validOptions = new HashSet<string>();
+            GetAllControlNames(this, validOptions);
+            bool isValidOption(string s)
+            {
+                if (validOptions.Contains(s)) return true;
+                if (uint.TryParse(s, out var ignored)) return true;
+                return false;
+            }
+            previousOpts = new HashSet<string>(defaultOpts.Split(' '));
+            options = RandomizerOptions.Parse(previousOpts, false, isValidOption);
+
+            simultaneousUpdate = true;
+            InsertControlFlags(this);
+            difficulty.Value = options.Difficulty;
+            simultaneousUpdate = false;
+
+            fixedseed.Text = options.Seed == 0 ? "" : $"{options.Seed}";
+        }
+
+        private void SetWarning()
+        {
+            bool fatal = MiscSetup.CheckDS3ModEngine(out string err, out encrypted);
+#if DEBUG
+            fatal = false;
+#endif
+            SetError(err, fatal);
+        }
+
+        private void SetError(string text, bool fatal = false)
+        {
+            warningL.Text = text ?? "";
+            warningL.Visible = true;
+            if (fatal)
             {
                 randomize.Enabled = false;
-                warningL.Visible = true;
-                warningL.Text = "Running from same directory as DarkSoulsIII.exe\r\nRun from randomizer subdirectory instead";
+                error = true;
             }
-            else if (!File.Exists(@"..\DarkSoulsIII.exe"))
+        }
+
+        private void SetStatus(string msg, bool error = false, bool success = false)
+        {
+            if (msg == null)
             {
-                warningL.Visible = true;
-                warningL.Text = "DarkSoulsIII.exe not found in parent directory\r\nRandomization may not apply to game";
+                msg = $"Created by thefifthmatt. Current config hash: {options.ConfigHash()}";
             }
-            // The rest of initialization
-            options.Difficulty = difficulty.Value;
-            SetControlFlags(this);
-            UpdateLabels();
+            statusL.Text = msg;
+            statusStrip1.BackColor = error ? Color.IndianRed : (success ? Color.PaleGreen : SystemColors.Control);
+        }
+
+        private void SaveOptions()
+        {
+            Settings.Default.Options = options.FullString();
+            Settings.Default.Save();
         }
 
         private void difficulty_Scroll(object sender, EventArgs e)
         {
             options.Difficulty = difficulty.Value;
             UpdateLabels();
+            SetStatus(null);
+            SaveOptions();
         }
 
         private void option_CheckedChanged(object sender, EventArgs e)
@@ -50,23 +137,75 @@ namespace RandomizerCommon
             SetControlFlags(this);
             UpdateEnabled();
             UpdateLabels();
+            SetStatus(null);
+            SaveOptions();
         }
 
-        private void SetControlFlags(Control control)
+        private void reroll_CheckedChanged(object sender, EventArgs e)
         {
+            if (defaultReroll.Checked)
+            {
+                randomize.Text = "Randomize new run!";
+            }
+            else
+            {
+                randomize.Text = "Run with fixed seed";
+            }
+        }
+
+
+        private void SetControlFlags(Control control, RandomizerOptions customOpt = null)
+        {
+            RandomizerOptions getOpt = customOpt ?? options;
             if (control is RadioButton radio)
             {
-                options[control.Name] = radio.Checked;
+                getOpt[control.Name] = radio.Checked;
             }
             else if (control is CheckBox check)
             {
-                options[control.Name] = check.Checked;
+                getOpt[control.Name] = check.Checked;
             }
             else
             {
                 foreach (Control sub in control.Controls)
                 {
-                    SetControlFlags(sub);
+                    SetControlFlags(sub, customOpt);
+                }
+            }
+        }
+
+        private void InsertControlFlags(Control control)
+        {
+            if (control.Name.StartsWith("default")) return;
+            if (control is RadioButton radio)
+            {
+                radio.Checked = options[control.Name];
+            }
+            else if (control is CheckBox check)
+            {
+                check.Checked = options[control.Name];
+            }
+            else
+            {
+                foreach (Control sub in control.Controls)
+                {
+                    InsertControlFlags(sub);
+                }
+            }
+        }
+
+        private void GetAllControlNames(Control control, HashSet<string> names)
+        {
+            if (control.Name.StartsWith("default")) return;
+            if (control is RadioButton || control is CheckBox)
+            {
+                names.Add(control.Name);
+            }
+            else
+            {
+                foreach (Control sub in control.Controls)
+                {
+                    GetAllControlNames(sub, names);
                 }
             }
         }
@@ -75,19 +214,25 @@ namespace RandomizerCommon
         {
             simultaneousUpdate = true;
             bool changes = false;
-            Action<CheckBox, Boolean> setCheck = (check, enabled) =>
+            void setCheck(Control control, bool enabled)
             {
-                check.Enabled = enabled;
-                if (check.Checked && !enabled)
+                control.Enabled = enabled;
+                if (control is CheckBox check && check.Checked && !enabled)
                 {
                     check.Checked = false;
                     changes = true;
                 }
+                else if (control is RadioButton radio && radio.Checked && !enabled)
+                {
+                    radio.Checked = false;
+                    changes = true;
+                }
             };
-            setCheck(earlyfriede, options["dlc1"]);
+            setCheck(earlydlc, options["dlc1"]);
             setCheck(vilhelmskip, options["dlc1"]);
             setCheck(dlc2fromdlc1, options["dlc1"] && options["dlc2"]);
             setCheck(dlc2fromkiln, options["dlc2"]);
+            setCheck(racemode_health, options["racemode"]);
             if (!dlc2fromdlc1.Checked && !dlc2fromkiln.Checked)
             {
                 if (dlc2fromdlc1.Enabled)
@@ -100,6 +245,16 @@ namespace RandomizerCommon
                     dlc2fromkiln.Checked = true;
                     changes = true;
                 }
+            }
+            if (!racemode_health.Checked && !norandom_health.Checked)
+            {
+                defaultHealth.Checked = true;
+                changes = true;
+            }
+            if (!racemode.Checked && !norandom.Checked)
+            {
+                defaultKey.Checked = true;
+                changes = true;
             }
             if (changes) SetControlFlags(this);
             simultaneousUpdate = false;
@@ -117,10 +272,11 @@ namespace RandomizerCommon
             else if (options.GetNum("allitemdifficulty") > 0.001) loc = "Most locations for items are equally likely.";
             else loc = "All possible locations for items are equally likely.";
             string chain;
-            if (options.GetNum("keyitemchainweight") == 1) chain = "Key items may depend on each other. The game can sometimes be completed very early.";
+            if (options.GetNum("keyitemchainweight") <= 3) chain = "Key items will usually be easy to find and not require much side content.";
             else if (options.GetNum("keyitemchainweight") <= 4.001) chain = "Key items will usually be in different areas and depend on each other.";
             else if (options.GetNum("keyitemchainweight") <= 10) chain = "Key items will usually be in different areas and form interesting chains.";
             else chain = "Key items will usually form long chains across different areas.";
+            if (options["norandom"]) chain = "";
             difficultyL.Text = $"{loc}\r\n{chain}";
             difficultyAmtL.Text = $"{options.Difficulty}%";
             string weaponText = "Comparable difficulty to base game";
@@ -133,7 +289,7 @@ namespace RandomizerCommon
             }
             if (!options["estusprogression"])
             {
-                if (options.GetNum("allitemdifficulty") > 0.5) estusText = "Unreasonably difficult compared to base game";
+                if (options.GetNum("allitemdifficulty") > 0.5) estusText = "You will get almost no estus upgrades until the very end of the game";
                 else if (options.GetNum("allitemdifficulty") > 0.15) estusText = "More difficult than base game";
             }
             if (!options["soulsprogression"])
@@ -156,75 +312,76 @@ namespace RandomizerCommon
             string friedeEstus = options["estusprogression"] ? "most" : "no guaranteed";
             string friedeWeapon = "+10";
             string friedeLevel = "high";
-            if (options["earlyfriede"])
+            if (options["earlydlc"])
             {
-                friedeLevel = "mid";
+                friedeLevel = "medium";
                 friedeWeapon = "+7";
             }
             if (!options["weaponprogression"]) friedeWeapon = "no guaranteed";
-            earlyfriedeL.Text = $"Fight Friede at {friedeLevel} soul level, {friedeEstus} estus, and {friedeWeapon} weapon";
+            earlydlcL.Text = $"Fight Friede at {friedeLevel} soul level, {friedeEstus} estus, and {friedeWeapon} weapon";
             // Fun with colors
             if (options.Difficulty <= 85)
             {
                 BackColor = initialColor;
-                randomizeL.BackColor = BackColor;
             }
             else
             {
                 // Ugly blending. But because there's only one hue involved, it's ok
                 double blend = (options.Difficulty - 85) / 15.0;
+                // A bit less strong to preserve readability
+                blend /= 2;
                 BackColor = Color.FromArgb(
                     (int)(dangerColor.R * blend + initialColor.R * (1 - blend)),
                     (int)(dangerColor.G * blend + initialColor.G * (1 - blend)),
                     (int)(dangerColor.B * blend + initialColor.B * (1 - blend)));
-                randomizeL.BackColor = BackColor;
             }
         }
 
         private async void randomize_Click(object sender, EventArgs e)
         {
-            RandomizerOptions rand = options.Copy();
-            if (fixedseed.Text.Trim() != "")
+            if (working) return;
+            SetWarning();
+            if (!defaultReroll.Checked && fixedseed.Text.Trim() != "")
             {
                 if (uint.TryParse(fixedseed.Text.Trim(), out uint seed))
                 {
-                    rand.Seed = seed;
+                    options.Seed = seed;
                 }
                 else
                 {
-                    statusL.Text = "Invalid fixed seed";
+                    SetStatus("Invalid fixed seed", true);
                     return;
                 }
             }
             else
             {
-                rand.Seed = (uint)new Random().Next();
+                options.Seed = (uint)new Random().Next();
             }
-            // Hacky translation of dlc1/dlc2 options
-            // This is fine because no other code in the form relies on these values
-            if (options["dlc2fromdlc1"] && options["dlc2fromkiln"])
-            {
-                rand["dlc2fromdlc1"] = rand["dlc2fromkiln"] = false;
-                rand["dlc2fromeither"] = true;
-            }
-            randomize.Enabled = false;
-            randomizeL.Text = $"Seed: {rand.Seed}";
+            SaveOptions();
+            RandomizerOptions rand = options.Copy();
+            working = true;
+            string buttonText = randomize.Text;
+            randomize.Text = $"Running...";
+            randomize.BackColor = Color.LightYellow;
+            fixedseed.Text = $"{rand.Seed}";
+
             Randomizer randomizer = new Randomizer();
             await Task.Factory.StartNew(() => {
-                Directory.CreateDirectory("runs");
-                string runId = $@"runs\{DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss")}_log_{rand.Seed}_{rand.ConfigHash()}.txt";
-                TextWriter log = File.CreateText(runId);
+                Directory.CreateDirectory("spoiler_logs");
+                string runId = $"{DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss")}_log_{rand.Seed}_{rand.ConfigHash()}.txt";
+                TextWriter log = File.CreateText($@"spoiler_logs\{runId}");
                 TextWriter stdout = Console.Out;
                 Console.SetOut(log);
                 try
                 {
-                    randomizer.Randomize(rand, status => { statusL.Text = status; });
-                    statusL.Text = $"Done. Hints and spoilers in {runId}";
+                    randomizer.Randomize(rand, status => { statusL.Text = status; }, encrypted: encrypted);
+                    SetStatus($"Done! Hints and spoilers in spoiler_logs directory as {runId} - Restart your game!!", success: true);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
-                    statusL.Text = $"Error! Partial log in {runId}";
+                    SetError($"Error encountered: {ex.Message}\r\nIt may work to try again with a different seed. See most recent file in spoiler_logs directory for the full error.");
+                    SetStatus($"Error! Partial log in spoiler_logs directory as {runId}", true);
                 }
                 finally
                 {
@@ -232,7 +389,53 @@ namespace RandomizerCommon
                     Console.SetOut(stdout);
                 }
             });
-            randomize.Enabled = true;
+            randomize.Text = buttonText;
+            randomize.BackColor = SystemColors.Control;
+            working = false;
+        }
+
+        private void option_alwaysEnable(object sender, EventArgs e)
+        {
+            CheckBox box = (CheckBox)sender;
+            box.Checked = true;
+        }
+
+        private void fixedseed_TextChanged(object sender, EventArgs e)
+        {
+            string text = fixedseed.Text.Trim();
+            defaultReroll.Enabled = uint.TryParse(text, out uint val) && val != 0;
+            if (!defaultReroll.Enabled)
+            {
+                defaultReroll.Checked = true;
+            }
+        }
+
+        private void optionwindow_Click(object sender, EventArgs e)
+        {
+            using (OptionsForm form = new OptionsForm(options.FullString()))
+            {
+                DialogResult result = form.ShowDialog(this);
+                if (result == DialogResult.OK)
+                {
+                    string text = form.OptionString;
+                    if (string.IsNullOrEmpty(text))
+                    {
+                        text = defaultOpts;
+                    }
+                    if (string.IsNullOrEmpty(text) || int.TryParse(text, out var _) || !text.Contains("v2"))
+                    {
+                        SetStatus("Invalid options string", error: true);
+                        return;
+                    }
+                    SetOptionsString(text);
+                    if (options.Seed != 0) defaultReroll.Checked = false;
+
+                    SetStatus(null);
+                    UpdateEnabled();
+                    UpdateLabels();
+                    SaveOptions();
+                }
+            }
         }
     }
 }

@@ -13,27 +13,7 @@ namespace RandomizerCommon
             { 0x20000000, (ItemType) 2 },
             { 0x40000000, (ItemType) 3 }
         };
-        public static Dictionary<ItemType, uint> RevLotTypes = LotTypes.ToDictionary(x => x.Value, x => x.Key);
-        public static Dictionary<string, string> LocationNames = new Dictionary<string, string>
-        {
-            { "m30_00_00_00", "highwall" },
-            { "m30_01_00_00", "lothric" },
-            { "m34_01_00_00", "archives" },
-            { "m31_00_00_00", "settlement" },
-            { "m32_00_00_00", "archdragon" },
-            { "m33_00_00_00", "farronkeep" },
-            { "m35_00_00_00", "cathedral" },
-            { "m37_00_00_00", "irithyll" },
-            { "m38_00_00_00", "catacombs" },
-            { "m39_00_00_00", "dungeon" },
-            { "m40_00_00_00", "firelink" },
-            { "m41_00_00_00", "kiln" },
-            { "m45_00_00_00", "ariandel" },
-            { "m50_00_00_00", "dregheap" },
-            { "m51_00_00_00", "ringedcity" },
-            { "m51_01_00_00", "filianore" }
-        };
-        public static Dictionary<string, string> RevLocationNames = LocationNames.ToDictionary(x => x.Value, x => x.Key);
+        public static Dictionary<ItemType, uint> RevLotTypes = LotTypes.ToDictionary(e => e.Value, e => e.Key);
 
         // Location information for all items in the game, with additional splitting by how to acquire the item.
         public readonly SortedDictionary<ItemKey, ItemLocations> Data = new SortedDictionary<ItemKey, ItemLocations>();
@@ -188,10 +168,9 @@ namespace RandomizerCommon
             {
                 return IdStr;
             }
-            private static List<string> desc = new List<string>() { "Unique location", "Unique drop", "Boss weapon", "Shop item", "Shop item", "Enemy drop" };
             public string Description()
             {
-                return desc[(int)Type];
+                return scopeDesc[(int)Type];
             }
             public override bool Equals(object obj) => obj is LocationScope o && Equals(o);
             public bool Equals(LocationScope o) => IdStr == o.IdStr;
@@ -199,6 +178,7 @@ namespace RandomizerCommon
             public int CompareTo(LocationScope o) => IdStr.CompareTo(o.IdStr);
         }
 
+        private static List<string> scopeDesc = new List<string>() { "Unique location", "Unique drop", "Boss weapon", "Shop item", "Shop item", "Enemy drop", "Unknown location" };
         // *Within* a given item, the different ways of acquiring it
         public class ItemScope : IComparable<ItemScope>
         {

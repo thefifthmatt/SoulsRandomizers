@@ -258,8 +258,8 @@ namespace RandomizerCommon
             // Find location of all bonfires
             foreach (KeyValuePair<string, MSBS> entry in game.Smaps)
             {
-                if (!SekiroLocationDataScraper.locations.ContainsKey(entry.Key)) continue;
-                string map = SekiroLocationDataScraper.locations[entry.Key];
+                if (!game.Locations.ContainsKey(entry.Key)) continue;
+                string map = game.Locations[entry.Key];
                 MSBS msb = entry.Value;
                 foreach (MSBS.Part.Object e in msb.Parts.Objects)
                 {
@@ -312,8 +312,8 @@ namespace RandomizerCommon
                 }
                 foreach (KeyValuePair<string, MSBS> entry in game.Smaps)
                 {
-                    if (!SekiroLocationDataScraper.locations.ContainsKey(entry.Key)) continue;
-                    string map = SekiroLocationDataScraper.locations[entry.Key];
+                    if (!game.Locations.ContainsKey(entry.Key)) continue;
+                    string map = game.Locations[entry.Key];
                     MSBS msb = entry.Value;
 
                     if (!maps.Contains(map)) continue;

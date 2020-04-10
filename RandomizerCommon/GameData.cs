@@ -4,16 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using SoulsIds;
+using static RandomizerCommon.LocationData;
 using static RandomizerCommon.Util;
 
 namespace RandomizerCommon
 {
-    using EntityId = LocationData.EntityId;
-    using ItemKey = LocationData.ItemKey;
-    using ItemType = LocationData.ItemType;
     public class GameData
     {
         private static readonly List<string> itemParams = new List<string>() { "EquipParamWeapon", "EquipParamProtector", "EquipParamAccessory", "EquipParamGoods" };
+        // TODO: Is this really needed?
         private static readonly List<string> loadParams = itemParams.Concat(new List<string> {
             // Data scraper and elsewhere
             "ShopLineupParam",
@@ -28,33 +27,75 @@ namespace RandomizerCommon
             "ReinforceParamWeapon",
         }).ToList();
 
-        public enum MsgFile { GOODS_INFO, GOODS_CAPTION }
-        private readonly Dictionary<string, MsgFile> msgFiles = new Dictionary<string, MsgFile>
-        {
-            { "\u30a2\u30a4\u30c6\u30e0\u3046\u3093\u3061\u304f", MsgFile.GOODS_CAPTION },
-            { "\u30a2\u30a4\u30c6\u30e0\u8aac\u660e", MsgFile.GOODS_INFO },
-        };
-
         public readonly bool Sekiro;
         public readonly GameEditor Editor;
 
         // TODO: Merge with GameEditor for DS3, to get rid of a lot of this.
         private string dir;
         private string modDir;
-        private BND4 regulation;
-        private bool encrypted;
+        // private BND4 regulation;
+        // private bool encrypted;
+
+        // Informational data
+        private static readonly Dictionary<string, string> ds3LocationNames = new Dictionary<string, string>
+        {
+            { "m30_00_00_00", "highwall" },
+            { "m30_01_00_00", "lothric" },
+            { "m34_01_00_00", "archives" },
+            { "m31_00_00_00", "settlement" },
+            { "m32_00_00_00", "archdragon" },
+            { "m33_00_00_00", "farronkeep" },
+            { "m35_00_00_00", "cathedral" },
+            { "m37_00_00_00", "irithyll" },
+            { "m38_00_00_00", "catacombs" },
+            { "m39_00_00_00", "dungeon" },
+            { "m40_00_00_00", "firelink" },
+            { "m41_00_00_00", "kiln" },
+            { "m45_00_00_00", "ariandel" },
+            { "m50_00_00_00", "dregheap" },
+            { "m51_00_00_00", "ringedcity" },
+            { "m51_01_00_00", "filianore" }
+        };
+        private static readonly Dictionary<string, string> sekiroLocationNames = new Dictionary<string, string>
+        {
+            { "m10_00_00_00", "hirata" },
+            { "m11_00_00_00", "ashinaoutskirts" },
+            { "m11_01_00_00", "ashinacastle" },
+            { "m11_02_00_00", "ashinareservoir" },
+            { "m13_00_00_00", "dungeon" },
+            { "m15_00_00_00", "mibuvillage" },
+            { "m17_00_00_00", "sunkenvalley" },
+            { "m20_00_00_00", "senpou" },
+            { "m25_00_00_00", "fountainhead" },
+        };
+        private static Dictionary<string, string> sekiroMapName = new Dictionary<string, string>
+        {
+            { "", "Global" },
+            { "hirata", "Hirata Estate" },
+            { "ashinaoutskirts", "Ashina Outskirts" },
+            { "ashinacastle", "Ashina Castle" },
+            { "ashinareservoir", "Ashina Reservoir" },
+            { "dungeon", "Abandoned Dungeon" },
+            { "mibuvillage", "Ashina Depths" },
+            { "sunkenvalley", "Sunken Valley" },
+            { "senpou", "Senpou Temple" },
+            { "fountainhead", "Fountainhead Palace" },
+        };
+
+        public readonly Dictionary<string, string> Locations;
+        public readonly Dictionary<string, string> RevLocations;
+        public readonly Dictionary<string, string> LocationNames;
+
         // Actual data
         private Dictionary<string, PARAM.Layout> layouts = new Dictionary<string, PARAM.Layout>();
         public Dictionary<string, PARAM> Params = new Dictionary<string, PARAM>();
-        private Dictionary<string, MSB3> maps = new Dictionary<string, MSB3>();
+        public Dictionary<string, MSB3> Maps = new Dictionary<string, MSB3>();
         public Dictionary<string, MSBS> Smaps = new Dictionary<string, MSBS>();
         public Dictionary<string, EMEVD> Emevds = new Dictionary<string, EMEVD>();
-        public Dictionary<string, FMG> BaseItemFMGs = new Dictionary<string, FMG>();
         public Dictionary<string, FMG> ItemFMGs = new Dictionary<string, FMG>();
-        private HashSet<string> editedMaps = new HashSet<string>();
-        private Dictionary<string, Dictionary<string, ESD>> talk = new Dictionary<string, Dictionary<string, ESD>>();
-        private Dictionary<string, List<(uint, uint)>> scriptChanges = new Dictionary<string, List<(uint, uint)>>();
-        private Dictionary<MsgFile, Dictionary<string, FMG>> Messages = new Dictionary<MsgFile, Dictionary<string, FMG>>();
+        public Dictionary<string, FMG> MenuFMGs = new Dictionary<string, FMG>();
+        public Dictionary<string, Dictionary<string, ESD>> Talk = new Dictionary<string, Dictionary<string, ESD>>();
+
         // Names
         private SortedDictionary<ItemKey, string> itemNames = new SortedDictionary<ItemKey, string>();
         private SortedDictionary<string, List<ItemKey>> revItemNames = new SortedDictionary<string, List<ItemKey>>();
@@ -63,14 +104,21 @@ namespace RandomizerCommon
         private SortedDictionary<int, string> characterSplits = new SortedDictionary<int, string>();
         private SortedDictionary<string, string> modelNames = new SortedDictionary<string, string>();
 
-        public GameData(string dir, bool sekiro) {
+        private List<string> writtenFiles = new List<string>();
+
+        public GameData(string dir, bool sekiro)
+        {
             this.dir = dir;
             Sekiro = sekiro;
             Editor = new GameEditor(sekiro ? GameSpec.FromGame.SDT : GameSpec.FromGame.DS3);
             Editor.Spec.GameDir = $@"{dir}";
             Editor.Spec.NameDir = $@"{dir}\Names";
             Editor.Spec.LayoutDir = $@"{dir}\Layouts";
-        }
+            Locations = Sekiro ? sekiroLocationNames : ds3LocationNames;
+            RevLocations = Locations.ToDictionary(e => e.Value, e => e.Key);
+            LocationNames = Sekiro ? sekiroMapName : null;
+
+    }
 
         public void Load(string modDir=null)
         {
@@ -110,7 +158,7 @@ namespace RandomizerCommon
 
         public PARAM.Row Item(ItemKey key)
         {
-            if (!Sekiro) key = Normalize(key);
+            if (!Sekiro) key = NormalizeWeapon(key);
             return Params[itemParams[(int) key.Type]][key.ID];
         }
 
@@ -127,41 +175,6 @@ namespace RandomizerCommon
             return row;
         }
 
-        public void ReplaceScript(string script, uint from, uint to)
-        {
-            scriptChanges[script].Add((from, to));
-        }
-
-        public void SetMessage(MsgFile file, int id, string msg)
-        {
-            if (!Messages.ContainsKey(file))
-            {
-                Warn($"No file for message type {file} loaded in (setting {id}={msg})");
-                return;
-            }
-            foreach (FMG fmg in Messages[file].Values)
-            {
-                fmg[id] = msg;
-            }
-        }
-
-        public Dictionary<string, MSB3> Maps()
-        {
-            return maps;
-        }
-
-        public MSB3 EditMap(string name)
-        {
-            editedMaps.Add(name);
-            return maps[name];
-        }
-
-        // TODO: Cleaner way to split between DS3 and Sekiro.
-        public Dictionary<string, Dictionary<string, ESD>> Talk()
-        {
-            return talk;
-        }
-
         public StreamReader NewAnnotationReader()
         {
             string testFile = $@"{dir}\Base\annotations.txt";
@@ -169,10 +182,10 @@ namespace RandomizerCommon
             return File.OpenText($@"{dir}\Base\annotations.yaml");
         }
 
-        private static ItemKey Normalize(ItemKey key)
+        private static ItemKey NormalizeWeapon(ItemKey key)
         {
             // Maybe can put this logic in ItemKey itself
-            if (key.Type == LocationData.ItemType.WEAPON && key.ID % 100 != 0)
+            if (key.Type == ItemType.WEAPON && key.ID % 100 != 0)
             {
                 return new ItemKey(key.Type, key.ID - (key.ID % 100));
             }
@@ -182,7 +195,7 @@ namespace RandomizerCommon
         public string Name(ItemKey key)
         {
             string suffix = "";
-            if (key.Type == LocationData.ItemType.WEAPON && key.ID % 100 != 0)
+            if (key.Type == ItemType.WEAPON && key.ID % 100 != 0)
             {
                 suffix = $" +{key.ID % 100}";
                 key = new ItemKey(key.Type, key.ID - (key.ID % 100));
@@ -190,6 +203,23 @@ namespace RandomizerCommon
             // suffix += $" {key.ID}";
             return (itemNames.ContainsKey(key) ? itemNames[key] : $"?ITEM?" + $" ({(int)key.Type}:{key.ID})") + suffix;
         }
+
+        private static readonly Dictionary<ItemKey, string> customNames = new Dictionary<ItemKey, string>
+        {
+            { new ItemKey(ItemType.GOOD, 2123), "Cinders of a Lord (Abyss Watchers)" },
+            { new ItemKey(ItemType.GOOD, 2124), "Cinders of a Lord (Aldrich)" },
+            { new ItemKey(ItemType.GOOD, 2125), "Cinders of a Lord (Yhorm)" },
+            { new ItemKey(ItemType.GOOD, 2126), "Cinders of a Lord (Lothric)" },
+        };
+        public string DisplayName(ItemKey key)
+        {
+            if (!Sekiro && customNames.TryGetValue(key, out string name))
+            {
+                return name;
+            }
+            return Name(key);
+        }
+
 
         public ItemKey ItemForName(string name)
         {
@@ -262,27 +292,18 @@ namespace RandomizerCommon
         public void SaveSekiro(string outPath)
         {
             Console.WriteLine("Writing to " + outPath);
-            string fullName(string path)
-            {
-                return new FileInfo(path).FullName;
-            }
-            List<string> writtenFiles = new List<string>();
-            void writeFile(string path)
-            {
-                path = fullName(path);
-                Console.WriteLine($"Writing {path}");
-                writtenFiles.Add(path);
-            }
+            writtenFiles.Clear();
+
             foreach (KeyValuePair<string, MSBS> entry in Smaps)
             {
-                if (!SekiroLocationDataScraper.locations.ContainsKey(entry.Key)) continue;
+                if (!Locations.ContainsKey(entry.Key)) continue;
                 string path = $@"{outPath}\map\mapstudio\{entry.Key}.msb.dcx";
-                writeFile(path);
+                AddModFile(path);
                 entry.Value.Write(path, (DCX.Type)DCX.DefaultType.Sekiro);
             }
-            foreach (KeyValuePair<string, Dictionary<string, ESD>> entry in talk)
+            foreach (KeyValuePair<string, Dictionary<string, ESD>> entry in Talk)
             {
-                if (!SekiroLocationDataScraper.locations.ContainsKey(entry.Key)) continue;
+                if (!Locations.ContainsKey(entry.Key)) continue;
                 string basePath = $@"{dir}\Base\{entry.Key}.talkesdbnd.dcx";
                 if (modDir != null)
                 {
@@ -290,13 +311,13 @@ namespace RandomizerCommon
                     if (File.Exists(modPath)) basePath = modPath;
                 }
                 string path = $@"{outPath}\script\talk\{entry.Key}.talkesdbnd.dcx";
-                writeFile(path);
+                AddModFile(path);
                 Editor.OverrideBnd(basePath, $@"{outPath}\script\talk", entry.Value, esd => esd.Write());
             }
             foreach (KeyValuePair<string, EMEVD> entry in Emevds)
             {
                 string path = $@"{outPath}\event\{entry.Key}.emevd.dcx";
-                writeFile(path);
+                AddModFile(path);
                 entry.Value.Write(path, (DCX.Type)DCX.DefaultType.Sekiro);
 #if DEBUG
                 // This is only needed for easier use of EventScriptTool
@@ -311,9 +332,10 @@ namespace RandomizerCommon
                     if (File.Exists(modPath)) basePath = modPath;
                 }
                 string path = $@"{outPath}\param\gameparam\gameparam.parambnd.dcx";
-                writeFile(path);
+                AddModFile(path);
                 Editor.OverrideBnd(basePath, $@"{outPath}\param\gameparam", Params, f => f.Write());
             }
+            // At least for now, only do FMGs for English
             {
                 string basePath = $@"{dir}\Base\item.msgbnd.dcx";
                 if (modDir != null)
@@ -322,17 +344,92 @@ namespace RandomizerCommon
                     if (File.Exists(modPath)) basePath = modPath;
                 }
                 string path = $@"{outPath}\msg\engus\item.msgbnd.dcx";
-                writeFile(path);
+                AddModFile(path);
                 Editor.OverrideBnd(basePath, $@"{outPath}\msg\engus", ItemFMGs, f => f.Write());
             }
+            {
+                string basePath = $@"{dir}\Base\menu.msgbnd.dcx";
+                if (modDir != null)
+                {
+                    string modPath = $@"{modDir}\msg\engus\menu.msgbnd.dcx";
+                    if (File.Exists(modPath)) basePath = modPath;
+                }
+                string path = $@"{outPath}\msg\engus\menu.msgbnd.dcx";
+                AddModFile(path);
+                Editor.OverrideBnd(basePath, $@"{outPath}\msg\engus", MenuFMGs, f => f.Write());
+            }
+
+            MergeMods(outPath);
+            Console.WriteLine("Success!");
+        }
+
+        public void SaveDS3(string outPath, bool encrypted)
+        {
+            // This is a bit duplicate of Sekiro code, although boilerplate is also pretty plain to read.
+            Console.WriteLine("Writing to " + outPath);
+            writtenFiles.Clear();
+
+            // Save params
+            {
+                string basePath = $@"{dir}\Base\Data0.bdt";
+                if (modDir != null)
+                {
+                    string modPath1 = $@"{modDir}\param\gameparam\gameparam.parambnd.dcx";
+                    string modPath2 = $@"{modDir}\Data0.bdt";
+                    if (File.Exists(modPath1)) basePath = modPath1;
+                    else if (File.Exists(modPath2)) basePath = modPath2;
+                }
+                string path = encrypted ? $@"{outPath}\Data0.bdt" : $@"{outPath}\param\gameparam\gameparam.parambnd.dcx";
+                AddModFile(path);
+                Editor.OverrideBndRel(basePath, path, Params, f => f.Write());
+            }
+
+            // Messages
+            // At least for now, only do FMGs for English
+            {
+                string basePath = $@"{dir}\Base\item_dlc2.msgbnd.dcx";
+                if (modDir != null)
+                {
+                    string modPath = $@"{modDir}\msg\engus\item_dlc2.msgbnd.dcx";
+                    if (File.Exists(modPath)) basePath = modPath;
+                }
+                string path = $@"{outPath}\msg\engus\item_dlc2.msgbnd.dcx";
+                AddModFile(path);
+                Editor.OverrideBnd(basePath, $@"{outPath}\msg\engus", ItemFMGs, f => f.Write());
+            }
+
+            // Event scripts
+            foreach (KeyValuePair<string, EMEVD> entry in Emevds)
+            {
+                string path = $@"{outPath}\event\{entry.Key}.emevd.dcx";
+                AddModFile(path);
+                entry.Value.Write(path);
+            }
+
+            MergeMods(outPath);
+            Console.WriteLine("Success!");
+        }
+
+        private static string FullName(string path)
+        {
+            return new FileInfo(path).FullName;
+        }
+        private void AddModFile(string path)
+        {
+            path = FullName(path);
+            Console.WriteLine($"Writing {path}");
+            writtenFiles.Add(path);
+        }
+        private void MergeMods(string outPath)
+        {
             Console.WriteLine("Processing extra mod files...");
             bool work = false;
             if (modDir != null)
             {
                 foreach (string gameFile in MiscSetup.GetGameFiles(modDir))
                 {
-                    string source = fullName($@"{modDir}\{gameFile}");
-                    string target = fullName($@"{outPath}\{gameFile}");
+                    string source = FullName($@"{modDir}\{gameFile}");
+                    string target = FullName($@"{outPath}\{gameFile}");
                     if (writtenFiles.Contains(target)) continue;
                     Console.WriteLine($"Copying {source}");
                     Directory.CreateDirectory(Path.GetDirectoryName(target));
@@ -343,152 +440,26 @@ namespace RandomizerCommon
             }
             foreach (string gameFile in MiscSetup.GetGameFiles(outPath))
             {
-                string target = fullName($@"{outPath}\{gameFile}");
+                string target = FullName($@"{outPath}\{gameFile}");
                 if (writtenFiles.Contains(target)) continue;
                 Console.WriteLine($"Found extra file (delete it if you don't want it): {target}");
                 work = true;
             }
             if (!work) Console.WriteLine("No extra files found");
-            Console.WriteLine("Success!");
-        }
-
-        public void SaveDS3(string outPath, bool editMaps=false)
-        {
-            // Save params
-            string outParams = $@"{outPath}\Data0.bdt";
-            foreach (BinderFile file in regulation.Files.Where(f => f.Name.EndsWith(".param")))
-            {
-                string name = Path.GetFileNameWithoutExtension(file.Name);
-                if (Params.ContainsKey(name)) {
-                    file.Bytes = Params[name].Write();
-                }
-            }
-            if (encrypted)
-            {
-                SFUtil.EncryptDS3Regulation(outParams, regulation);
-            }
-            else
-            {
-                regulation.Write(outParams);
-            }
-            // Messages
-            Directory.CreateDirectory($@"{outPath}\msg\engus");
-            foreach (string path in Directory.GetFiles($@"{dir}\Base", "*.msgbnd.dcx"))
-            {
-                string name = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
-                string outText = $@"{outPath}\msg\engus\{Path.GetFileName(path)}";
-                BND4 bnd = BND4.Read(path);
-                foreach (BinderFile file in bnd.Files)
-                {
-                    string fileName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(file.Name));
-                    if (msgFiles.ContainsKey(fileName))
-                    {
-                        file.Bytes = Messages[msgFiles[fileName]][name].Write();
-                    }
-                }
-                bnd.Write(outText, (DCX.Type)DCX.DefaultType.DarkSouls3);
-            }
-            // Edited maps, if option enabled
-            HashSet<string> mapsToEdit = editMaps ? editedMaps : new HashSet<string>();
-            string outMapDir = $@"{outPath}\map\mapstudio";
-            Directory.CreateDirectory(outMapDir);
-            foreach (string mapName in editedMaps)
-            {
-                MSB3 msb = maps[mapName];
-                string outMap = $@"{outPath}\map\mapstudio\{mapName}.msb.dcx";
-                msb.Write(outMap, (DCX.Type)DCX.DefaultType.DarkSouls3);
-            }
-            // Delete unedited maps, could be left over from previous run, or now disabled
-            foreach (string path in Directory.GetFiles(outMapDir, "*.msb.dcx"))
-            {
-                string name = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
-                if (!editedMaps.Contains(name))
-                {
-                    File.Delete(path);
-                }
-            }
-            // Copy/save scripts
-            Directory.CreateDirectory($@"{outPath}\event");
-            foreach (string path in Directory.GetFiles($@"{dir}\Base", "*.emevd.dcx"))
-            {
-                string name = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
-                string outScript = $@"{outPath}\event\{Path.GetFileName(path)}";
-                if (!scriptChanges.ContainsKey(name))
-                {
-                    File.Copy(path, outScript);
-                    continue;
-                }
-                byte[] bytes = DCX.Decompress(File.ReadAllBytes(path));
-                foreach ((uint, uint) change in scriptChanges[name])
-                {
-                    int pos = SearchInt(bytes, change.Item1);
-                    if (pos == -1) throw new Exception($"Could not find int {change.Item1} in script {name}");
-                    byte[] replace = BitConverter.GetBytes(change.Item2);
-                    for (int i = 0; i < replace.Length; i++)
-                    {
-                        bytes[pos + i] = replace[i];
-                    }
-                }
-                DCX.Compress(bytes, (DCX.Type)DCX.DefaultType.DarkSouls3, outScript);
-            }
-            Console.WriteLine($"Saved to {outPath}!");
         }
 
         private void LoadNames()
         {
-            foreach (string path in Directory.GetFiles($@"{dir}\Names", "*.txt"))
+            modelNames = new SortedDictionary<string, string>(Editor.LoadNames("ModelName", n => n, false));
+            characterSplits = new SortedDictionary<int, string>(Editor.LoadNames("CharaInitParam", n => int.Parse(n), false));
+            lotNames = new SortedDictionary<int, string>(Editor.LoadNames("ItemLotParam", n => int.Parse(n), true));
+            qwcNames = new SortedDictionary<int, string>(Editor.LoadNames("ShopQwc", n => int.Parse(n), true));
+            for (int i = 0; i < itemParams.Count; i++)
             {
-                string name = Path.GetFileNameWithoutExtension(path);
-                // if (name == "ShopQwc") continue;
-                int type = itemParams.IndexOf(name);
-                foreach (var line in File.ReadLines(path))
+                foreach (KeyValuePair<ItemKey, string> entry in Editor.LoadNames(itemParams[i], n => new ItemKey((ItemType)i, int.Parse(n))))
                 {
-                    int spot = line.IndexOf(' ');
-                    if (spot == -1)
-                    {
-                        throw new Exception($"Bad line {line} in {path}");
-                    }
-                    string idstr = line.Substring(0, spot);
-                    string text = line.Substring(spot + 1);
-                    if (name == "ModelName")
-                    {
-                        modelNames[idstr] = text;
-                    }
-                    else
-                    {
-                        int id = Int32.Parse(idstr);
-                        if (type >= 0)
-                        {
-                            // Item
-                            ItemKey key = new ItemKey((ItemType)type, id);
-                            itemNames[key] = text;
-                            AddMulti(revItemNames, text, key);
-                        }
-                        else
-                        {
-                            // One-off id
-                            if (name == "ItemLotParam")
-                            {
-                                lotNames[id] = text;
-                            }
-                            else if (name == "CharaInitParam")
-                            {
-                                characterSplits[id] = text;
-                            }
-                            else if (name == "ShopQwc")
-                            {
-                                int refId;
-                                if (Int32.TryParse(text, out refId))
-                                {
-                                    qwcNames[id] = qwcNames[refId]; // + " (handmaid)";
-                                }
-                                else
-                                {
-                                    qwcNames[id] = text;
-                                }
-                            }
-                        }
-                    }
+                    itemNames[entry.Key] = entry.Value;
+                    AddMulti(revItemNames, entry.Value, entry.Key);
                 }
             }
             if (characterSplits.Count == 0)
@@ -517,9 +488,10 @@ namespace RandomizerCommon
 
         private void LoadParams()
         {
-            string path = Sekiro ? $@"{dir}\Base\gameparam.parambnd.dcx" : $@"{dir}\Base\Data0.bdt";
+            string path;
             if (Sekiro)
             {
+                path = $@"{dir}\Base\gameparam.parambnd.dcx";
                 string modPath = $@"{modDir}\param\gameparam\gameparam.parambnd.dcx";
                 if (File.Exists(modPath))
                 {
@@ -527,94 +499,44 @@ namespace RandomizerCommon
                     path = modPath;
                 }
             }
-            // path = $@"{Editor.Spec.GameDir}\{Editor.Spec.ParamFile}";
+            else
+            {
+                path = $@"{dir}\Base\Data0.bdt";
+                string modPath1 = $@"{modDir}\param\gameparam\gameparam.parambnd.dcx";
+                string modPath2 = $@"{modDir}\Data0.bdt";
+                if (File.Exists(modPath1))
+                {
+                    Console.WriteLine($"Using modded file {modPath1}");
+                    path = modPath1;
+                }
+                else if (File.Exists(modPath2))
+                {
+                    Console.WriteLine($"Using modded file {modPath2}");
+                    path = modPath2;
+                }
+            }
             if (!File.Exists(path))
             {
                 throw new Exception($"Missing param file: {path}");
             }
-
-            try
-            {
-                // May be encrypted or not based on DS3 or Sekiro
-                if (BND4.Is(path))
-                {
-                    regulation = BND4.Read(path);
-                    encrypted = false;
-                }
-                else
-                {
-                    regulation = SFUtil.DecryptDS3Regulation(path);
-                    encrypted = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Failed to load regulation file:\r\n{path}\r\n\r\n{ex}");
-            }
-            foreach (BinderFile file in regulation.Files.Where(f => f.Name.EndsWith(".param")))
-            {
-                string name = Path.GetFileNameWithoutExtension(file.Name);
-
-                if (!Sekiro && !loadParams.Contains(name)) continue;
-
-                try
-                {
-                    PARAM param = PARAM.Read(file.Bytes);
-                    if (layouts.ContainsKey(param.ParamType))
-                    {
-                        PARAM.Layout layout = layouts[param.ParamType];
-                        if (layout.Size == param.DetectedSize)
-                        {
-                            param.ApplyParamdef(layout.ToParamdef(param.ParamType, out var _));
-                            Params[name] = param;
-                        }
-                        else
-                        {
-                            // if (loadParams.Contains(name)) throw new Exception ($"param {name} had size {param.DetectedSize} but expected {layout.Size}");
-                        }
-                    }
-                    else
-                    {
-                        if (loadParams.Contains(name)) throw new Exception($"unknown param {param.ParamType}");
-                    }
-                }
-                catch (Exception)
-                {
-                    // throw new Exception($"Failed to load param {name}: {ex}");
-                    Console.WriteLine($"Failed to load param {name}");
-                }
-            }
+            Params = Editor.LoadParams(path, layouts, allowError: !Sekiro);
         }
 
         private void LoadMapData()
         {
-            foreach (string path in Directory.GetFiles($@"{dir}\Base", "*.msb.dcx"))
-            {
-                string name = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
-
-                try
-                {
-                    if (Sekiro)
-                    {
-                        MSBS msb = MSBS.Read(path);
-                        Smaps[name] = msb;
-                    }
-                    else
-                    {
-                        MSB3 msb = MSB3.Read(path);
-                        maps[name] = msb;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception($"Failed to load msb {name}: {path}\r\n\r\n{ex}");
-                }
-            }
             if (Sekiro)
             {
+                Smaps = Editor.Load("Base", path => MSBS.Read(path), "*.msb.dcx");
                 MaybeOverrideFromModDir(Smaps, name => $@"map\MapStudio\{name}.msb.dcx", path => MSBS.Read(path));
-                List<string> missing = SekiroLocationDataScraper.locations.Keys.Except(Smaps.Keys).ToList();
+                List<string> missing = Locations.Keys.Except(Smaps.Keys).ToList();
                 if (missing.Count != 0) throw new Exception($@"Missing msbs in dists\Base: {string.Join(", ", missing)}");
+            }
+            else
+            {
+                Maps = Editor.Load("Base", path => MSB3.Read(path), "*.msb.dcx");
+                MaybeOverrideFromModDir(Maps, name => $@"map\MapStudio\{name}.msb.dcx", path => MSB3.Read(path));
+                List<string> missing = Locations.Keys.Except(Maps.Keys).ToList();
+                if (missing.Count != 0) throw new Exception($@"Missing msbs in dist\Base: {string.Join(", ", missing)}");
             }
         }
 
@@ -622,69 +544,34 @@ namespace RandomizerCommon
         {
             if (Sekiro)
             {
-                talk = Editor.LoadBnds("Base", (data, path) => ESD.Read(data), "*.talkesdbnd.dcx");
-                MaybeOverrideFromModDir(talk, name => $@"script\talk\{name}.talkesdbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => ESD.Read(data)));
-                List<string> missing = SekiroLocationDataScraper.locations.Keys.Except(talk.Keys).ToList();
-                if (missing.Count != 0) throw new Exception($@"Missing talkesdbnds in dists\Base: {string.Join(", ", missing)}");
+                Talk = Editor.LoadBnds("Base", (data, path) => ESD.Read(data), "*.talkesdbnd.dcx");
+                MaybeOverrideFromModDir(Talk, name => $@"script\talk\{name}.talkesdbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => ESD.Read(data)));
+                List<string> missing = Locations.Keys.Except(Talk.Keys).ToList();
+                if (missing.Count != 0) throw new Exception($@"Missing talkesdbnds in dist\Base: {string.Join(", ", missing)}");
             }
         }
 
         private void LoadScripts()
         {
-            if (Sekiro)
-            {
-                Emevds = Editor.Load("Base", path => EMEVD.Read(path), "*.emevd.dcx");
-                MaybeOverrideFromModDir(Emevds, name => $@"event\{name}.emevd.dcx", path => EMEVD.Read(path));
-                List<string> missing = SekiroLocationDataScraper.locations.Keys.Concat(new[] { "common", "common_func" }).Except(Emevds.Keys).ToList();
-                if (missing.Count != 0) throw new Exception($@"Missing emevds in dists\Base: {string.Join(", ", missing)}");
-            }
-            else
-            {
-                foreach (string path in Directory.GetFiles($@"{dir}\Base", "*.emevd.dcx"))
-                {
-                    string name = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
-                    scriptChanges[name] = new List<(uint, uint)>();
-                }
-            }
+            Emevds = Editor.Load("Base", path => EMEVD.Read(path), "*.emevd.dcx");
+            MaybeOverrideFromModDir(Emevds, name => $@"event\{name}.emevd.dcx", path => EMEVD.Read(path));
+            List<string> missing = Locations.Keys.Concat(new[] { "common", "common_func" }).Except(Emevds.Keys).ToList();
+            if (missing.Count != 0) throw new Exception($@"Missing emevds in dist\Base: {string.Join(", ", missing)}");
         }
 
         private void LoadText()
         {
             if (Sekiro)
             {
-                BaseItemFMGs = ItemFMGs = Editor.LoadBnd($@"{dir}\Base\item.msgbnd.dcx", (data, path) => FMG.Read(data));
+                ItemFMGs = Editor.LoadBnd($@"{dir}\Base\item.msgbnd.dcx", (data, path) => FMG.Read(data));
                 ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
+                MenuFMGs = Editor.LoadBnd($@"{dir}\Base\menu.msgbnd.dcx", (data, path) => FMG.Read(data));
+                MenuFMGs = MaybeOverrideFromModDir(MenuFMGs, @"msg\engus\menu.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
             }
             else
             {
-                foreach (string path in Directory.GetFiles($@"{dir}\Base", "*.msgbnd.dcx"))
-                {
-                    string name = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
-                    try
-                    {
-                        // Maybe just undcx it first
-                        BND4 bnd = BND4.Read(path);
-                        foreach (BinderFile file in bnd.Files)
-                        {
-                            string uname = System.Text.RegularExpressions.Regex.Replace(file.Name, @"[^\x00-\x7F]", c => string.Format(@"\u{0:x4}", (int)c.Value[0]));
-                            string fileName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(file.Name));
-                            if (msgFiles.ContainsKey(fileName))
-                            {
-                                MsgFile ftype = msgFiles[fileName];
-                                if (!Messages.ContainsKey(ftype))
-                                {
-                                    Messages[ftype] = new Dictionary<string, FMG>();
-                                }
-                                FMG fmg = FMG.Read(file.Bytes);
-                                Messages[ftype][name] = fmg;
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception($"Failed to load file: {name}: {path}\r\n\r\n{ex}");
-                    }
-                }
+                ItemFMGs = Editor.LoadBnd($@"{dir}\Base\item_dlc2.msgbnd.dcx", (data, path) => FMG.Read(data));
+                ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item_dlc2.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
             }
         }
 

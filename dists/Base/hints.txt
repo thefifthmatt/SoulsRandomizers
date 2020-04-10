@@ -1,0 +1,1078 @@
+Types:
+- Name: None
+  Imperative: explore
+  Gerund: exploring
+  Adjective: available
+  Noun: anywhere
+- Name: Treasure
+  Imperative: search for treasure
+  Gerund: searching for treasure
+  Adjective: on the ground
+  Noun: any treasure
+- Name: Chest
+  Imperative: search treasure chests
+  Gerund: searching treasure chests
+  Adjective: in a chest
+  Noun: any chest
+- Name: Boss
+  Imperative: defeat a boss
+  Gerund: defeating a boss
+  Adjective: guarded by a boss
+  Noun: any boss
+- Name: Miniboss
+  Imperative: defeat a miniboss
+  Gerund: defeating a miniboss
+  Adjective: guarded by a miniboss
+  Noun: any miniboss
+- Name: Enemy
+  Imperative: defeat a powerful enemy
+  Gerund: defeating a powerful enemy
+  Adjective: guarded by a powerful enemy
+  Noun: any powerful enemy
+- Name: Carp
+  Imperative: go fishing
+  Gerund: hunting treasure carp
+  Adjective: held by a fish
+  Noun: any carp
+- Name: Underwater
+  Imperative: search underwater
+  Gerund: searching underwater
+  Adjective: underwater
+  Noun: underwater
+- Name: Shop
+  Imperative: go shopping
+  Gerund: going shopping
+  Adjective: for sale
+  Noun: any shop item
+ItemCategories:
+- Name: RequiredKey
+  Text: an important key
+  Includes: gatehousekey hiddentemplekey secretpassagekey gunfortshrinekey
+- Name: RequiredAbility
+  Text: an important ability
+  Includes: puppeteerninjutsu mibubreathingtechnique
+# Fallback category
+- Name: RequiredItem
+  Text: an important item
+- Name: ImportantTool
+  IncludesName: Mikiri Counter; Robert's Firecrackers; Shuriken Wheel
+- Name: HintFodder
+  IncludesName: Sakura Droplet; Dragon's Tally Board; Gyoubu's Broken Horn; Bestowal Ninjutsu; Yashariku's Spiritfall; Ako's Spiritfall # ; Frozen Tears; Aromatic Flower
+# Categories with other purposes
+- Name: LatenessHints
+  Includes: mibubreathingtechnique gunfortshrinekey secretpassagekey hiddentemplekey fathersbellcharm younglordsbellcharm
+  IncludesName: Mikiri Counter
+- Name: ExcludeHints
+  Includes: shinobiprosthetic
+ItemNames:
+- Name: Mikiri Counter
+  Vague: a well-timed stomp; a thrust defense
+- Name: Robert's Firecrackers
+  Vague: a flash of gunpowder; a scourge of beasts
+- Name: Shuriken Wheel
+  Vague: a ranged weapon; a ranged mechanical device
+# All areas. Children should come after parents in the ordering.
+Areas:
+- Name: Hirata Estate
+  Includes: hirata*
+  LaterIncludes: hirata_courtyard2 hirata_temple2
+  Vague: a distant memory; the past
+  Present: Boss Boss Miniboss Miniboss Miniboss Miniboss Treasure
+- Name: Hirata Estate Revisited
+  Parent: Hirata Estate
+  Includes: hirata_courtyard2 hirata_temple2
+  Vague: a deeper memory; a deeper alternate past
+  Present: Boss Miniboss Miniboss
+- Name: Ashina Outskirts
+  Includes: ashinaoutskirts*
+  LaterIncludes: ashinaoutskirts_invasion2
+  Vague: rural outskirts; Ashina Outskirts
+  Present: Miniboss Miniboss
+- Name: Ashina Castle
+  Includes: ashinacastle*
+  LaterIncludes: ashinacastle_invasion1 ashinacastle_kuro2 ashinacastle_invasion2
+  Vague: a central town
+  Present: Miniboss Treasure
+- Name: Ashina Castle Gate
+  Includes: ashinacastle_gate ashinaoutskirts_fortress2 ashinaoutskirts_invasion2
+  LaterIncludes: ashinaoutskirts_invasion2
+  Vague: a well-guarded gate
+- Name: Ashina Reservoir
+  Includes: ashinareservoir*
+  LaterIncludes: ashinareservoir_invasion2
+  Vague: a municipal water reserve
+  VaguePrep: near a moon-bathed tower
+  Present: Miniboss Miniboss
+- Name: Ashina Castle after Interior Ministry invasion
+  Parent: Ashina Castle
+  Includes: ashinacastle_invasion1 ashinacastle_kuro2
+  Vague: a rat-infested castle
+  VaguePrep: after the first defenses fall; when the Interior Ministry arrives
+  Present: Miniboss
+- Name: Ashina after Central Forces invasion
+  Parent: Ashina Castle
+  Includes: ashinacastle_invasion2 ashinareservoir_invasion2 ashinaoutskirts_invasion2
+  Vague: a leaderless Ashina
+  VaguePrep: in Ashina's final hours; when the Central Forces arrive
+  Present: Boss Miniboss Miniboss Miniboss Treasure
+- Name: Abandoned Dungeon
+  Includes: dungeon*
+  Vague: a spooky dungeon; a gloomy waterway
+- Name: Ashina Depths
+  Includes: sunkenvalley_poisonpool sunkenvalley_burrow* hiddenforest mibuvillage*
+  Vague: the depths of Ashina
+  Present: Miniboss Miniboss
+- Name: Mibu Village
+  Parent: Ashina Depths
+  Includes: mibuvillage*
+  Vague: a village in the depths of Ashina; a lost village
+- Name: Hidden Forest
+  Parent: Ashina Depths
+  Includes: hiddenforest
+  Vague: a misty forest; the Forest of Mist
+- Name: Guardian Ape's Burrow
+  Parent: Ashina Depths
+  Includes: sunkenvalley_burrow*
+  Vague: the burrow of a powerful ape; the ape's old den
+  Present: Boss Miniboss
+- Name: Sunken Valley
+  Includes: sunkenvalley sunkenvalley_cave sunkenvalley_passage sunkenvalley_underwater sunkenvalley_flower sunkenvalley_shrine sunkenvalley_carp
+  Vague: a sunken valley
+  LaterIncludes: sunkenvalley_carp
+  Present: Miniboss Miniboss Boss Treasure
+- Name: Upper Sunken Valley
+  Parent: Sunken Valley
+  Includes: sunkenvalley sunkenvalley_cave
+  Vague: a valley of Okami descendents
+  Present: Miniboss Miniboss
+- Name: Lower Sunken Valley
+  Parent: Sunken Valley
+  Includes: sunkenvalley_passage sunkenvalley_underwater sunkenvalley_flower sunkenvalley_shrine sunkenvalley_carp
+  LaterIncludes: sunkenvalley_carp
+  Vague: a valley of monkeys; a poisonous valley
+  Present: Boss
+- Name: Sunken Valley from Senpou Temple
+  Includes: senpou_cavern sunkenvalley_senpou
+  Vague: a post-kite cavern
+  VaguePrep: after a kite ride; perched above a god
+- Name: Sunken Valley Serpent Cave
+  Parent: Lower Sunken Valley
+  Includes: sunkenvalley_shrine
+  Vague: a well-guarded nest
+  VaguePrep: past a protective serpent
+- Name: Sunken Valley after Fountainhead Palace
+  Parent: Lower Sunken Valley
+  Includes: sunkenvalley_carp
+  Vague: an ape's grounds after killing a great carp
+  VaguePrep: by a fallen carp
+- Name: Senpou Temple
+  Includes: senpou*
+  Excludes: senpou_cavern
+  Vague: a sprawling Buddhist temple; a sanctuary of devotees
+  Present: Miniboss Miniboss Boss
+- Name: Senpou Temple Inner Sanctum
+  Parent: Senpou Temple
+  Includes: senpou_sanctum
+  Vague: the sanctum of a holy person
+  VaguePrep: among divine children
+  Present: Boss
+- Name: Fountainhead Palace
+  Includes: fountainhead*
+  Vague: the divine realm
+  Present: Miniboss Miniboss Miniboss Treasure
+Hints:
+- ID: 9020
+  Name: Ornamental Letter
+  Versions:
+  - Type: default
+    Text:
+    - A letter thrown into a well.
+    - ''
+    - "\"Kuro's Wolf,"
+    - Your destiny awaits you
+    - at the moon-view tower.
+    - Escape from the well and find the
+    - tower bathed in moonlight.
+    - ''
+    - Even without a blade, you can reach it.
+    - Stay silent.  Stay vigilant."
+  - Type: hint
+    MainPath: Your destiny
+    Text:
+    - A letter thrown into a well.
+    - ''
+    - "\"Kuro's Wolf,"
+    - (Item) awaits you
+    - (location_preposition).
+    - Escape from the well and find the
+    - tower bathed in moonlight.
+    - ''
+    - Stay silent.  Stay vigilant.
+    - (Type_imperative)."
+  - Type: badhint
+    Text:
+    - A letter thrown into a well.
+    - ''
+    - "\"Kuro's Wolf,"
+    - Required items do not await you
+    - (location_preposition).
+    - Escape from the well and find the
+    - tower bathed in moonlight.
+    - ''
+    - Stay silent.  Stay vigilant."
+- ID: 9200
+  Name: Herb Catalogue Scrap
+  Versions:
+  - Type: default
+    Text:
+    - A page torn from the Ashina Herb Catalogue, a compendium of flowers and herbs.
+    - "\"The 'Snap Seed' naturally grows in ravines and deep valleys."
+    - According to denizens of the Sunken Valley, such places are appropriate for offering oneself in marriage to the Great Serpent.
+    - If one wishes to become a bride, they must enter the belly of the Serpent in the valley."
+  - Type: hint
+    Text:
+    - A page torn from the Ashina Herb Catalogue, a compendium of flowers and herbs.
+    - "\"(Item) naturally grows (location_preposition)."
+    - According to denizens of the Sunken Valley, such places are appropriate for offering oneself in marriage to the Great Serpent.
+    - If one wishes to become a bride, they must (type_imperative)."
+  - Type: badhint
+    Text:
+    - A page torn from the Ashina Herb Catalogue, a compendium of flowers and herbs.
+    - "\"There is nothing required (location_preposition)."
+    - According to denizens of the Sunken Valley, such places are appropriate for offering oneself in marriage to the Great Serpent.
+    - If one wishes to become a bride, they need not explore there."
+- ID: 9205
+  Name: Dosaku's Note
+  Versions:
+  - Type: default
+    Text:
+    - 'An old note left by the surgeon Dosaku:'
+    - ''
+    - My disciples have abandoned me for Dogen.  Unwilling to dirty their own hands,
+    - they all left me for that hypocritical quack.
+    - ''
+    - Dojun! My last disciple!
+    - Even if I die, the research must continue.
+    - Finish the procedure, for Ashina's sake.
+    - '                                                            -Dosaku'
+  - Type: hint
+    Text:
+    - 'An old note left by the surgeon Dosaku:'
+    - ''
+    - My disciples have abandoned me for (item).  Unwilling to dirty their own hands,
+    - they all left me for (location).
+    - ''
+    - Dojun! My last disciple!
+    - Even if I die, the research must continue.
+    - (Type_imperative), for Ashina's sake.
+    - '                                                            -Dosaku'
+  - Type: badhint
+    Text:
+    - 'An old note left by the surgeon Dosaku:'
+    - ''
+    - My disciples have abandoned me for Dogen.  Unwilling to dirty their own hands,
+    - they all left me for that hypocritical quack.
+    - ''
+    - Dojun! My last disciple!
+    - Even if I die, the research must continue.
+    - Don't search (location), for Ashina's sake.
+    - '                                                            -Dosaku'
+- ID: 9206
+  Name: Rat Description
+  Versions:
+  - Type: default
+    Text:
+    - A description of the "rats" that have snuck into Ashina.  Speak to the Tengu again once the rats are dealt with.
+    - ''
+    - 'The rats:'
+    - '- Assassins from Senpou Temple'
+    - '- Short stature, wear bamboo hats'
+    - '- A number of rats are lurking about'
+    - '- Last seen around Ashina Castle Gate'
+  - Type: hint
+    Text:
+    - A description of the "rats" that have snuck into Ashina.  Speak to the Tengu again once the rats are dealt with.
+    - ''
+    - 'The rats:'
+    - '- (Item)'
+    - '- Lurking about (type_adjective)'
+    - '- Last seen around (location)'
+- ID: 9207
+  Name: Surgeon's Bloody Letter
+  Versions:
+  - Type: default
+    Text:
+    - 'A worn and bloodstained letter from Dosaku, the surgeon in the Abandoned Dungeon:'
+    - '   Required: 1 tough man'
+    - '   Preferably a strong samurai, or a young, '
+    - '   large soldier such as a member of'
+    - '   the Taro Troop.'
+    - ''
+    - '   Must be delivered unharmed.'
+    - '                                                               -Dosaku'
+  - Type: hint
+    MainPath: an item
+    Text:
+    - 'A worn and bloodstained letter from Dosaku, the surgeon in the Abandoned Dungeon:'
+    - '   Required: (item)'
+    - '   Preferably (type_adjective),'
+    - '   and (location_preposition).'
+    - ''
+    - '   Must be delivered unharmed.'
+    - '                                                               -Dosaku'
+- ID: 9208
+  Name: Surgeon's Stained Letter
+  Versions:
+  - Type: default
+    Text:
+    - A tattered, blood-covered note written by Dosaku, the surgeon in the Abandoned Dungeon.
+    - ''
+    - '   At the bottom of the Mibu Village pond,'
+    - '   You will find a Sakura carp.'
+    - '   You will know it from its red eyes, '
+    - '   which are said to never rot.   '
+    - '   I require those red eyes.'
+    - '                                                                -Dosaku'
+  - Type: hint
+    Text:
+    - A tattered, blood-covered note written by Dosaku, the surgeon in the Abandoned Dungeon.
+    - ''
+    - '   (Location_preposition),'
+    - '   You will find (item).'
+    - '   You will find it (type_adjective).'
+    - '   I require those red eyes.'
+    - '                                                                -Dosaku'
+- ID: 9209
+  Name: "Holy Chapter: Dragon's Return"
+  Versions:
+  - Type: default
+    Text:
+    - Sacred passage on a path to enlightenment.
+    - "\"Undying, I pray for the Dragon's return."
+    - Undying, lo, let us wait an age; for the
+    - Divine Heir to assimilate the cold dragon
+    - tears; for the cradle to consume
+    - the pair of serpentine fruits.
+    - ''
+    - Let the cradle endure, giving Him shelter;
+    - granting His return to the west."
+    - ' '
+  - Type: hint
+    Text:
+    - Sacred passage on a path to enlightenment.
+    - "\"Undying, I pray for the Dragon's return."
+    - Undying, lo, let us (type_imperative); for the
+    - Divine Heir to assimilate the cold dragon
+    - tears; for the cradle to consume
+    - (item).
+    - ''
+    - Let the cradle endure, giving Him shelter;
+    - granting His return to (location)."
+    - ' '
+  - Type: badhint
+    Text:
+    - Sacred passage on a path to enlightenment.
+    - "\"Undying, I pray for the Dragon's return."
+    - Undying, lo, let us wait an age; for the
+    - Divine Heir to assimilate the cold dragon
+    - tears; for the cradle to consume
+    - the pair of serpentine fruits.
+    - ''
+    - Let the cradle endure, giving Him shelter;
+    - but not (location_preposition),
+    - where no required items can be found.
+    - ' '
+- ID: 9210
+  Name: Immortal Severance Text
+  Versions:
+  - Type: default
+    Text:
+    - A book from Kuro on the art of
+    - severing ties with the Dragon's Heritage.
+    - It looks old.  The binding is torn,
+    - and several pages are missing.
+    - ''
+    - '"Herein describes the means to perform'
+    - the Rite of Immortal Severance.
+    - Beyond the Fountainhead Palace, locate
+    - the Sanctuary and imbibe the tears of
+    - the holy dragon of the divine realm."
+  - Type: hint
+    Text:
+    - A book from Kuro on the art of
+    - severing ties with the Dragon's Heritage.
+    - It looks old.  The binding is torn,
+    - and several pages are missing.
+    - ''
+    - '"Herein describes the means to perform'
+    - the Rite of Immortal Severance.
+    - (Location_preposition),
+    - (type_imperative) and imbibe
+    - (item)."
+  - Type: badhint
+    Text:
+    - A book from Kuro on the art of
+    - severing ties with the Dragon's Heritage.
+    - It looks old.  The binding is torn,
+    - and several pages are missing.
+    - ''
+    - '"Herein describes the means to perform'
+    - the Rite of Immortal Severance.
+    - You must imbibe the tears of
+    - the holy dragon of the divine realm,
+    - but there is no need to try
+    - (location)."
+- ID: 9211
+  Name: Immortal Severance Scrap
+  Versions:
+  - Type: default
+    Text:
+    - Part of the Book of Immortal Severance, left behind by Takeru.
+    - '"With Mortal Blade in hand,'
+    - my blood may be shed.
+    - ''
+    - With my blood, the aroma will be complete,
+    - 'the divine realm will be in reach.  '
+    - Immortal Severance will be at hand.
+    - I must ask Tomoe to assist with the beheading..."
+    - ''
+  - Type: hint
+    Text:
+    - Part of the Book of Immortal Severance, left behind by Takeru.
+    - '"With (item) (location_preposition),'
+    - progress may be made.
+    - ''
+    - With my blood, the aroma will be complete,
+    - 'the divine realm will be in reach.  '
+    - Immortal Severance will be at hand.
+    - I must ask Tomoe to (type_imperative)..."
+    - ''
+- ID: 9212
+  Name: Fragrant Flower Note
+  Versions:
+  - Type: default
+    Text:
+    - A note from Kuro, written by Takeru,
+    - former Heir of the Dragon's Heritage.
+    - ""
+    - '"It is said that relatives of Tomoe once'
+    - gathered the Fountainhead Fragrance
+    - and arrived at the palace.
+    - ''
+    - You may find a key where the waters of
+    - rejuvenation converge in a deep pool.
+    - A white and deeply fragrant flower..."
+  - Type: hint
+    Text:
+    - A note from Kuro, written by Takeru,
+    - former Heir of the Dragon's Heritage.
+    - ""
+    - '"It is said that relatives of Tomoe once'
+    - gathered the Fountainhead Fragrance
+    - and arrived at the palace.
+    - ''
+    - You may find (item)
+    - (location_preposition).
+    - (Type_imperative)..."
+  - Type: badhint
+    Text:
+    - A note from Kuro, written by Takeru,
+    - former Heir of the Dragon's Heritage.
+    - ""
+    - '"It is said that relatives of Tomoe once'
+    - gathered the Fountainhead Fragrance
+    - and arrived at the palace.
+    - ''
+    - You won't find anything related to that
+    - (location_preposition)."
+- ID: 9213
+  Name: Okami's Ancient Text
+  Versions:
+  - Type: default
+    Text:
+    - An old note left by the Okami clan, who sought to reach the divine realm.
+    - ''
+    - '"A fragrant stone, enshrined in a village '
+    - within the depths of Ashina.
+    - One must throw oneself for it to be found.
+    - With this, the fountainhead fragrance is complete.
+    - Let us depart now, to the divine realm."
+    - ''
+  - Type: hint
+    Text:
+    - An old note left by the Okami clan, who sought to reach the divine realm.
+    - ''
+    - '"(Item), enshrined'
+    - (location_preposition).
+    - One must (type_imperative).
+    - With this, the fountainhead fragrance is complete.
+    - Let us depart now, to the divine realm."
+    - ''
+- ID: 9214
+  Name: Page's Diary
+  Versions:
+  - Type: default
+    Text:
+    - An old diary entry written by Takeru's page.
+    - ""
+    - '"Lord Takeru held his arm over the incense burner, and attempted to cut it with a sword.  But incredibly, his wound healed instantly, and not a drop of blood was shed.'
+    - Lady Tomoe said,
+    - "'Without it, your blood cannot be spilled.'"
+    - ""
+    - What could she be referring to, I wonder?"
+  - Type: itemhint
+    Req: mortalblade
+    Text:
+    - An old diary entry written by Takeru's page.
+    - ""
+    - '"Lord Takeru held his arm over the incense burner, and attempted to cut it with a sword.  But incredibly, his wound healed instantly, and not a drop of blood was shed.'
+    - Lady Tomoe said,
+    - "'Without (type_gerund) (location_preposition), your blood cannot be spilled.'"
+    - ""
+    - What could she be referring to, I wonder?"
+- ID: 9215
+  Name: 'Holy Chapter: Infested'
+  Versions:
+  - Type: default
+    Text:
+    - A passage describing a journey to enlightenment.
+    - "\"For an age, I have been blessed by the worm.  To be undying is to walk the eternal path to enlightenment, thus I must become enlightened to understand why I cannot die.  It is said the holy dragon's origins were in the west. So I wonder, how did the worm come to be bestowed upon me?\""
+  - Type: hint
+    Text:
+    - A passage describing a journey to enlightenment.
+    - "\"For an age, I have been blessed by (item).  To be undying is to walk the eternal path to enlightenment, thus I must become enlightened to understand why I must (type_imperative).  It is said its origins were (location_preposition). So I wonder, how did it come to be bestowed upon me?\""
+- ID: 9216
+  Name: Tomoe's Note
+  Versions:
+  - Type: default
+    Text:
+    - A note written in Tomoe's soft handwriting.
+    - "\"Lord Takeru's coughs are worsening still;"
+    - Returning to the divine realm is hopeless, and I wish only to sever the Dragon's Heritage and restore his humanity.
+    - Restoration requires the Everblossom and Mortal Blade, and yet I cannot acquire the latter.  It was hidden by the High Priest of Senpou Temple, who has no desire to sever the immortal ties..."
+  - Type: hint
+    Text:
+    - A note written in Tomoe's soft handwriting.
+    - "\"Lord Takeru's coughs are worsening still;"
+    - Returning to the divine realm is hopeless, and I wish only to sever the Dragon's Heritage and restore his humanity.
+    - Restoration requires (item), and yet I cannot (type_imperative).  It was hidden by the High Priest of (location), who has no desire to sever the immortal ties..."
+  - Type: badhint
+    Text:
+    - A note written in Tomoe's soft handwriting.
+    - "\"Lord Takeru's coughs are worsening still;"
+    - Returning to the divine realm is hopeless, and I wish only to sever the Dragon's Heritage and restore his humanity.
+    - Of one thing I am certain, I won't find anything required (location_preposition)..."
+- ID: 9217
+  Name: Flame Barrel Memo
+  Versions:
+  - Type: default
+    Text:
+    - A tattered note written by Anayama.
+    - Seems to be from some years ago.
+    - ''
+    - '"Lucrative info #36'
+    - ''
+    - When we broke into Hirata Estate,
+    - we found a barrel that spewed flame.
+    - The boys lit a roaring bonfire with it
+    - and made merry with the drink.
+    - Must have been a shinobi's tool."
+  - Type: hint
+    Text:
+    - A tattered note written by Anayama.
+    - Seems to be from some years ago.
+    - ''
+    - '"Lucrative info #36'
+    - ''
+    - When we broke into (location),
+    - we found (item).
+    - The boys lit a roaring bonfire with it
+    - and made merry with the drink.
+    - Must have been (type_adjective)."
+- ID: 9218
+  Name: Nightjar Beacon Memo
+  Versions:
+  - Type: default
+    Text:
+    - 'A note on smoke signals used by '
+    - Ashina shinobi, the Grey Nightjars.
+    - ''
+    - '"Pale, pink smoke signals are placed'
+    - along the rooftops of Ashina Castle.
+    - ''
+    - These signals guide the Nightjar.
+    - ''
+    - The ashen-feathered flock are surely the
+    - only ones able to follow such a trail."
+  - Type: hint
+    Text:
+    - 'A note on smoke signals used by '
+    - Ashina shinobi, the Grey Nightjars.
+    - ''
+    - '"Pale, pink smoke signals are'
+    - (location_preposition).
+    - ''
+    - These signals guide the Nightjar to (item).
+    - ''
+    - The ashen-feathered flock are surely the
+    - only ones able to (type_imperative) there."
+  - Type: badhint
+    Text:
+    - 'A note on smoke signals used by '
+    - Ashina shinobi, the Grey Nightjars.
+    - ''
+    - '"Pale, pink smoke signals are'
+    - (location_preposition).
+    - ''
+    - These signals guide the Nightjar.
+    - ''
+    - The ashen-feathered flock are surely the
+    - only ones who would to follow such a trail,
+    - especially because it has no required items."
+- ID: 9219
+  Name: Isshin's Letter
+  Versions:
+  - Type: default
+    Text:
+    - A note left by Isshin in the watchtower.
+    - Perhaps Emma knows his current whereabouts.
+    - ''
+    - '    Dear Emma,'
+    - ''
+    - '    The Ashina Castle Gate has grown loud '
+    - '    with the sound of scurrying.'
+    - '    The Tengu will see to the rats.'
+    - '    Worry not.'
+    - 　　　　　　　　　　　　　Isshin
+  - Type: hint
+    Text:
+    - A note left by Isshin in the watchtower.
+    - Perhaps Emma knows his current whereabouts.
+    - ''
+    - '    Dear Emma,'
+    - ''
+    - '    (Location) has grown loud '
+    - '    with the sound of (item).'
+    - '    The Tengu will (type_imperative).'
+    - '    Worry not.'
+    - 　　　　　　　　　　　　　Isshin
+  - Type: badhint
+    Text:
+    - A note left by Isshin in the watchtower.
+    - Perhaps Emma knows his current whereabouts.
+    - ''
+    - '    Dear Emma,'
+    - ''
+    - '    (Location) appears '
+    - '    to be devoid of any required items.'
+    - '    The Tengu will take a relaxing vacation.'
+    - '    Worry not.'
+    - 　　　　　　　　　　　　　Isshin
+- ID: 9220
+  Name: Rotting Prisoner's Note
+  Versions:
+  - Type: default
+    Text:
+    - A note left by a dead and rotting man in the Abandoned Dungeon.
+    - ''
+    - "\"Supposedly the fragrant stone is enshrined in a village in the Ashina Depths.  But how to interpet 'throw oneself'?"
+    - This is as far as that old Okami tome could take me. But did they truly reach the Fountainhead Palace?  I'd like to know, but it seems I never will.  Kotaro... forgive me..."
+    - ""
+  - Type: hint
+    Text:
+    - A note left by a dead and rotting man in the Abandoned Dungeon.
+    - ''
+    - "\"Supposedly (item) is enshrined (location_preposition).  But how to interpet '(type_imperative)'?"
+    - This is as far as that old Okami tome could take me. But did they truly reach the Fountainhead Palace?  I'd like to know, but it seems I never will.  Kotaro... forgive me..."
+    - ""
+  - Type: badhint
+    Text:
+    - A note left by a dead and rotting man in the Abandoned Dungeon.
+    - ''
+    - "\"Supposedly nothing required is (location_preposition).  But how to interpet 'do not bother exploring there'?"
+    - This is as far as that old Okami tome could take me. But did they truly reach the Fountainhead Palace?  I'd like to know, but it seems I never will.  Kotaro... forgive me..."
+    - ""
+- ID: 9221
+  Name: Sabimaru Memo
+  Versions:
+  - Type: default
+    Text:
+    - A memo detailing the whereabouts of a kodachi short sword known as Sabimaru.
+    - ''
+    - Must be purchased to read the content.
+- ID: 9222
+  Name: Sabimaru Memo
+  Versions:
+  - Type: default
+    Text:
+    - A memo detailing the whereabouts of a kodachi short sword known as Sabimaru.
+    - The ancient kodachi Sabimaru can be found within Ashina Castle, enshrined in the bottom floor of the keep.
+    - Sabimaru was wielded in wars of old,
+    - 'and is a national treasure of Ashina.  '
+    - Supposedly the blade's poisonous blue rust could drive off even the inhuman Okami warrior women.
+  - Type: hint
+    Text:
+    - A memo detailing the whereabouts of (item).
+    - It can be found (location_preposition).
+    - It was wielded in wars of old,
+    - 'and is now (type_adjective).  '
+- ID: 9223
+  Name: Valley Apparitions Memo
+  Versions:
+  - Type: default
+    Text:
+    - A note about apparitions in the Sunken Valley.
+    - ''
+    - Must be purchased to read the content.
+- ID: 9224
+  Name: Valley Apparitions Memo
+  Versions:
+  - Type: default
+    Text:
+    - A note about apparitions in the Sunken Valley.
+    - '"Apparitions have been sighted in the'
+    - Guardian Ape of the Sunken Valley's old den.  Angry spirits, with many faces.
+    - The Guardian Ape's old den can be found
+    - 'at the bottom of the Sunken Valley, not far '
+    - from the Forest of Mist.
+    - 'Also, some reported they could hear the '
+    - sound of a woman crying in the distance..."
+  - Type: locationhint
+    Req: sunkenvalley_burrow2 sunkenvalley_burrow3
+    Text:
+    - A note about apparitions in the Sunken Valley.
+    - '"(Item) has been sighted in the'
+    - Guardian Ape of the Sunken Valley's old den.
+    - The Guardian Ape's old den can be found
+    - 'at the bottom of the Sunken Valley, not far '
+    - from the Forest of Mist.
+    - 'Also, some reported they could hear the '
+    - sound of a woman crying in the distance..."
+  - Type: locationbadhint
+    Req: sunkenvalley_burrow2 sunkenvalley_burrow3
+    Text:
+    - A note about apparitions in the Sunken Valley.
+    - '"Something not required has been sighted in the'
+    - Guardian Ape of the Sunken Valley's old den.
+    - The Guardian Ape's old den can be found
+    - 'at the bottom of the Sunken Valley, not far '
+    - from the Forest of Mist.
+    - 'Also, some reported they could hear the '
+    - sound of a woman crying in the distance..."
+- ID: 9225
+  Name: Three-story Pagoda Memo
+  Versions:
+  - Type: default
+    Text:
+    - A memo describing the three-storied pagoda.
+    - ''
+    - Must be purchased to read the content.
+- ID: 9226
+  Name: Three-story Pagoda Memo
+  Versions:
+  - Type: default
+    Text:
+    - Memo describing the three-story pagoda.
+    - ''
+    - '"It is said a precious treasure was once'
+    - held within the Hirata Estate pagoda;
+    - a three-fold tower stood upon a precipice
+    - along a slope lined with bamboo groves.
+    - ''
+    - Seems the treasure is related to shinobi
+    - techniques. The truth of it escapes me,
+    - but they called it 'blessed mist'..."
+  - Type: locationhint
+    Req: hirata_pagoda
+    Text:
+    - Memo describing the three-story pagoda.
+    - ''
+    - '"It is said a precious treasure was once'
+    - held within the Hirata Estate pagoda;
+    - a three-fold tower stood upon a precipice
+    - along a slope lined with bamboo groves.
+    - ''
+    - Seems the treasure is related to shinobi
+    - techniques. The truth of it escapes me,
+    - but they called it '(item)'..."
+  - Type: locationbadhint
+    Req: hirata_pagoda
+    Text:
+    - Memo describing the three-story pagoda.
+    - ''
+    - '"It is said some random treasure was once'
+    - held within the Hirata Estate pagoda;
+    - a three-fold tower stood upon a precipice
+    - along a slope lined with bamboo groves.
+    - ''
+    - Seems the treasure is not related to anything
+    - important. The truth of it escapes me,
+    - but I don't think it was required to
+    - finish the game..."
+- ID: 9227
+  Name: Black Scroll
+  Versions:
+  - Type: default
+    Text:
+    - An old text describing a black Mortal Blade.
+    - ''
+    - '"In addition to the red Mortal Blade, there exists one that is black in color.'
+    - The blade's name is "Open Gate", and is said to hold the power to open a gate to the underworld.
+    - It is through this power that it creates life.
+    - I beseech you, make offerings for the Dragon's Blood..."
+  - Type: hint
+    MainPath: Required Item
+    Text:
+    - An old text describing a black Mortal Blade.
+    - ''
+    - '"In addition to the red Mortal Blade, there exists one (location_preposition).'
+    - The blade's name is "(item)", and is said to hold the power to open a gate to the underworld.
+    - It is through this power that it creates life.
+    - I beseech you, (type_imperative)..."
+- ID: 9228  # Unused in randomizer
+  Name: 'Holy Chapter: Infested'
+  Versions:
+  - Type: default
+    Text:
+    - A holy book on enlightenment, inscribed
+    - '"For the Divine Child of Rejuvenation".'
+    - "\"For an age, I have been blessed by the worm.  To be undying is to walk the eternal path to enlightenment, thus I must become enlightened to understand why I cannot die.  It is said the holy dragon's origins were in the west. So I wonder, how did the worm come to be bestowed upon me?\""
+# The in-game large inspect boxes
+- ID: 12000000
+  Versions:
+  - Type: default
+    Text:
+    - Turn back if you value your life.
+    - You can't behead the headless.
+    - Our swords and pikes did nothing.
+  - Type: badhint
+    Text:
+    - Turn back if you value your life.
+    - You can't find anything required
+    - (location_preposition).
+    - Our swords and pikes did nothing.
+- ID: 12000011
+  Versions:
+  - Type: default
+    Text:
+    - Ghosts once lurked the lands of Ashina.
+    - The ghosts' lightning was of the
+    - Fountainhead gods, unstoppable by
+    - normal means.
+    - Avoid ground, reverse the lightning.
+  - Type: hint  # TODO: check scroll length
+    Text:
+    - Ghosts once lurked the lands of (location).
+    - The ghosts' lightning was of the
+    - Fountainhead gods, unstoppable by
+    - normal means.
+    - (Type_imperative), find (item).
+  - Type: badhint
+    Text:
+    - Ghosts once lurked (location_preposition).
+    - The ghosts' lightning was of the
+    - Fountainhead gods, unstoppable by
+    - normal means.
+    - But they found no required items.
+- ID: 12000021
+  Versions:
+  - Type: default
+    Text:
+    - Here lie the vassals of the Ashina Clan
+    - executed after the great rebellion.
+    - ''
+    - May their spirits rest.
+  - Type: hint
+    Text:
+    - Here lie the vassals of (location)
+    - executed after (type_gerund).
+    - ''
+    - May their spirits grant you (item).
+  - Type: badhint
+    Text:
+    - Here lie the vassals of (location)
+    - executed after the great rebellion.
+    - ''
+    - May their spirits rest, because they
+    - have no required items.
+- ID: 12000231
+  Versions:
+  - Type: default  # Seems to be unused? Entity does not exist
+    Text:
+    - '     I have business to attend to.'
+    - '     Everything is under control.'
+- ID: 12000241
+  Versions:
+  - Type: default
+    Text:
+    - At Sunken Valley entrance.
+    - Much activity near Great Serpent Shrine.
+    - The Tengu has rats to see to.
+  - Type: hint
+    Text:
+    - (Location_preposition).
+    - Much activity (type_gerund).
+    - The Tengu has (item) to see to.
+  - Type: badhint
+    Text:
+    - At (location).
+    - Not finding much activity.
+    - The Tengu has rats to see to elsewhere.
+- ID: 12000261
+  Versions:
+  - Type: default
+    Text:
+    - 'The noise of the Roaring Waterfall '
+    - is deafening.
+    - 'Surely no one can hear anything else '
+    - in here.
+  - Type: hint
+    Text:
+    - 'The noise of (item) (type_adjective) '
+    - is deafening.
+    - 'Surely no one can hear anything else '
+    - (location_preposition).
+  - Type: badhint
+    Text:
+    - 'The lack of items (location_preposition) '
+    - is deafening.
+    - 'Surely no one can hear anything else '
+    - in here.
+- ID: 12000275
+  Versions:
+  - Type: default
+    Text:
+    - A bare flame in the wind.
+    - 'When it goes out, the place '
+    - becomes dark as night.
+  - Type: hint
+    Text:
+    - (Item) in the wind.
+    - 'When (type_gerund), (location)'
+    - becomes dark as night.
+  - Type: badhint
+    Text:
+    - A bare flame in the wind.
+    - 'When it goes out, (location)'
+    - becomes unimportant.
+- ID: 12000285
+  Versions:
+  - Type: default
+    Text:
+    - 'Below is an abyss.  '
+    - The bottom cannot be seen.
+    - ''
+    - 'Above is darkness.  '
+    - Nothing can be seen.
+  - Type: badhint2
+    Text:
+    - 'Below is an abyss.  '
+    - Nothing can be found (location_preposition).
+    - ''
+    - 'Above is darkness.  '
+    - Nothing can be found (location2_preposition).
+- ID: 12000291
+  Versions:
+  - Type: default
+    Text:
+    - 'Shelter stones such as this '
+    - are an auspicious omen,
+    - sweetly scented for a bridal offering.
+    - ''
+    - The palanquin awaits with open arms.
+  - Type: hint
+    Text:
+    - 'Shelter stones such as this '
+    - are an auspicious omen,
+    - sweetly scented for (type_gerund).
+    - ''
+    - (Item) awaits (location_preposition).
+  - Type: badhint
+    Text:
+    - 'Shelter stones such as this '
+    - are an auspicious omen,
+    - sweetly scented for a bridal offering.
+    - ''
+    - But the palanquin does not await
+    - (location_preposition).
+- ID: 12000311
+  Versions:
+  - Type: default
+    Text:
+    - Wolf,
+    - ''
+    - Found something.
+    - I've opened the library.  Meet me there.
+    - ""
+    - '                                                      Kuro'
+  - Type: hint
+    Text:
+    - Wolf,
+    - ''
+    - Found (item).
+    - I've checked (location).  (Type_imperative) there.
+    - ""
+    - '                                                      Kuro'
+  - Type: badhint
+    Text:
+    - Wolf,
+    - ''
+    - I've opened the library.  Find me there.
+    - Don't bother searching (location).
+    - ""
+    - '                                                      Kuro'
+- ID: 12000321
+  Versions:
+  - Type: default
+    Text:
+    - This bell is deafening.
+    - 'Ringing it recklessly will also '
+    - make your ears ring.
+  - Type: hint
+    Text:
+    - This bell is deafening.
+    - '(Type_gerund) (location_preposition) will '
+    - give you (item) and also make your ears ring.
+  - Type: badhint
+    Text:
+    - This bell is deafening.
+    - '(Location) '
+    - may waste your time.
+    - And make your ears ring.
+- ID: 12000331  # Less verbose hint
+  Versions:
+  - Type: default
+    Text:
+    - Shinobi Escape Route
+    - Leads to Demon Bell
+  - Type: hint
+    Text:
+    - (Type_gerund) (location_preposition)
+    - Leads to (item)
+  - Type: badhint
+    Text:
+    - (Location)
+    - Doesn't contain anything required
+- ID: 12000341
+  Versions:
+  - Type: default
+    Text:
+    - Do not ring this bell.
+    - ''
+    - 'Inviting misfortune is an act of virtue, '
+    - 'but only the stoutest of heart should '
+    - ever consider it.
+  - Type: hint
+    Text:
+    - Do not ring this bell.
+    - ''
+    - 'Inviting (item) is an act of virtue, '
+    - 'but only the stoutest of heart should '
+    - ever (type_imperative) (location_preposition).
+  - Type: badhint
+    Text:
+    - Do not try (location) for required items.
+    - ''
+    - 'Inviting busywork is an act of virtue, '
+    - 'but only the stoutest of heart should '
+    - ever consider it.

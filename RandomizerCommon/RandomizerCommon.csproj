@@ -110,9 +110,16 @@
     <Compile Include="EnemyRandomizer.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="GameData.cs" />
+    <Compile Include="HintWriter.cs" />
     <Compile Include="KeyItemsPermutation.cs" />
     <Compile Include="LocationData.cs" />
     <Compile Include="LocationDataScraper.cs" />
+    <Compile Include="OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PresetForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +150,9 @@
     <Compile Include="MiscSetup.cs" />
     <Compile Include="SkillWriter.cs" />
     <Compile Include="Util.cs" />
+    <EmbeddedResource Include="OptionsForm.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PresetForm.resx">
       <DependentUpon>PresetForm.cs</DependentUpon>
     </EmbeddedResource>

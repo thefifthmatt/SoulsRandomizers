@@ -33,7 +33,7 @@ namespace RandomizerCommon
         // The 'main' area for area aliases. To be phased out; combining areas automatically was a bad idea.
         public readonly Dictionary<string, string> AreaAliases = new Dictionary<string, string>();
         // All named items with logic associated with them.
-        public readonly Dictionary<string, ItemAnnotation> Items = new Dictionary<string, ItemAnnotation>();
+        public readonly Dictionary<string, ItemKey> Items = new Dictionary<string, ItemKey>();
         // Contents of item groups by names, used for various purposes
         public readonly Dictionary<string, List<ItemKey>> ItemGroups = new Dictionary<string, List<ItemKey>>();
         // Mapping from item group names to hint group names used for them
@@ -127,7 +127,7 @@ namespace RandomizerCommon
                     if (!configItems.NoConfigNames)
                     {
                         if (Items.ContainsKey(item.ConfigName)) throw new Exception($"Duplicate item under config name {item.ConfigName}");
-                        Items[item.ConfigName] = item;
+                        Items[item.ConfigName] = item.Key;
                     }
                     AddMulti(ItemGroups, configItems.GroupName, item.Key);
                 }
@@ -138,11 +138,6 @@ namespace RandomizerCommon
                 }
             }
             HintCategories.AddRange(hints.Distinct().ToList());
-            if (HintCategories.Count == 0)
-            {
-                // Fallback for DS3. TODO use these in config
-                HintCategories.AddRange(new[] { "key items", "upgrade items", "quest items", "estus items" });
-            }
             foreach (ItemPriorityAnnotation group in ann.ItemPriority)
             {
                 group.Keys = new List<ItemKey>();
@@ -161,12 +156,15 @@ namespace RandomizerCommon
                 if (group.ExcludeTags != null)
                 {
                     HashSet<string> exclude = new HashSet<string>(group.ExcludeTags.Split(' '));
-                    if (options["unreliableenemyplacement"] && exclude.Contains("missable"))
+                    // Random enemies are a bit unfair for important items. Can make this based on options as well.
+                    if (exclude.Contains("missable"))
                     {
-                        // For StraySouls in DS3, enemies may be bugged out or not in their expected logical location
+                        // Regular enemies are not expected to be defeatable, and are excluded
                         exclude.Add("enemy");
-                        exclude.Add("miniboss");
+                        // In Sekiro, minibosses are a special class of enemy which block progression.
+                        // In DS3, minibosses are enemies which are powerful/unique and confirmed to drop their items with enemy rando.
                     }
+                    // Consider 'until' missable, except for key items, for which there is special area-level logic
                     if (exclude.Contains("missable") && group.Includes != "keyitems")
                     {
                         exclude.Add("until");
@@ -177,14 +175,9 @@ namespace RandomizerCommon
                     }
                     if (group.Includes == "keyitems")
                     {
-                        if (game.Sekiro)
+                        if (options["headlessignore"])
                         {
-                            // Random enemy key items are a bit unfair. Can make this based on options as well.
-                            exclude.Add("enemy");
-                            if (options["headlessignore"])
-                            {
-                                exclude.Add("headless");
-                            }
+                            exclude.Add("headless");
                         }
                         NoKeyTags.UnionWith(exclude);
                     }
@@ -223,18 +216,48 @@ namespace RandomizerCommon
                 else throw new Exception();
                 ItemRestrict[placement.Key] = placement;
             }
-            RaceModeTags.UnionWith(new[] { "boss", "miniboss", "racemode" });
-            if (!options["headlessignore"])
+            // Set up race mode tags
+            if (game.Sekiro)
             {
-                // Unless headless can contain key items, don't allow them to contain race mode locations either
-                RaceModeTags.Add("headless");
+                RaceModeTags.UnionWith(new[] { "boss", "miniboss", "racemode" });
+                if (!options["headlessignore"])
+                {
+                    // Unless headless can contain key items, don't allow them to contain race mode locations either
+                    RaceModeTags.Add("headless");
+                }
+            }
+            else
+            {
+                RaceModeTags.UnionWith(new[] { "boss", "racemode" });
+                if (options["raceloc_ashes"])
+                {
+                    // This also adds items in ashes to race locations, vs previously they're random.
+                    RaceModeTags.Add("raceshop");
+                    RaceModeTags.Add("ashes");
+                }
+                if (options["raceloc_miniboss"])
+                {
+                    RaceModeTags.Add("miniboss");
+                }
+                if (options["raceloc_lizard"])
+                {
+                    RaceModeTags.Add("lizard");
+                }
+                if (options["raceloc_chest"])
+                {
+                    RaceModeTags.Add("chest");
+                }
+                if (options["raceloc_ring"])
+                {
+                    RaceModeTags.Add("ring");
+                }
             }
             if (ann.SpecialModes != null)
             {
                 foreach (SpecialModeAnnotation group in ann.SpecialModes)
                 {
-                    bool raceMode = !isSwitchDisabled(group.RaceSwitch);
-                    bool norandomMode = !isSwitchDisabled(group.NorandomSwitch);
+                    bool raceMode = group.RaceSwitch != null && !isSwitchDisabled(group.RaceSwitch);
+                    bool norandomMode = group.NorandomSwitch != null && !isSwitchDisabled(group.NorandomSwitch);
                     if (!raceMode && !norandomMode)
                     {
                         continue;
@@ -285,36 +308,18 @@ namespace RandomizerCommon
             {
                 parseReq(area);
                 Areas[area.Name] = area;
-                if (game.Sekiro)
-                {
-                    // All areas are full areas in Sekiro.
-                    AreaAliases[area.Name] = area.Name;
-                    AllAreas[area.Name] = new List<LocationScope>();
-                }
-                else
-                {
-                    // In DS3, auto-combine areas which are connected to each other. This wasn't a great idea.
-                    bool isAlias = area.ReqExpr != null && area.ReqExpr.FreeVars().Count == 1;
-                    if (area.Aliases != null)
-                    {
-                        foreach (string alias in area.GetAliasNames())
-                        {
-                            AreaAliases[alias] = area.Name;
-                        }
-                    }
-                    if (!isAlias)
-                    {
-                        AreaAliases[area.Name] = area.Name;
-                        AllAreas[area.Name] = new List<LocationScope>();
-                    }
-                }
+                // Aliases don't do anything anymore. TODO: Fully remove.
+                AreaAliases[area.Name] = area.Name;
+                AllAreas[area.Name] = new List<LocationScope>();
             }
+            HashSet<string> configVarNames = new HashSet<string>(GetConfig(new HashSet<string>()).Keys);
             foreach (AreaAnnotation area in ann.Events)
             {
                 parseReq(area);
                 Events[area.Name] = area;
                 // Update event areas
                 SortedSet<string> frees = area.ReqExpr.FreeVars();
+                frees.ExceptWith(configVarNames);
                 if (frees.Count == 1 && Areas.ContainsKey(frees.First()))
                 {
                     EventAreas[area.Name] = frees.First();
@@ -349,7 +354,8 @@ namespace RandomizerCommon
             }
             if (strSlots.Count() > 0)
             {
-                Warn($"Keys [{string.Join(", ", strSlots.Keys)}] are in config but not in game. Remove them explicitly, so that data is not lost.");
+                // Should this be an error? Try seeing if merging in really big overhaul mods is actually playable.
+                Console.WriteLine($"Warning: Keys [{string.Join(", ", strSlots.Keys)}] are in config but not in game. Make sure your base mods have all of the required item lots. Will try to proceed without them, but this will result in errors if any key or important items are missing.");
             }
 
             // Simple post processing and validation
@@ -365,9 +371,9 @@ namespace RandomizerCommon
                     if (tag.Contains(':'))
                     {
                         string[] parts = tag.Split(':');
-                        if (parts.Length != 2 || !Items.TryGetValue(parts[1], out ItemAnnotation tagItem)) throw new Exception($"Bad scoped tag {tag} in {scope}");
+                        if (parts.Length != 2 || !Items.TryGetValue(parts[1], out ItemKey tagItem)) throw new Exception($"Bad scoped tag {tag} in {scope}");
                         if (slot.TagItems == null) slot.TagItems = new Dictionary<string, List<ItemKey>>();
-                        AddMulti(slot.TagItems, parts[0], tagItem.Key);
+                        AddMulti(slot.TagItems, parts[0], tagItem);
                     }
                     AddMulti(AllTags, tag, scope);
                 }
@@ -380,7 +386,7 @@ namespace RandomizerCommon
                     {
                         if (Items.ContainsKey(questReq))
                         {
-                            slot.ItemReqs.Add(Items[questReq].Key);
+                            slot.ItemReqs.Add(Items[questReq]);
                         }
                         else if (Areas.ContainsKey(questReq))
                         {
@@ -417,6 +423,8 @@ namespace RandomizerCommon
             // Add special unique items into game
             foreach (ItemKey addItem in ItemGroups["add"])
             {
+                // Mostly to exclude Path of the Dragon
+                if (NorandomItems.Contains(addItem)) continue;
                 data.AddLocationlessItem(addItem);
             }
         }
@@ -552,12 +560,12 @@ namespace RandomizerCommon
             return text;
         }
 
-        public string GetLocationDescription(SlotKey key, List<LocationKey> locations=null, bool raceModeOnly=false)
+        public string GetLocationDescription(SlotKey key, List<LocationKey> locations=null, HashSet<string> filterTags = null)
         {
             ItemLocation loc = data.Location(key);
             LocationScope scope = loc.LocScope;
-            // TODO: Revisit this for DS3
-            List<SlotKey> sources = game.Sekiro ? new List<SlotKey> { key } : data.Location(scope);
+            // Can do data.Location(scope) to list all items in the same scope, but this is more specific and useful.
+            List<SlotKey> sources = new List<SlotKey> { key };
             Func<bool, string> autoText = addPlace =>
             {
                 SortedSet<string> models = new SortedSet<string>();
@@ -577,15 +585,16 @@ namespace RandomizerCommon
                 SlotAnnotation slot = Slots[scope];
                 bool marked = slot.TagList.Contains("XX") || (slot.Text != null && slot.Text.Contains("XX"));
                 text = $" in {FullArea(slot.Area)}:{(marked ? " XX" : "")} {(slot.Text == "auto" || slot.Text == null ? autoText(false) : slot.Text.TrimEnd(new char[] { '.' }))}";
-                if (raceModeOnly && !slot.HasAnyTags(RaceModeTags)) return null;
+                if (filterTags != null && !slot.HasAnyTags(filterTags)) return null;
+                // if (filterTags != null && slot.HasAnyTags(NoKeyTags)) return null;
 
             }
             else
             {
-                if (raceModeOnly) return null;
+                if (filterTags != null) return null;
                 text = $": {autoText(true)}";
             }
-            List<string> original = sources.Select(k => game.Name(k.Item)).ToList();
+            List<string> original = sources.Select(k => game.DisplayName(k.Item)).ToList();
             if (original.Count > 5)
             {
                 original = original.Take(5).Concat(new[] { "etc" }).ToList();
@@ -842,6 +851,10 @@ namespace RandomizerCommon
                 {
                     TagList.Add("norandom");
                 }
+                if (TagList.Contains("ng+") && opt["nongplusrings"])
+                {
+                    TagList.Add("norandom");
+                }
                 // Boss implies late, unless specified otherwise
                 if (TagList.Contains("boss") && !TagList.Contains("early") && !TagList.Contains("mid"))
                 {
@@ -879,7 +892,11 @@ namespace RandomizerCommon
             // Returns if has any of the given tags. If given empty set, returns false.
             public bool HasAnyTags(ISet<string> tags)
             {
-                return GetTags().Any(t => tags.Contains(t));
+                return TagList.Any(t => tags.Contains(t));
+            }
+            public bool HasTag(string tag)
+            {
+                return TagList.Contains(tag);
             }
 
             [YamlIgnore]
@@ -895,6 +912,7 @@ namespace RandomizerCommon
             public string WeightBase { get; set; }
             public string AlwaysBefore { get; set; }
             public List<string> Aliases { get; set; }
+            public bool BoringKeyItem { get; set; }
             [YamlIgnore]
             public Expr ReqExpr { get; set; }
             [YamlIgnore]
@@ -922,21 +940,8 @@ namespace RandomizerCommon
             }
             private void ParseAliases()
             {
-                for (int i = 0; i < Aliases.Count; i++)
-                {
-                    foreach (string part in Regex.Split(Aliases[i], ", "))
-                    {
-                        string[] names = part.Split(' ');
-                        if (names.Length != 2 || names.Any(name => name == "")) throw new Exception($"Badly formatted alias {Aliases[i]} in {Name}");
-                        string subarea = names[0];
-                        string loc = names[1];
-                        if (subarea != Name)
-                        {
-                            AliasNames.Add(subarea);
-                        }
-                        AliasRankings[(subarea, LocationIndices[loc])] = i;
-                    }
-                }
+                // TODO: Fully delete this feature.
+                throw new Exception("Internal error: removed feature");
             }
         }
         public class ConfigAnnotation
@@ -944,6 +949,7 @@ namespace RandomizerCommon
             public string Opt { get; set; }
             public List<string> Oneof { get; set; }
             public string Num { get; set; }
+
             public void UpdateOptions(RandomizerOptions options)
             {
                 // Select first oneof value if none selected
@@ -959,6 +965,7 @@ namespace RandomizerCommon
                     }
                 }
             }
+
             public void UpdateConfig(Dictionary<string, bool> config, SortedSet<string> enabled)
             {
                 if (Opt != null)

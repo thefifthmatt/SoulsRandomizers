@@ -35,8 +35,8 @@ namespace RandomizerCommon
             Dictionary<int, (MSBS.Event.Generator, int)> generators = new Dictionary<int, (MSBS.Event.Generator, int)>();
             foreach (KeyValuePair<string, MSBS> entry in maps)
             {
-                if (!SekiroLocationDataScraper.locations.ContainsKey(entry.Key)) continue;
-                string map = SekiroLocationDataScraper.locations[entry.Key];
+                if (!game.Locations.ContainsKey(entry.Key)) continue;
+                string map = game.Locations[entry.Key];
                 MSBS msb = entry.Value;
 
                 foreach (MSBS.Part.Enemy e in msb.Parts.Enemies)
@@ -94,8 +94,8 @@ namespace RandomizerCommon
             Dictionary<int, string> ownerMap = new Dictionary<int, string>();
             foreach (KeyValuePair<string, MSBS> entry in maps)
             {
-                if (!SekiroLocationDataScraper.locations.ContainsKey(entry.Key)) continue;
-                string map = SekiroLocationDataScraper.locations[entry.Key];
+                if (!game.Locations.ContainsKey(entry.Key)) continue;
+                string map = game.Locations[entry.Key];
                 MSBS msb = entry.Value;
 
                 foreach (MSBS.Part.Enemy e in msb.Parts.Enemies)
@@ -262,8 +262,8 @@ namespace RandomizerCommon
                     HashSet<string> treasureModels = new HashSet<string> { "o000100", "o000101", "o005300", "o005390", "o005400", "o255300" };
                     foreach (KeyValuePair<string, MSBS> entry in maps)
                     {
-                        if (!SekiroLocationDataScraper.locations.ContainsKey(entry.Key)) continue;
-                        string map = SekiroLocationDataScraper.locations[entry.Key];
+                        if (!game.Locations.ContainsKey(entry.Key)) continue;
+                        string map = game.Locations[entry.Key];
                         MSBS msb = entry.Value;
 
                         foreach (MSBS.Part.Object e in msb.Parts.Objects)
@@ -321,8 +321,8 @@ namespace RandomizerCommon
                 // string file = File.ReadAllText(@"dists\Base\enemy.txt");
                 foreach (KeyValuePair<string, MSBS> entry in maps)
                 {
-                    if (!SekiroLocationDataScraper.locations.ContainsKey(entry.Key)) continue;
-                    string map = SekiroLocationDataScraper.locations[entry.Key];
+                    if (!game.Locations.ContainsKey(entry.Key)) continue;
+                    string map = game.Locations[entry.Key];
                     MSBS msb = entry.Value;
 
                     Dictionary<string, MSBS.Event.Talk> talks = new Dictionary<string, MSBS.Event.Talk>();
@@ -374,6 +374,102 @@ namespace RandomizerCommon
                 if (teamType == 24 || teamType == 29)
                 {
                     row["npcType"].Value = (byte)6;
+                }
+            }
+
+            // For scaling. Put every enemy into tiers.
+
+            if (false)
+            {
+                Dictionary<string, List<string>> getFieldValues(string p)
+                {
+                    Dictionary<string, List<string>> ret = new Dictionary<string, List<string>>();
+                    foreach (PARAM.Row row in Params[p].Rows)
+                    {
+                        foreach (PARAM.Cell cell in row.Cells)
+                        {
+                            string name = cell.Def.InternalName;
+                            AddMulti(ret, name, cell.Value.ToString());
+                        }
+                    }
+                    return ret;
+                }
+                string histogram(List<string> list)
+                {
+                    return string.Join(", ",  list.GroupBy(i => i).Select(g => g.Key + (g.Count() > 1 ? $" ({g.Count()})" : "")));
+                }
+                HashSet<int> spEffects = new HashSet<int>(Params["SpEffectParam"].Rows.Select(r => (int)r.ID));
+                spEffects.Add(-1);
+                HashSet<string> spStrs = new HashSet<string>(spEffects.Select(s => s.ToString()));
+                Dictionary<int, HashSet<string>> spEffectUsers = new Dictionary<int, HashSet<string>>();
+                HashSet<string> scalings = new HashSet<string>(new[] { 7514, 7524, 7534, 7544, 7554, 7564, 7574, 7584, 7594, 7604 }.Select(t => t.ToString()));
+                foreach (string p in Params.Keys)
+                {
+                    Dictionary<string, List<string>> fields = getFieldValues(p);
+                    foreach (KeyValuePair<string, List<string>> fe in fields)
+                    {
+                        HashSet<string> vals = new HashSet<string>(fe.Value);
+                        string name = fe.Key;
+                        if (name.ToLowerInvariant().Contains("speffectid") || (p == "NpcParam" && name == "Unk156") || (p == "SkillParam" && (name == "Unk2" || name == "Unk3")))
+                        {
+                            foreach (string val in vals)
+                            {
+                                if (int.TryParse(val, out int sp) && sp > 0)
+                                {
+                                    AddMulti(spEffectUsers, sp, $"{p}.{name} ({fe.Value.Count(v => v == val)})");
+                                }
+                            }
+                        }
+                        if (false && vals.All(v => spStrs.Contains(v)) && vals.Any(v => int.Parse(v) >= 1000))
+                        {
+                            Console.WriteLine($"Possible {p}.{fe.Key}: {histogram(fe.Value)}");
+                        }
+                        if (vals.Any(v => scalings.Contains(v)))
+                        {
+                            Console.WriteLine($"Possible {p}.{fe.Key}: {histogram(fe.Value)}");
+                        }
+                    }
+                }
+
+                List<int> special = new List<int> { 3102050, 300600 }; // sp24 the first
+                // Reference site of speffect, and value of field
+                Dictionary<string, HashSet<(string, string)>> fieldValues = new Dictionary<string, HashSet<(string, string)>>();
+                for (int i = 0; i <= 1; i++)
+                {
+                    foreach (PARAM.Row row in Params["SpEffectParam"].Rows)
+                    {
+                        int sp = (int)row.ID;
+                        if (!spEffectUsers.TryGetValue(sp, out HashSet<string> users))
+                        {
+                            users = new HashSet<string> { "other" + sp };
+                        }
+                        // if (special.Any(s => Math.Abs(s - sp) <= 10)) users.Add("bonk" + sp);
+                        foreach (PARAM.Cell cell in row.Cells)
+                        {
+                            string name = cell.Def.InternalName;
+                            foreach (string user in users)
+                            {
+                                AddMulti(fieldValues, name, (user, cell.Value.ToString()));
+                            }
+                        }
+                    }
+                }
+                foreach (PARAM.Cell cell in Params["SpEffectParam"].Rows[0].Cells)
+                {
+                    string name = cell.Def.InternalName;
+                    if (fieldValues[name].Select(t => t.Item2).Distinct().Count() <= 1) continue;
+                    Console.WriteLine($"\n\n{name}:");
+                    foreach (IGrouping<string, string> e in fieldValues[name].GroupBy(e => e.Item2, e => e.Item1).OrderBy(e => double.Parse(e.Key)))
+                    {
+                        if (e.Count() > 50)
+                        {
+                            Console.WriteLine($"    {e.Key}: *********************************************");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"    {e.Key}: {string.Join(", ", e)}");
+                        }
+                    }
                 }
             }
 
@@ -745,7 +841,7 @@ namespace RandomizerCommon
                     {
                         EnemyData data = defaultData[ent];
                         string name = infos[ent].ExtraName ?? game.ModelName(data.Model);
-                        return $"{name} (#{ent}) {(target ? "in" : "from")} {SekiroLocationDataScraper.fullMapName[SekiroLocationDataScraper.locations[data.Map]]}";
+                        return $"{name} (#{ent}) {(target ? "in" : "from")} {game.LocationNames[game.Locations[data.Map]]}";
                     }
                     List<EnemyClass> printSilos = new List<EnemyClass> { siloType };
                     if (siloType == EnemyClass.Boss)
@@ -1048,8 +1144,8 @@ namespace RandomizerCommon
             };
             foreach (KeyValuePair<string, MSBS> entry in maps)
             {
-                if (!SekiroLocationDataScraper.locations.ContainsKey(entry.Key)) continue;
-                string map = SekiroLocationDataScraper.locations[entry.Key];
+                if (!game.Locations.ContainsKey(entry.Key)) continue;
+                string map = game.Locations[entry.Key];
                 MSBS msb = entry.Value;
 
                 foreach (MSBS.Part.Collision col in msb.Parts.Collisions)
@@ -1181,8 +1277,8 @@ namespace RandomizerCommon
 
             foreach (KeyValuePair<string, MSBS> entry in maps)
             {
-                if (!SekiroLocationDataScraper.locations.ContainsKey(entry.Key)) continue;
-                string map = SekiroLocationDataScraper.locations[entry.Key];
+                if (!game.Locations.ContainsKey(entry.Key)) continue;
+                string map = game.Locations[entry.Key];
                 MSBS msb = entry.Value;
 
                 // Model declarations
@@ -1454,7 +1550,6 @@ namespace RandomizerCommon
             }
 
             // Also, name generation stuff
-            FMG baseNameFmg = game.BaseItemFMGs["NPC名"];
             FMG nameFmg = game.ItemFMGs["NPC名"];
             int baseNameId = 902000;
             // Mapping from (target entity, base target name) = new target name
@@ -1918,7 +2013,9 @@ namespace RandomizerCommon
                                         }
                                         else if (revMapping.TryGetValue(t.Entity, out int nameSource))
                                         {
-                                            if (t.Entity == nameEntity)
+                                            // Allow entity to be 0 to substitute an arg. This is needed for Owl 1 (the only parameterized start event),
+                                            // may not work in the general case.
+                                            if (t.Entity == nameEntity || nameEntity == 0)
                                             {
                                                 instr[3] = GetCleverName((int)instr[3], nameSource, t.Entity);
                                             }
@@ -2159,7 +2256,7 @@ namespace RandomizerCommon
 
             // An edit for roberto
             {
-                ESD warrior = game.Talk()["m20_00_00_00"]["t200500"];
+                ESD warrior = game.Talk["m20_00_00_00"]["t200500"];
                 List<ESD.State> mainloop = warrior.StateGroups[0x7FFFFFFF - 5].Values.ToList();
                 foreach (ESD.State state in mainloop)
                 {

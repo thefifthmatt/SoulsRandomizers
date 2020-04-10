@@ -190,7 +190,7 @@ namespace RandomizerCommon
                     {
                         if (info.Class == c && primaryName.TryGetValue(info.ID, out string name))
                         {
-                            string enemyMap = SekiroLocationDataScraper.fullMapName[SekiroLocationDataScraper.locations[defaultData[info.ID].Map]];
+                            string enemyMap = game.LocationNames[game.Locations[defaultData[info.ID].Map]];
                             if (map != enemyMap)
                             {
                                 map = enemyMap;
@@ -405,12 +405,11 @@ namespace RandomizerCommon
                 string val = entry.Value;
                 // For now, we can only do key items in general areas
                 List<ItemKey> keyItems = ann.ItemGroups["keyitems"];
-                if (!ann.Items.TryGetValue(item, out ItemAnnotation itemAnn))
+                if (!ann.Items.TryGetValue(item, out ItemKey key))
                 {
                     errors.Add($"Unrecognized item name {item} (must use randomizer's internal short names)");
                     continue;
                 }
-                ItemKey key = itemAnn.Key;
                 if (!keyItems.Contains(key))
                 {
                     errors.Add($"{item} is not considered a key item, cannot be assigned somewhere");

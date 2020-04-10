@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using RandomizerCommon;
 
-namespace RandomizerCommon
+namespace SekiroRandomizer
 {
     static class Program
     {
@@ -40,9 +40,7 @@ namespace RandomizerCommon
                     options.Preset = "Dev";
                     preset = Preset.LoadPreset("Dev", filename: "Dev.txt");
                 }
-                string outPath = sekiro
-                    ? @"C:\Program Files (x86)\Steam\steamapps\common\Sekiro\randomizer"
-                    : @"C:\Program Files (x86)\Steam\steamapps\common\DARK SOULS III\Game\randomizer";
+                string outPath = @"C:\Program Files (x86)\Steam\steamapps\common\Sekiro\randomizer";
                 new Randomizer().Randomize(options, status => Console.WriteLine("## " + status), outPath, sekiro, preset);
                 Application.Exit();
             }

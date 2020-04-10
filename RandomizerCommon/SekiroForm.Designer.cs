@@ -496,9 +496,9 @@
             this.mergemods.AutoSize = true;
             this.mergemods.Location = new System.Drawing.Point(6, 44);
             this.mergemods.Name = "mergemods";
-            this.mergemods.Size = new System.Drawing.Size(277, 20);
+            this.mergemods.Size = new System.Drawing.Size(274, 20);
             this.mergemods.TabIndex = 9;
-            this.mergemods.Text = "Merge in files from normal \'mods\' directory";
+            this.mergemods.Text = "Merge mods from normal \'mods\' directory";
             this.mergemods.UseVisualStyleBackColor = true;
             this.mergemods.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 

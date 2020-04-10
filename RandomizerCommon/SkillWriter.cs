@@ -103,16 +103,6 @@ namespace RandomizerCommon
                 r["Unk5"].Value = data.Placeholder;
                 r["Unk10"].Value = (byte)(data.EmblemChange ? 1 : 0);
             }
-            SlotKey getTargetKey(ItemKey key)
-            {
-                SlotKey target = permutation.Silos[Permutation.RandomSilo.FINITE].Mapping.Where(e => e.Value.Any(s => s.Item.Equals(key))).Select(e => e.Key).FirstOrDefault();
-                if (target == null)
-                {
-                    // If not randomized, try to get the vanilla location
-                    return new SlotKey(key, data.Data[key].Locations.Keys.First());
-                }
-                return target;
-            }
             Shuffle(random, skills);
             Shuffle(random, skillSlots);
             Shuffle(random, prosthetics);
@@ -121,7 +111,7 @@ namespace RandomizerCommon
             // Skills rando
             Dictionary<ItemKey, string> textWeight = new Dictionary<ItemKey, string>();
             Dictionary<ItemKey, string> textLocations = texts.Values.ToDictionary(t => t, t => {
-                SlotKey target = getTargetKey(t);
+                SlotKey target = permutation.GetFiniteTargetKey(t);
                 textWeight[t] = permutation.GetLogOrder(target);
                 SlotAnnotation sn = ann.Slot(data.Location(target).LocScope);
                 if (explain) Console.WriteLine($"{game.Name(t)} in {sn.Area} - {sn.Text}. Lateness {(permutation.ItemLateness.TryGetValue(t, out double val) ? val : -1)}");
@@ -207,6 +197,10 @@ namespace RandomizerCommon
                 // Can also order by (allSlots[t.Value].Col, allSlots[t.Value].Row), but just do alphabetical instead
                 List<int> textSkills = skillMapping.Where(t => text.Equals(allSlots[t.Value].Text)).Select(t => t.Key).ToList();
                 Console.WriteLine($"Skills in {game.Name(text)}: {string.Join(", ", textSkills.Select(t => descName(allData[t].Item)).OrderBy(t => t))}");
+                foreach (int skill in textSkills)
+                {
+                    permutation.SkillAssignment[allData[skill].Key] = text;
+                }
             }
             Console.WriteLine();
 
@@ -248,7 +242,7 @@ namespace RandomizerCommon
                     }
                 }
             }
-            matOrder = matOrder.Select(mat => (permutation.GetLogOrder(getTargetKey(mat)), mat)).OrderBy(e => e.Item1).Select(e => e.Item2).ToList();
+            matOrder = matOrder.Select(mat => (permutation.GetLogOrder(permutation.GetFiniteTargetKey(mat)), mat)).OrderBy(e => e.Item1).Select(e => e.Item2).ToList();
             List<SkillSlot> slotOrder = prostheticSlots.OrderBy(sl => (sl.Col, sl.Row)).ToList();
             List<int> initialSlots = new List<int> { 0, 1, 2, 3, 4, 5, 9, 10, 12, 13 };
             // Mapping source to target

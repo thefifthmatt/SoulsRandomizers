@@ -316,9 +316,9 @@ namespace RandomizerCommon
             Dictionary<EntityId, EntityId> objects = new Dictionary<EntityId, EntityId>();
             Dictionary<int, List<EntityId>> usedNpcs = new Dictionary<int, List<EntityId>>();
             Dictionary<int, List<EntityId>> usedEntities = new Dictionary<int, List<EntityId>>();
-            foreach (KeyValuePair<string, MSB3> entry in game.Maps())
+            foreach (KeyValuePair<string, MSB3> entry in game.Maps)
             {
-                string location = LocationNames[entry.Key];
+                string location = game.Locations[entry.Key];
                 foreach (MSB3.Part.Object part in entry.Value.Parts.Objects)
                 {
                     EntityId id = new EntityId(location, part.Name, part.EventEntityID);
@@ -342,9 +342,9 @@ namespace RandomizerCommon
                     }
                 }
             }
-            foreach (KeyValuePair<string, MSB3> entry in game.Maps())
+            foreach (KeyValuePair<string, MSB3> entry in game.Maps)
             {
-                string location = LocationNames[entry.Key];
+                string location = game.Locations[entry.Key];
                 foreach (MSB3.Event.Treasure treasure in entry.Value.Events.Treasures)
                 {
                     if (treasure.PartName2 != null)

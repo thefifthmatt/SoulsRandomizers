@@ -201,28 +201,28 @@ namespace RandomizerCommon
                     {
                         mainCat = weaponCategories[weaponCategory];
                     }
-                    if ((bool)row["enableGuard"].Value)
+                    if ((byte)row["enableGuard"].Value == 1)
                     {
                         mainCat = EquipCategory.SHIELD;
                     }
                     if (mainCat == EquipCategory.BOW || mainCat == EquipCategory.ARROW || mainCat == EquipCategory.BOLT)
                     {
                         // Disable greatbow for starting - requirements too far off
-                        if ((bool)row["DisableShoot"].Value) continue;
+                        if ((byte)row["DisableShoot"].Value == 1) continue;
                     }
                     if (mainCat == EquipCategory.BOW) {
-                        if ((bool)row["boltSlotEquipable"].Value) crossbows.Add(key);
+                        if ((byte)row["boltSlotEquipable"].Value == 1) crossbows.Add(key);
                     }
                     if (mainCat != EquipCategory.UNSET)
                     {
                         AddMulti(items, mainCat, key);
                     }
-                    if ((bool)row["enableMagic"].Value) AddMulti(items, EquipCategory.CATALYST, key);
-                    if ((bool)row["enableMiracle"].Value) AddMulti(items, EquipCategory.TALISMAN, key);
-                    if ((bool)row["enablePyromancy"].Value) AddMulti(items, EquipCategory.FLAME, key);
+                    if ((byte)row["enableMagic"].Value == 1) AddMulti(items, EquipCategory.CATALYST, key);
+                    if ((byte)row["enableMiracle"].Value == 1) AddMulti(items, EquipCategory.TALISMAN, key);
+                    if ((byte)row["enablePyromancy"].Value == 1) AddMulti(items, EquipCategory.FLAME, key);
                     int str = (byte)row["properStrength"].Value;
                     // Add two hand adjustment for weapons. Note this doesn't work exactly for casting items, but does not affect casting.
-                    if (twoHand && !(bool)row["Unk14"].Value && (mainCat == EquipCategory.WEAPON || mainCat == EquipCategory.UNSET))
+                    if (twoHand && (byte)row["Unk14"].Value == 0 && (mainCat == EquipCategory.WEAPON || mainCat == EquipCategory.UNSET))
                     {
                         str = (int)Math.Ceiling(str / 1.5);
                     }
@@ -240,7 +240,7 @@ namespace RandomizerCommon
                     PARAM.Row row = game.Item(key);
                     for (int i = 0; i < 4; i++)
                     {
-                        if ((bool)row[armorTypes[i]].Value)
+                        if ((byte)row[armorTypes[i]].Value == 1)
                         {
                             AddMulti(items, armorCats[i], key);
                             weights[key] = (float)row["weight"].Value;
@@ -251,7 +251,8 @@ namespace RandomizerCommon
                 else if (key.Type == ItemType.GOOD)
                 {
                     PARAM.Row magic = magics[key.ID];
-                    if (magic != null)
+                    // Exclude Spook and Tears of Denial as they can be a key item, useful though they are
+                    if (magic != null && key.ID != 1354000 && key.ID != 3520000)
                     {
                         int magicCat = (byte)magic["ezStateBehaviorType"].Value;
                         AddMulti(items, magicTypes[magicCat], key);

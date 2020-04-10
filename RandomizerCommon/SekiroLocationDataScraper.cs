@@ -11,32 +11,6 @@ namespace RandomizerCommon
 {
     public class SekiroLocationDataScraper
     {
-        // TODO: Move these dictionaries somewhere nicer
-        public static Dictionary<string, string> locations = new Dictionary<string, string>
-        {
-            { "m10_00_00_00", "hirata" },
-            { "m11_00_00_00", "ashinaoutskirts" },
-            { "m11_01_00_00", "ashinacastle" },
-            { "m11_02_00_00", "ashinareservoir" },
-            { "m13_00_00_00", "dungeon" },
-            { "m15_00_00_00", "mibuvillage" },
-            { "m17_00_00_00", "sunkenvalley" },
-            { "m20_00_00_00", "senpou" },
-            { "m25_00_00_00", "fountainhead" },
-        };
-        public static Dictionary<string, string> fullMapName = new Dictionary<string, string>
-        {
-            { "", "Global" },
-            { "hirata", "Hirata Estate" },
-            { "ashinaoutskirts", "Ashina Outskirts" },
-            { "ashinacastle", "Ashina Castle" },
-            { "ashinareservoir", "Ashina Reservoir" },
-            { "dungeon", "Abandoned Dungeon" },
-            { "mibuvillage", "Ashina Depths" },
-            { "sunkenvalley", "Sunken Valley" },
-            { "senpou", "Senpou Temple" },
-            { "fountainhead", "Fountainhead Palace" },
-        };
         private static SortedDictionary<int, string> shopSplits = new SortedDictionary<int, string>
         {
             { 1, null },
@@ -261,7 +235,7 @@ namespace RandomizerCommon
                     if (simple)
                     {
 
-                        SortedSet<string> locations = new SortedSet<string>(entities.Select(e => fullMapName[e.MapName]));
+                        SortedSet<string> locations = new SortedSet<string>(entities.Select(e => game.LocationNames[e.MapName]));
                         SortedSet<string> models = new SortedSet<string>(entities.Select(e => e.EntityName.StartsWith("o") ? "Treasure" : game.EntityName(e)));
                         text2 = $"{string.Join(", ", models)}: {string.Join(", ", locations)}";
                         if (models.All(x => x == "unknown")) { text2 = "Unused/Unknown"; }
@@ -504,9 +478,9 @@ namespace RandomizerCommon
             // This is a bit intensive. Ideally just dump this somewhere else
             HashSet<int> debugEsd = new HashSet<int>();
             IEnumerable<ESD.Condition> GetCommands(List<ESD.Condition> condList) => Enumerable.Concat(condList, condList.SelectMany(cond => GetCommands(cond.Subconditions)));
-            foreach (KeyValuePair<string, Dictionary<string, ESD>> entry in game.Talk())
+            foreach (KeyValuePair<string, Dictionary<string, ESD>> entry in game.Talk)
             {
-                string location = locations.ContainsKey(entry.Key) ? locations[entry.Key] : "";
+                string location = game.Locations.ContainsKey(entry.Key) ? game.Locations[entry.Key] : "";
                 // 62210
                 foreach (KeyValuePair<string, ESD> esdEntry in entry.Value)
                 {
@@ -535,7 +509,7 @@ namespace RandomizerCommon
             bool logEntities = false;
             foreach (KeyValuePair<string, MSBS> entry in game.Smaps)
             {
-                string location = locations[entry.Key];
+                string location = game.Locations[entry.Key];
                 MSBS msb = entry.Value;
                 Dictionary<string, int> partEsds = new Dictionary<string, int>();
                 List<MSBS.Part.Enemy> enemies = msb.Parts.Enemies;
@@ -625,7 +599,7 @@ namespace RandomizerCommon
             }
             foreach (KeyValuePair<string, MSBS> entry in game.Smaps)
             {
-                string location = locations[entry.Key];
+                string location = game.Locations[entry.Key];
                 foreach (MSBS.Event.Treasure treasure in entry.Value.Events.Treasures)
                 {
                     if (treasure.TreasurePartName != null)

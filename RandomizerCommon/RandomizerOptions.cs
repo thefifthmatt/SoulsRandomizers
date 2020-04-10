@@ -18,6 +18,8 @@ namespace RandomizerCommon
                 opt = new SortedDictionary<string, bool>(opt),
                 num = new Dictionary<string, float>(num),
                 difficulty = difficulty,
+                Seed = Seed,
+                Preset = Preset,
             };
         }
 
@@ -27,6 +29,10 @@ namespace RandomizerCommon
             if (Sekiro)
             {
                 opt["v1"] = false;
+                opt["v2"] = true;
+            }
+            else
+            {
                 opt["v2"] = true;
             }
         }
@@ -131,14 +137,20 @@ namespace RandomizerCommon
         }
 
         private static HashSet<string> logiclessOptions = new HashSet<string> { "mergemods" };
-        public HashSet<string> GetLogicOptions()
+        public SortedSet<string> GetLogicOptions()
         {
-            return new HashSet<string>(opt.Where(e => e.Value && !logiclessOptions.Contains(e.Key)).Select(e => e.Key));
+            return new SortedSet<string>(opt.Where(e => e.Value && !logiclessOptions.Contains(e.Key)).Select(e => e.Key));
+        }
+        public SortedSet<string> GetOptions()
+        {
+            return new SortedSet<string>(opt.Where(e => e.Value).Select(e => e.Key));
         }
 
-        public string ConfigString(bool includeSeed = false, bool includePreset = false) => $"{string.Join(" ", GetLogicOptions())} {Difficulty}{(includeSeed ? $" {Seed}" : "")}{(!string.IsNullOrEmpty(Preset) && includePreset ? $" --preset {Preset}" : "")}";
-        public override string ToString() => ConfigString(true, true);
-        public string ConfigHash() => (JavaStringHash(ConfigString(false, true)) % 99999).ToString().PadLeft(5, '0');
+        public string ConfigString(bool includeSeed = false, bool includePreset = false, bool onlyLogic = true) =>
+            $"{string.Join(" ", onlyLogic ? GetLogicOptions() : GetOptions())} {Difficulty}{(includeSeed ? $" {Seed}" : "")}{(!string.IsNullOrEmpty(Preset) && includePreset ? $" --preset {Preset}" : "")}";
+        public string FullString() => ConfigString(includeSeed: true, includePreset: true, onlyLogic: false);
+        public override string ToString() => ConfigString(includeSeed: true, includePreset: true, onlyLogic: false);
+        public string ConfigHash() => (JavaStringHash(ConfigString(includeSeed: false, includePreset: true, onlyLogic: true)) % 99999).ToString().PadLeft(5, '0');
 
         private static uint JavaStringHash(string s)
         {

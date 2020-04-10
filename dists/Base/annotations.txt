@@ -446,7 +446,7 @@ Areas:
   Text: Bell Demon's Temple
   Req: ashinaoutskirts_courtyard  # also from senpou, but courtyard is earlier
 - Name: senpou_cavern
-  Text: Sunken Valley Cavern
+  Text: Sunken Valley Cavern from Senpou Temple
   Req: senpou AND puppeteerninjutsu
 - Name: senpou_grounds
   Text: Senpou Temple Grounds
@@ -480,10 +480,10 @@ Areas:
   Text: Sunken Valley after Fountainhead
   Req: sunkenvalley_passage AND fountainhead_carp
 - Name: sunkenvalley_shrine
-  Text: Sunken Valley Passage Shrine
+  Text: Sunken Valley Serpent Cave
   Req: sunkenvalley_passage AND (cavesnakeskip OR mistravensfeathers OR puppeteerninjutsu)
 - Name: sunkenvalley_senpou
-  Text: Sunken Valley Passage after Cavern
+  Text: Sunken Valley Passage after Senpou Temple
   Req: senpou_cavern AND sunkenvalley_passage
   WeightBase: senpou_cavern
 - Name: sunkenvalley_poisonpool
@@ -595,26 +595,26 @@ PlacementRestrictions:
 - Name: Shuriken Wheel
   Switch: skillprogression
   Unique:
-  - Before: ladybutterfly_location owl_location
+  - Before: ladybutterfly_location owl_location fountainhead_bridge
 # Divine Confetti, maybe?
 - Name: Robert's Firecrackers
   Switch: skillprogression
   Unique:
-  - Before: blazingbull_location sakurabull_location guardianape_location headlessape_location
+  - Before: blazingbull_location sakurabull_location guardianape_location headlessape_location fountainhead_bridge
 - Name: Gyoubu's Broken Horn
   Switch: skillprogression
   Unique:
-  - Before: redguard_location guardianape_location headlessape_location
+  - Before: redguard_location guardianape_location headlessape_location fountainhead_bridge
 - Item:
     Name: Sabimaru
     ID: 3:9750
   Switch: skillprogression
   Unique:
-  - Before: fountainhead
+  - Before: fountainhead_bridge
 - Name: Shinobi Axe of the Monkey
   Switch: skillprogression
   Unique:
-  - Before: fountainhead
+  - Before: fountainhead_bridge
 - Name: Mikiri Counter
   Switch: skillprogression
   Unique:
@@ -644,15 +644,15 @@ PlacementRestrictions:
     ID: 3:9701
   Switch: skillprogression
   Unique:
-  - Before: fountainhead
+  - Before: fountainhead_bridge
 - Name: Pine Resin Ember
   Switch: skillprogression
   Unique:
-  - Before: fountainhead
+  - Before: fountainhead_bridge
 - Name: Malcontent's Ring
   Switch: skillprogression
   Unique:
-  - Before: fountainhead
+  - Before: fountainhead_bridge
 - Name: Divine Confetti
   Switch: skillprogression
   Unique:
@@ -2538,7 +2538,7 @@ Slots:
   - 'Gatehouse Key - 10101400[Treasure (o000100_0073 #1111510) ashinacastle, Ashina Soldier (c1010_0035 #1110225) ashinacastle]'
   Text: Dropped by a soldier on the bridge leading to the Abandoned Dungeon entrance, or in the courtyard immediately to the left after the Ashina Castle Sculptor's Idol
   Area: ashinareservoir_entrance
-  Tags: racemode
+  Tags: racemode enemyhint
 - Key: '02,0:51110985::'
   DebugText:
   - 'Heavy Coin Purse - 13605200[Assassin (Interior Ministry) (c1361_0000 #1110641) ashinacastle]'
@@ -3489,7 +3489,7 @@ Slots:
   - 'Shelter Stone - 1500050[o155400 (o155400_3000 #1501220) mibuvillage]'
   Text: On the cave altar
   Area: mibuvillage_cave
-  Tags: racemode
+  Tags: racemode bosshint
 - Key: '05,0:51500060::'
   DebugText:
   - Ceramic Shard - 1500060[Treasure (o000100_0006) mibuvillage] 2x
@@ -3935,7 +3935,7 @@ Slots:
   - 'Lotus of the Palace - 1700000[o177800 (o177800_7000 #1701200) sunkenvalley]'
   Text: After Guardian Ape
   Area: sunkenvalley_flower
-  Tags: racemode
+  Tags: racemode bosshint
 - Key: '06,0:51700015::'
   DebugText:
   - 'Bundled Jizo Statue - 1700015[Treasure (o000100_0067 #1701341) sunkenvalley]'
@@ -4404,7 +4404,7 @@ Slots:
   - 'Fresh Serpent Viscera - 50100000[Great Serpent (c5010_0000 #1700600) sunkenvalley]'
   Text: Dropped by plunging onto Great Serpent, after both grappling the kite in Senpou Temple and using Gun Fort Shrine Key
   Area: sunkenvalley_senpou
-  Tags: racemode
+  Tags: racemode enemyhint
 - Key: '06,0:51700961::'
   DebugText:
   - 'Yellow Gunpowder - 10401101[Centipede Boss (c1040_0000 #1700425) sunkenvalley] 2x'
@@ -5372,21 +5372,25 @@ Slots:
   - Light Coin Purse - 2500380[Treasure (o000100_0038) fountainhead]
   Text: At the bottom of the lake near Pot Noble Koremori under some tall plants
   Area: fountainhead
+  Tags: underwater
 - Key: '08,0:52500390::'
   DebugText:
   - Scrap Magnetite - 2500390[Treasure (o000100_0039) fountainhead] 3x
   Text: At the bottom of the lake near Pot Noble Koremori under some tall plants
   Area: fountainhead
+  Tags: underwater
 - Key: '08,0:52500400::'
   DebugText:
   - Red Lump - 2500400[Shiny Treasure (o000101_0002) fountainhead]
   Text: Shiny object in the lake a bit to the right of the bridge demolished by the Great Carp, coming from Flower Viewing Stage Sculptor's Idol
   Area: fountainhead
+  Tags: underwater
 - Key: '08,0:52500410::'
   DebugText:
   - Precious Bait - 2500410[Treasure (o000100_0041) fountainhead]
   Text: In the lake underneath the Feeding Grounds area
   Area: fountainhead
+  Tags: underwater
 - Key: '08,0:52500420::'
   DebugText:
   - Bulging Coin Purse - 2500420[o005391 (o005391_0001) fountainhead]
@@ -5398,55 +5402,61 @@ Slots:
   - Ceramic Shard - 2500430[Treasure (o000100_0043) fountainhead] 2x
   Text: In the lake before the opening leading to the Great Carp's area
   Area: fountainhead
+  Tags: underwater
 - Key: '08,0:52500440::'
   DebugText:
   - Treasure Carp Scale - 2500440[Shiny Treasure (o000101_0003) fountainhead]
   Text: Shiny object inside of a completely submerged building along the right wall of the lake, coming from Vermillion Bridge
   Area: fountainhead
+  Tags: underwater
 - Key: '08,0:52500450::'
   DebugText:
   - Treasure Carp Scale - 2500450[Shiny Treasure (o000101_0004) fountainhead]
   Text: Shiny object inside of a completely submerged building along the right wall of the lake, coming from Vermillion Bridge
   Area: fountainhead
+  Tags: underwater
 - Key: '08,0:52500460::'
   DebugText:
   - Treasure Carp Scale - 2500460[Shiny Treasure (o000101_0005) fountainhead]
   Text: Shiny object inside of a completely submerged building along the right wall of the lake, coming from Vermillion Bridge
   Area: fountainhead
+  Tags: underwater
 - Key: '08,0:52500470::'
   DebugText:
   - Precious Bait - 2500470[Treasure (o000100_0047) fountainhead]
   Text: Underneath the roof of an overturned building nearly directly below Okami Leader Shizu's tree branch
   Area: fountainhead
+  Tags: underwater
 - Key: '08,0:52500480::'
   DebugText:
   - Treasure Carp Scale - 2500480[Shiny Treasure (o000101_0000) fountainhead]
   Text: Shiny object near the chest guarded by the two Underwater Headless
   Area: fountainhead
-  Tags: outoftheway
+  Tags: outoftheway underwater
 - Key: '08,0:52500490::'
   DebugText:
   - Treasure Carp Scale - 2500490[Shiny Treasure (o000101_0001) fountainhead]
   Text: Shiny object near the chest guarded by the two Underwater Headless
   Area: fountainhead
-  Tags: outoftheway
+  Tags: outoftheway underwater
 - Key: '08,0:52500500::'
   DebugText:
   - Precious Bait - 2500500[Treasure (o000100_0050) fountainhead]
   Text: Deep in the lake on top of a sunken log nearby the Underwater Headless
   Area: fountainhead
+  Tags: underwater
 - Key: '08,0:52500510::'
   DebugText:
   - Light Coin Purse - 2500510[Treasure (o000100_0051) fountainhead]
   Text: At the bottom of the Great Carp ravine closer to the entrance. The carp will not attack after feeding it Precious Bait.
   Area: fountainhead
-  Tags: outoftheway
+  Tags: outoftheway underwater
 - Key: '08,0:52500520::'
   DebugText:
   - Adamantite Scrap - 2500520[Treasure (o000100_0052) fountainhead]
   Text: At the bottom of the Great Carp ravine closer to the exit. The carp will not attack after feeding it Precious Bait.
   Area: fountainhead
-  Tags: outoftheway
+  Tags: outoftheway underwater
 - Key: '08,0:52500530::'
   DebugText:
   - Mibu Balloon of Soul - 2500530[Treasure (o000100_0053) fountainhead] 3x
@@ -5468,6 +5478,7 @@ Slots:
   - Light Coin Purse - 2500560[Treasure (o000100_0056) fountainhead]
   Text: Underneath the completely submerged building overlooking the two Underwater Headless
   Area: fountainhead
+  Tags: underwater
 - Key: '08,0:52500570::'
   DebugText:
   - Treasure Carp Scale - 2500570[Treasure (o000100_0057) fountainhead]
@@ -5493,6 +5504,7 @@ Slots:
   - Lump of Grave Wax - 2500610[Treasure (o000100_0061) fountainhead]
   Text: Underneath the building where the Old Palace Maid asks you to open the palace doors, near Feeding Grounds
   Area: fountainhead
+  Tags: underwater
 - Key: '08,0:52500620::'
   DebugText:
   - Lump of Grave Wax - 2500620[Treasure (o000100_0062) fountainhead]
@@ -5554,7 +5566,7 @@ Slots:
   - "Yashariku's Spiritfall - 13401000[Underwater Headless (c1340_0000 #2500550) fountainhead]"
   Text: Dropped by Underwater Headless
   Area: fountainhead
-  Tags: headless
+  Tags: headless underwater
 - Key: '08,0:52500945::'
   DebugText:
   - 'Bulging Coin Purse - 13401005[Underwater Headless (c1340_0000 #2500550) fountainhead]'
@@ -5645,7 +5657,7 @@ Slots:
   - 'Prayer Bead - 2500020[Underwater Chest (o005400_0000 #2501502) fountainhead]'
   Text: In the chest guarded by the two Underwater Headless
   Area: fountainhead
-  Tags: racemode
+  Tags: racemode underwater
 - Key: '99,0:50003010::'
   DebugText:
   - Resurrection - 3010[Scripted] (hidden)

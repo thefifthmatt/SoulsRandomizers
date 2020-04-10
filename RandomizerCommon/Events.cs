@@ -59,7 +59,11 @@ namespace RandomizerCommon
         private EMEDF doc;
         private Dictionary<string, (int, int)> docByName;
         private Dictionary<EMEDF.InstrDoc, List<int>> funcBytePositions;
-        // Take free event flags from Abandoned Dungeon
+
+        // Take free event flags from Abandoned Dungeon.
+        // These are not usable as flags which can be read/written, even the temporary ones, but they are usable for event initialization.
+        // Who knows, these might work for DS3 too, but definitely not writable in that case.
+
         private int tmpBase = 11315000; // 11305750;  // until 6000, then it's not tmp anymore
         private int tmpBaseMax = 11496000;
         private int tmpJump = 11515000;
@@ -69,9 +73,9 @@ namespace RandomizerCommon
 
         public readonly EventConfig Config;
 
-        public Events()
+        public Events(bool Sekiro)
         {
-            doc = EMEDF.ReadFile(@"dists\Base\sekiro-common.emedf.json");
+            doc = EMEDF.ReadFile(Sekiro ? @"dists\Base\sekiro-common.emedf.json" : @"dist\Base\ds3-common.emedf.json");
             docByName = doc.Classes.SelectMany(c => c.Instructions.Select(i => (i, (int)c.Index))).ToDictionary(i => i.Item1.Name, i => (i.Item2, (int)i.Item1.Index));
             funcBytePositions = new Dictionary<EMEDF.InstrDoc, List<int>>();
             foreach (EMEDF.ClassDoc bank in doc.Classes)
@@ -88,10 +92,14 @@ namespace RandomizerCommon
                     }
                 }
             }
-            IDeserializer deserializer = new DeserializerBuilder().Build();
-            using (var reader = File.OpenText("dists/Base/events.txt"))
+            if (Sekiro)
             {
-                Config = deserializer.Deserialize<EventConfig>(reader);
+                // For now, DS3 has no config, since it has neither enemy rando or flag rewriting.
+                IDeserializer deserializer = new DeserializerBuilder().Build();
+                using (var reader = File.OpenText("dists/Base/events.txt"))
+                {
+                    Config = deserializer.Deserialize<EventConfig>(reader);
+                }
             }
         }
 

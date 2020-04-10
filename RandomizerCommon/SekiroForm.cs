@@ -453,8 +453,6 @@ namespace RandomizerCommon
             }
             SaveOptions();
             RandomizerOptions rand = options.Copy();
-            rand.Seed = options.Seed;
-            rand.Preset = options.Preset;
             working = true;
             randomize.Text = $"Randomizing...";
             randomize.BackColor = Color.LightYellow;
