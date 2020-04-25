@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using SoulsIds;
+using YamlDotNet.Serialization;
 
 namespace RandomizerCommon
 {
@@ -37,6 +39,7 @@ namespace RandomizerCommon
                 DirectoryInfo modDirInfo = new DirectoryInfo($@"{outPath}\..\{modPath}");
                 if (!modDirInfo.Exists) throw new Exception($"Can't merge mods: {modDirInfo.FullName} not found");
                 modDir = modDirInfo.FullName;
+                if (new DirectoryInfo(outPath).FullName == modDir) throw new Exception($"Can't merge mods: already running from 'mods' directory");
             }
             GameData game = new GameData(distDir, sekiro);
             game.Load(modDir);
@@ -60,13 +63,19 @@ namespace RandomizerCommon
             // Slightly different high-level algorithm for each game. As always, can try to merge more in the future.
             if (sekiro)
             {
-                Events events = new Events(true);
+                Events events = new Events(@"dists\Base\sekiro-common.emedf.json");
+                EventConfig eventConfig;
+                using (var reader = File.OpenText("dists/Base/events.txt"))
+                {
+                    IDeserializer deserializer = new DeserializerBuilder().Build();
+                    eventConfig = deserializer.Deserialize<EventConfig>(reader);
+                }
 
                 EnemyLocations locations = null;
                 if (options["enemy"])
                 {
                     notify?.Invoke("Randomizing enemies");
-                    locations = new EnemyRandomizer(game, events).Run(options, preset);
+                    locations = new EnemyRandomizer(game, events, eventConfig).Run(options, preset);
                     if (!options["enemytoitem"])
                     {
                         locations = null;
@@ -80,22 +89,26 @@ namespace RandomizerCommon
                     AnnotationData anns = new AnnotationData(game, data);
                     anns.Load(options);
                     anns.AddEnemyLocations(locations);
+
+                    SkillSplitter.Assignment split = null;
+                    if (!options["norandom_skills"] && options["splitskills"])
+                    {
+                        split = new SkillSplitter(game, data, anns, events).SplitAll();
+                    }
+
                     Permutation perm = new Permutation(game, data, anns, explain: false);
                     perm.Logic(new Random(seed), options, preset);
 
                     notify?.Invoke("Editing game files");
-                    PermutationWriter write = new PermutationWriter(game, data, anns, events);
+                    PermutationWriter write = new PermutationWriter(game, data, anns, events, eventConfig);
                     write.Write(new Random(seed + 1), perm, options);
                     if (!options["norandom_skills"])
                     {
                         SkillWriter skills = new SkillWriter(game, data, anns);
-                        skills.RandomizeTrees(new Random(seed + 2), perm);
+                        skills.RandomizeTrees(new Random(seed + 2), perm, split);
                     }
-                    if (options["edittext"])
-                    {
-                        HintWriter hints = new HintWriter(game, data, anns);
-                        hints.Write(options, perm);
-                    }
+                    HintWriter hints = new HintWriter(game, data, anns);
+                    hints.Write(options, perm);
                 }
                 MiscSetup.SekiroCommonPass(game, events, options);
 
@@ -108,7 +121,7 @@ namespace RandomizerCommon
             }
             else
             {
-                Events events = new Events(false);
+                Events events = new Events(@"dist\Base\ds3-common.emedf.json");
 
                 LocationDataScraper scraper = new LocationDataScraper(logUnused: false);
                 LocationData data = scraper.FindItems(game);
@@ -123,7 +136,7 @@ namespace RandomizerCommon
 
                 notify?.Invoke("Editing game files");
                 random = new Random(seed + 1);
-                PermutationWriter writer = new PermutationWriter(game, data, ann, events);
+                PermutationWriter writer = new PermutationWriter(game, data, ann, events, null);
                 writer.Write(random, permutation, options);
                 random = new Random(seed + 2);
                 CharacterWriter characters = new CharacterWriter(game, data);

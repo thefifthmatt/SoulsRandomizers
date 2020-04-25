@@ -93,6 +93,7 @@ namespace RandomizerCommon
         public Dictionary<string, MSBS> Smaps = new Dictionary<string, MSBS>();
         public Dictionary<string, EMEVD> Emevds = new Dictionary<string, EMEVD>();
         public Dictionary<string, FMG> ItemFMGs = new Dictionary<string, FMG>();
+        public Dictionary<string, Dictionary<string, FMG>> OtherItemFMGs = new Dictionary<string, Dictionary<string, FMG>>();
         public Dictionary<string, FMG> MenuFMGs = new Dictionary<string, FMG>();
         public Dictionary<string, Dictionary<string, ESD>> Talk = new Dictionary<string, Dictionary<string, ESD>>();
 
@@ -303,16 +304,8 @@ namespace RandomizerCommon
             }
             foreach (KeyValuePair<string, Dictionary<string, ESD>> entry in Talk)
             {
-                if (!Locations.ContainsKey(entry.Key)) continue;
-                string basePath = $@"{dir}\Base\{entry.Key}.talkesdbnd.dcx";
-                if (modDir != null)
-                {
-                    string modPath = $@"{modDir}\script\talk\{entry.Key}.talkesdbnd.dcx";
-                    if (File.Exists(modPath)) basePath = modPath;
-                }
-                string path = $@"{outPath}\script\talk\{entry.Key}.talkesdbnd.dcx";
-                AddModFile(path);
-                Editor.OverrideBnd(basePath, $@"{outPath}\script\talk", entry.Value, esd => esd.Write());
+                if (!Locations.ContainsKey(entry.Key) && entry.Key != "m00_00_00_00") continue;
+                WriteModDependentBnd(outPath, $@"{dir}\Base\{entry.Key}.talkesdbnd.dcx", $@"script\talk\{entry.Key}.talkesdbnd.dcx", entry.Value);
             }
             foreach (KeyValuePair<string, EMEVD> entry in Emevds)
             {
@@ -324,39 +317,13 @@ namespace RandomizerCommon
                 entry.Value.Write($@"{outPath}\event\{entry.Key}.emevd", DCX.Type.None);
 #endif
             }
+
+            WriteModDependentBnd(outPath, $@"{dir}\Base\gameparam.parambnd.dcx", $@"param\gameparam\gameparam.parambnd.dcx", Params);
+            WriteModDependentBnd(outPath, $@"{dir}\Base\item.msgbnd.dcx", $@"msg\engus\item.msgbnd.dcx", ItemFMGs);
+            WriteModDependentBnd(outPath, $@"{dir}\Base\menu.msgbnd.dcx", $@"msg\engus\menu.msgbnd.dcx", MenuFMGs);
+            foreach (KeyValuePair<string, Dictionary<string, FMG>> entry in OtherItemFMGs)
             {
-                string basePath = $@"{dir}\Base\gameparam.parambnd.dcx";
-                if (modDir != null)
-                {
-                    string modPath = $@"{modDir}\param\gameparam\gameparam.parambnd.dcx";
-                    if (File.Exists(modPath)) basePath = modPath;
-                }
-                string path = $@"{outPath}\param\gameparam\gameparam.parambnd.dcx";
-                AddModFile(path);
-                Editor.OverrideBnd(basePath, $@"{outPath}\param\gameparam", Params, f => f.Write());
-            }
-            // At least for now, only do FMGs for English
-            {
-                string basePath = $@"{dir}\Base\item.msgbnd.dcx";
-                if (modDir != null)
-                {
-                    string modPath = $@"{modDir}\msg\engus\item.msgbnd.dcx";
-                    if (File.Exists(modPath)) basePath = modPath;
-                }
-                string path = $@"{outPath}\msg\engus\item.msgbnd.dcx";
-                AddModFile(path);
-                Editor.OverrideBnd(basePath, $@"{outPath}\msg\engus", ItemFMGs, f => f.Write());
-            }
-            {
-                string basePath = $@"{dir}\Base\menu.msgbnd.dcx";
-                if (modDir != null)
-                {
-                    string modPath = $@"{modDir}\msg\engus\menu.msgbnd.dcx";
-                    if (File.Exists(modPath)) basePath = modPath;
-                }
-                string path = $@"{outPath}\msg\engus\menu.msgbnd.dcx";
-                AddModFile(path);
-                Editor.OverrideBnd(basePath, $@"{outPath}\msg\engus", MenuFMGs, f => f.Write());
+                WriteModDependentBnd(outPath, $@"{dir}\Base\msg\{entry.Key}\item.msgbnd.dcx", $@"msg\{entry.Key}\item.msgbnd.dcx", entry.Value);
             }
 
             MergeMods(outPath);
@@ -365,7 +332,8 @@ namespace RandomizerCommon
 
         public void SaveDS3(string outPath, bool encrypted)
         {
-            // This is a bit duplicate of Sekiro code, although boilerplate is also pretty plain to read.
+            // This is a bit duplicate, like previous version of Sekiro code
+            // TODO: Update this to use new method WriteModDependentBnd
             Console.WriteLine("Writing to " + outPath);
             writtenFiles.Clear();
 
@@ -414,19 +382,34 @@ namespace RandomizerCommon
         {
             return new FileInfo(path).FullName;
         }
+
         private void AddModFile(string path)
         {
             path = FullName(path);
             Console.WriteLine($"Writing {path}");
             writtenFiles.Add(path);
         }
+
+        void WriteModDependentBnd<T>(string outPath, string basePath, string relOutputPath, Dictionary<string, T> diffData)
+            where T : SoulsFile<T>, new()
+        {
+            if (modDir != null)
+            {
+                string modPath = $@"{modDir}\{relOutputPath}";
+                if (File.Exists(modPath)) basePath = modPath;
+            }
+            string path = $@"{outPath}\{relOutputPath}";
+            AddModFile(path);
+            Editor.OverrideBnd(basePath, Path.GetDirectoryName(path), diffData, f => f.Write());
+        }
+
         private void MergeMods(string outPath)
         {
             Console.WriteLine("Processing extra mod files...");
             bool work = false;
             if (modDir != null)
             {
-                foreach (string gameFile in MiscSetup.GetGameFiles(modDir))
+                foreach (string gameFile in MiscSetup.GetGameFiles(modDir, Sekiro))
                 {
                     string source = FullName($@"{modDir}\{gameFile}");
                     string target = FullName($@"{outPath}\{gameFile}");
@@ -438,7 +421,7 @@ namespace RandomizerCommon
                     work = true;
                 }
             }
-            foreach (string gameFile in MiscSetup.GetGameFiles(outPath))
+            foreach (string gameFile in MiscSetup.GetGameFiles(outPath, Sekiro))
             {
                 string target = FullName($@"{outPath}\{gameFile}");
                 if (writtenFiles.Contains(target)) continue;
@@ -451,12 +434,12 @@ namespace RandomizerCommon
         private void LoadNames()
         {
             modelNames = new SortedDictionary<string, string>(Editor.LoadNames("ModelName", n => n, false));
-            characterSplits = new SortedDictionary<int, string>(Editor.LoadNames("CharaInitParam", n => int.Parse(n), false));
+            characterSplits = new SortedDictionary<int, string>(Editor.LoadNames("CharaInitParam", n => int.Parse(n), true));
             lotNames = new SortedDictionary<int, string>(Editor.LoadNames("ItemLotParam", n => int.Parse(n), true));
             qwcNames = new SortedDictionary<int, string>(Editor.LoadNames("ShopQwc", n => int.Parse(n), true));
             for (int i = 0; i < itemParams.Count; i++)
             {
-                foreach (KeyValuePair<ItemKey, string> entry in Editor.LoadNames(itemParams[i], n => new ItemKey((ItemType)i, int.Parse(n))))
+                foreach (KeyValuePair<ItemKey, string> entry in Editor.LoadNames(itemParams[i], n => new ItemKey((ItemType)i, int.Parse(n)), true))
                 {
                     itemNames[entry.Key] = entry.Value;
                     AddMulti(revItemNames, entry.Value, entry.Key);
@@ -546,7 +529,7 @@ namespace RandomizerCommon
             {
                 Talk = Editor.LoadBnds("Base", (data, path) => ESD.Read(data), "*.talkesdbnd.dcx");
                 MaybeOverrideFromModDir(Talk, name => $@"script\talk\{name}.talkesdbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => ESD.Read(data)));
-                List<string> missing = Locations.Keys.Except(Talk.Keys).ToList();
+                List<string> missing = Locations.Keys.Concat(new[] { "m00_00_00_00" }).Except(Talk.Keys).ToList();
                 if (missing.Count != 0) throw new Exception($@"Missing talkesdbnds in dist\Base: {string.Join(", ", missing)}");
             }
         }
@@ -567,6 +550,12 @@ namespace RandomizerCommon
                 ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
                 MenuFMGs = Editor.LoadBnd($@"{dir}\Base\menu.msgbnd.dcx", (data, path) => FMG.Read(data));
                 MenuFMGs = MaybeOverrideFromModDir(MenuFMGs, @"msg\engus\menu.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
+                foreach (string lang in MiscSetup.Langs)
+                {
+                    if (lang == "engus") continue;
+                    OtherItemFMGs[lang] = Editor.LoadBnd($@"{dir}\Base\msg\{lang}\item.msgbnd.dcx", (data, path) => FMG.Read(data));
+                    OtherItemFMGs[lang] = MaybeOverrideFromModDir(OtherItemFMGs[lang], $@"msg\{lang}\item.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
+                }
             }
             else
             {

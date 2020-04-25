@@ -47,17 +47,15 @@ See "Things to definitely know" above first. Otherwise, here are some misc hints
 Misc general info:
 - There is a hint/spoiler log that is generated and put in the 'spoiler_logs' folder. Check it out if you are lost or want to check enemy placements.
 - For convenience, tutorials pop-ups have been removed.
-- It should be fine to re-run the randomizer with a different seed after starting NG+ playthroughs. If item randomizer is off, it should also be fine to re-run enemy randomizer with a different seed in the middle of a playthrough.
+- It should be fine to re-run the randomizer with a different seed after starting NG+ playthroughs, although some bugs may arise if multiple items are added to the same location.
 - The "Open Bell Demon's Temple" option allows you to get to Ashina Castle without defeating Gyoubu, although you must eventually go back to complete Isshin's quest. See https://streamable.com/fywve for a demonstration of this.
 
 Misc info about enemy randomizer:
 - Sword Saint Isshin and True Monk don't require Mortal Blade to deathblow.
 - You can get to Genichiro, skipping Ashina Elite Jinsuke Saze, by going through a breakable wall down the stairs from the Ashina Dojo idol toward Isshin's watchtower
-- If you get really stuck on a randomized enemy, you can rerun the seed with enemy rando turned off (use the big checkbox), defeat the enemy, then turn it back on again. This won't change the location of key items, but if item rando uses enemy placement data, some non-key item drops may become inaccessible.
 
 Misc info about item randomizer:
 - Remember that additional enemies spawn in Guardian Ape's Burrow after defeating Guardian Ape, and Fujioka will also sell Valley Apparitions Memo when the final enemy spawns.
-- Divine Dragon's Tears and Aromatic Branch have no effect in the game. You can complete the game and enter Fountainhead Palace, respectively, without them.
 - Item logic assumes that you can get into Sunken Passage Serpent Shrine if you have either Puppeteer Ninjutsu or Mist Raven's Feathers.
 - There are options like 'Item availability similar to base game' which I would strongly recommend. Otherwise, at high biases, it is possible for e.g. all Gourd Seeds and Memories to be in Fountainhead Palace.
 
@@ -65,41 +63,52 @@ If you encounter any issues, like softlocks from inaccessible items or unbeatabl
 
 There are also some features I could implement in the future. Let me know if any of these would be interesting, or if you have any other suggestions:
 - Adding boss vs boss or multi-boss fights
-- Making all Esoteric Texts skills item drops in the world instead
-- Making dragon tears/aromatic branch required key items
 - Randomizing enemies in Divine Dragon phase 1
 - Randomizing Bell Demon
-- Scaling minibosses/bosses down or up if they are moved from late game to early game or vice versa
-- Adding the ability to reroll enemy rando in the middle of a combined run
-- Semi-related, backporting some of the new features to DS3 Static Item Randomizer which uses the same codebase
 
 ### Presets
-The randomizer can be heavily customized using text files in the 'presets' folder. These can be selected in the UI and add some significant challenge or fun to runs. You can also create your own: there is a template you can copy. Check out README.txt in the presets folder to learn more. In v0.2 presets are more focused on enemy randomization, but there is some item randomizer customization support, and more coming in the future. Built-in presets include:
+The randomizer can be heavily customized using text files in the 'presets' folder. These can be selected in the UI under "Challenge runs" and add some significant challenge or fun to runs. You can also create your own: there is a template you can copy. Check out README.txt in the presets folder to learn more. Currently presets are more focused on enemy randomization, but there is some item randomizer customization support, and more coming in the future. Built-in presets include:
 
 - 10% Boss Replacement: The same as regular randomization except that 10% of enemies are upgraded to bosses
 - Ashina Zoo: Replace all enemies and bosses with animals and occasionally some animal caretakers
 - Nightmare Mode: The worst run with the most annoying and challenging enemies which might be possibly doable
 - No Demon of Hatred: The same as regular randomization but prevent Demon of Hatred from appearing
+- Oops! All: All enemies in the game are replaced with a specific enemy type.
 - Reverse Enemy Order: Place all enemies in the game roughly based on how soon you can find them in a full playthrough, but in reverse order
+
+The NPC definition for regular enemies can become slightly buffed when they become minibosses or bosses, so as always, it is important to restart the game after applying one of these so that they are reflected.
+
+### In-game hints
+In English, item descriptions of otherwise nonfunctional lore items will be slightly altered to provide hints for the placement of other items. This will also edit the text of all readable notes in the world, like the Headless warning sign, the Lightning Reversal scroll, and the Folding Screen Monkey hints.
+
+The hints are balanced so they require some deductive reasoning and not spoil too much of the run. There is no guarantee that hints can always be found before they are needed, since the placement of hint items in the world is completely random. The hints are split up into these categories:
+
+- Positive location hints: An item can be found in a location type in a location. Location types includes chests, underwater, treasure (item pickup on the ground or gift), boss, miniboss, powerful enemy (includes bosses and minibosses), and in shops. These hints only exist for important skills (Mikiri Counter, Shuriken, Firecrackers) and for key items which are required to beat the game, but the full item name may not be given.
+- Lateness hints: A specific item can be found early/late/midway through the game. The definition of early items are those which can be acquired before reaching Ashina Castle through Blazing Bull; late items cannot be acquired until after you reach Fountainhead Palace; mid items are neither.
+- Negative location hints: The given location doesn't have any important items at all, using the above definition of important items (key items required to beat the final Immortal Severence boss, or an important skill). These are kept as general as possible, so if the hint is for Gun Fort not having an important item, it's probably the case that Bodhisattva Valley might have one, since otherwise the hint would say all of Sunken Valley.
+- Negative type hints: The particular type of location doesn't have any important items in the entire game. For instance, this might say that you don't have to search underwater or look in shops.
+- Negative location type hints: The given location doesn't have important items in a certain location type. This is also kept as general as possible, so if the hint is for minibosses in Hirata Estate, it's probably the case that other locations in Hirata Estate will have something instead (since otherwise the hint would say the entirety of Hirata Estate), and also probably the case that a boss will have it (since otherwise the hint would say powerful enemies).
 
 ## Acknowledgements
 
-The fantastic art in the randomizer UI (the title and hand-drawn characters) was made specially for the randomizer by Souv, who has also created many wonderful emotes for the FromSoft modding discord server (https://discord.gg/mT2JJjx). Thanks to JesterPatches, Tolvo, and Shoobe for their valuable alpha testing feedback, and JP for some of the lovely screenshots as well. Thanks to katalash, who made DSTools and DSMapStudio and made a version of Mod Engine which fixed the audio crashes. Thanks to TKGP and Pav and others for SoulsFormats and Paramdex, and Pav for the CE table which was useful for testing. Thanks to HotPocketRemix and Meowmaritus and AinTunez for developing tools for event script editing which this mod uses. Thanks to everyone else who helped debug issues and provide feedback. The initial version of this project took 3-4 months of development time and makes some really advanced dynamic edits to game scripts and systems, and I'd love to see more gameplay-oriented Sekiro mods like it.
+The fantastic art in the randomizer UI (the title and hand-drawn characters) was made specially for the randomizer by Souv, who has also created many wonderful emotes for the FromSoft modding discord server (https://discord.gg/mT2JJjx). Thanks to JesterPatches, Tolvo, and Shoobe for their valuable alpha testing feedback, DistractionCrab for testing feedback for later versions, and JP for some of the lovely screenshots as well. Thanks to katalash, who made DSTools and DSMapStudio and made a version of Mod Engine which fixed the audio crashes. Thanks to TKGP and Pav and others for SoulsFormats and Paramdex, and Pav for the CE table which was useful for testing. Thanks to HotPocketRemix and Meowmaritus and AinTunez for developing tools for event script editing which this mod uses. Thanks to everyone else who helped debug issues and provide feedback. The initial version of this project took 3-4 months of development time and makes some really advanced dynamic edits to game scripts and systems, and I'd love to see more gameplay-oriented Sekiro mods like it.
 
 ## Key items
 Key items are defined as items which unlock other unmissable items. They are only placed in unmissable locations, which excludes many of the game's non-main quests. These items, and no others, can block your progress in the randomizer until you find them, with the ultimate goal of defeating the final Immortal Severence boss and getting to the credits.
 
+- Aromatic Branch: One of the four incense ingredients used to access Fountainhead Palace
+- Divine Dragon's Tears: Used to end the game when talking to Kuro in the silvergrass field
 - Father's Bell Charm: Used to revisit Hirata after Lady Butterfly has already been defeated
 - Gatehouse Key: Used to access the locked building in Ashina Reservoir
 - Gun Fort Shrine Key: Used to access Sunken Valley Passage after Gun Fort
 - Hidden Temple Key: Used to access the Lady Butterfly fight from Hirata Estate
-- Lotus of the Palace: One of three incense ingredients used to trigger the Interior Ministry invasion and access Fountainhead Palace
+- Lotus of the Palace: One of three incense ingredients used to trigger the Interior Ministry invasion, and one of four used to access Fountainhead Palace
 - Mibu Breathing Technique: Used to access many underwater areas in the game (in Fountainhead Palace, Hirata Estate, Senpou Temple Grounds, Mibu Village, Ashina Castle, Ashina Reservoir, Abandoned Dungeon, Riven Cave, Guardian Ape's Watering Hole, and the Sunken Valley Headless)
 - Mist Raven's Feathers: Can be used to get past the cave snake in Sunken Valley Passage
-- Mortal Blade: One of three incense ingredients used to trigger the Interior Ministry invasion and access Fountainhead Palace
+- Mortal Blade: One of three incense ingredients used to trigger the Interior Ministry invasion, and one of four used to access Fountainhead Palace
 - Puppeteer Ninjutsu: Can be used to get past the cave snake in Sunken Valley Passage, and access Sunken Valley Cavern from Senpou Temple
 - Secret Passage Key: Used to access the final boss
-- Shelter Stone: One of three incense ingredients used to trigger the Interior Ministry invasion and access Fountainhead Palace
+- Shelter Stone: One of three incense ingredients used to trigger the Interior Ministry invasion, and one of four used to access Fountainhead Palace
 - Shinobi Prosthetic: Required to access most of the game past Dilapidated Temple and some early parts of Hirata Estate
 - Truly Precious Bait: Used in Fountainhead Palace to unlock an item in Sunken Valley Passage
 - Young Lord's Bell Charm: Used to access Hirata Estate from Dilapidated Temple

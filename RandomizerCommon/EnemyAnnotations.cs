@@ -14,6 +14,7 @@ namespace RandomizerCommon
         public List<string> Singletons { get; set; }
         public List<string> NoDeathblow { get; set; }
         public List<EnemyInfo> Enemies = new List<EnemyInfo>();
+        public Dictionary<int, int> ScalingSections = new Dictionary<int, int>();
 
         public class EnemyCategory
         {
@@ -57,6 +58,8 @@ namespace RandomizerCommon
             public string FullName { get; set; }
             // Specific name for name mashups
             public string PartName { get; set; }
+            // Npc name id for non-mashup substitutions
+            public int NpcName { get; set; }
             // Category for minibosses, to avoid them replacing each other
             public string EnemyType { get; set; }
             // Same as in event templates, except it will remove the original region. Meant for Lua hardcoded regions (avoid editing the scripts)

@@ -178,7 +178,7 @@ namespace RandomizerCommon
                 }
             }
 
-            bool printText = false;
+            bool printText = opt["hinttext"];
 
             // Process items to search for
             List<ItemCategory> categoryOverrides = new List<ItemCategory> { ItemCategory.RequiredKey, ItemCategory.RequiredAbility, ItemCategory.ImportantTool, ItemCategory.HintFodder };
@@ -327,13 +327,13 @@ namespace RandomizerCommon
                         else throw new Exception($"Unknown hint config variable {variable}");
                         if (positive || placement.Types.Count == 0)
                         {
-                            value = placement.AreaHint == null ? "somewhere" : choose(placement.AreaHint.GetNames(prep));
+                            value = placement.AreaHint == null ? (positive ? "somewhere" : "anywhere") : choose(placement.AreaHint.GetNames(prep));
                         }
                         else
                         {
                             if (prep || placement.AreaHint != null)
                             {
-                                value = (prep ? "from " : "") + choose(typeNames[placement.Types[0]].GetNames("noun")) + " " + (placement.AreaHint == null ? "somewhere" : choose(placement.AreaHint.GetNames(true)));
+                                value = (prep ? "from " : "") + choose(typeNames[placement.Types[0]].GetNames("noun")) + " " + (placement.AreaHint == null ? (positive ? "somewhere" : "anywhere") : choose(placement.AreaHint.GetNames(true)));
                             }
                             else
                             {
@@ -455,7 +455,7 @@ namespace RandomizerCommon
                 placement = placement.Copy();
                 placement.LateHint = true;
                 string info = early.Contains(placement.Area) ? "an early game location" : (late.Contains(placement.Area) ? "a late game location" : "a mid game location");
-                string prep = early.Contains(placement.Area) ? "before Ashina Castle" : (late.Contains(placement.Area) ? "after reaching Fountainhead Palace" : "after reaching Ashina Castle");
+                string prep = early.Contains(placement.Area) ? "in the early game" : (late.Contains(placement.Area) ? "in the late game" : "in the mid game");
                 placement.AreaHint = new AreaHint { Name = info, Vague = info, VaguePrep = prep };
                 addHint(hint, t, placement);
                 sources.Remove(hint);

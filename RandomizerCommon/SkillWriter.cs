@@ -22,7 +22,7 @@ namespace RandomizerCommon
             this.ann = ann;
         }
 
-        public void RandomizeTrees(Random random, Permutation permutation)
+        public void RandomizeTrees(Random random, Permutation permutation, SkillSplitter.Assignment split)
         {
             // >= 700: prosthetics
             // < 400: skills before mushin
@@ -109,100 +109,110 @@ namespace RandomizerCommon
             Shuffle(random, prostheticSlots);
 
             // Skills rando
-            Dictionary<ItemKey, string> textWeight = new Dictionary<ItemKey, string>();
-            Dictionary<ItemKey, string> textLocations = texts.Values.ToDictionary(t => t, t => {
-                SlotKey target = permutation.GetFiniteTargetKey(t);
-                textWeight[t] = permutation.GetLogOrder(target);
-                SlotAnnotation sn = ann.Slot(data.Location(target).LocScope);
-                if (explain) Console.WriteLine($"{game.Name(t)} in {sn.Area} - {sn.Text}. Lateness {(permutation.ItemLateness.TryGetValue(t, out double val) ? val : -1)}");
-                return sn.Area;
-            });
-            List<ItemKey> textOrder = texts.Values.OrderBy(t => textWeight[t]).ToList();
-            Dictionary<ItemKey, List<ItemKey>> allowedSkillLocations = new Dictionary<ItemKey, List<ItemKey>>();
-            foreach (PlacementRestrictionAnnotation restrict in ann.ItemRestrict.Values)
+            if (split == null)
             {
-                if (!(restrict.Key.Type == ItemType.WEAPON && (restrict.Key.ID >= 200000 || restrict.Key.ID < 690000))) continue;
-                if (restrict.Unique != null)
+                Dictionary<ItemKey, string> textWeight = new Dictionary<ItemKey, string>();
+                Dictionary<ItemKey, string> textLocations = texts.Values.ToDictionary(t => t, t => {
+                    SlotKey target = permutation.GetFiniteTargetKey(t);
+                    textWeight[t] = permutation.GetLogOrder(target);
+                    SlotAnnotation sn = ann.Slot(data.Location(target).LocScope);
+                    if (explain) Console.WriteLine($"{game.Name(t)} in {sn.Area} - {sn.Text}. Lateness {(permutation.ItemLateness.TryGetValue(t, out double val) ? val : -1)}");
+                    return sn.Area;
+                });
+                List<ItemKey> textOrder = texts.Values.OrderBy(t => textWeight[t]).ToList();
+                Dictionary<ItemKey, List<ItemKey>> allowedSkillLocations = new Dictionary<ItemKey, List<ItemKey>>();
+                foreach (PlacementRestrictionAnnotation restrict in ann.ItemRestrict.Values)
                 {
-                    PlacementSlotAnnotation restrictSlot = restrict.Unique[0];
-                    HashSet<string> allowedLocs = restrictSlot.AllowedAreas(permutation.IncludedAreas);
-                    allowedSkillLocations[restrict.Key] = textOrder.Where(t => allowedLocs.Contains(textLocations[t])).ToList();
-                }
-            }
-            // Mapping from source to target
-            Dictionary<int, int> skillMapping = new Dictionary<int, int>();
-            foreach (SkillData data in skills.OrderBy(d => allowedSkillLocations.TryGetValue(d.Key, out List<ItemKey> itemTexts) ? itemTexts.Count : 99))
-            {
-                SkillSlot select = null;
-                // TODO: Have different requirements for smaller texts?
-                if (allowedSkillLocations.TryGetValue(data.Key, out List<ItemKey> itemTexts))
-                {
-                    select = skillSlots.Find(sl =>
+                    if (!(restrict.Key.Type == ItemType.WEAPON && (restrict.Key.ID >= 200000 || restrict.Key.ID < 690000))) continue;
+                    if (restrict.Unique != null)
                     {
-                        int textIndex = itemTexts.IndexOf(sl.Text);
-                        if (textIndex == -1) return false;
-                        // If the skill is in the most recent two texts, it should be in the first two columns.
-                        if (textIndex >= itemTexts.Count - 2) return sl.Col <= 1;
-                        // Otherwise, just not the secret technique slot.
-                        return sl.Col <= 2;
-                    });
+                        PlacementSlotAnnotation restrictSlot = restrict.Unique[0];
+                        HashSet<string> allowedLocs = restrictSlot.AllowedAreas(permutation.IncludedAreas);
+                        allowedSkillLocations[restrict.Key] = textOrder.Where(t => allowedLocs.Contains(textLocations[t])).ToList();
+                    }
                 }
-                SkillSlot slot = select ?? skillSlots.First();
-                skillSlots.Remove(slot);
-                skillMapping[data.ID] = slot.ID;
-            }
-            foreach (KeyValuePair<int, int> order in skillOrderings)
-            {
-                SkillSlot first = allSlots[skillMapping[order.Key]];
-                SkillSlot second = allSlots[skillMapping[order.Value]];
-                if (first.Text != null && first.Text.Equals(second.Text) && first.Col > second.Col)
+                // Mapping from source to target
+                Dictionary<int, int> skillMapping = new Dictionary<int, int>();
+                foreach (SkillData data in skills.OrderBy(d => allowedSkillLocations.TryGetValue(d.Key, out List<ItemKey> itemTexts) ? itemTexts.Count : 99))
                 {
-                    skillMapping[order.Key] = second.ID;
-                    skillMapping[order.Value] = first.ID;
+                    SkillSlot select = null;
+                    // TODO: Have different requirements for smaller texts?
+                    if (allowedSkillLocations.TryGetValue(data.Key, out List<ItemKey> itemTexts))
+                    {
+                        select = skillSlots.Find(sl =>
+                        {
+                            int textIndex = itemTexts.IndexOf(sl.Text);
+                            if (textIndex == -1) return false;
+                            // If the skill is in the most recent two texts, it should be in the first two columns.
+                            if (textIndex >= itemTexts.Count - 2) return sl.Col <= 1;
+                            // Otherwise, just not the secret technique slot.
+                            return sl.Col <= 2;
+                        });
+                    }
+                    SkillSlot slot = select ?? skillSlots.First();
+                    skillSlots.Remove(slot);
+                    skillMapping[data.ID] = slot.ID;
                 }
-            }
-            Dictionary<int, List<int>> colCosts = new Dictionary<int, List<int>>();
-            foreach (int skill in skillMapping.Keys)
-            {
-                SkillData data = allData[skill];
-                SkillSlot slot = allSlots[skill];
-                PARAM.Row item = game.Item(data.Key);
-                PARAM.Row mat = game.Params["EquipMtrlSetParam"][(int)item["materialSetId"].Value];
-                if (mat != null && (int)mat["MaterialId01"].Value == 1200)
+                foreach (KeyValuePair<int, int> order in skillOrderings)
                 {
-                    AddMulti(colCosts, slot.Col, (sbyte)mat["ItemNum01"].Value);
+                    SkillSlot first = allSlots[skillMapping[order.Key]];
+                    SkillSlot second = allSlots[skillMapping[order.Value]];
+                    if (first.Text != null && first.Text.Equals(second.Text) && first.Col > second.Col)
+                    {
+                        skillMapping[order.Key] = second.ID;
+                        skillMapping[order.Value] = first.ID;
+                    }
                 }
-            }
-            foreach (KeyValuePair<int, int> transfer in skillMapping.OrderBy(k => k.Key))
-            {
-                SkillData data = allData[transfer.Key];
-                SkillSlot slot = allSlots[transfer.Value];
-                applyData(param[transfer.Value], data);
-                // Also randomize skill points while we are here
-                PARAM.Row item = game.Item(data.Key);
-                PARAM.Row mat = game.Params["EquipMtrlSetParam"][(int)item["materialSetId"].Value];
-                if (mat != null && (int)mat["MaterialId01"].Value == 1200)
+                Dictionary<int, List<int>> colCosts = new Dictionary<int, List<int>>();
+                foreach (int skill in skillMapping.Keys)
                 {
-                    int cost = (sbyte)mat["ItemNum01"].Value;
-                    int newCost = Choice(random, colCosts.TryGetValue(slot.Col, out List<int> costs) ? costs : new List<int> { 1, 2, 3, 4, 5 });
-                    newCost = Math.Min(Math.Max(cost - 2, newCost), cost + 2);
-                    mat["ItemNum01"].Value = (sbyte)newCost;
+                    SkillData data = allData[skill];
+                    SkillSlot slot = allSlots[skill];
+                    PARAM.Row item = game.Item(data.Key);
+                    PARAM.Row mat = game.Params["EquipMtrlSetParam"][(int)item["materialSetId"].Value];
+                    if (mat != null && (int)mat["MaterialId01"].Value == 1200)
+                    {
+                        AddMulti(colCosts, slot.Col, (sbyte)mat["ItemNum01"].Value);
+                    }
                 }
-            }
+                foreach (KeyValuePair<int, int> transfer in skillMapping.OrderBy(k => k.Key))
+                {
+                    SkillData data = allData[transfer.Key];
+                    SkillSlot slot = allSlots[transfer.Value];
+                    applyData(param[transfer.Value], data);
+                    // Also randomize skill points while we are here
+                    PARAM.Row item = game.Item(data.Key);
+                    PARAM.Row mat = game.Params["EquipMtrlSetParam"][(int)item["materialSetId"].Value];
+                    if (mat != null && (int)mat["MaterialId01"].Value == 1200)
+                    {
+                        int cost = (sbyte)mat["ItemNum01"].Value;
+                        int newCost = Choice(random, colCosts.TryGetValue(slot.Col, out List<int> costs) ? costs : new List<int> { 1, 2, 3, 4, 5 });
+                        newCost = Math.Min(Math.Max(cost - 2, newCost), cost + 2);
+                        mat["ItemNum01"].Value = (sbyte)newCost;
+                    }
+                }
 
-            Console.WriteLine("-- Skills placements");
-            for (int i = 0; i <= 3; i++)
-            {
-                ItemKey text = texts[i];
-                // Can also order by (allSlots[t.Value].Col, allSlots[t.Value].Row), but just do alphabetical instead
-                List<int> textSkills = skillMapping.Where(t => text.Equals(allSlots[t.Value].Text)).Select(t => t.Key).ToList();
-                Console.WriteLine($"Skills in {game.Name(text)}: {string.Join(", ", textSkills.Select(t => descName(allData[t].Item)).OrderBy(t => t))}");
-                foreach (int skill in textSkills)
+                Console.WriteLine("-- Skills placements");
+                for (int i = 0; i <= 3; i++)
                 {
-                    permutation.SkillAssignment[allData[skill].Key] = text;
+                    ItemKey text = texts[i];
+                    // Can also order by (allSlots[t.Value].Col, allSlots[t.Value].Row), but just do alphabetical instead
+                    List<int> textSkills = skillMapping.Where(t => text.Equals(allSlots[t.Value].Text)).Select(t => t.Key).ToList();
+                    Console.WriteLine($"Skills in {game.Name(text)}: {string.Join(", ", textSkills.Select(t => descName(allData[t].Item)).OrderBy(t => t))}");
+                    foreach (int skill in textSkills)
+                    {
+                        permutation.SkillAssignment[allData[skill].Key] = text;
+                    }
+                }
+                Console.WriteLine();
+            }
+            else
+            {
+                foreach (KeyValuePair<ItemKey, ItemKey> transfer in split.Assign)
+                {
+                    permutation.SkillAssignment[transfer.Key] = transfer.Value;
                 }
             }
-            Console.WriteLine();
 
             // Prosthetics rando
             Dictionary<ItemKey, List<ItemKey>> upgrades = new Dictionary<ItemKey, List<ItemKey>>();

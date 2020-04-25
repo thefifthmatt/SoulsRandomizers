@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
-using static RandomizerCommon.Events;
+using SoulsIds;
+using static SoulsIds.Events;
+using static RandomizerCommon.EventConfig;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.LocationData.ItemScope;
 using static RandomizerCommon.LocationData.LocationKey;
@@ -21,6 +23,8 @@ namespace RandomizerCommon
         private LocationData data;
         private AnnotationData ann;
         private Events events;
+        private EventConfig eventConfig;
+
         private PARAM itemLots;
         private PARAM shops;
         private PARAM npcs;
@@ -30,12 +34,13 @@ namespace RandomizerCommon
         private readonly Dictionary<ItemKey, float> dropCost = new Dictionary<ItemKey, float>();
         private readonly Dictionary<int, int> lotCost = new Dictionary<int, int>();
 
-        public PermutationWriter(GameData game, LocationData data, AnnotationData ann, Events events)
+        public PermutationWriter(GameData game, LocationData data, AnnotationData ann, Events events, EventConfig eventConfig)
         {
             this.game = game;
             this.data = data;
             this.ann = ann;
             this.events = events;
+            this.eventConfig = eventConfig;
             itemLots = game.Param("ItemLotParam");
             shops = game.Param("ShopLineupParam");
             npcs = game.Param("NpcParam");
@@ -56,14 +61,20 @@ namespace RandomizerCommon
             foreach (string hintType in ann.HintCategories)
             {
                 Console.WriteLine($"-- Hints for {hintType}:");
+                bool hasHint = false;
                 foreach (KeyValuePair<SlotKey, SlotKey> assign in permutation.Hints[hintType].OrderBy(e => (game.DisplayName(e.Key.Item), permutation.GetLogOrder(e.Value))))
                 {
                     LocationScope scope = data.Location(assign.Value).LocScope;
                     Console.WriteLine($"{game.DisplayName(assign.Key.Item)}: {ann.GetLocationHint(assign.Value, permutation.SpecialLocation(scope))}");
+                    hasHint = true;
                     if (opt["fullhint"])
                     {
                         Console.WriteLine($"- {ann.GetLocationDescription(assign.Value)}");
                     }
+                }
+                if (!hasHint)
+                {
+                    Console.WriteLine("(not randomized)");
                 }
                 Console.WriteLine();
             }
@@ -555,7 +566,7 @@ namespace RandomizerCommon
             {
                 // Sekiro edits
                 Dictionary<string, Dictionary<string, ESD>> talks = game.Talk;
-                Dictionary<int, EventSpec> talkTemplates = events.Config.ItemTalks.ToDictionary(e => e.ID, e => e);
+                Dictionary<int, EventSpec> talkTemplates = eventConfig.ItemTalks.ToDictionary(e => e.ID, e => e);
                 bool parseMachineName(string mIdStr, out int mId)
                 {
                     if (!int.TryParse(mIdStr, out mId))
@@ -571,6 +582,7 @@ namespace RandomizerCommon
                     }
                     return true;
                 }
+                bool debugEsd = false;
                 foreach (KeyValuePair<string, ESD> entry in talks.SelectMany(s => s.Value))
                 {
                     void rewriteCondition(ESD.Condition cond, Action<byte[]> rewriteExpr)
@@ -589,24 +601,45 @@ namespace RandomizerCommon
                         ESD esd = entry.Value;
                         Dictionary<int, int> replaceInts = new Dictionary<int, int>();
                         HashSet<int> machines = new HashSet<int>();
+                        int tearsMachine = -1;
                         foreach (ItemTemplate t in spec.ItemTemplate)
                         {
-                            int machine = parseMachineName(t.Machine, out int mId) ? mId : throw new Exception($"Unknown machine id {t.Machine} of {esdName}");
-                            machines.Add(machine);
-                            int flag = int.Parse(t.EventFlag);
-                            if (t.Type == "loc")
+                            List<int> templateMachines = new List<int>();
+                            foreach (string machineStr in phraseRe.Split(t.Machine))
                             {
-                                if (rewrittenFlags.TryGetValue(flag, out int newFlag))
+                                int machine = parseMachineName(machineStr, out int mId) ? mId : throw new Exception($"Unknown machine id {t.Machine} of {esdName}");
+                                templateMachines.Add(machine);
+                            }
+                            machines.UnionWith(templateMachines);
+                            if (t.EventFlag != null)
+                            {
+                                int flag = int.Parse(t.EventFlag);
+                                if (t.Type == "loc")
                                 {
-                                    replaceInts[flag] = newFlag;
+                                    if (rewrittenFlags.TryGetValue(flag, out int newFlag))
+                                    {
+                                        replaceInts[flag] = newFlag;
+                                    }
+                                }
+                                else if (t.Type == "isshin")
+                                {
+                                    replaceInts[flag] = int.Parse(t.Replace);
+                                }
+                                else if (opt["extraitems"] && t.Type == "extraitems")
+                                {
+                                    replaceInts[flag] = int.Parse(t.Replace);
+                                }
+                                else if (opt["splitskills"] && t.Type == "splitskills")
+                                {
+                                    replaceInts[flag] = int.Parse(t.Replace);
                                 }
                             }
-                            else if (t.Type == "isshin")
+                            if (opt["extraitems"] && t.Type == "tears")
                             {
-                                replaceInts[flag] = int.Parse(t.Replace);
+                                tearsMachine = templateMachines[0];
                             }
                         }
-                        if (replaceInts.Count == 0)
+                        if (replaceInts.Count == 0 && tearsMachine == -1)
                         {
                             continue;
                         }
@@ -618,6 +651,7 @@ namespace RandomizerCommon
                                 int search = SearchInt(b, (uint)replace.Key);
                                 if (search != -1)
                                 {
+                                    if (debugEsd) Console.WriteLine($"In ESD {esdName}, replacing {replace.Key} -> {replace.Value}");
                                     Array.Copy(BitConverter.GetBytes(replace.Value), 0, b, search, 4);
                                 }
                             }
@@ -632,13 +666,59 @@ namespace RandomizerCommon
                                 state.EntryCommands.ForEach(c => rewriteCommand(c, rewriteExpr));
                                 state.ExitCommands.ForEach(c => rewriteCommand(c, rewriteExpr));
                                 state.WhileCommands.ForEach(c => rewriteCommand(c, rewriteExpr));
+                                if ((int)machine.Key == tearsMachine)
+                                {
+                                    // The ESDLang translation of the base game item checks are:
+                                    //
+                                    // AddTalkListData(1, 14000100, -1)
+                                    // c1_19 (41 a1, 82 e4 9f d5 00 a1, 3f a1)
+                                    //
+                                    // AddTalkListDataIf(ComparePlayerInventoryNumber(3, 2503, 2, 0, 0) == 1, 2, 14000101, -1)
+                                    // c5_19 (6f 43 82 c7 09 00 00 42 40 40 89 41 95 a1, 42 a1, 82 e5 9f d5 00 a1, 3f a1)
+                                    //
+                                    // AddTalkListDataIf(ComparePlayerInventoryNumber(3, 9091, 2, 0, 0) == 1, 3, 14000102, -1)
+                                    // c5_19 (6f 43 82 83 23 00 00 42 40 40 89 41 95 a1, 43 a1, 82 e6 9f d5 00 a1, 3f a1)
+
+                                    byte[] tearsHave = new byte[] { 0x6f, 0x43, 0x82, 0x28, 0x23, 0x00, 0x00, 0x42, 0x40, 0x40, 0x89, 0x41, 0x95, 0xa1 };
+                                    byte[] tearsLack = new byte[] { 0x6f, 0x43, 0x82, 0x28, 0x23, 0x00, 0x00, 0x42, 0x40, 0x40, 0x89, 0x40, 0x95, 0xa1 };
+                                    bool madeEdit = false;
+                                    foreach (ESD.CommandCall cmd in state.EntryCommands)
+                                    {
+                                        // AddTalkListData
+                                        if (cmd.CommandID != 19) continue;
+                                        // A bit hacky, but just do this inline. Change every condition to also depend on dragon tears, plus add a default one.
+                                        if (debugEsd) Console.WriteLine($"tearsA {stateEntry.Key} {cmd.CommandBank}:{cmd.CommandID}: {string.Join(", ", cmd.Arguments.Select(a => string.Join(" ", a.Select(b => $"{b:x2}"))))}");
+                                        if (cmd.CommandBank == 1)
+                                        {
+                                            cmd.CommandBank = 5;
+                                            cmd.Arguments.Insert(0, tearsHave);
+                                        }
+                                        else
+                                        {
+                                            List<byte> cond = cmd.Arguments[0].Where(b => b != 0xa1).ToList();
+                                            cond.AddRange(tearsHave.Where(b => b != 0xa1));
+                                            cond.Add(0x98);  // &&
+                                            cond.Add(0xa1);  // end
+                                            cmd.Arguments[0] = cond.ToArray();
+                                        }
+                                        if (debugEsd) Console.WriteLine($"tearsB {stateEntry.Key} {cmd.CommandBank}:{cmd.CommandID}: {string.Join(", ", cmd.Arguments.Select(a => string.Join(" ", a.Select(b => $"{b:x2}"))))}");
+                                        madeEdit = true;
+                                    }
+                                    if (madeEdit)
+                                    {
+                                        // Use dialogue id 14025002, "Do nothing"
+                                        ESD.CommandCall cmd = new ESD.CommandCall(5, 19, tearsLack, new byte[] { 0x48, 0xa1 }, new byte[] { 0x82, 0x2a, 0x01, 0xd6, 0x00, 0xa1 }, new byte[] { 0x3f, 0xa1 });
+                                        if (debugEsd) Console.WriteLine($"add {stateEntry.Key} {cmd.CommandBank}:{cmd.CommandID}: {string.Join(", ", cmd.Arguments.Select(a => string.Join(" ", a.Select(b => $"{b:x2}"))))}");
+                                        state.EntryCommands.Add(cmd);
+                                    }
+                                }
                             }
                         }
                     }
                 }
 
                 Dictionary<string, EMEVD> emevds = game.Emevds;
-                Dictionary<int, EventSpec> templates = events.Config.ItemEvents.ToDictionary(e => e.ID, e => e);
+                Dictionary<int, EventSpec> templates = eventConfig.ItemEvents.ToDictionary(e => e.ID, e => e);
 
                 HashSet<ItemTemplate> completedTemplates = new HashSet<ItemTemplate>();
                 foreach (KeyValuePair<string, EMEVD> entry in emevds)
@@ -1041,6 +1121,7 @@ namespace RandomizerCommon
                 part.Rotation = Rotation;
             }
         }
+        private static readonly Regex phraseRe = new Regex(@"\s*;\s*");
 
         private PriceCategory GetSekiroPriceCategory(ItemKey key)
         {
@@ -1110,6 +1191,8 @@ namespace RandomizerCommon
                     price = Choice(random, prices[GetSekiroPriceCategory(item)]);
                     // Could use a category for this, but meanwhile just make sure esoteric texts are reasonable
                     if (item.ID >= 2920 && item.ID < 2930) price = Math.Min(price, 200);
+                    // And skill prices as well. This is an especially hacky way of being nice.
+                    if (item.ID >= 6405 && item.ID < 6500 && game.Name(item) == "Mikiri Counter") price = Math.Min(price, 500);
                 }
                 PARAM.Row row = game.Item(item);
                 int sellPrice = (int)row["sellValue"].Value;

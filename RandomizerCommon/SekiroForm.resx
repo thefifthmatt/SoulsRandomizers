@@ -120,11 +120,9 @@
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Important item locations are bosses, minibosses,
-prayer beads, gourd seeds, prosthetics, esoteric texts,
-key items, and serpent viscera. They can be used for
-shorter runs or races. See the mod page for a full list.</value>
+  <data name="warningL.Text" xml:space="preserve">
+    <value>Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error
+It may work to try again with a different seed. See most recent file in spoiler_logs directory for the full error.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="title.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

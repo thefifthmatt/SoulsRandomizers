@@ -83,10 +83,8 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -108,6 +106,7 @@
     <Compile Include="EnemyAnnotations.cs" />
     <Compile Include="EnemyLocations.cs" />
     <Compile Include="EnemyRandomizer.cs" />
+    <Compile Include="EventConfig.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="GameData.cs" />
     <Compile Include="HintWriter.cs" />
@@ -148,6 +147,7 @@
     <Compile Include="RandomizerOptions.cs" />
     <Compile Include="SekiroLocationDataScraper.cs" />
     <Compile Include="MiscSetup.cs" />
+    <Compile Include="SkillSplitter.cs" />
     <Compile Include="SkillWriter.cs" />
     <Compile Include="Util.cs" />
     <EmbeddedResource Include="OptionsForm.resx">

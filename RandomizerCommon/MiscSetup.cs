@@ -6,8 +6,9 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using SoulsIds;
 using SoulsFormats;
-using static RandomizerCommon.Events;
+using static SoulsIds.Events;
 
 namespace RandomizerCommon
 {
@@ -73,7 +74,7 @@ namespace RandomizerCommon
             }
             else if (File.Exists("DarkSoulsIII.exe"))
             {
-                ret = "Error: Running from same directory as Sekiro.exe\r\nThe randomizer and its files must be in a subdirectory";
+                ret = "Error: Running from same directory as DarkSoulsIII.exe\r\nThe randomizer and its files must be in a subdirectory";
             }
             return ret == null;
         }
@@ -333,11 +334,11 @@ namespace RandomizerCommon
             }
         }
 
-        private static List<string> langs = new List<string>
+        public static readonly List<string> Langs = new List<string>
         {
-            "engus", "frafr", "itait", "jpnjp", "korkr", "polpl", "porbr", "rusru", "spaar", "spaes", "thath", "zhocn", "zhotw",
+            "deude", "engus", "frafr", "itait", "jpnjp", "korkr", "polpl", "porbr", "rusru", "spaar", "spaes", "thath", "zhocn", "zhotw",
         };
-        private static List<string> fileDirs = new List<string>
+        private static readonly List<string> fileDirs = new List<string>
         {
             @".",
             @"action",
@@ -366,17 +367,18 @@ namespace RandomizerCommon
             @"sfx",  // This should be a no-op in Sekiro
             @"shader",
             @"sound",
-        }.SelectMany(t => t.Contains("$lang") ? langs.Select(l => t.Replace("$lang", l)) : new[] { t }).ToList();
+        }.SelectMany(t => t.Contains("$lang") ? Langs.Select(l => t.Replace("$lang", l)) : new[] { t }).ToList();
         private static List<string> extensions = new List<string>
         {
             ".hks", ".dcx", ".gfx", ".dds", ".fsb", ".fev", ".itl", ".tpf", ".entryfilelist", ".hkxbdt", ".hkxbhd", "Data0.bdt"
         };
         private static Regex extensionRe = new Regex(string.Join("|", extensions.Select(e => e + "$")));
-        public static List<string> GetGameFiles(string dir)
+        public static List<string> GetGameFiles(string dir, bool sekiro)
         {
             List<string> allFiles = new List<string>();
             foreach (string subdir in fileDirs)
             {
+                if (sekiro && (subdir == "script" || subdir == "sfx")) continue;
                 string fulldir = $@"{dir}\{subdir}";
                 if (Directory.Exists(fulldir))
                 {

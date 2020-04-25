@@ -57,10 +57,10 @@ ItemCategories:
 - Name: ImportantTool
   IncludesName: Mikiri Counter; Robert's Firecrackers; Shuriken Wheel
 - Name: HintFodder
-  IncludesName: Sakura Droplet; Dragon's Tally Board; Gyoubu's Broken Horn; Bestowal Ninjutsu; Yashariku's Spiritfall; Ako's Spiritfall # ; Frozen Tears; Aromatic Flower
+  IncludesName: Sakura Droplet; Dragon's Tally Board; Gyoubu's Broken Horn; Yashariku's Spiritfall; Ako's Spiritfall # ; Frozen Tears; Aromatic Flower; Bestowal Ninjutsu
 # Categories with other purposes
 - Name: LatenessHints
-  Includes: mibubreathingtechnique gunfortshrinekey secretpassagekey hiddentemplekey fathersbellcharm younglordsbellcharm
+  Includes: mibubreathingtechnique gunfortshrinekey secretpassagekey hiddentemplekey fathersbellcharm younglordsbellcharm divinedragonstears
   IncludesName: Mikiri Counter
 - Name: ExcludeHints
   Includes: shinobiprosthetic
@@ -68,15 +68,40 @@ ItemNames:
 - Name: Mikiri Counter
   Vague: a well-timed stomp; a thrust defense
 - Name: Robert's Firecrackers
-  Vague: a flash of gunpowder; a scourge of beasts
+  Vague: a flash of gunpowder; a startler of beasts
 - Name: Shuriken Wheel
   Vague: a ranged weapon; a ranged mechanical device
+- Name: Sakura Droplet
+  Vague: Takeru's boon; additional resurrective power
+- Name: Dragon's Tally Board
+  Vague: a prized tally board; a jade dragon
+- Name: Gyoubu's Broken Horn
+  Vague: a famed horn-spear; a centipede extractor; an armor stripper
+- Name: Yashariku's Spiritfall
+  Vague: a forbidden spiritfall
+- Name: Ako's Spiritfall
+  Vague: an attack-boosting spiritfall
+- Name: Mibu Breathing Technique
+  Vague: a secret breathing technique; a technique to meet Divine Dragon
+- Name: Gun Fort Shrine Key
+  Vague: access past a shrine's idol; the key to a wooden bridge; access past Gun Fort
+- Name: Secret Passage Key
+  Vague: access to a silvergrass field; a key to save Kuro
+- Name: Hidden Temple Key
+  Vague: a temple key; access to a practitioner of illusions
+- Name: Father's Bell Charm
+  Vague: Owl's bell charm
+- Name: Young Lord's Bell Charm
+  Vague: Kuro's bell charm
+- Name: Divine Dragon's Tears
+  Vague: the gracious gift of tears; the dragon's tears
+
 # All areas. Children should come after parents in the ordering.
 Areas:
 - Name: Hirata Estate
   Includes: hirata*
   LaterIncludes: hirata_courtyard2 hirata_temple2
-  Vague: a distant memory; the past
+  Vague: a past memory; the past
   Present: Boss Boss Miniboss Miniboss Miniboss Miniboss Treasure
 - Name: Hirata Estate Revisited
   Parent: Hirata Estate
@@ -86,12 +111,12 @@ Areas:
 - Name: Ashina Outskirts
   Includes: ashinaoutskirts*
   LaterIncludes: ashinaoutskirts_invasion2
-  Vague: rural outskirts; Ashina Outskirts
+  Vague: Ashina's rural outskirts; Ashina Outskirts
   Present: Miniboss Miniboss
 - Name: Ashina Castle
   Includes: ashinacastle*
   LaterIncludes: ashinacastle_invasion1 ashinacastle_kuro2 ashinacastle_invasion2
-  Vague: a central town
+  Vague: a central town; Ashina's capital
   Present: Miniboss Treasure
 - Name: Ashina Castle Gate
   Includes: ashinacastle_gate ashinaoutskirts_fortress2 ashinaoutskirts_invasion2
@@ -105,7 +130,8 @@ Areas:
   Present: Miniboss Miniboss
 - Name: Ashina Castle after Interior Ministry invasion
   Parent: Ashina Castle
-  Includes: ashinacastle_invasion1 ashinacastle_kuro2
+  Includes: ashinacastle_invasion1 ashinacastle_kuro2 ashinacastle_invasion2
+  LaterIncludes: ashinacastle_invasion2
   Vague: a rat-infested castle
   VaguePrep: after the first defenses fall; when the Interior Ministry arrives
   Present: Miniboss
@@ -143,13 +169,13 @@ Areas:
 - Name: Upper Sunken Valley
   Parent: Sunken Valley
   Includes: sunkenvalley sunkenvalley_cave
-  Vague: a valley of Okami descendents
+  Vague: a valley of Okami descendents; a valley of snipers
   Present: Miniboss Miniboss
 - Name: Lower Sunken Valley
   Parent: Sunken Valley
   Includes: sunkenvalley_passage sunkenvalley_underwater sunkenvalley_flower sunkenvalley_shrine sunkenvalley_carp
   LaterIncludes: sunkenvalley_carp
-  Vague: a valley of monkeys; a poisonous valley
+  Vague: a valley of monkeys
   Present: Boss
 - Name: Sunken Valley from Senpou Temple
   Includes: senpou_cavern sunkenvalley_senpou
@@ -168,7 +194,7 @@ Areas:
 - Name: Senpou Temple
   Includes: senpou*
   Excludes: senpou_cavern
-  Vague: a sprawling Buddhist temple; a sanctuary of devotees
+  Vague: a sprawling Buddhist temple; a sprawling sanctuary of devotees
   Present: Miniboss Miniboss Boss
 - Name: Senpou Temple Inner Sanctum
   Parent: Senpou Temple
@@ -178,7 +204,7 @@ Areas:
   Present: Boss
 - Name: Fountainhead Palace
   Includes: fountainhead*
-  Vague: the divine realm
+  Vague: the divine realm; the divine palace
   Present: Miniboss Miniboss Miniboss Treasure
 Hints:
 - ID: 9020
@@ -340,7 +366,7 @@ Hints:
     - '   (Location_preposition),'
     - '   You will find (item).'
     - '   You will find it (type_adjective).'
-    - '   I require those red eyes.'
+    - '   I require it.'
     - '                                                                -Dosaku'
 - ID: 9209
   Name: "Holy Chapter: Dragon's Return"
@@ -502,7 +528,7 @@ Hints:
     Text:
     - An old note left by the Okami clan, who sought to reach the divine realm.
     - ''
-    - '"(Item), enshrined'
+    - '"(Item), found'
     - (location_preposition).
     - One must (type_imperative).
     - With this, the fountainhead fragrance is complete.
@@ -682,7 +708,7 @@ Hints:
     Text:
     - A note left by a dead and rotting man in the Abandoned Dungeon.
     - ''
-    - "\"Supposedly (item) is enshrined (location_preposition).  But how to interpet '(type_imperative)'?"
+    - "\"Supposedly (item) is found (location_preposition).  But how to interpet '(type_imperative)'?"
     - This is as far as that old Okami tome could take me. But did they truly reach the Fountainhead Palace?  I'd like to know, but it seems I never will.  Kotaro... forgive me..."
     - ""
   - Type: badhint
@@ -825,7 +851,7 @@ Hints:
     Text:
     - An old text describing a black Mortal Blade.
     - ''
-    - '"In addition to the red Mortal Blade, there exists one (location_preposition).'
+    - '"Other than the red Mortal Blade, there exists one (location_preposition).'
     - The blade's name is "(item)", and is said to hold the power to open a gate to the underworld.
     - It is through this power that it creates life.
     - I beseech you, (type_imperative)..."
@@ -954,7 +980,7 @@ Hints:
     Text:
     - A bare flame in the wind.
     - 'When it goes out, (location)'
-    - becomes unimportant.
+    - becomes unimportant to search.
 - ID: 12000285
   Versions:
   - Type: default

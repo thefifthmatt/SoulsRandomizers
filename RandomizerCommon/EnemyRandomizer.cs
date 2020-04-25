@@ -7,8 +7,9 @@ using System.Text.RegularExpressions;
 using SoulsFormats;
 using SoulsIds;
 using YamlDotNet.Serialization;
+using static SoulsIds.Events;
 using static RandomizerCommon.EnemyAnnotations;
-using static RandomizerCommon.Events;
+using static RandomizerCommon.EventConfig;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.Preset;
 using static RandomizerCommon.Util;
@@ -19,17 +20,46 @@ namespace RandomizerCommon
     {
         private GameData game;
         private Events events;
-        public EnemyRandomizer(GameData game, Events events)
+        private EventConfig eventConfig;
+
+        public EnemyRandomizer(GameData game, Events events, EventConfig eventConfig)
         {
             this.game = game;
             this.events = events;
+            this.eventConfig = eventConfig;
         }
+
+        // Take free event flags from Abandoned Dungeon.
+        // These are not usable as flags which can be read/written, even the temporary ones, but they are usable for event initialization.
+        // Who knows, these might work for DS3 too, but definitely not writable in that case.
+
+        private int tmpBase = 11315000; // 11305750;  // until 6000, then it's not tmp anymore
+        private int tmpBaseMax = 11496000;
+        private int tmpJump = 11515000;
+        private int tmpMax = 11696000; // 11396000; ?
+        private int permBase = 11306000;  // until at least 7000
+        private int permMax = 11307000;
+
+        // Copying
+        public int NewID(bool temp)
+        {
+            int newId = temp ? tmpBase++ : permBase++;
+            if (!Events.IsTemp(tmpBase) && tmpBase % 10000 == 6000)
+            {
+                tmpBase -= 1000;
+                tmpBase += 10000;
+            }
+            if (tmpBase >= tmpBaseMax && tmpBase < tmpJump) tmpBase = tmpJump;
+            if (tmpBase > tmpMax || permBase > permMax) throw new Exception($"event {newId} hit event limit.");
+            return newId;
+        }
+
         public EnemyLocations Run(RandomizerOptions opt, Preset preset)
         {
             Dictionary<string, MSBS> maps = game.Smaps;
 
             // Collect all ids first
-            HashSet<int> ids = new HashSet<int>();
+            HashSet<int> entityIds = new HashSet<int>();
             Dictionary<int, string> regionIds = new Dictionary<int, string>();
             Dictionary<int, List<int>> groupIds = new Dictionary<int, List<int>>();
             Dictionary<int, (MSBS.Event.Generator, int)> generators = new Dictionary<int, (MSBS.Event.Generator, int)>();
@@ -41,13 +71,13 @@ namespace RandomizerCommon
 
                 foreach (MSBS.Part.Enemy e in msb.Parts.Enemies)
                 {
-                    ids.Add(e.EntityID);
+                    entityIds.Add(e.EntityID);
                     foreach (int id in e.EntityGroupIDs)
                     {
                         if (id > 0)
                         {
                             AddMulti(groupIds, id, e.EntityID);
-                            ids.Add(id);
+                            entityIds.Add(id);
                         }
                     }
                 }
@@ -55,7 +85,7 @@ namespace RandomizerCommon
                 {
                     if (r.EntityID < 1000000) continue;
                     regionIds[r.EntityID] = r.Name;
-                    ids.Add(r.EntityID);
+                    entityIds.Add(r.EntityID);
                 }
                 foreach (MSBS.Event.Generator gen in msb.Events.Generators)
                 {
@@ -111,26 +141,17 @@ namespace RandomizerCommon
                     };
                     ownerMap[e.EntityID] = entry.Key;
                     // Set all boss/miniboss default teams to be aggressive toward player
-                    // TODO: This doesn't work for blazing bull for some reason, or at least it damages other enemies
                     if (e.NPCParamID > 0 && (infos[e.EntityID].Class == EnemyClass.Boss || infos[e.EntityID].Class == EnemyClass.Miniboss))
                     {
+                        // TODO: Does teamType actually matter? Assume not for now. npcType is changed later on.
                         PARAM.Row npc = game.Params["NpcParam"][e.NPCParamID];
-                        npc["teamType"].Value = (byte)3;
-                        npc["npcType"].Value = (byte)6;
+                        // npc["teamType"].Value = (byte)3;
+                        // npc["npcType"].Value = (byte)6;
                     }
                 }
             }
 
-            // Process config
-            HashSet<string> testNorandom = new HashSet<string> { };
-            bool isRandom(EnemyInfo info, string model)
-            {
-                if (testNorandom.Count == 0) return true;
-                if ((info.Class == EnemyClass.Basic || info.ExtraName == null) && testNorandom.Contains(model)) return false;
-                if (info.ExtraName != null && testNorandom.Contains(info.ExtraName)) return false;
-                if (testNorandom.Contains(info.ID.ToString())) return false;
-                return true;
-            }
+            // Process core enemy config
             foreach (EnemyInfo info in ann.Enemies)
             {
                 if (!defaultData.TryGetValue(info.ID, out EnemyData data)) throw new Exception($"Entity {info.ID} does not exist in map; cannot randomize it");
@@ -139,11 +160,6 @@ namespace RandomizerCommon
                     info.Class = EnemyClass.Miniboss;
                 }
                 string model = game.ModelName(data.Model);
-                if (!isRandom(info, model))
-                {
-                    // TODO: Verify this works against actual config
-                    info.Class = EnemyClass.SetNone;
-                }
                 if (info.OwnedBy != 0)
                 {
                     if (!infos.TryGetValue(info.OwnedBy, out EnemyInfo main)) throw new Exception($"Entity {info.ID} referencing {info.OwnedBy} which does not exist in config");
@@ -250,7 +266,7 @@ namespace RandomizerCommon
                                 {
                                     // Permanent check: eventFlag >= 6500 && eventFlag < 6800 || eventFlag == 6022
                                     flagItems[eventFlag] = game.Name(item.Key);
-                                    ids.Add(eventFlag);
+                                    entityIds.Add(eventFlag);
                                     // if (eventFlag >= 6500 && eventFlag < 6800 || eventFlag == 6022)
                                     {
                                         Console.WriteLine($"{eventFlag}: {game.Name(item.Key)}");
@@ -270,11 +286,11 @@ namespace RandomizerCommon
                         {
                             if (!treasureModels.Contains(e.ModelName) || e.EntityID <= 0) continue;
                             treasureNames[e.EntityID] = $"{e.Name} - {game.ModelName(e.ModelName)}";
-                            ids.Add(e.EntityID);
+                            entityIds.Add(e.EntityID);
                         }
                     }
                 }
-                SortedDictionary<int, EventDebug> eventInfos = events.GetHighlightedEvents(emevds, ids);
+                SortedDictionary<int, EventDebug> eventInfos = events.GetHighlightedEvents(emevds, entityIds);
                 string quickId(int id)
                 {
                     if (regionIds.TryGetValue(id, out string region))
@@ -305,11 +321,69 @@ namespace RandomizerCommon
                     }
                     else
                     {
-                        List<int> entityIds = groupIds.TryGetValue(entityId, out List<int> gids) ? gids : new List<int> { entityId };
-                        return entityIds.Any(id => !infos.TryGetValue(id, out EnemyInfo enemy) || enemy.Class != 0);
+                        List<int> groupEntityIds = groupIds.TryGetValue(entityId, out List<int> gids) ? gids : new List<int> { entityId };
+                        return groupEntityIds.Any(id => !infos.TryGetValue(id, out EnemyInfo enemy) || enemy.Class != 0);
                     }
                 }
-                events.WriteEventConfig(opt["eventsyaml"] ? "newevents.txt" : null, eventInfos, isEligible, quickId, !opt["eventsitem"]);
+                EventSpec produceSpec()
+                {
+                    if (opt["eventsitem"])
+                    {
+                        return new EventSpec
+                        {
+                            Template = new List<EnemyTemplate>
+                            {
+                                new EnemyTemplate
+                                {
+                                    Type = "chr loc start end remove xx",
+                                    Entity = -1,
+                                    DefeatFlag = -1,
+                                }
+                            }
+                        };
+                    }
+                    else
+                    {
+                        return new EventSpec
+                        {
+                            ItemTemplate = new List<ItemTemplate>
+                            {
+                                new ItemTemplate
+                                {
+                                    Type = "item loc",
+                                    EventFlag = "X0",
+                                }
+                            }
+                        };
+                    }
+                }
+
+                HashSet<int> processEventsOverride = new HashSet<int> { };
+                // Old Dragons: 2500810, 2500811, 2500812, 2500813, 2500814, 2500815, 2500816, 2500817, 2500818, 2500819, 2500820, 2500821, 2500822, 2500823, 2500824, 2500825
+                // Tree Dragons: 2500930, 2500933, 2500934, 2500884, 2500880, 2500881, 2500882, 2500883
+                // Divine Dragon: 2500800
+                // Monkeys: 2000800, 2000801, 2000802, 2000803, 2000804 
+                HashSet<int> processEntitiesOverride = new HashSet<int>
+                {
+                    2500800,
+                    2500810, 2500811, 2500812, 2500813, 2500814, 2500815, 2500816, 2500817, 2500818, 2500819, 2500820, 2500821, 2500822, 2500823, 2500824, 2500825,
+                    2500930, 2500933, 2500934, 2500884, 2500880, 2500881, 2500882, 2500883,
+                };
+
+                List<EventSpec> specs = events.CreateEventConfig(eventInfos, isEligible, produceSpec, quickId, processEventsOverride, processEntitiesOverride);
+
+                ISerializer serializer = new SerializerBuilder().DisableAliases().Build();
+                if (opt["eventsyaml"])
+                {
+                    using (var writer = File.CreateText("newevents.txt"))
+                    {
+                        serializer.Serialize(writer, specs);
+                    }
+                }
+                else
+                {
+                    serializer.Serialize(Console.Out, specs);
+                }
                 return null;
             }
 
@@ -366,119 +440,120 @@ namespace RandomizerCommon
                 }
             }
 
-            // Remove most team affiliations, since they are set for multiple enemies at once.
-            // Can revisit this or use emevd like in DS1 enemy rando.
+            // Remove most default team affiliations, since they are set for multiple enemies at once.
+            // Add them per-enemy like in DS1 enemy rando.
+            Dictionary<int, byte> npcOriginalTeam = new Dictionary<int, byte>();
             foreach (PARAM.Row row in Params["NpcParam"].Rows)
             {
                 int teamType = (byte)row["npcType"].Value;
                 if (teamType == 24 || teamType == 29)
                 {
+                    npcOriginalTeam[(int)row.ID] = (byte)row["npcType"].Value;
                     row["npcType"].Value = (byte)6;
                 }
             }
 
-            // For scaling. Put every enemy into tiers.
+            // Make all scaling speffects, even if we're not using them in this run.
+            // Mapping from (source section, target section) to (scaling without xp, scaling with xp)
+            Dictionary<(int, int), (int, int)> scalingSpEffects = new Dictionary<(int, int), (int, int)>();
 
-            if (false)
+            // A flattened lower triangular matrix with all mappings from section to section (transposed from normal).
+            // These lists are generated from ReverseEnemyOrder.
+            // row: the target class. column: the source class. value: how much to multiply to place the source stat in the target.
+            Dictionary<string, List<double>> scalingMatrix = new Dictionary<string, List<double>>
             {
-                Dictionary<string, List<string>> getFieldValues(string p)
+                ["health"] = new List<double>()
                 {
-                    Dictionary<string, List<string>> ret = new Dictionary<string, List<string>>();
-                    foreach (PARAM.Row row in Params[p].Rows)
-                    {
-                        foreach (PARAM.Cell cell in row.Cells)
-                        {
-                            string name = cell.Def.InternalName;
-                            AddMulti(ret, name, cell.Value.ToString());
-                        }
-                    }
-                    return ret;
-                }
-                string histogram(List<string> list)
+                    1.36668,
+                    1.79345, 1.08729,
+                    2.23100, 1.82860, 1.75986,
+                    2.96018, 2.15446, 1.84980, 1.27038,
+                },
+                ["damage"] = new List<double>()
                 {
-                    return string.Join(", ",  list.GroupBy(i => i).Select(g => g.Key + (g.Count() > 1 ? $" ({g.Count()})" : "")));
-                }
-                HashSet<int> spEffects = new HashSet<int>(Params["SpEffectParam"].Rows.Select(r => (int)r.ID));
-                spEffects.Add(-1);
-                HashSet<string> spStrs = new HashSet<string>(spEffects.Select(s => s.ToString()));
-                Dictionary<int, HashSet<string>> spEffectUsers = new Dictionary<int, HashSet<string>>();
-                HashSet<string> scalings = new HashSet<string>(new[] { 7514, 7524, 7534, 7544, 7554, 7564, 7574, 7584, 7594, 7604 }.Select(t => t.ToString()));
-                foreach (string p in Params.Keys)
+                    1.34859,
+                    1.75701, 1.08164,
+                    2.06106, 1.73130, 1.66855,
+                    2.59672, 1.96505, 1.70489, 1.21831,
+                },
+                ["xp"] = new List<double>()
                 {
-                    Dictionary<string, List<string>> fields = getFieldValues(p);
-                    foreach (KeyValuePair<string, List<string>> fe in fields)
-                    {
-                        HashSet<string> vals = new HashSet<string>(fe.Value);
-                        string name = fe.Key;
-                        if (name.ToLowerInvariant().Contains("speffectid") || (p == "NpcParam" && name == "Unk156") || (p == "SkillParam" && (name == "Unk2" || name == "Unk3")))
-                        {
-                            foreach (string val in vals)
-                            {
-                                if (int.TryParse(val, out int sp) && sp > 0)
-                                {
-                                    AddMulti(spEffectUsers, sp, $"{p}.{name} ({fe.Value.Count(v => v == val)})");
-                                }
-                            }
-                        }
-                        if (false && vals.All(v => spStrs.Contains(v)) && vals.Any(v => int.Parse(v) >= 1000))
-                        {
-                            Console.WriteLine($"Possible {p}.{fe.Key}: {histogram(fe.Value)}");
-                        }
-                        if (vals.Any(v => scalings.Contains(v)))
-                        {
-                            Console.WriteLine($"Possible {p}.{fe.Key}: {histogram(fe.Value)}");
-                        }
-                    }
-                }
+                    2.22234,
+                    6.27407, 1.64918,
+                    7.37703, 3.74878, 2.00944,
+                    8.59301, 4.57776, 3.25542, 1.40736,
+                },
+                ["posturerate"] = new List<double>()
+                {
+                    1.36668,
+                    1.79345, 1.08729,
+                    2.23100, 1.82860, 1.75986,
+                    2.96018, 2.15446, 1.84980, 1.27038,
+                },
+            };
+            Dictionary<string, List<string>> scalingFields = new Dictionary<string, List<string>>
+            {
+                ["health"] = new List<string> { "maxHpRate", "maxStaminaCutRate" },
+                ["damage"] = new List<string> { "physAtkPowerRate", "magicAtkPowerRate", "fireAtkPowerRate", "thunderAtkPowerRate", "staminaAttackRate", "darkAttackPowerRate" },
+                ["xp"] = new List<string> { "Unk85" },
+                ["posturerate"] = new List<string> { "NewGameBonusUnk" },
+            };
+            List<(int, int)> sectionPairs = new List<(int, int)>
+            {
+                (1, 2),
+                (1, 3), (2, 3),
+                (1, 4), (2, 4), (3, 4),
+                (1, 5), (2, 5), (3, 5), (4, 5),
+            };
+            if (scalingMatrix.Any(e => !scalingFields.ContainsKey(e.Key) || e.Value.Count != sectionPairs.Count)) throw new Exception($"Internal error: bad scaling values");
 
-                List<int> special = new List<int> { 3102050, 300600 }; // sp24 the first
-                // Reference site of speffect, and value of field
-                Dictionary<string, HashSet<(string, string)>> fieldValues = new Dictionary<string, HashSet<(string, string)>>();
-                for (int i = 0; i <= 1; i++)
+            int newSpBase = 7200;
+            PARAM.Row defaultSp = Params["SpEffectParam"][7000];
+            for (int i = 1; i <= 5; i++)
+            {
+                for (int j = 1; j <= 5; j++)
                 {
-                    foreach (PARAM.Row row in Params["SpEffectParam"].Rows)
+                    // Making scaling sp for going from section i to section j
+                    if (i == j) continue;
+                    int scaleUp = sectionPairs.IndexOf((i, j));
+                    int scaleDown = sectionPairs.IndexOf((j, i));
+                    if (scaleUp == -1 && scaleDown == -1) throw new Exception($"Internal error: no scaling values defined for section transfer {i}->{j}");
+                    int index = scaleUp == -1 ? scaleDown : scaleUp;
+                    bool invert = scaleUp == -1;
+
+                    int newSp = newSpBase++;
+                    int newSpXp = newSpBase++;
+                    PARAM.Row sp = game.AddRow("SpEffectParam", newSp);
+                    PARAM.Row spXp = game.AddRow("SpEffectParam", newSpXp);
+                    GameEditor.CopyRow(defaultSp, sp);
+                    GameEditor.CopyRow(defaultSp, spXp);
+                    scalingSpEffects[(i, j)] = (newSp, newSpXp);
+                    foreach (KeyValuePair<string, List<string>> entry in scalingFields)
                     {
-                        int sp = (int)row.ID;
-                        if (!spEffectUsers.TryGetValue(sp, out HashSet<string> users))
+                        double val = scalingMatrix[entry.Key][index];
+                        // If scaling down, just take opposite of calculated difference. If scaling up, nerf a bit, since these numbers tend to come from simpler enemies.
+                        if (invert) val = 1 / val;
+                        else val = val / 1.333333;
+                        // Console.WriteLine($"{i}->{j} {entry.Key}: {val}");
+                        foreach (string field in entry.Value)
                         {
-                            users = new HashSet<string> { "other" + sp };
-                        }
-                        // if (special.Any(s => Math.Abs(s - sp) <= 10)) users.Add("bonk" + sp);
-                        foreach (PARAM.Cell cell in row.Cells)
-                        {
-                            string name = cell.Def.InternalName;
-                            foreach (string user in users)
-                            {
-                                AddMulti(fieldValues, name, (user, cell.Value.ToString()));
-                            }
-                        }
-                    }
-                }
-                foreach (PARAM.Cell cell in Params["SpEffectParam"].Rows[0].Cells)
-                {
-                    string name = cell.Def.InternalName;
-                    if (fieldValues[name].Select(t => t.Item2).Distinct().Count() <= 1) continue;
-                    Console.WriteLine($"\n\n{name}:");
-                    foreach (IGrouping<string, string> e in fieldValues[name].GroupBy(e => e.Item2, e => e.Item1).OrderBy(e => double.Parse(e.Key)))
-                    {
-                        if (e.Count() > 50)
-                        {
-                            Console.WriteLine($"    {e.Key}: *********************************************");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"    {e.Key}: {string.Join(", ", e)}");
+                            spXp[field].Value = (float)val;
+                            if (entry.Key == "xp") continue;
+                            sp[field].Value = (float)val;
                         }
                     }
                 }
             }
+            Params["SpEffectParam"].Rows.Sort((a, b) => a.ID.CompareTo(b.ID));
+
+            int seed = opt.Seed2 == 0 ? (int)opt.Seed : (int)opt.Seed2;
 
             // Force mapping from target to source. This does disrupt the seed, but only way to avoid that would be with potentially extensive swapping.
             Dictionary<int, int> forceMap = new Dictionary<int, int>();
             if (preset != null)
             {
                 // Specific enemies in specific locations
-                Random forcemapRandom = new Random((int)opt.Seed);
+                Random forcemapRandom = new Random((int)seed);
                 foreach (KeyValuePair<int, List<int>> transfer in preset.EnemyIDs.OrderBy(e => e.Key))
                 {
                     forceMap[transfer.Key] = transfer.Value.Count == 1 ? transfer.Value[0] : Choice(forcemapRandom, transfer.Value);
@@ -533,7 +608,6 @@ namespace RandomizerCommon
                 EnemyData data = defaultData[ent];
                 return $"{data.Name} #{ent} ({game.ModelName(data.Model)})";
             }
-            int seed = (int)opt.Seed;
             Dictionary<string, HashSet<string>> arenaEnemyTypes = new Dictionary<string, HashSet<string>>();
             foreach (EnemyInfo info in infos.Values)
             {
@@ -1187,7 +1261,7 @@ namespace RandomizerCommon
 
             // Preemptively make copies of all bosses as basic enemies and minibosses. Also monkeys, since they have nothing by default.
             Dictionary<int, int> bossAsBasicNpc = new Dictionary<int, int>();
-            Random reward = new Random((int)opt.Seed + 40);
+            Random reward = new Random((int)seed + 40);
             foreach (EnemyInfo info in infos.Values.Where(i => i.Class == EnemyClass.Boss || i.Class == EnemyClass.FoldingMonkey || i.Class == EnemyClass.TutorialBoss).OrderBy(i => i.ID))
             {
                 int source = info.ID;
@@ -1245,7 +1319,7 @@ namespace RandomizerCommon
             Dictionary<int, List<int>> mapping = new Dictionary<int, List<int>>();
             // Another one from target to source
             Dictionary<int, int> revMapping = new Dictionary<int, int>();
-            // Mapping of new helpers, from original owner and original helper to target
+            // Mapping of new helpers, from owner target and source helper to target helper
             Dictionary<(int, int), int> helperMapping = new Dictionary<(int, int), int>();
 
             Dictionary<int, int> totalTargetCounts = silos.Values.SelectMany(s => s.Mapping).GroupBy(e => e.Value).ToDictionary(e => e.Key, e => e.Count());
@@ -1453,7 +1527,7 @@ namespace RandomizerCommon
             }
 
             // It's emevd t ime
-            Dictionary<int, EventSpec> templates = events.Config.EnemyEvents.ToDictionary(e => e.ID, e => e);
+            Dictionary<int, EventSpec> templates = eventConfig.EnemyEvents.ToDictionary(e => e.ID, e => e);
 
             // Entities which do not exist in game anymore, but passed as arguments to events.
             // These event initializations are ignored, otherwise an error is thrown if no valid entity is found.
@@ -1551,25 +1625,43 @@ namespace RandomizerCommon
 
             // Also, name generation stuff
             FMG nameFmg = game.ItemFMGs["NPC名"];
+            Dictionary<string, FMG> otherNameFmgs = game.OtherItemFMGs.ToDictionary(e => e.Key, e => e.Value["NPC名"]);
             int baseNameId = 902000;
             // Mapping from (target entity, base target name) = new target name
             Dictionary<(int, int), int> nameIds = new Dictionary<(int, int), int>();
             int GetCleverName(int id, int source, int target)
             {
-                if (!opt["edittext"]) return id;
                 if (source == target) return id;
                 // If they have the same full name, keep it as is to avoid duplication
                 if (infos[source].FullName != null && infos[source].FullName == infos[target].FullName) return id;
 
                 if (!nameIds.TryGetValue((target, id), out int nameId))
                 {
-                    // Use the part name, otherwise keep things simple and use the model name
+                    // Use the part name, otherwise keep things simple and use the model name, for English name
                     string sourceName = infos[source].PartName ?? game.ModelName(defaultData[source].Model);
                     string fullName = infos[target].FullName != null ? infos[target].FullName.Replace("$1", sourceName) : sourceName;
                     nameId = baseNameId++;
                     nameIds[(target, id)] = nameId;
                     nameFmg[nameId] = fullName;
                     // Console.WriteLine($"Replacement for {id} -> {nameId} - source {ename(source)} -> target {ename(target)}: {fullName}");
+
+                    // For other languages, use the NPC name directly if it exists
+                    int sourceId = infos[source].NpcName;
+                    foreach (KeyValuePair<string, FMG> entry in otherNameFmgs)
+                    {
+                        FMG langFmg = entry.Value;
+                        string fullSourceName = null;
+                        if (sourceId > 0)
+                        {
+                            fullSourceName = langFmg[sourceId];
+                        }
+                        if (string.IsNullOrWhiteSpace(fullSourceName))
+                        {
+                            fullSourceName = langFmg[id];
+                        }
+                        langFmg[nameId] = fullSourceName;
+                        // Console.WriteLine($"Assigning {entry.Key}[{nameId}] = {fullSourceName}");
+                    }
                 }
                 return nameId;
             }
@@ -1674,7 +1766,7 @@ namespace RandomizerCommon
 
                             if (fileEvents.TryGetValue(callee, out EMEVD.Event theEvent))
                             {
-                                foreach (int target in targets) eventCopies.Add((entity, target, events.CopyEvent(theEvent), t));
+                                foreach (int target in targets) eventCopies.Add((entity, target, events.CopyEvent(theEvent, NewID(Events.IsTemp((int)theEvent.ID))), t));
                             }
                             else if (argEntity != 0)
                             {
@@ -1775,7 +1867,7 @@ namespace RandomizerCommon
                                         int flag = int.Parse(progressFlag);
                                         if (!progressFlags.TryGetValue((flag, target), out int targetFlag))
                                         {
-                                            targetFlag = progressFlags[(flag, target)] = events.NewID(true);
+                                            targetFlag = progressFlags[(flag, target)] = NewID(true);
                                         }
                                         reloc[flag] = targetFlag;
                                     }
@@ -2139,7 +2231,7 @@ namespace RandomizerCommon
                                     else
                                     {
                                         // TODO: Also for reading event flags? But exclude start/defeat/appear flags
-                                        if (instr.Name.Contains("Set") && instr.Name.Contains("Event Flag") && instr[0] is int flag && (flag == 0 ? !events.IsTemp(callee) : !events.IsTemp(flag)))
+                                        if (instr.Name.Contains("Set") && instr.Name.Contains("Event Flag") && instr[0] is int flag && (flag == 0 ? !Events.IsTemp(callee) : !Events.IsTemp(flag)))
                                         {
                                             warn = true;
                                         }
@@ -2180,7 +2272,7 @@ namespace RandomizerCommon
                     {
                         if (endConds.TryGetValue((source, 1), out List<EMEVD.Instruction> after) || endConds.TryGetValue((source, 0), out after))
                         {
-                            EMEVD.Event ev = new EMEVD.Event(events.NewID(true), EMEVD.Event.RestBehaviorType.Restart);
+                            EMEVD.Event ev = new EMEVD.Event(NewID(true), EMEVD.Event.RestBehaviorType.Restart);
                             ev.Instructions.AddRange(events.RewriteCondGroup(after, new Dictionary<int, int> { { source, target } }, 0));
                             // ev.Instructions.Add(events.ParseAdd($"Award Item Lot (60220)"));
                             ev.Instructions.Add(events.ParseAdd($"WAIT Fixed Time (Seconds) (5)"));
@@ -2193,6 +2285,38 @@ namespace RandomizerCommon
                             AddMulti(newInitializations, ownerMap[target], (init, ev));
                         }
                     }
+                }
+                int baseGameTarget = target;
+                if (!infos.ContainsKey(target) && infos[source].OwnedBy > 0)
+                {
+                    // Helper mapping is from owner target and source helper to target helper
+                    int ownerTarget = helperMapping.Where(e => e.Key.Item2 == source && e.Value == target).Select(e => e.Key.Item1).FirstOrDefault();
+                    if (ownerTarget > 0)
+                    {
+                        baseGameTarget = ownerTarget;
+                    }
+                }
+                if (opt["scale"])
+                {
+                    // Assign scaling speffects on best-effort basis
+                    int sourceSection = ann.ScalingSections.TryGetValue(source, out int s) ? s : -1;
+                    int targetSection = ann.ScalingSections.TryGetValue(baseGameTarget, out s) ? s : -1;
+                    if (sourceSection > 0 && targetSection > 0 && scalingSpEffects.TryGetValue((sourceSection, targetSection), out (int, int) sp))
+                    {
+                        bool fixedXp = infos.TryGetValue(target, out EnemyInfo e) && e.IsBossTarget;
+                        AddMulti(newInitializations, ownerMap[target], (events.ParseAdd($"Set SpEffect ({target},{(fixedXp ? sp.Item1 : sp.Item2)})"), null));
+                    }
+                    else if (!(sourceSection > 0 && sourceSection == targetSection))
+                    {
+#if DEBUG
+                        Console.WriteLine($"Warning: scaling speffect not found for {ename(source)} in {target}, sections {sourceSection}->{targetSection}");
+#endif
+                    }
+                }
+                // Add infighting if the original enemy had it, or the original owner had it
+                if (defaultData.TryGetValue(baseGameTarget, out EnemyData val) && npcOriginalTeam.TryGetValue(val.NPC, out byte team))
+                {
+                    AddMulti(newInitializations, ownerMap[target], (events.ParseAdd($"Set Character Team Type ({target},{team})"), null));
                 }
             }
             foreach (KeyValuePair<string, EMEVD> entry in emevds)

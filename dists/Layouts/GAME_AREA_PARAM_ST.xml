@@ -76,8 +76,13 @@
     <default>10000</default>
   </entry>
   <entry>
+    <name>BonusExperience</name>
+    <type>s32</type>
+    <default>10000</default>
+  </entry>
+  <entry>
     <name>pad1</name>
     <type>dummy8</type>
-    <size>8</size>
+    <size>4</size>
   </entry>
 </layout>

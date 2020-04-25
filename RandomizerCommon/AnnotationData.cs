@@ -418,6 +418,7 @@ namespace RandomizerCommon
                 AddMulti(AllAreas, slot.GetArea(), scope);
             }
         }
+
         public void AddSpecialItems()
         {
             // Add special unique items into game
@@ -428,6 +429,7 @@ namespace RandomizerCommon
                 data.AddLocationlessItem(addItem);
             }
         }
+
         public void AddEnemyLocations(EnemyLocations enemies)
         {
             // Currently, enemy location processing is required for skill/prosthetics progression, to add requirements for enemies
@@ -483,6 +485,35 @@ namespace RandomizerCommon
                 processLocationList(restrict.Shop);
             }
         }
+
+        public void CopyRestrictions(Dictionary<ItemKey, ItemKey> mapping)
+        {
+            foreach (ItemPriorityAnnotation priority in ItemPriority)
+            {
+                priority.Keys.AddRange(priority.Keys.Where(k => mapping.ContainsKey(k)).Select(k => mapping[k]).ToList());
+            }
+            RaceModeItems.UnionWith(RaceModeItems.Where(k => mapping.ContainsKey(k)).Select(k => mapping[k]).ToList());
+
+            foreach (KeyValuePair<ItemKey, ItemKey> entry in mapping)
+            {
+                ItemKey from = entry.Key;
+                ItemKey to = entry.Value;
+                if (ItemRestrict.ContainsKey(from))
+                {
+                    if (ItemRestrict.ContainsKey(to)) throw new Exception($"Can't copy {from}->{to}; the latter is already present");
+                    ItemRestrict[to] = ItemRestrict[from];
+                    // Not making a deep copy here, but this should fine, as the old items are expected to not be used
+                    ItemRestrict[to].Key = to;
+                }
+                if (ExcludeTags.ContainsKey(from))
+                {
+                    if (ExcludeTags.ContainsKey(to)) throw new Exception($"Can't copy {from}->{to}; the latter is already present");
+                    ExcludeTags[to] = ExcludeTags[from];
+                }
+            }
+        }
+
+        // Hints and heuristics
         public SlotAnnotation Slot(LocationScope scope)
         {
             if (Slots.ContainsKey(scope))
@@ -497,7 +528,11 @@ namespace RandomizerCommon
                 ItemLocation loc = data.Location(key);
                 locationSet.UnionWith(loc.GetLocations());
             }
-            string location = locationOrder[locationSet.Select(loc => AreaAliases.TryGetValue(loc, out string b) ? b : loc).Select(loc => locationIndex[loc]).DefaultIfEmpty().Min()];
+            string location = game.Sekiro ? "ashinaoutskirts_temple" : "firelink";
+            if (locationSet.Count > 0)
+            {
+                location = locationOrder[locationSet.Select(loc => AreaAliases.TryGetValue(loc, out string b) ? b : loc).Select(loc => locationIndex[loc]).DefaultIfEmpty().Min()];
+            }
             SlotAnnotation slot = new SlotAnnotation
             {
                 Area = location,
@@ -516,12 +551,14 @@ namespace RandomizerCommon
             { "boss", "requires defeating boss" },
         };
         private static readonly List<string> LocationHint = new List<string> { "Early in", "Midway through", "Late in" };
+
         private string FullArea(string area)
         {
             if (game.Sekiro && !Areas.ContainsKey(area)) return area;
             if (!Areas.ContainsKey(area)) throw new Exception($"Unknown area {area}");
             return Areas[area].Text;
         }
+
         public string GetLocationHint(SlotKey key, SortedSet<string> specialLocation=null)
         {
             Func<string, string> capitalize = s => $"{s[0]}".ToUpperInvariant() + s.Substring(1);
@@ -602,6 +639,7 @@ namespace RandomizerCommon
             return $"{text}. {(original.Count == 1 ? "Replaces" : "In the spot of")} {string.Join(", ", original)}.";
         }
 
+        // Counting for key item assignment
         public enum UniqueCategory { KEY_LOT, KEY_SHOP, QUEST_LOT, QUEST_SHOP };
         public Dictionary<LocationScope, (UniqueCategory, int)> GetUniqueCounts()
         {

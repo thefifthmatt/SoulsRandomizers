@@ -173,7 +173,12 @@ namespace RandomizerCommon
                 {
                     names.Add($"{info.Class}");
                 }
-                names.Add($"Any");
+                if (info.Class != EnemyClass.Helper)
+                {
+                    // This is mainly used for "Oops All Any" so it should not include unkillable helpers
+                    // like Immortal Centipede or Corrupted Monk Illusion.
+                    names.Add($"Any");
+                }
                 if (debugNames) Console.WriteLine($"-- Names: {string.Join("; ", names)}");
                 foreach (string name in names)
                 {

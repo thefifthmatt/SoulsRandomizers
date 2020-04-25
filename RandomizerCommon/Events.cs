@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Globalization;
-using System.Numerics;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using SoulsFormats;
-using SoulsIds;
-using YamlDotNet.Serialization;
 using static RandomizerCommon.Util;
 using static SoulsFormats.EMEVD.Instruction;
 
 namespace RandomizerCommon
 {
-    public class Events
+    public class EventsDeprecated
     {
         private static Dictionary<int, int> ArgLength = new Dictionary<int, int>
         {
@@ -60,22 +54,9 @@ namespace RandomizerCommon
         private Dictionary<string, (int, int)> docByName;
         private Dictionary<EMEDF.InstrDoc, List<int>> funcBytePositions;
 
-        // Take free event flags from Abandoned Dungeon.
-        // These are not usable as flags which can be read/written, even the temporary ones, but they are usable for event initialization.
-        // Who knows, these might work for DS3 too, but definitely not writable in that case.
-
-        private int tmpBase = 11315000; // 11305750;  // until 6000, then it's not tmp anymore
-        private int tmpBaseMax = 11496000;
-        private int tmpJump = 11515000;
-        private int tmpMax = 11696000; // 11396000; ?
-        private int permBase = 11306000;  // until at least 7000
-        private int permMax = 11307000;
-
-        public readonly EventConfig Config;
-
-        public Events(bool Sekiro)
+        public EventsDeprecated(string emedfPath)
         {
-            doc = EMEDF.ReadFile(Sekiro ? @"dists\Base\sekiro-common.emedf.json" : @"dist\Base\ds3-common.emedf.json");
+            doc = EMEDF.ReadFile(emedfPath);
             docByName = doc.Classes.SelectMany(c => c.Instructions.Select(i => (i, (int)c.Index))).ToDictionary(i => i.Item1.Name, i => (i.Item2, (int)i.Item1.Index));
             funcBytePositions = new Dictionary<EMEDF.InstrDoc, List<int>>();
             foreach (EMEDF.ClassDoc bank in doc.Classes)
@@ -90,15 +71,6 @@ namespace RandomizerCommon
                         AddMulti(funcBytePositions, instr, bytePos);
                         bytePos += len;
                     }
-                }
-            }
-            if (Sekiro)
-            {
-                // For now, DS3 has no config, since it has neither enemy rando or flag rewriting.
-                IDeserializer deserializer = new DeserializerBuilder().Build();
-                using (var reader = File.OpenText("dists/Base/events.txt"))
-                {
-                    Config = deserializer.Deserialize<EventConfig>(reader);
                 }
             }
         }
@@ -183,28 +155,14 @@ namespace RandomizerCommon
             public override string ToString() => $"{Name} ({string.Join(",", Args.Select(a => TextArg(a)))})";
         }
 
-        public int IndexFromByteOffset(Instr instr, int offset)
+        private int IndexFromByteOffset(Instr instr, int offset)
         {
             int paramIndex = funcBytePositions[instr.Doc].IndexOf(offset);
             if (paramIndex == -1) throw new Exception($"Finding {instr.Name}, target {offset}, available {string.Join(",", funcBytePositions[instr.Doc])}");
             return paramIndex;
         }
 
-        // Copying
-        public int NewID(bool temp)
-        {
-            int newId = temp ? tmpBase++ : permBase++;
-            if (!IsTemp(tmpBase) && tmpBase % 10000 == 6000)
-            {
-                tmpBase -= 1000;
-                tmpBase += 10000;
-            }
-            if (tmpBase >= tmpBaseMax && tmpBase < tmpJump) tmpBase = tmpJump;
-            if (tmpBase > tmpMax || permBase > permMax) throw new Exception($"event {newId} hit event limit.");
-            return newId;
-        }
-
-        public bool IsTemp(int flag)
+        public static bool IsTemp(int flag)
         {
             return (flag / 1000) % 10 == 5;
         }
@@ -214,9 +172,8 @@ namespace RandomizerCommon
             return i.Layer.HasValue ? new EMEVD.Instruction(i.Bank, i.ID, i.Layer.Value, i.ArgData) : new EMEVD.Instruction(i.Bank, i.ID, i.ArgData);
         }
 
-        public EMEVD.Event CopyEvent(EMEVD.Event src)
+        public EMEVD.Event CopyEvent(EMEVD.Event src, int newId)
         {
-            int newId = NewID(IsTemp((int)src.ID));
             EMEVD.Event newEvent = new EMEVD.Event(newId, src.RestBehavior);
             if (src.Parameters.Count > 0)
             {
@@ -409,6 +366,7 @@ namespace RandomizerCommon
             public bool Remove { get; set; }
             public Dictionary<int, string> PosEdit { get; set; }
             public Dictionary<string, string> ValEdit { get; set; }
+            // TODO: Add information here to see what is being matched, not just what the edit is
             public override string ToString() => $"Edit (Add {Add}, Remove {Remove}, PosEdit {(PosEdit == null ? "" : string.Join(",", PosEdit))}, ValEdit {(ValEdit == null ? "" : string.Join(",", ValEdit))})";
         }
 
@@ -589,99 +547,13 @@ namespace RandomizerCommon
             return false;
         }
 
-        // All the various config classes
-        public class EventConfig
-        {
-            public List<EventSpec> ItemTalks { get; set; }
-            public List<EventSpec> ItemEvents { get; set; }
-            public List<EventSpec> EnemyEvents { get; set; }
-        }
-
-        public class EventSpec
+        public abstract class AbstractEventSpec
         {
             public int ID { get; set; }
             public string Comment { get; set; }
-            public List<EnemyTemplate> Template { get; set; }
-            public List<ItemTemplate> ItemTemplate { get; set; }
             public List<string> DebugInfo { get; set; }
             public List<string> DebugInit { get; set; }
             public List<string> DebugCommands { get; set; }
-        }
-
-        public class EnemyTemplate
-        {
-            // chr, multichr, loc, start, end, startphase, endphase, remove, replace
-            // chr and multichr create copies
-            public string Type { get; set; }
-            // The affected entities, if a chr command or if conds/cmds are used below which need to be transplanted
-            public int Entity { get; set; }
-            // The other entity involved. The source for locs, or the target for chrs. (Currently only works for loc)
-            public int Transfer { get; set; }
-            // A flag which ends this event when on, if chr
-            public int DefeatFlag { get; set; }
-            // A flag which ends this event when off, if chr
-            public int AppearFlag { get; set; }
-            // A 5xxx flag which this event waits for (phase change or boss fight), or the flag itself if start event
-            public int StartFlag { get; set; }
-            // 5xxx flags which are both set and read as chr, and should be isolated for the target entity if it is duplicated
-            public string ProgressFlag { get; set; }
-            // The condition groups used to end a boss fight, first for music flag and second for permanent flag. Either a group or a command name (with cond group 0)
-            public string EndCond { get; set; }
-            public string EndCond2 { get; set; }
-            // Moving CameraSetParam ids between regions
-            public string Camera { get; set; }
-            // A finisher deathblow, to add conditions to stop it from proccing unnecessarily
-            public int Deathblow { get; set; }
-            // This character's invincibility is managed here, so after they lose it, their immortality may need to be reset if an immortal boss
-            public int Invincibility { get; set; }
-            // Replacing boss/miniboss health bar names
-            public string Name { get; set; }
-            // Commands used when starting a boss fight for this entity, especially related to disp mask or lockon points.
-            // Usually not needed for minibosses and other enemies, when those are standalone chr events.
-            // Maybe should automatically remove (or transplant for boss starts) Set Lock On Point, Force Animation Playback, Set Dispmask, Set AI ID
-            public string StartCmd { get; set; }
-            // Commands to unconditionally remove.
-            public string Remove { get; set; }
-            // Commands to unconditionally remove when enemy is not unique
-            public string RemoveDupe { get; set; }
-            // Args to replace
-            public string Replace { get; set; }
-            // Commands to add to an event, before randomizing it
-            public List<EventAddCommand> Add { get; set; }
-            // What to do with regions if a chr command - chrpoint (exact), arenapoint (center/random), arenabox10 (random), arena (bgm), arenasfx (center), or dist10.
-            public List<string> Regions { get; set; }
-            // Check for doing nothing. Maybe should just have a type for nothing
-            public bool IsDefault() =>
-                Entity == 0 && DefeatFlag == 0 && AppearFlag == 0 && StartFlag == 0 && EndCond == null && EndCond2 == null && StartCmd == null && Remove == null && RemoveDupe == null && Replace == null
-                    && Add == null && Regions == null && Camera == null && Invincibility == 0 && Deathblow == 0 && ProgressFlag == null && Name == null;
-            [YamlIgnore]
-            public EMEVD.Event Inner { get; set; }
-        }
-
-        public class ItemTemplate
-        {
-            // item, any, loc, carp
-            public string Type { get; set; }
-            // The event flag to potentially rewrite
-            public string EventFlag { get; set; }
-            // The item lot to use for the event flag replacement. TODO: implement
-            public string ItemLot { get; set; }
-            // The shop slot qwc to use for the event flag replacement. May not be needed, since shop event flags are unambiguous
-            // public string ShopQwc { get; set; }
-            // An arg to blank out, in the case of alternate drops
-            public string RemoveArg { get; set; }
-            // An entity to use to identity item lots, mainly for making carp drops unique
-            public string Entity { get; set; }
-            // For ESD edits, the machine with the flag usage
-            public string Machine { get; set; }
-            // Commands to unconditionally remove.
-            public string Remove { get; set; }
-            // Args to replace
-            public string Replace { get; set; }
-            // Commands to add to an event, before randomizing it
-            public List<EventAddCommand> Add { get; set; }
-            // Check for doing nothing
-            public bool IsDefault() => EventFlag == null && ItemLot == null && RemoveArg == null && Entity == null && Remove == null && Add == null;
         }
 
         public class EventAddCommand
@@ -816,75 +688,37 @@ namespace RandomizerCommon
             }
             return eventInfos;
         }
-        private HashSet<int> processEventsOverride = new HashSet<int> { };
-        // Old Dragons: 2500810, 2500811, 2500812, 2500813, 2500814, 2500815, 2500816, 2500817, 2500818, 2500819, 2500820, 2500821, 2500822, 2500823, 2500824, 2500825
-        // Tree Dragons: 2500930, 2500933, 2500934, 2500884, 2500880, 2500881, 2500882, 2500883
-        // Divine Dragon: 2500800
-        // Monkeys: 2000800, 2000801, 2000802, 2000803, 2000804 
-        private HashSet<int> processEntitiesOverride = new HashSet<int>
+
+        public List<T> CreateEventConfig<T>(
+            SortedDictionary<int, EventDebug> eventInfos,
+            Predicate<int> eligibleFilter,
+            Func<T> createSpec,
+            Func<int, string> quickId,
+            HashSet<int> eventsOverride = null,
+            HashSet<int> idsOverride = null)
+            where T : AbstractEventSpec
         {
-            2500800,
-            2500810, 2500811, 2500812, 2500813, 2500814, 2500815, 2500816, 2500817, 2500818, 2500819, 2500820, 2500821, 2500822, 2500823, 2500824, 2500825,
-            2500930, 2500933, 2500934, 2500884, 2500880, 2500881, 2500882, 2500883,
-        };
-        public void WriteEventConfig(string fileName, SortedDictionary<int, EventDebug> eventInfos, Predicate<int> eligibleFilter, Func<int, string> quickId, bool enemies)
-        {
-            List<EventSpec> toWrite = new List<EventSpec>();
+            List<T> toWrite = new List<T>();
             foreach (KeyValuePair<int, EventDebug> entry in eventInfos.OrderBy(e => e.Key))
             {
                 EventDebug info = entry.Value;
+                // At least for now, don't rewrite constructors in configs
                 if (entry.Key == 0 || entry.Key == 50) continue;
                 bool process = info.Highlight;
                 process = process && info.IDs.Any(id => eligibleFilter(id));
-                if (processEventsOverride.Count > 0) process = processEventsOverride.Contains(entry.Key);
-                else if (processEntitiesOverride.Count > 0) process = processEntitiesOverride.Intersect(info.IDs).Count() > 0;
+                if (eventsOverride?.Count > 0) process = eventsOverride.Contains(entry.Key);
+                else if (idsOverride?.Count > 0) process = idsOverride.Intersect(info.IDs).Count() > 0;
                 if (!process) continue;
-                EventSpec spec = new EventSpec
-                {
-                    ID = entry.Key,
-                    Comment = "none",
-                    DebugInfo = info.IDs.Select(id => quickId(id)).Distinct().ToList(),
-                    DebugInit = info.Callers.Count > 0 ? info.Callers.Select(c => c.CallString()).ToList() : null,
-                    DebugCommands = info.Instructions.Select(c => $"{(c.HighlightArgs.Count > 0 ? "+ " : "")}{c.CallString()}").ToList(),
-                };
-                if (enemies)
-                {
-                    spec.Template = new List<EnemyTemplate>
-                    {
-                        new EnemyTemplate
-                        {
-                            Type = "chr loc start end remove xx",
-                            Entity = -1,
-                            DefeatFlag = -1,
-                        }
-                    };
-                }
-                else
-                {
-                    spec.ItemTemplate = new List<ItemTemplate>
-                    {
-                        new ItemTemplate
-                        {
-                            Type = "item loc",
-                            EventFlag = "X0",
-                        }
-                    };
-                }
+
+                T spec = createSpec();
+                spec.ID = entry.Key;
+                spec.Comment = "none";
+                spec.DebugInfo = info.IDs.Select(id => quickId(id)).Distinct().ToList();
+                spec.DebugInit = info.Callers.Count > 0 ? info.Callers.Select(c => c.CallString()).ToList() : null;
+                spec.DebugCommands = info.Instructions.Select(c => $"{(c.HighlightArgs.Count > 0 ? "+ " : "")}{c.CallString()}").ToList();
                 toWrite.Add(spec);
             }
-            Console.WriteLine(string.Join(",", toWrite.Select(e => e.ID)));
-            ISerializer serializer = new SerializerBuilder().DisableAliases().Build();
-            if (fileName == null)
-            {
-                serializer.Serialize(Console.Out, new EventConfig { EnemyEvents = toWrite });
-            }
-            else
-            {
-                using (var writer = File.CreateText(fileName))
-                {
-                    serializer.Serialize(writer, new EventConfig { EnemyEvents = toWrite });
-                }
-            }
+            return toWrite;
         }
     }
 }

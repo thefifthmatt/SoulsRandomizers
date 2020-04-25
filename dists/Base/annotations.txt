@@ -13,8 +13,16 @@ Config:
 - Oneof:
   - noracemode_health
   - racemode_health
+- Oneof:
+  - nosplitskills
+  - splitskills
+# Add extra items by default. Currently not exposed in UI.
+- Oneof:
+  - extraitems
+  - noextraitems
 - Opt: cavesnakeskip
 # gourdprogression, weaponprogression, owlorder (2 after 1)?
+
 ConfigItems:
 - GroupName: keyitems
   HintName: key items
@@ -25,9 +33,9 @@ ConfigItems:
   - Name: Mortal Blade
   - Name: Lotus of the Palace
   - Name: Shelter Stone
-  #- Name: Aromatic Branch - no one checks for this
+  - Name: Aromatic Branch  # extraitems
   #- Name: Healing Gourd ID: 3:3000
-  #- Name: Divine Dragon's Tears - no one seems to check this either
+  - Name: Divine Dragon's Tears  # extraitems
   - Name: Young Lord's Bell Charm
   - Name: Father's Bell Charm
   - ConfigName: trulypreciousbait1
@@ -230,7 +238,6 @@ ConfigItems:
   - Name: 'Mask Fragment: Left'
   - Name: 'Mask Fragment: Dragon'
   - Name: Lapis Lazuli
-  - Name: Divine Dragon's Tears
   - Name: Sakura Droplet
   - Name: Dragon's Tally Board
   - Name: Promissory Note
@@ -311,7 +318,7 @@ Events:
 - Name: isshin
   Req: ashinacastle_invasion1
 - Name: swordsaintisshin
-  Req: ashinareservoir_end
+  Req: ashinareservoir_endfield
 - Name: jinsuke
   Req: ashinacastle
 - Name: demonofhatred
@@ -372,9 +379,12 @@ Areas:
 - Name: ashinareservoir_invasion2
   Text: Ashina Reservoir after Central Forces
   Req: ashinacastle_invasion2 # reservoir_entrance AND invasion2
-- Name: ashinareservoir_end
+- Name: ashinareservoir_endfield
   Text: Ashina Reservoir Ending
   Req: ashinareservoir_invasion2 AND secretpassagekey
+- Name: ashinareservoir_end
+  Text: Ashina Reservoir Ending
+  Req: ashinareservoir_endfield AND (noextraitems OR divinedragonstears)
 - Name: ashinacastle_gate
   Text: Ashina Castle Gate
   Req: ashinaoutskirts_fortress2
@@ -393,7 +403,7 @@ Areas:
   Req: ashinacastle AND invasion1
 - Name: ashinacastle_kuro2
   Text: Ashina Castle after Owl
-  Req: ashinacastle_invasion1 AND owl
+  Req: ashinacastle_invasion1 AND owl AND (noextraitems OR aromaticbranch)
 - Name: ashinacastle_invasion2
   Text: Ashina Castle after Central Forces
   Req: invasion2  # ashinacastle
@@ -513,7 +523,7 @@ Areas:
   Req: mibuvillage AND corruptedmonk
 - Name: fountainhead_bridge
   Text: Fountainhead Vermillion Bridge
-  Req: ashinacastle_kuro2 AND mibuvillage_cave # AND aromaticbranch - not needed - make it required somehow?
+  Req: ashinacastle_kuro2 AND mibuvillage_cave
 - Name: fountainhead_surface
   Text: Fountainhead Palace
   Req: fountainhead_bridge AND truemonk
@@ -618,7 +628,7 @@ PlacementRestrictions:
 - Name: Mikiri Counter
   Switch: skillprogression
   Unique:
-  - Before: shinobihunter_location genichiro_location sevenspears_location sevenspears2_location corruptedmonk_location truemonk_location armoredwarrior_location
+  - Before: shinobihunter_location genichiro_location sevenspears_location sevenspears2_location corruptedmonk_location truemonk_location armoredwarrior_location owl2_location ashinacastle
 - Name: Grappling Hook Attack
   Switch: skillprogression
   Unique:
@@ -630,15 +640,15 @@ PlacementRestrictions:
 - Name: Descending Carp
   Switch: skillprogression
   Unique:
-  - Before: owl_location owl2_location isshin_location swordsaintisshin_location
+  - Before: owl_location owl2_location isshin_location swordsaintisshin_location ashinacastle
 - Name: Ascending Carp
   Switch: skillprogression
   Unique:
-  - Before: owl_location owl2_location isshin_location swordsaintisshin_location
+  - Before: owl_location owl2_location isshin_location swordsaintisshin_location ashinacastle
 - Name: Flowing Water
   Switch: skillprogression
   Unique:
-  - Before: owl_location owl2_location isshin_location swordsaintisshin_location
+  - Before: owl_location owl2_location isshin_location swordsaintisshin_location ashinacastle
 - Item:
     Name: Phantom Kunai
     ID: 3:9701
@@ -659,6 +669,11 @@ PlacementRestrictions:
   - Amount: 5
     Before: shichimen_location shichimen2_location shichimen3_location headless_outskirts_location headless_forest_location headless_sunken_location sakurabull_location
   - After: ashinaoutskirts_temple
+- Name: Anti-air Deathblow Text
+  Switch: skillprogression
+  Unique:
+  - Before: shichimen_location shichimen2_location shichimen3_location
+
 SpecialModes:
 - RaceSwitch: racemode
   NorandomSwitch: norandom
@@ -685,6 +700,12 @@ SpecialModes:
 - RaceSwitch: racemode_skills
   NorandomSwitch: norandom_skills
   Includes: texts
+  Items:
+  - Name: Mikiri Counter
+  - Name: Flowing Water
+  - Name: Grappling Hook Attack
+  - Name: Ascending Carp
+  - Name: Descending Carp
 ItemPriority:
 - ExcludeTags: missable norandom nokey end
   Includes: keyitems
@@ -707,6 +728,12 @@ ItemPriority:
   - Name: Bestowal Ninjutsu
   - Name: Sakura Droplet
   - Name: Prayer Bead
+  # If skill splitting, these are unmissable skills
+  - Name: Mikiri Counter
+  - Name: Flowing Water
+  - Name: Grappling Hook Attack
+  - Name: Ascending Carp
+  - Name: Descending Carp
 - ExcludeTags: enemy norandom exclusive until
   Includes: questitems
 - ExcludeTags: missable
@@ -752,6 +779,7 @@ ItemPriority:
     ID: 3:3580
   - Name: Ceremonial Tanto
     ID: 3:3800
+
 Slots:
 - Key: '00,0:-1:1100000,1100100:'
   DebugText:
@@ -953,7 +981,7 @@ Slots:
   - 'Memory - 2002[Gyoubu Oniwa (c5080_0000 #1100800,1105600) ashinaoutskirts] (hidden)'
   Text: Dropped by Gyoubu Oniwa
   Area: ashinaoutskirts_fortress1
-  Tags: norandom
+  Tags: remove
 - Key: '00,0:50002040::'
   DebugText:
   - 'Lapis Lazuli - 2040[Demon of Hatred (c7020_0000 #1100900,1105610) ashinaoutskirts] 2x'
@@ -971,7 +999,7 @@ Slots:
   - 'Memory - 2042[Demon of Hatred (c7020_0000 #1100900,1105610) ashinaoutskirts] (hidden)'
   Text: Dropped by Demon of Hatred
   Area: ashinaoutskirts_invasion2
-  Tags: norandom
+  Tags: remove
 - Key: '00,0:50003060::'
   DebugText:
   - Shinobi Prosthetic - 3060[Scripted ashinaoutskirts]
@@ -1540,14 +1568,14 @@ Slots:
   DebugText:
   - 'Memory: Saint Isshin  - 2131[Sword Saint Isshin (c5400_0000 #1120860) ashinareservoir]'
   Text: Dropped by Sword Saint Isshin
-  Area: ashinareservoir_end
-  Tags: boss end
+  Area: ashinareservoir_endfield
+  Tags: boss
 - Key: '01,0:50002132::'
   DebugText:
   - 'Memory - 2132[Sword Saint Isshin (c5400_0000 #1120860) ashinareservoir] (hidden)'
   Text: Dropped by Sword Saint Isshin
   Area: ashinareservoir
-  Tags: norandom
+  Tags: remove
 - Key: '01,0:50003080::'
   DebugText:
   - Shirt after Kurabimaru (cosmetic) - 3080[Scripted ashinareservoir]
@@ -1712,8 +1740,8 @@ Slots:
   DebugText:
   - 'Dragon Flash - 2130[Sword Saint Isshin (c5400_0000 #1120860) ashinareservoir] (hidden)'
   Text: Dropped by Sword Saint Isshin
-  Area: ashinareservoir_end
-  Tags: boss end
+  Area: ashinareservoir_endfield
+  Tags: boss
 - Key: '01,0:6720::'
   DebugText:
   - 'Healing Gourd - 61100[Kuro (c7200_0000 #1120700) ashinareservoir, Kuro (c7200_0001 #1120701) ashinareservoir]'
@@ -1792,7 +1820,7 @@ Slots:
   - 'Memory - 2082[Genichiro, Way of Tomoe (c7110_0001 #1110801) ashinacastle] (hidden)'
   Text: Dropped by Genichiro
   Area: ashinacastle
-  Tags: norandom
+  Tags: remove
 - Key: '02,0:50002090::'
   DebugText:
   - 'Aromatic Branch - 2090[Owl (c5060_0000 #1110850) ashinacastle]'
@@ -1810,7 +1838,7 @@ Slots:
   - 'Memory - 2092[Owl (c5060_0000 #1110850) ashinacastle] (hidden)'
   Text: Dropped by Owl
   Area: ashinacastle
-  Tags: norandom
+  Tags: remove
 - Key: '02,0:50002121::'
   DebugText:
   - 'Memory: Isshin Ashina - 2121[Tengu of Ashina (c5430_0000 #1110920) ashinacastle]'
@@ -1822,7 +1850,7 @@ Slots:
   - 'Memory - 2122[Tengu of Ashina (c5430_0000 #1110920) ashinacastle] (hidden)'
   Text: Dropped by Isshin in Shura ending
   Area: ashinacastle
-  Tags: norandom
+  Tags: remove
 - Key: '02,0:50006111::'
   DebugText:
   - 'Fragrant Flower Note - 61110[Kuro (c7200_0000 #1110701) ashinacastle]'
@@ -2709,7 +2737,7 @@ Slots:
   - 'Memory - 2032[Lady Butterfly (c5090_0000 #1000800) hirata] (hidden)'
   Text: Dropped by Lady Butterfly
   Area: hirata
-  Tags: norandom
+  Tags: remove
 - Key: '03,0:50002100::'
   DebugText:
   - 'Aromatic Flower - 2100[Owl (c5060_0001 #1000900) hirata]'
@@ -2729,7 +2757,7 @@ Slots:
   - 'Memory - 2102[Owl (c5060_0001 #1000900) hirata] (hidden)'
   Text: Dropped by Owl
   Area: hirata_temple2
-  Tags: norandom
+  Tags: remove
 - Key: '03,0:50006120::'
   DebugText:
   - 'Hidden Temple Key - 61200[Owl (c5060_0000 #1000590) hirata]'
@@ -3434,7 +3462,7 @@ Slots:
   - 'Memory - 2052[Corrupted Monk (c5000_0000 #1500800) mibuvillage] (hidden)'
   Text: Dropped by Corrupted Monk
   Area: mibuvillage
-  Tags: norandom
+  Tags: remove
 - Key: '05,0:50006280::'
   DebugText:
   - 'Dragonspring Sake - 62800[Head Priest (c7480_0000 #1500701) mibuvillage]'
@@ -3917,7 +3945,7 @@ Slots:
   - 'Memory - 2012[Guardian Ape (c5100_0000 #1700800) sunkenvalley] (hidden)'
   Text: Dropped by Guardian Ape
   Area: sunkenvalley_passage
-  Tags: norandom
+  Tags: remove
 - Key: '06,0:50002017::'
   DebugText:
   - 'Memory: Headless Ape - 2017[Guardian Ape (c5100_0001 #1700850) sunkenvalley]'
@@ -3929,7 +3957,7 @@ Slots:
   - 'Memory - 2018[Guardian Ape (c5100_0001 #1700850) sunkenvalley] (hidden)'
   Text: Dropped by Headless Ape
   Area: sunkenvalley_burrow2
-  Tags: norandom
+  Tags: remove
 - Key: '06,0:51700000::'
   DebugText:
   - 'Lotus of the Palace - 1700000[o177800 (o177800_7000 #1701200) sunkenvalley]'
@@ -4583,7 +4611,7 @@ Slots:
   - 'Memory - 2022[Invisible (c1000_0009 #2000800) senpou] (hidden)'
   Text: Dropped by Folding Screen Monkeys
   Area: senpou_sanctum
-  Tags: norandom
+  Tags: remove
 - Key: '07,0:50003090::'
   DebugText:
   - Shirt after Mortal Blade (cosmetic) - 3090[Scripted senpou]
@@ -5114,7 +5142,7 @@ Slots:
   - 'Memory - 2062[Corrupted Monk (c5000_0000 #2500850) fountainhead] (hidden)'
   Text: Dropped by True Monk
   Area: fountainhead_bridge
-  Tags: norandom
+  Tags: remove
 - Key: '08,0:50002070::'
   DebugText:
   - "Divine Dragon's Tears - 2070[Divine Dragon (c5200_0000 #2500800) fountainhead]"
@@ -5132,7 +5160,7 @@ Slots:
   - 'Memory - 2072[Divine Dragon (c5200_0000 #2500800) fountainhead] (hidden)'
   Text: Dropped by Divine Dragon
   Area: fountainhead
-  Tags: norandom
+  Tags: remove
 - Key: '08,0:50006250::'
   DebugText:
   - 'Treasure Carp Scale - 52500[Feeding Grounds Attendant (c5021_0000 #2500560) fountainhead], 62500[Feeding Grounds Attendant (c5021_0000 #2500560) fountainhead], 62511[Feeding Grounds Attendant (c5021_0000 #2500560) fountainhead]'

@@ -66,6 +66,10 @@ namespace RandomizerCommon
                         enemyNames.Add("- " + subname);
                     }
                 }
+                if (ann.Singletons != null)
+                {
+                    enemyNames = enemyNames.Except(ann.Singletons).ToList();
+                }
                 select.Enabled = true;
                 UpdateEnemyList();
             }

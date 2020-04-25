@@ -214,6 +214,7 @@ Enemies:
   ItemName: shinobihunter
   FullName: Shinobi Hunter $1
   PartName: Enshin of Misen
+  NpcName: 911060
   Arena: 70.368 -802.347 303.849 80 15 5 40
 - ID: 1000331
   DebugText: m10_00_00_00 - c1050_0001 - npc 10500012 - think 10500000 - id 1000331 (1005331) - Shinobi Hunter
@@ -239,6 +240,7 @@ Enemies:
   ExtraName: Juzou the Drunkard
   FullName: $1 the Drunkard
   PartName: Juzou
+  NpcName: 911071
   EnemyType: drunkard
   Arena: -49.260 -766.467 485.704 30 18 10 23
   # Bigger, but more terrain: -51.85 -766.648 485.86 30 35 10 25
@@ -252,6 +254,7 @@ Enemies:
   ExtraName: Juzou the Drunkard 2
   FullName: $1 the Drunkard
   PartName: Juzou
+  NpcName: 911071
   EnemyType: drunkard
   Arena: -49.260 -766.467 485.704 30 18 10 23
 - ID: 1000400
@@ -419,6 +422,7 @@ Enemies:
   ExtraName: Lone Shadow Masanaga the Spear-Bearer (Hirata)
   FullName: Lone Shadow $1 the Spear-Bearer
   PartName: Masanaga
+  NpcName: 911472
   EnemyType: loneshadow
   Arena: 68.793 -766.379 425.982 30 20 10 8
 - ID: 1000354
@@ -829,6 +833,7 @@ Enemies:
   ExtraName: Owl (Father)
   FullName: $1 (Father)
   PartName: Owl
+  NpcName: 905061
   DefeatFlag: 9317
   AppearFlag: 8304
   StartFlag: 11005901
@@ -850,6 +855,7 @@ Enemies:
   ExtraName: Lady Butterfly 1
   FullName: Lady $1
   PartName: Lady Butterfly
+  NpcName: 905090
   Phases: 1
 - ID: 1000810
   DebugText: m10_00_00_00 - c5090_0001 - npc 50900001 - think 50900000 - id 1000810 - Lady Butterfly
@@ -861,6 +867,7 @@ Enemies:
   ExtraName: Lady Butterfly 2
   FullName: Lady $1
   PartName: Lady Butterfly
+  NpcName: 905090
   StartFlag: 11005802
   DefeatFlag: 9302
   Arena: -218.937 -786.211 571.987 30 48 10 11
@@ -1151,6 +1158,7 @@ Enemies:
   ExtraName: General Naomori Kawarada
   FullName: General $1
   PartName: Naomori Kawarada
+  NpcName: 911021
   Arena: 212.014 -38.225 2.915 -130.3 23 10 13 0 5
 - ID: 1100301
   DebugText: m11_00_00_00 - c1020_0001 - npc 10200010 - think 10200010 - id 1100301 (1105600) - Samurai General
@@ -1160,6 +1168,7 @@ Enemies:
   ExtraName: General Tenzen Yamauchi
   FullName: General $1
   PartName: Tenzen Yamauchi
+  NpcName: 911022
   EnemyType: general
   Arena: 100.416 -42.555 147.864 10 38 10 15
 - ID: 1100480
@@ -1171,6 +1180,7 @@ Enemies:
   ExtraName: Shigekichi of the Red Guard
   FullName: $1 of the Red Guard
   PartName: Shigekichi
+  NpcName: 911072
   Arena: 100.416 -42.555 147.864 10 38 10 15
 - ID: 1100321
   DebugText: m11_00_00_00 - c1100_0001 - npc 11004000 - think 11000001 - id 1100321 (1105600) - Gecko
@@ -1243,6 +1253,7 @@ Enemies:
   ItemName: headless_outskirts
   FullName: Headless $1
   PartName: Headless
+  NpcName: 911350
   EnemyType: headless
   Arena: 236.731 -122.881 203.226 20 10 5 5 0 12
 - ID: 1100450
@@ -1399,6 +1410,7 @@ Enemies:
   ItemName: chainedogre
   FullName: Chained $1
   PartName: Chained Ogre
+  NpcName: 915020
   EnemyType: chainedogre
   Arena: 133.416 -44.660 136.173 5.9 9 10 25
 - ID: 1100312
@@ -1416,6 +1428,7 @@ Enemies:
   ExtraName: Gyoubu Oniwa
   FullName: $1 Oniwa
   PartName: Gyoubu Oniwa
+  NpcName: 905081
   DefeatFlag: 9301
   StartFlag: 11105801
   Arena: -126.2 -68.326 68.3 13 70 5 100
@@ -1441,6 +1454,7 @@ Enemies:
   ExtraName: Demon of Hatred
   FullName: $1 of Hatred
   PartName: Demon of Hatred
+  NpcName: 907021
   DefeatFlag: 9313
   AppearFlag: 8302
   StartFlag: 11105901
@@ -1884,6 +1898,7 @@ Enemies:
   ExtraName: General Kuranosuke Matsomoto
   FullName: General $1
   PartName: Kuranosuke Matsomoto
+  NpcName: 911023
   EnemyType: general
   Arena: -151.777 -7.351 208.964 55 10 15 23 -22 0
 - ID: 1110411
@@ -2220,6 +2235,7 @@ Enemies:
   FullName: Blazing $1
   PartName: Blazing Bull
   ItemName: blazingbull
+  NpcName: 911370
   Arena: -248.134 -29.761 152.658 150 40 10 9 0 -4
 - ID: 1110500
   DebugText: m11_01_00_00 - c1400_0000 - npc 14000000 - think 14000020 - id 1110500 - Fencer
@@ -2246,6 +2262,7 @@ Enemies:
   ExtraName: Ashina Elite Jinsuke Saze
   FullName: Ashina Elite - $1
   PartName: Jinsuke Saze
+  NpcName: 911400
   EnemyType: fencer
   Arena: -109.62 40.613 239.4 48 18 6 17
 - ID: 1110505
@@ -2277,6 +2294,7 @@ Enemies:
   ExtraName: Ashina Elite Ujinari Mizuo
   FullName: Ashina Elite - $1
   PartName: Ujinari Mizuo
+  NpcName: 911401
   EnemyType: fencer
   Arena: -75.758 26.004 197.036 -43 5 10 22
 - ID: 1110513
@@ -2446,6 +2464,7 @@ Enemies:
   ExtraName: Lone Shadow Vilehand
   FullName: Lone Shadow $1
   PartName: Vilehand
+  NpcName: 911471
   EnemyType: loneshadow
   Arena: -109.62 40.613 239.4 48 18 6 17
 - ID: 1110308
@@ -2473,6 +2492,7 @@ Enemies:
   ExtraName: Lone Shadow Masanaga the Spear-Bearer (Ashina Castle)
   FullName: Lone Shadow $1 the Spear-Bearer
   PartName: Masanaga
+  NpcName: 911472
   EnemyType: loneshadow
   Arena: 60.356 -30.955 360.743 10 3 6 19
 - ID: 1110317
@@ -2581,6 +2601,7 @@ Enemies:
   ItemName: chainedogre2
   FullName: Chained $1
   PartName: Chained Ogre
+  NpcName: 915020
   EnemyType: chainedogre
   DefeatFlag: 11110620
   Arena: -116.41 1.754 232.87 46 18 10 9
@@ -2594,6 +2615,7 @@ Enemies:
   FullName: Great Shinobi $1
   PartName: Owl
   ItemName: owl
+  NpcName: 905060
   DefeatFlag: 9308
   StartFlag: 11115851
   Arena: -109.337 54.248 239.483 47 13.5 10 27
@@ -2618,6 +2640,7 @@ Enemies:
   ExtraName: Isshin Ashina
   FullName: $1 Ashina
   PartName: Isshin
+  NpcName: 905401
   DefeatFlag: 9316
   StartFlag: 11115921
   Arena: -109.337 54.248 239.483 47 13.5 10 27
@@ -2640,6 +2663,7 @@ Enemies:
   ExtraName: Genichiro Ashina
   FullName: $1 Ashina
   PartName: Genichiro
+  NpcName: 907100
   OwnedBy: 1110801
   StartFlag: 11115801
   Phases: 2
@@ -2653,6 +2677,7 @@ Enemies:
   ExtraName: Genichiro, Way of Tomoe (Lightning)
   FullName: $1, Way of Tomoe
   PartName: Genichiro
+  NpcName: 907110
   StartFlag: 11115802
   DefeatFlag: 9303
   Arena: -109.337 54.248 239.483 47 13.5 10 27
@@ -2693,6 +2718,7 @@ Enemies:
   ExtraName: Emma
   FullName: $1, the Gentle Blade
   PartName: Emma
+  NpcName: 907400
   OwnedBy: 1110920
   StartFlag: 11115901
   Tags: mortal
@@ -2889,6 +2915,7 @@ Enemies:
   ExtraName: Leader Shigenori Yamauchi
   FullName: Leader $1
   PartName: Shigenori Yamauchi
+  NpcName: 911020
   Arena: -199.21 -39.747 242.5 -152 8 10 8
   DefeatFlag: 11120390
 - ID: 1120521
@@ -2900,6 +2927,7 @@ Enemies:
   ExtraName: Seven Ashina Spears 2
   FullName: Seven Ashina Spears - $1
   PartName: Shume Masaji Oniwa
+  NpcName: 911025
   ItemName: sevenspears2
   EnemyType: sevenspears
   Arena: -197.075 -43.112 264.529 0 15 10 15
@@ -2912,6 +2940,7 @@ Enemies:
   FullName: Seven Ashina Spears - $1
   PartName: Shikibu Toshikatsu Yamauchi
   ItemName: sevenspears
+  NpcName: 911024
   EnemyType: sevenspears
   Arena: -187.17 -36.878 343.14 47.7 25 10 6
 - ID: 1120550
@@ -2965,6 +2994,7 @@ Enemies:
   ExtraName: Lone Shadow Longswordsman
   FullName: Lone Shadow $1
   PartName: Longswordsman
+  NpcName: 911470
   DefeatFlag: 11120450
   EnemyType: loneshadow
   Arena: -305.9646 -53.385 301.1708 -32 9 10 11
@@ -2978,6 +3008,7 @@ Enemies:
   ExtraName: Sword Saint Isshin
   FullName: $1, the Sword Saint
   PartName: Sword Saint Isshin
+  NpcName: 905400
   StartFlag: 11125861
   DefeatFlag: 9312
   Arena: -382.628 -44.459 174.480 32 35 10 55 0 -3
@@ -2996,6 +3027,7 @@ Enemies:
   ExtraName: Genichiro Ashina (Tutorial)
   FullName: $1 Ashina
   PartName: Genichiro
+  NpcName: 907101
   StartFlag: 11125810
   DefeatFlag: 11120801  # Set on defeat and by outskirts event, although not used by reservoir events
   Arena: -382.628 -44.459 174.480 32 35 10 55 0 -3
@@ -3010,6 +3042,7 @@ Enemies:
   ExtraName: Genichiro, Way of Tomoe (Mortal Blade)
   FullName: $1, Way of Tomoe
   PartName: Genichiro
+  NpcName: 907110
   StartFlag: 11125831
   OwlArena: -385.464 -45.979 174.957 -2 76 30 140
   Phases: 1
@@ -3101,10 +3134,11 @@ Enemies:
   DebugText: m13_00_00_00 - c1080_0000 - npc 10800000 - think 10800000 - id 1300200 - Shichimen Warrior
   Events: IF Character AI State; Force Character Target; IF Character Dead/Alive; IF Character Backread Status; IF Entity Loaded; Display Miniboss Health Bar; Set Network Update Rate; IF Character Has SpEffect; Set Character Gravity; Set Character MapHit; Force Animation Playback; IF Damage Type; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Change Character Enable State; Set Character Animation State; Set Character Backread State; Set SpEffect; IF Character HP Ratio; IF Number of Character Health Bars (Other); Clear SpEffect; IF Character DrawGroup State; Force Character Death; Request Character AI Command; IF Entity In/Outside Radius Of Entity; Create NPC Part; Set NPC Part SE and SFX; IF Character Has Event Message; Shoot Bullet; IF Number of Character Health Bars; Request Character AI Re-plan; Set Lock On Point; Warp Character and Copy Floor
   Class: Miniboss
-  Tags: mid npcpart
+  Tags: mid npcpart exclude:1000800 exclude:1000810
   ItemName: shichimen
   FullName: Shichimen $1
   PartName: Shichimen Warrior
+  NpcName: 911080
   EnemyType: shichimen
   Arena: -357.5 -77.353 382.77 80 55 10 30
 - ID: 1300350
@@ -3377,6 +3411,7 @@ Enemies:
   ExtraName: Tokujiro the Glutton
   FullName: $1 the Glutton
   PartName: Tokujiro
+  NpcName: 911070
   EnemyType: drunkard
   Arena: -183.056 -377.456 846.410 5 18 10 9 0 20
 - ID: 1500510
@@ -3571,6 +3606,7 @@ Enemies:
   ItemName: mistnoble
   FullName: Mist $1
   PartName: Mist Noble
+  NpcName: 911300
   Arena: -134.61 -374.949 916.99 -4 21.91 10 15
 - ID: 1500460
   DebugText: m15_00_00_00 - c1320_0000 - npc 13204200 - think 13200010 - id 1500460 - Treasure Carp
@@ -3630,6 +3666,7 @@ Enemies:
   ItemName: headless_forest
   FullName: Headless $1
   PartName: Headless
+  NpcName: 911350
   Tags: mid npcpart
   EnemyType: headless
   Arena: -116.138 -382.834 807.903 -159 10 5 7
@@ -4066,6 +4103,7 @@ Enemies:
   ExtraName: Corrupted Monk
   FullName: Corrupted $1
   PartName: Corrupted Monk
+  NpcName: 905000
   DefeatFlag: 9306
   StartFlag: 11505801
   Arena: -166.3 -393.402 1425.74 50 30 10 15
@@ -4078,6 +4116,7 @@ Enemies:
   Tags: mid npcpart
   FullName: $1 of the Water
   PartName: O'Rin
+  NpcName: 917000
   Arena: -149.93 -411.988 1282.5 -31 22 10 24
 - ID: 1500703
   DebugText: m15_00_00_00 - c7410_0000 - npc 74102081 - think 3 - id 1500703 - Jinzaemon Kumano
@@ -4176,6 +4215,7 @@ Enemies:
   ExtraName: Long-arm Centipede Giraffe
   FullName: Long-arm Centipede $1
   PartName: Giraffe
+  NpcName: 911041
   EnemyType: centipede
   Arena: -401.78 -178.39 613.96 -50 10 5 7
 - ID: 1700520
@@ -4186,6 +4226,7 @@ Enemies:
   ItemName: shichimen2
   FullName: Shichimen $1
   PartName: Shichimen Warrior
+  NpcName: 911081
   EnemyType: shichimen
   Arena: -196.11 -376.774 647.86 10 25 10 35
 - ID: 1700400
@@ -4435,6 +4476,7 @@ Enemies:
   ExtraName: Snake Eyes Shirafuji  # In Gun Fort
   FullName: Snake Eyes $1
   PartName: Shirafuji
+  NpcName: 911191
   EnemyType: snakeeyes
   Arena: -233.483 -189.740 514.843 -62 8 10 8
 - ID: 1700201
@@ -4446,6 +4488,7 @@ Enemies:
   ExtraName: Snake Eyes Shirahagi  # In Poison Pool
   FullName: Snake Eyes $1
   PartName: Shirahagi
+  NpcName: 911192
   EnemyType: snakeeyes
   Arena: -243.88 -353.501 578.5 40 10 10 6
 - ID: 1700352
@@ -4647,6 +4690,7 @@ Enemies:
   ItemName: headless_sunken
   FullName: Headless $1
   PartName: Headless
+  NpcName: 911350
   Tags: late npcpart
   EnemyType: headless
   Arena: -9.964 -71.081 348.518 -40 7 10 20
@@ -4788,12 +4832,13 @@ Enemies:
   ExtraName: Guardian Ape
   FullName: Guardian $1
   PartName: Guardian Ape
+  NpcName: 905100
   DefeatFlag: 9304
   StartFlag: 11705801
   Arena: -650.13 -295.3 744.92 122 48 10 60
   Phases: 2
 - ID: 1700850
-  DebugText: m17_00_00_00 - c5100_0001 - npc 51000100 - think 51000100 - id 1700850 - Guardian Ape
+  DebugText: m17_00_00_00 - c5100_0001 - npc 51000100 - think 51000100 - id 1700800 - Guardian Ape
   Events: IF Character Has SpEffect; IF Character Dead/Alive; IF Character Has Event Message; Handle Boss Defeat; Change Character Enable State; Set Character Animation State; Force Character Death; Set Lock On Point; Warp Character and Copy Floor; Force Animation Playback; Change Character DispMask; Set Character HP Bar Display; Set SpEffect; Set Character Immortality; Set Character AI State; Set Character Backread State; Set Network Update Rate; Display Boss Health Bar; Force Character Target; EzState Instruction Request; Issue Short Warp Request; Create NPC Part; Set NPC Part Damaging Prosthetic; IF NPC Part HP; IF Character In View Range; Clear SpEffect; IF Number of Character Health Bars; Request Character AI Command; IF In/Outside Area; Request Character AI Re-plan; Set Character Event Target
   Class: Boss
   Tags: mid npcpart nerfloc buffphase  # Add phase to source, as friend makes it a bit harder than most other 2 phases in some arenas
@@ -4801,6 +4846,7 @@ Enemies:
   ItemName: headlessape
   FullName: Guardian $1
   PartName: Guardian Ape
+  NpcName: 905100
   StartFlag: 11705851
   DefeatFlag: 9307
   AppearFlag: 8303
@@ -4963,6 +5009,7 @@ Enemies:
   ExtraName: Long-arm Centipede Sen'un
   FullName: Long-arm Centipede $1
   PartName: Sen'un
+  NpcName: 911040
   EnemyType: centipede
   Arena: -708.221 49.126 564.014 23 12 5 20
 - ID: 2000650
@@ -5023,6 +5070,7 @@ Enemies:
   ItemName: armoredwarrior
   FullName: Armored $1
   PartName: Armored Warrior
+  NpcName: 911130
   Arena: -817.017 88.006 443.928 54.9 48 10 8
 - ID: 2000313
   DebugText: m20_00_00_00 - c1150_0005 - npc 11506000 - think 11500000 - id 2000313 - Hound
@@ -5879,6 +5927,7 @@ Enemies:
   ItemName: shichimen3
   FullName: Shichimen $1
   PartName: Shichimen Warrior
+  NpcName: 911080
   EnemyType: shichimen
   Arena: -18.27 114.443 558.11 -112 45 10 5 0 6.5
 - ID: 2500500
@@ -6173,6 +6222,7 @@ Enemies:
   ExtraName: Okami Leader Shizu
   FullName: Okami Leader $1
   PartName: Shizu
+  NpcName: 911310
   Tags: early reasonable island
   Arena: -6.120 131.789 419.362 -190 4 10 40 5 0
 - ID: 2500407
@@ -6445,6 +6495,7 @@ Enemies:
   ItemName: sakurabull
   FullName: $1 of the Palace
   PartName: Sakura Bull
+  NpcName: 911371
   Regions:
   - event arenabox 2502572 2502573  # walkroute 3/5. in the passageway
   - event arena 2502571
@@ -6458,6 +6509,7 @@ Enemies:
   ExtraName: True Monk
   FullName: Corrupted $1
   PartName: Corrupted Monk
+  NpcName: 905000
   StartFlag: 12505951
   DefeatFlag: 9309
   Arena: 80.77 157.176 87.73 60 52 10 10
@@ -6627,3 +6679,1204 @@ Enemies:
   ESDs: 250381,0,0,0,0,0,0,0
   Events: IF Character Dead/Alive; IF Character Has SpEffect; Change Character Enable State; Set Character Backread State; Set Character Immortality; Set Character Gravity; Set Multiplayer-dependent Buffs (Non-Boss); Force Animation Playback; EzState Instruction Request; Force Character Treasure
   Class: None
+ScalingSections:
+  1000200: 1
+  1000201: 1
+  1000202: 1
+  1000203: 1
+  1000204: 1
+  1000205: 1
+  1000206: 1
+  1000207: 1
+  1000208: 1
+  1000209: 1
+  1000210: 1
+  1000211: 1
+  1000212: 1
+  1000213: 1
+  1000214: 1
+  1000215: 1
+  1000216: 1
+  1000217: 1
+  1000218: 1
+  1000219: 1
+  1000220: 1
+  1000221: 1
+  1000222: 1
+  1000223: 1
+  1000224: 1
+  1000225: 1
+  1000226: 1
+  1000227: 1
+  1000228: 1
+  1000229: 1
+  1000230: 1
+  1000232: 1
+  1000233: 1
+  1000234: 1
+  1000236: 1
+  1000237: 1
+  1000238: 1
+  1000239: 1
+  1000240: 1
+  1000241: 1
+  1000242: 1
+  1000243: 1
+  1000244: 1
+  1000245: 1
+  1000246: 1
+  1000247: 1
+  1000248: 1
+  1000249: 1
+  1000250: 1
+  1000251: 1
+  1000252: 1
+  1000253: 1
+  1000254: 1
+  1000255: 1
+  1000256: 1
+  1000257: 1
+  1000258: 1
+  1000259: 1
+  1000260: 1
+  1000261: 1
+  1000262: 1
+  1000263: 1
+  1000264: 1
+  1000265: 1
+  1000266: 1
+  1000267: 1
+  1000269: 1
+  1000270: 1
+  1000271: 1
+  1000272: 1
+  1000273: 1
+  1000274: 1
+  1000275: 1
+  1000276: 1
+  1000300: 1
+  1000330: 1
+  1000331: 1
+  1000332: 1
+  1000350: 1
+  1000360: 1
+  1000370: 1
+  1000371: 1
+  1000372: 1
+  1000373: 1
+  1000374: 1
+  1000400: 1
+  1000401: 1
+  1000402: 1
+  1000403: 1
+  1000404: 1
+  1000407: 1
+  1000408: 1
+  1000800: 1
+  1000810: 1
+  1000820: 1
+  1000821: 1
+  1000822: 1
+  1000823: 1
+  1000824: 1
+  1000825: 1
+  1000826: 1
+  1000827: 1
+  1100200: 1
+  1100201: 1
+  1100202: 1
+  1100203: 1
+  1100204: 1
+  1100205: 1
+  1100206: 1
+  1100207: 1
+  1100208: 1
+  1100209: 1
+  1100211: 1
+  1100212: 1
+  1100214: 1
+  1100215: 1
+  1100216: 1
+  1100217: 1
+  1100218: 1
+  1100221: 1
+  1100225: 1
+  1100226: 1
+  1100227: 1
+  1100228: 1
+  1100229: 1
+  1100230: 1
+  1100233: 1
+  1100234: 1
+  1100235: 1
+  1100236: 1
+  1100238: 1
+  1100239: 1
+  1100244: 1
+  1100245: 1
+  1100246: 1
+  1100247: 1
+  1100248: 1
+  1100249: 1
+  1100300: 1
+  1100301: 1
+  1100310: 1
+  1100321: 1
+  1100322: 1
+  1100323: 1
+  1100341: 1
+  1100350: 1
+  1100351: 1
+  1100352: 1
+  1100360: 1
+  1100361: 1
+  1100370: 1
+  1100380: 1
+  1100381: 1
+  1100382: 1
+  1100383: 1
+  1100450: 1
+  1100800: 1
+  1110200: 1
+  1110201: 1
+  1110264: 1
+  1110266: 1
+  1110640: 1
+  1110645: 1
+  1110646: 1
+  1110680: 1
+  1110681: 1
+  1120201: 1
+  1120202: 1
+  1120203: 1
+  1120204: 1
+  1120205: 1
+  1120206: 1
+  1120207: 1
+  1120208: 1
+  1120209: 1
+  1120210: 1
+  1120211: 1
+  1120212: 1
+  1120213: 1
+  1120250: 1
+  1120422: 1
+  1120550: 1
+  1120551: 1
+  1120552: 1
+  1120800: 1
+  1100330: 2
+  1110202: 2
+  1110203: 2
+  1110204: 2
+  1110207: 2
+  1110210: 2
+  1110212: 2
+  1110223: 2
+  1110224: 2
+  1110225: 2
+  1110229: 2
+  1110230: 2
+  1110231: 2
+  1110233: 2
+  1110234: 2
+  1110235: 2
+  1110254: 2
+  1110255: 2
+  1110256: 2
+  1110258: 2
+  1110260: 2
+  1110261: 2
+  1110262: 2
+  1110265: 2
+  1110267: 2
+  1110269: 2
+  1110276: 2
+  1110277: 2
+  1110278: 2
+  1110279: 2
+  1110280: 2
+  1110400: 2
+  1110401: 2
+  1110402: 2
+  1110403: 2
+  1110404: 2
+  1110405: 2
+  1110406: 2
+  1110410: 2
+  1110411: 2
+  1110430: 2
+  1110431: 2
+  1110432: 2
+  1110440: 2
+  1110501: 2
+  1110504: 2
+  1110509: 2
+  1110510: 2
+  1110532: 2
+  1110533: 2
+  1110536: 2
+  1110537: 2
+  1110544: 2
+  1110545: 2
+  1110546: 2
+  1110547: 2
+  1110548: 2
+  1110549: 2
+  1110550: 2
+  1110566: 2
+  1110567: 2
+  1110577: 2
+  1110580: 2
+  1110581: 2
+  1110582: 2
+  1110583: 2
+  1110592: 2
+  1110593: 2
+  1110594: 2
+  1110595: 2
+  1110596: 2
+  1110631: 2
+  1110647: 2
+  1110800: 2
+  1110801: 2
+  1120300: 2
+  1120350: 2
+  1120351: 2
+  1120352: 2
+  1120353: 2
+  1120354: 2
+  1120355: 2
+  1120356: 2
+  1120357: 2
+  1120424: 2
+  1120425: 2
+  1120426: 2
+  1120430: 2
+  1120450: 2
+  1120451: 2
+  1120460: 2
+  1120461: 2
+  1120530: 2
+  1300200: 2
+  1300211: 2
+  1300212: 2
+  1300215: 2
+  1300216: 2
+  1300217: 2
+  1300218: 2
+  1300219: 2
+  1300220: 2
+  1300222: 2
+  1300223: 2
+  1300224: 2
+  1300225: 2
+  1300226: 2
+  1300228: 2
+  1300229: 2
+  1300230: 2
+  1300233: 2
+  1300234: 2
+  1300235: 2
+  1300236: 2
+  1300238: 2
+  1300239: 2
+  1300240: 2
+  1300280: 2
+  1300281: 2
+  1300282: 2
+  1300283: 2
+  1300284: 2
+  1300285: 2
+  1300291: 2
+  1300300: 2
+  1300301: 2
+  1300302: 2
+  1300303: 2
+  1300304: 2
+  1300350: 2
+  1300351: 2
+  2000202: 2
+  2000203: 2
+  2000210: 2
+  2000211: 2
+  2000212: 2
+  2000213: 2
+  2000214: 2
+  2000215: 2
+  2000216: 2
+  2000217: 2
+  2000218: 2
+  2000219: 2
+  2000220: 2
+  2000221: 2
+  2000222: 2
+  2000223: 2
+  2000224: 2
+  2000225: 2
+  2000226: 2
+  2000227: 2
+  2000228: 2
+  2000229: 2
+  2000230: 2
+  2000231: 2
+  2000232: 2
+  2000233: 2
+  2000234: 2
+  2000241: 2
+  2000253: 2
+  2000261: 2
+  2000262: 2
+  2000263: 2
+  2000264: 2
+  2000265: 2
+  2000279: 2
+  2000280: 2
+  2000281: 2
+  2000282: 2
+  2000283: 2
+  2000284: 2
+  2000285: 2
+  2000286: 2
+  2000287: 2
+  2000288: 2
+  2000289: 2
+  2000290: 2
+  2000291: 2
+  2000292: 2
+  2000293: 2
+  2000294: 2
+  2000295: 2
+  2000296: 2
+  2000297: 2
+  2000298: 2
+  2000299: 2
+  2000301: 2
+  2000302: 2
+  2000303: 2
+  2000304: 2
+  2000305: 2
+  2000306: 2
+  2000307: 2
+  2000308: 2
+  2000309: 2
+  2000311: 2
+  2000312: 2
+  2000313: 2
+  2000314: 2
+  2000315: 2
+  2000316: 2
+  2000317: 2
+  2000318: 2
+  2000319: 2
+  2000320: 2
+  2000321: 2
+  2000322: 2
+  2000323: 2
+  2000324: 2
+  2000325: 2
+  2000326: 2
+  2000327: 2
+  2000328: 2
+  2000329: 2
+  2000330: 2
+  2000331: 2
+  2000332: 2
+  2000333: 2
+  2000334: 2
+  2000335: 2
+  2000336: 2
+  2000337: 2
+  2000338: 2
+  2000339: 2
+  2000340: 2
+  2000341: 2
+  2000342: 2
+  2000343: 2
+  2000344: 2
+  2000345: 2
+  2000346: 2
+  2000347: 2
+  2000348: 2
+  2000349: 2
+  2000350: 2
+  2000351: 2
+  2000352: 2
+  2000353: 2
+  2000354: 2
+  2000355: 2
+  2000356: 2
+  2000357: 2
+  2000358: 2
+  2000359: 2
+  2000360: 2
+  2000361: 2
+  2000363: 2
+  2000364: 2
+  2000365: 2
+  2000366: 2
+  2000367: 2
+  2000368: 2
+  2000369: 2
+  2000370: 2
+  2000371: 2
+  2000372: 2
+  2000373: 2
+  2000374: 2
+  2000375: 2
+  2000376: 2
+  2000377: 2
+  2000378: 2
+  2000379: 2
+  2000380: 2
+  2000381: 2
+  2000382: 2
+  2000383: 2
+  2000384: 2
+  2000385: 2
+  2000386: 2
+  2000387: 2
+  2000388: 2
+  2000389: 2
+  2000390: 2
+  2000391: 2
+  2000400: 2
+  2000401: 2
+  2000402: 2
+  2000403: 2
+  2000404: 2
+  2000405: 2
+  2000406: 2
+  2000407: 2
+  2000408: 2
+  2000409: 2
+  2000410: 2
+  2000411: 2
+  2000412: 2
+  2000413: 2
+  2000414: 2
+  2000415: 2
+  2000416: 2
+  2000417: 2
+  2000418: 2
+  2000419: 2
+  2000420: 2
+  2000421: 2
+  2000422: 2
+  2000423: 2
+  2000424: 2
+  2000425: 2
+  2000450: 2
+  2000451: 2
+  2000453: 2
+  2000454: 2
+  2000455: 2
+  2000456: 2
+  2000458: 2
+  2000460: 2
+  2000465: 2
+  2000466: 2
+  2000467: 2
+  2000468: 2
+  2000510: 2
+  2000512: 2
+  2000573: 2
+  2000575: 2
+  2000576: 2
+  2000577: 2
+  2000578: 2
+  2000601: 2
+  2000630: 2
+  2000631: 2
+  2000632: 2
+  2000634: 2
+  2000635: 2
+  2000636: 2
+  2000646: 2
+  2000647: 2
+  2000648: 2
+  2000649: 2
+  2000650: 2
+  2000651: 2
+  2000670: 2
+  2000671: 2
+  2000672: 2
+  2000673: 2
+  2000801: 2
+  2000802: 2
+  2000803: 2
+  2000804: 2
+  2000805: 2
+  2000806: 2
+  2000807: 2
+  2000808: 2
+  2000809: 2
+  2000811: 2
+  2000812: 2
+  2000813: 2
+  2000814: 2
+  1110226: 3
+  1110227: 3
+  1110271: 3
+  1110272: 3
+  1110273: 3
+  1110274: 3
+  1110295: 3
+  1110450: 3
+  1110451: 3
+  1110452: 3
+  1110462: 3
+  1110500: 3
+  1110502: 3
+  1110503: 3
+  1110508: 3
+  1110513: 3
+  1110514: 3
+  1110530: 3
+  1110563: 3
+  1110564: 3
+  1110565: 3
+  1110600: 3
+  1110601: 3
+  1110630: 3
+  1110670: 3
+  1110686: 3
+  1500200: 3
+  1500260: 3
+  1500261: 3
+  1500264: 3
+  1500265: 3
+  1500266: 3
+  1500267: 3
+  1500268: 3
+  1500271: 3
+  1500273: 3
+  1500274: 3
+  1500275: 3
+  1500276: 3
+  1500277: 3
+  1500278: 3
+  1500282: 3
+  1500290: 3
+  1500300: 3
+  1500301: 3
+  1500302: 3
+  1500304: 3
+  1500306: 3
+  1500309: 3
+  1500311: 3
+  1500327: 3
+  1500328: 3
+  1500329: 3
+  1500330: 3
+  1500331: 3
+  1500332: 3
+  1500333: 3
+  1500334: 3
+  1500335: 3
+  1500336: 3
+  1500337: 3
+  1500338: 3
+  1500339: 3
+  1500340: 3
+  1500341: 3
+  1500342: 3
+  1500344: 3
+  1500345: 3
+  1500346: 3
+  1500347: 3
+  1500350: 3
+  1500354: 3
+  1500356: 3
+  1500357: 3
+  1500359: 3
+  1500360: 3
+  1500361: 3
+  1500363: 3
+  1500366: 3
+  1500367: 3
+  1500368: 3
+  1500369: 3
+  1500370: 3
+  1500371: 3
+  1500372: 3
+  1500374: 3
+  1500375: 3
+  1500376: 3
+  1500377: 3
+  1500378: 3
+  1500379: 3
+  1500380: 3
+  1500381: 3
+  1500382: 3
+  1500400: 3
+  1500401: 3
+  1500402: 3
+  1500403: 3
+  1500404: 3
+  1500405: 3
+  1500406: 3
+  1500410: 3
+  1500411: 3
+  1500412: 3
+  1500414: 3
+  1500415: 3
+  1500416: 3
+  1500417: 3
+  1500418: 3
+  1500419: 3
+  1500420: 3
+  1500421: 3
+  1500422: 3
+  1500423: 3
+  1500424: 3
+  1500425: 3
+  1500431: 3
+  1500432: 3
+  1500433: 3
+  1500434: 3
+  1500435: 3
+  1500436: 3
+  1500437: 3
+  1500438: 3
+  1500439: 3
+  1500440: 3
+  1500441: 3
+  1500442: 3
+  1500443: 3
+  1500444: 3
+  1500449: 3
+  1500450: 3
+  1500451: 3
+  1500453: 3
+  1500480: 3
+  1500481: 3
+  1500482: 3
+  1500483: 3
+  1500484: 3
+  1500485: 3
+  1500490: 3
+  1500495: 3
+  1500510: 3
+  1500511: 3
+  1500512: 3
+  1500513: 3
+  1500514: 3
+  1500515: 3
+  1500516: 3
+  1500517: 3
+  1500518: 3
+  1500519: 3
+  1500520: 3
+  1500521: 3
+  1500522: 3
+  1500600: 3
+  1500601: 3
+  1500602: 3
+  1500603: 3
+  1500604: 3
+  1500605: 3
+  1500606: 3
+  1500607: 3
+  1500608: 3
+  1500609: 3
+  1500610: 3
+  1500616: 3
+  1500620: 3
+  1500621: 3
+  1500622: 3
+  1500623: 3
+  1500624: 3
+  1500626: 3
+  1500627: 3
+  1500628: 3
+  1500636: 3
+  1500637: 3
+  1500638: 3
+  1500640: 3
+  1500641: 3
+  1500642: 3
+  1500643: 3
+  1500644: 3
+  1500645: 3
+  1500646: 3
+  1500647: 3
+  1500648: 3
+  1500680: 3
+  1500690: 3
+  1500800: 3
+  1700200: 3
+  1700201: 3
+  1700202: 3
+  1700203: 3
+  1700204: 3
+  1700205: 3
+  1700206: 3
+  1700208: 3
+  1700209: 3
+  1700210: 3
+  1700211: 3
+  1700212: 3
+  1700213: 3
+  1700214: 3
+  1700215: 3
+  1700216: 3
+  1700217: 3
+  1700218: 3
+  1700219: 3
+  1700220: 3
+  1700221: 3
+  1700222: 3
+  1700223: 3
+  1700224: 3
+  1700225: 3
+  1700226: 3
+  1700227: 3
+  1700228: 3
+  1700229: 3
+  1700230: 3
+  1700231: 3
+  1700232: 3
+  1700233: 3
+  1700250: 3
+  1700251: 3
+  1700252: 3
+  1700260: 3
+  1700301: 3
+  1700305: 3
+  1700310: 3
+  1700311: 3
+  1700312: 3
+  1700313: 3
+  1700314: 3
+  1700315: 3
+  1700316: 3
+  1700317: 3
+  1700318: 3
+  1700319: 3
+  1700320: 3
+  1700321: 3
+  1700322: 3
+  1700323: 3
+  1700324: 3
+  1700325: 3
+  1700326: 3
+  1700327: 3
+  1700328: 3
+  1700329: 3
+  1700333: 3
+  1700334: 3
+  1700338: 3
+  1700339: 3
+  1700340: 3
+  1700350: 3
+  1700351: 3
+  1700352: 3
+  1700353: 3
+  1700354: 3
+  1700355: 3
+  1700356: 3
+  1700357: 3
+  1700358: 3
+  1700359: 3
+  1700360: 3
+  1700361: 3
+  1700362: 3
+  1700363: 3
+  1700364: 3
+  1700365: 3
+  1700366: 3
+  1700367: 3
+  1700390: 3
+  1700391: 3
+  1700393: 3
+  1700399: 3
+  1700400: 3
+  1700403: 3
+  1700404: 3
+  1700405: 3
+  1700406: 3
+  1700407: 3
+  1700408: 3
+  1700409: 3
+  1700410: 3
+  1700411: 3
+  1700412: 3
+  1700413: 3
+  1700414: 3
+  1700415: 3
+  1700416: 3
+  1700423: 3
+  1700425: 3
+  1700426: 3
+  1700427: 3
+  1700428: 3
+  1700430: 3
+  1700431: 3
+  1700432: 3
+  1700433: 3
+  1700460: 3
+  1700470: 3
+  1700471: 3
+  1700480: 3
+  1700500: 3
+  1700520: 3
+  1700660: 3
+  1700661: 3
+  1700662: 3
+  1700670: 3
+  1700671: 3
+  1700672: 3
+  1700673: 3
+  1700674: 3
+  1700675: 3
+  1700676: 3
+  1700677: 3
+  1700678: 3
+  1700679: 3
+  1700680: 3
+  1700681: 3
+  1700682: 3
+  1700683: 3
+  1700684: 3
+  1700685: 3
+  1700686: 3
+  1700687: 3
+  1700688: 3
+  1700689: 3
+  1700690: 3
+  1700691: 3
+  1700692: 3
+  1700693: 3
+  1700800: 3
+  1700850: 4  # Bump up a bit
+  1700851: 3
+  1700852: 3
+  1110211: 4
+  1110236: 4
+  1110240: 4
+  1110241: 4
+  1110242: 4
+  1110243: 4
+  1110244: 4
+  1110246: 4
+  1110248: 4
+  1110282: 4
+  1110283: 4
+  1110285: 4
+  1110287: 4
+  1110296: 4
+  1110297: 4
+  1110298: 4
+  1110300: 4
+  1110302: 4
+  1110303: 4
+  1110304: 4
+  1110305: 4
+  1110312: 4
+  1110316: 4
+  1110317: 4
+  1110318: 4
+  1110319: 4
+  1110321: 4
+  1110322: 4
+  1110323: 4
+  1110330: 4
+  1110331: 4
+  1110332: 4
+  1110333: 4
+  1110334: 4
+  1110335: 4
+  1110336: 4
+  1110337: 4
+  1110351: 4
+  1110353: 4
+  1110365: 4
+  1110372: 4
+  1110373: 4
+  1110381: 4
+  1110407: 4
+  1110408: 4
+  1110409: 4
+  1110412: 4
+  1110413: 4
+  1110433: 4
+  1110460: 4
+  1110534: 4
+  1110560: 4
+  1110561: 4
+  1110562: 4
+  1110569: 4
+  1110570: 4
+  1110571: 4
+  1110585: 4
+  1110586: 4
+  1110587: 4
+  1110588: 4
+  1110610: 4
+  1110642: 4
+  1110643: 4
+  1110644: 4
+  1110648: 4
+  1110649: 4
+  1110653: 4
+  1110654: 4
+  1110850: 4
+  1110900: 4
+  1110920: 4
+  1110921: 4
+  1000277: 5
+  1000278: 5
+  1000279: 5
+  1000281: 5
+  1000282: 5
+  1000283: 5
+  1000284: 5
+  1000285: 5
+  1000288: 5
+  1000289: 5
+  1000290: 5
+  1000291: 5
+  1000292: 5
+  1000293: 5
+  1000294: 5
+  1000301: 5
+  1000333: 5
+  1000334: 5
+  1000351: 5
+  1000352: 5
+  1000353: 5
+  1000354: 5
+  1000355: 5
+  1000361: 5
+  1000362: 5
+  1000363: 5
+  1000410: 5
+  1000411: 5
+  1000412: 5
+  1000900: 5
+  1000901: 5
+  1100243: 5
+  1100250: 5
+  1100251: 5
+  1100252: 5
+  1100254: 5
+  1100312: 5
+  1100342: 5
+  1100405: 5
+  1100406: 5
+  1100408: 5
+  1100409: 5
+  1100410: 5
+  1100411: 5
+  1100413: 5
+  1100414: 5
+  1100415: 5
+  1100416: 5
+  1100417: 5
+  1100418: 5
+  1100419: 5
+  1100420: 5
+  1100421: 5
+  1100422: 5
+  1100423: 5
+  1100424: 5
+  1100425: 5
+  1100427: 5
+  1100429: 5
+  1100430: 5
+  1100431: 5
+  1100432: 5
+  1100433: 5
+  1100434: 5
+  1100435: 5
+  1100436: 5
+  1100437: 5
+  1100438: 5
+  1100452: 5
+  1100453: 5
+  1100454: 5
+  1100455: 5
+  1100456: 5
+  1100457: 5
+  1100458: 5
+  1100480: 5
+  1100900: 5
+  1110216: 5
+  1110217: 5
+  1110286: 5
+  1110288: 5
+  1110289: 5
+  1110290: 5
+  1110291: 5
+  1110292: 5
+  1110293: 5
+  1110294: 5
+  1110299: 5
+  1110308: 5
+  1110309: 5
+  1110310: 5
+  1110324: 5
+  1110326: 5
+  1110338: 5
+  1110339: 5
+  1110355: 5
+  1110360: 5
+  1110361: 5
+  1110371: 5
+  1110374: 5
+  1110375: 5
+  1110376: 5
+  1110377: 5
+  1110378: 5
+  1110379: 5
+  1110414: 5
+  1110415: 5
+  1110434: 5
+  1110435: 5
+  1110453: 5
+  1110456: 5
+  1110457: 5
+  1110458: 5
+  1110459: 5
+  1110461: 5
+  1110464: 5
+  1110465: 5
+  1110466: 5
+  1110467: 5
+  1110469: 5
+  1110470: 5
+  1110505: 5
+  1110507: 5
+  1110511: 5
+  1110515: 5
+  1110516: 5
+  1110572: 5
+  1110573: 5
+  1110575: 5
+  1110576: 5
+  1110589: 5
+  1110590: 5
+  1110591: 5
+  1120358: 5
+  1120510: 5
+  1120521: 5
+  1120830: 5
+  1120860: 5
+  2500200: 5
+  2500201: 5
+  2500202: 5
+  2500203: 5
+  2500204: 5
+  2500205: 5
+  2500206: 5
+  2500207: 5
+  2500208: 5
+  2500209: 5
+  2500210: 5
+  2500211: 5
+  2500212: 5
+  2500213: 5
+  2500214: 5
+  2500215: 5
+  2500216: 5
+  2500217: 5
+  2500218: 5
+  2500219: 5
+  2500220: 5
+  2500221: 5
+  2500222: 5
+  2500353: 5
+  2500354: 5
+  2500356: 5
+  2500357: 5
+  2500358: 5
+  2500359: 5
+  2500360: 5
+  2500361: 5
+  2500362: 5
+  2500363: 5
+  2500364: 5
+  2500365: 5
+  2500366: 5
+  2500367: 5
+  2500368: 5
+  2500369: 5
+  2500370: 5
+  2500371: 5
+  2500372: 5
+  2500373: 5
+  2500374: 5
+  2500375: 5
+  2500379: 5
+  2500380: 5
+  2500384: 5
+  2500385: 5
+  2500386: 5
+  2500387: 5
+  2500400: 5
+  2500401: 5
+  2500402: 5
+  2500403: 5
+  2500404: 5
+  2500405: 5
+  2500406: 5
+  2500407: 5
+  2500408: 5
+  2500410: 5
+  2500411: 5
+  2500412: 5
+  2500413: 5
+  2500414: 5
+  2500415: 5
+  2500416: 5
+  2500417: 5
+  2500418: 5
+  2500419: 5
+  2500421: 5
+  2500422: 5
+  2500423: 5
+  2500424: 5
+  2500425: 5
+  2500426: 5
+  2500427: 5
+  2500428: 5
+  2500429: 5
+  2500432: 5
+  2500433: 5
+  2500434: 5
+  2500435: 5
+  2500437: 5
+  2500438: 5
+  2500439: 5
+  2500440: 5
+  2500441: 5
+  2500442: 5
+  2500443: 5
+  2500444: 5
+  2500445: 5
+  2500446: 5
+  2500447: 5
+  2500449: 5
+  2500450: 5
+  2500451: 5
+  2500452: 5
+  2500453: 5
+  2500500: 5
+  2500501: 5
+  2500502: 5
+  2500503: 5
+  2500504: 5
+  2500505: 5
+  2500506: 5
+  2500507: 5
+  2500508: 5
+  2500509: 5
+  2500570: 5
+  2500580: 5
+  2500714: 5
+  2500850: 5
+  2500851: 5
+  2500852: 5
+  2500853: 5
+  2500854: 5

@@ -51,9 +51,13 @@ namespace RandomizerCommon
                     if (slotAnn.TagItems != null && slotAnn.TagItems.TryGetValue("norandom", out List<ItemKey> items)) norandoms.AddRange(items);
                     // Crow targets get special handling
                     crow = slotAnn.TagList.Contains("crow");
-                    // Just remove NG+ in Sekiro.
-                    if (game.Sekiro)
+                    if (slotAnn.TagList.Contains("remove"))
                     {
+                        removeSlot = true;
+                    }
+                    else if (game.Sekiro)
+                    {
+                        // Just remove NG+ in Sekiro.
                         removeSlot = slotAnn.TagList.Contains("ng+");
                     }
                 }
@@ -64,10 +68,16 @@ namespace RandomizerCommon
                     ItemLocation location = data.Location(itemLocKey);
                     ItemScope scope = location.Scope;
                     RandomSilo siloType = canPermuteTo[scope.Type];
-                    if (remove.Contains(itemLocKey.Item) || removeSlot)
+                    if (removeSlot)
                     {
                         AddMulti(Silos[RandomSilo.REMOVE].Mapping, itemLocKey, itemLocKey);
                         Silos[RandomSilo.FINITE].ExcludeTargets.Add(itemLocKey);
+                    }
+                    else if (remove.Contains(itemLocKey.Item))
+                    {
+                        // If only the item is removed, still allow the target slot to be used
+                        AddMulti(Silos[RandomSilo.REMOVE].Mapping, itemLocKey, itemLocKey);
+                        hasSource = true;
                     }
                     else if (norandoms.Contains(null) || norandoms.Contains(itemLocKey.Item) || ann.NorandomItems.Contains(itemLocKey.Item))
                     {
@@ -322,6 +332,7 @@ namespace RandomizerCommon
                 {
                     continue;
                 }
+
                 // Add placement restrictions. There are a lot of these
                 Dictionary<ItemKey, PendingItem> restrictions = new Dictionary<ItemKey, PendingItem>();
                 if (siloType == RandomSilo.FINITE)
@@ -361,7 +372,7 @@ namespace RandomizerCommon
                 foreach (PlacementRestrictionAnnotation restrict in ann.ItemRestrict.Values)
                 {
                     ItemKey key = restrict.Key;
-                    // If restrictions already present from key item/quest assignment, this is not necessary to check - it is already taken into account
+                    // If restrictions already present from key item/quest assignment, location restrictions are not necessary - this is already taken into account
                     if (restrictions.ContainsKey(restrict.Key))
                     {
                         continue;

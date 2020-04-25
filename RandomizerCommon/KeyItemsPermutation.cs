@@ -309,11 +309,13 @@ namespace RandomizerCommon
                     if (item == "pathofthedragon")
                     {
                         forcemap[item] = "highwall_garden";
-                        continue;
                     }
-                    ItemLocation loc = data.Data[itemKey].Locations.Values.First();
-                    SlotAnnotation sn = ann.Slot(loc.LocScope);
-                    forcemap[item] = sn.Area;
+                    else
+                    {
+                        ItemLocation loc = data.Data[itemKey].Locations.Values.First();
+                        SlotAnnotation sn = ann.Slot(loc.LocScope);
+                        forcemap[item] = sn.Area;
+                    }
                 }
             }
             else if (preset?.Items != null)

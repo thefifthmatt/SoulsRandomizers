@@ -1,4 +1,11 @@
 ItemTalks:
+- ID: 1
+  Comment: Don't give idol skills menu if skills were split
+  ItemTemplate:
+  - Type: splitskills
+    Machine: x6
+    EventFlag: 6219
+    Replace: 67676767
 - ID: 110100
   Comment: Sculptor esoteric text checks
   ItemTemplate:
@@ -17,6 +24,13 @@ ItemTalks:
   - Type: loc
     Machine: x28
     EventFlag: 50006242
+- ID: 111110
+  Comment: Kuro using Aromatic Branch flag instead of Owl defeat flag for progression to Fountainhead. TODO this may need to be a combined flag of 8411 (aromatic branch) and 9308 (owl defeat) to avoid softlocks?
+  ItemTemplate:
+  - Type: extraitems
+    Machine: 1000; x49; x50; x57
+    EventFlag: 9308
+    Replace: 8411
 - ID: 111240
   Comment: Prevent Isshin softlock by allowing dialogue until invasion, rather than until mortal blade
   ItemTemplate:
@@ -24,6 +38,11 @@ ItemTalks:
     Machine: x44
     EventFlag: 8410
     Replace: 8301
+- ID: 112111
+  Comment: Only showing game-ending options if Divine Dragon Tears is possessed, slightly more complicated edit
+  ItemTemplate:
+  - Type: tears
+    Machine: x26
 - ID: 250250
   Comment: Items from Master's Chamberlain after feeding carp
   ItemTemplate:
@@ -37,19 +56,10 @@ ItemTalks:
   Comment: Flame Barrel Memo, Promissory Note, and Yellow Gunpowder from Anayama
   ItemTemplate:
   - Type: loc
-    Machine: x45
+    Machine: x45; x53; x55
     EventFlag: 50006170
   - Type: loc
-    Machine: x53
-    EventFlag: 50006170
-  - Type: loc
-    Machine: x55
-    EventFlag: 50006170
-  - Type: loc
-    Machine: 2000
-    EventFlag: 71101800
-  - Type: loc
-    Machine: x39
+    Machine: 2000; x39
     EventFlag: 71101800
   - Type: loc
     Machine: x45
@@ -58,10 +68,7 @@ ItemTalks:
   Comment: Iron Fortress from Blackhat Badger
   ItemTemplate:
   - Type: loc
-    Machine: x39
-    EventFlag: 71111500
-  - Type: loc
-    Machine: x43
+    Machine: x39; x43
     EventFlag: 71111500
 - ID: 150280
   Comment: Sake from Head Priest
