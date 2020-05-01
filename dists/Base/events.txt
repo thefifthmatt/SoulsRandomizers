@@ -4806,9 +4806,12 @@ EnemyEvents:
   Template:
   - Type: start
     Entity: 1100900
-    Remove: Request Character AI Command; Set Character AI State
+    Remove: Request Character AI Command; Set Character AI State; IF In/Outside Area (1,1,1100900,1102910,1)
     Camera: 510
     Name: entity
+    #Add:
+    #- After: IF Player Standing On Hit
+    #  Cmd: Award Item Lot (62208)
   DebugInfo:
   - 1100900 (c7020_0000 - Demon of Hatred)
   - group 1105405 [1100405 (c1700_0005 - Red Guard), 1100406 (c1700_0006 - Red Guard), 1100408 (c1700_0008 - Red Guard)]
@@ -9075,6 +9078,10 @@ EnemyEvents:
   - Type: loc
     Entity: 1120800
     Remove: Request Character Animation Reset
+  - Type: loc
+    Entity: 1120800
+    Transfer: 2500800
+    Remove: Issue Short Warp Request
   DebugInfo:
   - 1120800 (c7100_0000 - Genichiro Ashina)
   - region 1122831 (event_ボス関連_ボス_ボス起動領域_複合)
@@ -11523,14 +11530,14 @@ EnemyEvents:
     StartCmd: Set Lock On Point
     Camera: 500
     Name: entity
-  - Type: multichr
-    Entity: 1700850
-    Remove: 9307; 1700850; 1700852
-    Add:
-    - Cmd: END Unconditionally (0)
-      Before: GOTO Unconditionally (3)
-    DefeatFlag: 9314
-    AppearFlag: 8303
+  #- Type: multichr
+  #  Entity: 1700850
+  #  Remove: 9307; 1700850; 1700852
+  #  Add:
+  #  - Cmd: END Unconditionally (0)
+  #    Before: GOTO Unconditionally (3)
+  #  DefeatFlag: 9314
+  #  AppearFlag: 8303
   DebugInfo:
   - 1700850 (c5100_0001 - Guardian Ape)
   - 1700851 (c5001_0001 - Immortal Centipede)
@@ -11670,6 +11677,7 @@ EnemyEvents:
     Entity: 1700850
     DefeatFlag: 9307
     AppearFlag: 8303
+    Remove: 1700851
   DebugInfo:
   - 1700850 (c5100_0001 - Guardian Ape)
   - 1700851 (c5001_0001 - Immortal Centipede)
@@ -14035,9 +14043,17 @@ EnemyEvents:
   - END IF Event Flag (Execution End Type = 0, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 12500601)
   - + Force Character Death (Entity ID = 2505700*, Should Receive Souls = 0)
 - ID: 12505801
-  Comment: Initialization for divine dragon fight
+  Comment: Initialization for old dragons
   Template:
   - Type: loc
+    Entity: 2500812
+    Remove: Request Character AI Command
+  - Type: loc
+    Entity: 2500800
+    Remove: (De)activate Object (2501800,0)  # If divine dragon randomized, don't remove the object yet
+    Add:
+    - Cmd: Change Character Enable State (2500800,0)  # Also, to be extra safe, disable the character
+      After: Set Lock On Point (2500800,222,0)
   DebugInfo:
   - 2500806 (c1001_0010 - Invisible - not random)
   - region 2502821 (event_ワープ用_雲海)
@@ -14119,6 +14135,1233 @@ EnemyEvents:
   - Set Map Sound State (Entity ID = 2504830, Enable/Disable = 1)
   - Set Map Sound State (Entity ID = 2504833, Enable/Disable = 1)
   - Set Map Sound State (Entity ID = 2504837, Enable/Disable = 1)
+- ID: 12505803
+  Comment: Old dragon behavior (summoning and AI speffects) and death. After 10 respawns have happened, dragons will respawn with speffect 3530030 and different dispmasks, meaning they do not damage the main health bar dragon (2500810). This also sets an event flag per enemy but it doesn't seem to do anything. Try to make this more complicated by behaving vanilla only when there are dragons there.
+  Template:
+  - Type: loc
+    # Remove: Change Character DispMask; IF Event Value; GOTO IF Condition Group State (Uncompiled)  # the last two are just for temp testing
+    Replace: 
+    Add:
+    # Add visual effect for non-old dragons who have respawned. Also end their spawn if a lot of respawns have happened already
+    - Cmd: SKIP IF Character Has SpEffect (5,X0_4,3530001,1,0,1)
+      After: Set SpEffect (0,3530030)
+    - Cmd: Set SpEffect (X0_4,3108030)  # 220695 for phantom, 3700500 for O'Rin, 3147120 for Masanaga, 3108030 for Shichimen, 3506030 invisible, 3510540 shiny effect but goes away after a second
+      After: Set SpEffect (0,3530030)
+    - Cmd: IF Event Value (12,12505828,5,4,20)
+      After: Set SpEffect (0,3530030)
+    - Cmd: SKIP IF Condition Group State (Uncompiled) (2,0,12)
+      After: Set SpEffect (0,3530030)
+    - Cmd: Set Character Backread State (X0_4,1)
+      After: Set SpEffect (0,3530030)
+    - Cmd: END Unconditionally (0)
+      After: Set SpEffect (0,3530030)
+    # Don't do dispmasks if it's not Old Dragons
+    - Cmd: SKIP IF Character Has SpEffect (6,X0_4,3530001,0,0,1)
+      After: GOTO IF Character Has SpEffect (0,0,3530030,1,0,1)
+    - Cmd: GOTO IF Character Has SpEffect (1,X0_4,3530001,0,0,1)
+      After: Label 0 ()
+    - Cmd: GOTO IF Character Has SpEffect (2,X0_4,3530001,0,0,1)
+      After: Set SpEffect (0,3530510)
+  DebugInfo:
+  - 2500810 (c5300_0025 - Old Dragon)
+  - 2500811 (c5300_0000 - Old Dragon)
+  - 2500812 (c5300_0001 - Old Dragon)
+  - 2500813 (c5300_0002 - Old Dragon)
+  - 2500814 (c5300_0003 - Old Dragon)
+  - 2500815 (c5300_0004 - Old Dragon)
+  - 2500816 (c5300_0005 - Old Dragon)
+  - 2500817 (c5300_0006 - Old Dragon)
+  - 2500818 (c5300_0007 - Old Dragon)
+  - 2500819 (c5300_0008 - Old Dragon)
+  - 2500820 (c5300_0009 - Old Dragon)
+  - 2500821 (c5300_0010 - Old Dragon)
+  - 2500822 (c5300_0011 - Old Dragon)
+  - 2500823 (c5300_0012 - Old Dragon)
+  - 2500824 (c5300_0013 - Old Dragon)
+  - 2500825 (c5300_0014 - Old Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505803, X0_4 = 2500811*, X4_4 = 12505803)
+  - Initialize Event (1, 12505803, X0_4 = 2500812*, X4_4 = 12505804)
+  - Initialize Event (2, 12505803, X0_4 = 2500813*, X4_4 = 12505805)
+  - Initialize Event (3, 12505803, X0_4 = 2500814*, X4_4 = 12505806)
+  - Initialize Event (4, 12505803, X0_4 = 2500815*, X4_4 = 12505807)
+  - Initialize Event (5, 12505803, X0_4 = 2500816*, X4_4 = 12505808)
+  - Initialize Event (6, 12505803, X0_4 = 2500817*, X4_4 = 12505809)
+  - Initialize Event (7, 12505803, X0_4 = 2500818*, X4_4 = 12505810)
+  - Initialize Event (8, 12505803, X0_4 = 2500819*, X4_4 = 12505811)
+  - Initialize Event (9, 12505803, X0_4 = 2500820*, X4_4 = 12505812)
+  - Initialize Event (10, 12505803, X0_4 = 2500821*, X4_4 = 12505813)
+  - Initialize Event (11, 12505803, X0_4 = 2500822*, X4_4 = 12505814)
+  - Initialize Event (12, 12505803, X0_4 = 2500823*, X4_4 = 12505815)
+  - Initialize Event (13, 12505803, X0_4 = 2500824*, X4_4 = 12505816)
+  - Initialize Event (14, 12505803, X0_4 = 2500825*, X4_4 = 12505817)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - + IF Character HP Value (Result Condition Group = 0, Target Entity ID = X0_4*, Comparison Type = 5, Target HP = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + GOTO IF Character Has SpEffect (Label = 0, Target Entity ID = X0_4*, SpEffect ID = 3530030, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 1, Switch Type = 0)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 13, Switch Type = 0)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 24, Switch Type = 0)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 0, Switch Type = 1)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 11, Switch Type = 1)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 14, Switch Type = 1)
+  - + Set SpEffect (Entity ID = 2500810*, SpEffect ID = 3530020)
+  - GOTO Unconditionally (Label = 1)
+  - Label 0 ()
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 1, Switch Type = 0)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 12, Switch Type = 0)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 15, Switch Type = 0)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 24, Switch Type = 0)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 0, Switch Type = 1)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 10, Switch Type = 1)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 14, Switch Type = 1)
+  - Label 1 ()
+  - + IF Character Dead/Alive (Result Condition Group = 0, Target Entity ID = X0_4*, Desired Life State = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Dead/Alive (Result Condition Group = 0, Target Entity ID = X0_4*, Desired Life State = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Event Value (Result Condition Group = 1, Base Event Flag ID = 12505828, Number of Used Flag Bits = 5, Comparison Type = 3, Threshold Value = 10)
+  - GOTO IF Condition Group State (Uncompiled) (Label = 2, Desired Condition Group State = 1, Target Condition Group = 1)
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 3530030)
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 3530501)
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 3530510)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 1, Switch Type = 1)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 12, Switch Type = 1)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 15, Switch Type = 1)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 20, Switch Type = 1)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 21, Switch Type = 1)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 13, Switch Type = 0)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 22, Switch Type = 0)
+  - + Change Character DispMask (Entity ID = X0_4*, Bit Number = 23, Switch Type = 0)
+  - + Set Character Event Target (Entity ID = X0_4*, Entity ID 2 = 2500840)
+  - Label 2 ()
+  - Increment Event Value (Base Event Flag ID = 12505828, Number of Used Flag Bits = 5, Maximum Allowed Value = 31)
+  - Set Event Flag (Event Flag ID = X4_4, Flag State = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505834
+  Comment: The grappleable tree dragon having objects attached? They are not randomized currently. This event also applies to 2 DummyEnemy tree dragons but they are not grappleable.
+  Template:
+  - Type: loc
+  DebugInfo:
+  - 2500930 (c5310_0000 - Tree Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505834, X0_4 = 2500930*, X4_4 = 2501900, X8_4 = 2501901, X12_4 = 2501902)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - SKIP IF Event Flag (Number Of Skipped Lines = 3, Desired Flag State = 1, Target Event Flag Type = 2, Target Event Flag ID = 12505834)
+  - + Attach Object to Character (Character Entity ID = X0_4*, Dummypoly ID = 600, Object Entity ID = X4_4)
+  - + Attach Object to Character (Character Entity ID = X0_4*, Dummypoly ID = 601, Object Entity ID = X8_4)
+  - + Attach Object to Character (Character Entity ID = X0_4*, Dummypoly ID = 602, Object Entity ID = X12_4)
+  - (De)activate Object (Target Object Entity ID = X4_4, State = 0)
+  - Set Object Interaction (Object Entity ID = X4_4, Interaction = -1, Desired State = 0)
+  - (De)activate Object (Target Object Entity ID = X8_4, State = 0)
+  - Set Object Interaction (Object Entity ID = X8_4, Interaction = -1, Desired State = 0)
+  - (De)activate Object (Target Object Entity ID = X12_4, State = 0)
+  - Set Object Interaction (Object Entity ID = X12_4, Interaction = -1, Desired State = 0)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 5025, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 5026, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 5027, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
+  - + GOTO IF Character Has SpEffect (Label = 0, Target Entity ID = X0_4*, SpEffect ID = 5025, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + GOTO IF Character Has SpEffect (Label = 1, Target Entity ID = X0_4*, SpEffect ID = 5026, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + GOTO IF Character Has SpEffect (Label = 2, Target Entity ID = X0_4*, SpEffect ID = 5027, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - GOTO Unconditionally (Label = 3)
+  - Label 0 ()
+  - (De)activate Object (Target Object Entity ID = X4_4, State = 1)
+  - Set Object Interaction (Object Entity ID = X4_4, Interaction = -1, Desired State = 1)
+  - GOTO Unconditionally (Label = 3)
+  - Label 1 ()
+  - (De)activate Object (Target Object Entity ID = X8_4, State = 1)
+  - Set Object Interaction (Object Entity ID = X8_4, Interaction = -1, Desired State = 1)
+  - + Warp Object To Character (Entity ID = 2500940, Character Entity ID = X0_4*, Dummypoly ID = 602)
+  - (De)activate Object (Target Object Entity ID = 2500940, State = 1)
+  - GOTO Unconditionally (Label = 3)
+  - Label 2 ()
+  - (De)activate Object (Target Object Entity ID = X12_4, State = 1)
+  - Set Object Interaction (Object Entity ID = X12_4, Interaction = -1, Desired State = 1)
+  - Label 3 ()
+  - + IF Character Has SpEffect (Result Condition Group = 4, Target Entity ID = X0_4*, SpEffect ID = 5025, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 4, Target Entity ID = X0_4*, SpEffect ID = 5026, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 4, Target Entity ID = X0_4*, SpEffect ID = 5027, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 4)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505837
+  Comment: Management for old dragon who is used for the boss health bar. Seemingly, the event runs while its HP ratio is <= 1 (not backread?), and increments the flag twice 0->2->4. Also try removing
+  Template:
+  - Type: loc
+  DebugInfo:
+  - 2500810 (c5300_0025 - Old Dragon)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - + IF Character HP Ratio (Result Condition Group = 0, Target Entity ID = 2500810*, Comparison Type = 5, Target HP Ratio = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - Increment Event Value (Base Event Flag ID = 12505837, Number of Used Flag Bits = 2, Maximum Allowed Value = 4)
+  - Increment Event Value (Base Event Flag ID = 12505837, Number of Used Flag Bits = 2, Maximum Allowed Value = 4)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505840
+  Comment: Sets event flag 12505875 used to prompt Old Dragon AI for summoning animation, and for tree dragon to allow spawning on subsequent times. When at least one old dragon has been killed (12505828 >= 1), and not yet second phase (12505881), wait for either 12505875 to be unset and end (to avoid race condition?) or 12505876 to be set (when any Old Dragon gets summon speffect), play warning sound, and set 12505877 (which is also used by AI for the Old Dragons to hold their wands high in the air). Finally wait for 12505875 to be unset by tree dragon summon.
+  Template:
+  - Type: loc
+  DebugInfo:
+  - 2500811 (c5300_0000 - Old Dragon)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Value (Result Condition Group = 0, Base Event Flag ID = 12505828, Number of Used Flag Bits = 5, Comparison Type = 4, Threshold Value = 1)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505881)
+  - Set Event Flag (Event Flag ID = 12505875, Flag State = 1)
+  - IF Event Flag (Result Condition Group = -1, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 12505875)
+  - IF Event Flag (Result Condition Group = -1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505876)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
+  - END IF Event Flag (Execution End Type = 1, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 12505875)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 4)
+  - + Play SE (Entity ID = 2500811*, Sound Type = 1, Sound ID = 530008130)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
+  - Set Event Flag (Event Flag ID = 12505877, Flag State = 1)
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 12505875)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 30)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505841
+  Comment: Spawning the tree dragons, after 12505878 (set on summoning speffect). X4 are [1,2,2], and X8 are [30,1,1]. Sets an AI command randomly as well to prompt the spawning.
+  Template:
+  - Type: loc
+  DebugInfo:
+  - 2500930 (c5310_0000 - Tree Dragon)
+  - 2500934 (c5310_0004 - Tree Dragon)
+  - 2500933 (c5310_0003 - Tree Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505841, X0_4 = 2500930*, X4_4 = 1065353216, X8_4 = 1106247680, X12_4 = 10, X16_4 = 2)
+  - Initialize Event (1, 12505841, X0_4 = 2500934*, X4_4 = 1073741824, X8_4 = 1065353216, X12_4 = 20, X16_4 = 2)
+  - Initialize Event (2, 12505841, X0_4 = 2500933*, X4_4 = 1077936128, X8_4 = 1065353216, X12_4 = 20, X16_4 = 2)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505878)
+  - IF Event Value (Result Condition Group = 1, Base Event Flag ID = 12505837, Number of Used Flag Bits = 2, Comparison Type = 4, Threshold Value = X16_4)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = X4_4)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505881)
+  - + Request Character AI Command (Entity ID = X0_4*, Command ID = X12_4, Slot Number = 0)
+  - Randomly Set Event Flag In Range (Event Flag ID Min = 12505872, Event Flag ID Max = 12505874, Flag State = 1)
+  - GOTO IF Event Flag (Label = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505872)
+  - GOTO IF Event Flag (Label = 2, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505873)
+  - GOTO IF Event Flag (Label = 3, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505874)
+  - Label 1 ()
+  - + Request Character AI Command (Entity ID = X0_4*, Command ID = 0, Slot Number = 1)
+  - GOTO Unconditionally (Label = 4)
+  - Label 2 ()
+  - + Request Character AI Command (Entity ID = X0_4*, Command ID = 10, Slot Number = 1)
+  - GOTO Unconditionally (Label = 4)
+  - Label 3 ()
+  - + Request Character AI Command (Entity ID = X0_4*, Command ID = 20, Slot Number = 1)
+  - GOTO Unconditionally (Label = 4)
+  - Label 4 ()
+  - + Request Character AI Re-plan (Entity ID = X0_4*)
+  - Batch Set Event Flags (Event Flag ID Start = 12505872, Event Flag ID End = 12505874, Flag State = 0)
+  - Batch Set Event Flags (Event Flag ID Start = 12505875, Event Flag ID End = 12505878, Flag State = 0)
+  - IF Elapsed Seconds (Result Condition Group = -1, Target Number Of Seconds = X8_4)
+  - IF Event Flag (Result Condition Group = -1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505875)
+  - IF Event Flag (Result Condition Group = -1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505881)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
+  - Label 5 ()
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 3531000)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 2)
+  - + Request Character AI Command (Entity ID = X0_4*, Command ID = -1, Slot Number = 0)
+  - + Request Character AI Command (Entity ID = X0_4*, Command ID = -1, Slot Number = 1)
+  - + Request Character AI Command (Entity ID = X0_4*, Command ID = -1, Slot Number = 2)
+  - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = 3531000)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505850
+  Comment: Sets some speffect on Divine Dragon. This is changed in the phase transition to 3520070
+  Template:
+  - Type: loc
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - + Set SpEffect (Entity ID = 2500800*, SpEffect ID = 3520070)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 12505851
+  Comment: Allows Old Dragon HP bar display, until 3530040 (death animation), and again on 3530041 (spawn animation). Doesn't really do much for replacement enemies, although could use alive/dead status.
+  Template:
+  - Type: chr
+    DefeatFlag: 9310
+  DebugInfo:
+  - 2500811 (c5300_0000 - Old Dragon)
+  - 2500812 (c5300_0001 - Old Dragon)
+  - 2500813 (c5300_0002 - Old Dragon)
+  - 2500814 (c5300_0003 - Old Dragon)
+  - 2500815 (c5300_0004 - Old Dragon)
+  - 2500816 (c5300_0005 - Old Dragon)
+  - 2500817 (c5300_0006 - Old Dragon)
+  - 2500818 (c5300_0007 - Old Dragon)
+  - 2500819 (c5300_0008 - Old Dragon)
+  - 2500820 (c5300_0009 - Old Dragon)
+  - 2500821 (c5300_0010 - Old Dragon)
+  - 2500822 (c5300_0011 - Old Dragon)
+  - 2500823 (c5300_0012 - Old Dragon)
+  - 2500824 (c5300_0013 - Old Dragon)
+  - 2500825 (c5300_0014 - Old Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505851, X0_4 = 2500811*)
+  - Initialize Event (1, 12505851, X0_4 = 2500812*)
+  - Initialize Event (2, 12505851, X0_4 = 2500813*)
+  - Initialize Event (3, 12505851, X0_4 = 2500814*)
+  - Initialize Event (4, 12505851, X0_4 = 2500815*)
+  - Initialize Event (5, 12505851, X0_4 = 2500816*)
+  - Initialize Event (6, 12505851, X0_4 = 2500817*)
+  - Initialize Event (7, 12505851, X0_4 = 2500818*)
+  - Initialize Event (8, 12505851, X0_4 = 2500819*)
+  - Initialize Event (9, 12505851, X0_4 = 2500820*)
+  - Initialize Event (10, 12505851, X0_4 = 2500821*)
+  - Initialize Event (11, 12505851, X0_4 = 2500822*)
+  - Initialize Event (12, 12505851, X0_4 = 2500823*)
+  - Initialize Event (13, 12505851, X0_4 = 2500824*)
+  - Initialize Event (14, 12505851, X0_4 = 2500825*)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - + Set Character HP Bar Display (Entity ID = X0_4*, Disabled/Enabled = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = 3530040, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + Set Character HP Bar Display (Entity ID = X0_4*, Disabled/Enabled = 0)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = 3530041, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + Set Character HP Bar Display (Entity ID = X0_4*, Disabled/Enabled = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505870
+  Comment: Set 12505876 (prepare for tree dragons to spawn and play sound effect) when any Old Dragons get speffect 5025, set by the summon animation (3015). Although they could be summoned constantly, keep this vanilla and give the Tree Dragons time to move, requiring some Old Dragons to still be present.
+  Template:
+  - Type: loc
+    Replace: 2505830 -> 2500812
+  DebugInfo:
+  - group 2505830 [2500812 (c5300_0001 - Old Dragon), 2500813 (c5300_0002 - Old Dragon), 2500814 (c5300_0003 - Old Dragon), 2500815 (c5300_0004 - Old Dragon), 2500816 (c5300_0005 - Old Dragon), 2500817 (c5300_0006 - Old Dragon), 2500818 (c5300_0007 - Old Dragon), 2500819 (c5300_0008 - Old Dragon), 2500820 (c5300_0009 - Old Dragon), 2500821 (c5300_0010 - Old Dragon), 2500822 (c5300_0011 - Old Dragon), 2500823 (c5300_0012 - Old Dragon), 2500824 (c5300_0013 - Old Dragon), 2500825 (c5300_0014 - Old Dragon)]
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 2505830*, SpEffect ID = 5025, Should Have = 1, Comparison Type = 4, Number of Target Characters = 1)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 12505876)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - Set Event Flag (Event Flag ID = 12505876, Flag State = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505871
+  Comment: During the 'really really' summon part of Old Dragon animation (anim 3018), do some state management with setting event flag 12505878, which prompts the actual spawning.
+  Template:
+  - Type: loc
+    Replace: 2505830 -> 2500812
+  DebugInfo:
+  - group 2505830 [2500812 (c5300_0001 - Old Dragon), 2500813 (c5300_0002 - Old Dragon), 2500814 (c5300_0003 - Old Dragon), 2500815 (c5300_0004 - Old Dragon), 2500816 (c5300_0005 - Old Dragon), 2500817 (c5300_0006 - Old Dragon), 2500818 (c5300_0007 - Old Dragon), 2500819 (c5300_0008 - Old Dragon), 2500820 (c5300_0009 - Old Dragon), 2500821 (c5300_0010 - Old Dragon), 2500822 (c5300_0011 - Old Dragon), 2500823 (c5300_0012 - Old Dragon), 2500824 (c5300_0013 - Old Dragon), 2500825 (c5300_0014 - Old Dragon)]
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 2505830*, SpEffect ID = 5026, Should Have = 1, Comparison Type = 4, Number of Target Characters = 1)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 12505878)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - Set Event Flag (Event Flag ID = 12505878, Flag State = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505879
+  Comment: Setting camera subid upon tree dragons having speffects. This also ends immediately if second phase (12505885 event finished). This makes fighting enemy mobs harder so avoid it.
+  Template:
+  - Type: remove
+    Entity: 2500800
+  DebugInfo:
+  - 2500930 (c5310_0000 - Tree Dragon)
+  - 2500933 (c5310_0003 - Tree Dragon)
+  - 2500934 (c5310_0004 - Tree Dragon)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = 2500930*, SpEffect ID = 3531020, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = 2500933*, SpEffect ID = 3531020, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = 2500934*, SpEffect ID = 3531020, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = -2, Desired Condition Group State = 1, Target Condition Group = -1)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505885)
+  - IF Condition Group (Result Condition Group = -2, Desired Condition Group State = 1, Target Condition Group = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -2)
+  - GOTO IF Condition Group State (Compiled) (Label = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = 610)
+  - + IF Character Has SpEffect (Result Condition Group = -3, Target Entity ID = 2500930*, SpEffect ID = 3531020, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -3, Target Entity ID = 2500933*, SpEffect ID = 3531020, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -3, Target Entity ID = 2500934*, SpEffect ID = 3531020, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = -4, Desired Condition Group State = 0, Target Condition Group = -3)
+  - IF Event Flag (Result Condition Group = 2, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505885)
+  - IF Condition Group (Result Condition Group = -4, Desired Condition Group State = 1, Target Condition Group = 2)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -4)
+  - GOTO IF Condition Group State (Compiled) (Label = 0, Desired Condition Group State = 1, Target Condition Group = 2)
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = 600)
+  - END Unconditionally (Execution End Type = 1)
+  - Label 0 ()
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = -1)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 12505880
+  Comment: End Divine Dragon and warp to Ashina Castle
+  Template:
+  - Type: end
+    Entity: 2500800
+    EndCond: -1
+    EndCond2: IF Character HP Ratio
+    Name: entity
+    Replace: WAIT Fixed Time (Seconds) (9.7->3)
+  - Type: multichronly
+    Entity: 2500800
+    DefeatFlag: 9310
+    Remove: 9410; GOTO IF Condition Group State (Uncompiled)
+    Add:
+    - Before: Set Event Flag (12500880,1)
+      Cmd: Set Wire Searchability (-1)
+    - Before: Set Event Flag (12500880,1)
+      Cmd: (De)activate Object (2501815,0)
+    - Before: Set Event Flag (12500880,1)
+      Cmd: END Unconditionally (0)
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  - region 1112953 (チェックポイント_03_リスポン位置)
+  DebugCommands:
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 9410)
+  - GOTO IF Condition Group State (Uncompiled) (Label = 20, Desired Condition Group State = 1, Target Condition Group = 1)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9410)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = 2500800*, SpEffect ID = 201000, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Dead/Alive (Result Condition Group = -1, Target Entity ID = 2500800*, Desired Life State = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
+  - Set Event Flag (Event Flag ID = 12500880, Flag State = 1)
+  - + IF Character HP Ratio (Result Condition Group = 0, Target Entity ID = 2500800*, Comparison Type = 5, Target HP Ratio = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 9.7)
+  - + Handle Boss Defeat and Display Banner (Entity ID = 2500800*, Banner Type = 3)
+  - + Display Boss Health Bar (Disabled/Enabled = 0, Entity ID = 2500800*, Slot Number = 0, Name ID = 905200)
+  - Award Achievement (Achievement ID = 29)
+  - Set Event Flag (Event Flag ID = 9310, Flag State = 1)
+  - Set Event Flag (Event Flag ID = 6810, Flag State = 1)
+  - Set Wire Searchability (WireSetParam ID = -1)
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = -1)
+  - Set SpEffect (Entity ID = 10000, SpEffect ID = 4700)
+  - Set SpEffect (Entity ID = 10000, SpEffect ID = 4701)
+  - Set Character Immortality (Entity ID = 10000, Disabled/Enabled = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 3)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 2)
+  - Spawn Oneshot SFX (Type = 2, Entity ID = 10000, Dummypoly ID = 2, SFX ID = 820130)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 2.33)
+  - Label 20 ()
+  - Set Character Immortality (Entity ID = 10000, Disabled/Enabled = 0)
+  - Warp Player (New) (Area ID = 11, Block ID = 1, Respawn Point Entity ID = 1110799)
+  - + Set Player Respawn Point (Respawn Point Entity ID = 1112953*)
+  - Save Request (Dummy = 0)
+  - Set Event Flag (Event Flag ID = 9410, Flag State = 1)
+  - Set Force Scale Render (Desired State = 0)
+- ID: 12505882
+  Comment: Warps player to near Divine Dragon ("cloud sea") on event flag 12505949. However this event flag doesn't seem to be set from anywhere, and sets the boss defeat flag to true also, which is weird
+  Template:
+  - Type: loc
+  DebugInfo:
+  - region 2502821 (event_ワープ用_雲海)
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugCommands:
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505949)
+  - Set Event Flag (Event Flag ID = 9318, Flag State = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.1)
+  - + Warp Character and Copy Floor (Entity ID = 10000, Warp Type = 1, Warp Destination Entity ID = 2502821*, Dummypoly ID = -1, Entity ID to Copy Floor From = 2500800*)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 3)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 12505885
+  Comment: Start Divine Dragon, transition from Old Dragon phase. This happens when the previous health bar is down to 0. (Also checks batch flags but the later ones do not seem to be settable)
+  Template:
+  - Type: startphase
+    Entity: 2500800
+    StartCmd: Change Character DispMask
+    Camera: 500  # Replacement camera is weird, but so is original
+    Name: entity
+    # Don't give characters a barrier cylinder
+    Remove: Attach Object to Character
+    # Add immortality as per usual, but also remove all objects in the arena
+    Add:
+    - Cmd: Change Character Enable State (2500800,1)  # Disabled in old dragons
+      After: Play Cutscene and Warp Player
+    - Cmd: Set Character Immortality (2500800,1)
+      Before: Set Character AI State (2500800,1)
+    - Cmd: (De)activate Object (2501815,0)
+      Before: Set Character AI State (2500800,1)
+    - Cmd: (De)activate Object (2501800,0)
+      Before: Set Character AI State (2500800,1)
+    #- Cmd: Set Character Immortality (2500800,1)
+    #  After: Warp Character and Copy Floor
+    #- Cmd: (De)activate Object (2501815,0)
+    #  After: Warp Character and Copy Floor
+    #- Cmd: (De)activate Object (2501800,0)
+    #  After: Warp Character and Copy Floor
+  #- Type: loc
+  #  Replace: IF Character HP Ratio (-1,2500810,5,0->0.99,0,1)  # To shorten phase 1
+  # This causes too much flailing around. funny, but softlocks sometimes.
+  #- Type: multichronly
+  #  Entity: 2500800
+  #  Remove: Set Character AI State; GOTO IF Event Flag
+  #  Add:
+  #  - Cmd: GOTO Unconditionally (0)
+  #    Before: start
+  #  - Cmd: IF Entity In/Outside Radius Of Entity (0,1,10000,2500800,25,1)
+  #    Before: Attach Object to Character
+  #  - Cmd: Award Item Lot (62208)
+  #    Before: Attach Object to Character
+  #  - Cmd: Set Character Gravity (2500800,0)
+  #    Before: Attach Object to Character
+  #  - Cmd: WAIT Fixed Time (Frames) (3)
+  #    Before: Attach Object to Character 
+  #  - Cmd: END Unconditionally (0)
+  #    After: Attach Object to Character
+  DebugInfo:
+  - group 2505800 [2500811 (c5300_0000 - Old Dragon), 2500812 (c5300_0001 - Old Dragon), 2500813 (c5300_0002 - Old Dragon), 2500814 (c5300_0003 - Old Dragon), 2500815 (c5300_0004 - Old Dragon), 2500816 (c5300_0005 - Old Dragon), 2500817 (c5300_0006 - Old Dragon), 2500818 (c5300_0007 - Old Dragon), 2500819 (c5300_0008 - Old Dragon), 2500820 (c5300_0009 - Old Dragon), 2500821 (c5300_0010 - Old Dragon), 2500822 (c5300_0011 - Old Dragon), 2500823 (c5300_0012 - Old Dragon), 2500824 (c5300_0013 - Old Dragon), 2500825 (c5300_0014 - Old Dragon), 2500810 (c5300_0025 - Old Dragon), 2500930 (c5310_0000 - Tree Dragon), 2500933 (c5310_0003 - Tree Dragon), 2500934 (c5310_0004 - Tree Dragon)]
+  - 2500800 (c5200_0000 - Divine Dragon)
+  - group 2505820 [2500310 (c5050_0000 - Giant Carp), 2500884 (c5310_0007 - Tree Dragon), 2500880 (c5310_0008 - Tree Dragon), 2500881 (c5310_0009 - Tree Dragon), 2500882 (c5310_0010 - Tree Dragon), 2500883 (c5310_0011 - Tree Dragon)]
+  - 2500810 (c5300_0025 - Old Dragon)
+  - region 2502550 (SFX:雲海_カメラ前_ID825021_0001)
+  - region 2502551 (SFX:雲海姫竜戦_カメラ前_ID825022_0001)
+  - region 2502824 (event_PCワープ用_人魚竜戦開始)
+  - region 2502849 (event_人魚竜戦_人魚竜開始位置)
+  DebugCommands:
+  - GOTO IF Event Flag (Label = 0, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - + Change Character Enable State (Entity ID = 2505800*, Disabled/Enabled = 0)
+  - + Set Character Animation State (Entity ID = 2505800*, Disabled/Enabled = 0)
+  - + Force Character Death (Entity ID = 2505800*, Should Receive Souls = 0)
+  - + Set Character Backread State (Entity ID = 2505800*, Removed = 1)
+  - + Change Character Enable State (Entity ID = 2500800*, Disabled/Enabled = 0)
+  - + Set Character Animation State (Entity ID = 2500800*, Disabled/Enabled = 0)
+  - + Force Character Death (Entity ID = 2500800*, Should Receive Souls = 0)
+  - + Set Character Backread State (Entity ID = 2505820*, Removed = 1)
+  - END Unconditionally (Execution End Type = 0)
+  - Label 0 ()
+  - GOTO IF Event Flag (Label = 20, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505882)
+  - + Set Character AI State (Entity ID = 2500800*, Disabled/Enabled = 0)
+  - + Attach Object to Character (Character Entity ID = 2500800*, Dummypoly ID = 260, Object Entity ID = 2501815)
+  - + IF Character HP Ratio (Result Condition Group = -1, Target Entity ID = 2500810*, Comparison Type = 5, Target HP Ratio = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Batch Event Flags (Result Condition Group = -1, Desired Flag State = 0, Target Event Flag Type = 0, Starting Target Event Flag ID = 12505803, Ending Target Event Flag ID = 12505827)
+  - IF Event Flag (Result Condition Group = -1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505882)
+  - IF Condition Group (Result Condition Group = 1, Desired Condition Group State = 1, Target Condition Group = -1)
+  - IF Character HP Value (Result Condition Group = 1, Target Entity ID = 10000, Comparison Type = 2, Target HP = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - Set Menu Fade (Fade = 1, Fade Time (s) = 0.5)
+  - Set SpEffect (Entity ID = 10000, SpEffect ID = 4702)
+  - Set Character Invincibility (Entity ID = 10000, Disabled/Enabled = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.5)
+  - + Display Boss Health Bar (Disabled/Enabled = 0, Entity ID = 2500810*, Slot Number = 0, Name ID = 905200)
+  - Set Event Flag (Event Flag ID = 12500940, Flag State = 1)
+  - Set Event Flag (Event Flag ID = 9318, Flag State = 1)
+  - Set Wire Searchability (WireSetParam ID = -1)
+  - Set Event Flag (Event Flag ID = 6818, Flag State = 1)
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = -1)
+  - + Delete Map SFX (Entity ID = 2502550*, Only Delete Root = 0)
+  - + Delete Map SFX (Entity ID = 2502551*, Only Delete Root = 0)
+  - Set Menu Fade (Fade = 0, Fade Time (s) = 0.5)
+  - + Play Cutscene and Warp Player (Cutscene ID = 25000020, Playback Method = 16, Point Entity ID = 2502824*, Area ID = 25, Block ID = 0, Player Entity ID = 10000)
+  - IF Ongoing Cutscene Finished (Result Condition Group = 0, Cutscene ID = 25000020)
+  - Clear SpEffect (Entity ID = 10000, SpEffect ID = 4702)
+  - Set Character Invincibility (Entity ID = 10000, Disabled/Enabled = 0)
+  - Label 20 ()
+  - + Set Character Backread State (Entity ID = 2505800*, Removed = 1)
+  - + Set Character Backread State (Entity ID = 2505820*, Removed = 0)
+  - Set Lighting + UNKNOWN (Time of Day = 1, Unknown = 0)
+  - + Spawn Map SFX (Entity ID = 2502551*)
+  - Reset Omission Mode Counts to Default ()
+  - Set Wire Searchability (WireSetParam ID = 100)
+  - + Set Character AI State (Entity ID = 2500800*, Disabled/Enabled = 1)
+  - + Set Character Animation State (Entity ID = 2500800*, Disabled/Enabled = 1)
+  - + Change Character DispMask (Entity ID = 2500800*, Bit Number = 10, Switch Type = 1)
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = 500)
+  - + Set Lock On Point (Entity ID = 2500800*, Lock On Dummypoly ID = 220, Desired State = 1)
+  - + Display Boss Health Bar (Disabled/Enabled = 1, Entity ID = 2500800*, Slot Number = 0, Name ID = 905200)
+  - + Set Network Update Rate (Entity ID = 2500800*, Use Fixed Frequency = 1, Update Frequency = 0)
+  - + Set SpEffect (Entity ID = 2500800*, SpEffect ID = 3520071)
+  - + Clear SpEffect (Entity ID = 2500800*, SpEffect ID = 3520070)
+  - Set Event Flag (Event Flag ID = 12505881, Flag State = 1)
+  - + Warp Character and Copy Floor (Entity ID = 2500800*, Warp Type = 1, Warp Destination Entity ID = 2502849*, Dummypoly ID = -1, Entity ID to Copy Floor From = 10000)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 12505887
+  Comment: Shoots a bullet after the fight starts (and 5 seconds have passed), and also on event flags 12505889 and 12505890, forcing a Divine Dragon animation playback in that case. Also changes the music with flag 12505883
+  Template:
+  - Type: chr
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: 12505881
+    Remove: 9318
+    RemoveDupe: IF Event Flag; Set Event Flag; Shoot Bullet; Force Animation Playback
+  - Type: loc
+    Entity: 2500800
+    Remove: 12505888; 12505889; Force Animation Playback; Shoot Bullet
+    Add:
+    - Cmd: IF Character HP Ratio (0,2500800,5,0.3,0,1)
+      Before: 12505883
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9318)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505881)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 15)
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505888)
+  - + Shoot Bullet (Bullet Team Entity ID = 2500800*, Bullet Producer Entity ID = 2500800*, Dummypoly ID = 70, Behavior ID = 252000850, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505889)
+  - + Force Animation Playback (Entity ID = 2500800*, Animation ID = 20001, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - Set Event Flag (Event Flag ID = 12505883, Flag State = 1)
+  - + Shoot Bullet (Bullet Team Entity ID = 2500800*, Bullet Producer Entity ID = 2500800*, Dummypoly ID = 70, Behavior ID = 252000850, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505890)
+  - + Force Animation Playback (Entity ID = 2500800*, Animation ID = 20002, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - + Shoot Bullet (Bullet Team Entity ID = 2500800*, Bullet Producer Entity ID = 2500800*, Dummypoly ID = 70, Behavior ID = 252000850, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 12505888
+  Comment: Sets flag 12505888, 5 seconds after second phase starts. Also sets an speffect used by AI, which seems to allows it to do melee attacks. Try to make this more consistent wrt tree dragon placements in smaller arenas by setting the flag immediately before the dragon can rotate too much.
+  Template:
+  - Type: chr
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: 12505881
+    Remove: WAIT Fixed Time (Seconds) (5); 9318
+    Add:
+    - Cmd: Set Character AI State (2500800,0)
+      Before: start
+    - Cmd: IF Character AI State (-1,2500800,3,0,1)
+      Before: END Unconditionally (0)
+    - Cmd: IF Character AI State (-1,2500800,2,0,1)
+      Before: END Unconditionally (0)
+    - Cmd: IF Elapsed Seconds (-1,5)
+      Before: END Unconditionally (0)
+    - Cmd: IF Condition Group (0,1,-1)
+      Before: END Unconditionally (0)
+    - Cmd: Set Event Flag (12505888,1)
+      Before: END Unconditionally (0)
+    - Cmd: Set Character AI State (2500800,1)
+      Before: END Unconditionally (0)
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505888, X0_4 = 2500800*)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9318)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505881)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 15)
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 5020)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 5)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 12505889
+  Comment: Sets wire searchability after the phase starts, and then when dragon gets down to 30% health, changes update rate of a tree dragon, and may triggers phase 2
+  Template:
+  - Type: multichronly
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: -1
+    Camera: -100  # Used for moving wire params
+    Remove: WAIT Fixed Time (Seconds); END Unconditionally
+    Add:
+    - Cmd: Set Event Flag (12505889,1)
+  DebugInfo:
+  - 2500880 (c5310_0008 - Tree Dragon)
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505889, X0_4 = 2500800*, X4_4 = 1050253722)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505888)
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 5020)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
+  - Set Wire Searchability (WireSetParam ID = 100)
+  - + IF Character HP Ratio (Result Condition Group = 0, Target Entity ID = X0_4*, Comparison Type = 5, Target HP Ratio = X4_4, Comparison Type = 0, Number of Target Characters = 1)
+  - + Set Network Update Rate (Entity ID = 2500880*, Use Fixed Frequency = 1, Update Frequency = 0)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 12505890
+  Comment: When Dragon gets down to 30% health, does something with the 5 tree branches, and ends when the Divine Dragon has a speffect
+  Template:
+  - Type: multichronly
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: -1
+    Remove: END Unconditionally
+    Add:
+    - Cmd: Set Event Flag (12505890,1)
+  DebugInfo:
+  - 2500883 (c5310_0011 - Tree Dragon)
+  - 2500884 (c5310_0007 - Tree Dragon)
+  - 2500880 (c5310_0008 - Tree Dragon)
+  - 2500881 (c5310_0009 - Tree Dragon)
+  - 2500882 (c5310_0010 - Tree Dragon)
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505890, X0_4 = 2500800*)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505889)
+  - + Set SpEffect (Entity ID = 2500883*, SpEffect ID = 3520062)
+  - + Set SpEffect (Entity ID = 2500884*, SpEffect ID = 3520062)
+  - + Request Character AI Command (Entity ID = 2500880*, Command ID = 20, Slot Number = 0)
+  - + Request Character AI Command (Entity ID = 2500881*, Command ID = 20, Slot Number = 0)
+  - + Request Character AI Command (Entity ID = 2500882*, Command ID = 20, Slot Number = 0)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = X0_4*, SpEffect ID = 3520081, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = X0_4*, SpEffect ID = 3520085, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 12505891
+  Comment: After the Divine Dragon gets down to 30% health and has a speffect, warp the last 3 tree dragons to various spots relative to the divine dragon, and shoot a bullet toward what is probably the middle one. Can repeat.
+  Template:
+  - Type: multichr
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: -1
+    RemoveDupe: Batch Set Event Flags; Randomly Set Event Flag In Range; Shoot Bullet
+    Regions:
+    - event chrrel 2502844
+    - event chrrel 2502845
+    - arg chrrel 2502842
+  DebugInfo:
+  - region 2502844 (ストームジャンプ触手_出現領域(サブ2))
+  - region 2502845 (ストームジャンプ触手_出現領域(サブ1))
+  - 2500800 (c5200_0000 - Divine Dragon)
+  - 2500880 (c5310_0008 - Tree Dragon)
+  - region 2502842 (ストームジャンプ触手_出現領域(メイン))
+  - 2500881 (c5310_0009 - Tree Dragon)
+  - 2500882 (c5310_0010 - Tree Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505891, X0_4 = 2500800*, X4_4 = 2500880*, X8_4 = 2502842*, X12_4 = 2500881*, X16_4 = 2500882*)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505889)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = X0_4*, SpEffect ID = 3520012, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - Batch Set Event Flags (Event Flag ID Start = 12505940, Event Flag ID End = 12505942, Flag State = 0)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.1)
+  - + Warp Character and Copy Floor (Entity ID = X4_4*, Warp Type = 1, Warp Destination Entity ID = X8_4*, Dummypoly ID = -1, Entity ID to Copy Floor From = X0_4*)
+  - Randomly Set Event Flag In Range (Event Flag ID Min = 12505940, Event Flag ID Max = 12505940, Flag State = 1)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - SKIP IF Event Flag (Number Of Skipped Lines = 2, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 12505940)
+  - + Warp Character and Copy Floor (Entity ID = X12_4*, Warp Type = 1, Warp Destination Entity ID = 2502844*, Dummypoly ID = -1, Entity ID to Copy Floor From = X0_4*)
+  - + Warp Character and Copy Floor (Entity ID = X16_4*, Warp Type = 1, Warp Destination Entity ID = 2502845*, Dummypoly ID = -1, Entity ID to Copy Floor From = X0_4*)
+  - SKIP IF Event Flag (Number Of Skipped Lines = 2, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 12505941)
+  - + Warp Character and Copy Floor (Entity ID = X12_4*, Warp Type = 2, Warp Destination Entity ID = X0_4*, Dummypoly ID = 51, Entity ID to Copy Floor From = X0_4*)
+  - + Warp Character and Copy Floor (Entity ID = X16_4*, Warp Type = 2, Warp Destination Entity ID = X0_4*, Dummypoly ID = 54, Entity ID to Copy Floor From = X0_4*)
+  - SKIP IF Event Flag (Number Of Skipped Lines = 2, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 12505942)
+  - + Warp Character and Copy Floor (Entity ID = X12_4*, Warp Type = 2, Warp Destination Entity ID = X0_4*, Dummypoly ID = 52, Entity ID to Copy Floor From = X0_4*)
+  - + Warp Character and Copy Floor (Entity ID = X16_4*, Warp Type = 2, Warp Destination Entity ID = X0_4*, Dummypoly ID = 56, Entity ID to Copy Floor From = X0_4*)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - + Request Character AI Command (Entity ID = X4_4*, Command ID = 30, Slot Number = 0)
+  - + Request Character AI Command (Entity ID = X12_4*, Command ID = 30, Slot Number = 0)
+  - + Request Character AI Command (Entity ID = X16_4*, Command ID = 30, Slot Number = 0)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 3)
+  - + Shoot Bullet (Bullet Team Entity ID = X0_4*, Bullet Producer Entity ID = X4_4*, Dummypoly ID = 11, Behavior ID = 252000660, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - + Shoot Bullet (Bullet Team Entity ID = X0_4*, Bullet Producer Entity ID = X4_4*, Dummypoly ID = 11, Behavior ID = 252000665, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = 3520012, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - + Request Character AI Command (Entity ID = X4_4*, Command ID = 20, Slot Number = 0)
+  - + Request Character AI Command (Entity ID = X12_4*, Command ID = 20, Slot Number = 0)
+  - + Request Character AI Command (Entity ID = X16_4*, Command ID = 20, Slot Number = 0)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505894
+  Comment: When the player has a speffect after the Divine Dragon phase starts, Divine Dragon shoots a bullet, and so does the player
+  Template:
+  - Type: chr
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: 12505881
+    Remove: 9318
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505894, X0_4 = 2500800*, X4_4 = 3531070)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9318)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505881)
+  - IF Character Has SpEffect (Result Condition Group = 15, Target Entity ID = 10000, SpEffect ID = X4_4, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 15)
+  - + Shoot Bullet (Bullet Team Entity ID = X0_4*, Bullet Producer Entity ID = X0_4*, Dummypoly ID = 20, Behavior ID = 253100650, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - + Shoot Bullet (Bullet Team Entity ID = X0_4*, Bullet Producer Entity ID = 10000, Dummypoly ID = 70, Behavior ID = 253100620, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = 10000, SpEffect ID = X4_4, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505895
+  Comment: Activates some objects on Divine Dragon during certain attacks
+  Template:
+  - Type: multichronly
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: 12505881
+    Remove: 9318
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505895, X0_4 = 2500800*)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9318)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505881)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 15)
+  - + Attach Object to Character (Character Entity ID = X0_4*, Dummypoly ID = 600, Object Entity ID = 2501810)
+  - + Attach Object to Character (Character Entity ID = X0_4*, Dummypoly ID = 600, Object Entity ID = 2501814)
+  - (De)activate Object (Target Object Entity ID = 2501810, State = 0)
+  - (De)activate Object (Target Object Entity ID = 2501814, State = 0)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = 5026, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + Attach Object to Character (Character Entity ID = X0_4*, Dummypoly ID = 600, Object Entity ID = 2501810)
+  - + Attach Object to Character (Character Entity ID = X0_4*, Dummypoly ID = 600, Object Entity ID = 2501814)
+  - (De)activate Object (Target Object Entity ID = 2501810, State = 1)
+  - (De)activate Object (Target Object Entity ID = 2501814, State = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = 5026, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505896
+  Comment: At the end of the Divine Dragon fight, shooting a bullet, when player has neither of two speffects and Divine Dragon does have a speffect (set during big swoop animation)
+  Template:
+  - Type: chr
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: -1
+    RemoveDupe: IF Event Flag; Shoot Bullet
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505896, X0_4 = 2500800*)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505889)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = X0_4*, SpEffect ID = 3520014, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 10000, SpEffect ID = 106111, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 10000, SpEffect ID = 106110, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - + Shoot Bullet (Bullet Team Entity ID = X0_4*, Bullet Producer Entity ID = X0_4*, Dummypoly ID = 70, Behavior ID = 252000640, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 2, Target Entity ID = X0_4*, SpEffect ID = 3520014, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Character Has SpEffect (Result Condition Group = 2, Target Entity ID = 10000, SpEffect ID = 106111, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Character Has SpEffect (Result Condition Group = 2, Target Entity ID = 10000, SpEffect ID = 106110, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 0, Target Condition Group = 2)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505897
+  Comment: When player has speffect during the fight, shoot several bullets
+  Template:
+  - Type: chr
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: 12505881
+    Remove: 9318
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505897, X0_4 = 2500800*)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9318)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505881)
+  - IF Character Has SpEffect (Result Condition Group = 15, Target Entity ID = 10000, SpEffect ID = 106111, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 15)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.8)
+  - + Shoot Bullet (Bullet Team Entity ID = X0_4*, Bullet Producer Entity ID = X0_4*, Dummypoly ID = 20, Behavior ID = 252000610, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 0.75)
+  - + Shoot Bullet (Bullet Team Entity ID = X0_4*, Bullet Producer Entity ID = X0_4*, Dummypoly ID = 20, Behavior ID = 252000611, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 10)
+  - IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = 10000, SpEffect ID = 106111, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505898
+  Comment: Set lockon points for Divine Dragon with different speffects
+  Template:
+  - Type: chr
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: 12505881
+    Remove: 9318
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505898, X0_4 = 2500800*, X4_4 = 222, X8_4 = 5033)
+  - Initialize Event (1, 12505898, X0_4 = 2500800*, X4_4 = 221, X8_4 = 5034)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9318)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505881)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 15)
+  - + Set Lock On Point (Entity ID = X0_4*, Lock On Dummypoly ID = X4_4, Desired State = 0)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = X8_4, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + Set Lock On Point (Entity ID = X0_4*, Lock On Dummypoly ID = X4_4, Desired State = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = X8_4, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505900
+  Comment: Based on Divine Dragon having speffect 5039 or not, change hitmasks. (Perhaps during sword swipe, or neck swipe?)
+  Template:
+  - Type: chr
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: 12505881
+    Remove: 9318
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505900, X0_4 = 2500800*)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9318)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505881)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 15)
+  - + Change Character HitMask (Entity ID = X0_4*, Bit Number = 2, Switch Type = 0)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = 5039, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + Change Character HitMask (Entity ID = X0_4*, Bit Number = 2, Switch Type = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = 5039, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505901
+  Comment: Shortly after Divine Dragon starts, warp Tree Dragon to a dummypoly of Divine Dragon, attach objects to it, and disable them all. The tree ordering by entity id is 50 54 55 56 53.
+  Template:
+  - Type: multichronly
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: -1
+    Remove: WAIT Fixed Time (Seconds) (1)  # Pop up as soon as possible
+    # TreeDragons: X0; Attach Object to Character
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  - 2500880 (c5310_0008 - Tree Dragon)
+  - 2500881 (c5310_0009 - Tree Dragon)
+  - 2500882 (c5310_0010 - Tree Dragon)
+  - 2500883 (c5310_0011 - Tree Dragon)
+  - 2500884 (c5310_0007 - Tree Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505901, X0_4 = 2500880*, X4_4 = 50, X8_4 = 2501910, X12_4 = 2501911, X16_4 = 2501912, X20_4 = 2501830, X24_4 = 2501831, X28_4 = 2501832)
+  - Initialize Event (1, 12505901, X0_4 = 2500881*, X4_4 = 53, X8_4 = 2501913, X12_4 = 2501914, X16_4 = 2501915, X20_4 = 2501833, X24_4 = 2501834, X28_4 = 2501835)
+  - Initialize Event (2, 12505901, X0_4 = 2500882*, X4_4 = 54, X8_4 = 2501916, X12_4 = 2501917, X16_4 = 2501918, X20_4 = 2501836, X24_4 = 2501837, X28_4 = 2501838)
+  - Initialize Event (3, 12505901, X0_4 = 2500883*, X4_4 = 55, X8_4 = 2501919, X12_4 = 2501920, X16_4 = 2501921, X20_4 = 2501839, X24_4 = 2501840, X28_4 = 2501841)
+  - Initialize Event (4, 12505901, X0_4 = 2500884*, X4_4 = 56, X8_4 = 2501922, X12_4 = 2501923, X16_4 = 2501924, X20_4 = 2501842, X24_4 = 2501843, X28_4 = 2501844)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505888)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
+  - + Set Character Gravity (Entity ID = X0_4*, Disabled/Enabled = 0)
+  - + Warp Character and Copy Floor (Entity ID = X0_4*, Warp Type = 2, Warp Destination Entity ID = 2500800*, Dummypoly ID = X4_4, Entity ID to Copy Floor From = X0_4*)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - + Attach Object to Character (Character Entity ID = X0_4*, Dummypoly ID = 600, Object Entity ID = X8_4)
+  - + Attach Object to Character (Character Entity ID = X0_4*, Dummypoly ID = 601, Object Entity ID = X12_4)
+  - + Attach Object to Character (Character Entity ID = X0_4*, Dummypoly ID = 602, Object Entity ID = X16_4)
+  - + Attach Object to Character (Character Entity ID = X0_4*, Dummypoly ID = 600, Object Entity ID = X20_4)
+  - + Attach Object to Character (Character Entity ID = X0_4*, Dummypoly ID = 601, Object Entity ID = X24_4)
+  - + Attach Object to Character (Character Entity ID = X0_4*, Dummypoly ID = 602, Object Entity ID = X28_4)
+  - (De)activate Object (Target Object Entity ID = X8_4, State = 0)
+  - Set Object Interaction (Object Entity ID = X8_4, Interaction = -1, Desired State = 0)
+  - (De)activate Object (Target Object Entity ID = X12_4, State = 0)
+  - Set Object Interaction (Object Entity ID = X12_4, Interaction = -1, Desired State = 0)
+  - (De)activate Object (Target Object Entity ID = X16_4, State = 0)
+  - Set Object Interaction (Object Entity ID = X16_4, Interaction = -1, Desired State = 0)
+  - (De)activate Object (Target Object Entity ID = X20_4, State = 0)
+  - (De)activate Object (Target Object Entity ID = X24_4, State = 0)
+  - (De)activate Object (Target Object Entity ID = X28_4, State = 0)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 12505906
+  Comment: Shortly after Divine Dragon starts and tree dragon gets speffects, enable/disable various objects on tree dragons based on speffect, and repeat
+  Template:
+  - Type: multichronly
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: -1
+    Remove: WAIT Fixed Time (Seconds) (1)  # Pop up as soon as possible
+    # TreeDragons: X0; Set Object Interaction; (De)activate Object
+  DebugInfo:
+  - 2500880 (c5310_0008 - Tree Dragon)
+  - 2500881 (c5310_0009 - Tree Dragon)
+  - 2500882 (c5310_0010 - Tree Dragon)
+  - 2500883 (c5310_0011 - Tree Dragon)
+  - 2500884 (c5310_0007 - Tree Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505906, X0_4 = 2500880*, X4_4 = 2501910, X8_4 = 2501911, X12_4 = 2501912, X16_4 = 2501830, X20_4 = 2501831, X24_4 = 2501832)
+  - Initialize Event (1, 12505906, X0_4 = 2500881*, X4_4 = 2501913, X8_4 = 2501914, X12_4 = 2501915, X16_4 = 2501833, X20_4 = 2501834, X24_4 = 2501835)
+  - Initialize Event (2, 12505906, X0_4 = 2500882*, X4_4 = 2501916, X8_4 = 2501917, X12_4 = 2501918, X16_4 = 2501836, X20_4 = 2501837, X24_4 = 2501838)
+  - Initialize Event (3, 12505906, X0_4 = 2500883*, X4_4 = 2501919, X8_4 = 2501920, X12_4 = 2501921, X16_4 = 2501839, X20_4 = 2501840, X24_4 = 2501841)
+  - Initialize Event (4, 12505906, X0_4 = 2500884*, X4_4 = 2501922, X8_4 = 2501923, X12_4 = 2501924, X16_4 = 2501842, X20_4 = 2501843, X24_4 = 2501844)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505888)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 5025, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 5026, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 5027, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = X0_4*, SpEffect ID = 5025, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 2, Target Entity ID = X0_4*, SpEffect ID = 5026, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 3, Target Entity ID = X0_4*, SpEffect ID = 5027, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - GOTO IF Condition Group State (Uncompiled) (Label = 2, Desired Condition Group State = 1, Target Condition Group = 2)
+  - GOTO IF Condition Group State (Uncompiled) (Label = 3, Desired Condition Group State = 1, Target Condition Group = 3)
+  - (De)activate Object (Target Object Entity ID = X4_4, State = 1)
+  - Set Object Interaction (Object Entity ID = X4_4, Interaction = -1, Desired State = 1)
+  - (De)activate Object (Target Object Entity ID = X16_4, State = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = 5025, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - (De)activate Object (Target Object Entity ID = X4_4, State = 0)
+  - Set Object Interaction (Object Entity ID = X4_4, Interaction = -1, Desired State = 0)
+  - (De)activate Object (Target Object Entity ID = X16_4, State = 0)
+  - END Unconditionally (Execution End Type = 1)
+  - Label 2 ()
+  - (De)activate Object (Target Object Entity ID = X8_4, State = 1)
+  - Set Object Interaction (Object Entity ID = X8_4, Interaction = -1, Desired State = 1)
+  - (De)activate Object (Target Object Entity ID = X20_4, State = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = 5026, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - (De)activate Object (Target Object Entity ID = X8_4, State = 0)
+  - Set Object Interaction (Object Entity ID = X8_4, Interaction = -1, Desired State = 0)
+  - (De)activate Object (Target Object Entity ID = X20_4, State = 0)
+  - END Unconditionally (Execution End Type = 1)
+  - Label 3 ()
+  - (De)activate Object (Target Object Entity ID = X12_4, State = 1)
+  - Set Object Interaction (Object Entity ID = X12_4, Interaction = -1, Desired State = 1)
+  - (De)activate Object (Target Object Entity ID = X24_4, State = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = 5027, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - (De)activate Object (Target Object Entity ID = X12_4, State = 0)
+  - Set Object Interaction (Object Entity ID = X12_4, Interaction = -1, Desired State = 0)
+  - (De)activate Object (Target Object Entity ID = X24_4, State = 0)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505911
+  Comment: Requests different AI commands for tree dragons based on speffects, including disabling them on speffect 3520062. Can also warp them back to their original position, and clear their event flag
+  Template:
+  - Type: multichronly
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: -1
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  - 2500880 (c5310_0008 - Tree Dragon)
+  - 2500881 (c5310_0009 - Tree Dragon)
+  - 2500882 (c5310_0010 - Tree Dragon)
+  - 2500883 (c5310_0011 - Tree Dragon)
+  - 2500884 (c5310_0007 - Tree Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505911, X0_4 = 2500880*, X4_4 = 50, X8_4 = 12505940)
+  - Initialize Event (1, 12505911, X0_4 = 2500881*, X4_4 = 53, X8_4 = 12505941)
+  - Initialize Event (2, 12505911, X0_4 = 2500882*, X4_4 = 54, X8_4 = 12505942)
+  - Initialize Event (3, 12505911, X0_4 = 2500883*, X4_4 = 55, X8_4 = 12505943)
+  - Initialize Event (4, 12505911, X0_4 = 2500884*, X4_4 = 56, X8_4 = 12505944)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505888)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = X0_4*, SpEffect ID = 3520062, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - GOTO IF Condition Group State (Uncompiled) (Label = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - + Request Character AI Command (Entity ID = X0_4*, Command ID = 10, Slot Number = 0)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 5025, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 5026, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 5027, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
+  - + IF Character Has SpEffect (Result Condition Group = -2, Target Entity ID = X0_4*, SpEffect ID = 3520060, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -2, Target Entity ID = X0_4*, SpEffect ID = 3520062, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -2)
+  - + Request Character AI Command (Entity ID = X0_4*, Command ID = 20, Slot Number = 0)
+  - + Shoot Bullet (Bullet Team Entity ID = X0_4*, Bullet Producer Entity ID = X0_4*, Dummypoly ID = 11, Behavior ID = 253100630, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - Set Event Flag (Event Flag ID = X8_4, Flag State = 0)
+  - + IF Character Has SpEffect (Result Condition Group = 2, Target Entity ID = X0_4*, SpEffect ID = 3520062, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - GOTO IF Condition Group State (Uncompiled) (Label = 0, Desired Condition Group State = 1, Target Condition Group = 2)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 8)
+  - + Warp Character and Copy Floor (Entity ID = X0_4*, Warp Type = 2, Warp Destination Entity ID = 2500800*, Dummypoly ID = X4_4, Entity ID to Copy Floor From = X0_4*)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - END Unconditionally (Execution End Type = 1)
+  - Label 0 ()
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 4)
+  - + Change Character Enable State (Entity ID = X0_4*, Disabled/Enabled = 0)
+  - + Set Character Animation State (Entity ID = X0_4*, Disabled/Enabled = 0)
+  - + Set Character Backread State (Entity ID = X0_4*, Removed = 1)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 12505916
+  Comment: When player has a speffect (up to 5 different instantiations, in 5310 range), shoot bullet, and clear the given event flag in the range 12505940-12505944 (tree having lightning)
+  Template:
+  - Type: chr
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: -1
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505888)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
+  - IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = 10000, SpEffect ID = X4_4, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + Shoot Bullet (Bullet Team Entity ID = 2500800*, Bullet Producer Entity ID = 2500800*, Dummypoly ID = 70, Behavior ID = 252000550, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - + Shoot Bullet (Bullet Team Entity ID = 2500800*, Bullet Producer Entity ID = 2500800*, Dummypoly ID = 70, Behavior ID = 252000555, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - + Shoot Bullet (Bullet Team Entity ID = 2500800*, Bullet Producer Entity ID = 10000, Dummypoly ID = 260, Behavior ID = 253100620, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - Set Event Flag (Event Flag ID = X0_4, Flag State = 0)
+  - IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = 10000, SpEffect ID = X4_4, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505921
+  Comment: Also waits for speffects on the tree dragons, and if their event flag is set, shoot the given bullet parameter, and restart when the flag is set again. Until the final phase
+  Template:
+  - Type: multichronly
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: -1
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  - 2500880 (c5310_0008 - Tree Dragon)
+  - 2500881 (c5310_0009 - Tree Dragon)
+  - 2500882 (c5310_0010 - Tree Dragon)
+  - 2500883 (c5310_0011 - Tree Dragon)
+  - 2500884 (c5310_0007 - Tree Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505921, X0_4 = 2500880*, X4_4 = 12505940, X8_4 = 253100661)
+  - Initialize Event (1, 12505921, X0_4 = 2500881*, X4_4 = 12505941, X8_4 = 253100662)
+  - Initialize Event (2, 12505921, X0_4 = 2500882*, X4_4 = 12505942, X8_4 = 253100663)
+  - Initialize Event (3, 12505921, X0_4 = 2500883*, X4_4 = 12505943, X8_4 = 253100664)
+  - Initialize Event (4, 12505921, X0_4 = 2500884*, X4_4 = 12505944, X8_4 = 253100665)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505888)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 5025, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 5026, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 5027, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 1, Desired Condition Group State = 1, Target Condition Group = -1)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = X4_4)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505889)
+  - + Shoot Bullet (Bullet Team Entity ID = 2500800*, Bullet Producer Entity ID = X0_4*, Dummypoly ID = 11, Behavior ID = 253100600, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - + Shoot Bullet (Bullet Team Entity ID = 2500800*, Bullet Producer Entity ID = X0_4*, Dummypoly ID = 11, Behavior ID = X8_4, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -2, Target Entity ID = X0_4*, SpEffect ID = 5025, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -2, Target Entity ID = X0_4*, SpEffect ID = 5026, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -2, Target Entity ID = X0_4*, SpEffect ID = 5027, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 2, Desired Condition Group State = 1, Target Condition Group = -2)
+  - IF Event Flag (Result Condition Group = 2, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = X4_4)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 0, Target Condition Group = 2)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505926
+  Comment: From the start of Divine Dragon (after 8 seconds in total), until the big phase, set a random event flag every 18 seconds, which adds lightning to the trees. Make this just 3 trees for most arenas.
+  Template:
+  - Type: multichronly
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: -1
+    # Replace: 15 -> 5  # For much faster phase
+    TreeDragonFlags: 12505940 12505930
+    Add:
+    - Cmd: Batch Set Event Flags (12505930,12505934,0)
+      Before: Randomly Set Event Flag In Range
+    - Cmd: SKIP IF Event Flag (1,0,0,12505930)
+      After: Randomly Set Event Flag In Range
+    - Cmd: Set Event Flag (12505940,1)
+      After: Randomly Set Event Flag In Range
+    - Cmd: SKIP IF Event Flag (1,0,0,12505931)
+      After: Randomly Set Event Flag In Range
+    - Cmd: Set Event Flag (12505942,1)
+      After: Randomly Set Event Flag In Range
+    - Cmd: SKIP IF Event Flag (1,0,0,12505932)
+      After: Randomly Set Event Flag In Range
+    - Cmd: Set Event Flag (12505943,1)
+      After: Randomly Set Event Flag In Range
+    - Cmd: SKIP IF Event Flag (1,0,0,12505933)
+      After: Randomly Set Event Flag In Range
+    - Cmd: Set Event Flag (12505944,1)
+      After: Randomly Set Event Flag In Range
+    - Cmd: SKIP IF Event Flag (1,0,0,12505934)
+      After: Randomly Set Event Flag In Range
+    - Cmd: Set Event Flag (12505941,1)
+      After: Randomly Set Event Flag In Range
+  - Type: loc
+    Add:
+    - Cmd: IF Event Flag (0,1,0,12505881)
+      After: 9310
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505889)
+  - IF Event Flag (Result Condition Group = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505888)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 3)
+  - Randomly Set Event Flag In Range (Event Flag ID Min = 12505940, Event Flag ID Max = 12505944, Flag State = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 15)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505927
+  Comment: When the Divine Dragon has the given speffect (and one other), play the given animation, and repeat. Unclear what these do
+  Template:
+  - Type: chr
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: 12505881
+    Remove: 9318
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505927, X0_4 = 2500800*, X4_4 = 3520080, X8_4 = 20003)
+  - Initialize Event (1, 12505927, X0_4 = 2500800*, X4_4 = 3520081, X8_4 = 20004)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9318)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505881)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = X0_4*, SpEffect ID = X4_4, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = X0_4*, SpEffect ID = 3520085, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = X0_4*, SpEffect ID = 3520011, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505889)
+  - + Force Animation Playback (Entity ID = X0_4*, Animation ID = X8_4, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505929
+  Comment: With player with the given speffect in final phase, warp to dragon dummypoly 42, or to given region, depending on the speffect. Region is "storm jump alignment". Add life check to prevent interference between dragon warps, if that's a thing.
+  Template:
+  - Type: multichronly
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: -1
+    Add:
+    - Cmd: IF Character Dead/Alive (10,X0_4,1,0,1)
+      After: WAIT Fixed Time (Frames)
+    - Cmd: END IF Condition Group State (Uncompiled) (0,1,10)
+      After: WAIT Fixed Time (Frames)
+    Regions:
+    - arg chrrel 2502843
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  - region 2502843 (ストームジャンプ位置合わせ)
+  DebugInit:
+  - Initialize Event (0, 12505929, X0_4 = 2500800*, X4_4 = 106110, X8_4 = 0, X12_4 = 2502843*)
+  - Initialize Event (1, 12505929, X0_4 = 2500800*, X4_4 = 106111, X8_4 = 42, X12_4 = 0)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505889)
+  - IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 10000, SpEffect ID = X4_4, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 2)
+  - SKIP IF Comparison (Number Of Skipped Lines = 1, Comparison Type = 0, Left-hand Side = X8_4, Right-hand Side = 0)
+  - + Warp Character and Copy Floor (Entity ID = 10000, Warp Type = 2, Warp Destination Entity ID = X0_4*, Dummypoly ID = X8_4, Entity ID to Copy Floor From = X0_4*)
+  - + SKIP IF Comparison (Number Of Skipped Lines = 1, Comparison Type = 0, Left-hand Side = X12_4*, Right-hand Side = 0)
+  - + Warp Character and Copy Floor (Entity ID = 10000, Warp Type = 1, Warp Destination Entity ID = X12_4*, Dummypoly ID = -1, Entity ID to Copy Floor From = X0_4*)
+  - IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = 10000, SpEffect ID = X4_4, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505936
+  Comment: Camera and lockon-ability to Divine Dragon based on player/dragon speffects
+  Template:
+  - Type: chr
+    Entity: 2500800
+    DefeatFlag: 9310
+    Camera: 500; 501; 502; 503; 504
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505936, X0_4 = 2500800*)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 3520031, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = X0_4*, SpEffect ID = 3520032, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Character Has SpEffect (Result Condition Group = -1, Target Entity ID = 10000, SpEffect ID = 106112, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = -1)
+  - IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = 10000, SpEffect ID = 106112, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - GOTO IF Condition Group State (Uncompiled) (Label = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - + IF Character Has SpEffect (Result Condition Group = 2, Target Entity ID = X0_4*, SpEffect ID = 3520032, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - GOTO IF Condition Group State (Uncompiled) (Label = 1, Desired Condition Group State = 1, Target Condition Group = 2)
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = 501)
+  - + Set Lock On Point (Entity ID = X0_4*, Lock On Dummypoly ID = 220, Desired State = 0)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = 3520031, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = 500)
+  - + Set Lock On Point (Entity ID = X0_4*, Lock On Dummypoly ID = 220, Desired State = 1)
+  - END Unconditionally (Execution End Type = 1)
+  - Label 0 ()
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = 502)
+  - IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = 10000, SpEffect ID = 106112, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = 500)
+  - END Unconditionally (Execution End Type = 1)
+  - Label 1 ()
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = 503)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 2)
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = 504)
+  - + IF Character Has SpEffect (Result Condition Group = 0, Target Entity ID = X0_4*, SpEffect ID = 3520032, Should Have = 0, Comparison Type = 0, Number of Target Characters = 1)
+  - Set Area CameraSetParam SubID (CameraSetParam SubID = 500)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 12505939
+  Comment: From start of Divine Dragon until warp to Ashina Castle, every 5 + (5 to 10) seconds, shoot a bullet. This is the responsible for the visual lightning striking effect behind him.
+  Template:
+  - Type: chr
+    Entity: 2500800
+    DefeatFlag: 9310
+    StartFlag: 12505881
+    Remove: 9318
+  DebugInfo:
+  - 2500800 (c5200_0000 - Divine Dragon)
+  DebugInit:
+  - Initialize Event (0, 12505939, X0_4 = 2500800*, X4_4 = 252000540, X8_4 = 70, X12_4 = 1084227584, X16_4 = 1092616192, X20_4 = 12505880)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9318)
+  - IF Event Flag (Result Condition Group = 15, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505881)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 15)
+  - SKIP IF Event Flag (Number Of Skipped Lines = 1, Desired Flag State = 1, Target Event Flag Type = 2, Target Event Flag ID = 0)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 5)
+  - WAIT Random Time (Seconds) (Min Number Of Seconds = X12_4, Max Number Of Seconds = X16_4)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = X20_4)
+  - + Shoot Bullet (Bullet Team Entity ID = X0_4*, Bullet Producer Entity ID = X0_4*, Dummypoly ID = X8_4, Behavior ID = X4_4, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
+  - END Unconditionally (Execution End Type = 1)
 - ID: 12505950
   Comment: End of true monk fight
   Template:
@@ -14173,7 +15416,7 @@ EnemyEvents:
     Remove: Set Area CameraSetParam SubID; Display Boss Health Bar; Set Event Flag
     RemoveDupe: Change Character Enable State; Set Character Animation State; Force Character Death; END Unconditionally (0)
     Regions:
-    - event dist10 2502850
+    - event distdragon 2502850
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   - 2500851 (c5005_0000 - Corrupted Monk Illusion)

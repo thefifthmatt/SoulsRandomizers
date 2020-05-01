@@ -8,7 +8,7 @@ Boss:
 - Weight: 75
   Pool: Demon of Hatred; Headless Ape; Isshin Ashina; Sword Saint Isshin; True Monk; Owl (Father)
 - Weight: 25
-  Pool: Great Shinobi Owl; Genichiro, Way of Tomoe (Mortal Blade); Guardian Ape; Corrupted Monk; Emma
+  Pool: Great Shinobi Owl; Genichiro, Way of Tomoe (Mortal Blade); Guardian Ape; Corrupted Monk; Emma; Divine Dragon
 
 # Minibosses are bosses
 Miniboss:

@@ -108,7 +108,7 @@
             this.headlesswalk = new System.Windows.Forms.CheckBox();
             this.mergemods = new System.Windows.Forms.CheckBox();
             this.openstart = new System.Windows.Forms.CheckBox();
-            this.label11 = new System.Windows.Forms.Label();
+            this.edittext = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -499,7 +499,7 @@
             this.warningL.AutoSize = true;
             this.warningL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.warningL.ForeColor = System.Drawing.Color.DarkRed;
-            this.warningL.Location = new System.Drawing.Point(446, 634);
+            this.warningL.Location = new System.Drawing.Point(446, 633);
             this.warningL.Name = "warningL";
             this.warningL.Size = new System.Drawing.Size(645, 32);
             this.warningL.TabIndex = 20;
@@ -1064,23 +1064,26 @@
             this.openstart.AutoSize = true;
             this.openstart.Checked = true;
             this.openstart.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.openstart.Location = new System.Drawing.Point(785, 580);
+            this.openstart.Location = new System.Drawing.Point(785, 601);
             this.openstart.Name = "openstart";
             this.openstart.Size = new System.Drawing.Size(294, 20);
-            this.openstart.TabIndex = 18;
+            this.openstart.TabIndex = 17;
             this.openstart.Text = "Open Bell Demon\'s Temple doors at the start";
             this.openstart.UseVisualStyleBackColor = true;
             this.openstart.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
-            // label11
+            // edittext
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(800, 600);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(173, 13);
-            this.label11.TabIndex = 27;
-            this.label11.Text = "Allow early access to Ashina Castle";
+            this.edittext.AutoSize = true;
+            this.edittext.Checked = true;
+            this.edittext.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.edittext.Location = new System.Drawing.Point(785, 580);
+            this.edittext.Name = "edittext";
+            this.edittext.Size = new System.Drawing.Size(313, 20);
+            this.edittext.TabIndex = 16;
+            this.edittext.Text = "Edit in-game text (rename bosses and add hints)";
+            this.edittext.UseVisualStyleBackColor = true;
+            this.edittext.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
             // SekiroForm
             // 
@@ -1088,7 +1091,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1134, 761);
-            this.Controls.Add(this.label11);
+            this.Controls.Add(this.edittext);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.openstart);
             this.Controls.Add(this.defaultAllowReroll);
@@ -1118,7 +1121,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SekiroForm";
-            this.Text = "Sekiro Enemy and Item Randomizer v0.3 beta2";
+            this.Text = "Sekiro Enemy and Item Randomizer v0.3";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -1232,7 +1235,7 @@
         private System.Windows.Forms.CheckBox headlesswalk;
         private System.Windows.Forms.CheckBox mergemods;
         private System.Windows.Forms.CheckBox openstart;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.CheckBox edittext;
     }
 }
 

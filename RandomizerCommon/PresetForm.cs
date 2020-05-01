@@ -56,19 +56,17 @@ namespace RandomizerCommon
             }
             else
             {
+                HashSet<string> singletons = ann.Singletons == null ? new HashSet<string>() : new HashSet<string>(ann.Singletons);
                 enemyNames = new List<string>();
                 foreach (EnemyCategory cat in ann.Categories)
                 {
-                    if (cat.Name == null) continue;
+                    if (cat.Name == null || singletons.Contains(cat.Name)) continue;
                     enemyNames.Add(cat.Name);
                     foreach (string subname in new[] { cat.Partition, cat.Partial, cat.Instance }.Where(g => g != null).SelectMany(g => g))
                     {
+                        if (singletons.Contains(subname)) continue;
                         enemyNames.Add("- " + subname);
                     }
-                }
-                if (ann.Singletons != null)
-                {
-                    enemyNames = enemyNames.Except(ann.Singletons).ToList();
                 }
                 select.Enabled = true;
                 UpdateEnemyList();

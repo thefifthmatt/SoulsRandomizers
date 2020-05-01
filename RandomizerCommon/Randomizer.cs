@@ -43,7 +43,7 @@ namespace RandomizerCommon
             }
             GameData game = new GameData(distDir, sekiro);
             game.Load(modDir);
-            // game.SearchParamInt(20000); return;
+            // game.SearchParamInt(15200090); return;
             if (modDir != null) Console.WriteLine();
 
             // Prologue
@@ -107,8 +107,11 @@ namespace RandomizerCommon
                         SkillWriter skills = new SkillWriter(game, data, anns);
                         skills.RandomizeTrees(new Random(seed + 2), perm, split);
                     }
-                    HintWriter hints = new HintWriter(game, data, anns);
-                    hints.Write(options, perm);
+                    if (options["edittext"])
+                    {
+                        HintWriter hints = new HintWriter(game, data, anns);
+                        hints.Write(options, perm);
+                    }
                 }
                 MiscSetup.SekiroCommonPass(game, events, options);
 

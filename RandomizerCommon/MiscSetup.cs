@@ -221,6 +221,21 @@ namespace RandomizerCommon
             aiCommon.Write($@"{outDir}\script\aicommon.luabnd.dcx");
         }
 
+        public static void CombineDragonTpfs()
+        {
+            // Utility for creating Divine Dragon texbnd. Requires using Yabber to unpack these bnds, and repack after done.
+            string gamePath = GameSpec.ForGame(GameSpec.FromGame.SDT).GameDir;
+            string mainPath = $@"{gamePath}\chr\c5200-texbnd-dcx\chr\c5200\c5200.tpf";
+            SFUtil.Backup(mainPath);
+            TPF dragon = TPF.Read(mainPath);
+            foreach (string p in Directory.GetFiles($@"{gamePath}\map\m25\m25_0000-tpfbhd", "m25_Dragon*.tpf.dcx"))
+            {
+                TPF t = TPF.Read(p);
+                dragon.Textures.AddRange(t.Textures);
+            }
+            dragon.Write(mainPath);
+        }
+
         public static bool CheckSFX()
         {
             string customPath = @"sfx\sfxbnd_commoneffects.ffxbnd.dcx";

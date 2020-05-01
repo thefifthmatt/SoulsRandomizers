@@ -10,30 +10,60 @@ namespace RandomizerCommon
     public class EnemyAnnotations
     {
         // YAML fields
+        // Enemies which can be referenced by name in presets
         public List<EnemyCategory> Categories = new List<EnemyCategory>();
+        // Enemies to exclude from Oops All UI because they don't work very well
         public List<string> Singletons { get; set; }
-        public List<string> NoDeathblow { get; set; }
+        public List<EnemyGroup> Groups = new List<EnemyGroup>();
         public List<EnemyInfo> Enemies = new List<EnemyInfo>();
+        public List<ObjectInfo> Objects = new List<ObjectInfo>();
         public Dictionary<int, int> ScalingSections = new Dictionary<int, int>();
+
+        public SortedSet<int> GetGroup(string name)
+        {
+            EnemyGroup group = Groups.Find(g => g.Name == name);
+            if (group == null) return new SortedSet<int>();
+            return group.Entities;
+        }
 
         public class EnemyCategory
         {
+            // The main display name, which should match the model name or ExtraNames of enemies in the config
             public string Name { get; set; }
-            public bool Singleton { get; set; }
+            // The list of subcategory display names, when they are a partition of the enemies
             public List<string> Partition { get; set; }
+            // The list of subcategory display names, when it is an unstructured subset of all of them
             public List<string> Partial { get; set; }
+            // The list of names of individual instances of this enemy, usually for minibosses
             public List<string> Instance { get; set; }
+            // When this category is defined as the union of two other categories, those categories
+            public List<string> Contains { get; set; }
+        }
+
+        public class EnemyGroup
+        {
+            public string Name { get; set; }
+            public List<string> Models { get; set; }
+            [YamlIgnore]
+            public SortedSet<int> Entities = new SortedSet<int>();
         }
 
         public class EnemyInfo
         {
             // Unique entity id
             public int ID { get; set; }
-            // Name etc
+            // Part name, not unique
+            public string Name { get; set; }
+            // Metadata about models which is useful for placement logic
+            [YamlIgnore]
+            public string ModelID { get; set; }
+            [YamlIgnore]
+            public string ModelName { get; set; }
+            // Debug info with full name and part references etc
             public string DebugText { get; set; }
-            // Info about ESDs
+            // Debug info about ESDs
             public string ESDs { get; set; }
-            // Info about emevd commands used
+            // Debug info about emevd commands used
             public string Events { get; set; }
             // The category
             public EnemyClass Class { get; set; }
@@ -68,16 +98,22 @@ namespace RandomizerCommon
             public string Arena { get; set; }
             // Experiment for making Owl 2 owl behave better in certain arenas. Not used.
             public string OwlArena { get; set; }
+            // A point (in region syntax, for code reuse) of where to relocate the boss to if Divine Dragon can go here.
+            public string DragonArena { get; set; }
+            // The Divine Dragon tree dragons which are supported in this area. Should be defined if DragonArena is also defined, for dragon to be placed here.
+            public string DragonTrees { get; set; }
             [YamlIgnore]
             public Arena ArenaData { get; set; }
             [YamlIgnore]
             public Arena OwlArenaData { get; set; }
             [YamlIgnore]
-            public HashSet<string> TagSet { get; set; }
+            public Arena DragonArenaData { get; set; }
+            [YamlIgnore]
+            public List<int> DragonTreeList { get; set; }
+            [YamlIgnore]
+            public HashSet<string> TagSet = new HashSet<string>();
             public bool HasTag(string tag)
             {
-                if (Tags == null) return false;
-                if (TagSet == null) TagSet = new HashSet<string>(Tags.Split(' '));
                 return TagSet.Contains(tag);
             }
             // Used in a few places, but
@@ -130,6 +166,12 @@ namespace RandomizerCommon
             }
         }
 
+        public class ObjectInfo
+        {
+            public int ID { get; set; }
+            public int OwnedBy { get; set; }
+        }
+
         public enum EnemyClass
         {
             // Do not randomize
@@ -148,10 +190,12 @@ namespace RandomizerCommon
             FoldingMonkey = 6,
             // Genichiro in tutorial. Other enemies can go here.
             TutorialBoss = 7,
-            // Remove source
+            // Remove source. (Currently not implemented like this)
             Remove = 8,
-            // Randomizable when specifically referenced, but not generally
-            SetNone = 9,
+            // An enemy which cannot be meaningfully randomized, but there is some spectacle involved in putting it in the world
+            ChaosBoss = 9,
+            // An old dragon, of which some can be randomized
+            OldDragon = 10,
         }
 
         public class EnemyData
@@ -165,6 +209,7 @@ namespace RandomizerCommon
             public int Think { get; set; }
             // Info for placement
             public List<int> Group { get; set; }
+            public string Col { get; set; }
         }
     }
 }

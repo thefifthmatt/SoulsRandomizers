@@ -17,12 +17,13 @@ Enemies:
   Lady Butterfly 1 1000800: Genichiro, Way of Tomoe (Mortal Blade) 1120830
   Lady Butterfly 2 1000810: Demon of Hatred 1100900
   Genichiro Ashina 1110800: Owl (Father) 1000900
-  Genichiro, Way of Tomoe (Lightning) 1110801: True Monk 2500850
-  Corrupted Monk 1500800: Great Shinobi Owl 1110850
-  Guardian Ape 1700800: Headless Ape 1700850
-  Headless Ape 1700850: Guardian Ape 1700800
-  Great Shinobi Owl 1110850: Corrupted Monk 1500800
-  True Monk 2500850: Genichiro, Way of Tomoe (Lightning) 1110801
+  Genichiro, Way of Tomoe (Lightning) 1110801: Great Shinobi Owl 1110850  # Swap with Guardian Ape, for arena, and get double owl
+  Corrupted Monk 1500800: True Monk 2500850
+  Guardian Ape 1700800: Divine Dragon 2500800
+  Headless Ape 1700850: Headless Ape 1700850
+  Great Shinobi Owl 1110850: Genichiro, Way of Tomoe (Lightning) 1110801  # Also swap to be symmetric
+  True Monk 2500850: Corrupted Monk 1500800
+  Divine Dragon 2500800: Guardian Ape 1700800
   Owl (Father) 1000900: Genichiro Ashina 1110800
   Demon of Hatred 1100900: Lady Butterfly 2 1000810
   Genichiro, Way of Tomoe (Mortal Blade) 1120830: Lady Butterfly 1 1000800
@@ -41,12 +42,12 @@ Enemies:
   Lone Shadow Longswordsman 1120300: Chained Ogre 1110610
   Shichimen Warrior 1300200: Shichimen Warrior 1700520
   Long-arm Centipede Sen'un 2000279: Snake Eyes Shirahagi 1700201
-  Armored Warrior 2000400: Long-arm Centipede Giraffe 1700425
-  Tokujiro the Glutton 1500490: Snake Eyes Shirafuji 1700200
+  Armored Warrior 2000400: Tokujiro the Glutton 1500490  # Custom swap
+  Tokujiro the Glutton 1500490: Armored Warrior 2000400
   Mist Noble 1500200: O'Rin 1500690
   O'Rin 1500690: Mist Noble 1500200
-  Snake Eyes Shirafuji 1700200: Tokujiro the Glutton 1500490
-  Long-arm Centipede Giraffe 1700425: Armored Warrior 2000400
+  Snake Eyes Shirafuji 1700200: Long-arm Centipede Giraffe 1700425  # Custom swap
+  Long-arm Centipede Giraffe 1700425: Snake Eyes Shirafuji 1700200
   Snake Eyes Shirahagi 1700201: Long-arm Centipede Sen'un 2000279
   Shichimen Warrior 1700520: Shichimen Warrior 1300200
   Chained Ogre 1110610: Lone Shadow Longswordsman 1120300
@@ -57,8 +58,8 @@ Enemies:
   Shichimen Warrior 2500580: Juzou the Drunkard 1000300
   Lone Shadow Masanaga the Spear-Bearer (Hirata) 1000353: Shinobi Hunter 1000330
   Juzou the Drunkard 2 1000301: General Tenzen Yamauchi 1100301
-  Ashina Elite Ujinari Mizuo 1110511: Chained Ogre 1100310
-  Shigekichi of the Red Guard 1100480: General Naomori Kawarada 1100300
+  Ashina Elite Ujinari Mizuo 1110511: General Naomori Kawarada 1100300  # Swap
+  Shigekichi of the Red Guard 1100480: Chained Ogre 1100310
   Seven Ashina Spears 2 1120521: Leader Shigenori Yamauchi 1120250
 
   Ashina Soldier 1120213: Ashina Soldier 1120358
@@ -292,671 +293,685 @@ Enemies:
   Nightjar Ninja 1110577: Okami Warrior 2500425
   Gecko 1110583: Okami Warrior 2500426
   Nightjar Ninja 1110547: Okami Warrior 2500423
-  Fencer 1110501: Palace Noble 2500216
-  Nightjar Ninja 1110532: Palace Noble 2500218
-  Nightjar Ninja 1110533: Palace Noble 2500200
-  Assassin (Senpou) 1120426: Hound 1110337
-  Assassin (Senpou) 1120424: Hound 1110335
-  Assassin (Senpou) 1120425: Hound 1110336
-  Ashina Soldier 1120354: Nightjar Ninja 1110561
-  Ashina Soldier 1120352: Nightjar Ninja 1110560
-  Taro Troop 1120450: Ashina Soldier 1110283
-  Ashina Soldier 1120357: Nightjar Ninja 1110562
-  Ashina Soldier 1120353: Ashina Soldier 1110282
-  Sentry 1120430: Nightjar Ninja 1110569
-  Taro Troop 1120451: Nightjar Ninja 1110570
-  Ashina Soldier 1120350: Nightjar Ninja 1110571
-  Ashina Soldier 1120351: Shinobi Hunter 1110460
-  Hound 1120460: Nightjar Ninja 1110534
-  Hound 1120461: Assassin (Interior Ministry) 1110648
-  Ashina Soldier 1120356: Assassin (Interior Ministry) 1110653
-  Ashina Soldier 1120355: Assassin (Interior Ministry) 1110649
-  Test Subject 1300280: Lone Shadow 1110304
-  Cricket 1300212: Lone Shadow 1110303
-  Test Subject 1300284: Hound 1110334
-  Cricket 1300217: Hound 1110330
-  Cricket 1300238: Lone Shadow 1110318
-  Cricket 1300235: Lone Shadow 1110319
-  Cricket 1300230: Lone Shadow 1110302
-  Cricket 1300229: Assassin (Interior Ministry) 1110654
-  Cricket 1300233: Gecko 1110588
-  Cricket 1300228: Gecko 1110585
-  Cricket 1300234: Ashina Soldier 1110297
-  Cricket 1300236: Lone Shadow 1110300
-  Cricket 1300220: Red Guard 1110373
-  Cricket 1300219: Red Guard 1110381
-  Cricket 1300211: Ashina Soldier 1110298
-  Cricket 1300218: Red Guard 1110372
-  Cricket 1300215: Ashina Soldier 1110296
-  Test Subject 1300281: Hound 1110332
-  Test Subject 1300282: Lone Shadow 1110317
-  Cricket 1300223: Lone Shadow 1110322
-  Cricket 1300239: Lone Shadow 1110323
-  Cricket 1300240: Lone Shadow 1110321
-  Ashina Soldier 1300301: Gecko 1110586
-  Ashina Soldier 1300303: Hound 1110331
-  Ashina Soldier 1300300: Hound 1110333
-  Ashina Soldier 1300302: Gecko 1110587
-  Ashina Soldier 1300304: Samurai General 1110413
-  Test Subject 1300283: Ashina Soldier 1110240
-  Cricket 1300224: Lone Shadow 1110312
-  Cricket 1300222: Ashina Soldier 1110287
-  Cricket 1300226: Samurai General 1110412
-  Cricket 1300225: Assassin (Interior Ministry) 1110644
-  Cricket 1300216: Assassin (Interior Ministry) 1110643
-  Test Subject 1300291: Assassin (Interior Ministry) 1110642
-  Test Subject 1300285: Ashina Soldier 1110246
-  Gecko 1300351: Ashina Soldier 1110244
-  Gecko 1300350: Ashina Soldier 1110242
-  Seeker 2000312: Red Guard 1110353
-  Sunken Valley Clan 2000326: Ashina Soldier 1110285
-  Fencer 2000380: Ashina Soldier 1110241
-  Mibu Villager 2000407: Ashina Soldier 1110243
-  Seeker 2000450: Red Guard 1110365
-  Seeker 2000451: Ashina Soldier 1110248
-  Nightjar Ninja 2000402: Red Guard 1110351
-  Sunken Valley Clan 2000330: Ashina Soldier 1110236
-  Mibu Villager 2000408: Hound 1110407
-  Taro Troop 2000673: Hound 1110409
-  Mibu Villager 2000410: Taro Troop 1110433
-  Mibu Villager 2000409: Hound 1110408
-  Nightjar Ninja 2000401: Ashina Soldier 1110211
-  Infested Seeker 2000601: Valley Monkey 1700367
-  Sunken Valley Clan 2000331: Gecko 1700414
-  Sunken Valley Clan 2000332: Gecko 1700224
-  Cricket 2000285: Gecko 1700228
-  Cricket 2000283: Gecko 1700412
-  Seeker 2000304: Gecko 1700229
-  Valley Monkey 2000808: Gecko 1700226
-  Valley Monkey 2000805: Gecko 1700413
-  Valley Monkey 2000812: Rock Diver 1700432
-  Valley Monkey 2000814: Gecko 1700415
-  Valley Monkey 2000807: Gecko 1700225
-  Seeker 2000305: Gecko 1700230
-  Valley Monkey 2000811: Gecko 1700227
-  Cricket 2000282: Rock Diver 1700433
-  Folding Screen Monkey (Hearing) 2000802: Sunken Valley Clan 1700480
-  Seeker 2000306: Rock Diver 1700431
-  Seeker 2000303: Sunken Valley Clan 1700221
-  Cricket 2000287: Sunken Valley Clan 1700250
-  Cricket 2000289: Sunken Valley Clan 1700208
-  Cricket 2000284: Sunken Valley Clan 1700252
-  Cricket 2000292: Sunken Valley Clan 1700220
-  Cricket 2000281: Sunken Valley Clan 1700222
-  Seeker 2000453: Sunken Valley Clan 1700251
-  Cricket 2000290: Nightjar Ninja 1700358
-  Cricket 2000212: Nightjar Ninja 1700357
-  Seeker 2000337: Valley Monkey 1700334
-  Cricket 2000291: Valley Monkey 1700318
-  Seeker 2000336: Valley Monkey 1700325
-  Cricket 2000286: Valley Monkey 1700333
-  Seeker 2000339: Valley Monkey 1700328
-  Cricket 2000288: Valley Monkey 1700324
-  Nightjar Ninja 2000403: Valley Monkey 1700314
-  Seeker 2000338: Valley Monkey 1700317
-  Seeker 2000340: Valley Monkey 1700311
-  Seeker 2000308: Valley Monkey 1700320
-  Cricket 2000210: Nightjar Ninja 1700356
-  Mibu Villager 2000420: Valley Monkey 1700321
-  Cricket 2000211: Valley Monkey 1700322
-  Seeker 2000353: Valley Monkey 1700327
-  Mibu Villager 2000424: Valley Monkey 1700312
-  Seeker 2000352: Valley Monkey 1700316
-  Seeker 2000350: Valley Monkey 1700319
-  Mibu Villager 2000419: Valley Monkey 1700323
-  Cricket 2000280: Valley Monkey 1700310
-  Cricket 2000215: Valley Monkey 1700326
-  Seeker 2000309: Valley Monkey 1700313
-  Nightjar Ninja 2000405: Valley Monkey 1700315
-  Bandit 2000425: Valley Monkey 1700329
-  Cricket 2000217: Valley Monkey 1700353
-  Cricket 2000299: Valley Monkey 1700352
-  Seeker 2000351: Valley Monkey 1700355
-  Mibu Villager 2000422: Valley Monkey 1700351
-  Cricket 2000216: Valley Monkey 1700354
-  Mibu Villager 2000421: Valley Monkey 1700338
-  Cricket 2000297: Valley Monkey 1700339
-  Cricket 2000294: Valley Monkey 1700305
-  Bandit 2000454: Valley Monkey 1700366
-  Spear Adept 2000650: Valley Monkey 1700365
-  Cricket 2000298: Valley Monkey 1700364
-  Seeker 2000349: Valley Monkey 1700360
-  Nightjar Ninja 2000406: Valley Monkey 1700362
-  Sunken Valley Clan 2000333: Valley Monkey 1700340
-  Cricket 2000293: Valley Monkey 1700350
-  Mibu Villager 2000423: Valley Monkey 1700361
-  Nightjar Ninja 2000404: Valley Monkey 1700363
-  Sunken Valley Clan 2000334: Gecko 1700233
-  Cricket 2000295: Valley Monkey 1700359
-  Cricket 2000214: Gecko 1700232
-  Cricket 2000296: Gecko 1700231
-  Cricket 2000213: Rock Diver 1700430
-  Bandit 2000390: Valley Monkey 1700301
-  Bandit 2000391: Gecko 1700411
-  Assassin (Senpou) 2000375: Gecko 1700410
-  Assassin (Senpou) 2000253: Gecko 1700393
-  Assassin (Senpou) 2000379: Centipede 1700427
-  Spear Adept 2000651: Gecko 1700390
-  Sunken Valley Clan 2000335: Centipede 1700428
-  Assassin (Senpou) 2000376: Gecko 1700391
-  Mibu Villager 2000578: Centipede 1700426
-  Nightjar Ninja 2000387: Mibu Villager 1700679
-  Mibu Villager 2000577: Gecko 1700405
-  Mibu Villager 2000575: Gecko 1700403
-  Nightjar Ninja 2000388: Fencer 1700689
-  Sunken Valley Clan 2000327: Fencer 1700688
-  Mibu Villager 2000573: Gecko 1700407
-  Mibu Villager 2000576: Gecko 1700409
-  Valley Monkey 2000512: Gecko 1700400
-  Taro Troop 2000671: Gecko 1700406
-  Sunken Valley Clan 2000328: Gecko 1700408
-  Nightjar Ninja 2000389: Gecko 1700399
-  Sunken Valley Clan 2000329: Gecko 1700404
-  Valley Monkey 2000367: Mibu Villager 1700678
-  Fencer 2000382: Sunken Valley Clan 1700203
-  Mibu Villager 2000417: Sunken Valley Clan 1700202
-  Valley Monkey 2000371: Old Maid (Sunken Valley) 1700460
-  Mibu Villager 2000416: Sunken Valley Clan 1700212
-  Mibu Villager 2000413: Sunken Valley Clan 1700204
-  Centipede 2000218: Sunken Valley Clan 1700211
-  Valley Monkey 2000369: Sunken Valley Clan 1700214
-  Centipede 2000261: Sunken Valley Clan 1700213
-  Fencer 2000384: Sunken Valley Clan 1700206
-  Mibu Villager 2000414: Sunken Valley Clan 1700205
-  Centipede 2000263: Sunken Valley Clan 1700215
-  Valley Monkey 2000366: Sunken Valley Clan 1700218
-  Fencer 2000383: Mibu Villager 1700683
-  Centipede 2000219: Nightjar Ninja 1700692
-  Mibu Villager 2000418: Sunken Valley Clan 1700217
-  Valley Monkey 2000370: Nightjar Ninja 1700691
-  Centipede 2000262: Mibu Villager 1700684
-  Mibu Villager 2000415: Mibu Villager 1700682
-  Valley Monkey 2000368: Nightjar Ninja 1700693
-  Valley Monkey 2000364: Mibu Villager 1700680
-  Centipede 2000221: Sunken Valley Clan 1700470
-  Valley Monkey 2000363: Mibu Villager 1700681
-  Mibu Villager 2000412: Gecko 1700423
-  Fencer 2000381: Sunken Valley Clan 1700223
-  Valley Monkey 2000360: Sunken Valley Clan 1700216
-  Valley Monkey 2000809: Mibu Villager 1700687
-  Valley Monkey 2000806: Mibu Villager 1700686
-  Folding Screen Monkey (Seeing) 2000801: Nightjar Ninja 1700690  # Also manual swap, these two with next two
-  Folding Screen Monkey (Speaking) 2000803: Sunken Valley Clan 1700219
-  Valley Monkey 2000813: Mibu Villager 1700260
-  Valley Monkey 2000365: Mibu Villager 1700685
-  Folding Screen Monkey (Invisible) 2000804: Gecko 1700416  # Swap with hearing
-  Mibu Villager 2000411: Sunken Valley Clan 1700471
-  Gecko 2000202: Sunken Valley Clan 1700210
-  Gecko 2000203: Fencer 1700662
-  Valley Monkey 2000361: Fencer 1700661
-  Gecko 2000233: Valley Monkey 1110451
-  Centipede 2000264: Mibu Villager 1700672
-  Valley Monkey 2000510: Mibu Villager 1700674
-  Gecko 2000234: Sunken Valley Clan 1700209
-  Hound 2000314: Fencer 1700660
-  Hound 2000318: Mibu Villager 1700670
-  Hound 2000317: Mibu Villager 1700677
-  Hound 2000316: Mibu Villager 1700676
-  Hound 2000315: Mibu Villager 1700673
-  Hound 2000313: Mibu Villager 1700671
-  Seeker 2000354: Mibu Villager 1700675
-  Seeker 2000355: Valley Monkey 1110452
-  Seeker 2000341: Valley Monkey 1110450
-  Gecko 2000231: Sentry 1110670
-  Seeker 2000357: Ashina Soldier 1110273
-  Centipede 2000223: Sunken Valley Clan 1110600
-  Centipede 2000226: Ashina Soldier 1110272
-  Centipede 2000220: Ashina Soldier 1110274
-  Gecko 2000232: Sunken Valley Clan 1110601
-  Seeker 2000358: Ashina Soldier 1110271
-  Centipede 2000227: Ashina Soldier 1110226
-  Assassin (Senpou) 2000378: Ashina Soldier 1110686
-  Seeker 2000356: Ashina Soldier 1110227
-  Centipede 2000265: Shinobi Hunter 1110462
-  Centipede 2000225: Nightjar Ninja 1110565
-  Assassin (Senpou) 2000455: Nightjar Ninja 1110564
-  Gecko 2000229: Nightjar Ninja 1110563
-  Gecko 2000230: Nightjar Ninja 1110530
-  Gecko 2000228: Fencer 1110500
-  Hound 2000323: Fencer 1110514
-  Hound 2000319: Fencer 1110513
-  Hound 2000325: Fencer 1110502
-  Hound 2000320: Ashina Soldier 1110295
-  Hound 2000322: Fencer 1110508
-  Hound 2000324: Old Maid 1110630
-  Centipede 2000222: Fencer 1110503
-  Hound 2000321: Mibu Villager 1500378
-  Assassin (Senpou) 2000456: Mibu Villager 1500379
-  Centipede 2000224: Taro Troop (Mibu) 1500484
-  Seeker 2000311: Mibu Villager 1500381
-  Assassin (Senpou) 2000465: Mibu Villager 1500376
-  Seeker 2000344: Mibu Villager 1500380
-  Seeker 2000343: Mibu Villager 1500377
-  Infested Seeker (Parasite) 2000646: Mibu Villager 1500368
-  Seeker 2000342: Fencer 1500616
-  Seeker 2000301: Snake Eyes 1500638
-  Assassin (Senpou) 2000377: Mibu Villager 1500338
-  Seeker 2000307: Mibu Villager 1500339
-  Seeker 2000302: Mibu Villager 1500337
-  Taro Troop 2000672: Gamefowl 1500444
-  Seeker 2000359: Mibu Villager 1500371
-  Assassin (Senpou) 2000241: Mibu Villager 1500309
-  Spear Adept 2000467: Gamefowl 1500442
-  Seeker 2000348: Taro Troop (Mibu) 1500485
-  Seeker 2000345: Mibu Villager 1500276
-  Taro Troop 2000670: Mibu Villager 1500274
-  Infested Seeker 2000631: Mibu Villager 1500268
-  Valley Monkey 2000374: Mibu Villager 1500347
-  Fencer 2000385: Taro Troop (Mibu) 1500483
-  Fencer 2000386: Mibu Villager 1500275
-  Seeker 2000460: Sunken Valley Clan 1500622
-  Valley Monkey 2000372: Mibu Villager 1500278
-  Valley Monkey 2000373: Snake Eyes 1500637
-  Cricket 2000635: Mibu Villager 1500330
-  Cricket 2000634: Mibu Villager 1500277
-  Cricket 2000636: Nightjar Ninja 1500604
-  Infested Seeker 2000632: Mibu Villager 1500273
-  Seeker 2000346: Mibu Villager 1500360
-  Seeker 2000347: Mibu Villager 1500340
-  Infested Seeker 2000630: Mibu Villager 1500282
-  Spear Adept 2000468: Mibu Villager 1500372
-  Spear Adept 2000466: Mibu Villager 1500341
-  Seeker 2000458: Mibu Villager 1500331
-  Infested Seeker (Parasite) 2000649: Nightjar Ninja 1500607
-  Infested Seeker (Parasite) 2000647: Nightjar Ninja 1500605
-  Infested Seeker (Parasite) 2000648: Mibu Villager 1500356
-  Nightjar Ninja 1500601: Mibu Villager 1500271
-  Bandit 1500400: Sunken Valley Clan 1500624
-  Bandit 1500402: Mibu Villager 1500344
-  Valley Monkey 1500640: Mibu Villager 1500342
-  Valley Monkey 1500642: Nightjar Ninja 1500606
-  Valley Monkey 1500643: Mibu Villager 1500265
-  Valley Monkey 1500644: Taro Troop (Mibu) 1500482
-  Nightjar Ninja 1500600: Mibu Villager 1500267
-  Gamefowl 1500440: Sunken Valley Clan 1500623
-  Valley Monkey 1500641: Mibu Villager 1500266
-  Bandit 1500401: Mibu Villager 1500335
-  Bandit 1500404: Mibu Villager 1500359
-  Gamefowl 1500441: Mibu Villager 1500361
-  Bandit 1500403: Mibu Villager 1500357
-  Bandit 1500406: Mibu Villager 1500328
-  Gamefowl 1500453: Mibu Villager 1500334
-  Bandit 1500412: Mibu Villager 1500336
-  Bandit 1500411: Taro Troop (Mibu) 1500481
-  Bandit 1500410: Taro Troop (Mibu) 1500480
-  Bandit 1500405: Mibu Villager 1500264
-  Gamefowl 1500443: Mibu Villager 1500261
-  Gamefowl 1500450: Mibu Villager 1500333
-  Gamefowl 1500451: Mibu Villager 1500329
-  Hound 1500513: Mibu Villager 1500332
-  Bandit 1500423: Mibu Villager 1500354
-  Hound 1500516: Gamefowl 1500449
-  Bandit 1500425: Mibu Villager 1500290
-  Hound 1500514: Mibu Villager 1500350
-  Hound 1500517: Mibu Villager 1500327
-  Bandit 1500424: Mibu Villager 1500345
-  Valley Monkey 1500647: Mibu Villager 1500382
-  Valley Monkey 1500646: Mibu Villager 1500260
-  Bandit 1500422: Mibu Villager 1500304
-  Valley Monkey 1500645: Mibu Villager 1500346
-  Hound 1500515: Mibu Villager 1500306
-  Bandit 1500414: Mibu Villager 1500311
-  Bandit 1500437: Mibu Villager 1500363
-  Bandit 1500436: Mibu Villager 1500370
-  Nightjar Ninja 1500608: Mibu Villager 1500375
-  Valley Monkey 1500648: Mibu Villager 1500369
-  Sunken Valley Clan 1500626: Mibu Villager 1500366
-  Sunken Valley Clan 1500627: Mibu Villager 1500374
-  Nightjar Ninja 1500610: Mibu Villager 1500367
-  Nightjar Ninja 1500609: Mibu Villager 1500302
-  Hound 1500511: Mibu Villager 1500300
-  Bandit 1500431: Mibu Villager 1500301
-  Bandit 1500439: Sunken Valley Clan 1500621
-  Bandit 1500415: Nightjar Ninja 1500602
-  Bandit 1500438: Sunken Valley Clan 1500620
-  Hound 1500510: Nightjar Ninja 1500603
-  Bandit 1500432: Hound 1500522
-  Bandit 1500417: Hound 1500520
-  Bandit 1500433: Hound 1500519
-  Bandit 1500421: Lone Shadow 1500495
-  Bandit 1500419: Snake Eyes 1500636
-  Bandit 1500435: Hound 1500518
-  Bandit 1500418: Hound 1500521
-  Bandit 1500416: Hound 1500512
-  Bandit 1500434: Bandit 1500420
-  Sunken Valley Clan 1500628: Sunken Valley Clan 1500628
-  Bandit 1500420: Bandit 1500434
-  Hound 1500512: Bandit 1500416
-  Hound 1500521: Bandit 1500418
-  Hound 1500518: Bandit 1500435
-  Snake Eyes 1500636: Bandit 1500419
-  Lone Shadow 1500495: Bandit 1500421
-  Hound 1500519: Bandit 1500433
-  Hound 1500520: Bandit 1500417
-  Hound 1500522: Bandit 1500432
-  Nightjar Ninja 1500603: Hound 1500510
-  Sunken Valley Clan 1500620: Bandit 1500438
-  Nightjar Ninja 1500602: Bandit 1500415
-  Sunken Valley Clan 1500621: Bandit 1500439
-  Mibu Villager 1500301: Bandit 1500431
-  Mibu Villager 1500300: Hound 1500511
-  Mibu Villager 1500302: Nightjar Ninja 1500609
-  Mibu Villager 1500367: Nightjar Ninja 1500610
-  Mibu Villager 1500374: Sunken Valley Clan 1500627
-  Mibu Villager 1500366: Sunken Valley Clan 1500626
-  Mibu Villager 1500369: Valley Monkey 1500648
-  Mibu Villager 1500375: Nightjar Ninja 1500608
-  Mibu Villager 1500370: Bandit 1500436
-  Mibu Villager 1500363: Bandit 1500437
-  Mibu Villager 1500311: Bandit 1500414
-  Mibu Villager 1500306: Hound 1500515
-  Mibu Villager 1500346: Valley Monkey 1500645
-  Mibu Villager 1500304: Bandit 1500422
-  Mibu Villager 1500260: Valley Monkey 1500646
-  Mibu Villager 1500382: Valley Monkey 1500647
-  Mibu Villager 1500345: Bandit 1500424
-  Mibu Villager 1500327: Hound 1500517
-  Mibu Villager 1500350: Hound 1500514
-  Mibu Villager 1500290: Bandit 1500425
-  Gamefowl 1500449: Hound 1500516
-  Mibu Villager 1500354: Bandit 1500423
-  Mibu Villager 1500332: Hound 1500513
-  Mibu Villager 1500329: Gamefowl 1500451
-  Mibu Villager 1500333: Gamefowl 1500450
-  Mibu Villager 1500261: Gamefowl 1500443
-  Mibu Villager 1500264: Bandit 1500405
-  Taro Troop (Mibu) 1500480: Bandit 1500410
-  Taro Troop (Mibu) 1500481: Bandit 1500411
-  Mibu Villager 1500336: Bandit 1500412
-  Mibu Villager 1500334: Gamefowl 1500453
-  Mibu Villager 1500328: Bandit 1500406
-  Mibu Villager 1500357: Bandit 1500403
-  Mibu Villager 1500361: Gamefowl 1500441
-  Mibu Villager 1500359: Bandit 1500404
-  Mibu Villager 1500335: Bandit 1500401
-  Mibu Villager 1500266: Valley Monkey 1500641
-  Sunken Valley Clan 1500623: Gamefowl 1500440
-  Mibu Villager 1500267: Nightjar Ninja 1500600
-  Taro Troop (Mibu) 1500482: Valley Monkey 1500644
-  Mibu Villager 1500265: Valley Monkey 1500643
-  Nightjar Ninja 1500606: Valley Monkey 1500642
-  Mibu Villager 1500342: Valley Monkey 1500640
-  Mibu Villager 1500344: Bandit 1500402
-  Sunken Valley Clan 1500624: Bandit 1500400
-  Mibu Villager 1500271: Nightjar Ninja 1500601
-  Mibu Villager 1500356: Infested Seeker (Parasite) 2000648
-  Nightjar Ninja 1500605: Infested Seeker (Parasite) 2000647
-  Nightjar Ninja 1500607: Infested Seeker (Parasite) 2000649
-  Mibu Villager 1500331: Seeker 2000458
-  Mibu Villager 1500341: Spear Adept 2000466
-  Mibu Villager 1500372: Spear Adept 2000468
-  Mibu Villager 1500282: Infested Seeker 2000630
-  Mibu Villager 1500340: Seeker 2000347
-  Mibu Villager 1500360: Seeker 2000346
-  Mibu Villager 1500273: Infested Seeker 2000632
-  Nightjar Ninja 1500604: Cricket 2000636
-  Mibu Villager 1500277: Cricket 2000634
-  Mibu Villager 1500330: Cricket 2000635
-  Snake Eyes 1500637: Valley Monkey 2000373
-  Mibu Villager 1500278: Valley Monkey 2000372
-  Sunken Valley Clan 1500622: Seeker 2000460
-  Mibu Villager 1500275: Fencer 2000386
-  Taro Troop (Mibu) 1500483: Fencer 2000385
-  Mibu Villager 1500347: Valley Monkey 2000374
-  Mibu Villager 1500268: Infested Seeker 2000631
-  Mibu Villager 1500274: Taro Troop 2000670
-  Mibu Villager 1500276: Seeker 2000345
-  Taro Troop (Mibu) 1500485: Seeker 2000348
-  Gamefowl 1500442: Spear Adept 2000467
-  Mibu Villager 1500309: Assassin (Senpou) 2000241
-  Mibu Villager 1500371: Seeker 2000359
-  Gamefowl 1500444: Taro Troop 2000672
-  Mibu Villager 1500337: Seeker 2000302
-  Mibu Villager 1500339: Seeker 2000307
-  Mibu Villager 1500338: Assassin (Senpou) 2000377
-  Snake Eyes 1500638: Seeker 2000301
-  Fencer 1500616: Seeker 2000342
-  Mibu Villager 1500368: Infested Seeker (Parasite) 2000646
-  Mibu Villager 1500377: Seeker 2000343
-  Mibu Villager 1500380: Seeker 2000344
-  Mibu Villager 1500376: Assassin (Senpou) 2000465
-  Mibu Villager 1500381: Seeker 2000311
-  Taro Troop (Mibu) 1500484: Centipede 2000224
-  Mibu Villager 1500379: Assassin (Senpou) 2000456
-  Mibu Villager 1500378: Hound 2000321
-  Fencer 1110503: Centipede 2000222
-  Old Maid 1110630: Hound 2000324
-  Fencer 1110508: Hound 2000322
-  Ashina Soldier 1110295: Hound 2000320
-  Fencer 1110502: Hound 2000325
-  Fencer 1110513: Hound 2000319
-  Fencer 1110514: Hound 2000323
-  Fencer 1110500: Gecko 2000228
-  Nightjar Ninja 1110530: Gecko 2000230
-  Nightjar Ninja 1110563: Gecko 2000229
-  Nightjar Ninja 1110564: Assassin (Senpou) 2000455
-  Nightjar Ninja 1110565: Centipede 2000225
-  Shinobi Hunter 1110462: Centipede 2000265
-  Ashina Soldier 1110227: Seeker 2000356
-  Ashina Soldier 1110686: Assassin (Senpou) 2000378
-  Ashina Soldier 1110226: Centipede 2000227
-  Ashina Soldier 1110271: Seeker 2000358
-  Sunken Valley Clan 1110601: Gecko 2000232
-  Ashina Soldier 1110274: Centipede 2000220
-  Ashina Soldier 1110272: Centipede 2000226
-  Sunken Valley Clan 1110600: Centipede 2000223
-  Ashina Soldier 1110273: Seeker 2000357
-  Sentry 1110670: Gecko 2000231
-  Valley Monkey 1110450: Seeker 2000341
-  Valley Monkey 1110452: Seeker 2000355
-  Mibu Villager 1700675: Seeker 2000354
-  Mibu Villager 1700671: Hound 2000313
-  Mibu Villager 1700673: Hound 2000315
-  Mibu Villager 1700676: Hound 2000316
-  Mibu Villager 1700677: Hound 2000317
-  Mibu Villager 1700670: Hound 2000318
-  Fencer 1700660: Hound 2000314
-  Sunken Valley Clan 1700209: Gecko 2000234
-  Mibu Villager 1700674: Valley Monkey 2000510
-  Mibu Villager 1700672: Centipede 2000264
-  Valley Monkey 1110451: Gecko 2000233
-  Fencer 1700661: Valley Monkey 2000361
-  Fencer 1700662: Gecko 2000203
-  Sunken Valley Clan 1700210: Gecko 2000202
-  Sunken Valley Clan 1700471: Mibu Villager 2000411
-  Sunken Valley Clan 1700480: Folding Screen Monkey (Invisible) 2000804
-  Nightjar Ninja 1700690: Valley Monkey 2000365
-  Sunken Valley Clan 1700219: Valley Monkey 2000813
-  Mibu Villager 1700685: Folding Screen Monkey (Speaking) 2000803
-  Mibu Villager 1700260: Folding Screen Monkey (Seeing) 2000801
-  Mibu Villager 1700686: Valley Monkey 2000806
-  Mibu Villager 1700687: Valley Monkey 2000809
-  Sunken Valley Clan 1700216: Valley Monkey 2000360
-  Sunken Valley Clan 1700223: Fencer 2000381
-  Gecko 1700423: Mibu Villager 2000412
-  Mibu Villager 1700681: Valley Monkey 2000363
-  Sunken Valley Clan 1700470: Centipede 2000221
-  Mibu Villager 1700680: Valley Monkey 2000364
-  Nightjar Ninja 1700693: Valley Monkey 2000368
-  Mibu Villager 1700682: Mibu Villager 2000415
-  Mibu Villager 1700684: Centipede 2000262
-  Nightjar Ninja 1700691: Valley Monkey 2000370
-  Sunken Valley Clan 1700217: Mibu Villager 2000418
-  Nightjar Ninja 1700692: Centipede 2000219
-  Mibu Villager 1700683: Fencer 2000383
-  Sunken Valley Clan 1700218: Valley Monkey 2000366
-  Sunken Valley Clan 1700215: Centipede 2000263
-  Sunken Valley Clan 1700205: Mibu Villager 2000414
-  Sunken Valley Clan 1700206: Fencer 2000384
-  Sunken Valley Clan 1700213: Centipede 2000261
-  Sunken Valley Clan 1700214: Valley Monkey 2000369
-  Sunken Valley Clan 1700211: Centipede 2000218
-  Sunken Valley Clan 1700204: Mibu Villager 2000413
-  Sunken Valley Clan 1700212: Mibu Villager 2000416
-  Old Maid (Sunken Valley) 1700460: Valley Monkey 2000371
-  Sunken Valley Clan 1700202: Mibu Villager 2000417
-  Sunken Valley Clan 1700203: Fencer 2000382
-  Mibu Villager 1700678: Valley Monkey 2000367
-  Gecko 1700404: Sunken Valley Clan 2000329
-  Gecko 1700399: Nightjar Ninja 2000389
-  Gecko 1700408: Sunken Valley Clan 2000328
-  Gecko 1700406: Taro Troop 2000671
-  Gecko 1700400: Valley Monkey 2000512
-  Gecko 1700409: Mibu Villager 2000576
-  Gecko 1700407: Mibu Villager 2000573
-  Fencer 1700688: Sunken Valley Clan 2000327
-  Fencer 1700689: Nightjar Ninja 2000388
-  Gecko 1700403: Mibu Villager 2000575
-  Gecko 1700405: Mibu Villager 2000577
-  Mibu Villager 1700679: Nightjar Ninja 2000387
-  Centipede 1700426: Mibu Villager 2000578
-  Gecko 1700391: Assassin (Senpou) 2000376
-  Centipede 1700428: Sunken Valley Clan 2000335
-  Gecko 1700390: Spear Adept 2000651
-  Centipede 1700427: Assassin (Senpou) 2000379
-  Gecko 1700393: Assassin (Senpou) 2000253
-  Gecko 1700410: Assassin (Senpou) 2000375
-  Gecko 1700411: Bandit 2000391
-  Valley Monkey 1700301: Bandit 2000390
-  Rock Diver 1700430: Cricket 2000213
-  Gecko 1700231: Cricket 2000296
-  Gecko 1700232: Cricket 2000214
-  Valley Monkey 1700359: Cricket 2000295
-  Gecko 1700233: Sunken Valley Clan 2000334
-  Valley Monkey 1700363: Nightjar Ninja 2000404
-  Valley Monkey 1700361: Mibu Villager 2000423
-  Valley Monkey 1700350: Cricket 2000293
-  Valley Monkey 1700340: Sunken Valley Clan 2000333
-  Valley Monkey 1700362: Nightjar Ninja 2000406
-  Valley Monkey 1700360: Seeker 2000349
-  Valley Monkey 1700364: Cricket 2000298
-  Valley Monkey 1700365: Spear Adept 2000650
-  Valley Monkey 1700366: Bandit 2000454
-  Valley Monkey 1700305: Cricket 2000294
-  Valley Monkey 1700339: Cricket 2000297
-  Valley Monkey 1700338: Mibu Villager 2000421
-  Valley Monkey 1700354: Cricket 2000216
-  Valley Monkey 1700351: Mibu Villager 2000422
-  Valley Monkey 1700355: Seeker 2000351
-  Valley Monkey 1700352: Cricket 2000299
-  Valley Monkey 1700353: Cricket 2000217
-  Valley Monkey 1700329: Bandit 2000425
-  Valley Monkey 1700315: Nightjar Ninja 2000405
-  Valley Monkey 1700313: Seeker 2000309
-  Valley Monkey 1700326: Cricket 2000215
-  Valley Monkey 1700310: Cricket 2000280
-  Valley Monkey 1700323: Mibu Villager 2000419
-  Valley Monkey 1700319: Seeker 2000350
-  Valley Monkey 1700316: Seeker 2000352
-  Valley Monkey 1700312: Mibu Villager 2000424
-  Valley Monkey 1700327: Seeker 2000353
-  Valley Monkey 1700322: Cricket 2000211
-  Valley Monkey 1700321: Mibu Villager 2000420
-  Nightjar Ninja 1700356: Cricket 2000210
-  Valley Monkey 1700320: Seeker 2000308
-  Valley Monkey 1700311: Seeker 2000340
-  Valley Monkey 1700317: Seeker 2000338
-  Valley Monkey 1700314: Nightjar Ninja 2000403
-  Valley Monkey 1700324: Cricket 2000288
-  Valley Monkey 1700328: Seeker 2000339
-  Valley Monkey 1700333: Cricket 2000286
-  Valley Monkey 1700325: Seeker 2000336
-  Valley Monkey 1700318: Cricket 2000291
-  Valley Monkey 1700334: Seeker 2000337
-  Nightjar Ninja 1700357: Cricket 2000212
-  Nightjar Ninja 1700358: Cricket 2000290
-  Sunken Valley Clan 1700251: Seeker 2000453
-  Sunken Valley Clan 1700222: Cricket 2000281
-  Sunken Valley Clan 1700220: Cricket 2000292
-  Sunken Valley Clan 1700252: Cricket 2000284
-  Sunken Valley Clan 1700208: Cricket 2000289
-  Sunken Valley Clan 1700250: Cricket 2000287
-  Sunken Valley Clan 1700221: Seeker 2000303
-  Rock Diver 1700431: Seeker 2000306
-  Gecko 1700416: Folding Screen Monkey (Hearing) 2000802
-  Rock Diver 1700433: Cricket 2000282
-  Gecko 1700227: Valley Monkey 2000811
-  Gecko 1700230: Seeker 2000305
-  Gecko 1700225: Valley Monkey 2000807
-  Gecko 1700415: Valley Monkey 2000814
-  Rock Diver 1700432: Valley Monkey 2000812
-  Gecko 1700413: Valley Monkey 2000805
-  Gecko 1700226: Valley Monkey 2000808
-  Gecko 1700229: Seeker 2000304
-  Gecko 1700412: Cricket 2000283
-  Gecko 1700228: Cricket 2000285
-  Gecko 1700224: Sunken Valley Clan 2000332
-  Gecko 1700414: Sunken Valley Clan 2000331
-  Valley Monkey 1700367: Infested Seeker 2000601
-  Ashina Soldier 1110211: Nightjar Ninja 2000401
-  Hound 1110408: Mibu Villager 2000409
-  Taro Troop 1110433: Mibu Villager 2000410
-  Hound 1110409: Taro Troop 2000673
-  Hound 1110407: Mibu Villager 2000408
-  Ashina Soldier 1110236: Sunken Valley Clan 2000330
-  Red Guard 1110351: Nightjar Ninja 2000402
-  Ashina Soldier 1110248: Seeker 2000451
-  Red Guard 1110365: Seeker 2000450
-  Ashina Soldier 1110243: Mibu Villager 2000407
-  Ashina Soldier 1110241: Fencer 2000380
-  Ashina Soldier 1110285: Sunken Valley Clan 2000326
-  Red Guard 1110353: Seeker 2000312
-  Ashina Soldier 1110242: Gecko 1300350
-  Ashina Soldier 1110244: Gecko 1300351
-  Ashina Soldier 1110246: Test Subject 1300285
-  Assassin (Interior Ministry) 1110642: Test Subject 1300291
-  Assassin (Interior Ministry) 1110643: Cricket 1300216
-  Assassin (Interior Ministry) 1110644: Cricket 1300225
-  Samurai General 1110412: Cricket 1300226
-  Ashina Soldier 1110287: Cricket 1300222
-  Lone Shadow 1110312: Cricket 1300224
-  Ashina Soldier 1110240: Test Subject 1300283
-  Samurai General 1110413: Ashina Soldier 1300304
-  Gecko 1110587: Ashina Soldier 1300302
-  Hound 1110333: Ashina Soldier 1300300
-  Hound 1110331: Ashina Soldier 1300303
-  Gecko 1110586: Ashina Soldier 1300301
-  Lone Shadow 1110321: Cricket 1300240
-  Lone Shadow 1110323: Cricket 1300239
-  Lone Shadow 1110322: Cricket 1300223
-  Lone Shadow 1110317: Test Subject 1300282
-  Hound 1110332: Test Subject 1300281
-  Ashina Soldier 1110296: Cricket 1300215
-  Red Guard 1110372: Cricket 1300218
-  Ashina Soldier 1110298: Cricket 1300211
-  Red Guard 1110381: Cricket 1300219
-  Red Guard 1110373: Cricket 1300220
-  Lone Shadow 1110300: Cricket 1300236
-  Ashina Soldier 1110297: Cricket 1300234
-  Gecko 1110585: Cricket 1300228
-  Gecko 1110588: Cricket 1300233
-  Assassin (Interior Ministry) 1110654: Cricket 1300229
-  Lone Shadow 1110302: Cricket 1300230
-  Lone Shadow 1110319: Cricket 1300235
-  Lone Shadow 1110318: Cricket 1300238
-  Hound 1110330: Cricket 1300217
-  Hound 1110334: Test Subject 1300284
-  Lone Shadow 1110303: Cricket 1300212
-  Lone Shadow 1110304: Test Subject 1300280
-  Assassin (Interior Ministry) 1110649: Ashina Soldier 1120355
-  Assassin (Interior Ministry) 1110653: Ashina Soldier 1120356
-  Assassin (Interior Ministry) 1110648: Hound 1120461
-  Nightjar Ninja 1110534: Hound 1120460
-  Shinobi Hunter 1110460: Ashina Soldier 1120351
-  Nightjar Ninja 1110571: Ashina Soldier 1120350
-  Nightjar Ninja 1110570: Taro Troop 1120451
-  Nightjar Ninja 1110569: Sentry 1120430
-  Ashina Soldier 1110282: Ashina Soldier 1120353
-  Nightjar Ninja 1110562: Ashina Soldier 1120357
-  Ashina Soldier 1110283: Taro Troop 1120450
-  Nightjar Ninja 1110560: Ashina Soldier 1120352
-  Nightjar Ninja 1110561: Ashina Soldier 1120354
-  Hound 1110336: Assassin (Senpou) 1120425
-  Hound 1110335: Assassin (Senpou) 1120424
-  Hound 1110337: Assassin (Senpou) 1120426
-  Palace Noble 2500200: Nightjar Ninja 1110533
-  Palace Noble 2500218: Nightjar Ninja 1110532
-  Palace Noble 2500216: Fencer 1110501
+  Fencer 1110501: Old Dragon 2500821
+  Nightjar Ninja 1110532: Old Dragon 2500822
+  Nightjar Ninja 1110533: Old Dragon 2500815
+  Assassin (Senpou) 1120426: Old Dragon 2500823
+  Assassin (Senpou) 1120424: Old Dragon 2500817
+  Assassin (Senpou) 1120425: Old Dragon 2500816
+  Ashina Soldier 1120354: Old Dragon 2500811
+  Ashina Soldier 1120352: Old Dragon 2500819
+  Taro Troop 1120450: Old Dragon 2500825
+  Ashina Soldier 1120357: Old Dragon 2500818
+  Ashina Soldier 1120353: Old Dragon 2500820
+  Sentry 1120430: Old Dragon 2500813
+  Taro Troop 1120451: Old Dragon 2500814
+  Ashina Soldier 1120350: Old Dragon 2500824
+  Ashina Soldier 1120351: Palace Noble 2500216
+  Hound 1120460: Palace Noble 2500218
+  Hound 1120461: Palace Noble 2500200
+  Ashina Soldier 1120356: Hound 1110337
+  Ashina Soldier 1120355: Hound 1110335
+  Test Subject 1300280: Hound 1110336
+  Cricket 1300212: Nightjar Ninja 1110561
+  Test Subject 1300284: Nightjar Ninja 1110560
+  Cricket 1300217: Ashina Soldier 1110283
+  Cricket 1300238: Nightjar Ninja 1110562
+  Cricket 1300235: Ashina Soldier 1110282
+  Cricket 1300230: Nightjar Ninja 1110569
+  Cricket 1300229: Nightjar Ninja 1110570
+  Cricket 1300233: Nightjar Ninja 1110571
+  Cricket 1300228: Shinobi Hunter 1110460
+  Cricket 1300234: Nightjar Ninja 1110534
+  Cricket 1300236: Assassin (Interior Ministry) 1110648
+  Cricket 1300220: Assassin (Interior Ministry) 1110653
+  Cricket 1300219: Assassin (Interior Ministry) 1110649
+  Cricket 1300211: Lone Shadow 1110304
+  Cricket 1300218: Lone Shadow 1110303
+  Cricket 1300215: Hound 1110334
+  Test Subject 1300281: Hound 1110330
+  Test Subject 1300282: Lone Shadow 1110318
+  Cricket 1300223: Lone Shadow 1110319
+  Cricket 1300239: Lone Shadow 1110302
+  Cricket 1300240: Assassin (Interior Ministry) 1110654
+  Ashina Soldier 1300301: Gecko 1110588
+  Ashina Soldier 1300303: Gecko 1110585
+  Ashina Soldier 1300300: Ashina Soldier 1110297
+  Ashina Soldier 1300302: Lone Shadow 1110300
+  Ashina Soldier 1300304: Red Guard 1110373
+  Test Subject 1300283: Red Guard 1110381
+  Cricket 1300224: Ashina Soldier 1110298
+  Cricket 1300222: Red Guard 1110372
+  Cricket 1300226: Ashina Soldier 1110296
+  Cricket 1300225: Hound 1110332
+  Cricket 1300216: Lone Shadow 1110317
+  Test Subject 1300291: Lone Shadow 1110322
+  Test Subject 1300285: Lone Shadow 1110323
+  Gecko 1300351: Lone Shadow 1110321
+  Gecko 1300350: Gecko 1110586
+  Seeker 2000312: Hound 1110331
+  Sunken Valley Clan 2000326: Hound 1110333
+  Fencer 2000380: Gecko 1110587
+  Mibu Villager 2000407: Samurai General 1110413
+  Seeker 2000450: Ashina Soldier 1110240
+  Seeker 2000451: Lone Shadow 1110312
+  Nightjar Ninja 2000402: Ashina Soldier 1110287
+  Sunken Valley Clan 2000330: Samurai General 1110412
+  Mibu Villager 2000408: Assassin (Interior Ministry) 1110644
+  Taro Troop 2000673: Assassin (Interior Ministry) 1110643
+  Mibu Villager 2000410: Assassin (Interior Ministry) 1110642
+  Mibu Villager 2000409: Ashina Soldier 1110246
+  Nightjar Ninja 2000401: Ashina Soldier 1110244
+  Infested Seeker 2000601: Ashina Soldier 1110242
+  Sunken Valley Clan 2000331: Red Guard 1110353
+  Sunken Valley Clan 2000332: Ashina Soldier 1110285
+  Cricket 2000285: Ashina Soldier 1110241
+  Cricket 2000283: Ashina Soldier 1110243
+  Seeker 2000304: Red Guard 1110365
+  Valley Monkey 2000808: Ashina Soldier 1110248
+  Valley Monkey 2000805: Red Guard 1110351
+  Valley Monkey 2000812: Ashina Soldier 1110236
+  Valley Monkey 2000814: Hound 1110407
+  Valley Monkey 2000807: Hound 1110409
+  Seeker 2000305: Taro Troop 1110433
+  Valley Monkey 2000811: Hound 1110408
+  Cricket 2000282: Ashina Soldier 1110211
+  Folding Screen Monkey (Hearing) 2000802: Valley Monkey 1700367
+  Seeker 2000306: Gecko 1700414
+  Seeker 2000303: Gecko 1700224
+  Cricket 2000287: Gecko 1700228
+  Cricket 2000289: Gecko 1700412
+  Cricket 2000284: Gecko 1700229
+  Cricket 2000292: Gecko 1700226
+  Cricket 2000281: Gecko 1700413
+  Seeker 2000453: Rock Diver 1700432
+  Cricket 2000290: Gecko 1700415
+  Cricket 2000212: Gecko 1700225
+  Seeker 2000337: Gecko 1700230
+  Cricket 2000291: Gecko 1700227
+  Seeker 2000336: Rock Diver 1700433
+  Cricket 2000286: Gecko 1700416
+  Seeker 2000339: Rock Diver 1700431
+  Cricket 2000288: Sunken Valley Clan 1700221
+  Nightjar Ninja 2000403: Sunken Valley Clan 1700250
+  Seeker 2000338: Sunken Valley Clan 1700208
+  Seeker 2000340: Sunken Valley Clan 1700252
+  Seeker 2000308: Sunken Valley Clan 1700220
+  Cricket 2000210: Sunken Valley Clan 1700222
+  Mibu Villager 2000420: Sunken Valley Clan 1700251
+  Cricket 2000211: Nightjar Ninja 1700358
+  Seeker 2000353: Nightjar Ninja 1700357
+  Mibu Villager 2000424: Valley Monkey 1700334
+  Seeker 2000352: Valley Monkey 1700318
+  Seeker 2000350: Valley Monkey 1700325
+  Mibu Villager 2000419: Valley Monkey 1700333
+  Cricket 2000280: Valley Monkey 1700328
+  Cricket 2000215: Valley Monkey 1700324
+  Seeker 2000309: Valley Monkey 1700314
+  Nightjar Ninja 2000405: Valley Monkey 1700317
+  Bandit 2000425: Valley Monkey 1700311
+  Cricket 2000217: Valley Monkey 1700320
+  Cricket 2000299: Nightjar Ninja 1700356
+  Seeker 2000351: Valley Monkey 1700321
+  Mibu Villager 2000422: Valley Monkey 1700322
+  Cricket 2000216: Valley Monkey 1700327
+  Mibu Villager 2000421: Valley Monkey 1700312
+  Cricket 2000297: Valley Monkey 1700316
+  Cricket 2000294: Valley Monkey 1700319
+  Bandit 2000454: Valley Monkey 1700323
+  Spear Adept 2000650: Valley Monkey 1700310
+  Cricket 2000298: Valley Monkey 1700326
+  Seeker 2000349: Valley Monkey 1700313
+  Nightjar Ninja 2000406: Valley Monkey 1700315
+  Sunken Valley Clan 2000333: Valley Monkey 1700329
+  Cricket 2000293: Valley Monkey 1700353
+  Mibu Villager 2000423: Valley Monkey 1700352
+  Nightjar Ninja 2000404: Valley Monkey 1700355
+  Sunken Valley Clan 2000334: Valley Monkey 1700351
+  Cricket 2000295: Valley Monkey 1700354
+  Cricket 2000214: Valley Monkey 1700338
+  Cricket 2000296: Valley Monkey 1700339
+  Cricket 2000213: Valley Monkey 1700305
+  Bandit 2000390: Valley Monkey 1700366
+  Bandit 2000391: Valley Monkey 1700365
+  Assassin (Senpou) 2000375: Valley Monkey 1700364
+  Assassin (Senpou) 2000253: Valley Monkey 1700360
+  Assassin (Senpou) 2000379: Valley Monkey 1700362
+  Spear Adept 2000651: Valley Monkey 1700340
+  Sunken Valley Clan 2000335: Valley Monkey 1700350
+  Assassin (Senpou) 2000376: Valley Monkey 1700361
+  Mibu Villager 2000578: Valley Monkey 1700363
+  Nightjar Ninja 2000387: Gecko 1700233
+  Mibu Villager 2000577: Valley Monkey 1700359
+  Mibu Villager 2000575: Gecko 1700232
+  Nightjar Ninja 2000388: Gecko 1700231
+  Sunken Valley Clan 2000327: Rock Diver 1700430
+  Mibu Villager 2000573: Valley Monkey 1700301
+  Mibu Villager 2000576: Gecko 1700411
+  Valley Monkey 2000512: Gecko 1700410
+  Taro Troop 2000671: Gecko 1700393
+  Sunken Valley Clan 2000328: Centipede 1700427
+  Nightjar Ninja 2000389: Gecko 1700390
+  Sunken Valley Clan 2000329: Centipede 1700428
+  Valley Monkey 2000367: Gecko 1700391
+  Fencer 2000382: Centipede 1700426
+  Mibu Villager 2000417: Mibu Villager 1700679
+  Valley Monkey 2000371: Gecko 1700405
+  Mibu Villager 2000416: Gecko 1700403
+  Mibu Villager 2000413: Fencer 1700689
+  Centipede 2000218: Fencer 1700688
+  Valley Monkey 2000369: Gecko 1700407
+  Centipede 2000261: Gecko 1700409
+  Fencer 2000384: Gecko 1700400
+  Mibu Villager 2000414: Gecko 1700406
+  Centipede 2000263: Gecko 1700408
+  Valley Monkey 2000366: Gecko 1700399
+  Fencer 2000383: Gecko 1700404
+  Centipede 2000219: Mibu Villager 1700678
+  Mibu Villager 2000418: Sunken Valley Clan 1700203
+  Valley Monkey 2000370: Sunken Valley Clan 1700202
+  Centipede 2000262: Old Maid (Sunken Valley) 1700460
+  Mibu Villager 2000415: Sunken Valley Clan 1700212
+  Valley Monkey 2000368: Sunken Valley Clan 1700204
+  Valley Monkey 2000364: Sunken Valley Clan 1700211
+  Centipede 2000221: Sunken Valley Clan 1700214
+  Valley Monkey 2000363: Sunken Valley Clan 1700213
+  Mibu Villager 2000412: Sunken Valley Clan 1700206
+  Fencer 2000381: Sunken Valley Clan 1700205
+  Valley Monkey 2000360: Sunken Valley Clan 1700215
+  Valley Monkey 2000809: Sunken Valley Clan 1700218
+  Valley Monkey 2000806: Mibu Villager 1700683
+  Folding Screen Monkey (Seeing) 2000801: Nightjar Ninja 1700692
+  Folding Screen Monkey (Speaking) 2000803: Sunken Valley Clan 1700217
+  Valley Monkey 2000813: Nightjar Ninja 1700691
+  Valley Monkey 2000365: Mibu Villager 1700684
+  Folding Screen Monkey (Invisible) 2000804: Mibu Villager 1700682
+  Mibu Villager 2000411: Nightjar Ninja 1700693
+  Gecko 2000202: Mibu Villager 1700680
+  Gecko 2000203: Sunken Valley Clan 1700470
+  Valley Monkey 2000361: Mibu Villager 1700681
+  Gecko 2000233: Gecko 1700423
+  Centipede 2000264: Sunken Valley Clan 1700223
+  Valley Monkey 2000510: Sunken Valley Clan 1700216
+  Gecko 2000234: Mibu Villager 1700687
+  Hound 2000314: Mibu Villager 1700686
+  Hound 2000318: Mibu Villager 1700260
+  Hound 2000317: Mibu Villager 1700685
+  Hound 2000316: Sunken Valley Clan 1700219
+  Hound 2000315: Nightjar Ninja 1700690
+  Hound 2000313: Sunken Valley Clan 1700480
+  Seeker 2000354: Sunken Valley Clan 1700471
+  Seeker 2000355: Sunken Valley Clan 1700210
+  Seeker 2000341: Fencer 1700662
+  Gecko 2000231: Fencer 1700661
+  Seeker 2000357: Valley Monkey 1110451
+  Centipede 2000223: Mibu Villager 1700672
+  Centipede 2000226: Mibu Villager 1700674
+  Centipede 2000220: Sunken Valley Clan 1700209
+  Gecko 2000232: Fencer 1700660
+  Seeker 2000358: Mibu Villager 1700670
+  Centipede 2000227: Mibu Villager 1700677
+  Assassin (Senpou) 2000378: Mibu Villager 1700676
+  Seeker 2000356: Mibu Villager 1700673
+  Centipede 2000265: Mibu Villager 1700671
+  Centipede 2000225: Mibu Villager 1700675
+  Assassin (Senpou) 2000455: Valley Monkey 1110452
+  Gecko 2000229: Valley Monkey 1110450
+  Gecko 2000230: Sentry 1110670
+  Gecko 2000228: Ashina Soldier 1110273
+  Hound 2000323: Sunken Valley Clan 1110600
+  Hound 2000319: Ashina Soldier 1110272
+  Hound 2000325: Ashina Soldier 1110274
+  Hound 2000320: Sunken Valley Clan 1110601
+  Hound 2000322: Ashina Soldier 1110271
+  Hound 2000324: Ashina Soldier 1110226
+  Centipede 2000222: Ashina Soldier 1110686
+  Hound 2000321: Ashina Soldier 1110227
+  Assassin (Senpou) 2000456: Shinobi Hunter 1110462
+  Centipede 2000224: Nightjar Ninja 1110565
+  Seeker 2000311: Nightjar Ninja 1110564
+  Assassin (Senpou) 2000465: Nightjar Ninja 1110563
+  Seeker 2000344: Nightjar Ninja 1110530
+  Seeker 2000343: Fencer 1110500
+  Infested Seeker (Parasite) 2000646: Fencer 1110514
+  Seeker 2000342: Fencer 1110513
+  Seeker 2000301: Fencer 1110502
+  Assassin (Senpou) 2000377: Ashina Soldier 1110295
+  Seeker 2000307: Fencer 1110508
+  Seeker 2000302: Old Maid 1110630
+  Taro Troop 2000672: Fencer 1110503
+  Seeker 2000359: Mibu Villager 1500378
+  Assassin (Senpou) 2000241: Mibu Villager 1500379
+  Spear Adept 2000467: Taro Troop (Mibu) 1500484
+  Seeker 2000348: Mibu Villager 1500381
+  Seeker 2000345: Mibu Villager 1500376
+  Taro Troop 2000670: Mibu Villager 1500380
+  Infested Seeker 2000631: Mibu Villager 1500377
+  Valley Monkey 2000374: Mibu Villager 1500368
+  Fencer 2000385: Fencer 1500616
+  Fencer 2000386: Snake Eyes 1500638
+  Seeker 2000460: Mibu Villager 1500338
+  Valley Monkey 2000372: Mibu Villager 1500339
+  Valley Monkey 2000373: Mibu Villager 1500337
+  Cricket 2000635: Gamefowl 1500444
+  Cricket 2000634: Mibu Villager 1500371
+  Cricket 2000636: Mibu Villager 1500309
+  Infested Seeker 2000632: Gamefowl 1500442
+  Seeker 2000346: Taro Troop (Mibu) 1500485
+  Seeker 2000347: Mibu Villager 1500276
+  Infested Seeker 2000630: Mibu Villager 1500274
+  Spear Adept 2000468: Mibu Villager 1500268
+  Spear Adept 2000466: Mibu Villager 1500347
+  Seeker 2000458: Taro Troop (Mibu) 1500483
+  Infested Seeker (Parasite) 2000649: Mibu Villager 1500275
+  Infested Seeker (Parasite) 2000647: Sunken Valley Clan 1500622
+  Infested Seeker (Parasite) 2000648: Mibu Villager 1500278
+  Nightjar Ninja 1500601: Snake Eyes 1500637
+  Bandit 1500400: Mibu Villager 1500330
+  Bandit 1500402: Mibu Villager 1500277
+  Valley Monkey 1500640: Nightjar Ninja 1500604
+  Valley Monkey 1500642: Mibu Villager 1500273
+  Valley Monkey 1500643: Mibu Villager 1500360
+  Valley Monkey 1500644: Mibu Villager 1500340
+  Nightjar Ninja 1500600: Mibu Villager 1500282
+  Gamefowl 1500440: Mibu Villager 1500372
+  Valley Monkey 1500641: Mibu Villager 1500341
+  Bandit 1500401: Mibu Villager 1500331
+  Bandit 1500404: Nightjar Ninja 1500607
+  Gamefowl 1500441: Nightjar Ninja 1500605
+  Bandit 1500403: Mibu Villager 1500356
+  Bandit 1500406: Mibu Villager 1500271
+  Gamefowl 1500453: Sunken Valley Clan 1500624
+  Bandit 1500412: Mibu Villager 1500344
+  Bandit 1500411: Mibu Villager 1500342
+  Bandit 1500410: Nightjar Ninja 1500606
+  Bandit 1500405: Mibu Villager 1500265
+  Gamefowl 1500443: Taro Troop (Mibu) 1500482
+  Gamefowl 1500450: Mibu Villager 1500267
+  Gamefowl 1500451: Sunken Valley Clan 1500623
+  Hound 1500513: Mibu Villager 1500266
+  Bandit 1500423: Mibu Villager 1500335
+  Hound 1500516: Mibu Villager 1500359
+  Bandit 1500425: Mibu Villager 1500361
+  Hound 1500514: Mibu Villager 1500357
+  Hound 1500517: Mibu Villager 1500328
+  Bandit 1500424: Mibu Villager 1500334
+  Valley Monkey 1500647: Mibu Villager 1500336
+  Valley Monkey 1500646: Taro Troop (Mibu) 1500481
+  Bandit 1500422: Taro Troop (Mibu) 1500480
+  Valley Monkey 1500645: Mibu Villager 1500264
+  Hound 1500515: Mibu Villager 1500261
+  Bandit 1500414: Mibu Villager 1500333
+  Bandit 1500437: Mibu Villager 1500329
+  Bandit 1500436: Mibu Villager 1500332
+  Nightjar Ninja 1500608: Mibu Villager 1500354
+  Valley Monkey 1500648: Gamefowl 1500449
+  Sunken Valley Clan 1500626: Mibu Villager 1500290
+  Sunken Valley Clan 1500627: Mibu Villager 1500350
+  Nightjar Ninja 1500610: Mibu Villager 1500327
+  Nightjar Ninja 1500609: Mibu Villager 1500345
+  Hound 1500511: Mibu Villager 1500382
+  Bandit 1500431: Mibu Villager 1500260
+  Bandit 1500439: Mibu Villager 1500304
+  Bandit 1500415: Mibu Villager 1500346
+  Bandit 1500438: Mibu Villager 1500306
+  Hound 1500510: Mibu Villager 1500311
+  Bandit 1500432: Mibu Villager 1500363
+  Bandit 1500417: Mibu Villager 1500370
+  Bandit 1500433: Mibu Villager 1500375
+  Bandit 1500421: Mibu Villager 1500369
+  Bandit 1500419: Mibu Villager 1500366
+  Bandit 1500435: Mibu Villager 1500374
+  Bandit 1500418: Mibu Villager 1500367
+  Bandit 1500416: Mibu Villager 1500302
+  Bandit 1500434: Mibu Villager 1500300
+  Sunken Valley Clan 1500628: Mibu Villager 1500301
+  Bandit 1500420: Sunken Valley Clan 1500621
+  Hound 1500512: Nightjar Ninja 1500602
+  Hound 1500521: Sunken Valley Clan 1500620
+  Hound 1500518: Nightjar Ninja 1500603
+  Snake Eyes 1500636: Hound 1500522
+  Lone Shadow 1500495: Hound 1500520
+  Hound 1500519: Hound 1500519
+  Hound 1500520: Lone Shadow 1500495
+  Hound 1500522: Snake Eyes 1500636
+  Nightjar Ninja 1500603: Hound 1500518
+  Sunken Valley Clan 1500620: Hound 1500521
+  Nightjar Ninja 1500602: Hound 1500512
+  Sunken Valley Clan 1500621: Bandit 1500420
+  Mibu Villager 1500301: Sunken Valley Clan 1500628
+  Mibu Villager 1500300: Bandit 1500434
+  Mibu Villager 1500302: Bandit 1500416
+  Mibu Villager 1500367: Bandit 1500418
+  Mibu Villager 1500374: Bandit 1500435
+  Mibu Villager 1500366: Bandit 1500419
+  Mibu Villager 1500369: Bandit 1500421
+  Mibu Villager 1500375: Bandit 1500433
+  Mibu Villager 1500370: Bandit 1500417
+  Mibu Villager 1500363: Bandit 1500432
+  Mibu Villager 1500311: Hound 1500510
+  Mibu Villager 1500306: Bandit 1500438
+  Mibu Villager 1500346: Bandit 1500415
+  Mibu Villager 1500304: Bandit 1500439
+  Mibu Villager 1500260: Bandit 1500431
+  Mibu Villager 1500382: Hound 1500511
+  Mibu Villager 1500345: Nightjar Ninja 1500609
+  Mibu Villager 1500327: Nightjar Ninja 1500610
+  Mibu Villager 1500350: Sunken Valley Clan 1500627
+  Mibu Villager 1500290: Sunken Valley Clan 1500626
+  Gamefowl 1500449: Valley Monkey 1500648
+  Mibu Villager 1500354: Nightjar Ninja 1500608
+  Mibu Villager 1500332: Bandit 1500436
+  Mibu Villager 1500329: Bandit 1500437
+  Mibu Villager 1500333: Bandit 1500414
+  Mibu Villager 1500261: Hound 1500515
+  Mibu Villager 1500264: Valley Monkey 1500645
+  Taro Troop (Mibu) 1500480: Bandit 1500422
+  Taro Troop (Mibu) 1500481: Valley Monkey 1500646
+  Mibu Villager 1500336: Valley Monkey 1500647
+  Mibu Villager 1500334: Bandit 1500424
+  Mibu Villager 1500328: Hound 1500517
+  Mibu Villager 1500357: Hound 1500514
+  Mibu Villager 1500361: Bandit 1500425
+  Mibu Villager 1500359: Hound 1500516
+  Mibu Villager 1500335: Bandit 1500423
+  Mibu Villager 1500266: Hound 1500513
+  Sunken Valley Clan 1500623: Gamefowl 1500451
+  Mibu Villager 1500267: Gamefowl 1500450
+  Taro Troop (Mibu) 1500482: Gamefowl 1500443
+  Mibu Villager 1500265: Bandit 1500405
+  Nightjar Ninja 1500606: Bandit 1500410
+  Mibu Villager 1500342: Bandit 1500411
+  Mibu Villager 1500344: Bandit 1500412
+  Sunken Valley Clan 1500624: Gamefowl 1500453
+  Mibu Villager 1500271: Bandit 1500406
+  Mibu Villager 1500356: Bandit 1500403
+  Nightjar Ninja 1500605: Gamefowl 1500441
+  Nightjar Ninja 1500607: Bandit 1500404
+  Mibu Villager 1500331: Bandit 1500401
+  Mibu Villager 1500341: Valley Monkey 1500641
+  Mibu Villager 1500372: Gamefowl 1500440
+  Mibu Villager 1500282: Nightjar Ninja 1500600
+  Mibu Villager 1500340: Valley Monkey 1500644
+  Mibu Villager 1500360: Valley Monkey 1500643
+  Mibu Villager 1500273: Valley Monkey 1500642
+  Nightjar Ninja 1500604: Valley Monkey 1500640
+  Mibu Villager 1500277: Bandit 1500402
+  Mibu Villager 1500330: Bandit 1500400
+  Snake Eyes 1500637: Nightjar Ninja 1500601
+  Mibu Villager 1500278: Infested Seeker (Parasite) 2000648
+  Sunken Valley Clan 1500622: Infested Seeker (Parasite) 2000647
+  Mibu Villager 1500275: Infested Seeker (Parasite) 2000649
+  Taro Troop (Mibu) 1500483: Seeker 2000458
+  Mibu Villager 1500347: Spear Adept 2000466
+  Mibu Villager 1500268: Spear Adept 2000468
+  Mibu Villager 1500274: Infested Seeker 2000630
+  Mibu Villager 1500276: Seeker 2000347
+  Taro Troop (Mibu) 1500485: Seeker 2000346
+  Gamefowl 1500442: Infested Seeker 2000632
+  Mibu Villager 1500309: Cricket 2000636
+  Mibu Villager 1500371: Cricket 2000634
+  Gamefowl 1500444: Cricket 2000635
+  Mibu Villager 1500337: Valley Monkey 2000373
+  Mibu Villager 1500339: Valley Monkey 2000372
+  Mibu Villager 1500338: Seeker 2000460
+  Snake Eyes 1500638: Fencer 2000386
+  Fencer 1500616: Fencer 2000385
+  Mibu Villager 1500368: Valley Monkey 2000374
+  Mibu Villager 1500377: Infested Seeker 2000631
+  Mibu Villager 1500380: Taro Troop 2000670
+  Mibu Villager 1500376: Seeker 2000345
+  Mibu Villager 1500381: Seeker 2000348
+  Taro Troop (Mibu) 1500484: Spear Adept 2000467
+  Mibu Villager 1500379: Assassin (Senpou) 2000241
+  Mibu Villager 1500378: Seeker 2000359
+  Fencer 1110503: Taro Troop 2000672
+  Old Maid 1110630: Seeker 2000302
+  Fencer 1110508: Seeker 2000307
+  Ashina Soldier 1110295: Assassin (Senpou) 2000377
+  Fencer 1110502: Seeker 2000301
+  Fencer 1110513: Seeker 2000342
+  Fencer 1110514: Infested Seeker (Parasite) 2000646
+  Fencer 1110500: Seeker 2000343
+  Nightjar Ninja 1110530: Seeker 2000344
+  Nightjar Ninja 1110563: Assassin (Senpou) 2000465
+  Nightjar Ninja 1110564: Seeker 2000311
+  Nightjar Ninja 1110565: Centipede 2000224
+  Shinobi Hunter 1110462: Assassin (Senpou) 2000456
+  Ashina Soldier 1110227: Hound 2000321
+  Ashina Soldier 1110686: Centipede 2000222
+  Ashina Soldier 1110226: Hound 2000324
+  Ashina Soldier 1110271: Hound 2000322
+  Sunken Valley Clan 1110601: Hound 2000320
+  Ashina Soldier 1110274: Hound 2000325
+  Ashina Soldier 1110272: Hound 2000319
+  Sunken Valley Clan 1110600: Hound 2000323
+  Ashina Soldier 1110273: Gecko 2000228
+  Sentry 1110670: Gecko 2000230
+  Valley Monkey 1110450: Gecko 2000229
+  Valley Monkey 1110452: Assassin (Senpou) 2000455
+  Mibu Villager 1700675: Centipede 2000225
+  Mibu Villager 1700671: Centipede 2000265
+  Mibu Villager 1700673: Seeker 2000356
+  Mibu Villager 1700676: Assassin (Senpou) 2000378
+  Mibu Villager 1700677: Centipede 2000227
+  Mibu Villager 1700670: Seeker 2000358
+  Fencer 1700660: Gecko 2000232
+  Sunken Valley Clan 1700209: Centipede 2000220
+  Mibu Villager 1700674: Centipede 2000226
+  Mibu Villager 1700672: Centipede 2000223
+  Valley Monkey 1110451: Seeker 2000357
+  Fencer 1700661: Gecko 2000231
+  Fencer 1700662: Seeker 2000341
+  Sunken Valley Clan 1700210: Seeker 2000355
+  Sunken Valley Clan 1700471: Seeker 2000354
+  Sunken Valley Clan 1700480: Hound 2000313
+  Nightjar Ninja 1700690: Hound 2000315
+  Sunken Valley Clan 1700219: Hound 2000316
+  Mibu Villager 1700685: Hound 2000317
+  Mibu Villager 1700260: Hound 2000318
+  Mibu Villager 1700686: Hound 2000314
+  Mibu Villager 1700687: Gecko 2000234
+  Sunken Valley Clan 1700216: Valley Monkey 2000510
+  Sunken Valley Clan 1700223: Centipede 2000264
+  Gecko 1700423: Gecko 2000233
+  Mibu Villager 1700681: Valley Monkey 2000361
+  Sunken Valley Clan 1700470: Gecko 2000203
+  Mibu Villager 1700680: Gecko 2000202
+  Nightjar Ninja 1700693: Mibu Villager 2000411
+  Mibu Villager 1700682: Folding Screen Monkey (Invisible) 2000804
+  Mibu Villager 1700684: Valley Monkey 2000365
+  Nightjar Ninja 1700691: Valley Monkey 2000813
+  Sunken Valley Clan 1700217: Folding Screen Monkey (Speaking) 2000803
+  Nightjar Ninja 1700692: Folding Screen Monkey (Seeing) 2000801
+  Mibu Villager 1700683: Valley Monkey 2000806
+  Sunken Valley Clan 1700218: Valley Monkey 2000809
+  Sunken Valley Clan 1700215: Valley Monkey 2000360
+  Sunken Valley Clan 1700205: Fencer 2000381
+  Sunken Valley Clan 1700206: Mibu Villager 2000412
+  Sunken Valley Clan 1700213: Valley Monkey 2000363
+  Sunken Valley Clan 1700214: Centipede 2000221
+  Sunken Valley Clan 1700211: Valley Monkey 2000364
+  Sunken Valley Clan 1700204: Valley Monkey 2000368
+  Sunken Valley Clan 1700212: Mibu Villager 2000415
+  Old Maid (Sunken Valley) 1700460: Centipede 2000262
+  Sunken Valley Clan 1700202: Valley Monkey 2000370
+  Sunken Valley Clan 1700203: Mibu Villager 2000418
+  Mibu Villager 1700678: Centipede 2000219
+  Gecko 1700404: Fencer 2000383
+  Gecko 1700399: Valley Monkey 2000366
+  Gecko 1700408: Centipede 2000263
+  Gecko 1700406: Mibu Villager 2000414
+  Gecko 1700400: Fencer 2000384
+  Gecko 1700409: Centipede 2000261
+  Gecko 1700407: Valley Monkey 2000369
+  Fencer 1700688: Centipede 2000218
+  Fencer 1700689: Mibu Villager 2000413
+  Gecko 1700403: Mibu Villager 2000416
+  Gecko 1700405: Valley Monkey 2000371
+  Mibu Villager 1700679: Mibu Villager 2000417
+  Centipede 1700426: Fencer 2000382
+  Gecko 1700391: Valley Monkey 2000367
+  Centipede 1700428: Sunken Valley Clan 2000329
+  Gecko 1700390: Nightjar Ninja 2000389
+  Centipede 1700427: Sunken Valley Clan 2000328
+  Gecko 1700393: Taro Troop 2000671
+  Gecko 1700410: Valley Monkey 2000512
+  Gecko 1700411: Mibu Villager 2000576
+  Valley Monkey 1700301: Mibu Villager 2000573
+  Rock Diver 1700430: Sunken Valley Clan 2000327
+  Gecko 1700231: Nightjar Ninja 2000388
+  Gecko 1700232: Mibu Villager 2000575
+  Valley Monkey 1700359: Mibu Villager 2000577
+  Gecko 1700233: Nightjar Ninja 2000387
+  Valley Monkey 1700363: Mibu Villager 2000578
+  Valley Monkey 1700361: Assassin (Senpou) 2000376
+  Valley Monkey 1700350: Sunken Valley Clan 2000335
+  Valley Monkey 1700340: Spear Adept 2000651
+  Valley Monkey 1700362: Assassin (Senpou) 2000379
+  Valley Monkey 1700360: Assassin (Senpou) 2000253
+  Valley Monkey 1700364: Assassin (Senpou) 2000375
+  Valley Monkey 1700365: Bandit 2000391
+  Valley Monkey 1700366: Bandit 2000390
+  Valley Monkey 1700305: Cricket 2000213
+  Valley Monkey 1700339: Cricket 2000296
+  Valley Monkey 1700338: Cricket 2000214
+  Valley Monkey 1700354: Cricket 2000295
+  Valley Monkey 1700351: Sunken Valley Clan 2000334
+  Valley Monkey 1700355: Nightjar Ninja 2000404
+  Valley Monkey 1700352: Mibu Villager 2000423
+  Valley Monkey 1700353: Cricket 2000293
+  Valley Monkey 1700329: Sunken Valley Clan 2000333
+  Valley Monkey 1700315: Nightjar Ninja 2000406
+  Valley Monkey 1700313: Seeker 2000349
+  Valley Monkey 1700326: Cricket 2000298
+  Valley Monkey 1700310: Spear Adept 2000650
+  Valley Monkey 1700323: Bandit 2000454
+  Valley Monkey 1700319: Cricket 2000294
+  Valley Monkey 1700316: Cricket 2000297
+  Valley Monkey 1700312: Mibu Villager 2000421
+  Valley Monkey 1700327: Cricket 2000216
+  Valley Monkey 1700322: Mibu Villager 2000422
+  Valley Monkey 1700321: Seeker 2000351
+  Nightjar Ninja 1700356: Cricket 2000299
+  Valley Monkey 1700320: Cricket 2000217
+  Valley Monkey 1700311: Bandit 2000425
+  Valley Monkey 1700317: Nightjar Ninja 2000405
+  Valley Monkey 1700314: Seeker 2000309
+  Valley Monkey 1700324: Cricket 2000215
+  Valley Monkey 1700328: Cricket 2000280
+  Valley Monkey 1700333: Mibu Villager 2000419
+  Valley Monkey 1700325: Seeker 2000350
+  Valley Monkey 1700318: Seeker 2000352
+  Valley Monkey 1700334: Mibu Villager 2000424
+  Nightjar Ninja 1700357: Seeker 2000353
+  Nightjar Ninja 1700358: Cricket 2000211
+  Sunken Valley Clan 1700251: Mibu Villager 2000420
+  Sunken Valley Clan 1700222: Cricket 2000210
+  Sunken Valley Clan 1700220: Seeker 2000308
+  Sunken Valley Clan 1700252: Seeker 2000340
+  Sunken Valley Clan 1700208: Seeker 2000338
+  Sunken Valley Clan 1700250: Nightjar Ninja 2000403
+  Sunken Valley Clan 1700221: Cricket 2000288
+  Rock Diver 1700431: Seeker 2000339
+  Gecko 1700416: Cricket 2000286
+  Rock Diver 1700433: Seeker 2000336
+  Gecko 1700227: Cricket 2000291
+  Gecko 1700230: Seeker 2000337
+  Gecko 1700225: Cricket 2000212
+  Gecko 1700415: Cricket 2000290
+  Rock Diver 1700432: Seeker 2000453
+  Gecko 1700413: Cricket 2000281
+  Gecko 1700226: Cricket 2000292
+  Gecko 1700229: Cricket 2000284
+  Gecko 1700412: Cricket 2000289
+  Gecko 1700228: Cricket 2000287
+  Gecko 1700224: Seeker 2000303
+  Gecko 1700414: Seeker 2000306
+  Valley Monkey 1700367: Folding Screen Monkey (Hearing) 2000802
+  Ashina Soldier 1110211: Cricket 2000282
+  Hound 1110408: Valley Monkey 2000811
+  Taro Troop 1110433: Seeker 2000305
+  Hound 1110409: Valley Monkey 2000807
+  Hound 1110407: Valley Monkey 2000814
+  Ashina Soldier 1110236: Valley Monkey 2000812
+  Red Guard 1110351: Valley Monkey 2000805
+  Ashina Soldier 1110248: Valley Monkey 2000808
+  Red Guard 1110365: Seeker 2000304
+  Ashina Soldier 1110243: Cricket 2000283
+  Ashina Soldier 1110241: Cricket 2000285
+  Ashina Soldier 1110285: Sunken Valley Clan 2000332
+  Red Guard 1110353: Sunken Valley Clan 2000331
+  Ashina Soldier 1110242: Infested Seeker 2000601
+  Ashina Soldier 1110244: Nightjar Ninja 2000401
+  Ashina Soldier 1110246: Mibu Villager 2000409
+  Assassin (Interior Ministry) 1110642: Mibu Villager 2000410
+  Assassin (Interior Ministry) 1110643: Taro Troop 2000673
+  Assassin (Interior Ministry) 1110644: Mibu Villager 2000408
+  Samurai General 1110412: Sunken Valley Clan 2000330
+  Ashina Soldier 1110287: Nightjar Ninja 2000402
+  Lone Shadow 1110312: Seeker 2000451
+  Ashina Soldier 1110240: Seeker 2000450
+  Samurai General 1110413: Mibu Villager 2000407
+  Gecko 1110587: Fencer 2000380
+  Hound 1110333: Sunken Valley Clan 2000326
+  Hound 1110331: Seeker 2000312
+  Gecko 1110586: Gecko 1300350
+  Lone Shadow 1110321: Gecko 1300351
+  Lone Shadow 1110323: Test Subject 1300285
+  Lone Shadow 1110322: Test Subject 1300291
+  Lone Shadow 1110317: Cricket 1300216
+  Hound 1110332: Cricket 1300225
+  Ashina Soldier 1110296: Cricket 1300226
+  Red Guard 1110372: Cricket 1300222
+  Ashina Soldier 1110298: Cricket 1300224
+  Red Guard 1110381: Test Subject 1300283
+  Red Guard 1110373: Ashina Soldier 1300304
+  Lone Shadow 1110300: Ashina Soldier 1300302
+  Ashina Soldier 1110297: Ashina Soldier 1300300
+  Gecko 1110585: Ashina Soldier 1300303
+  Gecko 1110588: Ashina Soldier 1300301
+  Assassin (Interior Ministry) 1110654: Cricket 1300240
+  Lone Shadow 1110302: Cricket 1300239
+  Lone Shadow 1110319: Cricket 1300223
+  Lone Shadow 1110318: Test Subject 1300282
+  Hound 1110330: Test Subject 1300281
+  Hound 1110334: Cricket 1300215
+  Lone Shadow 1110303: Cricket 1300218
+  Lone Shadow 1110304: Cricket 1300211
+  Assassin (Interior Ministry) 1110649: Cricket 1300219
+  Assassin (Interior Ministry) 1110653: Cricket 1300220
+  Assassin (Interior Ministry) 1110648: Cricket 1300236
+  Nightjar Ninja 1110534: Cricket 1300234
+  Shinobi Hunter 1110460: Cricket 1300228
+  Nightjar Ninja 1110571: Cricket 1300233
+  Nightjar Ninja 1110570: Cricket 1300229
+  Nightjar Ninja 1110569: Cricket 1300230
+  Ashina Soldier 1110282: Cricket 1300235
+  Nightjar Ninja 1110562: Cricket 1300238
+  Ashina Soldier 1110283: Cricket 1300217
+  Nightjar Ninja 1110560: Test Subject 1300284
+  Nightjar Ninja 1110561: Cricket 1300212
+  Hound 1110336: Test Subject 1300280
+  Hound 1110335: Ashina Soldier 1120355
+  Hound 1110337: Ashina Soldier 1120356
+  Palace Noble 2500200: Hound 1120461
+  Palace Noble 2500218: Hound 1120460
+  Palace Noble 2500216: Ashina Soldier 1120351
+  Old Dragon 2500824: Ashina Soldier 1120350
+  Old Dragon 2500814: Taro Troop 1120451
+  Old Dragon 2500813: Sentry 1120430
+  Old Dragon 2500820: Ashina Soldier 1120353
+  Old Dragon 2500818: Ashina Soldier 1120357
+  Old Dragon 2500825: Taro Troop 1120450
+  Old Dragon 2500819: Ashina Soldier 1120352
+  Old Dragon 2500811: Ashina Soldier 1120354
+  Old Dragon 2500816: Assassin (Senpou) 1120425
+  Old Dragon 2500817: Assassin (Senpou) 1120424
+  Old Dragon 2500823: Assassin (Senpou) 1120426
+  Old Dragon 2500815: Nightjar Ninja 1110533
+  Old Dragon 2500822: Nightjar Ninja 1110532
+  Old Dragon 2500821: Fencer 1110501
   Okami Warrior 2500423: Nightjar Ninja 1110547
   Okami Warrior 2500426: Gecko 1110583
   Okami Warrior 2500425: Nightjar Ninja 1110577

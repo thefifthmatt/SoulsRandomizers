@@ -60,6 +60,10 @@ namespace RandomizerCommon
             // Usually not needed for minibosses and other enemies, when those are standalone chr events.
             // Maybe should automatically remove (or transplant for boss starts) Set Lock On Point, Force Animation Playback, Set Dispmask, Set AI ID
             public string StartCmd { get; set; }
+            // Commands to change when the tree dragon entity is disabled, with the argument spec as the first semicolon-separate value.
+            public string TreeDragons { get; set; }
+            // Directive to rewrite event flags depending on which tree dragons are enabled for lightning.
+            public string TreeDragonFlags { get; set; }
             // Commands to unconditionally remove.
             public string Remove { get; set; }
             // Commands to unconditionally remove when enemy is not unique
@@ -73,7 +77,7 @@ namespace RandomizerCommon
             // Check for doing nothing. Maybe should just have a type for nothing
             public bool IsDefault() =>
                 Entity == 0 && DefeatFlag == 0 && AppearFlag == 0 && StartFlag == 0 && EndCond == null && EndCond2 == null && StartCmd == null && Remove == null && RemoveDupe == null && Replace == null
-                    && Add == null && Regions == null && Camera == null && Invincibility == 0 && Deathblow == 0 && ProgressFlag == null && Name == null;
+                    && Add == null && Regions == null && Camera == null && Invincibility == 0 && Deathblow == 0 && ProgressFlag == null && Name == null && TreeDragons == null && TreeDragonFlags == null;
             [YamlIgnore]
             public EMEVD.Event Inner { get; set; }
         }

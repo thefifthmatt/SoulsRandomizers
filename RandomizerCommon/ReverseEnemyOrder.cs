@@ -276,16 +276,21 @@ namespace RandomizerCommon
                 return $"#{paths[p].Item1} {names[first]}->{names[last]}";
             }
 
+            bool investigateScaling = false;
             List<List<EnemyClass>> typeGroups = new List<List<EnemyClass>>
             {
                 new List<EnemyClass> { EnemyClass.Boss, EnemyClass.TutorialBoss },
                 new List<EnemyClass> { EnemyClass.Miniboss },
-                new List<EnemyClass> { EnemyClass.Basic, EnemyClass.FoldingMonkey }
+                new List<EnemyClass> { EnemyClass.Basic, EnemyClass.FoldingMonkey, EnemyClass.OldDragon }
             };
             List<EnemyClass> types = typeGroups.SelectMany(c => c).ToList();
             Dictionary<int, EnemyInfo> infos = fullInfos.Values.Where(e => types.Contains(e.Class)).ToDictionary(e => e.ID, e => e);
-            // infos.Remove(1110920);
-            // infos.Remove(1110900);
+            if (!investigateScaling)
+            {
+                infos.Remove(1110920);
+                infos.Remove(1110900);
+                infos.Remove(1120800);
+            }
             Dictionary<int, List<int>> possiblePaths = new Dictionary<int, List<int>>();
             bool explainCat = false;
             for (int i = 0; i < paths.Count; i++)
@@ -408,7 +413,6 @@ namespace RandomizerCommon
                 }
             }
 
-            bool investigateScaling = true;
             if (investigateScaling)
             {
                 Dictionary<int, MSBS.Part.Enemy> enemies = new Dictionary<int, MSBS.Part.Enemy>();
@@ -563,7 +567,7 @@ namespace RandomizerCommon
                 }
             }
 
-            bool debugOutput = true;
+            bool debugOutput = false;
             foreach (List<EnemyClass> typeGroup in typeGroups)
             {
                 List<string> order = new List<string>();

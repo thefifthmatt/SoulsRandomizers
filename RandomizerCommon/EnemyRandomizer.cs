@@ -110,6 +110,14 @@ namespace RandomizerCommon
                     AddMulti(owners, info.OwnedBy, info.ID);
                 }
             }
+            Dictionary<int, List<int>> objectOwners = new Dictionary<int, List<int>>();
+            foreach (ObjectInfo info in ann.Objects)
+            {
+                if (info.OwnedBy > 0)
+                {
+                    AddMulti(objectOwners, info.OwnedBy, info.ID);
+                }
+            }
 
             Dictionary<int, EnemyData> defaultData = new Dictionary<int, EnemyData>();
             List<EnemyClass> randomizedTypes = new List<EnemyClass>
@@ -138,6 +146,7 @@ namespace RandomizerCommon
                         Model = e.ModelName,
                         NPC = e.NPCParamID,
                         Think = e.ThinkParamID,
+                        Col = e.CollisionPartName,
                     };
                     ownerMap[e.EntityID] = entry.Key;
                     // Set all boss/miniboss default teams to be aggressive toward player
@@ -152,9 +161,21 @@ namespace RandomizerCommon
             }
 
             // Process core enemy config
+            List<int> treeDragonOrder = Enumerable.Repeat(0, 5).ToList();
             foreach (EnemyInfo info in ann.Enemies)
             {
                 if (!defaultData.TryGetValue(info.ID, out EnemyData data)) throw new Exception($"Entity {info.ID} does not exist in map; cannot randomize it");
+
+                if (info.Name == null) throw new Exception($"Entity {info.ID} has no name");
+                string modelName = info.Name.Split('_')[0];
+                info.ModelID = modelName;
+                info.ModelName = game.ModelName(info.ModelID);
+
+                if (info.Tags != null)
+                {
+                    info.TagSet = new HashSet<string>(info.Tags.Split(' '));
+                }
+
                 if (opt["headlessmove"] && info.Class == EnemyClass.Headless)
                 {
                     info.Class = EnemyClass.Miniboss;
@@ -169,8 +190,6 @@ namespace RandomizerCommon
                         info.DefeatFlag = main.DefeatFlag;
                         info.AppearFlag = main.AppearFlag;
                         info.Arena = main.Arena;
-                        // Add all tags from main, mainly lateness
-                        info.Tags = main.Tags + (info.Tags == null ? "" : " " + info.Tags);
                         info.ItemName = main.ItemName;
                     }
                 }
@@ -181,8 +200,18 @@ namespace RandomizerCommon
                     {
                         info.OwlArenaData = Arena.Parse(info.OwlArena);
                     }
+                    if (info.DragonArena != null || info.DragonTrees != null)
+                    {
+                        if (info.DragonArena == null || info.DragonTrees == null) throw new Exception($"Entity {info.ID} with dragon placement does not have both [{info.DragonArena}] and [{info.DragonTrees}] defined");
+                        info.DragonArenaData = Arena.Parse(info.DragonArena);
+                        info.DragonTreeList = info.DragonTrees.Split(' ').Select(t => int.Parse(t)).ToList();
+                    }
                 }
                 else if (info.IsNamedTarget) throw new Exception($"Entity {info.ID} has no arena defined");
+                if (info.Class == EnemyClass.Helper && info.DragonTrees != null)
+                {
+                    treeDragonOrder[int.Parse(info.DragonTrees)] = info.ID;
+                }
                 if (info.IsBossTarget)
                 {
                     if (info.Phases == 0) throw new Exception($"No phase count defined for boss {info.ID}");
@@ -193,9 +222,52 @@ namespace RandomizerCommon
                     info.DefeatFlag = 10000000 + info.ID;
                 }
             }
+
+            foreach (EnemyGroup group in ann.Groups)
+            {
+                if (group.Models == null) continue;
+                Dictionary<string, List<string>> models = new Dictionary<string, List<string>>();
+                foreach (string model in group.Models)
+                {
+                    string[] parts = model.Split('-');
+                    AddMulti(models, parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : null);
+                }
+                foreach (EnemyInfo info in infos.Values)
+                {
+                    if (models.TryGetValue(info.ModelName, out List<string> tags))
+                    {
+                        if (tags.Contains(null) || (info.Category != null && tags.Contains(info.Category) || tags.Any(t => info.HasTag(t))))
+                        {
+                            // Console.WriteLine($"Adding to {group.Name}: {info.DebugText}");
+                            group.Entities.Add(info.ID);
+                            info.TagSet.Add(group.Name);
+                        }
+                    }
+                }
+            }
+
             if (preset != null)
             {
                 preset.ProcessEnemyPreset(game, infos, ann.Categories, defaultData);
+            }
+
+            // Special pass for Old Dragons, because the # to replace depends on the distribution of enemies
+            int randomOldDragons = 0;
+            if (opt["bosses"] && opt["enemies"])
+            {
+                SortedSet<int> unpreferred = ann.GetGroup("nodragon");
+                List<int> eligibleForDragons = preset?.Basic == null && preset?.Add == null
+                    ? infos.Values.Where(info => info.Class == EnemyClass.Basic && !unpreferred.Contains(info.ID)).Select(info => info.ID).ToList()
+                    : (preset.Add ?? preset.Basic).SelectMany(pool => pool.PoolGroups.SelectMany(p => p)).ToList();
+                // There are 15 old dragons in total, 1 of which is not randomized, and 14 of which can be randomized
+                // If eligible enemy count > 200, 3 old dragons total (minimum to make the fight interesting)
+                // If eligible enemy count > 100, 7 old dragons total (half and half)
+                // If any non-boss enemy count > 10, 12 old dragons total (trio fight, challenge)
+                // Otherwise, if below these limits, 14 old dragons total (boss fight in its own right, but with old dragon swoop available)
+                if (eligibleForDragons.Count > 200) randomOldDragons = 12;
+                else if (eligibleForDragons.Count > 100) randomOldDragons = 8;
+                else if (eligibleForDragons.Count(i => !infos[i].IsBossTarget) > 10) randomOldDragons = 3;
+                else randomOldDragons = 1;
             }
 
             // Generate category config
@@ -240,7 +312,6 @@ namespace RandomizerCommon
                     serializer.Serialize(writer, outYaml);
                 }
             }
-
 
             // Read some emevds
             Dictionary<string, EMEVD> emevds = game.Emevds;
@@ -291,6 +362,14 @@ namespace RandomizerCommon
                     }
                 }
                 SortedDictionary<int, EventDebug> eventInfos = events.GetHighlightedEvents(emevds, entityIds);
+                if (!opt["eventsitem"])
+                {
+                    HashSet<int> current = new HashSet<int>(eventConfig.EnemyEvents.Select(e => e.ID));
+                    foreach (int key in eventInfos.Keys.ToList())
+                    {
+                        if (current.Contains(key)) eventInfos.Remove(key);
+                    }
+                }
                 string quickId(int id)
                 {
                     if (regionIds.TryGetValue(id, out string region))
@@ -311,7 +390,7 @@ namespace RandomizerCommon
                     }
                     if (!defaultData.ContainsKey(id)) return $"{id} unknown";
                     return $"{id} ({defaultData[id].Name} - {game.ModelName(defaultData[id].Model)}"
-                        + $"{(infos.TryGetValue(id, out EnemyInfo enemy) && enemy.Class == 0 ? " - not random" : "")})";
+                        + $"{(infos.TryGetValue(id, out EnemyInfo enemy) && enemy.Class == 0 ? "" : "")})";  // - not random
                 }
                 bool isEligible(int entityId)
                 {
@@ -327,7 +406,7 @@ namespace RandomizerCommon
                 }
                 EventSpec produceSpec()
                 {
-                    if (opt["eventsitem"])
+                    if (!opt["eventsitem"])
                     {
                         return new EventSpec
                         {
@@ -358,8 +437,8 @@ namespace RandomizerCommon
                     }
                 }
 
-                HashSet<int> processEventsOverride = new HashSet<int> { };
-                // Old Dragons: 2500810, 2500811, 2500812, 2500813, 2500814, 2500815, 2500816, 2500817, 2500818, 2500819, 2500820, 2500821, 2500822, 2500823, 2500824, 2500825
+                HashSet<int> processEventsOverride = new HashSet<int> { 12505926 };
+                // Old Dragons: 2500810, 2500811, 2500812, 2500813, 2500814, 2500815, 2500816, 2500817, 2500818, 2500819, 2500820, 2500821, 2500822, 2500823, 2500824, 2500825. Group 2505830
                 // Tree Dragons: 2500930, 2500933, 2500934, 2500884, 2500880, 2500881, 2500882, 2500883
                 // Divine Dragon: 2500800
                 // Monkeys: 2000800, 2000801, 2000802, 2000803, 2000804 
@@ -367,6 +446,7 @@ namespace RandomizerCommon
                 {
                     2500800,
                     2500810, 2500811, 2500812, 2500813, 2500814, 2500815, 2500816, 2500817, 2500818, 2500819, 2500820, 2500821, 2500822, 2500823, 2500824, 2500825,
+                    2505830,
                     2500930, 2500933, 2500934, 2500884, 2500880, 2500881, 2500882, 2500883,
                 };
 
@@ -423,6 +503,7 @@ namespace RandomizerCommon
                                 + $" - {id} - {game.ModelName(e.ModelName)}"
                         };
                         // file = file.Replace($"id {e.EntityID}", $"npc {e.NPCParamID} - think {e.ThinkParamID} - id {e.EntityID}");
+                        // file = file.Replace($"- ID: {e.EntityID}", $"- ID: {e.EntityID}\r\n  Name: {defaultData[e.EntityID].Name}");
                         if (talks.TryGetValue(e.Name, out MSBS.Event.Talk talk))
                         {
                             info.ESDs = string.Join(",", talk.TalkIDs);
@@ -433,6 +514,8 @@ namespace RandomizerCommon
                         outYaml.Enemies.Add(info);
                     }
                 }
+                // For mass updates to the enemy file, a bit hacky, but it is at least a possible migration path
+                // using (var writer = File.CreateText("newenemy.txt")) writer.Write(file);
                 ISerializer serializer = new SerializerBuilder().DisableAliases().Build();
                 using (var writer = File.CreateText("enemy.txt"))
                 {
@@ -548,6 +631,17 @@ namespace RandomizerCommon
 
             int seed = opt.Seed2 == 0 ? (int)opt.Seed : (int)opt.Seed2;
 
+            // Finally process Old Dragons
+            if (randomOldDragons > 0)
+            {
+                List<EnemyInfo> oldDragons = infos.Values.Where(i => i.Class == EnemyClass.OldDragon).ToList();
+                Shuffle(new Random(seed + 42), oldDragons);
+                for (int i = 0; i < Math.Min(oldDragons.Count, randomOldDragons); i++)
+                {
+                    oldDragons[i].Class = EnemyClass.Basic;
+                }
+            }
+
             // Force mapping from target to source. This does disrupt the seed, but only way to avoid that would be with potentially extensive swapping.
             Dictionary<int, int> forceMap = new Dictionary<int, int>();
             if (preset != null)
@@ -633,15 +727,22 @@ namespace RandomizerCommon
                 EnemyInfo sourceInfo = infos[source];
                 EnemyInfo targetInfo = infos[target];
                 // Custom exclusions
-                if (targetInfo.HasTag($"exclude:{source}"))
+                if (targetInfo.TagSet.Any(t => t.StartsWith("exclude:")))
                 {
-                    if (explain) Console.WriteLine($"Not adding {ename(source)} to {ename(target)} since it is specifically excluded from there");
-                    return false;
+                    foreach (string exclude in targetInfo.TagSet.Where(t => t.StartsWith("exclude:")))
+                    {
+                        string excludeStr = exclude.Substring(8);
+                        if (excludeStr == source.ToString() || sourceInfo.HasTag(excludeStr))
+                        {
+                            if (explain) Console.WriteLine($"Not adding {ename(source)} to {ename(target)} because it is excluded from {excludeStr}");
+                            return false;
+                        }
+                    }
                 }
-                // Boss falls off
-                if (targetInfo.HasTag("island") && sourceInfo.HasTag("noisland"))
+                // Exclusion for Divine Dragon: it is very boring unless the arena supports it
+                if (sourceInfo.ItemName == "divinedragon" && targetInfo.DragonArenaData == null)
                 {
-                    if (explain) Console.WriteLine($"Not adding {ename(source)} to {ename(target)} since it doesn't work well on an island");
+                    if (explain) Console.WriteLine($"Not adding {ename(source)} to {ename(target)} because no Divine Dragon arena support");
                     return false;
                 }
                 // Try not to put interesting enemies in phantom spots. (will this be okay with 'oops all' sorts of modes?)
@@ -834,13 +935,14 @@ namespace RandomizerCommon
                         adds = RandomSources.Create(makeRandom(), preset.Add, sources, silo.Targets.Count);
                     }
                 }
-                
+
                 // Some special pools, if not overridden
                 if (siloType == EnemyClass.FoldingMonkey && custom == null)
                 {
                     Shuffle(makeRandom(), silo.Sources);
 
-                    // Get some random early game bosses, unique by type
+                    // Get some random minibosses, unique by type. For balance, make them early game.
+                    // This is mostly excluding O'Rin, Headless, Shichimen, and Sakura Bull, but we would probably want to exclude them anyway even with scaling.
                     List<EnemyInfo> minibosses = infos.Values.Where(s => s.Class == EnemyClass.Miniboss && s.HasTag("early")).OrderBy(s => s.ID).ToList();
                     Shuffle(makeRandom(), minibosses);
 
@@ -851,7 +953,7 @@ namespace RandomizerCommon
                 {
                     // There should be just one of these, but cycle through all bosses anyway
                     Shuffle(makeRandom(), sources);
-                    
+
                     sources = infos.Values.Where(s => s.Class == EnemyClass.Boss).Select(s => s.ID).OrderBy(s => s).ToList();
                     sources.Remove(1110800);  // Castle Genichiro too boring here
                     Shuffle(makeRandom(), sources);
@@ -915,6 +1017,8 @@ namespace RandomizerCommon
                     {
                         EnemyData data = defaultData[ent];
                         string name = infos[ent].ExtraName ?? game.ModelName(data.Model);
+                        string cat = infos[ent].Category; 
+                        if (cat != null) name = $"{phraseRe.Split(cat)[0]} {name}";
                         return $"{name} (#{ent}) {(target ? "in" : "from")} {game.LocationNames[game.Locations[data.Map]]}";
                     }
                     List<EnemyClass> printSilos = new List<EnemyClass> { siloType };
@@ -1037,7 +1141,9 @@ namespace RandomizerCommon
                 int toEntity = reloc[fromEntity];
                 string toMap = defaultData[toEntity].Map;
                 MSBS.Part.Enemy e = maps[toMap].Parts.Enemies.Find(en => en.EntityID == toEntity);
+                MSBS.Part.Enemy eSource = maps[fromMap].Parts.Enemies.Find(en => en.EntityID == fromEntity);
                 if (e == null) throw new Exception($"Internal error: can't find {toEntity} in {toMap} for {spec}");
+                if (eSource == null) throw new Exception($"Internal error: can't find {fromEntity} in {fromMap} for {spec}");
                 Dictionary<int, RegionTarget> res = new Dictionary<int, RegionTarget>();
                 if (type == "chrpoint")
                 {
@@ -1046,6 +1152,21 @@ namespace RandomizerCommon
                         (MSBS.Region a, MSBS.Region b) = getRegionCopy(fromMap, toMap, region, replace);
                         b.Position = e.Position;
                         b.Rotation = e.Rotation;
+                        res[region] = RegionTarget.ID(b.EntityID);
+                    }
+                }
+                else if (type == "chrrel")
+                {
+                    foreach (int region in regions)
+                    {
+                        (MSBS.Region a, MSBS.Region b) = getRegionCopy(fromMap, toMap, region, replace);
+                        // Get the relative position from chr to region a
+                        Vector3 relPos = Vector3.Subtract(a.Position, eSource.Position);
+                        relPos = Vector3.Transform(relPos, Matrix4x4.CreateFromYawPitchRoll(-eSource.Rotation.Y * (float)Math.PI / 180, 0, 0));
+                        Vector3 offPos = Vector3.Transform(relPos, Matrix4x4.CreateFromYawPitchRoll(e.Rotation.Y * (float)Math.PI / 180, 0, 0));
+                        offPos = Vector3.Add(offPos, e.Position);
+                        b.Position = offPos;
+                        b.Rotation = new Vector3(0, a.Rotation.Y - eSource.Rotation.Y + e.Rotation.Y, 0);
                         res[region] = RegionTarget.ID(b.EntityID);
                     }
                 }
@@ -1195,7 +1316,10 @@ namespace RandomizerCommon
                 }
                 else if (type.StartsWith("dist"))
                 {
-                    int dist = int.Parse(type.Substring(4));
+                    int dist;
+                    // Small hack to make True Monk not so hard to find in Dragon arena, albeit a pretty bad hack
+                    if (type == "distdragon") dist = toEntity == 2500800 ? 30 : 10;
+                    else dist = int.Parse(type.Substring(4));
                     foreach (int region in regions)
                     {
                         // Put negative number as convention to replace in/out conditions with distance
@@ -1231,7 +1355,7 @@ namespace RandomizerCommon
                 }
             }
 
-            // Do NPC param edits
+            // Do NPC param edits, before duplicating them
 
             // Remove butterfly invisibility (3509210)
             Params["NpcParam"][50900001]["spEffectId25"].Value = -1;
@@ -1241,6 +1365,17 @@ namespace RandomizerCommon
             owl2Npc["ModelDispMask2"].Value = (byte)1;
             owl2Npc["ModelDispMask3"].Value = (byte)0;
             owl2Npc["ModelDispMask4"].Value = (byte)1;
+
+            // Mark Old Dragons so that they can have vanilla behavior in their boss fight
+            Params["NpcParam"][53000010]["spEffectId24"].Value = 3530001;
+            Params["NpcParam"][53000011]["spEffectId24"].Value = 3530001;
+            Params["NpcParam"][53000012]["spEffectId24"].Value = 3530001;
+
+            // Show Divine Dragon always. This will make it appear early in the divine realm as well.
+            if (opt["bosses"] || preset != null)
+            {
+                Params["NpcParam"][52000000]["ModelDispMask10"].Value = (byte)1;
+            }
 
             // Duplicate npc params
             // For bosses, make a copy of them with XP drops (Experience) and money drops (getSoul)
@@ -1268,18 +1403,21 @@ namespace RandomizerCommon
                 int baseNpc = defaultData[source].NPC;
                 PARAM.Row row = duplicateNpcParam(baseNpc);
                 // Sen
-                row["getSoul"].Value = info.SourcePhases * (info.HasTag("early") ? reward.Next(50, 100) : (info.HasTag("mid") ? reward.Next(100, 150) : reward.Next(100, 200)));
-                // XP - more lenient values, closer to minibosses
-                // row["Experience"].Value = info.SourcePhases * (info.HasTag("early") ? reward.Next(100, 200) : (info.HasTag("mid") ? reward.Next(150, 250) : reward.Next(200, 300)));
-                // XP - more strict values, closer to regular enemies, since they can just fall off
-                row["Experience"].Value = info.SourcePhases * (info.HasTag("early") ? reward.Next(25, 50) : (info.HasTag("mid") ? reward.Next(50, 75) : reward.Next(50, 100)));
+                int amt = info.HasTag("early") ? reward.Next(50, 100) : (info.HasTag("mid") ? reward.Next(100, 150) : reward.Next(100, 200));
+                row["getSoul"].Value = info.SourcePhases * amt;
+                // XP - more lenient or strict values, closer to minibosses or to regular enemies. Note that many bosses can just fall off and die pretty easily. So do something in between
+                // amt = info.HasTag("early") ? reward.Next(100, 200) : (info.HasTag("mid") ? reward.Next(150, 250) : reward.Next(200, 300));
+                // amt = info.HasTag("early") ? reward.Next(25, 50) : (info.HasTag("mid") ? reward.Next(50, 75) : reward.Next(50, 100));
+                amt = info.HasTag("early") ? reward.Next(50, 100) : (info.HasTag("mid") ? reward.Next(100, 150) : reward.Next(150, 200));
+                row["Experience"].Value = info.SourcePhases * amt / (opt["splitskills"] ? 5 : 1);
                 row["disableIntiliazeDead"].Value = (byte)0;
                 bossAsBasicNpc[source] = (int)row.ID;
             }
 
             // Lazily make copies of regular enemies as specific bosses/minibosses, will basically only apply in 'oops all' mode.
             // Miniboss targets should only occur once so this does not need to be memoized.
-            List<string> basicBuffFields = new List<string> { "Experience", "getSoul", "Hp", "stamina", "staminaRecoverBaseVal", "HealthbarNum" };
+            List<string> basicBuffFields = new List<string> { "Experience", "getSoul", "Hp", "stamina", "staminaRecoverBaseVal" };
+            SortedSet<int> noDeathblow = ann.GetGroup("nodeathblow");
             int getBasicAsBoss(int source, int target)
             {
                 int baseNpc = defaultData[source].NPC;
@@ -1287,9 +1425,6 @@ namespace RandomizerCommon
 
                 PARAM.Row targetRow = Params["NpcParam"][defaultData[target].NPC];
                 if (targetRow == null) return baseNpc;
-
-                string model = game.ModelName(defaultData[source].Model);
-                if (ann.NoDeathblow != null && ann.NoDeathblow.Contains(model)) return baseNpc;
 
                 PARAM.Row row = duplicateNpcParam(baseNpc);
                 foreach (string field in basicBuffFields)
@@ -1306,7 +1441,7 @@ namespace RandomizerCommon
                     }
                     row[field].Value = newVal;
                 }
-                if (infos.TryGetValue(target, out EnemyInfo targetInfo) && targetInfo.IsBossTarget)
+                if (!noDeathblow.Contains(source) && infos.TryGetValue(target, out EnemyInfo targetInfo) && targetInfo.IsBossTarget)
                 {
                     row["HealthbarNum"].Value = (byte)targetInfo.Phases;
                 }
@@ -1330,7 +1465,7 @@ namespace RandomizerCommon
                 // If too many of a given type of enemy and all of their helpers, the game will crash.
                 if (totalTargetCounts.TryGetValue(source, out int targetCount) && targetCount >= amount)
                 {
-                    // In some cases, perhaps allow a propotional approach
+                    // In some cases, allow a proportional approach
                     if (lenient) return target.GetHashCode() % targetCount < amount;
                     return false;
                 }
@@ -1340,13 +1475,18 @@ namespace RandomizerCommon
             bool enableMultichr(int source, int target)
             {
                 if (!multichrSwitch) return false;
+                // Hirata Masanaga. Don't forbid replacement from having dogs past the limit, but limit the global number of dogs.
                 if (source == 1000353 && !withinMaxAllowed(source, target, 60, true)) return false;
+                // True Monk does not need helpers
                 if (source == 2500850 && !withinMaxAllowed(source, target, 60)) return false;
+                // Lady Butterfly has a ton of helpers
                 if (source == 1000810 && !withinMaxAllowed(source, target, 40)) return false;
+                // Divine Dragon adds a ridiculous number of objects, so only allow named targets to be dragon
+                if (source == 2500800 && infos[target].DragonArenaData == null) return false;
                 return true;
             }
             int partsNeeded = totalTargetCounts.Where(s => infos[s.Key].HasTag("npcpart")).Sum(s => s.Value);
-            // This seems to be a safe global limit. There can be no more than a handful of npc parts loaded at once.
+            // This seems to be a safe global limit. There can be no more than a handful of npc parts loaded at once locally.
             bool partsRestricted = partsNeeded >= 48;
 
             foreach (KeyValuePair<string, MSBS> entry in maps)
@@ -1369,6 +1509,12 @@ namespace RandomizerCommon
                         mused.Add(e.ModelName);
                     }
                 }
+                HashSet<string> mdeclObj = new HashSet<string>();
+                foreach (MSBS.Model.Object model in msb.Models.Objects)
+                {
+                    mdeclObj.Add(model.Name);
+                    // Console.WriteLine($"Object decl {model.Name}: placeholder {model.Placeholder} unk1c {model.Unk1C} type {model.Type}");
+                }
 
                 // Enemy stuff
                 HashSet<string> laterEnemies = new HashSet<string> { "c1361", "c1700", "c1470" };
@@ -1384,6 +1530,18 @@ namespace RandomizerCommon
                             Placeholder = $@"N:\NTC\data\Model\chr\{name}\sib\{name}.sib",
                         });
                         mdecl.Add(name);
+                    }
+                }
+                void useObjectModel(string name)
+                {
+                    if (!mdeclObj.Contains(name))
+                    {
+                        msb.Models.Objects.Add(new MSBS.Model.Object
+                        {
+                            Name = name,
+                            Placeholder = $@"N:\NTC\data\Model\obj\{name.Substring(0, 3)}\{name}\sib\{name}.sib",
+                        });
+                        mdeclObj.Add(name);
                     }
                 }
                 foreach (EnemyPermutation silo in silos.Values)
@@ -1405,7 +1563,7 @@ namespace RandomizerCommon
                         {
                             e.NPCParamID = sourceNpc;
                         }
-                        else if ((infos[source].Class == EnemyClass.Basic || infos[source].Class == EnemyClass.FoldingMonkey) && infos[target].IsNamedTarget)
+                        else if ((infos[source].Class == EnemyClass.Basic || infos[source].Class == EnemyClass.FoldingMonkey || infos[source].Class == EnemyClass.OldDragon) && infos[target].IsNamedTarget)
                         {
                             e.NPCParamID = getBasicAsBoss(source, target);
                         }
@@ -1429,6 +1587,14 @@ namespace RandomizerCommon
                                 e.Position = new Vector3(-239.089f, -787.188f, 583.271f);
                             }
                         }
+                        if (source == 2500800)
+                        {
+                            if (infos[target].DragonArenaData != null && infos[target].DragonTrees != null)
+                            {
+                                e.Position = infos[target].DragonArenaData.Pos;
+                                e.Rotation = infos[target].DragonArenaData.Rot;
+                            }
+                        }
                         // Seven Spears can get some big enemies stuck in the Moon-View Tower
                         if (target == 1120530)
                         {
@@ -1443,6 +1609,16 @@ namespace RandomizerCommon
                             if (infos[source].IsBossTarget || infos[source].EnemyType == "chainedogre")
                             {
                                 e.Position = new Vector3(-234.235f, -190.218f, 517.457f);
+                            }
+                        }
+                        if (target == 2500800)
+                        {
+                            e.Position = new Vector3(-22.610f, 388.983f, 318.763f);
+                            MSBS.Part.Object treeObj = msb.Parts.Objects.Find(o => o.EntityID == 2501815);
+                            if (treeObj != null)
+                            {
+                                treeObj.Position = e.Position;
+                                treeObj.Rotation = new Vector3(0, 90, 0);
                             }
                         }
                         if (infos[source].HasTag("hidden"))
@@ -1509,7 +1685,30 @@ namespace RandomizerCommon
                                 ownerMap[target2] = entry.Key;
                             }
                         }
-                        // And remove them from this current map
+                        if (objectOwners.TryGetValue(source, out helpers))
+                        {
+                            MSBS sourceMsb = maps[defaultData[source].Map];
+                            List<MSBS.Part.Object> objects = sourceMsb.Parts.Objects.Where(o => helpers.Contains(o.EntityID)).ToList();
+                            if (objects.Count != helpers.Count) throw new Exception($"Not all required objects {string.Join(",", helpers)} found in map of {ename(source)}");
+                            foreach (MSBS.Part.Object o in objects)
+                            {
+                                if (!enableMultichr(source, target)) continue;
+                                MSBS.Part.Object e2 = new MSBS.Part.Object(o);
+                                // TODO: Anything to do with Unk1Struct?
+                                int target2 = newEntity();
+                                e2.EntityID = target2;
+                                e2.Name = $"{e2.ModelName}_{helperModelBase++:d4}";
+                                if (e2.ObjPartName3 != null)
+                                {
+                                    e2.ObjPartName3 = defaultData[target].Col;
+                                }
+                                for (int i = 0; i < e2.EntityGroupIDs.Length; i++) e2.EntityGroupIDs[i] = -1;
+                                msb.Parts.Objects.Add(e2);
+                                useObjectModel(e2.ModelName);
+                                helperMapping[(target, o.EntityID)] = target2;
+                            }
+                        }
+                        // And remove them from this current map, to avoid having to be strict about removing all emevd references
                         if (owners.TryGetValue(target, out List<int> helpers2))
                         {
                             msb.Parts.Enemies = msb.Parts.Enemies.Where(p => !(helpers2.Contains(p.EntityID) && infos[p.EntityID].Class == EnemyClass.Helper)).ToList();
@@ -1524,6 +1723,45 @@ namespace RandomizerCommon
                 msb.Events.Generators = msb.Events.Generators.Where(t => t.SpawnPartNames.All(n => n == null || names.Contains(n))).ToList();
 
                 msb.Models.Enemies = msb.Models.Enemies.Where(e => mused.Contains(e.Name)).OrderBy(e => e.Name).ToList();
+                if (false && map == "ashinaoutskirts")
+                {
+                    MSBS f = maps["m25_00_00_00"];
+                    msb.Models.Enemies.AddRange(f.Models.Enemies);
+                    msb.Models.Objects.AddRange(f.Models.Objects);
+                    msb.Models.Collisions.AddRange(f.Models.Collisions);
+                    msb.Models.MapPieces.AddRange(f.Models.MapPieces);
+                    foreach (MSBS.Part.DummyObject d in f.Parts.DummyObjects)
+                    {
+                        MSBS.Part.DummyObject m = new MSBS.Part.DummyObject(d);
+                        if (m.ObjPartName1 != null) m.ObjPartName1 = "h018100";
+                        if (m.ObjPartName3 != null) m.ObjPartName3 = "h018100";
+                        msb.Parts.DummyObjects.Add(m);
+                    }
+                    foreach (MSBS.Part.DummyEnemy d in f.Parts.DummyEnemies)
+                    {
+                        MSBS.Part.DummyEnemy m = new MSBS.Part.DummyEnemy(d);
+                        if (m.CollisionPartName != null) m.CollisionPartName = "h018100";
+                        msb.Parts.DummyEnemies.Add(m);
+                    }
+                    // msb.Parts.DummyObjects.AddRange(f.Parts.DummyObjects);
+                    // msb.Parts.DummyEnemies.AddRange(f.Parts.DummyEnemies);
+                    foreach (MSBS.Part.ConnectCollision col in msb.Parts.ConnectCollisions)
+                    {
+                        // col.MapID[0] = 25; col.MapID[1] = col.MapID[2] = col.MapID[3] = 0;
+                    }
+                    // = msb.Parts.ConnectCollisions.Find(c => c.CollisionName == "h018100");
+                }
+                if (false && map == "fountainhead")
+                {
+                    MSBS.Part.Enemy d = msb.Parts.Enemies.Find(e => e.EntityID == 2500800);
+                    // d.Position = new Vector3(-23.323f, 388.980f, 293.266f);
+                    // msb.Parts.Objects.RemoveAll(e => e.EntityID == 2501815);
+                    MSBS.Part.MapPiece p = msb.Parts.MapPieces.Find(e => e.ModelName == "m699999");
+                    p.Placeholder = "";
+                    HashSet<string> forRegion = new HashSet<string>(msb.Regions.GetEntries().Select(r => r.ActivationPartName));
+                    forRegion.UnionWith(msb.Parts.Objects.SelectMany(n => new[] { n.ObjPartName1, n.ObjPartName2, n.ObjPartName3 }));
+                    // msb.Parts.MapPieces.RemoveAll(v => !forRegion.Contains(v.Name));
+                }
             }
 
             // It's emevd t ime
@@ -1567,7 +1805,11 @@ namespace RandomizerCommon
                     if (startEvents.TryGetValue(id, out EnemyTemplate start))
                     {
                         EventEdits edits = new EventEdits();
-                        events.RemoveMacro(edits, start.StartCmd);
+                        foreach (string remove in phraseRe.Split(start.StartCmd))
+                        {
+                            events.RemoveMacro(edits, remove);
+                        }
+                        // events.RemoveMacro(edits, start.StartCmd);
                         for (int i = 0; i < e.Instructions.Count; i++)
                         {
                             Instr instr = events.Parse(e.Instructions[i]);
@@ -1588,8 +1830,8 @@ namespace RandomizerCommon
                 .SelectMany(ev => ev.Template.Where(t => t.Type.StartsWith("start") && t.Entity != 0 && t.Camera != null))
                 .ToDictionary(t => t.Entity, t => int.Parse(t.Camera));
             // Map from (full source id, target map) -> partial target id
-            Dictionary<(int, int), int> movedCameraSets = new Dictionary<(int, int), int>();
-            int TransplantCameraParam(int id, int source, int target)
+            Dictionary<(string, int, int), int> movedCameraSets = new Dictionary<(string, int, int), int>();
+            int TransplantParamSet(int id, int source, int target, string param = "CameraSetParam")
             {
                 // Camera set param is like 1102500. Entity id is like 1120830. At least for now, rely on entity id format to determine map.
                 // Get camera id base id for entity
@@ -1602,23 +1844,23 @@ namespace RandomizerCommon
                 int sourceMap = getFullCameraSet(source);
                 int targetMap = getFullCameraSet(target);
                 int sourceId = sourceMap + id;
-                PARAM.Row sourceRow = Params["CameraSetParam"][sourceId];
-                if (sourceRow == null) throw new Exception($"Error transplating camera {id} from {source} to {target}: source camera {sourceId} not found");
-                if (!movedCameraSets.TryGetValue((sourceId, targetMap), out int targetId))
+                PARAM.Row sourceRow = Params[param][sourceId];
+                if (sourceRow == null) throw new Exception($"Error transplating {param} {id} from {source} to {target}: source {sourceId} not found");
+                if (!movedCameraSets.TryGetValue((param, sourceId, targetMap), out int targetId))
                 {
                     targetId = 0;
                     for (int i = 500; i < 600; i++)
                     {
-                        if (Params["CameraSetParam"][targetMap + i] == null)
+                        if (Params[param][targetMap + i] == null)
                         {
                             targetId = i;
                             break;
                         }
                     }
-                    if (targetId == 0) throw new Exception("Could not transplant camera??");
-                    PARAM.Row targetRow = game.AddRow("CameraSetParam", targetMap + targetId);
+                    if (targetId == 0) throw new Exception($"Could not transplant {param}??");
+                    PARAM.Row targetRow = game.AddRow(param, targetMap + targetId);
                     GameEditor.CopyRow(sourceRow, targetRow);
-                    movedCameraSets[(sourceId, targetMap)] = targetId;
+                    movedCameraSets[(param, sourceId, targetMap)] = targetId;
                 }
                 return targetId;
             }
@@ -1631,6 +1873,7 @@ namespace RandomizerCommon
             Dictionary<(int, int), int> nameIds = new Dictionary<(int, int), int>();
             int GetCleverName(int id, int source, int target)
             {
+                if (!opt["edittext"]) return id;
                 if (source == target) return id;
                 // If they have the same full name, keep it as is to avoid duplication
                 if (infos[source].FullName != null && infos[source].FullName == infos[target].FullName) return id;
@@ -1789,7 +2032,7 @@ namespace RandomizerCommon
                                 {
                                     continue;
                                 }
-                                // Unused feature: source-target pair. This was needed at some point, but keeping it in any case.
+                                // Source-target pair
                                 if (t.Transfer > 0 && t.Transfer != source)
                                 {
                                     continue;
@@ -1824,11 +2067,14 @@ namespace RandomizerCommon
                             if (entity != 0)
                             {
                                 reloc[entity] = target;
-                                if (t.Type.StartsWith("multichr") && owners.TryGetValue(entity, out List<int> helpers))
+                                if (t.Type.StartsWith("multichr"))
                                 {
-                                    foreach (int helper in helpers)
+                                    List<int> allHelpers = new List<int>();
+                                    if (owners.TryGetValue(entity, out List<int> helpers)) allHelpers.AddRange(helpers);
+                                    if (objectOwners.TryGetValue(entity, out helpers)) allHelpers.AddRange(helpers);
+                                    foreach (int helper in allHelpers)
                                     {
-                                        if (infos[helper].Class != EnemyClass.Helper) continue;
+                                        if (infos.ContainsKey(helper) && infos[helper].Class != EnemyClass.Helper) continue;
                                         if (helperMapping.TryGetValue((target, helper), out int helperTarget))
                                         {
                                             reloc[helper] = helperTarget;
@@ -1891,28 +2137,70 @@ namespace RandomizerCommon
                             EventEdits edits = new EventEdits();
                             if (t.Remove != null)
                             {
-                                foreach (string remove in Regex.Split(t.Remove, @"\s*;\s*"))
+                                foreach (string remove in phraseRe.Split(t.Remove))
                                 {
                                     events.RemoveMacro(edits, remove);
                                 }
                             }
                             if (t.RemoveDupe != null && target != 0 && !infos[target].IsBossTarget)
                             {
-                                foreach (string remove in Regex.Split(t.RemoveDupe, @"\s*;\s*"))
+                                foreach (string remove in phraseRe.Split(t.RemoveDupe))
                                 {
                                     events.RemoveMacro(edits, remove);
                                 }
                             }
+                            if (t.TreeDragons != null)
+                            {
+                                // This isn't used exactly anymoe, since ineligible tree dragons can't be removed without affecting the final deathblow thing
+                                string[] parts = phraseRe.Split(t.TreeDragons);
+                                if (!events.ParseArgSpec(parts[0], out int entityPos)) throw new Exception($"Bad tree spec {parts[0]} in {t.TreeDragons} for {callee}");
+                                bool removeTree = true;
+                                if (infos[target].DragonTreeList != null)
+                                {
+                                    int dragon = (int)init[entityPos + init.Offset];
+                                    int dragonIndex = treeDragonOrder.IndexOf(dragon);
+                                    if (infos[target].DragonTreeList.Contains(dragonIndex))
+                                    {
+                                        removeTree = false;
+                                    }
+                                }
+                                if (removeTree)
+                                {
+                                    foreach (string remove in parts.Skip(1))
+                                    {
+                                        events.RemoveMacro(edits, remove);
+                                    }
+                                }
+                            }
+                            if (t.TreeDragonFlags != null)
+                            {
+                                if (infos[target].DragonTreeList != null)
+                                {
+                                    List<int> flags = t.TreeDragonFlags.Split(' ').Select(p => int.Parse(p)).ToList();
+                                    int oldFlagBase = flags[0];
+                                    int newFlagBase = flags[1];
+                                    int minDragon = infos[target].DragonTreeList.Min();
+                                    int maxDragon = infos[target].DragonTreeList.Max();
+                                    events.ReplaceMacro(edits, $"Randomly Set Event Flag In Range ({oldFlagBase} -> {newFlagBase + minDragon},{oldFlagBase + treeDragonOrder.Count() - 1} -> {newFlagBase + maxDragon},1)");
+                                }
+                                else
+                                {
+                                    events.RemoveMacro(edits, "Randomly Set Event Flag In Range");
+                                }
+                            }
                             if (t.Replace != null)
                             {
-                                foreach (string replace in Regex.Split(t.Replace, @"\s*;\s*"))
+                                foreach (string replace in phraseRe.Split(t.Replace))
                                 {
                                     events.ReplaceMacro(edits, replace);
                                 }
                             }
                             if (t.StartCmd != null)
                             {
-                                events.RemoveMacro(edits, t.StartCmd);
+                                foreach (string remove in phraseRe.Split(t.StartCmd))
+                                {
+                                    events.RemoveMacro(edits, remove);
+                                }
                             }
                             // Also edit conditional flags present in both the event and the target
                             if (entity > 0 && infos.ContainsKey(target))
@@ -1933,7 +2221,15 @@ namespace RandomizerCommon
                                 }
                                 if (t.StartFlag != 0)
                                 {
-                                    if (targetInfo.StartFlag == 0)
+                                    if (t.StartFlag == -1)
+                                    {
+                                        if (targetInfo.StartFlag != 0)
+                                        {
+                                            // This is a feature to add a start flag to inference-heavy events
+                                            events.AddMacro(edits, null, false, $"IF Event Flag (0,1,0,{targetInfo.StartFlag})");
+                                        }
+                                    }
+                                    else if (targetInfo.StartFlag == 0)
                                     {
                                         // TODO: To what extent is this needed
                                         if (targetInfo.IsBossTarget) throw new Exception($"{target} has no start flag defined, but was randomized to {entity} in {callee}");
@@ -1960,7 +2256,7 @@ namespace RandomizerCommon
                             if (t.Camera != null)
                             {
                                 if (t.Entity == 0) throw new Exception($"Internal error: Camera defined for {callee} but no owner entity");
-                                List<int> cameras = Regex.Split(t.Camera, @"\s*;\s*").Select(c => int.Parse(c)).ToList();
+                                List<int> cameras = phraseRe.Split(t.Camera).Select(c => int.Parse(c)).ToList();
                                 if (entity == 0)
                                 {
                                     // Moving camera from other entity to this one, a boss, at the start
@@ -1970,7 +2266,7 @@ namespace RandomizerCommon
                                     {
                                         foreach (int camera in cameras)
                                         {
-                                            int targetCamera = TransplantCameraParam(startCamera, cameraSource, t.Entity);
+                                            int targetCamera = TransplantParamSet(startCamera, cameraSource, t.Entity);
                                             events.ReplaceMacro(edits, $"Set Area CameraSetParam SubID ({camera} -> {targetCamera})");
                                         }
                                     }
@@ -1985,19 +2281,29 @@ namespace RandomizerCommon
                                 else
                                 {
                                     // Moving camera from this entity to the target
+                                    // Also support wire sets here for Divine Dragon only currently
                                     if (infos[target].IsBossTarget)
                                     {
                                         foreach (int camera in cameras)
                                         {
-                                            int targetCamera = TransplantCameraParam(camera, entity, target);
-                                            events.ReplaceMacro(edits, $"Set Area CameraSetParam SubID ({camera} -> {targetCamera})");
+                                            if (camera > 0)
+                                            {
+                                                int targetCamera = TransplantParamSet(camera, entity, target);
+                                                events.ReplaceMacro(edits, $"Set Area CameraSetParam SubID ({camera} -> {targetCamera})");
+                                            }
+                                            else
+                                            {
+                                                int targetCamera = TransplantParamSet(-camera, entity, target, "WireSetParam");
+                                                events.ReplaceMacro(edits, $"Set Wire Searchability ({-camera} -> {targetCamera})");
+                                            }
                                         }
                                     }
                                     else
                                     {
                                         foreach (int camera in cameras)
                                         {
-                                            events.ReplaceMacro(edits, $"Set Area CameraSetParam SubID ({camera} -> -1)");
+                                            if (camera > 0) events.ReplaceMacro(edits, $"Set Area CameraSetParam SubID ({camera} -> -1)");
+                                            else events.RemoveMacro(edits, $"Set Wire Searchability ({-camera})");
                                         }
                                     }
                                 }
@@ -2115,7 +2421,7 @@ namespace RandomizerCommon
                                         instr.Save();
                                     }
                                 }
-                                events.ApplyAdds(edits, e2);
+                                events.ApplyAdds(edits, e2, pre);
                                 if (t.Type.StartsWith("start"))
                                 {
                                     int source = revMapping[t.Entity];
@@ -2124,7 +2430,7 @@ namespace RandomizerCommon
                                         Dictionary<int, int> bossReplace = new Dictionary<int, int> { { source, t.Entity } };
                                         foreach (EMEVD.Instruction cmd in cmds)
                                         {
-                                            Instr instr = events.Parse(cmd);
+                                            Instr instr = events.Parse(events.CopyInstruction(cmd));
                                             events.RewriteInts(instr, bossReplace);
                                             instr.Save();
                                             e2.Instructions.Add(instr.Val);
@@ -2286,6 +2592,27 @@ namespace RandomizerCommon
                         }
                     }
                 }
+                // Make non-tree Divine Dragon easily killable, or other one hard to kill
+                if (source == 2500800)
+                {
+                    EMEVD.Event ev = new EMEVD.Event(NewID(true), EMEVD.Event.RestBehaviorType.Restart);
+                    if (enableMultichr(source, target))
+                    {
+                        ev.Instructions.Add(events.ParseAdd($"IF Entity In/Outside Radius Of Entity (0,1,10000,{target},15,1)"));
+                        ev.Instructions.Add(events.ParseAdd($"Set Character Invincibility ({target},1)"));
+                        ev.Instructions.Add(events.ParseAdd($"IF Entity In/Outside Radius Of Entity (0,0,10000,{target},15,1)"));
+                        ev.Instructions.Add(events.ParseAdd($"Set Character Invincibility ({target},0)"));
+                        ev.Instructions.Add(events.ParseAdd($"END Unconditionally (1)"));
+                    }
+                    else
+                    {
+                        ev.Instructions.Add(events.ParseAdd($"IF Character HP Value (0,{target},5,1,0,1)"));
+                        ev.Instructions.Add(events.ParseAdd($"Force Character Death ({target},1)"));
+                    }
+                    EMEVD.Instruction init = new EMEVD.Instruction(2000, 0, new List<object> { 0, (uint)ev.ID, (uint)0 });
+                    AddMulti(newInitializations, ownerMap[target], (init, ev));
+                }
+
                 int baseGameTarget = target;
                 if (!infos.ContainsKey(target) && infos[source].OwnedBy > 0)
                 {
@@ -2398,8 +2725,11 @@ namespace RandomizerCommon
             }
 
             // Other param edits
-            // Most minibosses in earlier spots are manageable, but, Sakura Bull is a bit too tanky. Bring it down to Blazing Bull level
-            if (mapping.TryGetValue(2500570, out List<int> sakuraTarget) && infos[sakuraTarget[0]].HasTag("early")) Params["NpcParam"][13800000]["Hp"].Value = 2232;
+            // Most minibosses in earlier spots are manageable, but, Sakura Bull is a bit too tanky. Bring it down to Blazing Bull level if scaling is not otherwise enabled
+            if (!opt["scale"] && mapping.TryGetValue(2500570, out List<int> sakuraTarget) && infos[sakuraTarget[0]].HasTag("early"))
+            {
+                Params["NpcParam"][13800000]["Hp"].Value = 2232;
+            }
 
             if (false && revMapping.TryGetValue(1500800, out int newMonk) && totalTargetCounts.TryGetValue(newMonk, out int monkAmount) && monkAmount == 1)
             {
@@ -2411,6 +2741,16 @@ namespace RandomizerCommon
             GameEditor.CopyRow(Params["ThrowKindParam"][250000], Params["ThrowKindParam"][250001]);
             Params["ThrowKindParam"][250001]["Mask4"].Value = (byte)0xFF;
             Params["ThrowParam"][15400590]["ThrowKindParamID0"].Value = 250001;
+            // And also Divine Dragon
+            Params["ThrowParam"][15200090]["ThrowKindParamID0"].Value = 250001;
+            if (mapping.ContainsKey(2500800))
+            {
+                Params["ThrowParam"][15200090]["Dist"].Value = (float)16;
+                Params["ThrowParam"][15200090]["UpperYrange"].Value = (float)20;
+                Params["ThrowParam"][15200090]["LowerYrange"].Value = (float)20;
+                // Plus remove Divine Dragon blowback behavior as it easily sends the player straight out of bounds, if dragon is moved anywhere
+                Params["Bullet"].Rows.RemoveAll(r => r.ID == 52000830);
+            }
 
             // Return item info
             Dictionary<string, List<string>> named = new Dictionary<string, List<string>>();
@@ -2430,6 +2770,8 @@ namespace RandomizerCommon
             }
             return new EnemyLocations { Target = named };
         }
+
+        private static readonly Regex phraseRe = new Regex(@"\s*;\s*");
 
         public class BossPhaseLimit
         {

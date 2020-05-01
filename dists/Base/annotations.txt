@@ -748,6 +748,11 @@ ItemPriority:
     ID: 3:2462
   - Name: 'Breath of Nature: Shadow'
     ID: 3:2481
+  # Some nice skills to have
+  - Name: Empowered Mortal Draw
+    ID: 0:612100
+  - Name: Devotion
+    ID: 0:660500
 - ExcludeTags: exclusive nopermanent
   Names:
   - Divine Grass

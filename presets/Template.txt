@@ -24,21 +24,21 @@ OopsAll: none
 
 # Which enemies can be used as sources for bosses?
 # The default for this is other bosses.
-# There are 16 bosses in the game.
+# There are 17 randomized bosses in the game.
 Boss:
 - Weight: 100
   Pool: default
 
 # Which enemies can be used as sources for minibosses?
 # The default for this is other minibosses.
-# There are 32 minibosses in the game (plus 3 headless).
+# There are 32 randomized minibosses in the game (plus 3 randomized headless).
 Miniboss:
 - Weight: 100
   Pool: default
 
 # Which enemies can be used as sources for all other enemies?
 # The default for this is other regular enemies.
-# There are ~1100 basic enemies in the game.
+# There are ~1100 randomized basic enemies in the game.
 Basic:
 - Weight: 100
   Pool: default
@@ -108,6 +108,7 @@ Enemies:
   Folding Screen Monkey (Invisible) 2000804: any
   # Fountainhead Palace
   True Monk 2500850: any
+  Divine Dragon 2500800: any
 
   # Minibosses
   # Hirata Estate
@@ -1288,6 +1289,20 @@ Enemies:
   Okami Warrior 2500451: any
   Okami Warrior 2500452: any
   Okami Warrior 2500453: any
+  Old Dragon 2500811: any
+  Old Dragon 2500813: any
+  Old Dragon 2500814: any
+  Old Dragon 2500815: any
+  Old Dragon 2500816: any
+  Old Dragon 2500817: any
+  Old Dragon 2500818: any
+  Old Dragon 2500819: any
+  Old Dragon 2500820: any
+  Old Dragon 2500821: any
+  Old Dragon 2500822: any
+  Old Dragon 2500823: any
+  Old Dragon 2500824: any
+  Old Dragon 2500825: any
 
 # Simple feature for key item placements.
 # Right now, allows placing items in logical areas or events, which are listed near the top of the item randomizer config (dists\Base\annotations.txt).

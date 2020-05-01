@@ -143,7 +143,10 @@ namespace RandomizerCommon
                     string model = game.ModelName(data.Model);
                     if (info.Class != EnemyClass.Boss && info.Category != null)
                     {
-                        names.Add($"{info.Category} {model}");
+                        foreach (string cat in Regex.Split(info.Category, @"\s*;\s*"))
+                        {
+                            names.Add($"{cat} {model}");
+                        }
                     }
                     if (info.Class == EnemyClass.Boss ? info.ExtraName == null : !bossNames.Contains(model))
                     {
@@ -207,18 +210,22 @@ namespace RandomizerCommon
                     Console.WriteLine();
                 }
             }
-            List<int> combinedBoss = new List<int>();
-            if (enemiesForName.TryGetValue("Boss", out List<int> specialIds))
+            foreach (EnemyCategory cat in cats)
             {
-                enemiesForName["Bosses"] = specialIds;
-                combinedBoss.AddRange(specialIds);
+                if (cat.Contains == null) continue;
+                List<int> combinedIds = new List<int>();
+                foreach (string sub in cat.Contains)
+                {
+                    if (enemiesForName.TryGetValue(sub, out List<int> specialIds))
+                    {
+                        combinedIds.AddRange(specialIds);
+                    }
+                }
+                if (combinedIds.Count > 0)
+                {
+                    enemiesForName[cat.Name] = combinedIds;
+                }
             }
-            if (enemiesForName.TryGetValue("Miniboss", out specialIds))
-            {
-                enemiesForName["Minibosses"] = specialIds;
-                combinedBoss.AddRange(specialIds);
-            }
-            enemiesForName["Boss and Miniboss"] = enemiesForName["Bosses and Minibosses"] = combinedBoss;
 
             // Process the config with these names
             List<string> errors = new List<string>();

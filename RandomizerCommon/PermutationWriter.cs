@@ -903,6 +903,15 @@ namespace RandomizerCommon
                     }
                     if (entry.Key == "common")
                     {
+                        // Copy event from Ashina Outskirts for getting grapple, to show green circle
+                        EMEVD.Event grappleEvent = emevds["m11_00_00_00"].Events.Find(e => e.ID == 11100620);
+                        if (grappleEvent != null)
+                        {
+                            grappleEvent = events.CopyEvent(grappleEvent, 929);
+                            entry.Value.Events.Add(grappleEvent);
+                            entry.Value.Events[0].Instructions.Add(new EMEVD.Instruction(2000, 0, new List<object> { 0, 929, 0 }));
+                        }
+
                         // Add custom event and item lot for granting display-only memories
                         // Use unused lot 3440 and unused event flag range 930-950ish
                         ItemKey memory = new ItemKey(ItemType.GOOD, 5400);

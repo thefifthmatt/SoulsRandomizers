@@ -40,7 +40,7 @@ namespace RandomizerCommon
             enemyseed.LostFocus += enemyseed_TextChanged;
 
             // The rest of initialization
-            RandomizerOptions initialOpts = new RandomizerOptions(false);
+            RandomizerOptions initialOpts = new RandomizerOptions(true);
             SetControlFlags(this, initialOpts);
             defaultOpts = initialOpts.FullString();
 
@@ -88,7 +88,7 @@ namespace RandomizerCommon
                 return false;
             }
             previousOpts = new HashSet<string>(defaultOpts.Split(' '));
-            options = RandomizerOptions.Parse(previousOpts, false, isValidOption);
+            options = RandomizerOptions.Parse(previousOpts, true, isValidOption);
 
             // New defaults
             if (previousOpts.Contains("v1"))
@@ -99,6 +99,7 @@ namespace RandomizerCommon
             if (previousOpts.Contains("v1") || previousOpts.Contains("v2"))
             {
                 options["scale"] = true;
+                options["edittext"] = true;
             }
 
             simultaneousUpdate = true;
@@ -114,7 +115,11 @@ namespace RandomizerCommon
             enemyseed.Text = options.Seed2 == 0 || options.Seed == options.Seed2 ? "" : $"{options.Seed2}";
             // Also need to set enemy seed. This may be done by enemyseed text change handler?
 
-            if (options.Preset != null)
+            if (options.Preset == null)
+            {
+                SetPreset(null);
+            }
+            else
             {
                 try
                 {

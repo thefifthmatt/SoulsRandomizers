@@ -3,7 +3,7 @@ A comprehensive enemy and item randomizer for Sekiro, including boss randomizati
 Things to definitely know for item randomizer:
 - The first castle invasion starts when you have Mortal Blade, Shelter Stone, and Lotus of the Palace; you have Isshin asked about the Mortal Blade location in the watchtower (talked to him twice); and you are in Senpou Temple/Sunken Valley/Ashina Depths/Hirata Temple.
 - You can get into Ashina Castle after the first invasion even if you can't swim underwater, through the Ashina Reservoir gate
-- To enter Hirata Estate without the Shinobi Prosthetic, do a precise running jump onto the tree branch you could otherwise grapple onto (see https://streamable.com/u7d7y). If you get stuck in water, you may have to use Homeward Idol to get out. The prosthetic activates as soon as you acquire it; even if you don't see green circles, you can still grapple.
+- To enter Hirata Estate without the Shinobi Prosthetic, do a precise running jump onto the tree branch you could otherwise grapple onto (see https://streamable.com/u7d7y). If you get stuck in water, you may have to use Homeward Idol to get out.
 
 Things to definitely know for enemy randomizer:
 - Game progression things that apply to enemies will apply to their replacements instead. e.g. killing Guardian Ape's replacement will spawn Headless Ape's replacement.
@@ -15,7 +15,7 @@ If you have issues installing the mod, or would like to provide feedback/partici
 
 To install and run:
 
-1. Download Sekiro Randomizer *and* Mod Engine Beta from the files page. You will also need to download Combined SFX if you haven't unpacked the game using UXM.
+1. From the Files tab of the mod page, download Sekiro Randomizer *and* Mod Engine Beta from the files page. You will also need to download Combined SFX if you haven't unpacked the game using UXM, and Divine Dragon Textures if you want Divine Dragon to have textures when randomized.
 
 2. Add the randomizer directory directly into the Sekiro.exe directory (*not* into an existing mods directory).
 
@@ -27,7 +27,7 @@ https://media.discordapp.net/attachments/319013592332763136/685713245063217189/m
 
 4. Change modengine.ini to have modOverrideDirectory="\randomizer", if it's not already.
 
-5. All enemy sfx must be combined. There are two ways to do this.
+5. All enemy sfx should be combined, since otherwise many of their attacks won't be visible. There are two ways to do this.
 
 5a. Download the sfx separately (76 MB download) and add the sfx directory into the randomizer directory.
 
@@ -35,9 +35,11 @@ https://media.discordapp.net/attachments/319013592332763136/685713250062565383/s
 
 5b. Alternatively, unpack Sekiro using UXM (needs about 14 GB disk space) and the randomizer will combine the SFX automatically on startup. This will take a few seconds. (After this, the sfx directory should match the above screenshots.)
 
-6. Run the randomizer. There is an experimental option to merge files from your 'mods' directory, if you have one, and those mod files will get added into the 'randomizer' directory. For some files this is a simple copy, but for others it has to merge them.
+6. Likewise, you can download the Divine Dragon texture files (18 MB download) so that more of the textures appear when Divine Dragon is moved to other maps. This doesn't affect the enemy, just the Sakura trees around it.
 
-7. Make sure that the randomizer succeeds (shows "Done" in the status bar), and then *close Sekiro if you have it open*, and start up Sekiro for changes to be reflected, and create a new save file.
+7. Run the randomizer. There is an experimental option to merge files from your 'mods' directory, if you have one, and those mod files will get added into the 'randomizer' directory. For some files this is a simple copy, but for others it has to merge them.
+
+8. Make sure that the randomizer succeeds (shows "Done" in the status bar), and then *close Sekiro if you have it open*, and start up Sekiro for changes to be reflected, and create a new save file.
 
 To uninstall, change back modOverrideDirectory="\mods", or delete the randomizer directory. The new version of mod engine will also work for previous mods, if you don't mind the extra memory allocation.
 
@@ -51,7 +53,7 @@ Misc general info:
 - The "Open Bell Demon's Temple" option allows you to get to Ashina Castle without defeating Gyoubu, although you must eventually go back to complete Isshin's quest. See https://streamable.com/fywve for a demonstration of this.
 
 Misc info about enemy randomizer:
-- Sword Saint Isshin and True Monk don't require Mortal Blade to deathblow.
+- Sword Saint Isshin, Divine Dragon, and True Monk don't require Mortal Blade to deathblow.
 - You can get to Genichiro, skipping Ashina Elite Jinsuke Saze, by going through a breakable wall down the stairs from the Ashina Dojo idol toward Isshin's watchtower
 
 Misc info about item randomizer:
@@ -61,10 +63,10 @@ Misc info about item randomizer:
 
 If you encounter any issues, like softlocks from inaccessible items or unbeatable enemies, feel free to report a bug. It will help a lot if you include the log in the 'spoiler_logs' folder, or at least the full first line of the log (starting with "Options and seed"). The seed by itself probably won't help.
 
-There are also some features I could implement in the future. Let me know if any of these would be interesting, or if you have any other suggestions:
+There are also some features I'm looking to implement in the future. Let me know if any of these would be interesting, or if you have any other suggestions:
+- Enemy Onslaught
+- Randomizing Bell Demon, Kusabimaru, or Healing Gourd
 - Adding boss vs boss or multi-boss fights
-- Randomizing enemies in Divine Dragon phase 1
-- Randomizing Bell Demon
 
 ### Presets
 The randomizer can be heavily customized using text files in the 'presets' folder. These can be selected in the UI under "Challenge runs" and add some significant challenge or fun to runs. You can also create your own: there is a template you can copy. Check out README.txt in the presets folder to learn more. Currently presets are more focused on enemy randomization, but there is some item randomizer customization support, and more coming in the future. Built-in presets include:
