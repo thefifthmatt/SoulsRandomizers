@@ -2145,7 +2145,7 @@ Slots:
   - Blessed Red and White Shield +1 - 3100740[Hanging Settlement Corpse [o319180_0004] @ settlement]
   Text: On a hanging corpse in the ravine accessible with the Grave Key or dropping down near Eygon, to the entrance of Irina's prison. Must be shot down with an arrow or projective.
   Area: settlement
-  Tags: unfair ng+
+  Tags: unfair
 - Key: '02,0:53100750::'
   DebugText:
   - Small Leather Shield - 3100750[Hanging Settlement Corpse [o319180_1020] @ settlement]
@@ -3269,6 +3269,7 @@ Slots:
 - Key: '04,0:53500480::'
   DebugText:
   - Drang Gauntlets - 3500480[Corpse [o000250_0048] @ cathedral]
+  Text: In the Giant Slave muck pit leading up to Deacons
   Area: cathedral
   Tags: late
 - Key: '04,0:53500490::'
@@ -3635,7 +3636,8 @@ Slots:
   - Speckled Stoneplate Ring - 3800300[Corpse [o000250_0030] @ catacombs]
   Text: Behind a destructible wall in Smouldering Lake which the ballista has to destroy
   Area: catacombs_lake
-  Tags: unfair ring
+  # May not be possible in enemy rando if ballista is randomized
+  Tags: missable
 - Key: '05,0:53800310::'
   DebugText:
   - Homeward Bone - 3800310[Corpse [o000250_0031] @ catacombs] (2)
@@ -6104,7 +6106,8 @@ Slots:
   - Twinkling Titanite - 31412002[Ancient Wyvern Mob [c3140_0003] @ archdragon] (3)
   Text: Dropped by the second Ancient Wyvern patrolling the path up to the Belfry
   Area: archdragon
-  Tags: late miniboss unfair
+  # Still possibly missable in enemy rando! If enemy stays on its perch with AI disabled, e.g. with Lorian
+  Tags: late enemy unfair
 - Key: '11,0:50002300::'
   DebugText:
   - Soul of Sister Friede - 2300[Sister Friede [c6020_0000] @ ariandel]
@@ -6693,7 +6696,7 @@ Slots:
   - Ember - 5000120[Corpse [o000250_0012] @ dregheap]
   Text: After exiting the building with the Lothric Knights where the front crumbles, to the last room end of the building to the right, up stairs past an illusory wall to the left, in the second-to-last room of the sequence, behind some crates to the left.
   Area: dregheap
-  Text: hidden outoftheway
+  Tags: hidden outoftheway
 - Key: '12,0:55000130::'
   DebugText:
   - Great Soul Dregs - 5000130[Corpse [o000250_0013] @ dregheap]

@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using SoulsFormats;
 using SoulsIds;
+using YamlDotNet.Serialization;
 using static RandomizerCommon.EnemyAnnotations;
 using static RandomizerCommon.Util;
+using static RandomizerCommon.AnnotationData;
+using static RandomizerCommon.LocationData;
+using static RandomizerCommon.LocationData.ItemScope;
 
 namespace RandomizerCommon
 {
@@ -13,6 +18,878 @@ namespace RandomizerCommon
     // Honestly this is probably more work than just listing every enemy in the game
     public class ReverseEnemyOrder
     {
+        public void FogDS3(GameData game, LocationData data, AnnotationData ann)
+        {
+            HashSet<int> allBonfires = new HashSet<int>
+            {
+                4001950,  // Firelink Shrine
+                4001951,  // Cemetery of Ash
+                4001952,  // Iudex Gundyr
+                4001953,  // Untended Graves
+                4001954,  // Champion Gundyr
+                3001950,  // High Wall of Lothric
+                // 3001960,  // High Wall of Lothric
+                3001955,  // Tower on the Wall
+                3001952,  // Vordt of the Boreal Valley
+                3001954,  // Dancer of the Boreal Valley
+                3001951,  // Oceiros, the Consumed King
+                // 3001959,  // High Wall of Lothric
+                // 3001958,  // High Wall of Lothric
+                3011950,  // Lothric Castle
+                3011952,  // Dragon Barracks
+                3011951,  // Dragonslayer Armour
+                3411951,  // Grand Archives
+                3411950,  // Twin Princes
+                3101954,  // Foot of the High Wall
+                3101950,  // Undead Settlement
+                3101952,  // Cliff Underside
+                3101953,  // Dilapidated Bridge
+                3101951,  // Pit of Hollows
+                3202900,  // - Archdragon Start
+                3201950,  // Archdragon Peak
+                3201953,  // Dragon-Kin Mausoleum
+                3201952,  // Great Belfry
+                3201951,  // Nameless King
+                3301956,  // Road of Sacrifices
+                3301950,  // Halfway Fortress
+                3301957,  // Crucifixion Woods
+                3301952,  // Crystal Sage
+                3301953,  // Farron Keep
+                3301954,  // Keep Ruins
+                3301958,  // Farron Keep Perimeter
+                3301955,  // Old Wolf of Farron
+                3301951,  // Abyss Watchers
+                3501953,  // Cathedral of the Deep
+                3501950,  // Cleansing Chapel
+                3501951,  // Deacons of the Deep
+                3501952,  // Rosaria's Bed Chamber
+                3701957,  // Irithyll of the Boreal Valley
+                3701954,  // Central Irithyll
+                3701950,  // Church of Yorshka
+                3701955,  // Distant Manor
+                3701951,  // Pontiff Sulyvahn
+                3701956,  // Water Reserve
+                3701953,  // Anor Londo
+                3701958,  // Prison Tower
+                3701952,  // Aldrich, Devourer of Gods
+                3801956,  // Catacombs of Carthus
+                3801950,  // High Lord Wolnir
+                3801951,  // Abandoned Tomb
+                3801952,  // Old King's Antechamber
+                3801953,  // Demon Ruins
+                3801954,  // Old Demon King
+                3901950,  // Irithyll Dungeon
+                3901952,  // Profaned Capital
+                3901951,  // Yhorm the Giant
+                4101950,  // Flameless Shrine
+                4101951,  // Kiln of the First Flame
+                4101952,  // The First Flame
+                4501951,  // Snowfield
+                4501952,  // Rope Bridge Cave
+                4501953,  // Corvian Settlement
+                4501954,  // Snowy Mountain Pass
+                4501955,  // Ariandel Chapel
+                4501950,  // Sister Friede
+                4501957,  // Depths of the Painting
+                4501956,  // Champion's Gravetender
+                5001951,  // The Dreg Heap
+                5001952,  // Earthen Peak Ruins
+                5001953,  // Within the Earthen Peak Ruins
+                5001950,  // The Demon Prince
+                5101952,  // Mausoleum Lookout
+                5101953,  // Ringed Inner Wall
+                5101954,  // Ringed City Streets
+                5101955,  // Shared Grave
+                5101950,  // Church of Filianore
+                5101951,  // Darkeater Midir
+                5111951,  // Filianore's Rest
+                5111950,  // Slave Knight Gael
+            };
+            Dictionary<int, string> extraPoints = new Dictionary<int, string>
+            {
+                [4000110] = "Cemetery Start",  // Player
+                [3202900] = "Archdragon Start",  // Spawn point
+            };
+
+
+            GameEditor editor = new GameEditor(GameSpec.FromGame.DS3);
+            Dictionary<string, FMG> menuFMGs = editor.LoadBnd($@"{editor.Spec.GameDir}\msg\engus\menu_dlc2.msgbnd.dcx", (p, n) => FMG.Read(p));
+
+            Dictionary<int, string> bonfireNames = new[] { "", "_dlc1", "_dlc2" }
+                .SelectMany(s => menuFMGs[$"FDP_\u30e1\u30cb\u30e5\u30fc\u30c6\u30ad\u30b9\u30c8{s}"].Entries)
+                .Where(e => !string.IsNullOrWhiteSpace(e.Text))
+                .ToDictionary(e => e.ID, e => e.Text);
+
+            Dictionary<int, string> names = new Dictionary<int, string>();
+            foreach (PARAM.Row r in game.Params["BonfireWarpParam"].Rows)
+            {
+                int entity = (int)r["WarpEventId"].Value;
+                string bonfire = bonfireNames[(int)r["BonfireNameId"].Value];
+                if (bonfire != null && entity > 0)
+                {
+                    names[entity] = bonfire;
+                    // Console.WriteLine($"{entity},  // {bonfire}");
+                }
+            }
+            foreach (KeyValuePair<int, string> entry in extraPoints)
+            {
+                names[entry.Key] = entry.Value;
+            }
+
+            List<Path> paths = new List<Path>
+            {
+                new Path
+                {
+                    Area = "firelink_cemetery",
+                    Maps = new List<string> { "firelink" },
+                    Conds = new List<int> { 1 },
+                    Bonfires = new List<int>
+                    {
+                        4000110,  // Cemetery Start
+                        4001951,  // Cemetery of Ash
+                        4001952,  // Iudex Gundyr
+                    }
+                },
+                new Path
+                {
+                    // probably more is here than in firelink_front, but we'll see
+                    Area = "firelink",
+                    Maps = new List<string> { "firelink" },
+                    Conds = new List<int> { 1 },
+                    Bonfires = new List<int>
+                    {
+                        4001952,  // Iudex Gundyr
+                        4001950,  // Firelink Shrine
+                    }
+                },
+                new Path
+                {
+                    Area = "highwall",
+                    Maps = new List<string> { "highwall" },
+                    Bonfires = new List<int>
+                    {
+                        3001950,  // High Wall of Lothric
+                        3001955,  // Tower on the Wall
+                        3001952,  // Vordt of the Boreal Valley
+                    }
+                },
+                new Path
+                {
+                    Area = "settlement",
+                    Maps = new List<string> { "settlement" },
+                    Bonfires = new List<int>
+                    {
+                        3101954,  // Foot of the High Wall
+                        3101950,  // Undead Settlement
+                        3101952,  // Cliff Underside
+                        3101953,  // Dilapidated Bridge
+                        3101951,  // Pit of Hollows
+                    }
+                },
+                new Path
+                {
+                    Area = "settlement_tower",  // ???
+                    Maps = new List<string> { "settlement" },
+                    Bonfires = new List<int>
+                    {
+                        3301956,  // Road of Sacrifices
+                        3101951,  // Pit of Hollows
+                    }
+                },
+                new Path
+                {
+                    Area = "farronkeep_start",
+                    Maps = new List<string> { "farronkeep" },
+                    Bonfires = new List<int>
+                    {
+                        3301956,  // Road of Sacrifices
+                        3301950,  // Halfway Fortress
+                    }
+                },
+                new Path
+                {
+                    Area = "farronkeep_road",
+                    Maps = new List<string> { "farronkeep" },
+                    Bonfires = new List<int>
+                    {
+                        3301950,  // Halfway Fortress
+                        3301957,  // Crucifixion Woods
+                        3301952,  // Crystal Sage
+                    }
+                },
+                new Path
+                {
+                    Area = "farronkeep",
+                    Maps = new List<string> { "farronkeep" },
+                    Bonfires = new List<int>
+                    {
+                        3301953,  // Farron Keep
+                        3301954,  // Keep Ruins
+                        3301958,  // Farron Keep Perimeter
+                        3301951,  // Abyss Watchers
+                    }
+                },
+                new Path
+                {
+                    Area = "cathedral_start",
+                    Maps = new List<string> { "farronkeep", "cathedral" },
+                    Bonfires = new List<int>
+                    {
+                        3301952,  // Crystal Sage
+                        3501953,  // Cathedral of the Deep
+                        3501950,  // Cleansing Chapel
+                    }
+                },
+                new Path
+                {
+                    Area = "cathedral",
+                    Maps = new List<string> { "cathedral" },
+                    Bonfires = new List<int>
+                    {
+                        3501950,  // Cleansing Chapel
+                        3501951,  // Deacons of the Deep
+                    }
+                },
+                new Path
+                {
+                    Area = "catacombs",
+                    Maps = new List<string> { "catacombs" },
+                    Bonfires = new List<int>
+                    {
+                        3301951,  // Abyss Watchers
+                        3801956,  // Catacombs of Carthus
+                        3801950,  // High Lord Wolnir
+                        3701957,  // Irithyll of the Boreal Valley
+                    }
+                },
+                new Path
+                {
+                    Area = "catacombs_prelake",
+                    Maps = new List<string> { "catacombs" },
+                    Bonfires = new List<int>
+                    {
+                        3801950,  // High Lord Wolnir
+                        3801951,  // Abandoned Tomb
+                    }
+                },
+                new Path
+                {
+                    Area = "catacombs_lake",
+                    Maps = new List<string> { "catacombs" },
+                    Bonfires = new List<int>
+                    {
+                        3801951,  // Abandoned Tomb
+                        3801952,  // Old King's Antechamber
+                        3801953,  // Demon Ruins
+                        3801954,  // Old Demon King
+                    }
+                },
+                new Path
+                {
+                    Area = "irithyll",
+                    Maps = new List<string> { "irithyll" },
+                    Bonfires = new List<int>
+                    {
+                        3701957,  // Irithyll of the Boreal Valley
+                        3701954,  // Central Irithyll
+                        3701950,  // Church of Yorshka
+                        3701951,  // Pontiff Sulyvahn
+                    }
+                },
+                new Path
+                {
+                    Area = "irithyll_anorlondo",
+                    Maps = new List<string> { "irithyll" },
+                    Bonfires = new List<int>
+                    {
+                        3701951,  // Pontiff Sulyvahn
+                        3701956,  // Water Reserve
+                        3701958,  // Prison Tower
+                        3701953,  // Anor Londo
+                        3701952,  // Aldrich, Devourer of Gods
+                    }
+                },
+                new Path
+                {
+                    Area = "irithyll_manor",
+                    Maps = new List<string> { "irithyll" },
+                    Bonfires = new List<int>
+                    {
+                        3701955,  // Distant Manor
+                        3901950,  // Irithyll Dungeon
+                    }
+                },
+                new Path
+                {
+                    Area = "dungeon",
+                    Maps = new List<string> { "dungeon" },
+                    Bonfires = new List<int>
+                    {
+                        3901950,  // Irithyll Dungeon
+                        3901952,  // Profaned Capital
+                        3901951,  // Yhorm the Giant
+                    }
+                },
+                new Path
+                {
+                    Area = "dungeon_profaned",
+                    Maps = new List<string> { "dungeon" },
+                    Bonfires = new List<int>
+                    {
+                        3901950,  // Irithyll Dungeon
+                        3901952,  // Profaned Capital
+                        3901951,  // Yhorm the Giant
+                    }
+                },
+                new Path
+                {
+                    Area = "highwall_garden",
+                    Maps = new List<string> { "highwall" },
+                    Bonfires = new List<int>
+                    {
+                        3001954,  // Dancer of the Boreal Valley
+                        3001951,  // Oceiros, the Consumed King
+                    }
+                },
+                new Path
+                {
+                    Area = "untended",
+                    Maps = new List<string> { "firelink" },
+                    Conds = new List<int> { 2 },
+                    Bonfires = new List<int>
+                    {
+                        4001953,  // Untended Graves
+                        4001954,  // Champion Gundyr
+                    }
+                },
+                new Path
+                {
+                    Area = "untended_postgundyr",
+                    Maps = new List<string> { "firelink" },
+                    Conds = new List<int> { 2 },
+                    Bonfires = new List<int>
+                    {
+                        4001954,  // Champion Gundyr
+                        4001950,  // Firelink Shrine
+                    }
+                },
+                new Path
+                {
+                    Area = "lothric",
+                    Maps = new List<string> { "lothric" },
+                    Bonfires = new List<int>
+                    {
+                        3011950,  // Lothric Castle
+                        3011952,  // Dragon Barracks
+                        3011951,  // Dragonslayer Armour
+                    }
+                },
+                new Path
+                {
+                    Area = "archives",
+                    Maps = new List<string> { "archives" },
+                    Bonfires = new List<int>
+                    {
+                        3411951,  // Grand Archives
+                        3411950,  // Twin Princes
+                    }
+                },
+                new Path
+                {
+                    Area = "archdragon_start",
+                    Maps = new List<string> { "archdragon" },
+                    Bonfires = new List<int>
+                    {
+                        3202900,  // Archdragon Start
+                        3201950,  // Archdragon Peak
+                    }
+                },
+                new Path
+                {
+                    Area = "archdragon_ancientwyvern",
+                    Maps = new List<string> { "archdragon" },
+                    Bonfires = new List<int>
+                    {
+                        3201950,  // Archdragon Peak
+                        3201953,  // Dragon-Kin Mausoleum
+                    }
+                },
+                new Path
+                {
+                    Area = "archdragon",
+                    Maps = new List<string> { "archdragon" },
+                    Bonfires = new List<int>
+                    {
+                        3201953,  // Dragon-Kin Mausoleum
+                        3201951,  // Nameless King
+                        3201952,  // Great Belfry
+                    }
+                },
+                new Path
+                {
+                    Area = "ariandel",
+                    Maps = new List<string> { "ariandel" },
+                    Bonfires = new List<int>
+                    {
+                        4501951,  // Snowfield
+                        4501952,  // Rope Bridge Cave
+                        4501953,  // Corvian Settlement
+                        4501954,  // Snowy Mountain Pass
+                    }
+                },
+                new Path
+                {
+                    Area = "ariandel",
+                    Maps = new List<string> { "ariandel" },
+                    Bonfires = new List<int>
+                    {
+                        4501952,  // Rope Bridge Cave
+                        4501957,  // Depths of the Painting
+                        4501956,  // Champion's Gravetender
+                    }
+                },
+                new Path
+                {
+                    Area = "ariandel_vilhelm",
+                    Maps = new List<string> { "ariandel" },
+                    Bonfires = new List<int>
+                    {
+                        4501954,  // Snowy Mountain Pass
+                        4501955,  // Ariandel Chapel
+                        4501950,  // Sister Friede
+                    }
+                },
+                new Path
+                {
+                    Area = "dregheap_start",
+                    Maps = new List<string> { "dregheap" },
+                    Bonfires = new List<int>
+                    {
+                        5001951,  // The Dreg Heap
+                        5001952,  // Earthen Peak Ruins
+                    }
+                },
+                new Path
+                {
+                    Area = "dregheap",
+                    Maps = new List<string> { "dregheap" },
+                    Bonfires = new List<int>
+                    {
+                        5001952,  // Earthen Peak Ruins
+                        5001953,  // Within the Earthen Peak Ruins
+                        5001950,  // The Demon Prince
+                    }
+                },
+                new Path
+                {
+                    Area = "ringedcity",
+                    Maps = new List<string> { "ringedcity" },
+                    Bonfires = new List<int>
+                    {
+                        5101952,  // Mausoleum Lookout
+                        5101953,  // Ringed Inner Wall
+                        5101954,  // Ringed City Streets
+                        5101955,  // Shared Grave
+                        5101950,  // Church of Filianore
+                        // 5101951,  // Darkeater Midir
+                    }
+                },
+                new Path
+                {
+                    Area = "filianore",
+                    Maps = new List<string> { "filianore" },
+                    Bonfires = new List<int>
+                    {
+                        5111951,  // Filianore's Rest
+                        5111950,  // Slave Knight Gael
+                    }
+                },
+                new Path
+                {
+                    Area = "kiln",
+                    Maps = new List<string> { "kiln" },
+                    Bonfires = new List<int>
+                    {
+                        4101951,  // Kiln of the First Flame
+                        4101952,  // The First Flame
+                    }
+                },
+            };
+
+            // TODO: May need to switch to map + name
+            Dictionary<int, Vector3> points = new Dictionary<int, Vector3>();
+            foreach (KeyValuePair<string, MSB3> entry in game.Maps)
+            {
+                if (!game.Locations.ContainsKey(entry.Key)) continue;
+                string map = game.Locations[entry.Key];
+                MSB3 msb = entry.Value;
+                foreach (MSB3.Part e in msb.Parts.GetEntries())
+                {
+                    if (names.ContainsKey(e.EntityID)) points[e.EntityID] = e.Position;
+                }
+                foreach (MSB3.Region e in msb.Regions.GetEntries())
+                {
+                    if (names.ContainsKey(e.EntityID)) points[e.EntityID] = e.Position;
+                }
+            }
+            string pathText(int p)
+            {
+                int first = paths[p].Bonfires.First();
+                int last = paths[p].Bonfires.Last();
+                return $"{paths[p].Area} [{names[first]}->{names[last]}]";
+            }
+
+            // Overall approach to produce heuristic area classifications for item lots and also enemies
+
+            Dictionary<string, string> fogToItemArea = new Dictionary<string, string>
+            {
+                ["firelink_cemetery"] = "firelink_cemetery",
+                ["firelink_iudexgundyr"] = "iudexgundyr",
+                ["firelink_front"] = "firelink",
+                ["firelink"] = "firelink",
+                ["firelink_bellfront"] = "firelink",
+                ["firelink_roof"] = "firelink_roof",
+                ["firelink_belltower"] = "firelink_belltower",
+                ["highwall"] = "highwall",
+                ["highwall_emma"] = "highwall",
+                ["highwall_darkwraith"] = "highwall_darkwraith",
+                ["highwall_greirat"] = "highwall_greirat",
+                ["highwall_vordt"] = "vordt",
+                ["settlement"] = "settlement",
+                ["settlement_greatwood"] = "greatwood",
+                ["settlement_tower"] = "settlement",
+                ["farronkeep_start"] = "farronkeep_road",
+                ["farronkeep_road"] = "farronkeep_road",
+                ["farronkeep_crystalsage"] = "crystalsage",
+                ["farronkeep"] = "farronkeep",
+                ["farronkeep_abysswatchers"] = "abysswatchers",
+                ["farronkeep_postwatchers"] = "~farronkeep",
+                ["cathedral_start"] = "cathedral",
+                ["cathedral"] = "cathedral",
+                ["cathedral_prerosaria"] = "cathedral",
+                ["cathedral_rosaria"] = "cathedral",
+                ["cathedral_deacons"] = "deacons",
+                ["catacombs"] = "catacombs",
+                ["catacombs_wolnirroom"] = "~catacombs",
+                ["catacombs_wolnir"] = "wolnir",
+                ["catacombs_prelake"] = "catacombs",
+                ["catacombs_lake"] = "catacombs_lake",
+                ["catacombs_olddemonking"] = "olddemonking",
+                ["irithyll_start"] = "catacombs",
+                ["irithyll_bridge"] = "catacombs",
+                ["irithyll"] = "irithyll",
+                ["irithyll_abovedorhys"] = "irithyll",
+                ["irithyll_dorhys"] = "irithyll",
+                ["irithyll_manor"] = "irithyll",
+                ["irithyll_pontiff"] = "pontiff",
+                ["irithyll_yorshka"] = "irithyll",
+                ["irithyll_postpontiff"] = "~irithyll",
+                ["irithyll_anorlondo"] = "irithyll",
+                ["irithyll_abovepontiff"] = "irithyll",
+                ["irithyll_aldrich"] = "aldrich",
+                ["irithyll_abovealdrich"] = "irithyll",
+                ["irithyll_aldrichleft"] = "~irithyll",
+                ["irithyll_aldrichright"] = "~irithyll",
+                ["dungeon"] = "dungeon",
+                ["dungeon_jailbreak"] = "dungeon_jailbreak",
+                ["dungeon_jailerscell"] = "dungeon_jailerscell",
+                ["dungeon_profaned"] = "dungeon_profaned",
+                ["dungeon_oldcell"] = "dungeon_oldcell",
+                ["dungeon_yhorm"] = "yhorm",
+                ["highwall_dancer"] = "dancer",
+                ["highwall_postdancer"] = "dancer",
+                ["highwall_abovedancer"] = "dancer",
+                ["lothric"] = "lothric",
+                ["lothric_dragonslayerarmour"] = "dragonslayerarmour",
+                ["lothric_postarmour"] = "lothric",
+                ["archives_start"] = "lothric",
+                ["lothric_gotthard"] = "lothric_gotthard",
+                ["archives"] = "archives",
+                ["archives_shortcutbottom"] = "~archives",
+                ["archives_shortcuttop"] = "~archives",
+                ["archives_preprinces"] = "~archives",
+                ["archives_twinprinces"] = "twinprinces",
+                ["highwall_garden"] = "highwall_garden",
+                ["highwall_oceiros"] = "oceiros",
+                ["highwall_postoceiros"] = "highwall_garden",
+                ["untended"] = "untended",
+                ["untended_championgundyr"] = "championgundyr",
+                ["untended_postgundyr"] = "untended",
+                ["untended_farron"] = "untended_farron",
+                ["archdragon_start"] = "archdragon",
+                ["archdragon_shortcuttop"] = "~archdragon",
+                ["archdragon_shortcutbottom"] = "~archdragon",
+                ["archdragon_prewyvern"] = "~archdragon",
+                ["archdragon_ancientwyvern"] = "archdragon",
+                ["archdragon_wyverndoor"] = "~archdragon",
+                ["archdragon_abovewyvern"] = "~archdragon",
+                ["archdragon"] = "archdragon",
+                ["archdragon_beforenameless"] = "archdragon",
+                ["archdragon_namelessking"] = "namelessking",
+                ["archdragon_belownameless"] = "archdragon",
+                ["ariandel"] = "ariandel",
+                ["ariandel_gravetender"] = "gravetender",
+                ["ariandel_vilhelm"] = "ariandel_vilhelm",
+                ["ariandel_dunnel"] = "ariandel_vilhelm",
+                ["ariandel_friede"] = "friede",
+                ["dregheap_start"] = "dregheap",
+                ["dregheap"] = "dregheap",
+                ["dregheap_predemon"] = "~dregheap",
+                ["dregheap_demonprince"] = "demonprince",
+                ["dregheap_postdemon"] = "dregheap",
+                ["ringedcity"] = "ringedcity",
+                ["ringedcity_halflight"] = "halflight",
+                ["ringedcity_posthalflight"] = "~ringedcity",
+                ["ringedcity_premidir"] = "~ringedcity",
+                ["ringedcity_midir"] = "midir",
+                ["filianore"] = "filianore",
+                ["filianore_gael"] = "gael",
+                ["filianore_shira"] = "filianore",
+                ["kiln_start"] = "kiln",
+                ["kiln"] = "kiln",
+                ["kiln_soulofcinder"] = "soulofcinder",
+            };
+            Dictionary<string, List<string>> itemToFogArea = fogToItemArea.Where(e => !e.Value.StartsWith("~")).GroupBy(e => e.Value).ToDictionary(g => g.Key, g => g.Select(e => e.Key).ToList());
+            // Iteration order is not reliable, but anyway, rely on it
+            List<string> fogOrder = fogToItemArea.Select(e => e.Key).ToList();
+
+            FogLocations locs = new FogLocations();
+            IDeserializer deserializer = new DeserializerBuilder().Build();
+            using (var reader = File.OpenText("locations.txt")) locs = deserializer.Deserialize<FogLocations>(reader);
+
+            bool addItems = locs.Items.Count == 0;
+            Dictionary<string, KeyItemLoc> storedItems = locs.Items.ToDictionary(l => l.Key, l => l);
+            Dictionary<EntityId, KeyItemLoc> entityFogAreas = new Dictionary<EntityId, KeyItemLoc>();
+
+            // For each item: find its old area in item rando, new proposed area in fog rando based on that, and entity id
+            HashSet<string> excludeKeyItem = new HashSet<string> { "missable", "enemy", "norandom", "nokey", "crow", "end" };
+
+            foreach (KeyValuePair<LocationScope, List<SlotKey>> entry in data.Locations)
+            {
+                LocationScope locScope = entry.Key;
+                if (!ann.Slots.TryGetValue(locScope, out SlotAnnotation slotAnn)) continue;
+
+                // All item lots and shop items
+                SortedSet<int> lots = new SortedSet<int>();
+                SortedSet<int> shops = new SortedSet<int>();
+                List<EntityId> ids = new List<EntityId>();
+                List<ItemKey> items = new List<ItemKey>();
+                foreach (SlotKey itemLocKey in entry.Value)
+                {
+                    ItemLocation location = data.Location(itemLocKey);
+                    ItemScope scope = location.Scope;
+                    if (scope.Type != ScopeType.EVENT && scope.Type != ScopeType.ENTITY) continue;
+                    items.Add(itemLocKey.Item);
+                    foreach (LocationKey locKey in location.Keys)
+                    {
+                        if (locKey.Type == LocationKey.LocationType.LOT) lots.Add(locKey.ID);
+                        else shops.Add(locKey.ID);
+                        ids.AddRange(locKey.Entities);
+                    }
+                }
+                foreach (int id in lots.ToList())
+                {
+                    lots.Remove(id + 1);
+                }
+
+                if (storedItems.TryGetValue(slotAnn.Key, out KeyItemLoc keyLoc))
+                {
+                    if (keyLoc.Area.Contains(' ')) continue;
+                    foreach (EntityId id in ids)
+                    {
+                        entityFogAreas[id] = keyLoc;
+                    }
+                }
+
+                // We only care about key item eligible lots/shops, but still can care about item locations, since they can be used to find enemy locations.
+                // Make sure not to set any norandom options, including setting ngplusrings
+                if (addItems && !slotAnn.HasAnyTags(excludeKeyItem))
+                {
+                    // Console.WriteLine(slotAnn.Area + " " + slotAnn.QuestReqs + " " + slotAnn.Event);
+                    // Find the best area
+                    List<string> areas = new List<string>();
+                    if (slotAnn.Event != null && itemToFogArea.ContainsKey(slotAnn.Event))
+                    {
+                        areas.AddRange(itemToFogArea[slotAnn.Event]);
+                    }
+                    else
+                    {
+                        if (slotAnn.Area == "firelink" && shops.Count > 0)
+                        {
+                            areas.Add(slotAnn.Area);
+                        }
+                        else
+                        {
+                            areas.AddRange(itemToFogArea[slotAnn.Area]);
+                        }
+                        if (slotAnn.QuestReqs != null)
+                        {
+                            foreach (string req in slotAnn.QuestReqs.Split(' '))
+                            {
+                                if (itemToFogArea.TryGetValue(req, out List<string> reqs)) areas.AddRange(reqs);
+                                else areas.Add(req);
+                            }
+                        }
+                    }
+                    List<string> debug = new List<string>
+                    {
+                        $"{slotAnn.Text.TrimEnd('.')}. Replaces {string.Join(", ", items.Select(i => game.Name(i)))}",
+                    };
+                    if (ids.Count > 0)
+                    {
+                        debug.Add($"{string.Join(", ", ids.Select(i => game.EntityName(i, true) + (string.IsNullOrWhiteSpace(i.MapName) ? "" : " in " + i.MapName)).Distinct())}");
+                    }
+                    KeyItemLoc loc = new KeyItemLoc
+                    {
+                        Key = slotAnn.Key,
+                        DebugText = debug,
+                        Area = string.Join(" ", areas),
+                    };
+                    if (lots.Count > 0) loc.Lots = string.Join(" ", lots);
+                    if (shops.Count > 0) loc.Shops = string.Join(" ", shops);
+                    locs.Items.Add(loc);
+                }
+            }
+            locs.Items = locs.Items.OrderBy(l => fogOrder.IndexOf(l.Area.Split(' ')[0])).ToList();
+
+            ISerializer serializer = new SerializerBuilder().DisableAliases().Build();
+            // Console.WriteLine(serializer.Serialize(locs));
+
+            // Algorithm for path:
+            // For each path: identify entities for each path, and initial fit
+            // For each entity: find the best fit path
+            // For each entity: output its item-inferred area and path-inferred area
+
+            // But just use item locations instead tbh
+            FogLocations enemyLocs = new FogLocations();
+            List<FogCoordinate> coords = new List<FogCoordinate>();
+            foreach (KeyValuePair<string, MSB3> entry in game.Maps)
+            {
+                if (!game.Locations.ContainsKey(entry.Key)) continue;
+                string map = game.Locations[entry.Key];
+                MSB3 msb = entry.Value;
+                foreach (MSB3.Part e in msb.Parts.GetEntries())
+                {
+                    EntityId id = new EntityId(map, e.Name);
+                    string partMap = map == "firelink" && (e.MapStudioLayer & 1) == 0 ? "untended" : map;
+                    if (entityFogAreas.TryGetValue(id, out KeyItemLoc area))
+                    {
+                        coords.Add(new FogCoordinate
+                        {
+                            Map = partMap,
+                            Pos = e.Position,
+                            Loc = area,
+                        });
+                    }
+                }
+            }
+            Dictionary<string, List<string>> allowedConnections = new Dictionary<string, List<string>>
+            {
+                ["highwall"] = new List<string> { "lothric", "untended" },
+                ["lothric"] = new List<string> { "highwall", "archives" },
+                ["archives"] = new List<string> { "lothric" },
+                ["settlement"] = new List<string> { "farronkeep" },
+                ["archdragon"] = new List<string> { },
+                ["farronkeep"] = new List<string> { "settlement", "cathedral", "catacombs" },
+                ["cathedral"] = new List<string> { "farronkeep" },
+                ["irithyll"] = new List<string> { "catacombs", "dungeon" },
+                ["catacombs"] = new List<string> { "irithyll", "dungeon", "farronkeep" },
+                ["dungeon"] = new List<string> { "irithyll", },
+                ["firelink"] = new List<string> { },
+                ["untended"] = new List<string> { "highwall" },
+                ["kiln"] = new List<string> { },
+                ["ariandel"] = new List<string> { },
+                ["dregheap"] = new List<string> { },
+                ["ringedcity"] = new List<string> { },
+                ["filianore"] = new List<string> { },
+            };
+            HashSet<string> excludeModel = new HashSet<string>
+            {
+                "c0100",  // ?
+                "c1000",  // Invisible
+                "c1480", "c1490",  // Irithyll phantoms
+                "c6120", "c6121",  // Painting child
+            };
+            foreach (KeyValuePair<string, MSB3> entry in game.Maps)
+            {
+                if (!game.Locations.ContainsKey(entry.Key)) continue;
+                string map = game.Locations[entry.Key];
+                MSB3 msb = entry.Value;
+                foreach (MSB3.Part.Enemy e in msb.Parts.Enemies)
+                {
+                    if (excludeModel.Contains(e.ModelName)) continue;
+                    EntityId id = new EntityId(map, e.Name, e.EntityID, e.NPCParamID, e.CharaInitID, e.EntityGroups.Where(g => g > 0).ToList());
+                    string partMap = map == "firelink" && (e.MapStudioLayer & 1) == 0 ? "untended" : map;
+                    string name = $"{game.EntityName(id, true)} in {partMap} on {e.CollisionName}";
+                    string guess;
+                    if (entityFogAreas.TryGetValue(id, out KeyItemLoc area))
+                    {
+                        guess = area.Area;
+                    }
+                    else
+                    {
+                        List<FogCoordinate> topCoords = coords
+                            .Where(c => c.Map == partMap || allowedConnections[partMap].Contains(c.Map))
+                            .OrderBy(f => Vector3.DistanceSquared(f.Pos, e.Position))
+                            .ToList();
+                        List<string> areas = topCoords.Take(5).Select(a => a.Loc.Area).Distinct().ToList();
+                        guess = string.Join(" ", areas);
+                        if (false && areas.Count > 1)
+                        {
+                            for (int i = 0; i < 5; i++)
+                            {
+                                KeyItemLoc loc = topCoords[i].Loc;
+                                Console.WriteLine($"- {loc.Area}: {loc.DebugText[0]}");
+                            }
+                        }
+                    }
+                    enemyLocs.Enemies.Add(new EnemyLoc
+                    {
+                        ID = $"{map} {e.Name} {e.CollisionName}",
+                        DebugText = name,
+                        Area = guess,
+                    });
+                    // Console.WriteLine($"{name}: {guess}");
+                }
+            }
+            Console.WriteLine(serializer.Serialize(enemyLocs));
+        }
+
+        public class FogLocations
+        {
+            public List<KeyItemLoc> Items = new List<KeyItemLoc>();
+            public List<EnemyLoc> Enemies = new List<EnemyLoc>();
+        }
+        public class KeyItemLoc
+        {
+            public string Key { get; set; }
+            public List<string> DebugText { get; set; }
+            public string Area { get; set; }
+            public string Lots { get; set; }
+            public string Shops { get; set; }
+        }
+        public class EnemyLoc
+        {
+            public string ID { get; set; }
+            public string DebugText { get; set; }
+            public string Area { get; set; }
+        }
+
+        public class FogCoordinate
+        {
+            public string Map { get; set; }
+            public Vector3 Pos { get; set; }
+            public KeyItemLoc Loc { get; set; }
+        }
+        public class Path
+        {
+            public int Section { get; set; }
+            public string Area { get; set; }
+            public List<string> Maps { get; set; }
+            public List<int> Conds { get; set; }
+            public List<int> Bonfires { get; set; }
+        }
+
         public void WriteList(GameData game, Dictionary<int, EnemyInfo> fullInfos)
         {
             // Generate things
@@ -76,169 +953,254 @@ namespace RandomizerCommon
             };
 
             // Probably shouldn't use tuples, but too late now
-            List<(int, List<string>, List<int>, List<int>)> paths = new List<(int, List<string>, List<int>, List<int>)>
+            List<Path> paths = new List<Path>
             {
                 // Tutorial
-                (1, new List<string> { "ashinareservoir", "ashinacastle" },
-                new List<int> { 8306, 0 }, new List<int>
+                new Path
                 {
-                    1121951,  // Ashina Reservoir
-                    1121950,  // Near Secret Passage
-                }),
+                    Section = 1,
+                    Maps = new List<string> { "ashinareservoir", "ashinacastle" },
+                    Conds = new List<int> { 8306, 0 },
+                    Bonfires = new List<int>
+                    {
+                        1121951,  // Ashina Reservoir
+                        1121950,  // Near Secret Passage
+                    }
+                },
                 // First stretch of Ashina Outskirts
-                (1, new List<string> { "ashinaoutskirts" },
-                new List<int> { 8302, 1, 8302, -1, 1100330, 1 }, new List<int>
+                new Path
                 {
-                    1101956,  // Ashina Outskirts
-                    1101951,  // Outskirts Wall - Gate Path
-                    1101952,  // Outskirts Wall - Stairway
-                }),
+                    Section = 1,
+                    Maps = new List<string> { "ashinaoutskirts" },
+                    Conds = new List<int> { 8302, 1, 8302, -1, 1100330, 1 },
+                    Bonfires = new List<int>
+                    {
+                        1101956,  // Ashina Outskirts
+                        1101951,  // Outskirts Wall - Gate Path
+                        1101952,  // Outskirts Wall - Stairway
+                    }
+                },
                 // Ashina Outskirts up to Blazing Bull
-                (1, new List<string> { "ashinaoutskirts", "ashinacastle" },
-                new List<int> { 8302, 1, 8302, -1, 8301, 1, 8301, -1, 1100330, 1 }, new List<int>
+                new Path
                 {
-                    1101952,  // Outskirts Wall - Stairway
-                    1101953,  // Underbridge Valley
-                    1101954,  // Ashina Castle Gate Fortress
-                    1101955,  // Ashina Castle Gate
-                    // 1111950,  // Ashina Castle
-                }),
+                    Section = 1,
+                    Maps = new List<string> { "ashinaoutskirts", "ashinacastle" },
+                    Conds = new List<int> { 8302, 1, 8302, -1, 8301, 1, 8301, -1, 1100330, 1 },
+                    Bonfires = new List<int>
+                    {
+                        1101952,  // Outskirts Wall - Stairway
+                        1101953,  // Underbridge Valley
+                        1101954,  // Ashina Castle Gate Fortress
+                        1101955,  // Ashina Castle Gate
+                        // 1111950,  // Ashina Castle
+                    }
+                },
                 // Hirata 1
-                (1, new List<string> { "hirata" },
-                new List<int> { 1000353, 1, 1005601, 1, 1000301, 1, 1000900, 1 }, new List<int>
+                new Path
                 {
-                    1001950,  // Dragonspring - Hirata Estate
-                    1001951,  // Estate Path
-                    1001952,  // Bamboo Thicket Slope
-                    1001953,  // Hirata Estate - Main Hall
-                    1001955,  // Hirata Audience Chamber
-                    1001954,  // Hirata Estate - Hidden Temple
-                }),
+                    Section = 1,
+                    Maps = new List<string> { "hirata" },
+                    Conds = new List<int> { 1000353, 1, 1005601, 1, 1000301, 1, 1000900, 1 },
+                    Bonfires = new List<int>
+                    {
+                        1001950,  // Dragonspring - Hirata Estate
+                        1001951,  // Estate Path
+                        1001952,  // Bamboo Thicket Slope
+                        1001953,  // Hirata Estate - Main Hall
+                        1001955,  // Hirata Audience Chamber
+                        1001954,  // Hirata Estate - Hidden Temple
+                    }
+                },
                 // Ashina Castle to Genichiro
-                (2, new List<string> { "ashinacastle" },
-                new List<int> { 8301, 1, 8302, 1, 8302, -1 }, new List<int>
+                new Path
                 {
-                    1111950,  // Ashina Castle
-                    1111951,  // Upper Tower - Antechamber
-                    1111957,  // Upper Tower - Ashina Dojo
-                    1111952,  // Castle Tower Lookout
-                }),
+                    Section = 2,
+                    Maps = new List<string> { "ashinacastle" },
+                    Conds = new List<int> { 8301, 1, 8302, 1, 8302, -1 },
+                    Bonfires = new List<int>
+                    {
+                        1111950,  // Ashina Castle
+                        1111951,  // Upper Tower - Antechamber
+                        1111957,  // Upper Tower - Ashina Dojo
+                        1111952,  // Castle Tower Lookout
+                    }
+                },
                 // Ashina Castle to Reservoir to Dungeon
-                (2, new List<string> { "ashinareservoir" },
-                new List<int> { 8302, 1, 1120300, 0 }, new List<int>
+                new Path
                 {
-                    1111950,  // Ashina Castle
-                    1121951,  // Ashina Reservoir
-                    1301951,  // Bottomless Hole
-                }),
+                    Section = 2,
+                    Maps = new List<string> { "ashinareservoir" },
+                    Conds = new List<int> { 8302, 1, 1120300, 0 },
+                    Bonfires = new List<int>
+                    {
+                        1111950,  // Ashina Castle
+                        1121951,  // Ashina Reservoir
+                        1301951,  // Bottomless Hole
+                    }
+                },
                 // Dungeon
-                (2, new List<string> { "dungeon" },
-                new List<int> { }, new List<int>
+                new Path
                 {
-                    1111955,  // Abandoned Dungeon Entrance
-                    1301950,  // Underground Waterway
-                    1301951,  // Bottomless Hole
-                }),
+                    Section = 2,
+                    Maps = new List<string> { "dungeon" },
+                    Conds = new List<int> { },
+                    Bonfires = new List<int>
+                    {
+                        1111955,  // Abandoned Dungeon Entrance
+                        1301950,  // Underground Waterway
+                        1301951,  // Bottomless Hole
+                    }
+                },
                 // Senpou temple
-                (2, new List<string> { "senpou" },
-                new List<int> { }, new List<int>
+                new Path
                 {
-                    2001950,  // Senpou Temple,  Mt. Kongo
-                    2001951,  // Shugendo
-                    2001952,  // Temple Grounds
-                    2001953,  // Main Hall
-                }),
+                    Section = 2,
+                    Maps = new List<string> { "senpou" },
+                    Conds = new List<int> { },
+                    Bonfires = new List<int>
+                    {
+                        2001950,  // Senpou Temple,  Mt. Kongo
+                        2001951,  // Shugendo
+                        2001952,  // Temple Grounds
+                        2001953,  // Main Hall
+                    }
+                },
                 // Hidden Forest to Water Mill
-                (3, new List<string> { "mibuvillage" },
-                new List<int> { 1700850, 1, 1700520, 1 }, new List<int>
+                new Path
                 {
-                    1501950,  // Hidden Forest
-                    1501951,  // Mibu Village
-                    1501952,  // Water Mill
-                }),
+                    Section = 3,
+                    Maps = new List<string> { "mibuvillage" },
+                    Conds = new List<int> { 1700850, 1, 1700520, 1 },
+                    Bonfires = new List<int>
+                    {
+                        1501950,  // Hidden Forest
+                        1501951,  // Mibu Village
+                        1501952,  // Water Mill
+                    }
+                },
                 // End of Ashina Depths
-                (3, new List<string> { "mibuvillage" },
-                new List<int> { }, new List<int>
+                new Path
                 {
-                    1501952,  // Water Mill
-                    1501953,  // Wedding Cave Door
-                }),
+                    Section = 3,
+                    Maps = new List<string> { "mibuvillage" },
+                    Conds = new List<int> { },
+                    Bonfires = new List<int>
+                    {
+                        1501952,  // Water Mill
+                        1501953,  // Wedding Cave Door
+                    }
+                },
                 // Most of Sunken Valley
-                (3, new List<string> { "ashinacastle", "sunkenvalley" },
-                new List<int> { 8301, 1, 8301, -1, 8302, 1, 8302, -1 }, new List<int>
+                new Path
                 {
-                    1111952,  // Castle Tower Lookout
-                    1111956,  // Old Grave
-                    1111954,  // Great Serpent Shrine
-                    1701957,  // Under-Shrine Valley
-                    1701950,  // Sunken Valley
-                    1701951,  // Gun Fort
-                    1701952,  // Riven Cave
-                    1701958,  // Bodhisattva Valley
-                    1701953,  // Guardian Ape's Watering Hole
-                }),
+                    Section = 3,
+                    Maps = new List<string> { "ashinacastle", "sunkenvalley" },
+                    Conds = new List<int> { 8301, 1, 8301, -1, 8302, 1, 8302, -1 },
+                    Bonfires = new List<int>
+                    {
+                        1111952,  // Castle Tower Lookout
+                        1111956,  // Old Grave
+                        1111954,  // Great Serpent Shrine
+                        1701957,  // Under-Shrine Valley
+                        1701950,  // Sunken Valley
+                        1701951,  // Gun Fort
+                        1701952,  // Riven Cave
+                        1701958,  // Bodhisattva Valley
+                        1701953,  // Guardian Ape's Watering Hole
+                    }
+                },
                 // Sunken Valley to Poison Pool path
-                (3, new List<string> { "sunkenvalley" },
-                new List<int> { 1700850, 0, 1700520, 0 }, new List<int>
+                new Path
                 {
-                    1701958,  // Bodhisattva Valley
-                    1701954,  // Poison Pool
-                    1701956,  // Guardian Ape's Burrow
-                }),
+                    Section = 3,
+                    Maps = new List<string> { "sunkenvalley" },
+                    Conds = new List<int> { 1700850, 0, 1700520, 0 },
+                    Bonfires = new List<int>
+                    {
+                        1701958,  // Bodhisattva Valley
+                        1701954,  // Poison Pool
+                        1701956,  // Guardian Ape's Burrow
+                    }
+                },
                 // Ashina Castle Revisited, also down to Masanaga
-                (4, new List<string> { "ashinacastle" },
-                new List<int> { 8301, 0, 8302, 1, 8302, -1 }, new List<int>
+                new Path
                 {
-                    1111955,  // Abandoned Dungeon Entrance
-                    1111950,  // Ashina Castle
-                    1111951,  // Upper Tower - Antechamber
-                    1111957,  // Upper Tower - Ashina Dojo
-                    1111952,  // Castle Tower Lookout
-                    1111956,  // Old Grave
-                    1111954,  // Great Serpent Shrine
-                }),
+                    Section = 4,
+                    Maps = new List<string> { "ashinacastle" },
+                    Conds = new List<int> { 8301, 0, 8302, 1, 8302, -1 },
+                    Bonfires = new List<int>
+                    {
+                        1111955,  // Abandoned Dungeon Entrance
+                        1111950,  // Ashina Castle
+                        1111951,  // Upper Tower - Antechamber
+                        1111957,  // Upper Tower - Ashina Dojo
+                        1111952,  // Castle Tower Lookout
+                        1111956,  // Old Grave
+                        1111954,  // Great Serpent Shrine
+                    }
+                },
                 // Fountainhead
-                (5, new List<string> { "fountainhead" },
-                new List<int> { }, new List<int>
+                new Path
                 {
-                    2501950,  // Fountainhead Palace
-                    2501951,  // Vermilion Bridge
-                    2501956,  // Mibu Manor
-                    2501952,  // Flower Viewing Stage
-                    2501958,  // Near Pot Noble
-                    2501953,  // Great Sakura
-                    2501954,  // Palace Grounds
-                    2501955,  // Sanctuary
-                }),
+                    Section = 5,
+                    Maps = new List<string> { "fountainhead" },
+                    Conds = new List<int> { },
+                    Bonfires = new List<int>
+                    {
+                        2501950,  // Fountainhead Palace
+                        2501951,  // Vermilion Bridge
+                        2501956,  // Mibu Manor
+                        2501952,  // Flower Viewing Stage
+                        2501958,  // Near Pot Noble
+                        2501953,  // Great Sakura
+                        2501954,  // Palace Grounds
+                        2501955,  // Sanctuary
+                    }
+                },
                 // Hirata Revisited
-                (5, new List<string> { "hirata" },
-                new List<int> { 1000353, 0, 1005601, 0, 1000301, 0, 1000900, 0 }, new List<int>
+                new Path
                 {
-                    1001952,  // Bamboo Thicket Slope
-                    1001953,  // Hirata Estate - Main Hall
-                    1001955,  // Hirata Audience Chamber
-                    1001954,  // Hirata Estate - Hidden Temple
-                }),
+                    Section = 5,
+                    Maps = new List<string> { "hirata" },
+                    Conds = new List<int> { 1000353, 0, 1005601, 0, 1000301, 0, 1000900, 0 },
+                    Bonfires = new List<int>
+                    {
+                        1001952,  // Bamboo Thicket Slope
+                        1001953,  // Hirata Estate - Main Hall
+                        1001955,  // Hirata Audience Chamber
+                        1001954,  // Hirata Estate - Hidden Temple
+                    }
+                },
                 // Ashina Castle End to Outskirts
-                (5, new List<string> { "ashinacastle", "ashinaoutskirts" },
-                new List<int> { 8302, 0 }, new List<int>
+                new Path
                 {
-                    1111953,  // Upper Tower - Kuro's Room
-                    1111956,  // Old Grave
-                    1101952,  // Outskirts Wall - Stairway
-                    1101951,  // Outskirts Wall - Gate Path
-                }),
+                    Section = 5,
+                    Maps = new List<string> { "ashinacastle", "ashinaoutskirts" },
+                    Conds = new List<int> { 8302, 0 },
+                    Bonfires = new List<int>
+                    {
+                        1111953,  // Upper Tower - Kuro's Room
+                        1111956,  // Old Grave
+                        1101952,  // Outskirts Wall - Stairway
+                        1101951,  // Outskirts Wall - Gate Path
+                    }
+                },
                 // Ashina Castle End to Reservoir
-                (5, new List<string> { "ashinacastle", "ashinareservoir" },
-                new List<int> { 8302, 0 }, new List<int>
+                new Path
                 {
-                    1111953,  // Upper Tower - Kuro's Room
-                    1111957,  // Upper Tower - Ashina Dojo
-                    1111951,  // Upper Tower - Antechamber
-                    1111950,  // Ashina Castle
-                    1121951,  // Ashina Reservoir
-                    1121950,  // Near Secret Passage
-                }),
+                    Section = 5,
+                    Maps = new List<string> { "ashinacastle", "ashinareservoir" },
+                    Conds = new List<int> { 8302, 0 },
+                    Bonfires = new List<int>
+                    {
+                        1111953,  // Upper Tower - Kuro's Room
+                        1111957,  // Upper Tower - Ashina Dojo
+                        1111951,  // Upper Tower - Antechamber
+                        1111950,  // Ashina Castle
+                        1121951,  // Ashina Reservoir
+                        1121950,  // Near Secret Passage
+                    }
+                },
             };
             FMG bonfires = new GameEditor(GameSpec.FromGame.SDT).LoadBnd(@"C:\Program Files (x86)\Steam\steamapps\common\Sekiro\msg\engus\menu.msgbnd.dcx", (p, n) => FMG.Read(p))["NTC_\u30e1\u30cb\u30e5\u30fc\u30c6\u30ad\u30b9\u30c8"];
             Dictionary<int, string> names = new Dictionary<int, string>();
@@ -271,9 +1233,9 @@ namespace RandomizerCommon
             }
             string pathText(int p)
             {
-                int first = paths[p].Item4.First();
-                int last = paths[p].Item4.Last();
-                return $"#{paths[p].Item1} {names[first]}->{names[last]}";
+                int first = paths[p].Bonfires.First();
+                int last = paths[p].Bonfires.Last();
+                return $"#{paths[p].Section} {names[first]}->{names[last]}";
             }
 
             bool investigateScaling = false;
@@ -296,7 +1258,10 @@ namespace RandomizerCommon
             for (int i = 0; i < paths.Count; i++)
             {
                 if (explainCat) Console.WriteLine($"--- Processing {pathText(i)}");
-                (int section, List<string> maps, List<int> cond, List<int> order) = paths[i];
+                Path p = paths[i];
+                List<string> maps = p.Maps;
+                List<int> cond = p.Conds;
+                List<int> order = p.Bonfires;
                 Dictionary<int, List<int>> eventFlags = new Dictionary<int, List<int>>();
                 HashSet<int> excludeEntity = new HashSet<int>();
                 HashSet<int> expectEntity = new HashSet<int>();
@@ -375,7 +1340,7 @@ namespace RandomizerCommon
             foreach (EnemyInfo info in infos.Values)
             {
                 if (!possiblePaths.TryGetValue(info.ID, out List<int> pathList)) throw new Exception($"{info.ID} has no categorization: {info.DebugText}");
-                if (paths[pathList[0]].Item2.Contains("hirata"))
+                if (paths[pathList[0]].Maps.Contains("hirata"))
                 {
                     // If Hirata, greedily choose pre-revisited Hirata
                     pathList = new List<int> { pathList[0] };
@@ -384,7 +1349,12 @@ namespace RandomizerCommon
                 Vector3 pos = points[info.ID];
                 foreach (int path in pathList)
                 {
-                    (int section, List<string> maps, List<int> cond, List<int> order) = paths[path];
+                    Path p = paths[path];
+                    int section = p.Section;
+                    List<string> maps = p.Maps;
+                    List<int> cond = p.Conds;
+                    List<int> order = p.Bonfires;
+
                     for (int i = 0; i < order.Count - 1; i++)
                     {
                         Vector3 p1 = points[order[i]];
@@ -464,7 +1434,7 @@ namespace RandomizerCommon
                         if (!typeGroup.Contains(info.Class)) continue;
                         MSBS.Part.Enemy e = enemies[id];
                         int path = entry.Value.Item1;
-                        int section = paths[path].Item1;
+                        int section = paths[path].Section;
                         sections[id] = section;
                         allSections[id] = section;
                         if (e.EntityGroupIDs.Any(g => phantomGroups.Contains(g))) continue;

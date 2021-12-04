@@ -31,11 +31,13 @@ namespace RandomizerCommon
             {
                 opt["v1"] = false;
                 opt["v2"] = false;
-                opt["v3"] = true;
+                opt["v3"] = false;
+                opt["v4"] = true;
             }
             else
             {
-                opt["v2"] = true;
+                opt["v2"] = false;
+                opt["v3"] = true;
             }
         }
 

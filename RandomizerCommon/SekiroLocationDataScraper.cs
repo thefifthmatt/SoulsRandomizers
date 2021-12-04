@@ -196,14 +196,14 @@ namespace RandomizerCommon
                             else
                             {
                                 // One time drops that directly award, that aren't covered by event flags. Mostly crystal lizards.
-                                if (entities.Count() == 1 && entityItemLots.ContainsKey(entities[0].EventEntityID) && entityItemLots[entities[0].EventEntityID] == entry.Key)
+                                if (entities.Count() == 1 && entityItemLots.ContainsKey(entities[0].EntityID) && entityItemLots[entities[0].EntityID] == entry.Key)
                                 {
-                                    scope = new ItemScope(ScopeType.ENTITY, entities[0].EventEntityID);
+                                    scope = new ItemScope(ScopeType.ENTITY, entities[0].EntityID);
                                 }
                                 // Non-respawning enemies with drops which can be missed. These are reused between different entities, so can drop multiple times.
-                                else if (entities.All(e => nonRespawningEntities.Contains(e.EventEntityID)))
+                                else if (entities.All(e => nonRespawningEntities.Contains(e.EntityID)))
                                 {
-                                    scope = new ItemScope(ScopeType.ENTITY, entities.Select(e => e.EventEntityID).Min());
+                                    scope = new ItemScope(ScopeType.ENTITY, entities.Select(e => e.EntityID).Min());
                                 }
                                 else
                                 {
@@ -548,9 +548,9 @@ namespace RandomizerCommon
                         continue;
                     }
                     objects[id] = id;
-                    if (id.EventEntityID > 0)
+                    if (id.EntityID > 0)
                     {
-                        AddMulti(usedEntities, id.EventEntityID, id);
+                        AddMulti(usedEntities, id.EntityID, id);
                     }
                     foreach (int groupID in groupIDs)
                     {
@@ -562,7 +562,7 @@ namespace RandomizerCommon
                     }
                     if (esdId > 0)
                     {
-                        if (debugEsd.Contains(esdId)) Console.WriteLine($"ESD {esdId} belongs to {game.EntityName(id, true)} in {location}, entity id {id.EventEntityID}");
+                        if (debugEsd.Contains(esdId)) Console.WriteLine($"ESD {esdId} belongs to {game.EntityName(id, true)} in {location}, entity id {id.EntityID}");
                         AddMulti(usedEsds, esdId, id);
                     }
                 }

@@ -149,15 +149,13 @@ namespace RandomizerCommon
                         Col = e.CollisionPartName,
                     };
                     ownerMap[e.EntityID] = entry.Key;
-                    // Set all boss/miniboss default teams to be aggressive toward player
-                    if (e.NPCParamID > 0 && (infos[e.EntityID].Class == EnemyClass.Boss || infos[e.EntityID].Class == EnemyClass.Miniboss))
+
+                    if (!infos.TryGetValue(e.EntityID, out EnemyInfo info))
                     {
-                        // TODO: Does teamType actually matter? Assume not for now. npcType is changed later on.
-                        PARAM.Row npc = game.Params["NpcParam"][e.NPCParamID];
-                        // npc["teamType"].Value = (byte)3;
-                        // npc["npcType"].Value = (byte)6;
+                        Console.WriteLine($"Unknown enemy {entry.Key} {e.Name} #{e.EntityID}");
                     }
                 }
+
             }
 
             // Process core enemy config
@@ -437,17 +435,15 @@ namespace RandomizerCommon
                     }
                 }
 
-                HashSet<int> processEventsOverride = new HashSet<int> { 12505926 };
+                HashSet<int> processEventsOverride = new HashSet<int> { };
                 // Old Dragons: 2500810, 2500811, 2500812, 2500813, 2500814, 2500815, 2500816, 2500817, 2500818, 2500819, 2500820, 2500821, 2500822, 2500823, 2500824, 2500825. Group 2505830
                 // Tree Dragons: 2500930, 2500933, 2500934, 2500884, 2500880, 2500881, 2500882, 2500883
                 // Divine Dragon: 2500800
                 // Monkeys: 2000800, 2000801, 2000802, 2000803, 2000804 
+                // Serpents: 1100850, 1700600, 1700610, 1700620, 1700640
+                // Carps: 2500310, 2500311, 2500312, 2500313
                 HashSet<int> processEntitiesOverride = new HashSet<int>
                 {
-                    2500800,
-                    2500810, 2500811, 2500812, 2500813, 2500814, 2500815, 2500816, 2500817, 2500818, 2500819, 2500820, 2500821, 2500822, 2500823, 2500824, 2500825,
-                    2505830,
-                    2500930, 2500933, 2500934, 2500884, 2500880, 2500881, 2500882, 2500883,
                 };
 
                 List<EventSpec> specs = events.CreateEventConfig(eventInfos, isEligible, produceSpec, quickId, processEventsOverride, processEntitiesOverride);
@@ -1084,14 +1080,14 @@ namespace RandomizerCommon
                 CopyAll(a, b);
                 MSBS msb = maps[toMap];
                 if (b is MSBS.Region.Event et) msb.Regions.Events.Add(et);
-                else if (b is MSBS.Region.SFX st) msb.Regions.SFXs.Add(st);
-                else if (b is MSBS.Region.WalkRoute wt) msb.Regions.WalkRoutes.Add(wt);
+                else if (b is MSBS.Region.SFX st) msb.Regions.SFX.Add(st);
+                else if (b is MSBS.Region.PatrolRoute wt) msb.Regions.PatrolRoutes.Add(wt);
                 else if (b is MSBS.Region.ActivationArea at) msb.Regions.ActivationAreas.Add(at);
                 else if (b is MSBS.Region.Other ot) msb.Regions.Others.Add(ot);
-                else if (b is MSBS.Region.Region0 rt) msb.Regions.Region0s.Add(rt);
+                // else if (b is MSBS.Region.Region0 rt) msb.Regions.Region0s.Add(rt);
                 else throw new Exception($"Internal error: unknown region type {b}, entity id {id}");
                 // Except shape is a nested field which is modified, so do that
-                MSBS.Shape shape = (MSBS.Shape)Activator.CreateInstance(b.Shape.GetType());
+                MSB.Shape shape = (MSB.Shape)Activator.CreateInstance(b.Shape.GetType());
                 CopyAll(b.Shape, shape);
                 b.Shape = shape;
                 // Hopefully this isn't used much
@@ -1219,9 +1215,9 @@ namespace RandomizerCommon
                             // Try to add this hack for composite shape
                             if (region == 2502570 || region == 2502571)
                             {
-                                b.Shape = new MSBS.Shape.Box();
+                                b.Shape = new MSB.Shape.Box();
                             }
-                            if (!(b.Shape is MSBS.Shape.Box box)) throw new Exception($"For now, only box regions can encompass entire arenas - {region} in {spec}");
+                            if (!(b.Shape is MSB.Shape.Box box)) throw new Exception($"For now, only box regions can encompass entire arenas - {region} in {spec}");
                             // Just ignore x/z rotation for the moment. The x/z bounds will be bigger than when it's laid flat, but hopefully not too much.
                             // Also add a few units since these are often floating above arenas
                             if (arena == null)
@@ -1250,7 +1246,7 @@ namespace RandomizerCommon
                             }
                             else
                             {
-                                if (!(b.Shape is MSBS.Shape.Box box)) throw new Exception($"For now, only box regions can encompass entire arenas - {region} in {spec} has {b.Shape}");
+                                if (!(b.Shape is MSB.Shape.Box box)) throw new Exception($"For now, only box regions can encompass entire arenas - {region} in {spec} has {b.Shape}");
                                 box.Width = owlArena.Box.X;
                                 box.Height = owlArena.Box.Y;
                                 box.Depth = owlArena.Box.Z;
@@ -1271,7 +1267,7 @@ namespace RandomizerCommon
                             }
                             // Shapes: point, sphere, box
                             // Only box is used for detection. Points used for spawning/warping enemies, spheres used for Isshin fire
-                            if (type == "arenabox" && b.Shape is MSBS.Shape.Box box)
+                            if (type == "arenabox" && b.Shape is MSB.Shape.Box box)
                             {
                                 box.Height += 3;
                                 b.Position = Vector3.Subtract(b.Position, floorBuffer);
@@ -1279,9 +1275,9 @@ namespace RandomizerCommon
                         }
                         else if (type == "arenapartition")
                         {
-                            if (!(b.Shape is MSBS.Shape.Box box))
+                            if (!(b.Shape is MSB.Shape.Box box))
                             {
-                                b.Shape = box = new MSBS.Shape.Box();
+                                b.Shape = box = new MSB.Shape.Box();
                             }
                             box.Width = arena.Box.X;
                             box.Height = arena.Box.Y + 3;
@@ -1441,9 +1437,9 @@ namespace RandomizerCommon
                     }
                     row[field].Value = newVal;
                 }
-                if (!noDeathblow.Contains(source) && infos.TryGetValue(target, out EnemyInfo targetInfo) && targetInfo.IsBossTarget)
+                if (!noDeathblow.Contains(source) && infos.TryGetValue(target, out EnemyInfo targetInfo) && targetInfo.IsNamedTarget)
                 {
-                    row["HealthbarNum"].Value = (byte)targetInfo.Phases;
+                    row["HealthbarNum"].Value = targetInfo.IsBossTarget ? (byte)targetInfo.Phases : targetRow["HealthbarNum"].Value;
                 }
                 row["disableIntiliazeDead"].Value = (byte)1;
                 return (int)row.ID;
@@ -1504,7 +1500,7 @@ namespace RandomizerCommon
                 }
                 foreach (MSBS.Part e in msb.Parts.GetEntries())
                 {
-                    if (e.Type == MSBS.PartType.DummyEnemy || e.Type == MSBS.PartType.Enemy || e.Type == MSBS.PartType.Player)
+                    if (e is MSBS.Part.DummyEnemy || e is MSBS.Part.Enemy || e is MSBS.Part.Player)
                     {
                         mused.Add(e.ModelName);
                     }
@@ -1516,9 +1512,6 @@ namespace RandomizerCommon
                     // Console.WriteLine($"Object decl {model.Name}: placeholder {model.Placeholder} unk1c {model.Unk1C} type {model.Type}");
                 }
 
-                // Enemy stuff
-                HashSet<string> laterEnemies = new HashSet<string> { "c1361", "c1700", "c1470" };
-
                 void useModel(string name)
                 {
                     mused.Add(name);
@@ -1527,7 +1520,7 @@ namespace RandomizerCommon
                         msb.Models.Enemies.Add(new MSBS.Model.Enemy
                         {
                             Name = name,
-                            Placeholder = $@"N:\NTC\data\Model\chr\{name}\sib\{name}.sib",
+                            SibPath = $@"N:\NTC\data\Model\chr\{name}\sib\{name}.sib",
                         });
                         mdecl.Add(name);
                     }
@@ -1539,7 +1532,7 @@ namespace RandomizerCommon
                         msb.Models.Objects.Add(new MSBS.Model.Object
                         {
                             Name = name,
-                            Placeholder = $@"N:\NTC\data\Model\obj\{name.Substring(0, 3)}\{name}\sib\{name}.sib",
+                            SibPath = $@"N:\NTC\data\Model\obj\{name.Substring(0, 3)}\{name}\sib\{name}.sib",
                         });
                         mdeclObj.Add(name);
                     }
@@ -1637,7 +1630,7 @@ namespace RandomizerCommon
                         {
                             // Also always add arena, as a debugging tool
                             Arena arena = infos[target].ArenaData;
-                            MSBS.Shape.Box box = new MSBS.Shape.Box();
+                            MSB.Shape.Box box = new MSB.Shape.Box();
                             box.Width = arena.Box.X;
                             box.Height = arena.Box.Y;
                             box.Depth = arena.Box.Z;
@@ -1660,7 +1653,7 @@ namespace RandomizerCommon
                             {
                                 if (!enableMultichr(source, target)) continue;
                                 if (infos[helper].Class != EnemyClass.Helper) continue;
-                                MSBS.Part.Enemy e2 = new MSBS.Part.Enemy(e);
+                                MSBS.Part.Enemy e2 = (MSBS.Part.Enemy)e.DeepCopy();
                                 EnemyData data2 = defaultData[helper];
                                 e2.ModelName = data2.Model;
                                 e2.NPCParamID = data2.NPC;
@@ -1693,7 +1686,7 @@ namespace RandomizerCommon
                             foreach (MSBS.Part.Object o in objects)
                             {
                                 if (!enableMultichr(source, target)) continue;
-                                MSBS.Part.Object e2 = new MSBS.Part.Object(o);
+                                MSBS.Part.Object e2 = (MSBS.Part.Object)o.DeepCopy();
                                 // TODO: Anything to do with Unk1Struct?
                                 int target2 = newEntity();
                                 e2.EntityID = target2;
@@ -1718,53 +1711,13 @@ namespace RandomizerCommon
 
                 List<string> names = msb.Parts.Enemies.Select(e => e.Name).ToList();
                 msb.Events.Talks = msb.Events.Talks.Where(t => t.EnemyNames.All(n => n == null || names.Contains(n))).ToList();
-                msb.Events.Event21s = msb.Events.Event21s.Where(t => t.Event21PartNames.All(n => n == null || names.Contains(n))).ToList();
-                msb.Events.GroupTours = msb.Events.GroupTours.Where(t => t.GroupPartNames.All(n => n == null || names.Contains(n))).ToList();
+                msb.Events.PlacementGroups = msb.Events.PlacementGroups.Where(t => t.Event21PartNames.All(n => n == null || names.Contains(n))).ToList();
+                msb.Events.PlatoonInfo = msb.Events.PlatoonInfo.Where(t => t.GroupPartNames.All(n => n == null || names.Contains(n))).ToList();
                 msb.Events.Generators = msb.Events.Generators.Where(t => t.SpawnPartNames.All(n => n == null || names.Contains(n))).ToList();
-
                 msb.Models.Enemies = msb.Models.Enemies.Where(e => mused.Contains(e.Name)).OrderBy(e => e.Name).ToList();
-                if (false && map == "ashinaoutskirts")
-                {
-                    MSBS f = maps["m25_00_00_00"];
-                    msb.Models.Enemies.AddRange(f.Models.Enemies);
-                    msb.Models.Objects.AddRange(f.Models.Objects);
-                    msb.Models.Collisions.AddRange(f.Models.Collisions);
-                    msb.Models.MapPieces.AddRange(f.Models.MapPieces);
-                    foreach (MSBS.Part.DummyObject d in f.Parts.DummyObjects)
-                    {
-                        MSBS.Part.DummyObject m = new MSBS.Part.DummyObject(d);
-                        if (m.ObjPartName1 != null) m.ObjPartName1 = "h018100";
-                        if (m.ObjPartName3 != null) m.ObjPartName3 = "h018100";
-                        msb.Parts.DummyObjects.Add(m);
-                    }
-                    foreach (MSBS.Part.DummyEnemy d in f.Parts.DummyEnemies)
-                    {
-                        MSBS.Part.DummyEnemy m = new MSBS.Part.DummyEnemy(d);
-                        if (m.CollisionPartName != null) m.CollisionPartName = "h018100";
-                        msb.Parts.DummyEnemies.Add(m);
-                    }
-                    // msb.Parts.DummyObjects.AddRange(f.Parts.DummyObjects);
-                    // msb.Parts.DummyEnemies.AddRange(f.Parts.DummyEnemies);
-                    foreach (MSBS.Part.ConnectCollision col in msb.Parts.ConnectCollisions)
-                    {
-                        // col.MapID[0] = 25; col.MapID[1] = col.MapID[2] = col.MapID[3] = 0;
-                    }
-                    // = msb.Parts.ConnectCollisions.Find(c => c.CollisionName == "h018100");
-                }
-                if (false && map == "fountainhead")
-                {
-                    MSBS.Part.Enemy d = msb.Parts.Enemies.Find(e => e.EntityID == 2500800);
-                    // d.Position = new Vector3(-23.323f, 388.980f, 293.266f);
-                    // msb.Parts.Objects.RemoveAll(e => e.EntityID == 2501815);
-                    MSBS.Part.MapPiece p = msb.Parts.MapPieces.Find(e => e.ModelName == "m699999");
-                    p.Placeholder = "";
-                    HashSet<string> forRegion = new HashSet<string>(msb.Regions.GetEntries().Select(r => r.ActivationPartName));
-                    forRegion.UnionWith(msb.Parts.Objects.SelectMany(n => new[] { n.ObjPartName1, n.ObjPartName2, n.ObjPartName3 }));
-                    // msb.Parts.MapPieces.RemoveAll(v => !forRegion.Contains(v.Name));
-                }
             }
 
-            // It's emevd t ime
+            // It's emevd time
             Dictionary<int, EventSpec> templates = eventConfig.EnemyEvents.ToDictionary(e => e.ID, e => e);
 
             // Entities which do not exist in game anymore, but passed as arguments to events.
@@ -2559,6 +2512,36 @@ namespace RandomizerCommon
                     initOld.Postprocess();
                 }
             }
+
+            // Add common functions
+            Dictionary<string, NewEvent> customEvents = new Dictionary<string, NewEvent>();
+            foreach (NewEvent e in eventConfig.NewEvents)
+            {
+                List<EMEVD.Parameter> ps = new List<EMEVD.Parameter>();
+                EMEVD.Event ev = new EMEVD.Event(e.ID, EMEVD.Event.RestBehaviorType.Default);
+                for (int i = 0; i < e.Commands.Count; i++)
+                {
+                    (EMEVD.Instruction instr, List<EMEVD.Parameter> newPs) = events.ParseAddArg(e.Commands[i], i);
+                    ev.Instructions.Add(instr);
+                    ev.Parameters.AddRange(newPs);
+                }
+                if (e.Name == null)
+                {
+                    EMEVD.Instruction init = new EMEVD.Instruction(2000, 0, new List<object> { 0, (uint)ev.ID, (uint)0 });
+                    AddMulti(newInitializations, "common", (init, ev));
+                }
+                else
+                {
+                    customEvents[e.Name] = e;
+                    AddMulti(newInitializations, "common_func", (null, ev));
+                }
+            }
+
+            void addCommonFuncInit(string name, int target, List<object> args)
+            {
+                EMEVD.Instruction init = new EMEVD.Instruction(2000, 6, new List<object> { customEvents[name].ID }.Concat(args));
+                AddMulti(newInitializations, ownerMap[target], (init, null));
+            }
             foreach (KeyValuePair<int, int> transfer in revMapping)
             {
                 int target = transfer.Key;
@@ -2567,13 +2550,10 @@ namespace RandomizerCommon
                 // Make all immortal boss targets immortal by default
                 if (infos[source].IsImmortal)
                 {
-                    // Should this be in a dedicate event? This is potentially a lot of events
-                    if (infos[target].DefeatFlag != 0)
-                    {
-                        // AddMulti(newInitializations, ownerMap[target], (events.ParseAdd($"SKIP IF Event Flag (1,1,0,{infos[target].DefeatFlag})"), null));
-                    }
-                    AddMulti(newInitializations, ownerMap[target], (events.ParseAdd($"Set Character Immortality ({target},1)"), null));
-                    // Except when they die in the spot of a non-boss, make sure that goes through, even if it looks hacky
+                    addCommonFuncInit("immortal", target, new List<object> { target });
+                    // Immortal, except when they die in the spot of a non-boss, make sure that goes through
+                    // This depends on endConds, so it would require dynamically adding custom common_funcs
+                    // in order to use common_func (we'd need to allocate a range of them).
                     if (infos[target].Class != EnemyClass.Boss)
                     {
                         if (endConds.TryGetValue((source, 1), out List<EMEVD.Instruction> after) || endConds.TryGetValue((source, 0), out after))
@@ -2586,7 +2566,6 @@ namespace RandomizerCommon
                             ev.Instructions.Add(events.ParseAdd($"Force Character Death ({target},1)"));
                             // Unfortunately, it seems like Fire Isshin can never actually die
                             if (source == 1110920) ev.Instructions.Add(events.ParseAdd($"Change Character Enable State ({target},0)"));
-                            // ev.Instructions.Add(events.ParseAdd($"Award Item Lot (60230)"));
                             EMEVD.Instruction init = new EMEVD.Instruction(2000, 0, new List<object> { 0, (uint)ev.ID, (uint)0 });
                             AddMulti(newInitializations, ownerMap[target], (init, ev));
                         }
@@ -2595,22 +2574,14 @@ namespace RandomizerCommon
                 // Make non-tree Divine Dragon easily killable, or other one hard to kill
                 if (source == 2500800)
                 {
-                    EMEVD.Event ev = new EMEVD.Event(NewID(true), EMEVD.Event.RestBehaviorType.Restart);
                     if (enableMultichr(source, target))
                     {
-                        ev.Instructions.Add(events.ParseAdd($"IF Entity In/Outside Radius Of Entity (0,1,10000,{target},15,1)"));
-                        ev.Instructions.Add(events.ParseAdd($"Set Character Invincibility ({target},1)"));
-                        ev.Instructions.Add(events.ParseAdd($"IF Entity In/Outside Radius Of Entity (0,0,10000,{target},15,1)"));
-                        ev.Instructions.Add(events.ParseAdd($"Set Character Invincibility ({target},0)"));
-                        ev.Instructions.Add(events.ParseAdd($"END Unconditionally (1)"));
+                        addCommonFuncInit("realdivinedragon", target, new List<object> { target });
                     }
                     else
                     {
-                        ev.Instructions.Add(events.ParseAdd($"IF Character HP Value (0,{target},5,1,0,1)"));
-                        ev.Instructions.Add(events.ParseAdd($"Force Character Death ({target},1)"));
+                        addCommonFuncInit("fakedivinedragon", target, new List<object> { target });
                     }
-                    EMEVD.Instruction init = new EMEVD.Instruction(2000, 0, new List<object> { 0, (uint)ev.ID, (uint)0 });
-                    AddMulti(newInitializations, ownerMap[target], (init, ev));
                 }
 
                 int baseGameTarget = target;
@@ -2631,7 +2602,7 @@ namespace RandomizerCommon
                     if (sourceSection > 0 && targetSection > 0 && scalingSpEffects.TryGetValue((sourceSection, targetSection), out (int, int) sp))
                     {
                         bool fixedXp = infos.TryGetValue(target, out EnemyInfo e) && e.IsBossTarget;
-                        AddMulti(newInitializations, ownerMap[target], (events.ParseAdd($"Set SpEffect ({target},{(fixedXp ? sp.Item1 : sp.Item2)})"), null));
+                        addCommonFuncInit("scale", target, new List<object> { target, fixedXp ? sp.Item1 : sp.Item2 });
                     }
                     else if (!(sourceSection > 0 && sourceSection == targetSection))
                     {
@@ -2643,7 +2614,7 @@ namespace RandomizerCommon
                 // Add infighting if the original enemy had it, or the original owner had it
                 if (defaultData.TryGetValue(baseGameTarget, out EnemyData val) && npcOriginalTeam.TryGetValue(val.NPC, out byte team))
                 {
-                    AddMulti(newInitializations, ownerMap[target], (events.ParseAdd($"Set Character Team Type ({target},{team})"), null));
+                    addCommonFuncInit("teamtype", target, new List<object> { target, team });
                 }
             }
             foreach (KeyValuePair<string, EMEVD> entry in emevds)
@@ -2666,7 +2637,7 @@ namespace RandomizerCommon
                     int id = (int)e.ID;
                     if (newEvents.Count > 0 && e.ID == 0)
                     {
-                        foreach (EMEVD.Instruction newEvent in newEvents.Select(n => n.Item1))
+                        foreach (EMEVD.Instruction newEvent in newEvents.Select(n => n.Item1).Where(i => i != null))
                         {
                             e.Instructions.Add(newEvent);
                         }

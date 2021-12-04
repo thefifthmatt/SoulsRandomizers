@@ -11,16 +11,23 @@ using SoulsFormats;
 using SoulsIds;
 using YamlDotNet.Serialization;
 using static SoulsIds.Events;
-using static RandomizerCommon.Util;
-using static SoulsFormats.EMEVD.Instruction;
 
 namespace RandomizerCommon
 {
     public class EventConfig
     {
+        public List<NewEvent> NewEvents { get; set; }
         public List<EventSpec> ItemTalks { get; set; }
         public List<EventSpec> ItemEvents { get; set; }
         public List<EventSpec> EnemyEvents { get; set; }
+
+        public class NewEvent
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public string Comment { get; set; }
+            public List<string> Commands { get; set; }
+        }
 
         public class EventSpec : AbstractEventSpec
         {

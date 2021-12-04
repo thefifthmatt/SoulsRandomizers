@@ -317,15 +317,15 @@ namespace RandomizerCommon
             // Entity name if extracted from a map. Any string otherwise
             public readonly string EntityName;
 
-            public readonly int EventEntityID;
+            public readonly int EntityID;
             public readonly int NPCParamID;
             public readonly int CharaInitID;
             public readonly List<int> GroupIds;
-            public EntityId(string MapName, string EntityName, int EventEntityID=-1, int NPCParamID=-1, int CharaInitID=-1, List<int> GroupIds=null)
+            public EntityId(string MapName, string EntityName, int EntityID=-1, int NPCParamID=-1, int CharaInitID=-1, List<int> GroupIds=null)
             {
                 this.MapName = MapName;
                 this.EntityName = EntityName;
-                this.EventEntityID = EventEntityID;
+                this.EntityID = EntityID;
                 this.NPCParamID = NPCParamID;
                 this.CharaInitID = CharaInitID;
                 this.GroupIds = GroupIds;
@@ -333,9 +333,9 @@ namespace RandomizerCommon
             public List<int> GetEntityIds()
             {
                 List<int> ids = new List<int>();
-                if (EventEntityID > 0)
+                if (EntityID > 0)
                 {
-                    ids.Add(EventEntityID);
+                    ids.Add(EntityID);
                 }
                 if (GroupIds != null)
                 {

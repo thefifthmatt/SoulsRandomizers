@@ -1,8 +1,8 @@
-﻿using SoulsFormats;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using SoulsFormats;
 using SoulsIds;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.Util;
@@ -12,29 +12,12 @@ namespace RandomizerCommon
     public class GameData
     {
         private static readonly List<string> itemParams = new List<string>() { "EquipParamWeapon", "EquipParamProtector", "EquipParamAccessory", "EquipParamGoods" };
-        // TODO: Is this really needed?
-        private static readonly List<string> loadParams = itemParams.Concat(new List<string> {
-            // Data scraper and elsewhere
-            "ShopLineupParam",
-            "ItemLotParam",
-            "EquipMtrlSetParam",
-            "NpcParam",
-            // Misc edits
-            "ActionButtonParam",
-            // Character writing
-            "CharaInitParam",
-            "Magic",
-            "ReinforceParamWeapon",
-        }).ToList();
 
         public readonly bool Sekiro;
         public readonly GameEditor Editor;
 
-        // TODO: Merge with GameEditor for DS3, to get rid of a lot of this.
         private string dir;
         private string modDir;
-        // private BND4 regulation;
-        // private bool encrypted;
 
         // Informational data
         private static readonly Dictionary<string, string> ds3LocationNames = new Dictionary<string, string>
@@ -279,12 +262,14 @@ namespace RandomizerCommon
             }
             if (!detail)
             {
+                // Note this doesn't do a CharacterName override, so using sparingly, or fix this
                 return modelDisplay;
             }
-            List<int> ids = entity.GetEntityIds();
-            string idInfo = ids.Count == 0 ? "" : $" #{string.Join(",", ids)}";
-            string info = $" ({entity.EntityName}{idInfo})";
-            if (model == "c0000" && entity.CharaInitID != -1) {
+            string idInfo = entity.EntityID <= 0 ? "" : $" - id {entity.EntityID}";
+            string groupInfo = entity.GroupIds?.Count == 0 ? "" : $" - group {string.Join(",", entity.GroupIds)}";
+            string info = $" ({entity.EntityName}{idInfo}{groupInfo})";
+            if (model == "c0000" && entity.CharaInitID != -1)
+            {
                 return CharacterName(entity.CharaInitID) + info;
             }
             return modelDisplay + info;
@@ -386,7 +371,9 @@ namespace RandomizerCommon
         private void AddModFile(string path)
         {
             path = FullName(path);
+#if !DEBUG
             Console.WriteLine($"Writing {path}");
+#endif
             writtenFiles.Add(path);
         }
 
@@ -591,7 +578,8 @@ namespace RandomizerCommon
         {
             bool matches(string cell)
             {
-                if (cell == id.ToString()) return true;
+                // if (cell == id.ToString()) return true;
+                if (cell.Contains(id.ToString())) return true;
                 // if (int.TryParse(cell, out int val)) return val >= 11000000 && val <= 13000000 && (val / 1000) % 10 == 5;
                 return false;
             }
@@ -655,6 +643,7 @@ namespace RandomizerCommon
         {
             foreach (string path in Directory.GetFiles(dir, "*.msgbnd*"))
             {
+                if (path.Contains("dlc1")) continue;
                 string name = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
                 try
                 {
@@ -662,7 +651,8 @@ namespace RandomizerCommon
                     foreach (BinderFile file in bnd.Files)
                     {
                         string fileName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(file.Name));
-                        string uname = System.Text.RegularExpressions.Regex.Replace(fileName, @"[^\x00-\x7F]", c => string.Format(@"u{0:x4}", (int)c.Value[0]));
+                        string uname = fileName;
+                        uname = System.Text.RegularExpressions.Regex.Replace(uname, @"[^\x00-\x7F]", c => string.Format(@"u{0:x4}", (int)c.Value[0]));
                         string fname = $"{name}_{uname}.txt";
                         // Console.WriteLine(fname);
                         // string fileName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(file.Name));

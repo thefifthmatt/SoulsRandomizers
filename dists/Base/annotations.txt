@@ -4030,7 +4030,7 @@ Slots:
   DebugText:
   - Mibu Balloon of Soul - 1700110[Treasure (o000100_0011) sunkenvalley]
   Text: Under the Bodhisattva Valley Sculptor's Idol on the opposite side from Guardian Ape
-  Area: sunkenvalley
+  Area: sunkenvalley_passage
 - Key: '06,0:51700120::'
   DebugText:
   - Divine Confetti - 1700120[Treasure (o000100_0012) sunkenvalley] 3x

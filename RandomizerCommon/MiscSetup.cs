@@ -20,6 +20,7 @@ namespace RandomizerCommon
 
         private static HashSet<string> badModEngines = new HashSet<string>
         {
+            // 1.04 and before
             "dfff963c88e82dc19c5e8592f464b9ca",
             "81137f302c6905f42ddf76fc52287e8e",
             "b25ddefec3f78278be633b85101ecccb",
@@ -30,11 +31,16 @@ namespace RandomizerCommon
             "267153f2297ba189591304560aab3a3e",
             "fbf98322736d493c5048804cc7efb11c",
         };
-        private static HashSet<string> justWorksModEngines = new HashSet<string>
+        private static HashSet<string> justWorksPrevModEngines = new HashSet<string>
         {
+            // 1.04 custom build
             "d79551b08bee23ab1d190448894b86d1",
         };
-        // May need to add a new section for requiresFurtherInstructionsModEngines later...
+        private static HashSet<string> justWorksModEngines = new HashSet<string>
+        {
+            // 1.06
+            "f785817a60c9a40f7cd57ff74f4256d3",
+        };
 
         public static bool CheckRequiredSekiroFiles(out string ret)
         {
@@ -90,18 +96,15 @@ namespace RandomizerCommon
             }
             if (!File.Exists(@"..\dinput8.dll") || !File.Exists(@"..\modengine.ini"))
             {
-                ret = "Error: Sekiro Mod Engine not found in parent directory\r\nDownload dinput8.dll and modengine.ini from the Sekiro Randomizer Files section";
+                ret = "Error: Sekiro Mod Engine not found in parent directory\r\nDownload dinput8.dll and modengine.ini from Sekiro Mod Engine";
                 return true;
             }
             // Check Mod Engine version
             string modEngineHash = GetMD5Hash(@"..\dinput8.dll");
-            if (badModEngines.Contains(modEngineHash))
+            if (badModEngines.Contains(modEngineHash) || justWorksPrevModEngines.Contains(modEngineHash))
             {
-                // TODO: Fix this up when it official releases
-                // return $"Sekiro Mod Engine is out of date (needs version >= 420)\r\nDownload the latest version or else enemy randomization will definitely crash the game";
-                // ret = "Sekiro Mod Engine needs the latest version (not yet officially released)\r\nCopy dinput8.dll into parent dir or else enemy randomization will definitely crash the game";
-                ret = "Error: Sekiro Mod Engine needs to be the unofficial version from the Sekiro Randomizer Files section\r\nCopy its dinput8.dll into parent dir or else enemy randomization will definitely crash the game!";
-                // "Unrecognized version of Sekiro Mod Engine\r\nEither use the one packaged with the randomizer (see install instructions) or copy."
+                // ret = "Error: Sekiro Mod Engine needs to be the unofficial version from the Sekiro Randomizer Files section\r\nCopy its dinput8.dll into parent dir or else enemy randomization will definitely crash the game!";
+                ret = "Error: Sekiro Mod Engine needs to be the official 0.1.16 release for Sekiro 1.06.\r\nDownload it and copy it dinput8.dll into the parent dir.";
                 return true;
             }
             // Check ini variables
@@ -125,7 +128,7 @@ namespace RandomizerCommon
             // Finally a check for future versions of mod engine. This will probably result in a bunch of user issue reports either way.
             if (!justWorksModEngines.Contains(modEngineHash))
             {
-                ret = "Warning: Unknown version of Sekiro Mod Engine detected\r\nUse the one from the files section of Sekiro Randomizer, and update the randomizer if there is an update";
+                ret = "Warning: Unknown version of Sekiro Mod Engine detected\r\nUse the latest official release, and update the randomizer if there is an update";
                 return false;
             }
             return false;
@@ -240,7 +243,8 @@ namespace RandomizerCommon
         {
             string customPath = @"sfx\sfxbnd_commoneffects.ffxbnd.dcx";
             if (!File.Exists(customPath)) return false;
-            // Original size: 64,029,504. New size: 78,592,543
+            // 1.04 original size: 64,029,504. New size: 78,592,543
+            // 1.06 original size: 64,319,424. New size: 79,142,507
             if (new FileInfo(customPath).Length < 75000000) return false;
             return true;
         }

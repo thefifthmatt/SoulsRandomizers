@@ -90,6 +90,7 @@ Categories:
   - Naginata Okami Warrior
   - Bow Okami Warrior
   - Ball Okami Warrior
+  - Lightning Okami Warrior
   Instance:
   - Okami Leader Shizu
 - Name: Old Dragon
@@ -6267,8 +6268,8 @@ Enemies:
   DefeatFlag: 9304
   StartFlag: 11705801
   Arena: -650.13 -295.3 744.92 122 48 10 60
-  DragonArena: -669.895 -295.471 769.055 -43 0 0 0  # -40 makes leftmost clip out of bounds, but -45 makes rightmost swoop out of bounds
-  DragonTrees: 1 2 3
+  # DragonArena: -669.895 -295.471 769.055 -43 0 0 0  # -40 makes leftmost clip out of bounds, but -45 makes rightmost swoop out of bounds
+  # DragonTrees: 1 2 3
   Phases: 2
 - ID: 1700850
   Name: c5100_0001
@@ -8538,7 +8539,7 @@ Enemies:
   DebugText: m25_00_00_00 - c5200_0000 - npc 52000000 - think 52000000 - id 2500800 - Divine Dragon
   Events: Set Character Gravity; Set Character MapHit; Set Character AI State; Set Character Animation State; Set Lock On Point; Set SpEffect; IF Character Has SpEffect; IF Character Dead/Alive; IF Character HP Ratio; Handle Boss Defeat and Display Banner; Display Boss Health Bar; Warp Character and Copy Floor; Change Character Enable State; Force Character Death; Attach Object to Character; Change Character DispMask; Set Network Update Rate; Clear SpEffect; Shoot Bullet; Force Animation Playback; Change Character HitMask
   Class: Boss
-  Tags: late mortal exclude:1000800 exclude:1000810  # Well, mortal in terms of mechanics, not lore
+  Tags: late mortal exclude:1000800 exclude:1000810 exclude:1100900
   ItemName: divinedragon
   ExtraName: Divine Dragon
   FullName: Divine $1

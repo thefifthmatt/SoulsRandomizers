@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using SoulsIds;
 using YamlDotNet.Serialization;
@@ -43,7 +44,10 @@ namespace RandomizerCommon
             }
             GameData game = new GameData(distDir, sekiro);
             game.Load(modDir);
-            // game.SearchParamInt(15200090); return;
+            // game.SearchParamInt(20000); return;
+            // game.DumpMessages(GameSpec.ForGame(GameSpec.FromGame.SDT).GameDir + @"\msg\engus"); return;
+            game.DumpMessages(GameSpec.ForGame(GameSpec.FromGame.DS1R).GameDir + @"\msg\JAPANESE"); return;
+            // MiscSetup.CombineSFX(game.Smaps.Keys.ToList(), GameSpec.ForGame(GameSpec.FromGame.SDT).GameDir + @"\combine"); return;
             if (modDir != null) Console.WriteLine();
 
             // Prologue

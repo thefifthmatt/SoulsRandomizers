@@ -422,7 +422,7 @@ namespace RandomizerCommon
                     {
                         text = defaultOpts;
                     }
-                    if (string.IsNullOrEmpty(text) || int.TryParse(text, out var _) || !text.Contains("v2"))
+                    if (string.IsNullOrEmpty(text) || int.TryParse(text, out var _) || !text.Contains("v"))
                     {
                         SetStatus("Invalid options string", error: true);
                         return;

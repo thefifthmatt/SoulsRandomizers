@@ -141,14 +141,14 @@ namespace RandomizerCommon
                             else
                             {                                
                                 // One time drops that directly award, that aren't covered by event flags. Mostly crystal lizards.
-                                if (entities.Count() == 1 && entityItemLots.ContainsKey(entities[0].EventEntityID) && entityItemLots[entities[0].EventEntityID] == entry.Key)
+                                if (entities.Count() == 1 && entityItemLots.ContainsKey(entities[0].EntityID) && entityItemLots[entities[0].EntityID] == entry.Key)
                                 {
-                                    scope = new ItemScope(ScopeType.ENTITY, entities[0].EventEntityID);
+                                    scope = new ItemScope(ScopeType.ENTITY, entities[0].EntityID);
                                 }
                                 // Non-respawning enemies with drops which can be missed. These are reused between different entities, so can drop multiple times.
-                                else if (entities.All(e => nonRespawningEntities.Contains(e.EventEntityID)))
+                                else if (entities.All(e => nonRespawningEntities.Contains(e.EntityID)))
                                 {
-                                    scope = new ItemScope(ScopeType.ENTITY, entities.Select(e => e.EventEntityID).Min());
+                                    scope = new ItemScope(ScopeType.ENTITY, entities.Select(e => e.EntityID).Min());
                                 }
                                 else
                                 {
@@ -321,24 +321,24 @@ namespace RandomizerCommon
                 string location = game.Locations[entry.Key];
                 foreach (MSB3.Part.Object part in entry.Value.Parts.Objects)
                 {
-                    EntityId id = new EntityId(location, part.Name, part.EventEntityID);
+                    EntityId id = new EntityId(location, part.Name, part.EntityID, GroupIds: part.EntityGroups.Where(g => g > 0).ToList());
                     objects[id] = id;
-                    if (part.EventEntityID > 0)
+                    if (part.EntityID > 0)
                     {
-                        AddMulti(usedEntities, part.EventEntityID, id);
+                        AddMulti(usedEntities, part.EntityID, id);
                     }
                 }
                 foreach (MSB3.Part.Enemy enemy in entry.Value.Parts.Enemies)
                 {
-                    EntityId id = new EntityId(location, enemy.Name, enemy.EventEntityID, enemy.NPCParamID, enemy.CharaInitID);
+                    EntityId id = new EntityId(location, enemy.Name, enemy.EntityID, enemy.NPCParamID, enemy.CharaInitID, enemy.EntityGroups.Where(g => g > 0).ToList());
                     objects[id] = id;
                     if (enemy.NPCParamID > 0)
                     {
                         AddMulti(usedNpcs, enemy.NPCParamID, id);
                     }
-                    if (enemy.EventEntityID > 0)
+                    if (enemy.EntityID > 0)
                     {
-                        AddMulti(usedEntities, enemy.EventEntityID, id);
+                        AddMulti(usedEntities, enemy.EntityID, id);
                     }
                 }
             }
@@ -347,12 +347,12 @@ namespace RandomizerCommon
                 string location = game.Locations[entry.Key];
                 foreach (MSB3.Event.Treasure treasure in entry.Value.Events.Treasures)
                 {
-                    if (treasure.PartName2 != null)
+                    if (treasure.TreasurePartName != null)
                     {
-                        EntityId id = new EntityId(location, treasure.PartName2);
+                        EntityId id = new EntityId(location, treasure.TreasurePartName);
                         if (!objects.ContainsKey(id))
                         {
-                            if (logUnused) Console.WriteLine($"Missing entity for treasure {treasure.Name} with entity {treasure.PartName2} and lot {treasure.ItemLot1}");
+                            if (logUnused) Console.WriteLine($"Missing entity for treasure {treasure.Name} with entity {treasure.TreasurePartName} and lot {treasure.ItemLot1}");
                             continue;
                         }
                         AddMulti(usedItemLots, treasure.ItemLot1, objects[id]);

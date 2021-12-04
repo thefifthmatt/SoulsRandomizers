@@ -5144,7 +5144,7 @@
               "unk4": 0
             },
             {
-              "name": "Number of Target Characters",
+              "name": "Number of Target Objects",
               "type": 6,
               "enum_name": null,
               "default": 1.0,
@@ -8325,7 +8325,8 @@
               "unk1": 0,
               "unk2": 1,
               "unk3": 4,
-              "unk4": 0
+              "unk4": 0,
+              "vararg": true
             }
           ]
         },
@@ -8473,7 +8474,8 @@
               "unk1": 0,
               "unk2": 1,
               "unk3": 4,
-              "unk4": 0
+              "unk4": 0,
+              "vararg": true
             }
           ]
         }
@@ -12678,6 +12680,11 @@
           "name": "Reset Dragonrot Counter",
           "index": 94,
           "args": []
+        },
+        {
+          "name": "UNKNOWN 2003[95]",
+          "index": 95,
+          "args": []
         }
       ]
     },
@@ -15397,6 +15404,26 @@
               "unk4": 0
             }
           ]
+        },
+        {
+          "name": "UNKNOWN 2004[68]",
+          "index": 68,
+          "args": [
+            {
+              "name": "Dummy",
+              "type": 0,
+              "enum_name": null,
+              "default": 0,
+              "min": 0,
+              "max": 1,
+              "increment": 1,
+              "format_string": "%d",
+              "unk1": 1,
+              "unk2": 0,
+              "unk3": 0,
+              "unk4": 0
+            }
+          ]
         }
       ]
     },
@@ -16768,7 +16795,7 @@
           ]
         },
         {
-          "name": "Display Hollow Arena PvP Message",
+          "name": "Display Generic Dialog Globally and Set Event Flags",
           "index": 12,
           "args": [
             {
@@ -16786,9 +16813,9 @@
               "unk4": 0
             },
             {
-              "name": "Unknown",
+              "name": "Dialog Type",
               "type": 4,
-              "enum_name": null,
+              "enum_name": "Prompt Type",
               "default": 0,
               "min": 0,
               "max": 0,
@@ -16800,10 +16827,10 @@
               "unk4": 0
             },
             {
-              "name": "Pad State",
-              "type": 0,
-              "enum_name": "Disabled/Enabled",
-              "default": 0,
+              "name": "Number of Options",
+              "type": 4,
+              "enum_name": "Number of Options",
+              "default": 6,
               "min": 0,
               "max": 0,
               "increment": 0,
@@ -16812,8 +16839,50 @@
               "unk2": 0,
               "unk3": 0,
               "unk4": 0
+            },
+            {
+              "name": "Left Response Event Flag ID",
+              "type": 5,
+              "enum_name": null,
+              "default": 0,
+              "min": 0,
+              "max": 1000000000,
+              "increment": 1,
+              "format_string": "%d",
+              "unk1": 1,
+              "unk2": 0,
+              "unk3": 0,
+              "unk4": 0
+            },
+            {
+              "name": "Right Response Event Flag ID",
+              "type": 5,
+              "enum_name": null,
+              "default": 0,
+              "min": 0,
+              "max": 1000000000,
+              "increment": 1,
+              "format_string": "%d",
+              "unk1": 1,
+              "unk2": 0,
+              "unk3": 0,
+              "unk4": 0
+            },
+            {
+              "name": "Cancel Response Event Flag ID",
+              "type": 5,
+              "enum_name": null,
+              "default": 0,
+              "min": 0,
+              "max": 1000000000,
+              "increment": 1,
+              "format_string": "%d",
+              "unk1": 1,
+              "unk2": 0,
+              "unk3": 0,
+              "unk4": 0
             }
-          ]   
+          ]
         },
         {
           "name": "Show Hint Box",
@@ -19135,7 +19204,7 @@
         "19": "Host",
         "20": "Co-op",
         "21": "Hostile",
-        "22": "Wandering Phantom",
+        "22": "Wandering Phantom 1",
         "23": "Enemy 1",
         "24": "Enemy 2",
         "25": "Strong Enemy 1",
@@ -19291,9 +19360,9 @@
         "15": "Burden Dispelled",
         "16": "Sinister Burden",
         "17": "Unseen Aid",
-        "18": "Unseen Aid",
-        "19": "Test Message",
-        "20": "Test Message",
+        "18": "Unseen Aid 1",
+        "19": "Test Message 1",
+        "20": "Test Message 2",
         "21": "Dragonrot Healed"
       }
     },

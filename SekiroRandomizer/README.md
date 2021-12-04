@@ -15,13 +15,13 @@ If you have issues installing the mod, or would like to provide feedback/partici
 
 To install and run:
 
-1. From the Files tab of the mod page, download Sekiro Randomizer *and* Mod Engine Beta from the files page. You will also need to download Combined SFX if you haven't unpacked the game using UXM, and Divine Dragon Textures if you want Divine Dragon to have textures when randomized.
+1. From the Files tab of the mod page, download Sekiro Randomizer, and also the latest official Sekiro Mod Engine release. You will also need to download Combined SFX if you haven't unpacked the game using UXM, and Divine Dragon Textures if you want Divine Dragon to have textures when randomized.
 
 2. Add the randomizer directory directly into the Sekiro.exe directory (*not* into an existing mods directory).
 
 https://media.discordapp.net/attachments/319013592332763136/685713247692914708/rando.png
 
-3. Install the Sekiro Mod Engine you downloaded from the randomizer files page. If the last time you downloaded a version of Mod Engine was before March 2020, you must use this version instead. It is not officially released yet (it will be when katalash has the time). This beta version allocates 200 MB additional memory for sound files and is required for avoiding crashes. It should suffice to copy dinput8.dll and modengine.ini into your Sekiro directory.
+3. Install Sekiro Mod Engine. If the last time you downloaded a version of Mod Engine was before November 2020, you must use this version instead. It allocates 200 MB additional memory for sound files and is required for avoiding crashes. It should suffice to copy dinput8.dll and modengine.ini into your Sekiro directory.
 
 https://media.discordapp.net/attachments/319013592332763136/685713245063217189/modini.png
 

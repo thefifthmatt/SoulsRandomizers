@@ -25,6 +25,7 @@ in specific areas (not yet specific locations) as defined in the item config in 
 Item assignments may be better documented and supported in the future.
 
 Enemy categories:
+Categories:
 - Any
 - Bosses
 - Minibosses
@@ -32,6 +33,10 @@ Enemy categories:
 - Basic
 - Armored Warrior
 - Ashina Soldier
+  - Katana Ashina Soldier
+  - Defensive Ashina Soldier
+  - Spear Ashina Soldier
+  - Rifle Ashina Sodlier
 - Assassin (Interior Ministry)
 - Assassin (Senpou)
 - Bandit
@@ -46,6 +51,10 @@ Enemy categories:
   - Aggressive Cricket
   - Passive Cricket
 - Demon of Hatred
+- Divine Dragon
+- Divine Dragon and Old Dragons
+  - Divine Dragon
+  - Old Dragon
 - Emma
 - Fencer
   - Basic Fencer
@@ -59,7 +68,7 @@ Enemy categories:
 - Gamefowl
 - Gecko
 - Genichiro Ashina
-- Genichiro Ashina (Tutorial) 1120800: any
+- Genichiro Ashina (Tutorial)
 - Genichiro, Way of Tomoe (Lightning)
 - Genichiro, Way of Tomoe (Mortal Blade)
 - Great Shinobi Owl
@@ -85,7 +94,13 @@ Enemy categories:
   - Exploding Nightjar Ninja
   - Kite Nightjar Ninja
 - Okami Warrior
+  - Katana Okami Warrior
+  - Naginata Okami Warrior
+  - Bow Okami Warrior
+  - Ball Okami Warrior
+  - Lightning Okami Warrior
   - Okami Leader Shizu
+- Old Dragon
 - Old Maid
 - Old Maid (Sunken Valley)
 - Owl (Father)
@@ -96,6 +111,9 @@ Enemy categories:
   - Red Palace Noble
   - Mist Noble
 - Red Guard
+  - Dual Katana Red Guard
+  - Firebomb Red Guard
+  - Flamethrower Red Guard
 - Rock Diver
 - Sakura Bull of the Palace
 - Samurai General
@@ -121,6 +139,9 @@ Enemy categories:
   - Snake Eyes Shirahagi
 - Spear Adept
 - Sunken Valley Clan
+  - Rifle Sunken Valley Clan
+  - Scattershot Sunken Valley Clan
+  - Cannon Sunken Valley Clan
   - Sniper Sunken Valley Clan
 - Sword Saint Isshin
 - Taro Troop

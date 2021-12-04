@@ -248,5 +248,33 @@ namespace RandomizerCommon
 
             return true;
         }
+        public static HashSet<int> ManualBinarySearch(List<int> values, int start=0, int end=0)
+        {
+            int i, j;
+            if (start == 0 && end == 0)
+            {
+                i = 0;
+                j = values.Count - 1;
+                start = values[i];
+                end = values[j];
+            }
+            else
+            {
+                i = values.IndexOf(start);
+                j = values.IndexOf(end);
+            }
+            Console.WriteLine($"Current range: {start},{end} ({j - i + 1} out of total {values.Count}, from {values[0]},{values[values.Count - 1]})");
+            if (start == end) throw new Exception("fatcat");
+            // if 3 to 4, make range 3 and 4. if 3 to 5, make range 34 and 5. if 3 to 6, make range 34 and 56
+            int mid1 = (i + j) / 2;
+            int mid2 = mid1 + 1;
+            List<int> keepVal = values.GetRange(i, mid1 - i + 1);
+            List<int> discardVal = values.GetRange(mid2, j - mid2 + 1);
+            Console.WriteLine($"Keeping: {string.Join(",", keepVal)}");
+            Console.WriteLine($"Discarding: {string.Join(",", discardVal)}");
+            Console.WriteLine($"If behavior observed, use {start},{values[mid1]}");
+            Console.WriteLine($"If not, use {values[mid2]},{end}");
+            return new HashSet<int>(discardVal);
+        }
     }
 }

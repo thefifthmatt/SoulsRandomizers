@@ -414,6 +414,8 @@ namespace RandomizerCommon
                 }
             }
             // Now, have fun with NPCs
+            // Just remove Symbol of Avarice first (may not matter with Irregulator, but those are more chaotic anyway)
+            armors.RemoveAll(set => set.Ids[0] == 78500000);
             Dictionary<string, ArmorSet> npcArmors = new Dictionary<string, ArmorSet>();
             Func<ItemType, PARAM.Cell, float> cellWeight = (type, cell) =>
             {

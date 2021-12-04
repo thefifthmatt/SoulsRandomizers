@@ -1121,7 +1121,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SekiroForm";
-            this.Text = "Sekiro Enemy and Item Randomizer v0.3";
+            this.Text = "Sekiro Enemy and Item Randomizer v0.4.1";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
