@@ -171,6 +171,7 @@ namespace RandomizerCommon
                     }
                     if (!options["dlc1"])
                     {
+                        // In DS3, some handmaid shops become available from DLC1
                         exclude.Add("dlc1");
                     }
                     if (group.Includes == "keyitems")

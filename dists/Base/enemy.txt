@@ -325,6 +325,7 @@ Enemies:
   ExtraName: Juzou the Drunkard
   FullName: $1 the Drunkard
   PartName: Juzou
+  DupeName: Juzou the Gambler
   NpcName: 911071
   EnemyType: drunkard
   Arena: -49.260 -766.467 485.704 30 18 10 23
@@ -340,6 +341,7 @@ Enemies:
   ExtraName: Juzou the Drunkard 2
   FullName: $1 the Drunkard
   PartName: Juzou
+  DupeName: Juzou the Smoker
   NpcName: 911071
   EnemyType: drunkard
   Arena: -49.260 -766.467 485.704 30 18 10 23
@@ -445,61 +447,73 @@ Enemies:
   DebugText: m10_00_00_00 - c1320_0000 - npc 13200100 - think 13200100 - id 1000450 - Treasure Carp
   Events: Change Character Enable State; Set Character Animation State; Set Character Backread State; Set SpEffect; IF Character HP Ratio; IF Number of Character Health Bars (Other); Clear SpEffect; IF Character Has SpEffect; IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death; IF Character Dead/Alive; IF Entity In/Outside Radius Of Entity; IF Character AI State; IF Character Has Event Message; Reset Character Position; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1000451
   Name: c1320_0001
   DebugText: m10_00_00_00 - c1320_0001 - npc 13200100 - think 13200100 - id 1000451 - Treasure Carp
   Events: Change Character Enable State; Set Character Animation State; Set Character Backread State; Set SpEffect; IF Character HP Ratio; IF Number of Character Health Bars (Other); Clear SpEffect; IF Character Has SpEffect; IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death; IF Character Dead/Alive; IF Entity In/Outside Radius Of Entity; IF Character AI State; IF Character Has Event Message; Reset Character Position; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1000452
   Name: c1320_0002
   DebugText: m10_00_00_00 - c1320_0002 - npc 13200100 - think 13200100 - id 1000452 - Treasure Carp
   Events: Change Character Enable State; Set Character Animation State; Set Character Backread State; Set SpEffect; IF Character HP Ratio; IF Number of Character Health Bars (Other); Clear SpEffect; IF Character Has SpEffect; IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death; IF Character Dead/Alive; IF Entity In/Outside Radius Of Entity; IF Character AI State; IF Character Has Event Message; Reset Character Position; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1000453
   Name: c1320_0003
   DebugText: m10_00_00_00 - c1320_0003 - npc 13200000 - think 13200000 - id 1000453 - Treasure Carp
   Events: Change Character Enable State; Set Character Animation State; Set Character Backread State; Set SpEffect; IF Character HP Ratio; IF Number of Character Health Bars (Other); Clear SpEffect; IF Character Has SpEffect; IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death; IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has Event Message; Reset Character Position; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1000454
   Name: c1320_0004
   DebugText: m10_00_00_00 - c1320_0004 - npc 13200010 - think 13200010 - id 1000454 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1000455
   Name: c1320_0005
   DebugText: m10_00_00_00 - c1320_0005 - npc 13200010 - think 13200010 - id 1000455 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1000456
   Name: c1320_0006
   DebugText: m10_00_00_00 - c1320_0006 - npc 13200010 - think 13200010 - id 1000456 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1000457
   Name: c1320_0007
   DebugText: m10_00_00_00 - c1320_0007 - npc 13200010 - think 13200010 - id 1000457 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1000458
   Name: c1320_0008
   DebugText: m10_00_00_00 - c1320_0008 - npc 13200010 - think 13200010 - id 1000458 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1000459
   Name: c1320_0009
   DebugText: m10_00_00_00 - c1320_0009 - npc 13200000 - think 13200000 - id 1000459 - Treasure Carp
   Events: Change Character Enable State; Set Character Animation State; Set Character Backread State; Set SpEffect; IF Character HP Ratio; IF Number of Character Health Bars (Other); Clear SpEffect; IF Character Has SpEffect; IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death; IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has Event Message; Reset Character Position; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1000460
   Name: c1320_0010
   DebugText: m10_00_00_00 - c1320_0010 - npc 13200000 - think 13200000 - id 1000460 - Treasure Carp
   Events: Change Character Enable State; Set Character Animation State; Set Character Backread State; Set SpEffect; IF Character HP Ratio; IF Number of Character Health Bars (Other); Clear SpEffect; IF Character Has SpEffect; IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death; IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has Event Message; Reset Character Position; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1000461
   Name: c1320_0011
   DebugText: m10_00_00_00 - c1320_0011 - npc 13200010 - think 13200010 - id 1000461 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1000731
   Name: c1321_0000
   DebugText: m10_00_00_00 - c1321_0000 - npc 13210000 - think 3 - id 1000731 - Man-eating Carp
@@ -1061,6 +1075,7 @@ Enemies:
   ExtraName: Owl (Father)
   FullName: $1 (Father)
   PartName: Owl
+  DupeName: Owl (Imagined Reification of Past Trauma)
   NpcName: 905061
   DefeatFlag: 9317
   AppearFlag: 8304
@@ -1085,6 +1100,7 @@ Enemies:
   ExtraName: Lady Butterfly 1
   FullName: Lady $1
   PartName: Lady Butterfly
+  DupeName: Phantom Butterfly
   NpcName: 905090
   Phases: 1
 - ID: 1000810
@@ -1098,6 +1114,7 @@ Enemies:
   ExtraName: Lady Butterfly 2
   FullName: Lady $1
   PartName: Lady Butterfly
+  DupeName: Phantom Butterfly
   NpcName: 905090
   StartFlag: 11005802
   DefeatFlag: 9302
@@ -1831,7 +1848,8 @@ Enemies:
   Name: c5010_0001
   DebugText: m11_00_00_00 - c5010_0001 - npc 50101000 - think 50101000 - id 1100850 (1105600) - Great Serpent
   Events: Set Character Gravity; Set Character Default Backread State; Set Network Update Rate; Issue Short Warp Request; IF Character Has SpEffect; Force Animation Playback; Request Character Animation Reset; Change Character DispMask; Clear SpEffect; Warp Character and Copy Floor; Request Character AI Command; Change Character Enable State; Set Character Animation State; Set Character Backread State; Set SpEffect
-  Class: ChaosBoss
+  Class: None
+  DupeEvents: [11105850, 11105851, 11105853, 11105865, 11105866, 11105870, 11105877, 11105878, 11105879, 11105898]
 - ID: 1100310
   Name: c5020_0000
   DebugText: m11_00_00_00 - c5020_0000 - npc 50202000 - think 50200010 - id 1100310 (1105600) - Chained Ogre
@@ -1861,14 +1879,17 @@ Enemies:
   ExtraName: Gyoubu Oniwa
   FullName: $1 Oniwa
   PartName: Gyoubu Oniwa
+  DupeName: horselover1862
   NpcName: 905081
   DefeatFlag: 9301
   StartFlag: 11105801
   Arena: -126.2 -68.326 68.3 13 70 5 100
-  OwlArena: -124.180 -76.846 75.653 95 156 30 121
+  # OwlArena: -124.180 -76.846 75.653 95 156 30 121
   # DragonArena: -127.884 -66.634 102.722 -10 0 0 0
   DragonArena: -127.884 -69.634 102.722 -10 0 0 0
   DragonTrees: 0 1 2 3
+  ExtraArenas:
+    dupe: -175.251 -68.956 72.779 -102.159 0 0 0
   Phases: 2
 - ID: 1100707
   Name: c5430_0000
@@ -1893,12 +1914,13 @@ Enemies:
   ExtraName: Demon of Hatred
   FullName: $1 of Hatred
   PartName: Demon of Hatred
+  DupeName: Sekijo
   NpcName: 907021
   DefeatFlag: 9313
   AppearFlag: 8302
   StartFlag: 11105901
   Arena: -126.2 -68.326 68.3 13 70 5 100
-  OwlArena: -124.180 -76.846 75.653 95 156 30 121
+  # OwlArena: -124.180 -76.846 75.653 95 156 30 121
   DragonArena: -127.884 -66.634 102.722 -10 0 0 0
   DragonTrees: 0 1 2 3
   Phases: 3
@@ -2852,14 +2874,17 @@ Enemies:
   DebugText: m11_01_00_00 - c1320_0000 - npc 13201001 - think 13200010 - id 1110650 - Treasure Carp
   Events: Set SpEffect; IF Player Is Looking At Entity; IF Damage Type; Force Animation Playback; Clear Character's AI Target; Change Character Patrol Behavior; Clear SpEffect; IF Character Dead/Alive; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; Change Character Enable State; Set Character Animation State; Set Character Backread State; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character Has SpEffect; IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1110651
   Name: c1320_0001
   DebugText: m11_01_00_00 - c1320_0001 - npc 13201110 - think 13200110 - id 1110651 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1110652
   Name: c1320_0002
   DebugText: m11_01_00_00 - c1320_0002 - npc 13201110 - think 13200110 - id 1110652 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1110660
   Name: c1340_0000
   DebugText: m11_01_00_00 - c1340_0000 - npc 13400000 - think 13400000 - id 1110660 - Underwater Headless
@@ -3421,6 +3446,7 @@ Enemies:
   FullName: Great Shinobi $1
   PartName: Owl
   ItemName: owl
+  DupeName: A Literal Owl
   NpcName: 905060
   DefeatFlag: 9308
   StartFlag: 11115851
@@ -3475,6 +3501,7 @@ Enemies:
   ExtraName: Genichiro Ashina
   FullName: $1 Ashina
   PartName: Genichiro
+  DupeName: Gen-chan
   NpcName: 907100
   OwnedBy: 1110801
   StartFlag: 11115801
@@ -3790,6 +3817,7 @@ Enemies:
   ExtraName: Leader Shigenori Yamauchi
   FullName: Leader $1
   PartName: Shigenori Yamauchi
+  DupeName: Follower Shigenori Yamauchi
   NpcName: 911020
   Arena: -199.21 -39.747 242.5 -152 8 10 8
   DefeatFlag: 11120390
@@ -3903,7 +3931,7 @@ Enemies:
   StartFlag: 11125861
   DefeatFlag: 9312
   Arena: -382.628 -44.459 174.480 32 35 10 55 0 -3
-  OwlArena: -385.464 -49.979 174.957 -2 76 30 140
+  # OwlArena: -385.464 -49.979 174.957 -2 76 30 140
   DragonArena: -395.925 -44.214 123.286 -155 0 0 0
   DragonTrees: 2 3
   Phases: 3
@@ -3942,7 +3970,7 @@ Enemies:
   PartName: Genichiro
   NpcName: 907110
   StartFlag: 11125831
-  OwlArena: -385.464 -45.979 174.957 -2 76 30 140
+  # OwlArena: -385.464 -45.979 174.957 -2 76 30 140
   DragonArena: -395.925 -44.214 123.286 -155 0 0 0
   DragonTrees: 2 3
   Phases: 1
@@ -4064,6 +4092,7 @@ Enemies:
   ItemName: shichimen
   FullName: Shichimen $1
   PartName: Shichimen Warrior
+  DupeName: Hachimen Warrior
   NpcName: 911080
   EnemyType: shichimen
   Arena: -357.5 -77.353 382.77 80 55 10 30
@@ -4209,18 +4238,22 @@ Enemies:
   Name: c1320_0000
   DebugText: m13_00_00_00 - c1320_0000 - npc 13206010 - think 13200010 - id 1300380 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1300381
   Name: c1320_0001
   DebugText: m13_00_00_00 - c1320_0001 - npc 13206010 - think 13200010 - id 1300381 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1300382
   Name: c1320_0002
   DebugText: m13_00_00_00 - c1320_0002 - npc 13206010 - think 13200010 - id 1300382 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1300383
   Name: c1320_0003
   DebugText: m13_00_00_00 - c1320_0003 - npc 13206010 - think 13200010 - id 1300383 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1300280
   Name: c1520_0000
   DebugText: m13_00_00_00 - c1520_0000 - npc 15200000 - think 15000600 - id 1300280 - Test Subject
@@ -4666,6 +4699,7 @@ Enemies:
   Tags: early reasonable
   Category: Red
   ExtraName: Mist Noble
+  DupeName: The Hardest Enemy in the Game, And Now There's *Two* of Them?! Please Laugh.
   ItemName: mistnoble
   FullName: Mist $1
   PartName: Mist Noble
@@ -4676,66 +4710,80 @@ Enemies:
   DebugText: m15_00_00_00 - c1320_0000 - npc 13204200 - think 13200010 - id 1500460 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; Set Character Backread State; Change Character Enable State; Set Character Animation State; Set SpEffect; IF Character HP Ratio; IF Number of Character Health Bars (Other); Clear SpEffect; IF Character Has SpEffect; IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500461
   Name: c1320_0001
   DebugText: m15_00_00_00 - c1320_0001 - npc 13204010 - think 13200010 - id 1500461 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500462
   Name: c1320_0002
   DebugText: m15_00_00_00 - c1320_0002 - npc 13204010 - think 13200010 - id 1500462 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500463
   Name: c1320_0003
   DebugText: m15_00_00_00 - c1320_0003 - npc 13204010 - think 13200010 - id 1500463 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500464
   Name: c1320_0004
   DebugText: m15_00_00_00 - c1320_0004 - npc 13204110 - think 13200110 - id 1500464 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500465
   Name: c1320_0005
   DebugText: m15_00_00_00 - c1320_0005 - npc 13204110 - think 13200110 - id 1500465 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500466
   Name: c1320_0006
   DebugText: m15_00_00_00 - c1320_0006 - npc 13204110 - think 13200110 - id 1500466 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500467
   Name: c1320_0007
   DebugText: m15_00_00_00 - c1320_0007 - npc 13204110 - think 13200110 - id 1500467 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500468
   Name: c1320_0008
   DebugText: m15_00_00_00 - c1320_0008 - npc 13204110 - think 13200110 - id 1500468 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500472
   Name: c1320_0012
   DebugText: m15_00_00_00 - c1320_0012 - npc 13204010 - think 13200010 - id 1500472 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; Set Character Backread State
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500473
   Name: c1320_0013
   DebugText: m15_00_00_00 - c1320_0013 - npc 13204010 - think 13200010 - id 1500473 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; Set Character Backread State
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500474
   Name: c1320_0014
   DebugText: m15_00_00_00 - c1320_0014 - npc 13204010 - think 13200010 - id 1500474 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; Set Character Backread State
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500561
   Name: c1320_0020
   DebugText: m15_00_00_00 - c1320_0020 - npc 13208100 - think 13201100 - id 1500561 - Treasure Carp
   Events: Set Character Animation State
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500562
   Name: c1320_0021
   DebugText: m15_00_00_00 - c1320_0021 - npc 13204000 - think 13200000 - id 1500562 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1500680
   Name: c1350_0000
   DebugText: m15_00_00_00 - c1350_0000 - npc 13502000 - think 13500020 - id 1500680 - Headless
@@ -5441,6 +5489,7 @@ Enemies:
   ExtraName: Long-arm Centipede Giraffe
   FullName: Long-arm Centipede $1
   PartName: Giraffe
+  DupeName: Long-arm Centipede Jirafu
   NpcName: 911041
   EnemyType: centipede
   Arena: -401.78 -178.39 613.96 -50 10 5 7
@@ -5453,6 +5502,7 @@ Enemies:
   ItemName: shichimen2
   FullName: Shichimen $1
   PartName: Shichimen Warrior
+  DupeName: Kyuumen Warrior
   NpcName: 911081
   EnemyType: shichimen
   Arena: -196.11 -376.774 647.86 10 25 10 35
@@ -5791,6 +5841,7 @@ Enemies:
   FullName: Snake Eyes $1
   PartName: Shirafuji
   NpcName: 911191
+  DupeName: Snake Eyes Shirahagi
   EnemyType: snakeeyes
   Arena: -233.483 -189.740 514.843 -62 8 10 8
 - ID: 1700201
@@ -5803,6 +5854,7 @@ Enemies:
   ExtraName: Snake Eyes Shirahagi  # In Poison Pool
   FullName: Snake Eyes $1
   PartName: Shirahagi
+  DupeName: Snake Eyes Shirafuji
   NpcName: 911192
   EnemyType: snakeeyes
   Arena: -243.88 -353.501 578.5 40 10 10 6
@@ -6026,27 +6078,33 @@ Enemies:
   DebugText: m17_00_00_00 - c1320_0000 - npc 13202000 - think 13200000 - id 1700450 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1700451
   Name: c1320_0001
   DebugText: m17_00_00_00 - c1320_0001 - npc 13202000 - think 13200000 - id 1700451 - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1700452
   Name: c1320_0002
   DebugText: m17_00_00_00 - c1320_0002 - npc 13202110 - think 13200110 - id 1700452 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1700453
   Name: c1320_0003
   DebugText: m17_00_00_00 - c1320_0003 - npc 13202110 - think 13200110 - id 1700453 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1700454
   Name: c1320_0004
   DebugText: m17_00_00_00 - c1320_0004 - npc 13202110 - think 13200110 - id 1700454 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1700455
   Name: c1320_0005
   DebugText: m17_00_00_00 - c1320_0005 - npc 13202110 - think 13200110 - id 1700455 - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 1700500
   Name: c1350_0000
   DebugText: m17_00_00_00 - c1350_0000 - npc 13501000 - think 13500000 - id 1700500 - Headless
@@ -6238,22 +6296,26 @@ Enemies:
   Name: c5010_0000
   DebugText: m17_00_00_00 - c5010_0000 - npc 50102000 - think 50102000 - id 1700600 - Great Serpent
   Events: IF Character Has SpEffect; Set Network Update Rate; IF Character Dead/Alive; Clear SpEffect; Force Animation Playback; Request Character Animation Reset; Set Character Default Backread State; Set Character Gravity; Issue Short Warp Request; Set Character HP Bar Display; Change Character DispMask; Set SpEffect; IF Character Has Event Message; Change Character Enable State; Set Character Backread State; Set Character Animation State
-  Class: ChaosBoss
+  Class: None
+  DupeEvents: [8995, 11700100, 11700661, 11705207, 11705600, 11705601, 11705610, 11705614, 11705617, 11705618, 11705619, 11705655, 11705656, 11705670, 12005250]
 - ID: 1700610
   Name: c5010_0001
   DebugText: m17_00_00_00 - c5010_0001 - npc 50102010 - think 50102010 - id 1700610 - Great Serpent
   Events: Set Network Update Rate; Change Character Enable State; Force Animation Playback; Request Character Animation Reset; Set Character Default Backread State; Set Character Gravity; Issue Short Warp Request; Set Character HP Bar Display; Change Character DispMask; Set Character Backread State; Set SpEffect; IF Character Has SpEffect; Set Character Animation State; Clear SpEffect
-  Class: ChaosBoss
+  Class: None
+  DupeEvents: [11705600, 11705601, 11705610, 11705617, 11705618, 11705655, 11705656, 11705670]
 - ID: 1700620
   Name: c5010_0002
   DebugText: m17_00_00_00 - c5010_0002 - npc 50103000 - think 50103000 - id 1700620 - Great Serpent
   Events: Set Network Update Rate; Set Character Default Backread State; Set Character Gravity; Issue Short Warp Request; Set Character HP Bar Display; Change Character DispMask; IF Character Dead/Alive; IF Character Has Event Message; Shoot Bullet; Set SpEffect; IF Character Has SpEffect; Set Character Animation State; Clear SpEffect
-  Class: ChaosBoss
+  Class: None
+  DupeEvents: [11705565, 11705601, 11705610, 11705620, 11705656, 11705671]
 - ID: 1700640
   Name: c5010_0003
   DebugText: m17_00_00_00 - c5010_0003 - npc 50103010 - think 50103010 - id 1700640 - Great Serpent
   Events: IF Character Has Event Message; Set Network Update Rate; Set SpEffect; Clear SpEffect; Force Animation Playback; IF Character Has SpEffect; Request Character Animation Reset; IF Character Dead/Alive; Set Character Default Backread State; Set Character Gravity; Issue Short Warp Request; Set Character HP Bar Display; Change Character DispMask; Set Character Animation State
-  Class: ChaosBoss
+  Class: None
+  DupeEvents: [11700101, 11700661, 11705110, 11705601, 11705610, 11705643, 11705644, 11705645, 11705651, 11705656, 11705671]
 - ID: 1700800
   Name: c5100_0000
   DebugText: m17_00_00_00 - c5100_0000 - npc 51000000 - think 51000000 - id 1700800 - Guardian Ape
@@ -6264,6 +6326,7 @@ Enemies:
   ExtraName: Guardian Ape
   FullName: Guardian $1
   PartName: Guardian Ape
+  DupeName: Lion Tamarin
   NpcName: 905100
   DefeatFlag: 9304
   StartFlag: 11705801
@@ -6352,6 +6415,8 @@ Enemies:
   DebugText: m20_00_00_00 - c1000_0009 - npc 12600050 - think 10000000 - id 2000800 - Invisible
   Events: IF Character HP Ratio; Handle Boss Defeat; Display Boss Health Bar; Set Character Gravity; Set SpEffect; Set Network Update Rate; Set Character Default Backread State
   Class: None  # The combined boss enemy for Folding Screen Monkeys
+  DupeName: Seeing Monkey, Hearing Monkey, Speaking Monkey,
+  DupeEvents: []
 - ID: 2000810
   Name: c1000_0010
   DebugText: m20_00_00_00 - c1000_0010 - npc 12600050 - think 10000000 - id 2000810 - Invisible
@@ -6558,6 +6623,7 @@ Enemies:
   ItemName: armoredwarrior
   FullName: Armored $1
   PartName: Armored Warrior
+  DupeName: Robert Fan Club Secretary
   NpcName: 911130
   Arena: -817.017 88.006 443.928 54.9 48 10 8
 - ID: 2000313
@@ -7250,6 +7316,8 @@ Enemies:
   DefeatFlag: 9305
   ExtraName: Folding Screen Monkey (Seeing)
   Arena: -943.354 -820.826 558.416 -35.100 20 10 5  # TODO: Make more specific arenas
+  ExtraArenas:
+    dupe: -900.526 -799.322 628.878 2.307 0 0 0
 - ID: 2000802
   Name: c1260_0001
   DebugText: m20_00_00_00 - c1260_0001 - npc 12600010 - think 12600010 - id 2000802 (2005800) - Folding Screen Monkey
@@ -7259,6 +7327,8 @@ Enemies:
   DefeatFlag: 9305
   ExtraName: Folding Screen Monkey (Hearing)
   Arena: -943.354 -820.826 558.416 -35.100 20 10 5
+  ExtraArenas:
+    dupe: -909.673 -824.273 588.467 47.321 0 0 0
 - ID: 2000803
   Name: c1260_0002
   DebugText: m20_00_00_00 - c1260_0002 - npc 12600020 - think 12600020 - id 2000803 (2005800) - Folding Screen Monkey
@@ -7268,6 +7338,8 @@ Enemies:
   DefeatFlag: 9305
   ExtraName: Folding Screen Monkey (Speaking)
   Arena: -943.354 -820.826 558.416 -35.100 20 10 5
+  ExtraArenas:
+    dupe: -928.149 -812.193 567.997 56.687 0 0 0
 - ID: 2000804
   Name: c1260_0003
   DebugText: m20_00_00_00 - c1260_0003 - npc 12600030 - think 12600030 - id 2000804 (2005800) - Folding Screen Monkey
@@ -7277,16 +7349,20 @@ Enemies:
   DefeatFlag: 9305
   ExtraName: Folding Screen Monkey (Invisible)
   Arena: -943.354 -820.826 558.416 -35.100 20 10 5
+  ExtraArenas:
+    dupe: -970.152 -820.759 538.356 51.838 0 0 0
 - ID: 2000690
   Name: c1320_0000
   DebugText: m20_00_00_00 - c1320_0000 - npc 13203100 - think 13200100 - id 2000690 - Treasure Carp
   Events: IF Character Dead/Alive; IF Entity In/Outside Radius Of Entity; IF Character AI State; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2000691
   Name: c1320_0001
   DebugText: m20_00_00_00 - c1320_0001 - npc 13203100 - think 13200100 - id 2000691 - Treasure Carp
   Events: IF Character Dead/Alive; IF Entity In/Outside Radius Of Entity; IF Character AI State; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2000455
   Name: c1360_0000
   DebugText: m20_00_00_00 - c1360_0000 - npc 13600000 - think 13600002 - id 2000455 - Assassin (Senpou)
@@ -7701,6 +7777,7 @@ Enemies:
   ItemName: shichimen3
   FullName: Shichimen $1
   PartName: Shichimen Warrior
+  DupeName: Juumen Warrior
   NpcName: 911080
   EnemyType: shichimen
   Arena: -18.27 114.443 558.11 -112 45 10 5 0 6.5
@@ -8075,6 +8152,7 @@ Enemies:
   FullName: Okami Leader $1
   PartName: Shizu
   NpcName: 911310
+  DupeName: Okami Follower Shizu
   Tags: early reasonable exclude:noisland
   Arena: -6.120 131.789 419.362 -190 4 10 40 5 0
 - ID: 2500407
@@ -8325,111 +8403,134 @@ Enemies:
   DebugText: m25_00_00_00 - c1320_0000 - npc 13200000 - think 13200000 - id 2500600 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500601
   Name: c1320_0001
   DebugText: m25_00_00_00 - c1320_0001 - npc 13200000 - think 13200000 - id 2500601 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500602
   Name: c1320_0002
   DebugText: m25_00_00_00 - c1320_0002 - npc 13200000 - think 13200000 - id 2500602 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500611
   Name: c1320_0011
   DebugText: m25_00_00_00 - c1320_0011 - npc 13200000 - think 13200000 - id 2500611 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500612
   Name: c1320_0012
   DebugText: m25_00_00_00 - c1320_0012 - npc 13200000 - think 13200000 - id 2500612 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500613
   Name: c1320_0013
   DebugText: m25_00_00_00 - c1320_0013 - npc 13200000 - think 13200000 - id 2500613 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500614
   Name: c1320_0014
   DebugText: m25_00_00_00 - c1320_0014 - npc 13200010 - think 13200010 - id 2500614 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500615
   Name: c1320_0015
   DebugText: m25_00_00_00 - c1320_0015 - npc 13200010 - think 13200010 - id 2500615 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500616
   Name: c1320_0016
   DebugText: m25_00_00_00 - c1320_0016 - npc 13200010 - think 13200010 - id 2500616 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500617
   Name: c1320_0017
   DebugText: m25_00_00_00 - c1320_0017 - npc 13200000 - think 13200000 - id 2500617 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; SKIP IF Character Has SpEffect; Force Character Death
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500618
   Name: c1320_0018
   DebugText: m25_00_00_00 - c1320_0018 - npc 13200010 - think 13200010 - id 2500618 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500619
   Name: c1320_0019
   DebugText: m25_00_00_00 - c1320_0019 - npc 13200010 - think 13200010 - id 2500619 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500620
   Name: c1320_0020
   DebugText: m25_00_00_00 - c1320_0020 - npc 13200010 - think 13200010 - id 2500620 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500621
   Name: c1320_0021
   DebugText: m25_00_00_00 - c1320_0021 - npc 13200110 - think 13200110 - id 2500621 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500622
   Name: c1320_0022
   DebugText: m25_00_00_00 - c1320_0022 - npc 13200110 - think 13200110 - id 2500622 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500623
   Name: c1320_0023
   DebugText: m25_00_00_00 - c1320_0023 - npc 13200110 - think 13200110 - id 2500623 (2505300) - Treasure Carp
   Events: IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Set Character Animation State; Reset Character Position; Set Character Backread State; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500624
   Name: c1320_0024
   DebugText: m25_00_00_00 - c1320_0024 - npc 13209200 - think 13200010 - id 2500624 (2505300) - Treasure Carp
   Events: Set Character Animation State; IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Reset Character Position; Set Character Backread State; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500625
   Name: c1320_0025
   DebugText: m25_00_00_00 - c1320_0025 - npc 13209200 - think 13200010 - id 2500625 (2505300) - Treasure Carp
   Events: Set Character Animation State; IF Character Dead/Alive; IF Player Is Looking At Entity; IF Entity In/Outside Radius Of Entity; IF Character AI State; Set Character Default Backread State; Set Network Update Rate; IF Character Has SpEffect; Set SpEffect; IF Character Has Event Message; Clear SpEffect; Change Character Enable State; Reset Character Position; Set Character Backread State; Force Animation Playback
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500626
   Name: c1320_0026
   DebugText: m25_00_00_00 - c1320_0026 - npc 13205010 - think 13200010 - id 2500626 (2505300) - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500627
   Name: c1320_0027
   DebugText: m25_00_00_00 - c1320_0027 - npc 13205010 - think 13200010 - id 2500627 (2505300) - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500628
   Name: c1320_0028
   DebugText: m25_00_00_00 - c1320_0028 - npc 13205010 - think 13200010 - id 2500628 (2505300) - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500629
   Name: c1320_0029
   DebugText: m25_00_00_00 - c1320_0029 - npc 13205010 - think 13200010 - id 2500629 (2505300) - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500630
   Name: c1320_0030
   DebugText: m25_00_00_00 - c1320_0030 - npc 13205010 - think 13200010 - id 2500630 (2505300) - Treasure Carp
   Class: None
+  DupeEvents: [20005450, 20005451]
 - ID: 2500702
   Name: c1321_0000
   DebugText: m25_00_00_00 - c1321_0000 - npc 13211000 - think 3 - id 2500702 - Man-eating Carp
@@ -8474,6 +8575,7 @@ Enemies:
   FullName: Corrupted $1
   PartName: Corrupted Monk
   NpcName: 905000
+  DupeName: True Monk
   StartFlag: 12505951
   DefeatFlag: 9309
   Arena: 80.77 157.176 87.73 60 52 10 10
@@ -8523,7 +8625,8 @@ Enemies:
   Name: c5050_0001
   DebugText: m25_00_00_00 - c5050_0001 - npc 50500000 - think 50500000 - id 2500311 - Giant Carp
   Events: Change Character Enable State; Set Character Animation State; Set Character Backread State; Set Network Update Rate; Set Character AI State; Set Character HP Bar Display; Change Character Patrol Behavior; Set Character Event Target; Set SpEffect; IF Character Has SpEffect; IF Character Dead/Alive; IF Character AI State (New); Clear Character's AI Target; Set Character Team Type; Request Character AI Re-plan; IF Character AI State; Clear SpEffect
-  Class: ChaosBoss
+  Class: None
+  DupeEvents: [12500319, 12505300, 12505302, 12505303, 12505309, 12505317, 12505318, 12505340]
 - ID: 2500312
   Name: c5050_0002
   DebugText: m25_00_00_00 - c5050_0002 - npc 50500080 - think 50500080 - id 2500312 - Giant Carp
@@ -8544,10 +8647,13 @@ Enemies:
   ExtraName: Divine Dragon
   FullName: Divine $1
   PartName: Divine Dragon
+  DupeName: Sakura Dragon
   NpcName: 905200
   StartFlag: 12505881
   DefeatFlag: 9310
   Arena: -29.051 389.556 300.000 -90 150 10 150
+  ExtraArenas:
+    dupe: -27.039 388.980 354.247 82.242 0 0 0
   Phases: 1
 - ID: 2500811
   Name: c5300_0000
@@ -8657,6 +8763,8 @@ Enemies:
   DebugText: m25_00_00_00 - c5300_0025 - npc 53000000 - think 53000010 - id 2500810 (2505800) - Old Dragon
   Events: Set Character HP Bar Display; Set Lock On Point; Set Character AI State; Display Boss Health Bar; Set SpEffect; IF Character HP Ratio
   Class: None  # Health bar only
+  DupeEvents: []
+  DupeName: Older Dragons of the Tree
 - ID: 2500930
   Name: c5310_0000
   DebugText: m25_00_00_00 - c5310_0000 - npc 53100020 - think 53100000 - id 2500930 (2505800,2505811) - Tree Dragon

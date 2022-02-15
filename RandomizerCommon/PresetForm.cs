@@ -24,14 +24,14 @@ namespace RandomizerCommon
         private List<string> noEnemies = new List<string> { "(None)" };
         private string defaultText;
         private bool fatal;
-        public PresetForm()
+        public PresetForm(string dir)
         {
             InitializeComponent();
             defaultText = desc.Text;
             try
             {
                 IDeserializer deserializer = new DeserializerBuilder().Build();
-                using (var reader = File.OpenText("dists/Base/enemy.txt"))
+                using (var reader = File.OpenText($"{dir}/Base/enemy.txt"))
                 {
                     ann = deserializer.Deserialize<EnemyAnnotations>(reader);
                 }
@@ -60,7 +60,7 @@ namespace RandomizerCommon
                 enemyNames = new List<string>();
                 foreach (EnemyCategory cat in ann.Categories)
                 {
-                    if (cat.Name == null || singletons.Contains(cat.Name)) continue;
+                    if (cat.Name == null || cat.Hidden || singletons.Contains(cat.Name)) continue;
                     enemyNames.Add(cat.Name);
                     foreach (string subname in new[] { cat.Partition, cat.Partial, cat.Instance }.Where(g => g != null).SelectMany(g => g))
                     {

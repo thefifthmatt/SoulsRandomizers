@@ -29,10 +29,16 @@ namespace RandomizerCommon
         private PARAM shops;
         private PARAM npcs;
 
-        private readonly Dictionary<ItemKey, bool> finiteShopClassification = new Dictionary<ItemKey, bool>();
+        // Determination of whether an item is finite, for price classification purposes
+        private readonly Dictionary<ItemKey, bool> isItemFiniteCache = new Dictionary<ItemKey, bool>();
+        // Prices for items in a given category
         private readonly Dictionary<PriceCategory, List<int>> prices = new Dictionary<PriceCategory, List<int>>();
-        private readonly Dictionary<ItemKey, float> dropCost = new Dictionary<ItemKey, float>();
-        private readonly Dictionary<int, int> lotCost = new Dictionary<int, int>();
+        // List of quantities and drop chances per category
+        private readonly Dictionary<PriceCategory, List<Dictionary<int, float>>> dropChances = new Dictionary<PriceCategory, List<Dictionary<int, float>>>();
+        // Reversed GameData.ItemLotTypes
+        private readonly Dictionary<ItemType, uint> lotValues;
+
+        private static readonly Dictionary<int, float> DEFAULT_CHANCES = new Dictionary<int, float> { { 1, 0.05f } };
 
         public PermutationWriter(GameData game, LocationData data, AnnotationData ann, Events events, EventConfig eventConfig)
         {
@@ -44,6 +50,7 @@ namespace RandomizerCommon
             itemLots = game.Param("ItemLotParam");
             shops = game.Param("ShopLineupParam");
             npcs = game.Param("NpcParam");
+            lotValues = game.LotItemTypes.ToDictionary(e => e.Value, e => e.Key);
         }
 
         public enum PriceCategory
@@ -51,7 +58,7 @@ namespace RandomizerCommon
             // First three should match ItemType ordering. Non-goods are very broad, to give the chance for some really good deals.
             WEAPON, ARMOR, RING,
             // The rest are mainly goods
-            SPELLS, FINITE_GOOD, INFINITE_GOOD, UPGRADE, TRANSPOSE,
+            SPELLS, ARROWS, FINITE_GOOD, INFINITE_GOOD, UPGRADE, TRANSPOSE,
             // Some Sekiro categories
             REGULAR_GOOD, UNIQUE_GOOD,
         }
@@ -117,105 +124,28 @@ namespace RandomizerCommon
                     PARAM.Row row = game.Item(item);
                     int price = (int)row[itemValueCells[(int)item.Type]].Value;
                     int sellPrice = (int)row["sellValue"].Value;
+                    PriceCategory cat = GetPriceCategory(item);
                     foreach (ItemLocation itemLoc in entry.Value.Locations.Values)
                     {
-                        bool material = itemLoc.Scope.Type == ScopeType.MATERIAL;
                         foreach (LocationKey loc in itemLoc.Keys.Where(k => k.Type == LocationType.SHOP))
                         {
                             PARAM.Row shop = shops[loc.ID];
                             int shopPrice = (int)shop["value"].Value;
                             if (price == -1 && shopPrice == -1) continue;
-                            PriceCategory cat = GetPriceCategory(item, material);
                             // Don't price regular items toooo high - looking at you, 20k for Tower Key. Key items are priced separately anyway
                             if (cat == PriceCategory.FINITE_GOOD && price > 10000) continue;
                             AddMulti(prices, cat, shopPrice == -1 ? price : shopPrice);
                         }
-                    }
-                }
-                // Gather 'costs' per item based on existing drop percentages, and the difficulty of enemies which drop them
-                // Enemy difficulty is calculated as 2 * (HP of enemy) + (# of souls acquired after enemy is killed).
-                // TODO: Is this really worth it? Doesn't matter as much with enemy randomizer anyway.
-                float itemCost = 500f;
-                HashSet<ScopeType> infiniteScopes = new HashSet<ScopeType> { ScopeType.MODEL, ScopeType.SHOP_INFINITE, ScopeType.SHOP_INFINITE_EVENT };
-                foreach (KeyValuePair<ItemKey, ItemLocations> entry in data.Data)
-                {
-                    ItemKey item = entry.Key;
-                    ItemLocations locs = entry.Value;
-                    if (!locs.Locations.Keys.Any(loc => infiniteScopes.Contains(loc.Type))) continue;
-                    double percentages = 0;
-                    int costs = 0;
-                    foreach (ItemLocation itemLoc in entry.Value.Locations.Values.Where(loc => loc.Scope.Type == ScopeType.MODEL))
-                    {
-                        double modelPercentages = 0;
-                        int modelCosts = 0;
-                        int count = 0;
-                        foreach (LocationKey loc in itemLoc.Keys.Where(k => k.Type == LocationType.LOT))
+                        if (itemLoc.Scope.Type == ScopeType.MODEL)
                         {
-                            SortedDictionary<int, string> npcInfo = new SortedDictionary<int, string>();
-                            double locPercentages = 0;
-                            int subcount = 0;
-                            if (!lotCost.ContainsKey(loc.BaseID))
+                            // Console.WriteLine($"Location for {game.Name(item)}: {itemLoc}");
+                            Dictionary<int, float> chances = GetDropChances(item, itemLoc);
+                            if (chances.Count > 0)
                             {
-                                int locCosts = 0;
-                                foreach (EntityId id in loc.Entities.Where(e => e.NPCParamID != -1))
-                                {
-                                    int npcId = id.NPCParamID;
-                                    PARAM.Row npc = npcs[npcId];
-                                    int hp = (int)npc["Hp"].Value;
-                                    int soul = (int)npc["getSoul"].Value;
-                                    locCosts += hp * 2 + soul;
-                                    subcount++;
-                                }
-                                if (subcount == 0) continue;
-                                locCosts /= subcount;
-                                lotCost[loc.BaseID] = locCosts;
-                            }
-                            PARAM.Row row = itemLots[loc.ID];
-                            int totalPoints = 0;
-                            for (int i = 1; i <= 8; i++)
-                            {
-                                totalPoints += (short)row[$"LotItemBasePoint0{i}"].Value;
-                            }
-                            subcount = 0;
-                            for (int i = 1; i <= 8; i++)
-                            {
-                                int id = (int)row[$"ItemLotId{i}"].Value;
-                                if (id == item.ID)
-                                {
-                                    int points = (short)row[$"LotItemBasePoint0{i}"].Value;
-                                    int quantity = game.Sekiro ? (ushort)row[$"NewLotItemNum{i}"].Value : (byte)row[$"LotItemNum{i}"].Value;
-                                    double drop = (double)points / totalPoints;
-                                    if (quantity > 1)
-                                    {
-                                        // If dropping more than one, reverse engineer drop rate for 1
-                                        drop = Math.Pow(drop, 1.0 / quantity);
-                                    }
-                                    locPercentages += drop;
-                                    subcount++;
-                                }
-                            }
-                            if (subcount == 0) continue;
-                            locPercentages /= subcount;
-                            if (locPercentages < 0.75)
-                            {
-                                modelCosts += lotCost[loc.BaseID];
-                                modelPercentages += locPercentages;
-                                count++;
+                                AddMulti(dropChances, cat, chances);
                             }
                         }
-                        if (count > 0)
-                        {
-                            percentages += modelPercentages / count;
-                            costs += modelCosts / count;
-                        }
                     }
-                    if (costs > 0)
-                    {
-                        // If any drops were observed for this item, update the item cost.
-                        // Otherwise, use the same drop as the previous item, as adjacent items usually have similar desirability.
-                        itemCost = (float)(costs / percentages);
-                    }
-                    dropCost[item] = itemCost;
                 }
             }
 
@@ -374,6 +304,7 @@ namespace RandomizerCommon
                         int quantity = data.Location(sourceKey).Quantity;
                         string quantityStr = quantity == 1 ? "" : $" {quantity}x";
                         Console.WriteLine($"{game.DisplayName(item)}{quantityStr}{ann.GetLocationDescription(targetKey, targetLocation.Keys)}");
+                        bool printChances = true;
                         if (opt["racemodeinfo"])
                         {
                             HashSet<string> filterTags = ann.RaceModeTags;
@@ -431,11 +362,21 @@ namespace RandomizerCommon
                                         sourceShop = new Dictionary<string, object>(sourceShop);
                                         sourceShop["EquipId"] = 500;
                                     }
-                                    lotCells = ShopToItemLot(sourceShop, item, target.BaseID);
+                                    lotCells = ShopToItemLot(sourceShop, item, random);
                                 }
                                 else if (targetLocation.Scope.Type == ScopeType.MODEL)
                                 {
-                                    lotCells = originalShop ? ShopToItemLot(shopCells, item, target.BaseID) : ProcessModelLot(lotCells, item, target.BaseID);
+                                    if (originalShop)
+                                    {
+                                        lotCells = ShopToItemLot(shopCells, item, random);
+                                    }
+                                    else
+                                    {
+                                        Dictionary<int, float> chances = GetDropChances(item, data.Location(sourceKey));
+                                        if (chances.Count == 0) chances = DEFAULT_CHANCES;
+                                        lotCells = ProcessModelLot(lotCells, item, chances, printChances);
+                                        printChances = false;
+                                    }
                                 }
                                 if (permanentSlots.TryGetValue(sourceKey, out int permanentFlag))
                                 {
@@ -453,7 +394,8 @@ namespace RandomizerCommon
                                     lotCells["getItemFlagId"] = eventFlag;
                                 }
                                 setEventFlag = (int)lotCells["getItemFlagId"];
-                                AddLot(target.BaseID, lotCells, itemRarity);
+                                // Crow sources are special items so they won't be removed, they must be overwritten
+                                AddLot(target.BaseID, lotCells, itemRarity, siloType == RandomSilo.CROW);
                             }
                             else
                             {
@@ -511,6 +453,7 @@ namespace RandomizerCommon
                                     targetPrice = price - price / 10;
                                 }
                                 shopCells["value"] = targetPrice;
+                                if (target.ID == 110006) Console.WriteLine($"Staff shop: {string.Join(", ", shopCells)}");
                                 SetShop(target.ID, shopCells);
                             }
                         }
@@ -916,7 +859,7 @@ namespace RandomizerCommon
                         // Use unused lot 3440 and unused event flag range 930-950ish
                         ItemKey memory = new ItemKey(ItemType.GOOD, 5400);
                         int memoryLot = 3440;  // unused lot
-                        Dictionary<string, object> memCells = ShopToItemLot(ShopCellsForItem(memory), memory, memoryLot);
+                        Dictionary<string, object> memCells = ShopToItemLot(ShopCellsForItem(memory), memory, random);
                         memCells["getItemFlagId"] = -1;
                         AddLot(memoryLot, memCells, itemRarity);
 
@@ -956,8 +899,6 @@ namespace RandomizerCommon
                     throw new Exception("Internal error: Path of the dragon not assigned to any location, but key items are randomized");
                 }
 
-                // Remove Storm Ruler infinite shiny (gives Storm Ruler if got the original but somehow dropped it). This lot is not randomized
-                itemLots[4600]["LotItemNum1"].Value = (byte)0;
                 // Disable Firelink Shrine bonfire without Coiled Sword, with special event flag
                 game.Params["ActionButtonParam"][9351]["grayoutFlag"].Value = 14005108;
 
@@ -1026,79 +967,75 @@ namespace RandomizerCommon
                         }
                         else if (ev.ID == 710)
                         {
+                            // Grand Archives Key softlock fix
                             edits = new EventEdits();
-                            events.RemoveMacro(edits, "END IF Condition Group State (Uncompiled) (0,1,15)");
-                        }
-                        else if (ev.ID == 14005102)
-                        {
-                            // Small convenience: Shorten the Firelink Shrine fog gate wait times significantly
-                            foreach (EMEVD.Instruction i in ev.Instructions)
-                            {
-                                Instr instr = events.Parse(i);
-                                if (instr.Name == "IF Elapsed Seconds" && instr.Args[1] is float wait)
-                                {
-                                    instr[1] = Math.Min(wait, 5f);
-                                    instr.Save();
-                                }
-                            }
+                            events.RemoveMacro(edits, "EndIfConditionGroupStateUncompiled(EventEndType.End, PASS, AND_15)");
                         }
                         else if (ev.ID == 20005523)
                         {
                             if (opt["ngplusrings"])
                             {
                                 edits = new EventEdits();
-                                events.AddMacro(edits, null, false, "GOTO Unconditionally (0)");
+                                events.AddMacro(edits, EditType.AddBefore, "GOTO Unconditionally (0)");
                             }
+                        }
+                        else if (ev.ID == 13905870)
+                        {
+                            // Prevent Storm Ruler infinite shiny from appearing, since it's randomized elsewhere
+                            edits = new EventEdits();
+                            events.AddMacro(edits, EditType.AddAfter, "EndUnconditionally(EventEndType.End)", "SetObjectTreasureState");
                         }
                         if (edits != null)
                         {
-                            OldParams pre = OldParams.Preprocess(ev);
-                            for (int j = 0; j < ev.Instructions.Count; j++)
-                            {
-                                Instr instr = events.Parse(ev.Instructions[j]);
-                                if (instr.Init) continue;
-                                edits.ApplyEdits(instr, j);
-                                instr.Save();
-                                ev.Instructions[j] = instr.Val;
-                            }
-                            events.ApplyAdds(edits, ev);
-                            pre.Postprocess();
-
+                            events.ApplyAllEdits(ev, edits);
                             if (edits.PendingEdits.Count != 0)
                             {
                                 throw new Exception($"{ev.ID} has unapplied edits: {string.Join("; ", edits.PendingEdits)}");
                             }
                         }
                     }
-                    if (map == "common" && dragonFlag > 0)
+                    // These should probably be in a config, although some of them would need to take args
+                    void addNewEvent(int id, IEnumerable<string> instrs, EMEVD.Event.RestBehaviorType rest = EMEVD.Event.RestBehaviorType.Default)
                     {
-                        // Do the Path of the Dragon swap
-                        EMEVD.Event pathEvent = new EMEVD.Event(13000904, EMEVD.Event.RestBehaviorType.Default);
-                        pathEvent.Instructions.AddRange(new string[]
-                        {
-                            "END IF Event Flag (0,1,0,6079)",
-                            $"IF Event Flag (0,1,0,{dragonFlag})",
-                            "Remove Item From Player (3,9030,1)",
-                            "Award Gesture Item (29,3,9030)",
-                            "Set Event Flag (6079,1)",
-                        }
-                        .Select(t => events.ParseAdd(t)));
-                        emevd.Events.Add(pathEvent);
-                        emevd.Events[0].Instructions.Add(new EMEVD.Instruction(2000, 0, new List<object> { 0, (uint)13000904, (uint)0 }));
+                        EMEVD.Event ev = new EMEVD.Event(id, rest);
+                        ev.Instructions.AddRange(instrs.Select(t => events.ParseAdd(t)));
+                        emevd.Events.Add(ev);
+                        emevd.Events[0].Instructions.Add(new EMEVD.Instruction(2000, 0, new List<object> { 0, (uint)id, (uint)0 }));
                     }
-                    if (map == "m40_00_00_00")
+                    if (map == "common")
                     {
+                        // Hacky Greirat Lothric Castle softlock fix
+                        // If you don't have Grand Archives key yet, mark him as having talked about looting Lothric
+                        // (74000308) so the actual looting flag (74000309) isn't touched by ESD.
+                        addNewEvent(13000905, new string[]
+                        {
+                            "EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventIDSlotNumber, 0)",
+                            "EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 74000309)",
+                            "SetEventFlag(74000308, ON)",
+                            "IfPlayerHasdoesntHaveItem(MAIN, ItemType.Goods, 2014, OwnershipState.Owns)",
+                            "SetEventFlag(74000308, OFF)",
+                        });
                         // Make Firelink Shrine greyed out by default, without having the Coiled Sword, in combination with param change above
-                        EMEVD.Event swordEvent = new EMEVD.Event(14005107, EMEVD.Event.RestBehaviorType.Default);
-                        swordEvent.Instructions.AddRange(new string[]
+                        // This doesn't always work just on its own, so there is a backup edit above.
+                        addNewEvent(14005107, new string[]
                         {
                             "Set Event Flag (14005108,1)",
                             "IF Player Has/Doesn't Have Item (0,3,2137,1)",
                             "Set Event Flag (14005108,0)",
+                        }, EMEVD.Event.RestBehaviorType.Restart);
+                        if (dragonFlag > 0)
+                        {
+                            // Do the Path of the Dragon swap
+                            // We can't just use the item all of the time, since it would appear as a double drop.
+                            addNewEvent(13000904, new string[]
+                            {
+                                "END IF Event Flag (0,1,0,6079)",
+                                $"IF Event Flag (0,1,0,{dragonFlag})",
+                                "Remove Item From Player (3,9030,1)",
+                                "Award Gesture Item (29,3,9030)",
+                                "Set Event Flag (6079,1)",
+                            });
                         }
-                        .Select(t => events.ParseAdd(t)));
-                        emevd.Events.Add(swordEvent);
-                        emevd.Events[0].Instructions.Add(new EMEVD.Instruction(2000, 0, new List<object> { 0, (uint)14005107, (uint)0 }));
                     }
                 }
             }
@@ -1134,16 +1071,25 @@ namespace RandomizerCommon
 
         private PriceCategory GetSekiroPriceCategory(ItemKey key)
         {
-            return data.Data[key].Unique && !game.Name(key).Contains("Jizo") ? PriceCategory.UNIQUE_GOOD : PriceCategory.REGULAR_GOOD;
+            return data.Data[key].Unique && !game.Name(key).Contains("Jizo")
+                ? PriceCategory.UNIQUE_GOOD : PriceCategory.REGULAR_GOOD;
         }
-        private PriceCategory GetPriceCategory(ItemKey key, bool isTranspose)
+
+        private PriceCategory GetPriceCategory(ItemKey key)
         {
             // Effectively don't use transpose category - instead use rules for base category.
             // if (isTranspose) return PriceCategory.TRANSPOSE;
-            if (key.Type != ItemType.GOOD) return (PriceCategory)key.Type;
+            if (key.Type != ItemType.GOOD)
+            {
+                if (key.Type == ItemType.WEAPON && key.ID >= 400000 && key.ID < 500000)
+                {
+                    return PriceCategory.ARROWS;
+                }
+                return (PriceCategory)key.Type;
+            }
             if (key.ID >= 1200000) return PriceCategory.SPELLS;
             if (key.ID >= 1000 & key.ID <= 1030) return PriceCategory.UPGRADE;
-            if (!finiteShopClassification.ContainsKey(key))
+            if (!isItemFiniteCache.ContainsKey(key))
             {
                 // If infinite shop, item is infinite
                 // If finite shop, item is finite
@@ -1165,9 +1111,9 @@ namespace RandomizerCommon
                     }
                 }
                 bool isInfinite = infiniteShop || (!finiteShop && infiniteLot);
-                finiteShopClassification[key] = !isInfinite;
+                isItemFiniteCache[key] = !isInfinite;
             }
-            return finiteShopClassification[key] ? PriceCategory.FINITE_GOOD : PriceCategory.INFINITE_GOOD;
+            return isItemFiniteCache[key] ? PriceCategory.FINITE_GOOD : PriceCategory.INFINITE_GOOD;
         }
 
         // Use simple DS1 item randomizer type system for the moment
@@ -1213,7 +1159,7 @@ namespace RandomizerCommon
             }
             else
             {
-                PriceCategory cat = GetPriceCategory(item, isTranspose);
+                PriceCategory cat = GetPriceCategory(item);
                 PARAM.Row row = game.Item(item);
                 // Upgrade materials roughly same. Unique ones on sale because of how many are moved to shops usually.
                 if (cat == PriceCategory.UPGRADE)
@@ -1259,15 +1205,23 @@ namespace RandomizerCommon
             }
         }
 
-        private void AddLot(int baseLot, Dictionary<string, object> cells, Dictionary<int, byte> itemRarity)
+        private void AddLot(int baseLot, Dictionary<string, object> cells, Dictionary<int, byte> itemRarity, bool overwrite = false)
         {
             PARAM itemLots = game.Param("ItemLotParam");
             int targetLot = baseLot;
-            while (itemLots[targetLot] != null)
+            PARAM.Row row = null;
+            if (overwrite)
             {
-                targetLot++;
+                row = itemLots[targetLot];
             }
-            PARAM.Row row = game.AddRow("ItemLotParam", targetLot);
+            if (row == null)
+            {
+                while (!overwrite && itemLots[targetLot] != null)
+                {
+                    targetLot++;
+                }
+                row = game.AddRow("ItemLotParam", targetLot);
+            }
             foreach (KeyValuePair<string, object> cell in cells)
             {
                 if (cell.Key == "LotItemRarity")
@@ -1295,78 +1249,40 @@ namespace RandomizerCommon
             }
         }
 
-        private (int, int) DropRate(ItemKey key, int baseLot, int quantity)
+        public Dictionary<int, float> GetDropChances(ItemKey key, ItemLocation itemLoc)
         {
-            // Cost is ratio of enemy cost to drop %
-            float cost = dropCost.ContainsKey(key) ? dropCost[key] : 10000;
-            int enemy = lotCost.ContainsKey(baseLot) ? lotCost[baseLot] : 500;
-            double oneDrop = enemy / cost;
-            // Keep increasing item quantity until drop rate becomes reasonable. If that is possible.
-            int iter = 0;
-            while (iter++ < 20)
+            Dictionary<int, float> chances = new Dictionary<int, float>();
+            foreach (LocationKey loc in itemLoc.Keys.Where(k => k.Type == LocationType.LOT))
             {
-                // Forward: oneDrop = drop ^ (1/quantity)
-                double drop = Math.Pow(oneDrop, quantity);
-                int dropNum = (int)(drop * 1000);
-                if (dropNum <= 900 || quantity >= 5)
-                {
-                    return (Math.Max(5, Math.Min(1000, dropNum)), quantity);
-                }
-                quantity *= 2;
-                oneDrop /= 2;
+                float chance = chances.TryGetValue(loc.Quantity, out float c) ? c : 1;
+                chances[loc.Quantity] = Math.Min(chance, loc.Chance);
             }
-            return (100, 1);
+            // From the way the rest of the randomizer is balanced, exclude DS3 upgrade materials from being too good
+            if (key.Type == ItemType.GOOD && key.ID >= 1000 && key.ID <= 1030)
+            {
+                float chanceMult = 0.2f / chances.Values.Sum();
+                if (chanceMult < 1)
+                {
+                    chances = chances.ToDictionary(e => e.Key, e => e.Value * chanceMult);
+                }
+            }
+            return chances;
         }
 
-        private Dictionary<string, object> ProcessModelLot(Dictionary<string, object> lotCells, ItemKey key, int baseLot)
+        private Dictionary<string, object> ProcessModelLot(Dictionary<string, object> lotCells, ItemKey key, Dictionary<int, float> sourceChances, bool print)
         {
             lotCells = new Dictionary<string, object>(lotCells);
-            List<int> quantities = new List<int>();
-            int totalPoints = 0;
+            // Clear existing items out
             for (int i = 1; i <= 8; i++)
             {
-                totalPoints += (short)lotCells[$"LotItemBasePoint0{i}"];
-            }
-            for (int i = 1; i <= 8; i++)
-            {
-                if ((int)lotCells[$"ItemLotId{i}"] == 0)
-                {
-                    continue;
-                }
-                ItemKey lotKey = new ItemKey(LocationData.LotTypes[(uint)lotCells[$"LotItemCategory0{i}"]], (int)lotCells[$"ItemLotId{i}"]);
-                if (lotKey.Equals(key))
-                {
-                    quantities.Add(game.Sekiro ? (ushort)lotCells[$"NewLotItemNum{i}"] : (byte)lotCells[$"LotItemNum{i}"]);
-                }
                 lotCells[$"ItemLotId{i}"] = 0;
                 lotCells[$"LotItemCategory0{i}"] = 0xFFFFFFFF;
                 lotCells[$"LotItemBasePoint0{i}"] = (short)0;
                 SetItemLotCount(lotCells, i, 0);
             }
-            // For now, disable resource drops
+            // Disable resource drops in Sekiro as well
             lotCells["LotItemNum1"] = (byte)0;
-            if (quantities.Count == 0) quantities.Add(1);
-            int cumDrop = 0;
-            for (int i = 1; i <= 8; i++)
-            {
-                if (i <= quantities.Count)
-                {
-                    int count = quantities[i - 1];
-                    (int drop, int quantity) = DropRate(key, baseLot, count);
-                    lotCells[$"ItemLotId{i}"] = key.ID;
-                    lotCells[$"LotItemCategory0{i}"] = RevLotTypes[key.Type];
-                    lotCells[$"LotItemBasePoint0{i}"] = (short)drop;
-                    SetItemLotCount(lotCells, i, quantity);
-                    cumDrop += drop;
-                    // This is a bit verbose for Sekiro
-                    // Console.WriteLine($"  Drop chance for {quantity}: {100.0 * drop / 1000}%");
-                }
-                else if (i == quantities.Count + 1)
-                {
-                    lotCells[$"LotItemBasePoint0{i}"] = (short)Math.Max(0, 1000 - cumDrop);
-                    break;
-                }
-            }
+            SetItemLotChances(lotCells, key, sourceChances, print);
             return lotCells;
         }
 
@@ -1391,14 +1307,34 @@ namespace RandomizerCommon
                 cells[$"LotItemNum{i}"] = (byte)quantity;
             }
         }
-        
-        private Dictionary<string, object> ShopToItemLot(Dictionary<string, object> shopCells, ItemKey key, int baseLot)
+
+        private void SetItemLotChances(Dictionary<string, object> cells, ItemKey key, Dictionary<int, float> quants, bool print)
+        {
+            int drop = 0;
+            int i = 1;
+            foreach (KeyValuePair<int, float> quant in quants)
+            {
+                cells[$"ItemLotId{i}"] = key.ID;
+                cells[$"LotItemCategory0{i}"] = lotValues[key.Type];
+                SetItemLotCount(cells, i, quant.Key);
+                int points = (int)Math.Round(1000 * quant.Value);
+                cells[$"LotItemBasePoint0{i}"] = (short)points;
+                if (print) Console.WriteLine($"  Drop chance for {quant.Key}: {points / 10.0}%");
+                drop += points;
+                i++;
+                if (i >= 8) break;
+            }
+            cells[$"LotItemCategory0{i}"] = 0xFFFFFFFF;
+            cells[$"LotItemBasePoint0{i}"] = (short)Math.Max(0, 1000 - drop);
+        }
+
+        private Dictionary<string, object> ShopToItemLot(Dictionary<string, object> shopCells, ItemKey key, Random random)
         {
             Dictionary<string, object> lotCells = new Dictionary<string, object>();
             lotCells["ItemLotId1"] = (int)shopCells["EquipId"];
             // Make default quantity 0, and also disable resource drop flag in Sekiro
             lotCells["LotItemNum1"] = (byte)0;
-            lotCells["LotItemCategory01"] = LocationData.RevLotTypes[(ItemType)(byte)shopCells["equipType"]];
+            lotCells["LotItemCategory01"] = lotValues[(ItemType)(byte)shopCells["equipType"]];
             int quantity = (short)shopCells["sellQuantity"];
             if (quantity > 0)
             {
@@ -1412,12 +1348,17 @@ namespace RandomizerCommon
             }
             else
             {
-                (int drop, int quant) = DropRate(key, baseLot, 1);
-                // Console.WriteLine($"  Drop chance for {quant}: {100.0 * drop / 1000}%");
-                SetItemLotCount(lotCells, 1, quant);
-                lotCells["LotItemBasePoint01"] = (short)drop;
-                lotCells["LotItemCategory02"] = 0xFFFFFFFF;
-                lotCells["LotItemBasePoint02"] = (short)(1000 - drop);
+                PriceCategory cat = GetPriceCategory(key);
+                Dictionary<int, float> chances;
+                if (dropChances.TryGetValue(cat, out List<Dictionary<int, float>> allChances))
+                {
+                    chances = Choice(random, allChances);
+                }
+                else
+                {
+                    chances = DEFAULT_CHANCES;
+                }
+                SetItemLotChances(lotCells, key, chances, true);
             }
             lotCells["cumulateNumFlagId"] = -1;
             return lotCells;
@@ -1439,7 +1380,7 @@ namespace RandomizerCommon
                 {
                     continue;
                 }
-                lotKey = new ItemKey(LocationData.LotTypes[(uint)lotCells[$"LotItemCategory0{i}"]], (int)lotCells[$"ItemLotId{i}"]);
+                lotKey = new ItemKey(game.LotItemTypes[(uint)lotCells[$"LotItemCategory0{i}"]], (int)lotCells[$"ItemLotId{i}"]);
                 if (!lotKey.Equals(itemKey))
                 {
                     lotKey = null;

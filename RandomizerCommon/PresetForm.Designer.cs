@@ -46,7 +46,7 @@
             this.select.Location = new System.Drawing.Point(57, 56);
             this.select.Name = "select";
             this.select.Size = new System.Drawing.Size(301, 21);
-            this.select.TabIndex = 0;
+            this.select.TabIndex = 2;
             this.select.SelectedIndexChanged += new System.EventHandler(this.preset_Changed);
             // 
             // label1
@@ -63,7 +63,7 @@
             this.submit.Location = new System.Drawing.Point(283, 199);
             this.submit.Name = "submit";
             this.submit.Size = new System.Drawing.Size(75, 23);
-            this.submit.TabIndex = 2;
+            this.submit.TabIndex = 6;
             this.submit.Text = "Select";
             this.submit.UseVisualStyleBackColor = true;
             this.submit.Click += new System.EventHandler(this.submit_Click);
@@ -94,16 +94,16 @@
             this.label3.Location = new System.Drawing.Point(8, 9);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(276, 39);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Presets are loaded from the \'presets\' directory.\r\nThey aren\'t needed for normal r" +
-    "andomization.\r\nThey\'re mainly for challenge runs, races, and showcases.";
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Presets are loaded from the \'presets\' directory.\r\nYou can edit them and add your " +
+    "own!\r\nThey\'re mainly for challenge runs, races, and showcases.";
             // 
             // desc
             // 
             this.desc.Location = new System.Drawing.Point(13, 113);
             this.desc.Name = "desc";
             this.desc.Size = new System.Drawing.Size(345, 78);
-            this.desc.TabIndex = 6;
+            this.desc.TabIndex = 5;
             this.desc.Text = "By default, all enemies are randomized within their own pools.";
             this.desc.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.271
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomizerCommon", "RandomizerCommon\RandomizerCommon.csproj", "{153B7DAC-12FC-4F0F-B5DC-3FCFE546C50C}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -13,8 +13,19 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoulsIds", "..\SoulsIds\SoulsIds\SoulsIds.csproj", "{C46D537C-54DC-48BF-B824-8A950DD9D4F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SekiroRandomizer", "SekiroRandomizer\SekiroRandomizer.csproj", "{17F220BA-034B-4BA3-97E2-32763D9F61A8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C46D537C-54DC-48BF-B824-8A950DD9D4F8} = {C46D537C-54DC-48BF-B824-8A950DD9D4F8}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DS3Randomizer", "DS3Randomizer\DS3Randomizer.csproj", "{5712207B-FC91-4480-A849-565044231885}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C46D537C-54DC-48BF-B824-8A950DD9D4F8} = {C46D537C-54DC-48BF-B824-8A950DD9D4F8}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EldenRingRandomizer", "EldenRingRandomizer\EldenRingRandomizer.csproj", "{03CEEEDB-E665-4DA1-B963-0A584EF1F440}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C46D537C-54DC-48BF-B824-8A950DD9D4F8} = {C46D537C-54DC-48BF-B824-8A950DD9D4F8}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,6 +75,14 @@ Global
 		{5712207B-FC91-4480-A849-565044231885}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5712207B-FC91-4480-A849-565044231885}.Release|x64.ActiveCfg = Release|Any CPU
 		{5712207B-FC91-4480-A849-565044231885}.Release|x64.Build.0 = Release|Any CPU
+		{03CEEEDB-E665-4DA1-B963-0A584EF1F440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03CEEEDB-E665-4DA1-B963-0A584EF1F440}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03CEEEDB-E665-4DA1-B963-0A584EF1F440}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{03CEEEDB-E665-4DA1-B963-0A584EF1F440}.Debug|x64.Build.0 = Debug|Any CPU
+		{03CEEEDB-E665-4DA1-B963-0A584EF1F440}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03CEEEDB-E665-4DA1-B963-0A584EF1F440}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03CEEEDB-E665-4DA1-B963-0A584EF1F440}.Release|x64.ActiveCfg = Release|Any CPU
+		{03CEEEDB-E665-4DA1-B963-0A584EF1F440}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

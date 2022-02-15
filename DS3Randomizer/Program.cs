@@ -12,7 +12,6 @@ namespace DS3Randomizer
         // https://stackoverflow.com/questions/7198639/c-sharp-application-both-gui-and-commandline
         [DllImport("kernel32.dll")]
         static extern bool AttachConsole(int dwProcessId);
-        private const int ATTACH_PARENT_PROCESS = -1;
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool AllocConsole();
@@ -30,14 +29,25 @@ namespace DS3Randomizer
                 {
                     options.Seed = (uint)new Random().Next();
                 }
+                Preset preset = null;
+                if (options.Preset != null)
+                {
+                    preset = Preset.LoadPreset(options.Preset, extractOopsAll: true, checkDir: "presets3");
+                }
+                if (preset == null && File.Exists("Dev3.txt"))
+                {
+                    options.Preset = "Dev3";
+                    preset = Preset.LoadPreset("Dev3", checkDir: ".");
+                }
                 string outPath = @"C:\Program Files (x86)\Steam\steamapps\common\DARK SOULS III\Game\randomizer";
-                new Randomizer().Randomize(options, status => Console.WriteLine("## " + status), outPath, sekiro);
+                new Randomizer().Randomize(
+                    options, SoulsIds.GameSpec.FromGame.DS3, status => Console.WriteLine("## " + status), outPath, preset);
                 Application.Exit();
             }
             else
             {
 #if DEBUG
-            AttachConsole(-1);
+                AttachConsole(-1);
 #endif
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);

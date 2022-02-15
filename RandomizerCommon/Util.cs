@@ -15,36 +15,43 @@ namespace RandomizerCommon
             Console.WriteLine($"WARNING: {text}");
 #endif
         }
+
         public static void AddMulti<K, V>(IDictionary<K, List<V>> dict, K key, V value)
         {
             if (!dict.ContainsKey(key)) dict[key] = new List<V>();
             dict[key].Add(value);
         }
+
         public static void AddMulti<K, V>(IDictionary<K, List<V>> dict, K key, IEnumerable<V> values)
         {
             if (!dict.ContainsKey(key)) dict[key] = new List<V>();
             dict[key].AddRange(values);
         }
+
         public static void AddMulti<K, V>(IDictionary<K, HashSet<V>> dict, K key, V value)
         {
             if (!dict.ContainsKey(key)) dict[key] = new HashSet<V>();
             dict[key].Add(value);
         }
+
         public static void AddMulti<K, V>(IDictionary<K, HashSet<V>> dict, K key, IEnumerable<V> values)
         {
             if (!dict.ContainsKey(key)) dict[key] = new HashSet<V>();
             dict[key].UnionWith(values);
         }
+
         public static void AddMulti<K, V>(IDictionary<K, SortedSet<V>> dict, K key, V value)
         {
             if (!dict.ContainsKey(key)) dict[key] = new SortedSet<V>();
             dict[key].Add(value);
         }
+
         public static void AddMulti<K, V, U>(IDictionary<K, Dictionary<V, U>> dict, K key, V value, U value2)
         {
             if (!dict.ContainsKey(key)) dict[key] = new Dictionary<V, U>();
             dict[key][value] = value2;
         }
+
         public static void Shuffle<T>(Random random, IList<T> list)
         {
             // Fisher Yates shuffle - O(n)
@@ -56,10 +63,12 @@ namespace RandomizerCommon
                 list[j] = tmp;
             }
         }
+
         public static T Choice<T>(Random random, IList<T> list)
         {
             return list[random.Next(list.Count)];
         }
+
         public static T WeightedChoice<T>(Random random, IList<T> list, Func<T, float> weightFunc)
         {
             // Weighted selection with accumulator - O(n)
@@ -77,6 +86,7 @@ namespace RandomizerCommon
             }
             return list[list.Count() - 1];
         }
+
         public static List<T> WeightedShuffle<T>(Random random, IList<T> list, Func<T, float> weightFunc)
         {
             // Like Fisher-Yates with weighted selection, but not in-place, because that is too much state to maintain.
@@ -142,6 +152,7 @@ namespace RandomizerCommon
             }
             return ret;
         }
+
         private static void MaxHeapify(HeapNode[] heap, int size, int i, bool updateWeights)
         {
             int left = 2 * i;
@@ -155,6 +166,7 @@ namespace RandomizerCommon
                 MaxHeapify(heap, size, largest, updateWeights);
             }
         }
+
         private static void SwapWithParent(HeapNode[] heap, int i, bool updateWeights)
         {
             HeapNode child = heap[i];
@@ -169,6 +181,7 @@ namespace RandomizerCommon
             heap[i] = parent;
             heap[i / 2] = child;
         }
+
         private static void HeapRemove(HeapNode[] heap, int size, int rem)
         {
             if (rem < 1 || rem > size) throw new Exception($"Invalid arguments for remove: size {size} index {rem}");
@@ -188,6 +201,7 @@ namespace RandomizerCommon
                 MaxHeapify(heap, size - 1, rem, true);
             }
         }
+
         private static void HeapUpdateWeights(HeapNode[] heap, int start, float diff)
         {
             int i = start;
@@ -197,6 +211,7 @@ namespace RandomizerCommon
                 i /= 2;
             }
         }
+
         public static void TestHeapWeights()
         {
             Random r = new Random();
@@ -220,6 +235,7 @@ namespace RandomizerCommon
                 Console.WriteLine($"{entry.Key}: {100.0 * entry.Value / count}%");
             }
         }
+
         private struct HeapNode
         {
             public float Weight { get; set; }
@@ -237,6 +253,7 @@ namespace RandomizerCommon
             }
             return -1;
         }
+
         private static bool IsMatch(byte[] array, int position, byte[] candidate)
         {
             if (candidate.Length > (array.Length - position))
@@ -248,8 +265,10 @@ namespace RandomizerCommon
 
             return true;
         }
+
         public static HashSet<int> ManualBinarySearch(List<int> values, int start=0, int end=0)
         {
+            // Used for things like finding which param row is responsible for certain behaviors
             int i, j;
             if (start == 0 && end == 0)
             {

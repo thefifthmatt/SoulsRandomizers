@@ -1,7 +1,6 @@
 Config:
 - Opt: dryrun
 - Opt: treeskip
-- Opt: dollskip
 - Opt: vilhelmskip
 - Oneof:
   - regdancer
@@ -13,9 +12,8 @@ Config:
 - Opt: dlc1
 - Opt: dlc2
 - Oneof:
-  - dlc2fromdlc1
   - dlc2fromkiln
-  - dlc2fromeither
+  - dlc2fromdlc1
 - Opt: estusprogression
 - Oneof:
   - noweaponprogression
@@ -69,7 +67,6 @@ ConfigItems:
   - Name: Small Envoy Banner
   - Name: Path of the Dragon
   - Name: Spook
-  - Name: Tears of Denial
 - GroupName: questitems
   HintName: quest items
   Items:
@@ -179,6 +176,7 @@ ConfigItems:
 - GroupName: other
   Items:
   - Name: Chameleon
+  - Name: Sorcerer's Staff
 # Special directives
 - GroupName: remove
   NoConfigNames: true
@@ -315,7 +313,7 @@ Areas:
   Req: catacombs
 - Name: irithyll
   Text: Irithyll
-  Req: catacombs AND (smalldoll OR (dollskip AND tearsofdenial))
+  Req: catacombs AND (smalldoll OR (vilhelmskip AND spook))
   Aliases:
   - irithyll early
   - irithyll mid, dungeon early
@@ -679,22 +677,6 @@ PlacementRestrictions:
   Unique:
   - After: settlement
     UpTo: settlement
-# Siegward
-- Name: Pierce Shield
-  Unique:
-  - UpTo: settlement
-- Name: Catarina Helm
-  Unique:
-  - UpTo: settlement
-- Name: Catarina Armor
-  Unique:
-  - UpTo: settlement
-- Name: Catarina Gauntlets
-  Unique:
-  - UpTo: settlement
-- Name: Catarina Leggings
-  Unique:
-  - UpTo: settlement
 # Sirris
 - Name: Dreamchaser's Ashes
   Unique:
@@ -1732,9 +1714,9 @@ Slots:
   - Catarina Armor - 52022[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 52101[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52111[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon], 200007[Patches while Patches has Siegward's armor (1)]
   - Catarina Gauntlets - 52023[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 52102[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52112[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon], 200008[Patches while Patches has Siegward's armor (1)]
   - Catarina Leggings - 52024[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 52103[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52113[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon], 200009[Patches while Patches has Siegward's armor (1)]
-  Text: Can be acquired by killing Siegward, completing his quest, buying from Patches while Siegward is in the well, or killing Patches while Siegward is in the well
+  Text: Armor acquirable by killing Siegward, completing his quest, buying from Patches while Siegward is in the well, or killing Patches while Siegward is in the well
   Area: settlement
-  Tags: missable exclusive shop
+  Tags: norandom
   QuestReqs: irithyll
 - Key: '02,0:50006218::'
   DebugText:
@@ -1742,7 +1724,7 @@ Slots:
   Text: Dropped by Siegward upon death or quest completion.
   Area: settlement
   Tags: missable
-  QuestReqs: irithyll pierceshield catarinahelm catarinaarmor catarinagauntlets catarinaleggings
+  QuestReqs: irithyll
 - Key: '02,0:50006218:200000,70000403:'
   DebugText:
   - Pierce Shield - 52020[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 52105[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52115[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon], 200010[Patches while Patches has Siegward's armor (1)]
@@ -2227,6 +2209,7 @@ Slots:
   - Warrior of Sunlight - 4200[Warrior of Sunlight Table [o319251_0000] @ settlement]
   Text: Dropping through a hole in the floor in the first building after the burning tree.
   Area: settlement
+  Tags: missable
 - Key: '02,0:6710::'
   DebugText:
   - Mound-makers - 4210[Holy Knight Hodrick [c0000_0017] @ settlement], 63100[?EVENT?]
@@ -2654,7 +2637,7 @@ Slots:
 - Key: '03,0:53300560::'
   DebugText:
   - Ember - 3300560[Corpse [o000250_0056] @ farronkeep]
-  Text: Behind the building before Crystal Sage, approached from Crucifixion Woods bonfire. Can drop down on left side of go under bridge on right side
+  Text: Behind the building before Crystal Sage, approached from Crucifixion Woods bonfire. Can drop down on left side or go under bridge on right side
   Area: farronkeep_road
 - Key: '03,0:53300570::'
   DebugText:
@@ -3201,17 +3184,17 @@ Slots:
 - Key: '04,0:53500320::'
   DebugText:
   - Repair Powder - 3500320[Corpse [o000250_0032] @ cathedral] (3)
-  Text: In the graveyard with the White Bitch and Infested Corpses
+  Text: In the graveyard with the White Birch and Infested Corpses
   Area: cathedral
 - Key: '04,0:53500330::'
   DebugText:
   - Large Soul of an Unknown Traveler - 3500330[Corpse [o000250_0033] @ cathedral]
-  Text: In the graveyard with the White Bitch and Infested Corpses
+  Text: In the graveyard with the White Birch and Infested Corpses
   Area: cathedral
 - Key: '04,0:53500340::'
   DebugText:
   - Large Soul of an Unknown Traveler - 3500340[Corpse [o000250_0034] @ cathedral]
-  Text: In the graveyard with the White Bitch and Infested Corpses
+  Text: In the graveyard with the White Birch and Infested Corpses
   Area: cathedral
 - Key: '04,0:53500370::'
   DebugText:
@@ -3409,7 +3392,7 @@ Slots:
   - Red Sign Soapstone - 21800110[Corpse-grub [c2180_0018] @ cathedral]
   Text: Dropped by passive Corpse-grub against the wall near the entrance to Rosaria's Bed Chamber
   Area: cathedral
-  Tags: enemy late
+  Tags: enemy late missable
 - Key: '04,1:3500292::'
   DebugText:
   - Aldrich's Sapphire - 31100000[Deep Accursed [c3110_0000] @ cathedral]
@@ -4482,7 +4465,7 @@ Slots:
   - Roster of Knights - 3700310[Corpse [o000250_0031] @ irithyll]
   Text: On the landing going down the stairs from Church of Yorshka to the graveyard
   Area: irithyll
-  Tags: mid
+  Tags: mid missable
 - Key: '06,1:3700300::'
   DebugText:
   - Twinkling Titanite - 21507000[Crystal Lizard [c2150_0000] @ irithyll]
@@ -4579,9 +4562,8 @@ Slots:
   DebugText:
   - Titanite Slab - 52116[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon], 62130[?EVENT?], 62141[Invisible [o000499_0001] @ dungeon]
   Text: Given by Siegward after unlocking Old Cell or on quest completion
-  Area: dungeon_profaned
+  Area: dungeon_oldcell
   Tags: missable
-  QuestReqs: pierceshield catarinahelm catarinaarmor catarinagauntlets catarinaleggings
 - Key: '07,0:50006820::'
   DebugText:
   - Logan's Scroll - 58200[Court Sorcerer [c0000_0013] @ dungeon]
@@ -8357,21 +8339,18 @@ Slots:
   Text: Given by Siegward meeting him in the Irithyll kitchen after the Sewer Centipedes.
   Area: irithyll
   Tags: missable mid
-  QuestReqs: pierceshield catarinahelm catarinaarmor catarinagauntlets catarinaleggings
 - Key: '99,0:50006212::'
   DebugText:
   - Siegbräu - 62105[?EVENT?]
   Text: Given by Siegward after helping him defeat Yhorm the Giant. You must talk to him before Emma teleports you.
   Area: dungeon_profaned
   Tags: missable
-  QuestReqs: pierceshield catarinahelm catarinaarmor catarinagauntlets catarinaleggings
 - Key: '99,0:50006214::'
   DebugText:
   - Emit Force - 62120[?EVENT?]
   Text: Given by Siegward meeting him in the Irithyll kitchen after the Sewer Centipedes.
   Area: irithyll
   Tags: missable mid
-  QuestReqs: pierceshield catarinahelm catarinaarmor catarinagauntlets catarinaleggings
 - Key: '99,0:50006250::'
   DebugText:
   - Young White Branch - 62500[?EVENT?]
@@ -8750,7 +8729,7 @@ Slots:
   DebugText:
   - Splintering Bolt - 113302[Shrine Handmaid after sending Greirat to Lothric Castle (unused by Greirat)], 120302[Greirat after sending Greirat to Lothric Castle (unused by Greirat)]
   - Exploding Bolt - 113303[Shrine Handmaid after sending Greirat to Lothric Castle (unused by Greirat)], 120303[Greirat after sending Greirat to Lothric Castle (unused by Greirat)]
-  Text: Unlimited item sold by Handmaid after sending Greirat to pill Lothric Castle and giving his ashes
+  Text: Unlimited item sold by Handmaid after sending Greirat to pillage Lothric Castle and giving his ashes
   Area: firelink
   Tags: missable
   QuestReqs: highwall_greirat lorettasbone irithyll archives
@@ -8894,6 +8873,7 @@ Slots:
   - Chain Leggings - 110016[Shrine Handmaid]
   Text: Unlimited item sold by Handmaid
   Area: firelink
+  Tags: norandom:sorcerersstaff
 - Key: '99,3:-1:40000,110000,70000107,70000116:'
   DebugText:
   - Purging Stone - 40005[Yuria], 110400[Shrine Handmaid after giving Hollow's Ashes], 112005[Shrine Handmaid after giving Yuria's Ashes]

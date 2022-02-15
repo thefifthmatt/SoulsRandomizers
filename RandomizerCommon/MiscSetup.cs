@@ -20,7 +20,7 @@ namespace RandomizerCommon
 
         private static HashSet<string> badModEngines = new HashSet<string>
         {
-            // 1.04 and before
+            // Sekiro 1.04 and before
             "dfff963c88e82dc19c5e8592f464b9ca",
             "81137f302c6905f42ddf76fc52287e8e",
             "b25ddefec3f78278be633b85101ecccb",
@@ -30,16 +30,20 @@ namespace RandomizerCommon
             "9168d85ef78d13e108c30bdb74984c46",
             "267153f2297ba189591304560aab3a3e",
             "fbf98322736d493c5048804cc7efb11c",
-        };
-        private static HashSet<string> justWorksPrevModEngines = new HashSet<string>
-        {
-            // 1.04 custom build
+            // Sekiro 1.04 custom build, previously worked
             "d79551b08bee23ab1d190448894b86d1",
+            // DS3 official ones
+            "3977dce4190107754b3b31deaf5b3b8f",
+            "ef66f24d523069504ef3ec06ed0725fe",
+            "af7c8c795ac852175e7850bc03f526ca",
         };
+
         private static HashSet<string> justWorksModEngines = new HashSet<string>
         {
-            // 1.06
+            // Sekiro 1.06
             "f785817a60c9a40f7cd57ff74f4256d3",
+            // DS3 custom build
+            "3405ca8f6cd084f10e46a967f2463f19",
         };
 
         public static bool CheckRequiredSekiroFiles(out string ret)
@@ -101,7 +105,7 @@ namespace RandomizerCommon
             }
             // Check Mod Engine version
             string modEngineHash = GetMD5Hash(@"..\dinput8.dll");
-            if (badModEngines.Contains(modEngineHash) || justWorksPrevModEngines.Contains(modEngineHash))
+            if (badModEngines.Contains(modEngineHash))
             {
                 // ret = "Error: Sekiro Mod Engine needs to be the unofficial version from the Sekiro Randomizer Files section\r\nCopy its dinput8.dll into parent dir or else enemy randomization will definitely crash the game!";
                 ret = "Error: Sekiro Mod Engine needs to be the official 0.1.16 release for Sekiro 1.06.\r\nDownload it and copy it dinput8.dll into the parent dir.";
@@ -134,7 +138,7 @@ namespace RandomizerCommon
             return false;
         }
 
-        public static bool CheckDS3ModEngine(out string ret, out bool encrypted)
+        public static bool CheckDS3ModEngine(bool enemyEnabled, out string ret, out bool encrypted)
         {
             encrypted = true;
             ret = null;
@@ -148,6 +152,13 @@ namespace RandomizerCommon
                 ret = "Error: DS3 Mod Engine not found in parent directory\r\ndinput8.dll and modengine.ini must be present";
                 return true;
             }
+            // Check Mod Engine version
+            string modEngineHash = GetMD5Hash(@"..\dinput8.dll");
+            if (enemyEnabled && badModEngines.Contains(modEngineHash))
+            {
+                ret = "Error: To use enemy randomizer, DS3 Mod Engine needs to be the version from randomizer\\ModEngine.\r\nCopy its dinput8.dll into the game dir or else the game will definitely crash!";
+                return true;
+            }
             // Check ini variables
             string ini = new FileInfo(@"..\modengine.ini").FullName.ToString();
 
@@ -155,7 +166,8 @@ namespace RandomizerCommon
             GetPrivateProfileString("files", "loadLooseParams", "", loadLoose, 255, ini);
             if (loadLoose.ToString() == "1")
             {
-                encrypted = false;
+                // This doesn't seem to work.
+                // encrypted = false;
             }
 
             StringBuilder useMods = new StringBuilder(255);
@@ -189,12 +201,45 @@ namespace RandomizerCommon
             }
         }
 
-        public static void CombineAI(List<string> maps, string outDir)
+        public static void CombineAI(List<string> maps, string outDir, bool mergeInfo)
         {
-            // Only works for Sekiro, since all other games have additional per-map metadata that actually matters
+            // Merges AI into common and removes scripts from other maps.
+            // Also looks at config directory for custom overrides.
             string commonPath = $@"{outDir}\..\script\aicommon.luabnd.dcx";
             BND4 aiCommon = BND4.Read(commonPath);
-            HashSet<string> aiFiles = new HashSet<string>(aiCommon.Files.Select(f => f.Name));
+            HashSet<string> usedFiles = new HashSet<string>(aiCommon.Files.Select(f => f.Name));
+            (LUAGNL, LUAINFO) parseMetadata(BND4 bnd)
+            {
+                if (!mergeInfo) return (null, null);
+                BinderFile gnlFile = bnd.Files.Find(f => f.Name.EndsWith(".luagnl"));
+                BinderFile infoFile = bnd.Files.Find(f => f.Name.EndsWith(".luainfo"));
+                if (gnlFile == null) throw new Exception($"Missing required AI files [{gnlFile},{infoFile}]");
+                return (LUAGNL.Read(gnlFile.Bytes), infoFile == null ? null : LUAINFO.Read(infoFile.Bytes));
+            }
+            void writeMetadata(BND4 bnd, LUAGNL gnl, LUAINFO info)
+            {
+                if (!mergeInfo) return;
+                if (gnl != null) bnd.Files.Find(f => f.Name.EndsWith(".luagnl")).Bytes = gnl.Write();
+                if (info != null) bnd.Files.Find(f => f.Name.EndsWith(".luainfo")).Bytes = info.Write();
+            }
+            void mergeMetadata(LUAGNL sourceGnl, LUAINFO sourceInfo, LUAGNL targetGnl, LUAINFO targetInfo)
+            {
+                if (!mergeInfo) return;
+                if (sourceGnl != null)
+                {
+                    targetGnl.Globals = targetGnl.Globals.Union(sourceGnl.Globals).ToList();
+                }
+                if (sourceInfo != null)
+                {
+                    foreach (LUAINFO.Goal g in sourceInfo.Goals)
+                    {
+                        // Dedupe does not seem to be necessary, and tricky besides
+                        // if (!sourceInfo.Goals.Any(h => h.ID == g.ID && h.Name == g.Name))
+                        targetInfo.Goals.Add(g);
+                    }
+                }
+            }
+            (LUAGNL commonGnl, LUAINFO commonInfo) = parseMetadata(aiCommon);
             foreach (string map in maps)
             {
                 string aiPath = $@"{outDir}\..\script\{map}.luabnd.dcx";
@@ -204,16 +249,24 @@ namespace RandomizerCommon
                 ai.Files = ai.Files.Where(file =>
                 {
                     if (!file.Name.Contains("out")) return true;
-                    if (!aiFiles.Contains(file.Name))
+                    if (!usedFiles.Contains(file.Name))
                     {
+                        string overrideFile = $@"configs\dist\{Path.GetFileName(file.Name)}";
+                        if (File.Exists(overrideFile))
+                        {
+                            Console.WriteLine("Override " + overrideFile);
+                            file.Bytes = File.ReadAllBytes(overrideFile);
+                        }
                         aiCommon.Files.Add(file);
-                        aiFiles.Add(file.Name);
-
+                        usedFiles.Add(file.Name);
                     }
                     return false;
                 }).ToList();
+                (LUAGNL gnl, LUAINFO info) = parseMetadata(ai);
+                mergeMetadata(gnl, info, commonGnl, commonInfo);
                 ai.Write($@"{outDir}\script\{map}.luabnd.dcx");
             }
+            writeMetadata(aiCommon, commonGnl, commonInfo);
             int startId = 2000;
             foreach (BinderFile file in aiCommon.Files)
             {
@@ -249,46 +302,102 @@ namespace RandomizerCommon
             return true;
         }
 
-        public static bool CombineSFX(List<string> maps, string outDir)
+        public static bool CombineSFX(List<string> maps, string outDir, bool ds3 = false)
         {
             string inDir = new DirectoryInfo($@"{outDir}\..\sfx").FullName;
-            string commonPath = $@"{inDir}\sfxbnd_commoneffects.ffxbnd.dcx";
-            if (!File.Exists(commonPath)) return false;
-            Console.WriteLine(commonPath);
-            Console.WriteLine(new FileInfo(commonPath).FullName);
-            BND4 sfxCommon = BND4.Read(commonPath);
-            HashSet<string> sfxFiles = new HashSet<string>(sfxCommon.Files.Select(f => f.Name));
-            Console.WriteLine(string.Join(",", maps));
-            foreach (string map in maps.Select(m => m.Substring(0, 3)).Distinct())
+            string prefix = ds3 ? "frpg_" : "";
+            // Note: DS3 files are 6 MB and 295 MB respectively, so, we need a more selective strategy for resources.
+            string[] suffixes = ds3 ? new[] { "_effect", "_resource" } : new[] { "" };
+            foreach (string suffix in suffixes)
             {
-                string path = $@"{inDir}\sfxbnd_{map}.ffxbnd.dcx";
-                if (!File.Exists(path)) continue;
-
-                BND4 sfx = BND4.Read(path);
-                sfx.Files = sfx.Files.Where(file =>
+                string commonPath = $@"{inDir}\{prefix}sfxbnd_commoneffects{suffix}.ffxbnd.dcx";
+                if (!File.Exists(commonPath)) return false;
+                Console.WriteLine(new FileInfo(commonPath).FullName);
+                BND4 sfxCommon = BND4.Read(commonPath);
+                HashSet<string> sfxFiles = new HashSet<string>(sfxCommon.Files.Select(f => f.Name));
+                Console.WriteLine(string.Join(",", maps));
+                foreach (string map in maps.Select(m => m.Substring(0, 3)).Distinct())
                 {
-                    if (!sfxFiles.Contains(file.Name))
+                    string path = $@"{inDir}\{prefix}sfxbnd_{map}{suffix}.ffxbnd.dcx";
+                    if (!File.Exists(path)) continue;
+
+                    BND4 sfx = BND4.Read(path);
+                    sfx.Files = sfx.Files.Where(file =>
                     {
-                        sfxCommon.Files.Add(file);
-                        sfxFiles.Add(file.Name);
-                        return false;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }).ToList();
-                sfx.Write($@"{outDir}\sfx\sfxbnd_{map}.ffxbnd.dcx");
+                        Console.WriteLine(file.Name);
+                        if (!sfxFiles.Contains(file.Name))
+                        {
+                            sfxCommon.Files.Add(file);
+                            sfxFiles.Add(file.Name);
+                            return false;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }).ToList();
+                    sfx.Write($@"{outDir}\sfx\{prefix}sfxbnd_{map}{suffix}.ffxbnd.dcx");
+                }
+                int startId = 0;
+                foreach (BinderFile file in sfxCommon.Files)
+                {
+                    // Ignore prefixes here
+                    file.ID = startId++;
+                }
+                sfxCommon.Files.Sort((a, b) => a.ID.CompareTo(b.ID));
+                sfxCommon.Write($@"{outDir}\sfx\{prefix}sfxbnd_commoneffects{suffix}.ffxbnd.dcx");
             }
-            int startId = 0;
-            foreach (BinderFile file in sfxCommon.Files)
-            {
-                // Ignore prefixes here
-                file.ID = startId++;
-            }
-            sfxCommon.Files.Sort((a, b) => a.ID.CompareTo(b.ID));
-            sfxCommon.Write($@"{outDir}\sfx\sfxbnd_commoneffects.ffxbnd.dcx");
             return true;
+        }
+
+        public static void DS3CommonPass(GameData game, Events events, RandomizerOptions opt)
+        {
+            EMEVD.Event fogEvent = game.Emevds["m40_00_00_00"].Events.Find(e => e.ID == 14005102);
+            if (fogEvent != null)
+            {
+                // Small convenience: Shorten the Firelink Shrine fog gate wait times significantly
+                foreach (EMEVD.Instruction i in fogEvent.Instructions)
+                {
+                    Instr instr = events.Parse(i);
+                    if (instr.Name == "IfElapsedSeconds" && instr.Args[1] is float wait)
+                    {
+                        instr[1] = Math.Min(wait, 2f);
+                        instr.Save();
+                    }
+                }
+            }
+            // Easier verification for enemy randomizer stuff
+            if (opt["cheat_shortcut"])
+            {
+                // Various shortcut flags
+                List<int> flags = new List<int>
+                {
+                    63100420, // Settlement Greatwood
+                    63100470, // Settlement sewers
+                    13010461, // Lothric->Archives elevator
+                    63300432, // Farron Keep shortcut
+                    13410451, // Archives elevator
+                    13500431, // Cathedral elevator
+                    63500210, 63500211, 63500212, 63500213, // Cathedral wooden doors
+                    63500221, // Cathedral gate 1
+                    63500220, // Cathedral gate 2
+                    63700460, // Irithyll Pontiff shortcut
+                    63900440, // Dungeon->Archdragon door 1
+                    63900430, // Dungeon->Archdragon door 2
+                    13900401, // Dungeon->Archdragon warp elevator
+                    64500572, // Ariandel basement
+                    65100610, // Ringed City
+                };
+                game.Emevds["common"].Events[0].Instructions.AddRange(
+                    flags.Select(f => events.ParseAdd($"SetEventFlag({f}, ON)")));
+                EMEVD.Event warpEvent = game.Emevds["m39_00_00_00"].Events.Find(e => e.ID == 13905900);
+                if (warpEvent != null)
+                {
+                    EventEdits edits = new EventEdits();
+                    events.RemoveMacro(edits, "4400");
+                    events.ApplyAllEdits(warpEvent, edits);
+                }
+            }
         }
 
         public static void SekiroCommonPass(GameData game, Events events, RandomizerOptions opt)
@@ -357,6 +466,8 @@ namespace RandomizerCommon
         {
             "deude", "engus", "frafr", "itait", "jpnjp", "korkr", "polpl", "porbr", "rusru", "spaar", "spaes", "thath", "zhocn", "zhotw",
         };
+        public static readonly List<string> NoDS3Langs = new List<string> { "thath" };
+
         private static readonly List<string> fileDirs = new List<string>
         {
             @".",
@@ -381,9 +492,9 @@ namespace RandomizerCommon
             @"param\gameparam",
             @"param\graphicsconfig",
             @"parts",
-            @"script",  // This should be a no-op in Sekiro
+            @"script",  // This should be a no-op with enemy rando
             @"script\talk",
-            @"sfx",  // This should be a no-op in Sekiro
+            @"sfx",  // This should be a no-op with enemy rando
             @"shader",
             @"sound",
         }.SelectMany(t => t.Contains("$lang") ? Langs.Select(l => t.Replace("$lang", l)) : new[] { t }).ToList();
@@ -397,7 +508,7 @@ namespace RandomizerCommon
             List<string> allFiles = new List<string>();
             foreach (string subdir in fileDirs)
             {
-                if (sekiro && (subdir == "script" || subdir == "sfx")) continue;
+                if (subdir == "script" || subdir == "sfx") continue;
                 string fulldir = $@"{dir}\{subdir}";
                 if (Directory.Exists(fulldir))
                 {

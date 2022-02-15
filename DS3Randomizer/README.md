@@ -1,6 +1,6 @@
-It's an offline item randomizer for DS3 which modifies the static files loaded on game startup, including key item locations and shops, turning the game into a scavenger hunt. **Only supports the latest game patch, installed legitimately from Steam. Use with default modengine options (offline, alternate save file) to prevent bans.** This is not the only DS3 item randomizer - for a more dynamic experience, see Luke's [DS3 Item Randomizer and Auto-Equip mod](https://www.nexusmods.com/darksouls3/mods/241).
+It's an offline item and enemy randomizer for DS3 which modifies the static files loaded on game startup. The item randomizer and enemy randomizer parts can be enabled or disabled separately.
 
-The following are all randomized with each other:
+When item randomizer is enabled, the following items are supported for randomization:
 
 - Items found in the world, including key items
 - Enemy and boss drops, including key items
@@ -12,29 +12,39 @@ The following are all randomized with each other:
 
 There are also difficulty settings. The most important setting is a bias slider, which can place desirable items completely randomly, or in difficult and unfair locations behind long item chains, or somewhere in between. There are also sequence break settings - in the most punishing variant, it is possible for e.g. Twin Princes to drop Small Lothric Banner, or Gael to drop Small Doll. And Cinders of a Lord can be potentially anywhere.
 
+In enemy randomizer, game progression things that apply to enemies will apply to their replacements instead. e.g. killing a mimic's replacement will give you the mimic's item. Killing Dancer's replacement will allow you to enter Lothric Castle.
+
+If you have issues installing the mod or would like to provide feedback or playtest, you can join the discord server at https://discord.gg/QArcYud (also for Fog Gate Randomizer, Sekiro Randomizer, and hopefully Elden Ring Randomizer too)
+
+For a more dynamic item randomizer experience, see Luke's [DS3 Item Randomizer and Auto-Equip mod](https://www.nexusmods.com/darksouls3/mods/241). For an alternate enemy randomizer, see GodFilm's [Dark Souls 3 Enemy Randomizer](https://www.nexusmods.com/darksouls3/mods/484). They are compatible with the enemy and item parts of this randomizer, respectively.
+
 ## Installation
 
-To use the mod, you must first install DS3 Mod Engine, and then run the randomizer executable.
-1. Install [DS3 Mod Engine](https://www.nexusmods.com/darksouls3/mods/332) (note: you must use the version from DS3 Enemy Randomizer if you plan on running that, to avoid crashes!). This requires the latest patch, installed legitimately from Steam. You should edit modengine.ini to change modOverrideDirectory="\randomizer" and useModOverrideDirectory=1. Make sure useAlternateSaveFile=1 and blockNetworkAccess=1 are also set to avoid irreversable bans.
-2. Unzip DS3StaticItemRandomizer.zip directly into your DS3 game directory - "C:\Program Files (x86)\steam\steamapps\common\DARK SOULS III\Game" by default. The zip archive contains only a folder called 'randomizer', which contains the randomizer executable and all other files. This folder must be added directly to your game directory.
-3. Install any other mods you want to use, such as [DS3 Enemy Randomizer](https://www.nexusmods.com/darksouls3/mods/484) or [Poorly Translated Mod](https://www.nexusmods.com/darksouls3/mods/316), in the 'mod' directory, like you would normally. Item randomizer can only use these mods if they are compatible, i.e. if critical game items are found in roughly their expected locations.
-4. In the 'randomizer' folder, run DS3Randomizer.exe to open the UI. Choose your settings, selecting "Merge mods" if you have other mods to merge in, click "Randomize", and wait for "Done" in the status bar. This will also create a hint/spoiler text file in the 'spoiler_logs' folder for that run, which should be the last file alphabetically.
-5. Close DS3 if it's running. The param files are only loaded when the game starts up.
-6. Launch DS3, and start a new save file! (If just installed Mod Engine, go offline in settings to avoid a 10 second wait at the start.) If the starting character weapons and armor are different, then it's working. You may soft lock if you change the item randomizer seed or options in the middle of a playthrough.
+To use the mod, you must first install DS3 Mod Engine, and then run the randomizer executable. If you're installing multiple mods, DS3 Static Randomizer should usually be the last one in the chain. ([DS3 Fog Gate Randomizer](https://nexusmods.com/darksouls3/mods/551/) is a notable exception. If you're using that, see the installation instructions on that page.)
 
-In order to alter other mods in the middle of a playthrough, e.g. to reroll DS3 Enemy Randomizer, you should change those files in the 'mod' directory, and then run item randomizer again with the same seed and settings. Note that for Enemy Randomizer in particular, you can also temporarily rename the 'map' folder to disable it, e.g. if the Ariandel Chapel basement crashes.
+1. Unzip DS3StaticItemRandomizer.zip directly into your DS3 game directory - `C:\Program Files (x86)\steam\steamapps\common\DARK SOULS III\Game` by default. The zip archive contains only a folder called `randomizer`, which contains the randomizer executable and all other files. The `randomizer` directory should appear directly in your game directory.
+2. Copy dinput8.dll *and* modengine.ini from randomizer\ModEngine\ into the game directory. This version of Mod Engine is required to prevent enemy randomizer crashes. (If you're only using the item randomizer, you can use normal [DS3 Mod Engine](https://www.nexusmods.com/darksouls3/mods/332).) Edit modengine.ini to set `modOverrideDirectory="\randomizer"` and `useModOverrideDirectory=1`. `useAlternateSaveFile=1` and `blockNetworkAccess=1` are also needed to avoid irreversable bans.
+3. Install any other mods you want to randomize on top of, such as [Poorly Translated Mod](https://www.nexusmods.com/darksouls3/mods/316), in a subdirectory called `mod\`, like you would normally. Merging will only work if the base mods don't significantly modify item or enemy locations or behaviors.
+4. In the randomizer folder, run DS3Randomizer.exe to open the UI. Choose your settings, selecting "Merge mods" if you have other mods installed in the `mod` directory to merge in. You may want to deselect "Edit in-game text" for Poorly Translated in particular. Then click "Randomize" and wait for "Done" in the status bar. This will also create a hint/spoiler text file in the spoiler_logs folder.
+5. Quit DS3 if it's running. The param files are only loaded when the game starts up.
+6. Launch DS3, and start a new save file! (If you just installed Mod Engine, go offline in settings to avoid a 10 second wait at the start.) If the starting character weapons and armor are different, then item randomizer is working. You may soft lock if you change the item randomizer seed or options in the middle of a playthrough.
+7. If you get stuck and can't find an item, go into the `spoiler_logs` directory and search the run's spoiler log.
 
-To keep item randomizer while uninstalling other mods, you can delete other mods' files (basically every directory except for the 'dist' directory) and then rerun item randomizer with the same seed and settings. A full list of extra files can be found at the bottom of the spoiler log.
+In order to alter other mods in the middle of a playthrough, you can change their files and then rerun DS3 Static Randomizer with the same item randomizer options and seed. By default options are saved when you close and re-open the program. Rerolling only enemy randomizer won't change item placements.
+
+A full list of extra files not belonging to DS3 Static Randomizer can be found at the bottom of the spoiler log, if you're wondering what is getting merged in or not.
 
 To uninstall the mod, change useModOverrideDirectory back. To remove Mod Engine altogether, delete input8.dll.
 
-## Logic
+One last note, if you're getting periodic game crashes, you may want to use a [version of the DS3 executable](https://wiki.speedsouls.com/darksouls3:Crash_Fix) that patches memory leaks. If you're consistently getting the same crash, temporarily disabling Enemy Randomizer and restarting the game may be required to proceed.
+
+## Item logic
 
 Important changes (and non-changes):
 
-- Handmaid's shop can contain key items, and unmissable ashes/shops can contain key items if shop locations are enabled. NPC shops considered unmissable are the initial shops for Greirat, Cornyx, Irina, Karla, and the Stone-humped Hag. NPCs with shops always drop their own ashes. (One softlock possibility - make sure to buy key items from Greirat before sending him away, in case you can't progress his questline.)
+- Handmaid's shop can contain key items, and unmissable ashes/shops can contain key items if shop locations are enabled. NPC shops considered unmissable are the initial shops for Greirat, Cornyx, Irina, Karla, and the Stone-humped Hag. NPCs with shops always drop their own ashes. (Greirat's quest is patched so you need Grand Archives Key first to send him to Lothric Castle.)
 - Optional NPC questlines are not required for key items. It is also never necessary to kill an NPC (except Emma), and no good items are obtainable through NPC death.
-- Crow items are randomized into upgrade materials. Boss weapons are available after a boss's soul is found. Transposition gives unique items, usually pretty good ones.
+- Crow items are randomized into upgrade materials. Boss weapons are available after a boss's soul is found. Transposition gives unique items, usually decent ones.
 - All starting classes are given 10 intelligence for free so that Orbeck can be recruited. Starting stats for classes other than Deprived may be slightly increased for better starting weapons, and starting SL increased the same amount.
 
 Unusual locations:
@@ -44,7 +54,13 @@ Unusual locations:
 - Some item locations only show up after you've defeated an enemy elsewhere, like the locations for Drakeblood Set, Havel's Set, Hornet Ring, Archives Key, and many Handmaid shop items.
 - You can enable NG+ locations in the base NG, in which case you can find more powerful rings, at the cost of more hidden locations. Check the NG+1 and NG+2 tabs in http://darksouls3.wikidot.com/rings if you are unfamiliar with the locations.
 
-If you find any bugs, especially those which make a run uncompleteable, you can send me info about your run. Do not send me only the seed, since item locations heavily depend on settings. Instead, just copy the first line from the spoiler log.
+If you find any bugs, especially those which make a run incompletable, you can send me info about your run. Do not send me only the seed, since item locations heavily depend on settings. Instead, just copy the first line from the spoiler log.
+
+## Enemy presets and boss replacement
+
+The randomizer can be heavily customized using text files in the 'presets' folder. These are meant to be edited as you see fit. If you add a new preset to the directory, like by copying an existing file, it will automatically show up in the randomizer's preset selection. Check out README.txt in the presets folder to learn more.
+
+There are a few built-in presets, like "Oops All" runs, and randomly replacing enemies in the world with bosses. These may push the game to its limit and may cause crashes or certain death.
 
 ## Special thanks
 
@@ -73,7 +89,7 @@ Key items are defined as items which unlock other unmissable items. They are onl
 - Small Lothric Banner: Used to progress from High Wall to Undead Settlement.
 - Tower Key: Used to access the Bell Tower in Firelink Shrine.
 
-Spook and Tears of Denial are also considered key items if the corresponding speedrunner skips are enabled.
+Spook is considered a key item if the corresponding speedrunner skips are enabled.
 
 Coals and Transposing Kiln are not key items exactly but are placed in the same pool as them. There is an option for Estus Shards and Undead Bone Shards to also be placed in the same pool.
 

@@ -62,7 +62,8 @@ namespace RandomizerCommon
                     }
                 }
                 // Add items
-                bool hasSource = false;
+                SortedSet<RandomSilo> sourceSilos = new SortedSet<RandomSilo>();
+                List<SlotKey> norandomSlots = new List<SlotKey>();
                 foreach (SlotKey itemLocKey in entry.Value)
                 {
                     ItemLocation location = data.Location(itemLocKey);
@@ -77,47 +78,68 @@ namespace RandomizerCommon
                     {
                         // If only the item is removed, still allow the target slot to be used
                         AddMulti(Silos[RandomSilo.REMOVE].Mapping, itemLocKey, itemLocKey);
-                        hasSource = true;
+                        sourceSilos.Add(siloType);
                     }
                     else if (norandoms.Contains(null) || norandoms.Contains(itemLocKey.Item) || ann.NorandomItems.Contains(itemLocKey.Item))
                     {
-                        // If nonrandom, just do everything here
+                        // If nonrandom, do the mapping here
                         AddMulti(Silos[RandomSilo.SELF].Mapping, itemLocKey, itemLocKey);
-                        Silos[RandomSilo.FINITE].ExcludeTargets.Add(itemLocKey);
+                        // Also prevent it from being added to other silos which use the same locScope
+                        norandomSlots.Add(itemLocKey);
+                    }
+                    else if (crow)
+                    {
+                        // A source exists, but we're not adding the item, as the items are already in the "add" group.
+                        sourceSilos.Add(RandomSilo.CROW);
                     }
                     else
                     {
-                        if (!crow)
+                        RandomSilo itemSilo = siloType;
+                        if (gearTypes.Contains(itemLocKey.Item.Type)
+                            && gearSiloVariants.TryGetValue(itemSilo, out RandomSilo gearSilo)
+                            // Exclude arrows a bit hackily
+                            && itemLocKey.Item.ID >= 1000000)
                         {
-                            Silos[siloType].Sources.Add(itemLocKey);
+                            itemSilo = gearSilo;
                         }
-                        hasSource = true;
+                        Silos[itemSilo].Sources.Add(itemLocKey);
+                        sourceSilos.Add(itemSilo);
                     }
                 }
                 // Add destination, assuming any of it is randomized
                 // Also ignore special locations, which don't come from the game
-                if (hasSource && locScope.Type != ScopeType.SPECIAL)
+                if (sourceSilos.Count > 0 && locScope.Type != ScopeType.SPECIAL)
                 {
-                    RandomSilo siloType = canPermuteTo[locScope.Type];
-                    if (crow) siloType = RandomSilo.CROW;
-                    Silos[siloType].Targets.Add(locScope);
-                    // TODO: Should we do something with this info?
-                    if (false && siloType == RandomSilo.FINITE && !entry.Value.All(s => Silos[siloType].Sources.Contains(s)))
+                    foreach (RandomSilo sourceSilo in sourceSilos)
                     {
-                        SlotAnnotation sn = ann.Slot(locScope);
-                        Console.WriteLine($"Adding target location [{sn.Area} - {sn.Text}] but not all {entry.Value.Count} of its sources - only adding {entry.Value.Where(s => Silos[siloType].Sources.Contains(s)).Count()}");
+                        Silos[sourceSilo].Targets.Add(locScope);
+                        foreach (SlotKey slotKey in norandomSlots)
+                        {
+                            // Partial exclusion of norandom items
+                            Silos[sourceSilo].ExcludeTargets.Add(slotKey);
+                        }
                     }
                 }
             }
         }
         public enum RandomSilo
         {
+            // Event flag
             FINITE,
+            // Infinite model drop items
             INFINITE,
+            // Shop items which have a finite and infinite variant
             MIXED,
+            // Non-randomized
             SELF,
+            // Removed
             REMOVE,
-            CROW
+            // Given random resource drops
+            CROW,
+            // Infinite shop items
+            INFINITE_SHOP,
+            // Infinite gear items, which are shared across shops and models
+            INFINITE_GEAR,
         }
         // List of what can permute to what.
         public static readonly Dictionary<ScopeType, RandomSilo> canPermuteTo = new Dictionary<ScopeType, RandomSilo>
@@ -126,11 +148,17 @@ namespace RandomizerCommon
             { ScopeType.MATERIAL, RandomSilo.FINITE },
             { ScopeType.ENTITY, RandomSilo.FINITE },
             { ScopeType.SPECIAL, RandomSilo.FINITE },
-            { ScopeType.SHOP_INFINITE, RandomSilo.INFINITE },
+            { ScopeType.SHOP_INFINITE, RandomSilo.INFINITE_SHOP },
             { ScopeType.MODEL, RandomSilo.INFINITE },
             // In theory go from this to finite + infinite pair, and vice versa... but that is some super complicated multiplexing
             { ScopeType.SHOP_INFINITE_EVENT, RandomSilo.MIXED },
         };
+        public static readonly Dictionary<RandomSilo, RandomSilo> gearSiloVariants = new Dictionary<RandomSilo, RandomSilo>
+        {
+            [RandomSilo.INFINITE] = RandomSilo.INFINITE_GEAR,
+            [RandomSilo.INFINITE_SHOP] = RandomSilo.INFINITE_GEAR,
+        };
+        public static readonly HashSet<ItemType> gearTypes = new HashSet<ItemType> { ItemType.WEAPON, ItemType.ARMOR };
         private static readonly HashSet<RandomSilo> specialSiloTypes = new HashSet<RandomSilo> { RandomSilo.SELF, RandomSilo.REMOVE, RandomSilo.CROW };
         public class SiloPermutation
         {
@@ -326,7 +354,9 @@ namespace RandomizerCommon
             {
                 RandomSilo siloType = siloEntry.Key;
                 SiloPermutation silo = siloEntry.Value;
-                if (explain) Console.WriteLine($"{siloType}: Mapping {silo.Sources.Count()} sources -> {silo.Targets.Count()} targets");
+#if DEBUG
+                Console.WriteLine($"{siloType}: Mapping {silo.Sources.Count()} sources -> {silo.Targets.Count()} targets");
+#endif
                 // Filled in before or after
                 if (specialSiloTypes.Contains(siloType))
                 {
@@ -390,7 +420,7 @@ namespace RandomizerCommon
                         pending.AddPartitions();
                         if (debug && pending.Partitions != null) foreach (PendingItemSlotPartition partition in pending.Partitions) Console.WriteLine($"- Partition: {partition}");
                     }
-                    if (siloType == RandomSilo.INFINITE && (restrict.Shop != null || restrict.Drop != null))
+                    if ((siloType == RandomSilo.INFINITE || siloType == RandomSilo.INFINITE_SHOP) && (restrict.Shop != null || restrict.Drop != null))
                     {
                         pending = new PendingItem
                         {

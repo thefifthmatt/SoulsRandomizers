@@ -11,7 +11,7 @@
 3009 Deprived
 3500 UNUSED
 21000 Slave Knight Gael
-21140 Sir Vilhelm
+21100 Sir Vilhelm
 21200 Livid Pyromancer Dunnel
 21300 Champion's Gravetender
 21400 Amnesiac Lapp
@@ -58,7 +58,7 @@
 28700 Havel Knight
 28800 Drakeblood Knight
 28900 Rapier Champion
-29100 Drang Hammers Knight
+29000 Drang Hammers Knight
 29100 Drang Twinspears Knight
 29200 Knight Slayer Tsorig
 29340 Creighton the Wanderer

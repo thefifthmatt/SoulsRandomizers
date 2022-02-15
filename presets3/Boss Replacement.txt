@@ -1,0 +1,22 @@
+Description: "The same as regular randomization except that 10% of enemies are upgraded to bosses and 10% become other powerful enemies. Edit the preset file to adjust percentages."
+
+# Boss pool is unchanged.
+Boss:
+- Weight: 100
+  Pool: default
+
+# Miniboss pool also gets some bosses.
+Miniboss:
+- Weight: 90
+  Pool: default
+- Weight: 10
+  Pool: Bosses
+
+# Regular enemies can become bosses and minibosses.
+Basic:
+- Weight: 80
+  Pool: default
+- Weight: 10
+  Pool: Bosses
+- Weight: 10
+  Pool: Minibosses

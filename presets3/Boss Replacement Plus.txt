@@ -1,0 +1,25 @@
+Description: "The same as regular randomization except that 30% of enemies are upgraded to bosses and 20% become other powerful enemies. Edit the preset file to adjust percentages."
+
+# Boss pool is unchanged.
+Boss:
+- Weight: 100
+  Pool: default
+
+# Miniboss pool gets a lot of bosses.
+Miniboss:
+- Weight: 50
+  Pool: default
+- Weight: 50
+  Pool: Bosses
+
+# Regular enemies can become bosses and minibosses and other enemies (scary).
+Basic:
+- Weight: 50
+  Pool: default
+- Weight: 30
+  Pool: Bosses
+- Weight: 10
+  Pool: Minibosses
+- Weight: 10
+  Pool: Black Knight; Cathedral Knight; Corvian Settler; Darkwraith; Grave Warden; Hollow Manservant; Jailer; Judicator; Large Hound Rat; Large Serpent-Man; Red-Eyed Lothric Knight; Lycanthrope; Millwood Knight; Monstrosity of Sin; Rock Lizard; Ringed Knight; Pontiff Knight
+  RandomByType: true

@@ -82,6 +82,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SoulsIds\SoulsIds\SoulsIds.csproj">
+      <Project>{c46d537c-54dc-48bf-b824-8a950dd9d4f8}</Project>
+      <Name>SoulsIds</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RandomizerCommon\RandomizerCommon.csproj">
       <Project>{153b7dac-12fc-4f0f-b5dc-3fcfe546c50c}</Project>
       <Name>RandomizerCommon</Name>

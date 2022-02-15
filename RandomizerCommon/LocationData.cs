@@ -4,21 +4,15 @@ using System.Linq;
 
 namespace RandomizerCommon
 {
+    // These classes are awful and contain ugly Java-esque boilerplate (TODO rewrite)
+    // But also C#'s lack of initialize-only fields is a travesty and both languages should feel bad.
     public class LocationData
     {
-        public static Dictionary<uint, ItemType> LotTypes = new Dictionary<uint, ItemType>
-        {
-            { 0x00000000, 0 },
-            { 0x10000000, (ItemType) 1 },
-            { 0x20000000, (ItemType) 2 },
-            { 0x40000000, (ItemType) 3 }
-        };
-        public static Dictionary<ItemType, uint> RevLotTypes = LotTypes.ToDictionary(e => e.Value, e => e.Key);
-
         // Location information for all items in the game, with additional splitting by how to acquire the item.
         public readonly SortedDictionary<ItemKey, ItemLocations> Data = new SortedDictionary<ItemKey, ItemLocations>();
         // Index of locations by how/when they are available. If one slot in the set is available, all the others are too.
         public readonly SortedDictionary<LocationScope, List<SlotKey>> Locations = new SortedDictionary<LocationScope, List<SlotKey>>();
+        // Replacement lots, used to give treasure carps event drops
         public Dictionary<int, int> NewEntityLots = new Dictionary<int, int>();
 
         public LocationData() { }
@@ -113,10 +107,11 @@ namespace RandomizerCommon
         // Keys
         public enum ItemType
         {
-            WEAPON = 0,
-            ARMOR = 1,
-            RING = 2,
-            GOOD = 3
+            WEAPON,
+            ARMOR,
+            RING,
+            GOOD,
+            GEM,
         }
 
         public class ItemKey : IComparable<ItemKey>
@@ -236,15 +231,17 @@ namespace RandomizerCommon
             // Auxiliary
             public readonly List<EntityId> Entities;
             public readonly int Quantity;
+            public readonly float Chance;
             // For a lot, the base lot location, if this is an additional draw. Otherwise null
             public readonly LocationKey Base;
-            public LocationKey(LocationType Type, int ID, string Text, List<EntityId> Entities, int Quantity, LocationKey Base)
+            public LocationKey(LocationType Type, int ID, string Text, List<EntityId> Entities, int Quantity, float Chance, LocationKey Base)
             {
                 this.Type = Type;
                 this.ID = ID;
                 this.Text = Text;
                 this.Entities = Entities;
                 this.Quantity = Quantity;
+                this.Chance = Chance;
                 this.Base = Base;
                 if (Base != null && Base.Type != Type)
                 {
@@ -321,7 +318,11 @@ namespace RandomizerCommon
             public readonly int NPCParamID;
             public readonly int CharaInitID;
             public readonly List<int> GroupIds;
-            public EntityId(string MapName, string EntityName, int EntityID=-1, int NPCParamID=-1, int CharaInitID=-1, List<int> GroupIds=null)
+            public readonly string Type;
+            public EntityId(
+                string MapName, string EntityName,
+                int EntityID=-1, int NPCParamID=-1, int CharaInitID=-1, List<int> GroupIds=null,
+                string Type=null)
             {
                 this.MapName = MapName;
                 this.EntityName = EntityName;
@@ -329,6 +330,7 @@ namespace RandomizerCommon
                 this.NPCParamID = NPCParamID;
                 this.CharaInitID = CharaInitID;
                 this.GroupIds = GroupIds;
+                this.Type = Type;
             }
             public List<int> GetEntityIds()
             {

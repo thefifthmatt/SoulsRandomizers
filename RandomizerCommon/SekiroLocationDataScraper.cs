@@ -81,7 +81,6 @@ namespace RandomizerCommon
             PARAM shops = game.Param("ShopLineupParam");
             PARAM itemLots = game.Param("ItemLotParam");
             PARAM materials = game.Param("EquipMtrlSetParam");
-            PARAM npcs = game.Param("NpcParam");
 
             // First we may have to create lots - easier to do this at the start than keep data in side channels all the way through
             int baseEvent = 52500960;
@@ -153,7 +152,7 @@ namespace RandomizerCommon
                             int points = (short)row[$"LotItemBasePoint0{i}"].Value;
                             int quantity = (ushort)row[$"NewLotItemNum{i}"].Value;
                             if (type == 0xFFFFFFFF) continue;
-                            ItemKey item = new ItemKey(LocationData.LotTypes[type], id);
+                            ItemKey item = new ItemKey(game.LotItemTypes[type], id);
                             string itemText = $"{itemLot}[{locs}]";
                             List<string> lotInfo = new List<string>();
                             if (quantity > 1)
@@ -220,7 +219,7 @@ namespace RandomizerCommon
                                     scope = new ItemScope(ScopeType.MODEL, model);
                                 }
                             }
-                            LocationKey location = new LocationKey(LocationType.LOT, itemLot, itemText, entities, quantity, baseLocation);
+                            LocationKey location = new LocationKey(LocationType.LOT, itemLot, itemText, entities, quantity, 1, baseLocation);
                             data.AddLocation(item, scope, location);
                             if (baseLocation == null)
                             {
@@ -234,7 +233,6 @@ namespace RandomizerCommon
                     string text2;
                     if (simple)
                     {
-
                         SortedSet<string> locations = new SortedSet<string>(entities.Select(e => game.LocationNames[e.MapName]));
                         SortedSet<string> models = new SortedSet<string>(entities.Select(e => e.EntityName.StartsWith("o") ? "Treasure" : game.EntityName(e)));
                         text2 = $"{string.Join(", ", models)}: {string.Join(", ", locations)}";
@@ -337,6 +335,7 @@ namespace RandomizerCommon
                     LocationType.SHOP, shopID, text,
                     usedBaseShops.ContainsKey(baseShop) ? usedBaseShops[baseShop] : new List<EntityId>(),
                     quantity,
+                    1,
                     null); // try not to use base shops - baseShops.ContainsKey(baseShop) ? baseShops[baseShop] : null);
                 if (shopID == baseShop)
                 {
@@ -443,7 +442,6 @@ namespace RandomizerCommon
                     }
                 }
             }
-
             return data;
         }
 
@@ -507,7 +505,7 @@ namespace RandomizerCommon
                 }
             }
             bool logEntities = false;
-            foreach (KeyValuePair<string, MSBS> entry in game.Smaps)
+            foreach (KeyValuePair<string, MSBS> entry in game.SekiroMaps)
             {
                 string location = game.Locations[entry.Key];
                 MSBS msb = entry.Value;
@@ -597,7 +595,7 @@ namespace RandomizerCommon
                 }
                 AddMulti(ret.usedBaseShops, entry.Key, usedEsds.ContainsKey(entry.Value) ? usedEsds[entry.Value] : unusedEsd);
             }
-            foreach (KeyValuePair<string, MSBS> entry in game.Smaps)
+            foreach (KeyValuePair<string, MSBS> entry in game.SekiroMaps)
             {
                 string location = game.Locations[entry.Key];
                 foreach (MSBS.Event.Treasure treasure in entry.Value.Events.Treasures)

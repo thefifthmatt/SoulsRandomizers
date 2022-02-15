@@ -222,6 +222,7 @@ namespace RandomizerCommon
                 }
                 else if (itemLoc.Keys.Any(k => k.Type == LocationKey.LocationType.SHOP && k.ID / 100 != 11005))
                 {
+                    // Exclude offering box in Sekiro
                     types.Add(HintType.Shop);
                 }
                 else

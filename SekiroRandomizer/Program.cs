@@ -38,10 +38,11 @@ namespace SekiroRandomizer
                 if (preset == null && File.Exists("Dev.txt"))
                 {
                     options.Preset = "Dev";
-                    preset = Preset.LoadPreset("Dev", filename: "Dev.txt");
+                    preset = Preset.LoadPreset("Dev", checkDir: ".");
                 }
                 string outPath = @"C:\Program Files (x86)\Steam\steamapps\common\Sekiro\randomizer";
-                new Randomizer().Randomize(options, status => Console.WriteLine("## " + status), outPath, sekiro, preset);
+                new Randomizer().Randomize(
+                    options, SoulsIds.GameSpec.FromGame.SDT, status => Console.WriteLine("## " + status), outPath, preset);
                 Application.Exit();
             }
             else

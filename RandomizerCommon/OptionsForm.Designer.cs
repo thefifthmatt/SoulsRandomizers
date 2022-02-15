@@ -40,7 +40,7 @@
             this.str.Location = new System.Drawing.Point(12, 59);
             this.str.Name = "str";
             this.str.Size = new System.Drawing.Size(821, 22);
-            this.str.TabIndex = 0;
+            this.str.TabIndex = 1;
             this.str.KeyDown += new System.Windows.Forms.KeyEventHandler(this.str_KeyDown);
             // 
             // select
@@ -49,7 +49,7 @@
             this.select.Location = new System.Drawing.Point(723, 88);
             this.select.Name = "select";
             this.select.Size = new System.Drawing.Size(110, 29);
-            this.select.TabIndex = 1;
+            this.select.TabIndex = 2;
             this.select.Text = "Select";
             this.select.UseVisualStyleBackColor = true;
             this.select.Click += new System.EventHandler(this.select_Click);
@@ -60,8 +60,8 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.label1.Location = new System.Drawing.Point(11, 6);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(822, 48);
-            this.label1.TabIndex = 2;
+            this.label1.Size = new System.Drawing.Size(821, 48);
+            this.label1.TabIndex = 0;
             this.label1.Text = resources.GetString("label1.Text");
             // 
             // OptionsForm

@@ -490,7 +490,7 @@
               "unk4": 0
             },
             {
-              "name": "Minimum Number of Targets",
+              "name": "Number of Target Characters",
               "type": 5,
               "enum_name": null,
               "default": 1,
@@ -2187,7 +2187,7 @@
               "unk3": 0,
               "unk4": 0
             }
-          ]  
+          ]
         },
         {
           "name": "IF Multiplayer Network Penalized",
@@ -2385,6 +2385,20 @@
               "min": 0,
               "max": 0,
               "increment": 0,
+              "format_string": "%d",
+              "unk1": 1,
+              "unk2": 0,
+              "unk3": 0,
+              "unk4": 0
+            },
+            {
+              "name": "Unknown",
+              "type": 5,
+              "enum_name": null,
+              "default": 1,
+              "min": 0,
+              "max": 9999,
+              "increment": 1,
               "format_string": "%d",
               "unk1": 1,
               "unk2": 0,
@@ -3342,7 +3356,7 @@
               "unk4": 0
             },
             {
-              "name": "Class",
+              "name": "Class Type",
               "type": 0,
               "enum_name": "Class Type",
               "default": 0,
@@ -3774,7 +3788,7 @@
               "unk2": 0,
               "unk3": 0,
               "unk4": 0
-            }, 
+            },
             {
               "name": "Is Transformed",
               "type": 0,
@@ -5526,7 +5540,7 @@
               "unk4": 0
             },
             {
-              "name": "Inside",
+              "name": "Should Player Be Inside",
               "type": 0,
               "enum_name": "BOOL",
               "default": 1,
@@ -5588,7 +5602,7 @@
               "unk4": 0
             },
             {
-              "name": "Inside",
+              "name": "Should Player Be Inside",
               "type": 0,
               "enum_name": "BOOL",
               "default": 1,
@@ -5815,13 +5829,13 @@
               "unk3": 0,
               "unk4": 0
             }
-          ]   
+          ]
         },
         {
           "name": "GOTO IF Player Is Not In Own World (Excludes Arena)",
           "index": 12,
           "args": [
-             {
+            {
               "name": "Label",
               "type": 0,
               "enum_name": "Label",
@@ -5855,7 +5869,7 @@
           "name": "END IF Player Is Not In Own World (Excludes Arena)",
           "index": 13,
           "args": [
-             {
+            {
               "name": "Execution End Type",
               "type": 0,
               "enum_name": "Event End Type",
@@ -6262,7 +6276,7 @@
               "unk4": 0
             },
             {
-              "name": "Inside",
+              "name": "Should Player Be Inside",
               "type": 0,
               "enum_name": "BOOL",
               "default": 1,
@@ -6357,7 +6371,7 @@
           "name": "END IF Character Has SpEffect",
           "index": 111,
           "args": [
-             {
+            {
               "name": "Execution End Type",
               "type": 0,
               "enum_name": "Event End Type",
@@ -6441,13 +6455,13 @@
               "unk3": 0,
               "unk4": 0
             }
-           ]    
+          ]
         },
         {
-           "name": "SKIP IF Character Has SpEffect",
-           "index": 112,
-           "args": [
-             {
+          "name": "SKIP IF Character Has SpEffect",
+          "index": 112,
+          "args": [
+            {
               "name": "Number Of Skipped Lines",
               "type": 0,
               "enum_name": null,
@@ -6531,7 +6545,7 @@
               "unk3": 0,
               "unk4": 0
             }
-           ]    
+          ]
         },
         {
           "name": "GOTO IF Player In/Outside Area",
@@ -6589,6 +6603,20 @@
               "increment": 1,
               "format_string": "%08d",
               "unk1": 0,
+              "unk2": 0,
+              "unk3": 0,
+              "unk4": 0
+            },
+            {
+              "name": "Number of Target Characters",
+              "type": 5,
+              "enum_name": null,
+              "default": 1,
+              "min": 0,
+              "max": 9999,
+              "increment": 1,
+              "format_string": "%d",
+              "unk1": 1,
               "unk2": 0,
               "unk3": 0,
               "unk4": 0
@@ -6654,11 +6682,26 @@
               "unk2": 0,
               "unk3": 0,
               "unk4": 0
+            },
+            {
+              "name": "Number of Target Characters",
+              "type": 5,
+              "enum_name": null,
+              "default": 1,
+              "min": 0,
+              "max": 9999,
+              "increment": 1,
+              "format_string": "%d",
+              "unk1": 1,
+              "unk2": 0,
+              "unk3": 0,
+              "unk4": 0
             }
-          ] 
+
+          ]
         },
         {
-            "name": "SKIP IF Player In/Outside Area",
+          "name": "SKIP IF Player In/Outside Area",
           "index": 202,
           "args": [
             {
@@ -6713,6 +6756,20 @@
               "increment": 1,
               "format_string": "%08d",
               "unk1": 0,
+              "unk2": 0,
+              "unk3": 0,
+              "unk4": 0
+            },
+            {
+              "name": "Number of Target Characters",
+              "type": 5,
+              "enum_name": null,
+              "default": 1,
+              "min": 0,
+              "max": 9999,
+              "increment": 1,
+              "format_string": "%d",
+              "unk1": 1,
               "unk2": 0,
               "unk3": 0,
               "unk4": 0
@@ -7182,7 +7239,8 @@
               "unk1": 0,
               "unk2": 1,
               "unk3": 4,
-              "unk4": 0
+              "unk4": 0,
+              "vararg": true
             }
           ]
         },
@@ -7330,7 +7388,8 @@
               "unk1": 0,
               "unk2": 1,
               "unk3": 4,
-              "unk4": 0
+              "unk4": 0,
+              "vararg": true
             }
           ]
         }
@@ -8027,7 +8086,7 @@
               "unk3": 0,
               "unk4": 0
             }
-          ]   
+          ]
         },
         {
           "name": "Play Cutscene to Player and Change Current Map Ceremony",
@@ -8103,7 +8162,7 @@
               "unk3": 0,
               "unk4": 0
             }
-          ]   
+          ]
         },
         {
           "name": "Play Ongoing Cutscene and Warp Player",
@@ -10367,7 +10426,7 @@
               "unk3": 0,
               "unk4": 0
             }
-          ]  
+          ]
         },
         {
           "name": "Set Current Map Ceremony",
@@ -10571,7 +10630,7 @@
               "unk3": 0,
               "unk4": 0
             }
-          ]   
+          ]
         },
         {
           "name": "Reset Omission Mode Counts to Default",
@@ -10868,7 +10927,7 @@
           "name": "Disable Loading Screen Tips",
           "index": 76,
           "args": [
-             {
+            {
               "name": "Should Be Disabled",
               "type": 0,
               "enum_name": "BOOL",
@@ -11052,7 +11111,7 @@
           "name": "Place NPC Summon Sign (Works For Non-Embered Players)",
           "index": 81,
           "args": [
-           {
+            {
               "name": "Sign Type",
               "type": 5,
               "enum_name": "Summon Sign Type",
@@ -13425,7 +13484,7 @@
               "unk3": 0,
               "unk4": 0
             }
-          ]  
+          ]
         },
         {
           "name": "Set Character Talk Range",
@@ -14956,7 +15015,7 @@
               "unk3": 0,
               "unk4": 0
             }
-          ]   
+          ]
         }
       ]
     },
@@ -16703,12 +16762,12 @@
     {
       "name": "Comparison Type",
       "values": {
-        "0": "==",
-        "1": "!=",
-        "2": ">",
-        "3": "<",
-        "4": ">=",
-        "5": "<="
+        "0": "Equal",
+        "1": "NotEqual",
+        "2": "Greater",
+        "3": "Less",
+        "4": "GreaterOrEqual",
+        "5": "LessOrEqual"
       }
     },
     {
@@ -16723,55 +16782,55 @@
     {
       "name": "Calculation Type",
       "values": {
-        "0": "+",
-        "1": "-",
-        "2": "\u00d7",
-        "3": "\u00f7",
-        "4": "mod",
-        "5": ":="
+        "0": "Add",
+        "1": "Sub",
+        "2": "Mult",
+        "3": "Div",
+        "4": "Mod",
+        "5": "Assign"
       }
     },
     {
       "name": "Condition Group",
       "values": {
-        "-15": "OR(15)",
-        "-14": "OR(14)",
-        "-13": "OR(13)",
-        "-12": "OR(12)",
-        "-11": "OR(11)",
-        "-10": "OR(10)",
-        "-9": "OR(09)",
-        "-8": "OR(08)",
-        "-7": "OR(07)",
-        "-6": "OR(06)",
-        "-5": "OR(05)",
-        "-4": "OR(04)",
-        "-3": "OR(03)",
-        "-2": "OR(02)",
-        "-1": "OR(01)",
+        "-15": "OR_15",
+        "-14": "OR_14",
+        "-13": "OR_13",
+        "-12": "OR_12",
+        "-11": "OR_11",
+        "-10": "OR_10",
+        "-9": "OR_09",
+        "-8": "OR_08",
+        "-7": "OR_07",
+        "-6": "OR_06",
+        "-5": "OR_05",
+        "-4": "OR_04",
+        "-3": "OR_03",
+        "-2": "OR_02",
+        "-1": "OR_01",
         "0": "MAIN",
-        "1": "AND(01)",
-        "2": "AND(02)",
-        "3": "AND(03)",
-        "4": "AND(04)",
-        "5": "AND(05)",
-        "6": "AND(06)",
-        "7": "AND(07)",
-        "8": "AND(08)",
-        "9": "AND(09)",
-        "10": "AND(10)",
-        "11": "AND(11)",
-        "12": "AND(12)",
-        "13": "AND(13)",
-        "14": "AND(14)",
-        "15": "AND(15)"
+        "1": "AND_01",
+        "2": "AND_02",
+        "3": "AND_03",
+        "4": "AND_04",
+        "5": "AND_05",
+        "6": "AND_06",
+        "7": "AND_07",
+        "8": "AND_08",
+        "9": "AND_09",
+        "10": "AND_10",
+        "11": "AND_11",
+        "12": "AND_12",
+        "13": "AND_13",
+        "14": "AND_14",
+        "15": "AND_15"
       }
     },
     {
       "name": "Count Direction",
       "values": {
-        "0": "Count Up",
-        "1": "Count Down"
+        "0": "Up",
+        "1": "Down"
       }
     },
     {
@@ -16790,13 +16849,13 @@
         "1": "TRUE"
       }
     },
-    {
-      "name": "\u25cb/\u00d7",
-      "values": {
-        "0": "\u00d7",
-        "1": "\u25cb"
-      }
-    },
+    //{
+    //  "name": "\u25cb/\u00d7",
+    //  "values": {
+    //    "0": "\u00d7",
+    //    "1": "\u25cb"
+    //  }
+    //},
     {
       "name": "Destruction State",
       "values": {
@@ -16860,7 +16919,7 @@
         "19": "Host",
         "20": "Co-op",
         "21": "Hostile",
-        "22": "Wandering Phantom",
+        "22": "Wandering Phantom 1",
         "23": "Enemy 1",
         "24": "Enemy 2",
         "25": "Strong Enemy 1",
@@ -16925,9 +16984,9 @@
     {
       "name": "Number of Options",
       "values": {
-        "1": "1 Button",
-        "2": "2 Buttons",
-        "6": "No Button"
+        "1": "One Button",
+        "2": "Two Buttons",
+        "6": "No Buttons"
       }
     },
     {
@@ -16942,17 +17001,17 @@
     {
       "name": "Sound Type",
       "values": {
-        "0": "a: Environmental Sound",
-        "1": "c: Character Motion",
-        "2": "f: Menu SE",
-        "3": "o: Object",
-        "4": "p: Cutscene SE",
-        "5": "s: SFX",
-        "6": "m: BGM",
-        "7": "v: Voice",
-        "8": "x: Depends On Floor Material",
-        "9": "b: Depends On Armor Material",
-        "10": "g: Ghost"
+        "0": "a_Environmental Sound",
+        "1": "c_Character Motion",
+        "2": "f_Menu SE",
+        "3": "o_Object",
+        "4": "p_Cutscene SE",
+        "5": "s_SFX",
+        "6": "m_BGM",
+        "7": "v_Voice",
+        "8": "x_Depends On Floor Material",
+        "9": "b_Depends On Armor Material",
+        "10": "g_Ghost"
       }
     },
     {
@@ -17285,11 +17344,11 @@
       "name": "Hollow Arena Match Type",
       "values": {
         "0": "Duel",
-        "1": "2 Player Brawl",
-        "2": "4 Player Brawl",
-        "3": "6 Player Brawl",
-        "4": "2 Versus 2",
-        "5": "3 Versus 3"   
+        "1": "Two Player Brawl",
+        "2": "Four Player Brawl",
+        "3": "Six Player Brawl",
+        "4": "Two Versus Three",
+        "5": "Three Versus Three"
       }
     },
     {
@@ -17297,13 +17356,6 @@
       "values": {
         "0": "Win",
         "1": "Draw"
-      }
-    },
-    {
-      "name": "Gender",
-      "values": {
-        "0": "Male",
-        "1": "Female"
       }
     }
   ]

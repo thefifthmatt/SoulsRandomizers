@@ -2939,7 +2939,7 @@ EnemyEvents:
 - ID: 271
   Comment: Hint to come back later if you die to Hirata enemies enough times
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000330 (c1050_0000 - Shinobi Hunter)
   DebugCommands:
@@ -3019,7 +3019,13 @@ EnemyEvents:
 - ID: 2000581
   Comment: Miniboss fog gates which block progress when entering a region
   Template:
-  - Type: loc
+  - Type: locarg
+    Dupe:
+      Entity: X12 X24
+  - Type: common
+    Dupe:
+      Entity: X12 X24
+      Condition: 1
   DebugInfo:
   - 1000300 (c1070_0000 - Shura Samurai)
   - region 1002300 (event_中ボス白扉領域_修羅侍)
@@ -3071,8 +3077,10 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 2005391
   Comment: Prevent walking off a col in an area. Mist Raven Lone Shadow, and player while Inosuke's mother is alive. However, disabling gravity is a separate issue for lone shadow
+  # Dupe: 1000350
   Template:
   - Type: remove
+    # Entity: 1000350
   DebugInfo:
   - 1000350 (c1470_0000 - Lone Shadow)
   - region 1002350 (event_孤影衆_落下防止無効)
@@ -3091,8 +3099,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11005210
   Comment: Forces a bandit on the bridge to target the player
+  Dupe: 1000214
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000214 (c1550_0014 - Bandit)
   - region 1002200 (event_野盗_逃げ撃ち_逃げ先エリア)
@@ -3106,8 +3115,9 @@ EnemyEvents:
   - + Force Character Target (Targeter Entity ID = 1000214*, Targeted Entity ID = 10000)
 - ID: 11005301
   Comment: Starting event for Juzou 2, activates their AIs together.
+  Dupe: 1000301
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000354 (c1470_0004 - Lone Shadow)
   - 1000301 (c1070_0001 - Shura Samurai)
@@ -3132,8 +3142,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11005333
   Comment: Initiates Shinobi Hunter fight
+  Dupe: 1000333
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000333 (c1050_0003 - Shinobi Hunter)
   - region 1002333 (event_不意打ち槍僧兵)
@@ -3165,7 +3176,7 @@ EnemyEvents:
 - ID: 11005335
   Comment: Shows Mikiri Counter tutorial tip
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000330 (c1050_0000 - Shinobi Hunter)
   DebugCommands:
@@ -3184,8 +3195,9 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 6158, Flag State = 1)
 - ID: 11005350
   Comment: Sets network update rate of Mist Raven Lone Shadow based on distance and speffect. Unknown.
+  Dupe: 1000350
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000350 (c1470_0000 - Lone Shadow)
   DebugCommands:
@@ -3310,8 +3322,9 @@ EnemyEvents:
   - + Force Character Target (Targeter Entity ID = 1000412*, Targeted Entity ID = 10000)
 - ID: 11005420
   Comment: Changes patrol behavior for hound Lone Shadow.
+  Dupe: 1000353
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1002960 (炎上玄関_孤影衆_戦闘開始領域)
   - 1000353 (c1470_0003 - Lone Shadow)
@@ -3323,8 +3336,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11005470
   Comment: Actually two different events, one in Hirata which makes bandits hostile, and another which makes invasion 2 enemies fight each other.
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000470 (c1001_0010 - Invisible - not random)
   - 1000233 (c1550_0033 - Bandit)
@@ -3367,7 +3381,7 @@ EnemyEvents:
 - ID: 11005480
   Comment: More events with destroying objects in bamboo thicket slope and targeting the player
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - group 1005470 [1000227 (c1550_0027 - Bandit), 1000228 (c1550_0028 - Bandit), 1000232 (c1550_0032 - Bandit), 1000234 (c1550_0034 - Bandit), 1000245 (c1550_0045 - Bandit), 1000248 (c1550_0048 - Bandit)]
   - 1000470 (c1001_0010 - Invisible - not random)
@@ -3411,7 +3425,7 @@ EnemyEvents:
 - ID: 11005710
   Comment: Initialize player's ally in Juzou 1
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - group 1005300 [1000300 (c1070_0000 - Shura Samurai), 1000203 (c1550_0003 - Bandit), 1000208 (c1550_0008 - Bandit), 1000209 (c1550_0009 - Bandit), 1000210 (c1550_0010 - Bandit), 1000259 (c1550_0059 - Bandit), 1000260 (c1550_0060 - Bandit)]
   - 1000300 (c1070_0000 - Shura Samurai)
@@ -3494,6 +3508,10 @@ EnemyEvents:
     EndCond: -3
     EndCond2: -2
     Remove: IF Condition Group (2,1,-1)
+  - Type: loc
+    Remove: IF Condition Group (2,1,-1)
+    Dupe:
+      Condition: -3; -2
   DebugInfo:
   - 1000800 (c5090_0000 - Lady Butterfly)
   - 1000810 (c5090_0001 - Lady Butterfly)
@@ -3601,6 +3619,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11005810
   Comment: Initializing lady butterfly fight
+  Dupe: rewrite
   Template:
   - Type: start
     Entity: 1000800
@@ -3668,13 +3687,14 @@ EnemyEvents:
     EndCond: -1
     EndCond2: IF Character Dead/Alive
   - Type: loc
+    Entity: 1000800
     Add:
     - Cmd: WAIT Fixed Time (Seconds) (4)
       Before: Change Character Enable State (1000800,0)
-  #  - Cmd: Force Character Death (1000800,0)
-  #    Before: Change Character Enable State (1000800,0)
-  #  - Cmd: WAIT Fixed Time (Frames) (3)
-  #    Before: Change Character Enable State (1000800,0)
+  - Type: chr
+    Entity: 1000810
+    Dupe:
+      HealthBar: 1000810
   DebugInfo:
   - 1000800 (c5090_0000 - Lady Butterfly)
   - 1000810 (c5090_0001 - Lady Butterfly)
@@ -3715,7 +3735,7 @@ EnemyEvents:
     Entity: 1000810
     DefeatFlag: 9302
     StartFlag: 11005801
-    # ProgressFlag: 11005840 11005841 11005842 11005843 11005844 11005845 11005846 11005847
+    ProgressFlag: 11005840 11005841 11005842 11005843 11005844 11005845 11005846 11005847
     Regions:
     - arg arenapoint 1002860 1002861 1002862 1002863 1002864 1002865 1002866 1002867
     - arg arenagen 1002890 1002891 1002892 1002893 1002894 1002895 1002896 1002897
@@ -3799,8 +3819,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11005851
   Comment: Sets event flags during butterfly phase 2. These enable map sfx, and happen based only on boss health, so it can be loc? TODO check this out vvvv
+  Dupe: 1000810
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000810 (c5090_0001 - Lady Butterfly)
   DebugCommands:
@@ -3913,7 +3934,7 @@ EnemyEvents:
     Entity: 1000810
     DefeatFlag: 9302
     StartFlag: 11005801
-    # ProgressFlag: 11005840 11005841 11005842 11005843 11005844 11005845 11005846 11005847
+    ProgressFlag: 11005840 11005841 11005842 11005843 11005844 11005845 11005846 11005847
   DebugInfo:
   - 1000810 (c5090_0001 - Lady Butterfly)
   - 1000820 (c1510_0000 - Mibu Villager Illusion)
@@ -4018,7 +4039,7 @@ EnemyEvents:
   - Type: chr
     Entity: 1000810
     DefeatFlag: 9302
-    # ProgressFlag: 11005840 11005841 11005842 11005843 11005844 11005845 11005846 11005847
+    ProgressFlag: 11005840 11005841 11005842 11005843 11005844 11005845 11005846 11005847
   DebugInfo:
   - 1000810 (c5090_0001 - Lady Butterfly)
   DebugCommands:
@@ -4034,11 +4055,14 @@ EnemyEvents:
     Entity: 1000900
     EndCond: -1
     EndCond2: -2
-  - Type: multichr
+  - Type: multichrmove
     Entity: 1000900
     DefeatFlag: 9317
     AppearFlag: 8304
     Remove: 1000900; 1000954; Set Event Flag; Set Area CameraSetParam SubID; (De)activate Object
+  - Type: loc
+    Dupe:
+      Condition: -1; -2
   DebugInfo:
   - 1000900 (c5060_0001 - Owl)
   - 1000901 (c5070_0000 - An Actual Owl)
@@ -4186,8 +4210,9 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 11005902, Flag State = 1)
 - ID: 11005913
   Comment: Creates fog gate and enables owl animation once the player comes close
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000900 (c5060_0001 - Owl)
   - region 1002810 (領域_ボス戦開始)
@@ -4255,19 +4280,10 @@ EnemyEvents:
   - + Change Character Enable State (Entity ID = 1000901*, Disabled/Enabled = 0)
   - + Set Character Animation State (Entity ID = 1000901*, Disabled/Enabled = 0)
 - ID: 11005923
-  Comment: Seems to reset position of actual owl. Needed for when it goes off cliffs
+  Comment: Seems to reset position of actual owl. This can't be used to stop it going off cliffs, though, so check death elsewhere
   Template:
-  - Type: remove  # multichr
+  - Type: remove
     Entity: 1000900
-    DefeatFlag: 9317
-    AppearFlag: 8304
-    #Regions:
-    #- event arenaowl 1002800
-    #Remove: IF In/Outside Area
-    #Add:
-    #- Cmd: IF Entity In/Outside Radius Of Entity (0,0,10000,1000901,100,1)
-    #  Before: Set SpEffect (1000901,3506030)
-    #Replace: Warp Character and Copy Floor (1000901,2,1000900->10000,210->-1,1000900->10000)
   DebugInfo:
   - 1000901 (c5070_0000 - An Actual Owl)
   - region 1002800 (BGM_ボス部屋)
@@ -4422,7 +4438,7 @@ EnemyEvents:
 - ID: 11100634
   Comment: Shows tip for deflecting bullets
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1100204 (c1010_0004 - Ashina Soldier)
   DebugCommands:
@@ -4442,8 +4458,10 @@ EnemyEvents:
   - Remove Hint Box (Hint Box ID = 1106340)
 - ID: 11105310
   Comment: Activation for Chained Ogre and its post, dependent on some event flags. Keep it as-is - mainly speffects won't apply.
+  Dupe: 1100310
   Template:
   - Type: loc
+    Entity: 1100310
     Remove: Force Animation Playback
   DebugInfo:
   - 1100310 (c5020_0000 - Chained Ogre)
@@ -4472,8 +4490,9 @@ EnemyEvents:
   - (De)activate Object (Target Object Entity ID = 1101310, State = 0)
 - ID: 11105315
   Comment: Clear speffects in spectator soldiers based on ogre being dead, or on either being backread. Unclear what this does
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1100310 (c5020_0000 - Chained Ogre)
   - 1100217 (c1010_0017 - Ashina Soldier)
@@ -4511,8 +4530,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11105425
   Comment: One-time AI activation for red guard before DoH warp, apparently disabled after that
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1100425 (c1700_0025 - Red Guard)
   - region 1102426 (event_徳川炎上_開始)
@@ -4537,7 +4557,12 @@ EnemyEvents:
 - ID: 11105440
   Comment: Forcing character targets if object destroyed
   Template:
+  - Type: locarg
+    Dupe:
+      Entity: X4 X16
   - Type: loc
+    Dupe:
+      Entity: X4 X16
   DebugInfo:
   - 1100470 (c1001_0010 - Invisible - not random)
   - 1100417 (c1700_0017 - Red Guard)
@@ -4562,8 +4587,9 @@ EnemyEvents:
   - + Force Character Target (Targeter Entity ID = X4_4*, Targeted Entity ID = 10000)
 - ID: 11105460
   Comment: Make the soldiers on the bridge fight each other. This won't do anything if their team types are not set, though
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1100250 (c1010_0050 - Ashina Soldier)
   - 1100431 (c1700_0031 - Red Guard)
@@ -4598,7 +4624,7 @@ EnemyEvents:
 - ID: 11105792
   Comment: Sets a flag if enemy dead, evidently? The full version is in castle map
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110640 (c1360_0000 - Assassin (Senpou))
   DebugCommands:
@@ -4610,6 +4636,9 @@ EnemyEvents:
     Entity: 1100800
     EndCond: -1
     EndCond2: IF Character Dead/Alive
+  - Type: loc
+    Dupe:
+      Condition: -1
   DebugInfo:
   - 1100800 (c5080_0000 - Gyoubu Oniwa)
   DebugCommands:
@@ -4640,6 +4669,9 @@ EnemyEvents:
     Remove: IF Character Has Event Message; Request Character AI Command
     Camera: 500
     Name: entity
+  - Type: loc
+    Remove: IF Character Has Event Message
+    Dupe: {}
   DebugInfo:
   - region 1102810 (event_領域_ボス戦開始_親)
   - 1100800 (c5080_0000 - Gyoubu Oniwa)
@@ -4812,6 +4844,9 @@ EnemyEvents:
     Entity: 1100900
     EndCond: -1
     EndCond2: -2
+  - Type: loc
+    Dupe:
+      Condition: -1; -2
   DebugInfo:
   - 1100955 (c1001_0005 - Invisible - not random)
   - 1100900 (c7020_0000 - Demon of Hatred)
@@ -4840,6 +4875,7 @@ EnemyEvents:
   - Set Area CameraSetParam SubID (CameraSetParam SubID = -1)
 - ID: 11105910
   Comment: Start Demon of Hatred. Need to change lockon points
+  Dupe: rewrite
   Template:
   - Type: start
     Entity: 1100900
@@ -4968,6 +5004,7 @@ EnemyEvents:
   - + EzState Instruction Request (Entity ID = 1100900*, Command = 21000, Slot = 0)
 - ID: 11105923
   Comment: Another way to initiate (or not) DoH fight
+  Dupe: rewrite
   Template:
   - Type: loc
     Entity: 1100900
@@ -5001,6 +5038,7 @@ EnemyEvents:
   - + Set SpEffect (Entity ID = 1100900*, SpEffect ID = 5022)
 - ID: 11105924
   Comment: Yet another fight initializer, it seems.
+  Dupe: rewrite
   Template:
   - Type: loc
     Entity: 1100900
@@ -5096,7 +5134,7 @@ EnemyEvents:
 - ID: 11107644
   Comment: Forcing a soldier's death near Dilapidated Temple idol when the player gets to the steps. unused?
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1100237 (c1010_0037 - Ashina Soldier)
   - region 1102637 (event_チュートリアル_白形代_表示)
@@ -5114,7 +5152,7 @@ EnemyEvents:
 - ID: 11107647
   Comment: Tutorials for lockon and plunging attack
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1100200 (c1010_0000 - Ashina Soldier)
   - region 1102647 (event_チュートリアル_落下忍殺_表示_親)
@@ -5181,7 +5219,7 @@ EnemyEvents:
 - ID: 11107648
   Comment: Tutorial for perilous attacks. Also enables Hanbei state
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1100300 (c1020_0000 - Samurai General)
   DebugCommands:
@@ -5202,7 +5240,7 @@ EnemyEvents:
 - ID: 11107649
   Comment: Tutorial for grab attacks
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1100310 (c5020_0000 - Chained Ogre)
   DebugCommands:
@@ -5223,7 +5261,7 @@ EnemyEvents:
 - ID: 11107670
   Comment: Tutorial for thrust attack
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1100208 (c1010_0008 - Ashina Soldier)
   - 1100217 (c1010_0017 - Ashina Soldier)
@@ -5253,8 +5291,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11110100
   Comment: Shura ending
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110715 (c7200_0003 - Kuro - not random)
   - 1110850 (c5060_0000 - Owl)
@@ -5358,8 +5397,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11114702
   Comment: Sets flag if assassin dead, used by Isshin. Redundant with common event
+  Dupe: 1110640
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110640 (c1360_0000 - Assassin (Senpou))
   DebugCommands:
@@ -5368,7 +5408,7 @@ EnemyEvents:
 - ID: 11115181
   Comment: Seems to be activating enemies based on player location
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - group 1115170 [1110295 (c1010_0095 - Ashina Soldier), 1110630 (c1110_0000 - Old Maid), 1110631 (c1110_0001 - Old Maid), 1110500 (c1400_0000 - Fencer), 1110501 (c1400_0001 - Fencer), 1110502 (c1400_0002 - Fencer), 1110503 (c1400_0003 - Fencer), 1110504 (c1400_0004 - Fencer), 1110508 (c1400_0008 - Fencer), 1110509 (c1400_0009 - Fencer), 1110511 (c1400_0011 - Fencer), 1110513 (c1400_0013 - Fencer), 1110514 (c1400_0014 - Fencer), 1110515 (c1400_0015 - Fencer), 1110516 (c1400_0016 - Fencer), 1110534 (c1450_0004 - Nightjar Ninja), 1110563 (c1450_0022 - Nightjar Ninja), 1110564 (c1450_0023 - Nightjar Ninja), 1110565 (c1450_0024 - Nightjar Ninja), 1110304 (c1470_0004 - Lone Shadow), 1110305 (c1470_0005 - Lone Shadow), 1110308 (c1470_0008 - Lone Shadow), 1110309 (c1470_0009 - Lone Shadow), 1110310 (c1470_0010 - Lone Shadow), 1110318 (c1470_0018 - Lone Shadow), 1110319 (c1470_0019 - Lone Shadow)]
   - region 1112170 (Event_投げ中落下防止無効化領域_屋根裏部屋)
@@ -5380,8 +5420,10 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11115200
   Comment: To Ashina Castle after Blazing Bull
+  Dupe: rewrite
   Template:
   - Type: loc
+    Entity: 1110210
     Remove: Force Animation Playback (1110210,20000,0,0,0,0,1)
     Invincibility: 1110210
   DebugInfo:
@@ -5464,8 +5506,9 @@ EnemyEvents:
   - Set Object Interaction (Object Entity ID = 1111400, Interaction = 10, Desired State = 1)
 - ID: 11115201
   Comment: Blazing Bull activation
+  Dupe: 1110440
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1112440 (event_火牛起動領域)
   - 1110440 (c1370_0000 - Blazing Bull)
@@ -5477,6 +5520,7 @@ EnemyEvents:
   - + Force Character Target (Targeter Entity ID = 1110440*, Targeted Entity ID = 10000)
 - ID: 11115202
   Comment: Also Blazing Bull activation
+  Dupe: 1110440
   Template:
   - Type: loc
     Invincibility: 1110440
@@ -5513,9 +5557,9 @@ EnemyEvents:
   - + Set SpEffect (Entity ID = 1110440*, SpEffect ID = 5304)
   - END Unconditionally (Execution End Type = 0)
 - ID: 11115205
-  Comment: Object logic based on blazing bull enabled
+  Comment: Object logic based on blazing bull enable (door, maybe fog gate?)
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110440 (c1370_0000 - Blazing Bull)
   DebugCommands:
@@ -5631,7 +5675,7 @@ EnemyEvents:
 - ID: 11115220
   Comment: Mass enemy speffects based on player location, maybe Jinsuke fight
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1112621 (BGM_屋内複合01_天守_吹き抜け4階)
   - group 1115210 [1110330 (c1150_0003 - Hound), 1110331 (c1150_0004 - Hound), 1110530 (c1450_0000 - Nightjar Ninja), 1110532 (c1450_0002 - Nightjar Ninja), 1110533 (c1450_0003 - Nightjar Ninja), 1110536 (c1450_0006 - Nightjar Ninja - not random), 1110547 (c1450_0016 - Nightjar Ninja), 1110548 (c1450_0017 - Nightjar Ninja), 1110549 (c1450_0018 - Nightjar Ninja - not random), 1110566 (c1450_0025 - Nightjar Ninja), 1110567 (c1450_0026 - Nightjar Ninja), 1110537 (c1460_0002 - Kite Nightjar Ninja - not random), 1110550 (c1460_0003 - Kite Nightjar Ninja - not random), 1110302 (c1470_0002 - Lone Shadow), 1110303 (c1470_0003 - Lone Shadow), 1110317 (c1470_0017 - Lone Shadow), 1110322 (c1470_0022 - Lone Shadow), 1110323 (c1470_0023 - Lone Shadow)]
@@ -5655,6 +5699,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11115225
   Comment: Some kind of mass coordination among enemies
+  Dupe: copyarg
   Template:
   - Type: loc
     Remove: Request Character AI Command
@@ -5771,8 +5816,9 @@ EnemyEvents:
   - Request Character AI Command (Entity ID = X36_4, Command ID = -1, Slot Number = 0)
 - ID: 11115227
   Comment: Logic for Jinsuke fog gate
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110504 (c1400_0004 - Fencer)
   - region 1112508 (Event_ロジック起動領域_剣客B_04)
@@ -5800,6 +5846,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11115228
   Comment: Logic for Jinsuke other fog gate
+  Dupe: rewrite
   Template:
   - Type: loc
   DebugInfo:
@@ -5834,8 +5881,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11115229
   Comment: Jinsuke initialization, only allow locking on in arena
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110504 (c1400_0004 - Fencer)
   - region 1112503 (Event_中ボスロジックON領域_孤影衆_複合)
@@ -5851,6 +5899,7 @@ EnemyEvents:
   - + Set Lock On Point (Entity ID = 1110504*, Lock On Dummypoly ID = 220, Desired State = 1)
 - ID: 11115236
   Comment: The soldier who runs away in invasion 1. It just makes them do an animation so not reproducible exactly.
+  Dupe: 1110236
   Template:
   - Type: remove
     Entity: 1110236
@@ -5871,6 +5920,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11115237
   Comment: Similar to previous, but near where chained ogre is
+  Dupe: 1110296
   Template:
   - Type: remove
     Entity: 1110296
@@ -5891,8 +5941,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11115239
   Comment: Lone Shadow AIs activate together
+  Dupe: 1110304
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110304 (c1470_0004 - Lone Shadow)
   - 1110305 (c1470_0005 - Lone Shadow)
@@ -5910,8 +5961,9 @@ EnemyEvents:
   - + Force Character Target (Targeter Entity ID = 1110304*, Targeted Entity ID = 10000)
 - ID: 11115240
   Comment: Lone Shadow fog walls
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110305 (c1470_0005 - Lone Shadow)
   - 1110304 (c1470_0004 - Lone Shadow)
@@ -5944,8 +5996,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11115243
   Comment: Activate Lone Shadows when entering area, also allowed areas for lockon
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110305 (c1470_0005 - Lone Shadow)
   - 1110304 (c1470_0004 - Lone Shadow)
@@ -5969,7 +6022,7 @@ EnemyEvents:
 - ID: 11115244
   Comment: Something to do with both stronger fencer boss and vilehand
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110305 (c1470_0005 - Lone Shadow)
   - 1110304 (c1470_0004 - Lone Shadow)
@@ -6023,6 +6076,9 @@ EnemyEvents:
   Comment: Activates some col for lone shadow in serpent shrine
   Template:
   - Type: loc
+    Dupe:
+      Entity: 1110316
+      Condition: 1
   DebugInfo:
   - 1110316 (c1470_0016 - Lone Shadow)
   DebugCommands:
@@ -6044,6 +6100,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11115248
   Comment: Some interaction between hound and lone shadow on the roof. May get lost
+  Dupe: 1110317
   Template:
   - Type: loc
     Remove: Request Character AI Command
@@ -6062,8 +6119,9 @@ EnemyEvents:
   - + Request Character AI Command (Entity ID = 1110317*, Command ID = -1, Slot Number = 0)
 - ID: 11115251
   Comment: Set up individual targets in war in front of castle
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1112218 (Event_本丸大階段_徳川侍敵対開始領域)
   - 1110376 (c1700_0026 - Red Guard)
@@ -6089,8 +6147,9 @@ EnemyEvents:
   - + Set SpEffect (Entity ID = 1110355*, SpEffect ID = 3125091)
 - ID: 11115252
   Comment: If any Red Guards are dead, all target player
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - group 1115355 [1110355 (c1700_0001 - Red Guard), 1110361 (c1700_0007 - Red Guard), 1110371 (c1700_0021 - Red Guard), 1110376 (c1700_0026 - Red Guard), 1110377 (c1700_0027 - Red Guard)]
   - 1110376 (c1700_0026 - Red Guard)
@@ -6109,8 +6168,9 @@ EnemyEvents:
   - + Force Character Target (Targeter Entity ID = 1110355*, Targeted Entity ID = 10000)
 - ID: 11115289
   Comment: Patrol stuff
+  Dupe: 1110509
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110509 (c1400_0009 - Fencer)
   - region 1112281 (Event_剣客_謁見の間で特殊待機を解除する)
@@ -6129,8 +6189,9 @@ EnemyEvents:
   - + Change Character Patrol Behavior (Character Entity ID = 1110509*, Patrol Information Entity ID = 1113237)
 - ID: 11115290
   Comment: More Patrol stuff
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1112290 (Event_巡回起動領域_剣客_謁見の間A2)
   - 1110501 (c1400_0001 - Fencer)
@@ -6145,8 +6206,9 @@ EnemyEvents:
   - + Change Character Patrol Behavior (Character Entity ID = 1110631*, Patrol Information Entity ID = 1113631)
 - ID: 11115291
   Comment: Setting network update rates
+  Dupe: 1110513
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110513 (c1400_0013 - Fencer)
   - 1110514 (c1400_0014 - Fencer)
@@ -6174,8 +6236,10 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11115325
   Comment: Fighting between characters
+  Dupe: copyarg
   Template:
   - Type: loc
+    Entities: 1110312 1110240 1110413 1110300
     Remove: Request Character AI Command
   DebugInfo:
   - 1110312 (c1470_0012 - Lone Shadow)
@@ -6213,6 +6277,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11115335
   Comment: Hound activation based on any hound spotting player
+  Dupe: 1110335
   Template:
   - Type: loc
     Remove: Request Character AI Command
@@ -6271,8 +6336,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11115340
   Comment: Reset position of soldier (gun?) when unloaded
+  Dupe: 1110284
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110284 (c1010_0085 - Ashina Soldier)
   DebugCommands:
@@ -6314,6 +6380,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11115371
   Comment: Forces animnations on a red guard in the middle of main stairs
+  Dupe: copyarg
   Template:
   - Type: remove
     Entity: 1110371
@@ -6348,8 +6415,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11115380
   Comment: Sets speffects on red guard in the middle of the stairs
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110371 (c1700_0021 - Red Guard)
   - region 1112356 (Event_本丸大階段_徳川侍火炎放射起動領域)
@@ -6371,8 +6439,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11115381
   Comment: Some war setup on the stairs
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110507 (c1400_0007 - Fencer)
   - 1110376 (c1700_0026 - Red Guard)
@@ -6386,7 +6455,7 @@ EnemyEvents:
 - ID: 11115406
   Comment: Lightning reversal tip
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110801 (c7110_0001 - Genichiro, Way of Tomoe)
   DebugCommands:
@@ -6420,8 +6489,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11115446
   Comment: Scared Taro troops in ashina castle
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110299 (c1010_0099 - Ashina Soldier)
   - 1110434 (c1180_0004 - Taro Troop)
@@ -6462,8 +6532,9 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 11115448, Flag State = 1)
 - ID: 11115451
   Comment: Activation for monkeys
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110451 (c1250_0001 - Valley Monkey)
   - 1110450 (c1250_0000 - Valley Monkey)
@@ -6479,8 +6550,9 @@ EnemyEvents:
   - + Clear SpEffect (Entity ID = 1110451*, SpEffect ID = 220600)
 - ID: 11115502
   Comment: Probably places where the Chained Ogre will start to yell. Probably won't do anything here, is location specific
+  Dupe: 1110610
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110610 (c5020_0000 - Chained Ogre)
   - region 1112650 (Event_白人奴隷_特殊待機制御領域_複合)
@@ -6509,10 +6581,12 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11115503
   Comment: Some logic for activating Chained Ogre. Targets player unless attacked by Red Guard
+  Dupe: 1110610
   Template:
   - Type: loc
+    Entity: 1110610
     Remove: Force Animation Playback
-  - Type: chr
+  - Type: chrmove
     Entity: 1110610
     Remove: 1115260
     DefeatFlag: 11110620
@@ -6551,8 +6625,10 @@ EnemyEvents:
   - + Force Character Target (Targeter Entity ID = 1110610*, Targeted Entity ID = 10000)
 - ID: 11115592
   Comment: Some logic for activating geckos. These are generally pretty broken, so we'll see
+  Dupe: copyarg
   Template:
   - Type: loc
+    Entities: 1110592 1110593 1110594 1110595 1110596
     Remove: Force Animation Playback
   DebugInfo:
   - 1110592 (c1100_0012 - Gecko)
@@ -6603,9 +6679,9 @@ EnemyEvents:
   - WAIT Fixed Time (Frames) (Number Of Frames = 1)
   - + Force Character Target (Targeter Entity ID = X0_4*, Targeted Entity ID = 10000)
 - ID: 11115720
-  Comment: Starting fights?
+  Comment: Owl Shura cutscene
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110850 (c5060_0000 - Owl)
   - 1110715 (c7200_0003 - Kuro - not random)
@@ -6672,6 +6748,9 @@ EnemyEvents:
     Entity: 1110801
     EndCond: -1
     EndCond2: 2
+  - Type: loc
+    Dupe:
+      Condition: -1
   DebugInfo:
   - 1110801 (c7110_0001 - Genichiro, Way of Tomoe)
   - 1110900 (c7400_0001 - Emma)
@@ -6817,6 +6896,7 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 9403, Flag State = 1)
 - ID: 11115810
   Comment: Start Genichiro. Has an animation playback but it's just pre-cutscene. The no-op loc is to because immortality for phase 2 is set here.
+  Dupe: rewrite
   Template:
   - Type: start
     Entity: 1110800
@@ -6954,6 +7034,15 @@ EnemyEvents:
     Entity: 1110800
     EndCond: IF Number of Character Health Bars
     Name: entity
+  - Type: loc
+    Remove: Display Boss Health Bar (0,1110800,0,907100)
+    Dupe:
+      Entity: -1
+  - Type: chr
+    Entity: 1110800
+    Remove: Display Boss Health Bar (0,1110800,0,907100)
+    Dupe:
+      HealthBar: 1110800
   DebugInfo:
   - 1110800 (c7100_0000 - Genichiro Ashina)
   - 1110801 (c7110_0001 - Genichiro, Way of Tomoe)
@@ -7051,6 +7140,9 @@ EnemyEvents:
     EndCond2: -2
     Add:
     - Cmd: Force Character Death (1110850,0)
+  - Type: loc
+    Dupe:
+      Condition: -1; -2
   DebugInfo:
   - 1110850 (c5060_0000 - Owl)
   DebugCommands:
@@ -7084,6 +7176,12 @@ EnemyEvents:
     Camera: 520
     Name: entity
     Remove: Change Character DispMask
+  - Type: loc
+    Dupe:
+      Entity: X0 X8
+  - Type: locarg
+    Dupe:
+      Entity: X0 X8
   DebugInfo:
   - region 1112851 (Event_カットシーン後出現位置_忍軍の長出現時の長出現位置)
   - 1110850 (c5060_0000 - Owl)
@@ -7193,6 +7291,10 @@ EnemyEvents:
     Remove: Display Boss Health Bar  # TODO: Make chr boss renamings work
     RemoveDupe: 11115853  # Display Boss Health Bar
     Name: entity
+  - Type: loc
+    Remove: Display Boss Health Bar
+    Dupe:
+      Entity: -1
   DebugInfo:
   - 1110850 (c5060_0000 - Owl)
   DebugCommands:
@@ -7280,12 +7382,28 @@ EnemyEvents:
   - WAIT Fixed Time (Seconds) (Number Of Seconds = 6)
   - END Unconditionally (Execution End Type = 1)
 - ID: 11115900
-  Comment: End of Emma phase
+  Comment: End Emma
+  # Dupe: 1110900
   Template:
   - Type: endphase
     Entity: 1110900
     EndCond: -1
     EndCond2: 1
+  - Type: loc
+    Remove: Handle Boss Defeat
+    Add:
+    - Cmd: IF Event Flag (0,1,0,11115901)
+      Before: start
+    Dupe:
+      Entity: -1
+  - Type: chr
+    Entity: 1110900
+    ProgressFlag: 11115900
+    Remove: Handle Boss Defeat
+    Add:
+    - Cmd: IF Event Flag (0,1,0,11115901)
+      Before: start
+    Dupe: {}
   DebugInfo:
   - 1110900 (c7400_0001 - Emma)
   DebugCommands:
@@ -7305,7 +7423,8 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 11115722, Flag State = 0)
   - Set Event Flag (Event Flag ID = 11115900, Flag State = 1)
 - ID: 11115910
-  Comment: Start of Emma fight
+  Comment: Start Emma
+  Dupe: rewrite
   Template:
   - Type: start
     Entity: 1110900
@@ -7379,6 +7498,24 @@ EnemyEvents:
     Entity: 1110920
     EndCond: -1
     EndCond2: IF Character Has Event Message
+  - Type: loc
+    Remove: Set Event Flag (11110920,1)
+    Add:
+    - Cmd: Set Event Flag (11110920,1)
+    - Cmd: IF Event Flag (0,1,0,11115902)
+      Before: WAIT Fixed Time (Seconds)
+    Dupe:
+      Entity: -1
+  - Type: chr
+    Entity: 1110920
+    NewEvent:
+    - IF Character Has SpEffect (-1,1110920,201000,1,0,1)
+    - IF Character Dead/Alive (-1,1110920,1,0,1)
+    - IF Condition Group (0,1,-1)
+    - IF Character Has Event Message (0,1110920,50,1,0,1)
+    - Force Character Death (1110920,1)
+    - Set Event Flag (11115902,1)
+    Dupe: {}
   DebugInfo:
   - 1110920 (c5430_0000 - Isshin)
   DebugCommands:
@@ -7409,6 +7546,11 @@ EnemyEvents:
     Entity: 1110920
     Camera: 510
     Name: entity
+  - Type: chr
+    Entity: 1110920
+    ProgressFlag: 11115900
+    Dupe:
+      HealthBar: 1110920
   DebugInfo:
   - 1110920 (c5430_0000 - Isshin)
   - 1110921 (c1000_0006 - Invisible - not random)
@@ -7471,8 +7613,9 @@ EnemyEvents:
   - + Display Boss Health Bar (Disabled/Enabled = 1, Entity ID = 1110920*, Slot Number = 0, Name ID = 905401)
 - ID: 11115932
   Comment: Sets event flag at one health bar, phase transition music
+  Dupe: 1110920
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110920 (c5430_0000 - Isshin)
   DebugCommands:
@@ -7605,7 +7748,7 @@ EnemyEvents:
 - ID: 11117405
   Comment: Vitality and posture tip
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110410 (c1020_0000 - Samurai General)
   DebugCommands:
@@ -7626,7 +7769,7 @@ EnemyEvents:
 - ID: 11120110
   Comment: End of game
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120704 (c7200_0005 - Kuro - not random)
   - region 1122800 (event_ボス関連_PC_PC初期位置)
@@ -7947,8 +8090,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11120201
   Comment: Talking with Kuro
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1122371 (event_NPCイベント_皇子と出会うイベント領域_複合)
   - 1120201 (c1011_0001 - Tutorial Ashina Soldier)
@@ -8038,8 +8182,10 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 9200, Flag State = 0)
 - ID: 11120256
   Comment: Something to do with first enemy
+  Dupe: rewrite
   Template:
   - Type: loc
+    Entity: 1120202
     Remove: Force Animation Playback
   DebugInfo:
   - 1120202 (c1011_0002 - Tutorial Ashina Soldier)
@@ -8057,7 +8203,7 @@ EnemyEvents:
 - ID: 11125202
   Comment: Other things related to talking to Kuro. This event is different in 1.06, but not modified in any case.
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120701 (c7200_0001 - Kuro - not random)
   - group 1125205 [1120212 (c1010_0012 - Ashina Soldier), 1120213 (c1010_0014 - Ashina Soldier), 1120211 (c1010_0015 - Ashina Soldier), 1120204 (c1011_0000 - Tutorial Ashina Soldier), 1120201 (c1011_0001 - Tutorial Ashina Soldier), 1120202 (c1011_0002 - Tutorial Ashina Soldier), 1120203 (c1011_0003 - Tutorial Ashina Soldier), 1120205 (c1011_0005 - Tutorial Ashina Soldier), 1120206 (c1011_0006 - Tutorial Ashina Soldier), 1120207 (c1011_0007 - Tutorial Ashina Soldier), 1120208 (c1011_0008 - Tutorial Ashina Soldier), 1120209 (c1011_0009 - Tutorial Ashina Soldier), 1120210 (c1011_0011 - Tutorial Ashina Soldier), 1120250 (c1020_0001 - Samurai General), 1120550 (c1100_0000 - Gecko), 1120551 (c1100_0001 - Gecko), 1120552 (c1100_0002 - Gecko), 1120422 (c1360_0002 - Assassin (Senpou))]
@@ -8118,6 +8264,7 @@ EnemyEvents:
   - + Set Character AI State (Entity ID = 1120701*, Disabled/Enabled = 1)
 - ID: 11125240
   Comment: Activating enemy as part of tutorial
+  Dupe: rewrite
   Template:
   - Type: loc
     Remove: Request Character AI Command
@@ -8131,8 +8278,9 @@ EnemyEvents:
   - + Request Character AI Command (Entity ID = 1120203*, Command ID = 20, Slot Number = 0)
 - ID: 11125241
   Comment: Tutorial enemy behavior
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120209 (c1011_0009 - Tutorial Ashina Soldier)
   - region 1122310 (event_攻撃チュートリアル落武者2体目のワープ地点)
@@ -8146,8 +8294,9 @@ EnemyEvents:
   - + Change Character Patrol Behavior (Character Entity ID = 1120209*, Patrol Information Entity ID = 1123310)
 - ID: 11125244
   Comment: Tutorial enemy behavior
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120204 (c1011_0000 - Tutorial Ashina Soldier)
   - region 1122311 (event_弾きチュートリアル落武者のワープ地点)
@@ -8158,7 +8307,7 @@ EnemyEvents:
   - IF In/Outside Area (Result Condition Group = 0, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 1122301, Number of Target Characters = 1)
   - + Change Character Patrol Behavior (Character Entity ID = 1120204*, Patrol Information Entity ID = 1123311)
 - ID: 11125245
-  Comment: Setting character AI
+  Comment: Setting character AI. Not initialized
   Template:
   - Type: remove
   DebugInfo:
@@ -8172,8 +8321,14 @@ EnemyEvents:
   - Request Character AI Command (Entity ID = 1120200, Command ID = 20, Slot Number = 0)
 - ID: 11125247
   Comment: Also setting character AI
+  Dupe: 1120250
   Template:
   - Type: remove
+    Entity: 1120250
+  - Type: remove
+    Entity: 1120209
+  - Type: remove
+    Entity: 1120204
   DebugInfo:
   - 1120209 (c1011_0009 - Tutorial Ashina Soldier)
   - 1120204 (c1011_0000 - Tutorial Ashina Soldier)
@@ -8188,8 +8343,10 @@ EnemyEvents:
   - + Set Character AI ID (Entity ID = 1120250*, AI ID = 10201010)
 - ID: 11125248
   Comment: Tutorial enemy behavior
+  Dupe: rewrite
   Template:
   - Type: loc
+    Entity: 1120205
     Remove: Request Character AI Command
   DebugInfo:
   - 1120207 (c1011_0007 - Tutorial Ashina Soldier)
@@ -8211,8 +8368,10 @@ EnemyEvents:
   - + Request Character AI Command (Entity ID = 1120205*, Command ID = -1, Slot Number = 0)
 - ID: 11125249
   Comment: More tutorial enemy behavior
+  Dupe: 1120206
   Template:
   - Type: loc
+    Entity: 1120206
     Remove: Request Character AI Command
   DebugInfo:
   - 1120207 (c1011_0007 - Tutorial Ashina Soldier)
@@ -8232,8 +8391,9 @@ EnemyEvents:
   - + Request Character AI Command (Entity ID = 1120206*, Command ID = -1, Slot Number = 0)
 - ID: 11125250
   Comment: Tutorial enemy behavior
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120205 (c1011_0005 - Tutorial Ashina Soldier)
   - 1120206 (c1011_0006 - Tutorial Ashina Soldier)
@@ -8251,8 +8411,12 @@ EnemyEvents:
   - + Set Character AI State (Entity ID = 1120206*, Disabled/Enabled = 1)
 - ID: 11125251
   Comment: Setting AI ids
+  Dupe: rewrite
   Template:
   - Type: remove
+    Entity: 1120207
+  - Type: remove
+    Entity: 1120208
   DebugInfo:
   - 1120207 (c1011_0007 - Tutorial Ashina Soldier)
   - 1120208 (c1011_0008 - Tutorial Ashina Soldier)
@@ -8265,8 +8429,9 @@ EnemyEvents:
   - + Set Character AI ID (Entity ID = 1120208*, AI ID = 10110603)
 - ID: 11125252
   Comment: Moving tutorial miniboss
+  Dupe: 1120250
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120250 (c1020_0001 - Samurai General)
   - region 1122210 (event_敵ワープ/リスポン_門の前に侍大将をワープ)
@@ -8278,8 +8443,9 @@ EnemyEvents:
   - + Request Character Animation Reset (Entity ID = 1120250*, Interpolation Method = 1)
 - ID: 11125253
   Comment: Moving a soldier
+  Dupe: 1120210
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120210 (c1011_0011 - Tutorial Ashina Soldier)
   - region 1122211 (event_敵ワープ/リスポン_所定地点に詰所前落武者をワープ)
@@ -8290,8 +8456,10 @@ EnemyEvents:
   - + Set Character Home (Entity ID = 1120210*, Area Entity ID = 1122211*)
 - ID: 11125254
   Comment: Another character AI thing
+  Dupe: 1120250
   Template:
   - Type: remove
+    Entity: 1120250
   DebugInfo:
   - 1120250 (c1020_0001 - Samurai General)
   DebugCommands:
@@ -8305,7 +8473,7 @@ EnemyEvents:
 - ID: 11125255
   Comment: For ESD
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120201 (c1011_0001 - Tutorial Ashina Soldier)
   DebugCommands:
@@ -8326,8 +8494,9 @@ EnemyEvents:
   - + Set Character Backread State (Entity ID = 1120202*, Removed = 1)
 - ID: 11125258
   Comment: Removes gun snipers
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120211 (c1010_0015 - Ashina Soldier)
   - 1120212 (c1010_0012 - Ashina Soldier)
@@ -8346,8 +8515,9 @@ EnemyEvents:
   - + Set Character Backread State (Entity ID = 1120213*, Removed = 1)
 - ID: 11125298
   Comment: Special behavior to do with soldier to the right of stairs to tutorial miniboss. Not a tutorial soldier though?
+  Dupe: 1120358
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120358 (c1010_0016 - Ashina Soldier)
   DebugCommands:
@@ -8368,7 +8538,7 @@ EnemyEvents:
 - ID: 11125308
   Comment: Eavesdrop hint
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1122508 (event_チュートリアルUI関連_通常_08_盗み聞き)
   - 1120201 (c1011_0001 - Tutorial Ashina Soldier)
@@ -8410,7 +8580,7 @@ EnemyEvents:
 - ID: 11125323
   Comment: Lock-on hint
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1122520 (event_チュートリアルUI関連_戦闘_00_ターゲットロック)
   - 1120203 (c1011_0003 - Tutorial Ashina Soldier)
@@ -8446,7 +8616,7 @@ EnemyEvents:
 - ID: 11125324
   Comment: Attack hint
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120203 (c1011_0003 - Tutorial Ashina Soldier)
   - region 1122521 (event_チュートリアルUI関連_戦闘_01_攻撃)
@@ -8480,7 +8650,7 @@ EnemyEvents:
 - ID: 11125325
   Comment: Deathblow hint
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120203 (c1011_0003 - Tutorial Ashina Soldier)
   - 1120209 (c1011_0009 - Tutorial Ashina Soldier)
@@ -8512,7 +8682,7 @@ EnemyEvents:
 - ID: 11125327
   Comment: Deflect hint
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120204 (c1011_0000 - Tutorial Ashina Soldier)
   DebugCommands:
@@ -8543,7 +8713,7 @@ EnemyEvents:
 - ID: 11125329
   Comment: Another lockon hint?
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120207 (c1011_0007 - Tutorial Ashina Soldier)
   - 1120208 (c1011_0008 - Tutorial Ashina Soldier)
@@ -8579,7 +8749,7 @@ EnemyEvents:
 - ID: 11125330
   Comment: Change target hint
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120207 (c1011_0007 - Tutorial Ashina Soldier)
   - 1120208 (c1011_0008 - Tutorial Ashina Soldier)
@@ -8616,7 +8786,7 @@ EnemyEvents:
 - ID: 11125332
   Comment: Counterslash hint
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120250 (c1020_0001 - Samurai General)
   DebugCommands:
@@ -8648,8 +8818,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11125350
   Comment: Lone Shadow activation
+  Dupe: 1120300
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120300 (c1470_0000 - Lone Shadow)
   - region 1122730 (Event_密命の孤影衆_敵対化)
@@ -8710,8 +8881,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11125351
   Comment: Lone Shadow activation
+  Dupe: 1120300
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1122320 (Event_無敵領域_密命の孤影衆)
   - region 1122340 (Event_中ボス霧壁制御領域_密命の孤影衆)
@@ -8739,8 +8911,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11125352
   Comment: Lone Shadow speffect management, if he's in the well or not
+  Dupe: 1120300
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1122730 (Event_密命の孤影衆_敵対化)
   - 1120300 (c1470_0000 - Lone Shadow)
@@ -8767,8 +8940,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11125353
   Comment: Lone Shadow fog gate
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120300 (c1470_0000 - Lone Shadow)
   - region 1122350 (Event_中ボス霧壁出現領域_密命の孤影衆)
@@ -8797,8 +8971,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11125360
   Comment: Initialization for seven spears 2, including where lockon is allowed
+  Dupe: 1120521
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120521 (c1021_0001 - Seven Ashina Spears)
   - 1120510 (c1020_0000 - Samurai General)
@@ -8821,8 +8996,9 @@ EnemyEvents:
   - + Set Lock On Point (Entity ID = 1120510*, Lock On Dummypoly ID = 220, Desired State = 1)
 - ID: 11125361
   Comment: Seven spear 2 AIs activate together
+  Dupe: 1120510
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120521 (c1021_0001 - Seven Ashina Spears)
   - 1120510 (c1020_0000 - Samurai General)
@@ -8840,8 +9016,9 @@ EnemyEvents:
   - + Force Character Target (Targeter Entity ID = 1120510*, Targeted Entity ID = 10000)
 - ID: 11125362
   Comment: Seven Spears 2 fog gates
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120521 (c1021_0001 - Seven Ashina Spears)
   - region 1122525 (Event_中ボス霧壁発生領域_侍大将四天王（徳川）_複合)
@@ -8871,7 +9048,7 @@ EnemyEvents:
 - ID: 11125733
   Comment: Genichiro dialogue in middle of his phase
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120830 (c7110_0000 - Genichiro, Way of Tomoe)
   DebugInit:
@@ -8891,6 +9068,9 @@ EnemyEvents:
     Add:
     - Cmd: IF Event Flag (0,1,0,11125810)
       After: END IF Event Flag (0,1,0,9300)
+  - Type: loc
+    Dupe:
+      Condition: 2
   DebugInfo:
   - 1120800 (c7100_0000 - Genichiro Ashina)
   - region 1122802 (Event_不死効果領域_ライバル（1回目）)
@@ -9106,6 +9286,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11125810
   Comment: Start Tutorial Genichiro
+  Dupe: rewrite
   Template:
   - Type: start
     Entity: 1120800
@@ -9222,6 +9403,7 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 1686, Flag State = 1)
 - ID: 11125812
   Comment: Managing Tutorial Genichiro immortality. But it also manages player's, so only do that
+  Dupe: rewrite
   Template:
   - Type: loc
     Entity: 1120800
@@ -9252,6 +9434,17 @@ EnemyEvents:
     Entity: 1120830
     EndCond: 1
     Name: entity
+  - Type: chr
+    Entity: 1120830
+    Remove: Display Boss Health Bar
+    ProgressFlag: 11125830
+    Add:
+    - Cmd: Set Event Flag (11125830,1)
+    Dupe: {}
+  - Type: loc
+    Remove: Display Boss Health Bar
+    Dupe:
+      Entity: -1
   DebugInfo:
   - 1120830 (c7110_0000 - Genichiro, Way of Tomoe)
   - 1120860 (c5400_0000 - Sword Saint Isshin)
@@ -9286,6 +9479,7 @@ EnemyEvents:
   - Set Map Sound State (Entity ID = 1124811, Enable/Disable = 1)
 - ID: 11125840
   Comment: Start of SSI fight with Genichiro
+  Dupe: rewrite
   Template:
   - Type: start
     Entity: 1120830
@@ -9386,6 +9580,21 @@ EnemyEvents:
     Add:
     - Cmd: IF Event Flag (0,1,0,11125875)
       Before: Set Event Flag (11125706,1)
+  - Type: loc
+    Comment: Set stop music flag here instead, and use new event flag to not have to worry about sequencing
+    Add:
+    - Cmd: IF Event Flag (0,1,0,11125876)
+      Before: Set Event Flag (11125706,1)
+    - Cmd: Set Event Flag (11120860,1)
+      Before: Set Event Flag (11125706,1)
+    Dupe:
+      Entity: -1
+  - Type: chr
+    Entity: 1120860
+    NewEvent:
+    - IF Character Has Event Message (0,1120860,30,1,0,1)
+    - Set Event Flag (11125876,1)
+    Dupe: {}
   DebugInfo:
   - 1120860 (c5400_0000 - Sword Saint Isshin)
   DebugCommands:
@@ -9416,6 +9625,11 @@ EnemyEvents:
     Entity: 1120860
     Camera: 510
     Name: entity
+  - Type: chr
+    Entity: 1120860
+    ProgressFlag: 11125830
+    Dupe:
+      HealthBar: 1120860
   DebugInfo:
   - 1120860 (c5400_0000 - Sword Saint Isshin)
   DebugCommands:
@@ -9535,6 +9749,10 @@ EnemyEvents:
     Entity: 1120860
     DefeatFlag: 9312
     Remove: Set Event Flag
+  - Type: loc
+    Remove: Set Event Flag (11120860,1)
+    Dupe:
+      Entity: -1
   DebugInfo:
   - 1120860 (c5400_0000 - Sword Saint Isshin)
   DebugCommands:
@@ -9548,7 +9766,7 @@ EnemyEvents:
 - ID: 11127322
   Comment: Posture and deathblow tutorial
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1122520 (event_チュートリアルUI関連_戦闘_00_ターゲットロック)
   - 1120203 (c1011_0003 - Tutorial Ashina Soldier)
@@ -9587,7 +9805,7 @@ EnemyEvents:
 - ID: 11127331
   Comment: Counterslash tutorial
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1120250 (c1020_0001 - Samurai General)
   DebugCommands:
@@ -9620,8 +9838,9 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 6136, Flag State = 1)
 - ID: 11305251
   Comment: Shichimen warrior fog gate
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1302350 (event_七面武者_中ボスエリア)
   - 1300200 (c1080_0000 - Shichimen Warrior)
@@ -9646,8 +9865,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11305252
   Comment: Shichimen warrior fight initialization
+  Dupe: 1300200
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1302350 (event_七面武者_中ボスエリア)
   - 1300200 (c1080_0000 - Shichimen Warrior)
@@ -9669,8 +9889,9 @@ EnemyEvents:
   - + Force Animation Playback (Entity ID = 1300281*, Animation ID = 451, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
 - ID: 11305300
   Comment: AI behavior for crickets when player is nearby
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1300212 (c1211_0002 - Cricket)
   - region 1302287 (event_コオロギ起動領域_②)
@@ -9708,13 +9929,14 @@ EnemyEvents:
 - ID: 11305350
   Comment: Activation for crickets. Remove depenency on event flag for chr, otherwise remove chr-specific things for loc
   Template:
-  - Type: chr
+  - Type: chrarg
     Regions:
     - event dist4 1302302
     Add:
     - Cmd: GOTO Unconditionally (1)
       Before: GOTO IF Event Flag (1,1,0,51300010)
   - Type: loc
+    Entities: 1300228 1300229 1300230 1300233 1300234 1300235 1300236
     Remove: Force Animation Playback
   DebugInfo:
   - region 1302302 (コオロギ_宝部屋_降り注ぐ)
@@ -9801,8 +10023,9 @@ EnemyEvents:
   - + Set SpEffect (Entity ID = 1300301*, SpEffect ID = 200141)
 - ID: 11305715
   Comment: Killing soldiers based on flags. Just keep dispmask, make it interesting
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1300300 (c1010_0000 - Ashina Soldier)
   - 1300301 (c1010_0001 - Ashina Soldier)
@@ -9830,6 +10053,9 @@ EnemyEvents:
   Comment: Defeating Mist Noble
   Template:
   - Type: loc
+    Dupe:
+      Entity: 1500200
+      Condition: -1
   DebugInfo:
   - 1500200 (c1300_0001 - Palace Noble)
   - group 1505400 [1500510 (c1150_0000 - Hound), 1500511 (c1150_0001 - Hound), 1500512 (c1150_0002 - Hound), 1500513 (c1150_0003 - Hound), 1500514 (c1150_0004 - Hound), 1500515 (c1150_0005 - Hound), 1500516 (c1150_0006 - Hound), 1500517 (c1150_0007 - Hound), 1500400 (c1550_0000 - Bandit), 1500401 (c1550_0001 - Bandit), 1500402 (c1550_0002 - Bandit), 1500403 (c1550_0003 - Bandit), 1500404 (c1550_0004 - Bandit), 1500405 (c1550_0005 - Bandit), 1500406 (c1550_0006 - Bandit), 1500410 (c1550_0010 - Bandit), 1500411 (c1550_0011 - Bandit), 1500412 (c1550_0012 - Bandit), 1500414 (c1550_0014 - Bandit), 1500415 (c1550_0015 - Bandit), 1500416 (c1550_0016 - Bandit), 1500417 (c1550_0017 - Bandit), 1500418 (c1550_0018 - Bandit), 1500419 (c1550_0019 - Bandit), 1500420 (c1550_0020 - Bandit), 1500421 (c1550_0021 - Bandit), 1500422 (c1550_0022 - Bandit), 1500423 (c1550_0023 - Bandit), 1500424 (c1550_0024 - Bandit), 1500425 (c1550_0025 - Bandit), 1500431 (c1550_0031 - Bandit), 1500432 (c1550_0032 - Bandit), 1500433 (c1550_0033 - Bandit), 1500434 (c1550_0034 - Bandit), 1500435 (c1550_0035 - Bandit), 1500436 (c1550_0036 - Bandit), 1500437 (c1550_0037 - Bandit), 1500438 (c1550_0038 - Bandit), 1500439 (c1550_0039 - Bandit)]
@@ -9940,6 +10166,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11505205
   Comment: Mist Noble initialization
+  Dupe: rewrite
   Template:
   - Type: loc
     Invincibility: 1500200
@@ -9961,8 +10188,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11505210
   Comment: Mibu villagers getting to the roof of the pine resin house. Only works for them
+  Dupe: copyarg
   Template:
-  - Type: remove
+  - Type: removearg
   DebugInfo:
   - region 1502295 (Event_Box：嫌われ者の家_梯子起動_PC)
   - region 1502296 (Event_Box：嫌われ者の家_梯子起動_村人A)
@@ -9993,8 +10221,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11505220
   Comment: Mibu villagers getting to the roof of the pine resin house. Only works for them
+  Dupe: copyarg
   Template:
-  - Type: remove
+  - Type: removearg
   DebugInfo:
   - region 1502295 (Event_Box：嫌われ者の家_梯子起動_PC)
   - region 1502297 (Event_Box：嫌われ者の家_梯子起動_村人B)
@@ -10025,8 +10254,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11505230
   Comment: Mibu villagers getting to the roof of the pine resin house. Only works for them
+  Dupe: copyarg
   Template:
-  - Type: remove
+  - Type: removearg
   DebugInfo:
   - region 1502295 (Event_Box：嫌われ者の家_梯子起動_PC)
   - region 1502298 (Event_Box：嫌われ者の家_梯子起動_村人C)
@@ -10057,25 +10287,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11505250
   Comment: Event for villagers coming out of the ground. Although they seem to work pretty well on their own (roaming around is probably better?)
+  Dupe: copyarg
   Template:
-  - Type: remove
-    Regions:
-    - arg chrpoint 1502230
-    - arg chrpoint 1502232
-    - arg chrpoint 1502238
-    - arg chrpoint 1502240
-    - arg chrpoint 1502242
-    - arg chrpoint 1502244
-    - arg chrpoint 1502246
-    - arg chrpoint 1502252
-    - arg chrpoint 1502256
-    - arg chrpoint 1502258
-    - arg chrpoint 1502260
-    - arg chrpoint 1502262
-    - arg chrpoint 1502264
-    - arg chrpoint 1502266
-    - arg chrpoint 1502274
-    - arg chrpoint 1502290
+  - Type: removearg
   DebugInfo:
   - 1500260 (c1500_0011 - Mibu Villager)
   - region 1502230 (Event_CYLINDERゾンビトラップ01_大通り)
@@ -10149,7 +10363,7 @@ EnemyEvents:
 - ID: 11505300
   Comment: Some one-time speffect/animation playback management of villagers in the fields
   Template:
-  - Type: chr
+  - Type: chrarg
   DebugInfo:
   - 1500341 (c1501_0008 - Mibu Villager)
   - 1500342 (c1500_0042 - Mibu Villager)
@@ -10193,7 +10407,7 @@ EnemyEvents:
 - ID: 11505350
   Comment: Enemy generator
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - group 1505500 [1500480 (c1181_0001 - Taro Troop (Mibu)), 1500481 (c1181_0002 - Taro Troop (Mibu)), 1500329 (c1500_0029 - Mibu Villager), 1500332 (c1500_0032 - Mibu Villager), 1500333 (c1500_0033 - Mibu Villager), 1500334 (c1500_0034 - Mibu Villager), 1500336 (c1500_0036 - Mibu Villager), 1500338 (c1500_0038 - Mibu Villager), 1500328 (c1501_0010 - Mibu Villager)]
   - region 1502295 (Event_Box：嫌われ者の家_梯子起動_PC)
@@ -10212,8 +10426,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11505360
   Comment: Activate lone shadow if hound above him activates
+  Dupe: 1500495
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1500518 (c1150_0008 - Hound)
   - 1500495 (c1470_0000 - Lone Shadow)
@@ -10230,7 +10445,7 @@ EnemyEvents:
 - ID: 11505400
   Comment: Waking up bandits. Is more fitting for it to apply in forest itself, probably
   Template:
-  - Type: chr
+  - Type: chrarg
   DebugInfo:
   - 1500403 (c1550_0003 - Bandit)
   - 1500404 (c1550_0004 - Bandit)
@@ -10290,8 +10505,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11505430
   Comment: Waking up bandits on getting items
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1500416 (c1550_0016 - Bandit)
   - 1500434 (c1550_0034 - Bandit)
@@ -10330,8 +10546,10 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11505431
   Comment: More waking up bandits on getting items. Though also forces animations
+  Dupe: rewrite
   Template:
   - Type: loc
+    Entities: 1500419 1500420 1500421 1500418
     Remove: Force Animation Playback
   DebugInfo:
   - 1500419 (c1550_0019 - Bandit)
@@ -10358,8 +10576,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11505440
   Comment: Waking up bandits
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1500431 (c1550_0031 - Bandit)
   - 1500438 (c1550_0038 - Bandit)
@@ -10394,8 +10613,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11505510
   Comment: Waking up ghost dogs
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1500510 (c1150_0000 - Hound)
   - 1500511 (c1150_0001 - Hound)
@@ -10425,6 +10645,9 @@ EnemyEvents:
   Comment: O'Rin defeat
   Template:
   - Type: loc
+    Dupe:
+      Entity: 1500690
+      Condition: 15
   DebugInfo:
   - 1500690 (c7000_0000 - O'Rin)
   DebugCommands:
@@ -10491,8 +10714,9 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 11507690, Flag State = 0)
 - ID: 11505700
   Comment: Transforming into palace noble. Although ezstate instruction may not work
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1500701 (c7480_0000 - Head Priest - not random)
   - 1500704 (c1300_0000 - Palace Noble)
@@ -10542,11 +10766,12 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11505720
   Comment: Some O'Rin initialization.
+  Dupe: 1500690
   Template:
   - Type: loc
     Entity: 1500690
     Remove: Force Animation Playback
-  - Type: chr
+  - Type: chrmove
     Entity: 1500690
     Remove: 11507690; Batch Set Event Flags
     DefeatFlag: 11500690
@@ -10562,10 +10787,11 @@ EnemyEvents:
   - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 30210)
 - ID: 11505721
   Comment: O'Rin activation. 1502700, on bridge side. 1502704, small box around arena. 1502706, on idol side.
+  Dupe: copyarg
   Template:
   - Type: loc
     Entity: 1500690
-  - Type: chr
+  - Type: chrmove
     Entity: 1500690
     Remove: 11507690; 11505725  # Unneeded event flag; set by ESD
     DefeatFlag: 11500690
@@ -10621,6 +10847,7 @@ EnemyEvents:
   - + Force Animation Playback (Entity ID = X0_4*, Animation ID = 0, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
 - ID: 11505800
   Comment: End Corrupted Monk
+  Dupe: rewrite
   Template:
   - Type: end
     Entity: 1500800
@@ -10644,6 +10871,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11505810
   Comment: Start Corrupted Monk. Also door
+  Dupe: rewrite
   Template:
   - Type: start
     Entity: 1500800
@@ -10677,6 +10905,7 @@ EnemyEvents:
     DefeatFlag: 9306
     Replace: END Unconditionally (0->1)
     Remove: 11505803
+    Deathblow: 1500800
   DebugInfo:
   - 1500800 (c5000_0000 - Corrupted Monk)
   DebugCommands:
@@ -10687,8 +10916,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11505814
   Comment: Corrupted Monk and snap seeds. This is a bit expensive to be a progress flag, so let it happen 3 times globally without flag reset
+  Dupe: rewrite
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 1500800
     DefeatFlag: 9306
   DebugInfo:
@@ -10706,8 +10936,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11705203
   Comment: Snake Eyes backread
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1702220 (Ev_中ボス領域_下層女スナイパー)
   - 1700201 (c1191_0001 - Snake Eyes)
@@ -10722,8 +10953,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11705205
   Comment: Group item lot
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1700202 (c1190_0010 - Sunken Valley Clan)
   - 1700203 (c1190_0011 - Sunken Valley Clan)
@@ -10740,7 +10972,7 @@ EnemyEvents:
 - ID: 11705206
   Comment: Disable gunfort AIs while at idol
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1702214 (Ev_広い谷入り口_対岸の谷敵ロジックOFF)
   - group 1705400 [1700211 (c1190_0004 - Sunken Valley Clan), 1700212 (c1190_0005 - Sunken Valley Clan), 1700205 (c1190_0006 - Sunken Valley Clan), 1700206 (c1190_0007 - Sunken Valley Clan), 1700213 (c1190_0008 - Sunken Valley Clan), 1700214 (c1190_0009 - Sunken Valley Clan)]
@@ -10752,8 +10984,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11705210
   Comment: Player area gunfort
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1702211 (Ev_広い谷_谷敵チーム攻撃力0領域)
   - group 1705250 [1700211 (c1190_0004 - Sunken Valley Clan), 1700205 (c1190_0006 - Sunken Valley Clan), 1700206 (c1190_0007 - Sunken Valley Clan), 1700213 (c1190_0008 - Sunken Valley Clan), 1700214 (c1190_0009 - Sunken Valley Clan), 1700215 (c1190_0014 - Sunken Valley Clan)]
@@ -10771,8 +11004,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11705212
   Comment: Snake Eyes reset
+  Dupe: 1700201
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1700201 (c1191_0001 - Snake Eyes)
   DebugCommands:
@@ -10784,6 +11018,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11705220
   Comment: Centipede activation
+  Dupe: rewrite
   Template:
   - Type: loc
     Invincibility: 1700425
@@ -10808,8 +11043,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11705221
   Comment: Centipede miniboss starting animation. This event depends on AI state being 0, so probably it's fine to drop ref to 11705222.
+  Dupe: 1700425
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 1700425
     DefeatFlag: 11700425
     Remove: 11705222
@@ -10829,6 +11065,7 @@ EnemyEvents:
   Comment: Used only by animation event
   Template:
   - Type: remove
+    Entity: 1700425
   DebugInfo:
   - 1700425 (c1040_0000 - Centipede Boss)
   DebugCommands:
@@ -10839,8 +11076,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11705301
   Comment: Update rate management
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1702212 (Ev_猿団子軽量化_猿団子居る判定領域)
   - 1700352 (c1250_0000 - Valley Monkey)
@@ -10884,8 +11122,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11705340
   Comment: Monkey update rate management
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 1702212 (Ev_猿団子軽量化_猿団子居る判定領域)
   - 1700301 (c1250_0027 - Valley Monkey)
@@ -10927,8 +11166,10 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11705400
   Comment: Ignoring broken geckos for now
+  Dupe: copyarg
   Template:
   - Type: loc
+    Entities: 1700399 1700403 1700404 1700405 1700406 1700407 1700408 1700409
     Remove: Force Animation Playback
   DebugInfo:
   - region 1702401 (Ev_お鍋洞窟びっしりヤモリイベント用)
@@ -10991,8 +11232,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11705470
   Comment: Rock Diver logic. Maybe will work for other chrs?
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1700430 (c1140_0000 - Rock Diver)
   - region 1702430 (土塀兵_出現ポイント0_0)
@@ -11064,6 +11306,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11705520
   Comment: Shichimen activation
+  Dupe: rewrite
   Template:
   - Type: loc  # loc with entity
     Entity: 1700850
@@ -11083,6 +11326,7 @@ EnemyEvents:
   Comment: More geckos
   Template:
   - Type: loc
+    Entities: 1700410 1700411 1700412 1700413 1700414 1700415 1700416
     Remove: Force Animation Playback
   DebugInfo:
   - 1700410 (c1100_0008 - Gecko)
@@ -11126,6 +11370,26 @@ EnemyEvents:
     EndCond2: -1
     Add:
     - Cmd: Set Event Flag (11700810,1)
+  - Type: loc
+    Comment: The conditions are both temporary, so they must be tracked in separate events
+    Remove: Set Event Flag (11700800,1)
+    Add:
+    - Cmd: IF Event Flag (0,1,0,11705805)
+      Before: Handle Boss Defeat
+    - Cmd: Set Event Flag (11700800,1)
+    Dupe:
+      Entity: -1
+  - Type: chr
+    Entity: 1700800
+    NewEvent:
+    - IF Character Has SpEffect (-5,1700800,201000,1,0,1)
+    - IF Character Dead/Alive (-5,1700800,1,0,1)
+    - IF Condition Group (0,1,-5)
+    - IF Character Has Event Message (-1,1700800,30,1,0,1)
+    - IF Character Dead/Alive (-1,1700800,1,0,1)
+    - IF Condition Group (0,1,-1)
+    - SetEventFlag (11705805,1)
+    Dupe: {}
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
   - 1700801 (c5001_0000 - Immortal Centipede)
@@ -11147,7 +11411,8 @@ EnemyEvents:
   - + Set SpEffect (Entity ID = 1700801*, SpEffect ID = 3510200)
   - Set Area CameraSetParam SubID (CameraSetParam SubID = -1)
 - ID: 11705810
-  Comment: Initialize Guardian Ape. The lock on point is default also
+  Comment: Start Guardian Ape. The lock on point is default also
+  Dupe: rewrite
   Template:
   - Type: start
     Entity: 1700800
@@ -11194,7 +11459,7 @@ EnemyEvents:
   - WAIT Fixed Time (Seconds) (Number Of Seconds = 5)
   - + Display Boss Health Bar (Disabled/Enabled = 1, Entity ID = 1700800*, Slot Number = 0, Name ID = 905100)
   - Set Area CameraSetParam SubID (CameraSetParam SubID = 500)
-- ID: 11705820
+- ID: 11705820  # to 11315673?
   Comment: Ape deathblow. This seems to be for both phases. As a result, don't allow it while another deathblow is happening, or else it will force the ape into an unkillable mix of the two phases.
   Template:
   - Type: chr
@@ -11491,6 +11756,17 @@ EnemyEvents:
       After: WAIT Fixed Time (Seconds) (7.5)
     - Cmd: Set Event Flag (11705889,0)
       After: WAIT Fixed Time (Seconds) (10.5)
+  - Type: loc
+    Comment: Also add it to default event. This is needed for dupes
+    Add:
+    - Cmd: Set Event Flag (11705889,1)
+      After: WAIT Fixed Time (Seconds) (7.5)
+    - Cmd: Set Event Flag (11705889,0)
+      After: WAIT Fixed Time (Seconds) (10.5)
+  - Type: loc
+    Remove: Display Boss Health Bar
+    Dupe:
+      Entity: -1
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
   DebugCommands:
@@ -11506,8 +11782,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11705836
   Comment: Activation for ape
+  Dupe: 1700800
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
   - region 1702830 (Ｅｖ_夜叉猿、アタリ無し解除領域)
@@ -11542,6 +11819,9 @@ EnemyEvents:
     Entity: 1700850
     EndCond: -5
     EndCond2: -1
+  - Type: loc
+    Dupe:
+      Condition: -5; -1
   DebugInfo:
   - 1700850 (c5100_0001 - Guardian Ape)
   DebugCommands:
@@ -11559,6 +11839,7 @@ EnemyEvents:
   - Set Area CameraSetParam SubID (CameraSetParam SubID = -1)
 - ID: 11705860
   Comment: Start for Headless Ape. Headless Ape centipede is excluded from randomizer, but this event needs to be transplanted for disabling helper, in which case defeat flag is ignored.
+  Dupe: rewrite
   Template:
   - Type: start
     Entity: 1700850
@@ -11650,7 +11931,7 @@ EnemyEvents:
 - ID: 11705862
   Comment: Guardian apes interaction. Only sets camera param. Right now uses event flag which will change so disable camera change also.
   Template:
-  - Type: chr
+  - Type: multichr
     Entity: 1700850
     DefeatFlag: 9314
     AppearFlag: 8303
@@ -11730,9 +12011,15 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 11705873
   Comment: Headless ape centipede deathblow. Removed, since 9307 gives 9314 instead, if the entity is randomized
+  Dupe: 1700850
   Template:
   - Type: remove
     Entity: 1700850
+  - Type: loc
+    Comment: Make sure boss is dead first, if in place, mostly for dupe
+    Add:
+    - Cmd: IF Event Flag (0,1,0,9307)
+      Before: start
   DebugInfo:
   - 1700850 (c5100_0001 - Guardian Ape)
   - 1700851 (c5001_0001 - Immortal Centipede)
@@ -11788,7 +12075,7 @@ EnemyEvents:
 - ID: 11705876
   Comment: Some more speffect interaction, but just camera id
   Template:
-  - Type: chr
+  - Type: multichr
     Entity: 1700850
     DefeatFlag: 9314
     AppearFlag: 8303
@@ -11819,18 +12106,16 @@ EnemyEvents:
   Comment: Enabling ape 2. This one is special wrt use of flags. The region is moved in enemy config as it's also used by AI. Or, just remove it...
   Template:
   - Type: multichr
+    Comment: Should use ProgressFlag, but it only seems to affect camera stuff
     Entity: 1700850
     DefeatFlag: 9307
     AppearFlag: 8303
     Remove: 9314; Set Area CameraSetParam SubID; 1702871; Request Character AI Command (1700850,10,0)
     # RemoveDupe: 1702871; Request Character AI Command (1700850,10,0)
     StartFlag: 11705851
-    ProgressFlag: 11705880
     Add:
     - After: Label 0 ()
       Cmd: Force Character Death (1700852,0)
-    - After: Set Area CameraSetParam SubID (510)
-      Cmd: Set Event Flag (11705880,1)
   - Type: chr  # For standalone. But partner is still way too passive
     Entity: 1700852
     Remove: 1700850; 1702871; GOTO IF Event Flag; IF Event Flag; Set Area CameraSetParam SubID; WAIT Fixed Time (Seconds) (3)
@@ -11982,8 +12267,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12000451
   Comment: Armored Warrior activation
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000400 (c1130_0000 - Armored Warrior)
   DebugInit:
@@ -11996,7 +12282,7 @@ EnemyEvents:
 - ID: 12005210
   Comment: Warp to folding screen monkeys boss fight
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000801 (c1260_0000 - Folding Screen Monkey)
   - region 2002200 (無限回廊ワープ後_初期位置)
@@ -12063,8 +12349,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005231
   Comment: Some speffect for spear adept near idol when wandering in halls
+  Dupe: 2000466
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 2002231 (Ev_回転槍術士_本堂内部のPC無視領域)
   - 2000466 (c1060_0002 - Spear Adept)
@@ -12082,8 +12369,10 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005240
   Comment: Some activation for enemy
+  Dupe: copyarg
   Template:
   - Type: loc
+    Entity: 2000253
     Remove: Force Animation Playback
   DebugInfo:
   - 2000253 (c1360_0009 - Assassin (Senpou))
@@ -12134,8 +12423,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005305
   Comment: Character interactions
+  Dupe: 2000651
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000650 (c1060_0000 - Spear Adept)
   - 2000651 (c1060_0005 - Spear Adept)
@@ -12154,9 +12444,9 @@ EnemyEvents:
   - + Request Character AI Re-plan (Entity ID = 2000651*)
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005306
-  Comment: speffect for group at start of Senpou. See if this should be preserved
+  Comment: Speffect for group at start of Senpou. See if this should be preserved
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - group 2005400 [2000336 (c1220_0004 - Seeker), 2000337 (c1220_0005 - Seeker), 2000338 (c1220_0006 - Seeker), 2000339 (c1220_0007 - Seeker), 2000340 (c1220_0008 - Seeker), 2000349 (c1220_0026 - Seeker), 2000350 (c1220_0027 - Seeker), 2000351 (c1220_0028 - Seeker), 2000352 (c1220_0029 - Seeker), 2000353 (c1220_0030 - Seeker)]
   DebugCommands:
@@ -12166,7 +12456,7 @@ EnemyEvents:
 - ID: 12005330
   Comment: NPC part setup for infested
   Template:
-  - Type: chr
+  - Type: chrarg
   DebugInfo:
   - 2000647 (c1200_0003 - Infested Seeker (Parasite))
   - 2000648 (c1200_0002 - Infested Seeker (Parasite))
@@ -12190,7 +12480,7 @@ EnemyEvents:
 - ID: 12005335
   Comment: Setup and parts for other infested seekers
   Template:
-  - Type: chrpart
+  - Type: chrpartarg
   DebugInfo:
   - 2000647 (c1200_0003 - Infested Seeker (Parasite))
   - 2000648 (c1200_0002 - Infested Seeker (Parasite))
@@ -12237,8 +12527,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005345
   Comment: Interaction between crickets and gourd seed seeker. Doesn't do much anymore
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000281 (c1211_0005 - Cricket)
   - 2000282 (c1211_0006 - Cricket)
@@ -12321,8 +12612,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005350
   Comment: Other interaction between seeker and crickets
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000630 (c1210_0003 - Infested Seeker)
   - 2000634 (c1211_0030 - Cricket)
@@ -12388,6 +12680,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005360
   Comment: Cricker seeker interactions
+  Dupe: copyarg
   Template:
   - Type: loc
     Remove: Request Character AI Command
@@ -12465,6 +12758,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005400
   Comment: Cricker seeker interactions
+  Dupe: copyarg
   Template:
   - Type: loc
     Remove: Request Character AI Command; Force Animation Playback
@@ -12562,8 +12856,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005455
   Comment: Allowing Armored Warrior to fall off. But allow it anywhere
+  Dupe: 2000400
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2000400
     Remove: IF Condition Group
     DefeatFlag: 12000400
@@ -12590,8 +12885,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005456
   Comment: Allowing Armored Warrior to fall through map. Also vibration. And don't make him wait for a death plane
+  Dupe: 2000400
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2000400
     DefeatFlag: 12000400
     Remove: END Unconditionally
@@ -12614,12 +12910,12 @@ EnemyEvents:
   - + Set Camera Vibration (Vibration ID = 110, Type = 1, Entity ID = 2002401*, Dummypoly ID = -1, Decay Start Distance = 999, Decay End Distance = 999)
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005457
-  Comment: Update rate. But also try to abuse this to add roberto
+  Comment: Update rate. But also try to abuse this to add roberto in t200500_x5
+  Dupe: rewrite
   Template:
   - Type: loc
-    Remove: END Unconditionally
     Entity: 2000400
-    # TODO: Make t200500_x5 not depend on CheckSelfDeath
+    Remove: END Unconditionally
     Add:
     - Cmd: IF Character Dead/Alive (0,2000400,1,0,1)
     - Cmd: Set SpEffect (2000400,30009)
@@ -12634,6 +12930,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005461
   Comment: Armored Warrior allow lockon/damage
+  Dupe: rewrite
   Template:
   - Type: loc
     Invincibility: 2000400
@@ -12654,8 +12951,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005462
   Comment: Armored Warrior activation
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000400 (c1130_0000 - Armored Warrior)
   DebugCommands:
@@ -12665,8 +12963,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005500
   Comment: Update rate updates
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 2002217 (Ev_本堂軽量化領域_ 敵更新停止)
   - region 2002218 (Ev_本堂軽量化_ 回転槍更新停止不許可)
@@ -12697,8 +12996,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005650
   Comment: Group item lot
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000466 (c1060_0002 - Spear Adept)
   - 2000467 (c1060_0003 - Spear Adept)
@@ -12714,6 +13014,8 @@ EnemyEvents:
   Comment: End of folding monkeys. Mostly not randomized
   Template:
   - Type: loc
+    Dupe:
+      Condition: -1
   DebugInfo:
   - 2000800 (c1000_0009 - Invisible - not random)
   - 2000801 (c1260_0000 - Folding Screen Monkey)
@@ -12780,6 +13082,9 @@ EnemyEvents:
   Comment: Start of folding monkeys. Mostly not randomized
   Template:
   - Type: loc
+    Comment: Use combined form, due to healthbars being unreliable
+    Dupe:
+      HealthBar: 2000800
   DebugInfo:
   - 2000801 (c1260_0000 - Folding Screen Monkey)
   - 2000802 (c1260_0001 - Folding Screen Monkey)
@@ -12824,9 +13129,10 @@ EnemyEvents:
   - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
   - + Display Boss Health Bar (Disabled/Enabled = 1, Entity ID = 2000800*, Slot Number = 0, Name ID = 901260)
 - ID: 12005820
-  Comment: Changing screens when a folding monkey dies
+  Comment: Changing screens and damaging healthbar when a folding monkey dies
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000800 (c1000_0009 - Invisible - not random)
   - 2000801 (c1260_0000 - Folding Screen Monkey)
@@ -12859,7 +13165,7 @@ EnemyEvents:
 - ID: 12005815
   Comment: Helper monkeys initialization in fight
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - group 2005810 [2000805 (c1250_0001 - Valley Monkey), 2000806 (c1250_0002 - Valley Monkey), 2000807 (c1250_0003 - Valley Monkey), 2000808 (c1250_0026 - Valley Monkey), 2000809 (c1250_0027 - Valley Monkey), 2000814 (c1250_0028 - Valley Monkey), 2000811 (c1250_0029 - Valley Monkey), 2000812 (c1250_0030 - Valley Monkey), 2000813 (c1250_0031 - Valley Monkey)]
   DebugCommands:
@@ -12867,8 +13173,9 @@ EnemyEvents:
   - + Set Character Animation State (Entity ID = 2005810*, Disabled/Enabled = 0)
 - ID: 12005827
   Comment: Setting speffect on player when in certain areas and looking at invisible monkey
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 2002551 (稚児猿_木の上領域①)
   - region 2002552 (稚児猿_木の上領域②)
@@ -12903,8 +13210,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005828
   Comment: Setting speffect for invisible monkey that prevents it from warping, if player is in some areas or near a terror monkey
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000805 (c1250_0001 - Valley Monkey)
   - 2000806 (c1250_0002 - Valley Monkey)
@@ -12993,6 +13301,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005835
   Comment: Restoring lockon point for invisible monkey if randomized, plus probably making it visible
+  Dupe: 2000804
   Template:
   - Type: loc
     Entity: 2000804
@@ -13009,6 +13318,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005838
   Comment: Setting AI of hearing monkey while it's in certain area
+  Dupe: 2000802
   Template:
   - Type: loc
     Entity: 2000802
@@ -13041,9 +13351,14 @@ EnemyEvents:
   - + Create NPC Part (Entity ID = X0_4*, NPC Part ID = X4_2, NPC Part Group IDx = 1, NPC Part HP = 100000, Damage Correction = 1, Body Damage Compensation = 1, Is Invincible = 0, Start In Stopped State = 0)
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005845
-  Comment: Setting some speffect on seeing monkey while in area
+  Comment: Setting some speffect on seeing monkey (and player) while in area
   Template:
+  - Type: locarg
+    Dupe:
+      Entity: X0 X12
   - Type: loc
+    Dupe:
+      Entity: X0 X12
   DebugInfo:
   - region 2002880 (稚児猿_Ｈ31)
   - 2000801 (c1260_0000 - Folding Screen Monkey)
@@ -13058,8 +13373,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005850
   Comment: Setting some speffect on seeing monkey when the door is opened and it is in that area
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000801 (c1260_0000 - Folding Screen Monkey)
   - region 2002870 (稚児猿_Ｈ24)
@@ -13074,9 +13390,10 @@ EnemyEvents:
   - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = X8_4)
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005855
-  Comment: Event for opening the door
+  Comment: Event for opening the door. This is probably fine duplicated
+  Dupe: 2000801
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 2004800 (環境音_無限回廊扉ガタガタ)
   - region 2001810 (SFX:蝋燭_ID811020_8000)
@@ -13113,8 +13430,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005858
   Comment: Another event for making seeing monkey confused
+  Dupe: 2000801
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000801 (c1260_0000 - Folding Screen Monkey)
   - region 2002880 (稚児猿_Ｈ31)
@@ -13133,6 +13451,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005860
   Comment: Hearing monkey getting bamboozled
+  Dupe: 2000802
   Template:
   - Type: loc
     Entity: 2000802
@@ -13157,6 +13476,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005865
   Comment: Some speffect for hearing monkey in area
+  Dupe: 2000802
   Template:
   - Type: loc
     Entity: 2000802
@@ -13179,6 +13499,9 @@ EnemyEvents:
   - Type: loc
     Entity: 2000803
     Remove: Set Character AI ID
+  - Type: loc
+    Dupe:
+      Condition: 1
   DebugInfo:
   - 2000803 (c1260_0002 - Folding Screen Monkey)
   - 2000801 (c1260_0000 - Folding Screen Monkey)
@@ -13199,6 +13522,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005873
   Comment: Warping to player location for invisible monkey. Also add condition so that Armored Warrior doesn't kill the player by falling on them. TODO check this works
+  Dupe: 2000804
   Template:
   - Type: loc
     Entity: 2000804
@@ -13228,8 +13552,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005874
   Comment: Another event for setting speffect while player is looking at invisible monkey
+  Dupe: 2000804
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000804 (c1260_0003 - Folding Screen Monkey)
   DebugCommands:
@@ -13241,6 +13566,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005875
   Comment: Change speffect on invisible folding monkey if it's in one of the closer two towers. Doesn't seem to change visibility if it already has one of them. But does affect other entities
+  Dupe: 2000804
   Template:
   - Type: loc
     Entity: 2000804
@@ -13266,8 +13592,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005885
   Comment: Using illusion hall bell
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 2002805 (Ev_無限回廊でワイヤーセット変更)
   - region 2002200 (無限回廊ワープ後_初期位置)
@@ -13322,8 +13649,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005890
   Comment: Helper monkeys
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000800 (c1000_0009 - Invisible - not random)
   - region 2002851 (稚児猿_Y22)
@@ -13349,8 +13677,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005895
   Comment: More helper monkeys
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000800 (c1000_0009 - Invisible - not random)
   - region 2002851 (稚児猿_Y22)
@@ -13382,8 +13711,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005900
   Comment: Even more helper monkeys
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000800 (c1000_0009 - Invisible - not random)
   - region 2002851 (稚児猿_Y22)
@@ -13421,8 +13751,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005910
   Comment: Update rate management
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 2002805 (Ev_無限回廊でワイヤーセット変更)
   - 2000800 (c1000_0009 - Invisible - not random)
@@ -13464,8 +13795,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005930
   Comment: Update rate of individual monkeys
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 2002805 (Ev_無限回廊でワイヤーセット変更)
   - 2000805 (c1250_0001 - Valley Monkey)
@@ -13498,8 +13830,10 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005940
   Comment: Warping monkeys if they fall off. The three warp locations are center island, back left top, and back right hallway. But some enemies are very difficult to fight on the center, so make it random.
+  Dupe: copyarg
   Template:
   - Type: loc
+    Entities: 2000801 2000802 2000803 2000804
     Remove: 2002551; 2002552; IF Character Has SpEffect (-3,0,5023,1,0,1)
     Add:
     - Cmd: Batch Set Event Flags (12005955,12005957,0)
@@ -13567,8 +13901,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005960
   Comment: speffect for monkeys. seems to be vfx
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000805 (c1250_0001 - Valley Monkey)
   - 2000806 (c1250_0002 - Valley Monkey)
@@ -13606,6 +13941,11 @@ EnemyEvents:
   - Type: loc
     Entity: 2500406
     Name: entity
+  - Type: loc
+    Dupe:
+      Entity: 2500406
+      HealthBar: 2500406
+      Condition: -1
   DebugInfo:
   - 2500406 (c1310_0006 - Okami Warrior)
   - region 2502345 (Event_Box_蹴鞠BGM)
@@ -13640,7 +13980,7 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 9201, Flag State = 0)
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505216
-  Comment: Lightning. Although it seems to not work too well as chr. As loc, it prevents backstab? I guess not.
+  Comment: Lightning
   Template:
   - Type: chr
     Entity: 2500406
@@ -13661,8 +14001,10 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505220
   Comment: Activation of some palace nobles, also references regions on the outside of Mibu Manor where the bull is
+  Dupe: copyarg
   Template:
   - Type: loc
+    Entities: 2500209 2500210 2500211 2500212 2500213
     Remove: Force Animation Playback
   DebugInfo:
   - region 2502213 (Event_起動領域_インスマウス_後宮)
@@ -13729,8 +14071,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12505400
   Comment: Character activation
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2500452 (c1310_0052 - Okami Warrior)
   - 2500453 (c1310_0053 - Okami Warrior)
@@ -13764,8 +14107,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12505430
   Comment: speffect for okami archer while on the roof. Used by AI script for something.
+  Dupe: 2500424
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500424
     Regions:
     - event dist10 2502424
@@ -13785,7 +14129,7 @@ EnemyEvents:
 - ID: 12505435
   Comment: Setting speffects on warriors overlooking the bull
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 2502220 (Event_源平武者_火牛援護制御)
   - 2500570 (c1380_0000 - Sakura Bull of the Palace)
@@ -13814,7 +14158,7 @@ EnemyEvents:
 - ID: 12505440
   Comment: Setting speffects based on areas
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - group 2505440 [2500580 (c1080_0000 - Shichimen Warrior), 2500356 (c1151_0006 - Palace Hound), 2500370 (c1151_0020 - Palace Hound), 2500371 (c1151_0021 - Palace Hound), 2500372 (c1151_0022 - Palace Hound), 2500373 (c1151_0023 - Palace Hound), 2500374 (c1151_0024 - Palace Hound), 2500375 (c1151_0025 - Palace Hound), 2500379 (c1151_0029 - Palace Hound), 2500380 (c1151_0030 - Palace Hound)]
   - group 2505441 [2500401 (c1310_0001 - Okami Warrior), 2500402 (c1310_0002 - Okami Warrior), 2500403 (c1310_0003 - Okami Warrior), 2500404 (c1310_0004 - Okami Warrior), 2500405 (c1310_0005 - Okami Warrior), 2500406 (c1310_0006 - Okami Warrior), 2500408 (c1310_0008 - Okami Warrior), 2500410 (c1310_0010 - Okami Warrior), 2500411 (c1310_0011 - Okami Warrior), 2500416 (c1310_0016 - Okami Warrior), 2500417 (c1310_0017 - Okami Warrior), 2500434 (c1310_0034 - Okami Warrior), 2500435 (c1310_0035 - Okami Warrior), 2500437 (c1310_0037 - Okami Warrior), 2500438 (c1310_0038 - Okami Warrior), 2500439 (c1310_0039 - Okami Warrior), 2500440 (c1310_0040 - Okami Warrior), 2500441 (c1310_0041 - Okami Warrior), 2500442 (c1310_0042 - Okami Warrior), 2500444 (c1310_0044 - Okami Warrior), 2500445 (c1310_0045 - Okami Warrior), 2500446 (c1310_0046 - Okami Warrior), 2500447 (c1310_0047 - Okami Warrior)]
@@ -13829,8 +14173,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505500
   Comment: Ties these two characters together. Also NPC part initialization. (These are not randomized, so don't try to remove them)
+  Dupe: 2500550
   Template:
-  - Type: multichr
+  - Type: multichrmove
     Entity: 2500550
     DefeatFlag: 12500550
   DebugInfo:
@@ -13851,8 +14196,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12505501
   Comment: More interaction between headlesses
+  Dupe: 2500550
   Template:
-  - Type: chr
+  - Type: multichrmove
     Entity: 2500550
     DefeatFlag: 12500550
   DebugInfo:
@@ -13871,8 +14217,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505502
   Comment: Kills other headless upon killing main one
+  Dupe: 2500550
   Template:
-  - Type: multichr
+  - Type: multichrmove
     Entity: 2500550
     DefeatFlag: 12500550
   DebugInfo:
@@ -13885,8 +14232,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12505510
   Comment: Wakes up geckos
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 2502503 (Event_特殊効果解除領域_ヤモリ洞窟)
   - 2500502 (c1100_0002 - Gecko)
@@ -13922,7 +14270,7 @@ EnemyEvents:
 - ID: 12505600
   Comment: Some lighting behavior from Okami warrior while climbing the steps to divine dragon
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2500699 (c1310_0009 - Okami Warrior - not random)
   - region 2502610 (event_box_神域_落雷起動00)
@@ -13947,7 +14295,7 @@ EnemyEvents:
 - ID: 12505699
   Comment: Initialization for fake Okami warrior
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2500699 (c1310_0009 - Okami Warrior - not random)
   DebugCommands:
@@ -13957,7 +14305,7 @@ EnemyEvents:
 - ID: 12505710
   Comment: Scale merchant
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2500701 (c1300_0023 - Palace Noble - not random)
   - 2500702 (c1321_0000 - Man-eating Carp - not random)
@@ -14023,7 +14371,7 @@ EnemyEvents:
 - ID: 12505720
   Comment: Logic for daughter who kills the palace nobles. Issues some ezstate requests to them, maybe it works xx
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2500710 (c7520_0000 - Feeding Ground Attendant's Daughter - not random)
   - 2500711 (c7520_0001 - Feeding Ground Attendant's Daughter - not random)
@@ -14073,14 +14421,15 @@ EnemyEvents:
 - ID: 12505721
   Comment: Killing all of the nobles in the gourd seed building
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - group 2505700 [2500209 (c1300_0009 - Palace Noble), 2500210 (c1300_0010 - Palace Noble), 2500211 (c1300_0011 - Palace Noble), 2500213 (c1300_0013 - Palace Noble)]
   DebugCommands:
   - END IF Event Flag (Execution End Type = 0, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 12500601)
   - + Force Character Death (Entity ID = 2505700*, Should Receive Souls = 0)
 - ID: 12505801
-  Comment: Initialization for old dragons
+  Comment: Start old dragons
+  Dupe: rewrite
   Template:
   - Type: loc
     Entity: 2500812
@@ -14176,8 +14525,6 @@ EnemyEvents:
   Comment: Old dragon behavior (summoning and AI speffects) and death. After 10 respawns have happened, dragons will respawn with speffect 3530030 and different dispmasks, meaning they do not damage the main health bar dragon (2500810). This also sets an event flag per enemy but it doesn't seem to do anything. Try to make this more complicated by behaving vanilla only when there are dragons there.
   Template:
   - Type: loc
-    # Remove: Change Character DispMask; IF Event Value; GOTO IF Condition Group State (Uncompiled)  # the last two are just for temp testing
-    Replace: 
     Add:
     # Add visual effect for non-old dragons who have respawned. Also end their spawn if a lot of respawns have happened already
     - Cmd: SKIP IF Character Has SpEffect (5,X0_4,3530001,1,0,1)
@@ -14199,6 +14546,10 @@ EnemyEvents:
       After: Label 0 ()
     - Cmd: GOTO IF Character Has SpEffect (2,X0_4,3530001,0,0,1)
       After: Set SpEffect (0,3530510)
+  - Type: chrarg
+    Comment: The other progress flags don't matter, as they are never set?
+    ProgressFlag: 12505828
+    Dupe: {}
   DebugInfo:
   - 2500810 (c5300_0025 - Old Dragon)
   - 2500811 (c5300_0000 - Old Dragon)
@@ -14276,7 +14627,7 @@ EnemyEvents:
 - ID: 12505834
   Comment: The grappleable tree dragon having objects attached? They are not randomized currently. This event also applies to 2 DummyEnemy tree dragons but they are not grappleable.
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2500930 (c5310_0000 - Tree Dragon)
   DebugInit:
@@ -14322,8 +14673,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505837
   Comment: Management for old dragon who is used for the boss health bar. Seemingly, the event runs while its HP ratio is <= 1 (not backread?), and increments the flag twice 0->2->4. Also try removing
+  Dupe: 2500810
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2500810 (c5300_0025 - Old Dragon)
   DebugCommands:
@@ -14336,6 +14688,10 @@ EnemyEvents:
   Comment: Sets event flag 12505875 used to prompt Old Dragon AI for summoning animation, and for tree dragon to allow spawning on subsequent times. When at least one old dragon has been killed (12505828 >= 1), and not yet second phase (12505881), wait for either 12505875 to be unset and end (to avoid race condition?) or 12505876 to be set (when any Old Dragon gets summon speffect), play warning sound, and set 12505877 (which is also used by AI for the Old Dragons to hold their wands high in the air). Finally wait for 12505875 to be unset by tree dragon summon.
   Template:
   - Type: loc
+    Comment: Most of the flags seem fine to use as a combined summoning system, other than the ending flag
+    Remove: 12505881
+    Dupe:
+      Entity: -1
   DebugInfo:
   - 2500811 (c5300_0000 - Old Dragon)
   DebugCommands:
@@ -14358,6 +14714,9 @@ EnemyEvents:
   Comment: Spawning the tree dragons, after 12505878 (set on summoning speffect). X4 are [1,2,2], and X8 are [30,1,1]. Sets an AI command randomly as well to prompt the spawning.
   Template:
   - Type: loc
+    Remove: 12505881
+    Dupe:
+      Entity: -1
   DebugInfo:
   - 2500930 (c5310_0000 - Tree Dragon)
   - 2500934 (c5310_0004 - Tree Dragon)
@@ -14405,8 +14764,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505850
   Comment: Sets some speffect on Divine Dragon. This is changed in the phase transition to 3520070
+  Dupe: rewrite
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   DebugCommands:
@@ -14463,6 +14823,9 @@ EnemyEvents:
   Template:
   - Type: loc
     Replace: 2505830 -> 2500812
+  - Type: loc
+    Dupe:
+      Condition: 1
   DebugInfo:
   - group 2505830 [2500812 (c5300_0001 - Old Dragon), 2500813 (c5300_0002 - Old Dragon), 2500814 (c5300_0003 - Old Dragon), 2500815 (c5300_0004 - Old Dragon), 2500816 (c5300_0005 - Old Dragon), 2500817 (c5300_0006 - Old Dragon), 2500818 (c5300_0007 - Old Dragon), 2500819 (c5300_0008 - Old Dragon), 2500820 (c5300_0009 - Old Dragon), 2500821 (c5300_0010 - Old Dragon), 2500822 (c5300_0011 - Old Dragon), 2500823 (c5300_0012 - Old Dragon), 2500824 (c5300_0013 - Old Dragon), 2500825 (c5300_0014 - Old Dragon)]
   DebugCommands:
@@ -14477,6 +14840,9 @@ EnemyEvents:
   Template:
   - Type: loc
     Replace: 2505830 -> 2500812
+  - Type: loc
+    Dupe:
+      Condition: 1
   DebugInfo:
   - group 2505830 [2500812 (c5300_0001 - Old Dragon), 2500813 (c5300_0002 - Old Dragon), 2500814 (c5300_0003 - Old Dragon), 2500815 (c5300_0004 - Old Dragon), 2500816 (c5300_0005 - Old Dragon), 2500817 (c5300_0006 - Old Dragon), 2500818 (c5300_0007 - Old Dragon), 2500819 (c5300_0008 - Old Dragon), 2500820 (c5300_0009 - Old Dragon), 2500821 (c5300_0010 - Old Dragon), 2500822 (c5300_0011 - Old Dragon), 2500823 (c5300_0012 - Old Dragon), 2500824 (c5300_0013 - Old Dragon), 2500825 (c5300_0014 - Old Dragon)]
   DebugCommands:
@@ -14521,6 +14887,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12505880
   Comment: End Divine Dragon and warp to Ashina Castle
+  Dupe: rewrite
   Template:
   - Type: end
     Entity: 2500800
@@ -14528,7 +14895,7 @@ EnemyEvents:
     EndCond2: IF Character HP Ratio
     Name: entity
     Replace: WAIT Fixed Time (Seconds) (9.7->3)
-  - Type: multichronly
+  - Type: multichronlymove
     Entity: 2500800
     DefeatFlag: 9310
     Remove: 9410; GOTO IF Condition Group State (Uncompiled)
@@ -14577,7 +14944,7 @@ EnemyEvents:
 - ID: 12505882
   Comment: Warps player to near Divine Dragon ("cloud sea") on event flag 12505949. However this event flag doesn't seem to be set from anywhere, and sets the boss defeat flag to true also, which is weird
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - region 2502821 (event_ワープ用_雲海)
   - 2500800 (c5200_0000 - Divine Dragon)
@@ -14608,31 +14975,15 @@ EnemyEvents:
       Before: Set Character AI State (2500800,1)
     - Cmd: (De)activate Object (2501800,0)
       Before: Set Character AI State (2500800,1)
-    #- Cmd: Set Character Immortality (2500800,1)
-    #  After: Warp Character and Copy Floor
-    #- Cmd: (De)activate Object (2501815,0)
-    #  After: Warp Character and Copy Floor
-    #- Cmd: (De)activate Object (2501800,0)
-    #  After: Warp Character and Copy Floor
-  #- Type: loc
-  #  Replace: IF Character HP Ratio (-1,2500810,5,0->0.99,0,1)  # To shorten phase 1
-  # This causes too much flailing around. funny, but softlocks sometimes.
-  #- Type: multichronly
-  #  Entity: 2500800
-  #  Remove: Set Character AI State; GOTO IF Event Flag
-  #  Add:
-  #  - Cmd: GOTO Unconditionally (0)
-  #    Before: start
-  #  - Cmd: IF Entity In/Outside Radius Of Entity (0,1,10000,2500800,25,1)
-  #    Before: Attach Object to Character
-  #  - Cmd: Award Item Lot (62208)
-  #    Before: Attach Object to Character
-  #  - Cmd: Set Character Gravity (2500800,0)
-  #    Before: Attach Object to Character
-  #  - Cmd: WAIT Fixed Time (Frames) (3)
-  #    Before: Attach Object to Character 
-  #  - Cmd: END Unconditionally (0)
-  #    After: Attach Object to Character
+  - Type: loc
+    Remove: Display Boss Health Bar (0,2500810,0,905200)
+    Dupe:
+      Entity: -1
+  - Type: chr
+    Entity: 2500800
+    Remove: Display Boss Health Bar (0,2500810,0,905200)
+    Dupe:
+      HealthBar: 2500800
   DebugInfo:
   - group 2505800 [2500811 (c5300_0000 - Old Dragon), 2500812 (c5300_0001 - Old Dragon), 2500813 (c5300_0002 - Old Dragon), 2500814 (c5300_0003 - Old Dragon), 2500815 (c5300_0004 - Old Dragon), 2500816 (c5300_0005 - Old Dragon), 2500817 (c5300_0006 - Old Dragon), 2500818 (c5300_0007 - Old Dragon), 2500819 (c5300_0008 - Old Dragon), 2500820 (c5300_0009 - Old Dragon), 2500821 (c5300_0010 - Old Dragon), 2500822 (c5300_0011 - Old Dragon), 2500823 (c5300_0012 - Old Dragon), 2500824 (c5300_0013 - Old Dragon), 2500825 (c5300_0014 - Old Dragon), 2500810 (c5300_0025 - Old Dragon), 2500930 (c5310_0000 - Tree Dragon), 2500933 (c5310_0003 - Tree Dragon), 2500934 (c5310_0004 - Tree Dragon)]
   - 2500800 (c5200_0000 - Divine Dragon)
@@ -14733,8 +15084,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12505888
   Comment: Sets flag 12505888, 5 seconds after second phase starts. Also sets an speffect used by AI, which seems to allows it to do melee attacks. Try to make this more consistent wrt tree dragon placements in smaller arenas by setting the flag immediately before the dragon can rotate too much.
+  Dupe: 2500800
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: 12505881
@@ -15400,12 +15752,15 @@ EnemyEvents:
   - + Shoot Bullet (Bullet Team Entity ID = X0_4*, Bullet Producer Entity ID = X0_4*, Dummypoly ID = X8_4, Behavior ID = X4_4, Firing Angle X = 0, Firing Angle Y = 0, Firing Angle Z = 0)
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505950
-  Comment: End of true monk fight
+  Comment: End true monk fight
   Template:
   - Type: end
     Entity: 2500850
     EndCond: -1
     EndCond2: IF Character HP Ratio
+  - Type: loc
+    Dupe:
+      Condition: -1
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   - 2500851 (c5005_0000 - Corrupted Monk Illusion)
@@ -15439,6 +15794,7 @@ EnemyEvents:
   - Set Area CameraSetParam SubID (CameraSetParam SubID = -1)
 - ID: 12505960
   Comment: Start true monk. Immortality is managed elsewhere, so add it explicitly here, since it's a boss
+  Dupe: rewrite
   Template:
   - Type: start
     Entity: 2500850
@@ -15447,7 +15803,7 @@ EnemyEvents:
     Name: entity
     Add:
     - Cmd: Set Character Immortality (2500850,1)
-  - Type: multichr
+  - Type: multichrmove
     Entity: 2500850
     DefeatFlag: 9309
     Remove: Set Area CameraSetParam SubID; Display Boss Health Bar; Set Event Flag
@@ -15495,7 +15851,7 @@ EnemyEvents:
   - Type: multichr
     Entity: 2500850
     DefeatFlag: 9309
-    # ProgressFlag: 12505952
+    ProgressFlag: 12505952
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   - 2500851 (c5005_0000 - Corrupted Monk Illusion)
@@ -15519,7 +15875,7 @@ EnemyEvents:
   - Type: chr
     Entity: 2500850
     DefeatFlag: 9309
-    # ProgressFlag: 12505952 12505953
+    ProgressFlag: 12505952 12505953
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   DebugCommands:
@@ -15544,7 +15900,7 @@ EnemyEvents:
     Entity: 2500850
     DefeatFlag: 9309
     Deathblow: 2500850
-    # ProgressFlag: 12505953 12505954
+    ProgressFlag: 12505953 12505954
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   DebugCommands:
@@ -15563,7 +15919,7 @@ EnemyEvents:
   - Type: chr
     Entity: 2500850
     DefeatFlag: 9309
-    # ProgressFlag: 12505954 12505955
+    ProgressFlag: 12505954 12505955
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   DebugCommands:
@@ -15596,8 +15952,9 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = 12505956, Flag State = 1)
 - ID: 12505970
   Comment: Illusions spawning and attacking. PC regions 6 and 8 apply for X12-X32 (0-2), and 7 and 9 apply to X36-X56 (3-5).
+  Dupe: 2500850
   Template:
-  - Type: multichronly
+  - Type: multichronlymove
     Entity: 2500850
     DefeatFlag: 9309
     Remove: Issue Short Warp Request
@@ -15697,8 +16054,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505980
   Comment: During summoning phase, speffect for monk, except when the player is high up. This doesn't translate to other arenas necessarily, but keep hiding behavior otherwise.
+  Dupe: 2500850
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500850
     DefeatFlag: 9309
     Regions:
@@ -15722,8 +16080,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505981
   Comment: Warp monk to a specific place during phase 2 illusion part. Except maybe leave her in place for more strategy with first deathblow.
+  Dupe: 2500850
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500850
     DefeatFlag: 9309
     Remove: Issue Short Warp Request
@@ -15739,7 +16098,7 @@ EnemyEvents:
   - + Issue Short Warp Request (Entity ID = 2500850*, Warp Type = 1, Warp Destination Entity ID = 2502888*, Dummypoly ID = -1)
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505982
-  Comment: Map SFX based on true monk behavior
+  Comment: Map SFX based on true monk behavior. The event flags seem to be used in Divine Dragon only??
   Template:
   - Type: chr
     Entity: 2500850
@@ -15861,7 +16220,7 @@ EnemyEvents:
 - ID: 20004105
   Comment: Start of common stuff. This is enabling/disabling backread
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - group 1505201 [1500616 (c1400_0001 - Fencer), 1500600 (c1450_0000 - Nightjar Ninja), 1500601 (c1450_0001 - Nightjar Ninja), 1500602 (c1450_0002 - Nightjar Ninja), 1500603 (c1450_0003 - Nightjar Ninja), 1500604 (c1450_0004 - Nightjar Ninja), 1500605 (c1450_0005 - Nightjar Ninja), 1500606 (c1450_0006 - Nightjar Ninja), 1500607 (c1450_0007 - Nightjar Ninja)]
   - group 1505211 [1500608 (c1450_0008 - Nightjar Ninja), 1500609 (c1450_0009 - Nightjar Ninja), 1500610 (c1450_0010 - Nightjar Ninja)]
@@ -16043,8 +16402,10 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 20004109
   Comment: Unclear what this does, but involves event messages, enables AIs, for one of the first phantoms in Sunken Valley
+  Dupe: copyarg
   Template:
   - Type: common
+    Entity: 1700260
     Remove: Force Animation Playback
   DebugInfo:
   - 1700260 (c1500_0000 - Mibu Villager)
@@ -16084,7 +16445,7 @@ EnemyEvents:
 - ID: 20004111
   Comment: Enabling characters based on event flags
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - group 1005600 [1000202 (c1550_0002 - Bandit), 1000203 (c1550_0003 - Bandit), 1000204 (c1550_0004 - Bandit), 1000205 (c1550_0005 - Bandit), 1000208 (c1550_0008 - Bandit), 1000210 (c1550_0010 - Bandit), 1000212 (c1550_0012 - Bandit), 1000241 (c1550_0041 - Bandit), 1000242 (c1550_0042 - Bandit), 1000243 (c1550_0043 - Bandit), 1000244 (c1550_0044 - Bandit), 1000259 (c1550_0059 - Bandit), 1000260 (c1550_0060 - Bandit), 1000262 (c1550_0062 - Bandit), 1000264 (c1550_0064 - Bandit), 1000265 (c1550_0065 - Bandit)]
   - group 1005601 [1000333 (c1050_0003 - Shinobi Hunter), 1000334 (c1050_0004 - Shinobi Hunter), 1000410 (c1150_0010 - Hound), 1000411 (c1150_0011 - Hound), 1000412 (c1150_0012 - Hound), 1000361 (c1180_0001 - Taro Troop), 1000362 (c1180_0002 - Taro Troop), 1000363 (c1180_0003 - Taro Troop), 1000351 (c1470_0001 - Lone Shadow), 1000352 (c1470_0002 - Lone Shadow), 1000354 (c1470_0004 - Lone Shadow), 1000355 (c1470_0005 - Lone Shadow), 1000277 (c1550_0077 - Bandit), 1000278 (c1550_0078 - Bandit), 1000279 (c1550_0079 - Bandit), 1000281 (c1550_0081 - Bandit), 1000282 (c1550_0082 - Bandit), 1000283 (c1550_0083 - Bandit), 1000284 (c1550_0084 - Bandit), 1000285 (c1550_0085 - Bandit), 1000288 (c1550_0088 - Bandit), 1000289 (c1550_0089 - Bandit), 1000290 (c1550_0090 - Bandit), 1000291 (c1550_0091 - Bandit), 1000292 (c1550_0092 - Bandit), 1000293 (c1550_0093 - Bandit), 1000294 (c1550_0094 - Bandit)]
@@ -16130,8 +16491,10 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 20005110
   Comment: Seems to trigger enemy AI based on entering region or getting damaged
+  Dupe: copyarg
   Template:
   - Type: common
+    Entities: 1000201 1000203 1000259 1000260 1000208 1000209 1000210 1000300 1100201 1100212 1100216 1100321 1100360 1100250 1100251 1100252 1100254 1110236 1110248 1110353 1110365 1110372 1110373 1110381 1110216 1110217 1110572 1110575 1110464 1110465 1110466 1110467 1110469 1110470 1110338 1110339 1110355 1110361 1110371 1110376 1110377 1110379 1110414 1110309 1110326 1110515 1110516 1110415 1110360 1300280 1300285 1700400 1700390 1700391 1700393 2500413 2500570
     Remove: Force Animation Playback
   DebugInfo:
   - 1000201 (c1550_0001 - Bandit)
@@ -16326,8 +16689,10 @@ EnemyEvents:
   - + Set Character AI State (Entity ID = X0_4*, Disabled/Enabled = 1)
 - ID: 20005120
   Comment: Similar to previous
+  Dupe: copyarg
   Template:
   - Type: common
+    Entities: 1000262 1000265 1000212 1000351 1000289 1000352 1100480 1100322 1100382 1100381 1100413 1100438 1100457 1110461 1300282 1300291 2000647 2000648 2000649 2000646
     Remove: Force Animation Playback
   DebugInfo:
   - 1000262 (c1550_0062 - Bandit)
@@ -16413,8 +16778,10 @@ EnemyEvents:
   - + Set Character AI State (Entity ID = X0_4*, Disabled/Enabled = 1)
 - ID: 20005130
   Comment: Similar to previous
+  Dupe: copyarg
   Template:
   - Type: common
+    Entity: 1100350
     Remove: Force Animation Playback
   DebugInfo:
   - 1100350 (c1150_0000 - Hound)
@@ -16466,8 +16833,10 @@ EnemyEvents:
   - + Set Character AI State (Entity ID = X0_4*, Disabled/Enabled = 1)
 - ID: 20005132
   Comment: Similar to previous
+  Dupe: copyarg
   Template:
   - Type: common
+    Entities: 1100202 1100203 1100352 1110374 1110610 1110375 1300284
     Remove: Force Animation Playback
   DebugInfo:
   - 1100202 (c1010_0002 - Ashina Soldier)
@@ -16535,8 +16904,9 @@ EnemyEvents:
   - + Set Character AI State (Entity ID = X0_4*, Disabled/Enabled = 1)
 - ID: 20005150
   Comment: Similar to previous
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1100243 (c1010_0043 - Ashina Soldier)
   - 1100427 (c1700_0027 - Red Guard)
@@ -16565,9 +16935,11 @@ EnemyEvents:
   - + Set Character AI State (Entity ID = X0_4*, Disabled/Enabled = 1)
 - ID: 20005200
   Comment: Seems to be condition for enemy noticing player
+  Dupe: copyarg
   Template:
   - Type: common
-    Remove: Force Animation Playback
+    Entities: 1100301 1100321 1110504 1110532 1110563 1110564 1110565 1110500 1110642 1110643 1110644 1110353 1110511 1120201 1300280 1300285 1500328 1500329 1500332 1500333 1500334 1500336 1500480 1500481 1500301 1500302 1500640 1500641 1500642 1500643 1500644 1700400 1700301 1700310 1700311 1700312 1700313 1700314 1700315 1700316 1700317 1700318 1700319 1700320 1700321 1700322 1700323 1700324 1700325 1700326 1700327 1700328 1700329 2000261 2000263 2000264 2000265 2000280 2000601 2000510 2500401 2500410 2500411 2500425 2500424 2500426
+    Remove: Force Animation Playback; 5450
   DebugInfo:
   - 1100301 (c1020_0001 - Samurai General)
   - region 1102301 (event_特殊待機解除_侍大将_01)
@@ -16800,9 +17172,11 @@ EnemyEvents:
   - + Force Character Target (Targeter Entity ID = X0_4*, Targeted Entity ID = 10000)
 - ID: 20005210
   Comment: Likewise, enabling enemy
+  Dupe: copyarg
   Template:
   - Type: common
-    Remove: Force Animation Playback
+    Entities: 1000246 1000247 1000249 1000221 1000230 1000239 1000218 1000219 1000222 1000332 1000350 1100217 1100225 1100247 1100383 1100457 1110432 1110451 1300282 1300291 1500300 1500368 1500304 1500361 1500356 1500360 1500372 1500339 1500378 1500484 1500450 1500453 1500404 1500405 1500406 1500414 1500415 1500416 1500431 1500433 1500434 1500436 1500437 1500438 1500439 1500410 1500411 1700390 1700391 1700393 1700423 1700200 1700202 1700208 1700209 1700210 1700218 1700340 1700350 1700356 1700357 1700358 1700520 2000671 2000673 2000202 2000203 2000210 2000211 2000212 2000647 2000648 2000649 2000646 2000512 2000301 2000302 2000303 2000304 2000601 2000305 2000306 2000307 2000308 2000309 2000311 2000312 2000390 2000391 2500405 2500407 2500412 2500413 2500415 2500421 2500424 2500425 2500450 2500363 2500364 2500365 2500366 2500509 2500500
+    Remove: Force Animation Playback; 5450
   DebugInfo:
   - 1000246 (c1550_0046 - Bandit)
   - 1000247 (c1550_0047 - Bandit)
@@ -17077,10 +17451,12 @@ EnemyEvents:
   - SKIP IF Comparison (Number Of Skipped Lines = 1, Comparison Type = 5, Left-hand Side = X40_4, Right-hand Side = 0)
   - + Force Character Target (Targeter Entity ID = X0_4*, Targeted Entity ID = 10000)
 - ID: 20005213
+  Dupe: copyarg
   Comment: Same
   Template:
   - Type: common
-    Remove: Force Animation Playback
+    Entities: 1300284 1500417 1500422 1500423
+    Remove: Force Animation Playback; 5450
   DebugInfo:
   - 1300284 (c1520_0004 - Test Subject)
   - region 1302301 (コオロギ_散るポイント)
@@ -17163,9 +17539,11 @@ EnemyEvents:
   - + Force Character Target (Targeter Entity ID = X0_4*, Targeted Entity ID = 10000)
 - ID: 20005290
   Comment: Same
+  Dupe: copyarg
   Template:
   - Type: common
-    Remove: Force Animation Playback
+    Entities: 1000232 1000245 1000276 1000274 1000300 1000281 1000283 1000288 1000289 1000290 1100330 1100342 1100480 1100218 1100217 1100243 1100435 1100409 1100423 1100424 1100427 1110510 1110280 1110234 1110212 1110640 1110646 1110502 1110295 1110503 1110508 1110513 1110514 1110400 1110401 1110433 1110641 1110211 1110285 1110297 1110298 1110407 1110408 1110409 1110562 1110571 1110461 1110299 1110286 1110288 1110289 1110290 1110291 1110292 1110293 1110294 1110466 1110378 1110360 1120250 1120210 1120422 1120425 1120426 1120358 1300301 1300300 1300200 1500331 1500490 1700650 2500402 2500408 2500374 2500380 2500505 2500506 2500502 2500580
+    Remove: Force Animation Playback; 5450
   DebugInfo:
   - 1000232 (c1550_0032 - Bandit)
   - 1000245 (c1550_0045 - Bandit)
@@ -17378,8 +17756,9 @@ EnemyEvents:
   - + Force Character Target (Targeter Entity ID = X0_4*, Targeted Entity ID = 10000)
 - ID: 20005300
   Comment: More AI event
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000226 (c1550_0026 - Bandit)
   - 1000490 (c1000_0000 - Invisible - not random)
@@ -17541,8 +17920,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 20005301
   Comment: More AI event in area
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000454 (c1550_0002 - Bandit)
   - 2000672 (c1180_0002 - Taro Troop)
@@ -17579,8 +17959,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 20005302
   Comment: More AI activation
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000285 (c1550_0085 - Bandit)
   DebugInit:
@@ -17600,8 +17981,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 20005304
   Comment: Yet more AI activation
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 2000459 (c1000_0006 - Invisible - not random)
   - 2000460 (c1220_0019 - Seeker)
@@ -17624,8 +18006,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 20005305
   Comment: AI activation
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1100351 (c1150_0001 - Hound)
   - 1110451 (c1250_0001 - Valley Monkey)
@@ -17662,8 +18045,10 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 20005307
   Comment: Complex AI activation
+  Dupe: copyarg
   Template:
   - Type: common
+    Entities: 1100235 1100209
     Remove: Force Animation Playback
   DebugInfo:
   - 1100235 (c1010_0035 - Ashina Soldier)
@@ -17718,8 +18103,9 @@ EnemyEvents:
   - + Request Character AI Command (Entity ID = X0_4*, Command ID = X4_4, Slot Number = 0)
 - ID: 20005321
   Comment: Set/clear speffects on combat
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1110530 (c1450_0000 - Nightjar Ninja)
   - 1110451 (c1250_0001 - Valley Monkey)
@@ -17763,9 +18149,18 @@ EnemyEvents:
   - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = 5000)
 - ID: 20005330
   Comment: Manages music and health bar display for minibosses
+  # TODO make this combined, somehow
   Template:
-  - Type: commonarg
+  - Type: locarg
     Name: X0 X4
+  - Type: locarg
+    Dupe:
+      Entity: X0 X16
+  - Type: common
+    Dupe:
+      Entity: X0 X16
+      HealthBar: X4
+      Condition: 2; -4
   DebugInfo:
   - 1000300 (c1070_0000 - Shura Samurai)
   - 1000301 (c1070_0001 - Shura Samurai)
@@ -17937,8 +18332,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 20005331
   Comment: Minibosses start. Last param is maybe chr
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000300 (c1070_0000 - Shura Samurai)
   - 1000301 (c1070_0001 - Shura Samurai)
@@ -18075,8 +18471,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 20005332
   Comment: Force character target if a certain distance away and have speffects
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000331 (c1050_0001 - Shinobi Hunter)
   - 1000332 (c1050_0002 - Shinobi Hunter)
@@ -18210,9 +18607,16 @@ EnemyEvents:
   - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
   - END Unconditionally (Execution End Type = 1)
 - ID: 20005340
-  Comment: Common enemy, award item on death
+  Comment: Common enemy/miniboss, award item on death, respawn iff flag
   Template:
-  - Type: loc
+  - Type: locarg
+    Dupe:
+      Entity: X4 X44
+  - Type: common
+    Comment: Always wait 3 seconds, since the speffect check doesn't work as an AND condition
+    Remove: SKIP IF Character Has SpEffect (1,0,220020,0,0,1)
+    Dupe:
+      Entity: X4 X44
   DebugInfo:
   - 1000450 (c1320_0000 - Treasure Carp - not random)
   - 1000451 (c1320_0001 - Treasure Carp - not random)
@@ -18453,7 +18857,12 @@ EnemyEvents:
 - ID: 20005341
   Comment: Special to Armored Warrior, award item on death
   Template:
-  - Type: loc
+  - Type: locarg
+    Dupe:
+      Entity: X4 X48
+  - Type: common
+    Dupe:
+      Entity: X4 X48
   DebugInfo:
   - 2000400 (c1130_0000 - Armored Warrior)
   DebugInit:
@@ -18545,8 +18954,9 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = X40_4, Flag State = 0)
 - ID: 20005380
   Comment: Setting backread for enemies based on entering/exiting region/maps
+  Dupe: copyarg
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1100390 (c1000_0000 - Invisible - not random)
   - region 1102390 (event_敵の巡回開始_旧見張り番広場)
@@ -18738,7 +19148,7 @@ EnemyEvents:
 - ID: 20005420
   Comment: Tutorial text for deathblows on either Butterfly or Gyoubu
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000810 (c5090_0001 - Lady Butterfly)
   - 1100800 (c5080_0000 - Gyoubu Oniwa)
@@ -18759,7 +19169,7 @@ EnemyEvents:
 - ID: 20005421
   Comment: Some event for a tutorial
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1300200 (c1080_0000 - Shichimen Warrior)
   - 2000466 (c1060_0002 - Spear Adept)
@@ -18990,9 +19400,9 @@ EnemyEvents:
   - + Clear SpEffect (Entity ID = X0_4*, SpEffect ID = 3108010)
   - END Unconditionally (Execution End Type = 1)
 - ID: 20005446
-  Comment: Shichimen event, but spawns bullets in places in arena, needs to be moved
+  Comment: Shichimen event, but spawns bullets in places in arena, they need to be moved xx
   Template:
-  - Type: chr xx
+  - Type: chr
   DebugInfo:
   - 1300200 (c1080_0000 - Shichimen Warrior)
   - region 1302360 (event_七面武者_怨霊弾召喚ポイント0)
@@ -19175,7 +19585,7 @@ EnemyEvents:
 - ID: 20005545
   Comment: Some behavior in response to object destruction
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000200 (c1550_0000 - Bandit)
   - 1100493 (c1000_0003 - Invisible - not random)
@@ -19215,7 +19625,7 @@ EnemyEvents:
 - ID: 20006002
   Comment: Sets an event flag (used by ESD) when chr dies
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000740 (c7420_0000 - Anayama the Peddler - not random)
   - 1100720 (c7010_0000 - Sculptor - not random)
@@ -19298,7 +19708,7 @@ EnemyEvents:
 - ID: 20006051
   Comment: Seems to make eavesdropping possible when it normally otherwise wouldn't be
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1100235 (c1010_0035 - Ashina Soldier)
   - region 1102740 (event_盗み聞き_盗み聞き可能状態設定用領域)
@@ -19319,7 +19729,7 @@ EnemyEvents:
 - ID: 20006204
   Comment: Sets an event flag based on being within some distance of an entity, likely used by ESD
   Template:
-  - Type: loc
+  - Type: default
   DebugInfo:
   - 1000730 (c1300_0000 - Palace Noble - not random)
   - 1110701 (c7200_0000 - Kuro - not random)

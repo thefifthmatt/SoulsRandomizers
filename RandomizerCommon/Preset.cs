@@ -27,6 +27,8 @@ namespace RandomizerCommon
         public string OopsAll { get; set; }
         [YamlIgnore]
         public List<int> OopsAllIDs = new List<int>();
+        // For enemy onslaught runs (>2 may cause crashes)
+        public int EnemyMultiplier { get; set; }
         // Individual pool specifications
         public List<PoolAssignment> Boss { get; set; }
         public List<PoolAssignment> Miniboss { get; set; }
@@ -83,20 +85,21 @@ namespace RandomizerCommon
                 ret = Directory.GetFiles("presets", "*.txt").Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
                 ret.Remove("README");
                 ret.Remove("Template");
+                ret.Sort();
             }
             return ret;
         }
 
         // Just load it at the start, but don't do any validation yet.
         // This method may throw exceptions which the caller should probably catch.
-        public static Preset LoadPreset(string name, bool extractOopsAll = false, string filename = null)
+        public static Preset LoadPreset(string name, bool extractOopsAll = false, string checkDir = null)
         {
             string loadName = name;
             if (extractOopsAll && name.StartsWith("Oops All "))
             {
                 loadName = "Oops All";
             }
-            string path = filename ?? $@"presets\{loadName}.txt";
+            string path = $@"{checkDir ?? "presets"}\{loadName}.txt";
 
             Preset preset;
             IDeserializer deserializer = new DeserializerBuilder().Build();
@@ -116,12 +119,47 @@ namespace RandomizerCommon
         {
             // Process enemy names
             HashSet<string> eligibleNames = new HashSet<string>();
+            Dictionary<string, string> impliedNames = new Dictionary<string, string>();
             foreach (EnemyCategory cat in cats)
             {
                 eligibleNames.Add(cat.Name);
-                if (cat.Instance != null) eligibleNames.UnionWith(cat.Instance);
-                if (cat.Partition != null) eligibleNames.UnionWith(cat.Partition);
-                if (cat.Partial != null) eligibleNames.UnionWith(cat.Partial);
+                HashSet<string> subNames = new HashSet<string>();
+                if (cat.Instance != null) subNames.UnionWith(cat.Instance);
+                if (cat.Partition != null) subNames.UnionWith(cat.Partition);
+                if (cat.Partial != null) subNames.UnionWith(cat.Partial);
+                if (subNames.Count > 0)
+                {
+                    eligibleNames.UnionWith(subNames);
+                    foreach (string subName in subNames)
+                    {
+                        impliedNames[subName] = cat.Name;
+                    }
+                }
+            }
+            if (eligibleNames.Count == 0)
+            {
+                eligibleNames.UnionWith(game.GetModelNames());
+            }
+            bool printCategories = false;
+            if (printCategories)
+            {
+                SortedSet<string> categories = new SortedSet<string>();
+                foreach (EnemyInfo info in infos.Values)
+                {
+                    if (info.Class == EnemyClass.None || info.Class == EnemyClass.Helper) continue;
+                    if (info.ExtraName != null)
+                    {
+                        categories.Add(info.ExtraName);
+                    }
+                    else
+                    {
+                        categories.Add(game.ModelName(info.ModelName));
+                    }
+                }
+                foreach (string cat in categories)
+                {
+                    Console.WriteLine($"- Name: {cat}");
+                }
             }
             Dictionary<int, string> primaryName = new Dictionary<int, string>();
             Dictionary<string, List<int>> enemiesForName = new Dictionary<string, List<int>>();
@@ -132,6 +170,9 @@ namespace RandomizerCommon
             {
                 // Do not let some enemies be randomized at this point, many will prevent the game from being completeable.
                 if (info.Class == EnemyClass.None) continue;
+                // Don't do helpers by default in DS3, as many are nonfunctional on their own. Tags could be used to override this.
+                // In Sekiro, bossNames handles some cases like this.
+                if (!game.Sekiro && info.Class == EnemyClass.Helper && !info.HasTag("standalone")) continue;
                 List<string> names = new List<string>();
                 // Add all names. The first name added will be the primary name.
                 if (info.ExtraName != null)
@@ -155,6 +196,13 @@ namespace RandomizerCommon
                     if (info.Class == EnemyClass.Miniboss || info.Class == EnemyClass.Basic)
                     {
                         names.Add($"{info.Class} {model}");
+                    }
+                    foreach (string name in names.ToList())
+                    {
+                        if (impliedNames.TryGetValue(name, out string broadName) && !names.Contains(broadName))
+                        {
+                            names.Add(broadName);
+                        }
                     }
                 }
                 names.RemoveAll(n =>
@@ -188,15 +236,30 @@ namespace RandomizerCommon
                     AddMulti(enemiesForName, name, info.ID);
                 }
             }
+            // Mapping Enemy name: any
             bool generateEnemyList = false;
             if (generateEnemyList)
             {
-                foreach (EnemyClass c in new[] { EnemyClass.Boss, EnemyClass.TutorialBoss, EnemyClass.Miniboss, EnemyClass.FoldingMonkey, EnemyClass.Basic })
+                List<List<EnemyClass>> classGroups = new List<List<EnemyClass>>
+                {
+                    new List<EnemyClass> { EnemyClass.Boss },
+                    new List<EnemyClass> { EnemyClass.TutorialBoss },
+                    new List<EnemyClass> { EnemyClass.Miniboss },
+                    new List<EnemyClass> { EnemyClass.FoldingMonkey },
+                    new List<EnemyClass> { EnemyClass.Basic, EnemyClass.CrystalLizard, EnemyClass.Mimic },
+                };
+                foreach (List<EnemyClass> cs in classGroups)
                 {
                     string map = null;
-                    foreach (EnemyInfo info in infos.Values)
+                    (string, string, int) sortKey(EnemyInfo info)
                     {
-                        if (info.Class == c && primaryName.TryGetValue(info.ID, out string name))
+                        string enemyMap = defaultData[info.ID].Map;
+                        return (enemyMap, info.ModelName, info.ID);
+                    }
+                    foreach (EnemyInfo info in infos.Values.OrderBy(sortKey))
+                    {
+                        if (!cs.Contains(info.Class)) continue;
+                        if (primaryName.TryGetValue(info.ID, out string name))
                         {
                             string enemyMap = game.LocationNames[game.Locations[defaultData[info.ID].Map]];
                             if (map != enemyMap)
@@ -205,6 +268,10 @@ namespace RandomizerCommon
                                 Console.WriteLine($"  # {map}");
                             }
                             Console.WriteLine($"  {name} {info.ID}: any");
+                        }
+                        else
+                        {
+                            throw new Exception($"No name for {info.Class} {info.ID}: {info.DebugText}");
                         }
                     }
                     Console.WriteLine();

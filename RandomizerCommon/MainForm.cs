@@ -11,11 +11,11 @@ namespace RandomizerCommon
 {
     public partial class MainForm : Form
     {
+        private static readonly string enemySeedPlaceholder = "(same as overall seed)";
+
         private RandomizerOptions options = new RandomizerOptions(false);
         private string defaultOpts = null;
         private HashSet<string> previousOpts = new HashSet<string>();
-        private Color initialColor;
-        private Color dangerColor = Color.IndianRed;
         private bool simultaneousUpdate;
         private bool working;
         private bool error;
@@ -24,8 +24,6 @@ namespace RandomizerCommon
         public MainForm()
         {
             InitializeComponent();
-            initialColor = BackColor;
-
             if (!MiscSetup.CheckRequiredDS3Files(out string req))
             {
                 SetError(req, true);
@@ -35,6 +33,9 @@ namespace RandomizerCommon
                 SetWarning();
             }
             SetStatus(null);
+            presetL.Text = "";
+            enemyseed.GotFocus += enemyseed_TextChanged;
+            enemyseed.LostFocus += enemyseed_TextChanged;
 
             // The rest of initialization
             RandomizerOptions initialOpts = new RandomizerOptions(false);
@@ -42,7 +43,6 @@ namespace RandomizerCommon
             defaultOpts = initialOpts.FullString();
 
             string existingOpts = Settings.Default.Options;
-
             if (string.IsNullOrWhiteSpace(existingOpts))
             {
                 options.Difficulty = difficulty.Value;
@@ -57,6 +57,7 @@ namespace RandomizerCommon
                     defaultReroll.Checked = false;
                 }
             }
+            // defaultRerollEnemy.Checked = defaultReroll.Checked && options.Seed2 != 0;
             SetStatus(null);
 
             UpdateEnabled();
@@ -70,11 +71,23 @@ namespace RandomizerCommon
             bool isValidOption(string s)
             {
                 if (validOptions.Contains(s)) return true;
-                if (uint.TryParse(s, out var ignored)) return true;
+                if (uint.TryParse(s, out _)) return true;
                 return false;
             }
             previousOpts = new HashSet<string>(defaultOpts.Split(' '));
             options = RandomizerOptions.Parse(previousOpts, false, isValidOption);
+
+            // New defaults
+            if (previousOpts.Contains("v2") || previousOpts.Contains("v3"))
+            {
+                options["item"] = true;
+                options["enemy"] = true;
+                options["mimics"] = true;
+                options["lizards"] = true;
+                options["earlyreq"] = true;
+                options["scale"] = true;
+                options["edittext"] = true;
+            }
 
             simultaneousUpdate = true;
             InsertControlFlags(this);
@@ -82,14 +95,30 @@ namespace RandomizerCommon
             simultaneousUpdate = false;
 
             fixedseed.Text = options.Seed == 0 ? "" : $"{options.Seed}";
+            enemyseed.Text = options.Seed2 == 0 || options.Seed == options.Seed2 ? "" : $"{options.Seed2}";
+
+            if (options.Preset == null)
+            {
+                SetPreset(null);
+            }
+            else
+            {
+                try
+                {
+                    Preset preset = Preset.LoadPreset(options.Preset, extractOopsAll: true);
+                    SetPreset(preset);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    SetPreset(null);
+                }
+            }
         }
 
         private void SetWarning()
         {
-            bool fatal = MiscSetup.CheckDS3ModEngine(out string err, out encrypted);
-#if DEBUG
-            fatal = false;
-#endif
+            bool fatal = MiscSetup.CheckDS3ModEngine(enemy.Checked, out string err, out encrypted);
             SetError(err, fatal);
         }
 
@@ -97,6 +126,9 @@ namespace RandomizerCommon
         {
             warningL.Text = text ?? "";
             warningL.Visible = true;
+#if DEBUG
+            fatal = false;
+#endif
             if (fatal)
             {
                 randomize.Enabled = false;
@@ -137,22 +169,9 @@ namespace RandomizerCommon
             SetControlFlags(this);
             UpdateEnabled();
             UpdateLabels();
-            SetStatus(null);
             SaveOptions();
+            SetStatus(null);
         }
-
-        private void reroll_CheckedChanged(object sender, EventArgs e)
-        {
-            if (defaultReroll.Checked)
-            {
-                randomize.Text = "Randomize new run!";
-            }
-            else
-            {
-                randomize.Text = "Run with fixed seed";
-            }
-        }
-
 
         private void SetControlFlags(Control control, RandomizerOptions customOpt = null)
         {
@@ -210,42 +229,58 @@ namespace RandomizerCommon
             }
         }
 
+        private void MassEnable(Dictionary<Control, bool> toEnable, Control control, string enableName, string filter)
+        {
+            if (control.Name == enableName) return;
+            if (control is RadioButton || control is CheckBox || control is TrackBar || control is Label)
+            {
+                if (filter == null) toEnable[control] = options[enableName];
+            }
+            else
+            {
+                if (filter == null) toEnable[control] = options[enableName];
+                foreach (Control sub in control.Controls)
+                {
+                    MassEnable(toEnable, sub, enableName, filter != null && filter == control.Name ? null : filter);
+                }
+            }
+        }
+
         private void UpdateEnabled()
         {
             simultaneousUpdate = true;
             bool changes = false;
-            void setCheck(Control control, bool enabled)
+            Dictionary<Control, bool> toEnable = new Dictionary<Control, bool>();
+            MassEnable(toEnable, this, "item", "itemPage");
+            MassEnable(toEnable, this, "enemy", "enemyPage");
+            // Individual updates
+            void setCheck(Control control, bool enabled, bool defaultState, bool disabledState, string overrideDisable)
             {
-                control.Enabled = enabled;
-                if (control is CheckBox check && check.Checked && !enabled)
+                bool prevEnabled = control.Enabled;
+                if (overrideDisable == null || options[overrideDisable])
                 {
-                    check.Checked = false;
+                    toEnable[control] = enabled;
+                }
+                // Generalizing across control types, was it worth it :')
+                CheckBox check = control as CheckBox;
+                RadioButton radio = control as RadioButton;
+                bool prevChecked = check != null ? check.Checked : radio.Checked;
+                if (!enabled && prevEnabled && prevChecked != disabledState)
+                {
+                    if (check != null) check.Checked = disabledState;
+                    else radio.Checked = disabledState;
                     changes = true;
                 }
-                else if (control is RadioButton radio && radio.Checked && !enabled)
+                else if (enabled && !prevEnabled && prevChecked != defaultState)
                 {
-                    radio.Checked = false;
+                    if (check != null) check.Checked = defaultState;
+                    else radio.Checked = defaultState;
                     changes = true;
                 }
             };
-            setCheck(earlydlc, options["dlc1"]);
-            setCheck(vilhelmskip, options["dlc1"]);
-            setCheck(dlc2fromdlc1, options["dlc1"] && options["dlc2"]);
-            setCheck(dlc2fromkiln, options["dlc2"]);
-            setCheck(racemode_health, options["racemode"]);
-            if (!dlc2fromdlc1.Checked && !dlc2fromkiln.Checked)
-            {
-                if (dlc2fromdlc1.Enabled)
-                {
-                    dlc2fromdlc1.Checked = true;
-                    changes = true;
-                }
-                else if (dlc2fromkiln.Enabled)
-                {
-                    dlc2fromkiln.Checked = true;
-                    changes = true;
-                }
-            }
+            setCheck(earlydlc, options["dlc1"], false, false, "item");
+            setCheck(dlc2fromdlc1, options["dlc1"] && options["dlc2"], true, false, "item");
+            setCheck(racemode_health, options["racemode"], false, false, "item");
             if (!racemode_health.Checked && !norandom_health.Checked)
             {
                 defaultHealth.Checked = true;
@@ -256,6 +291,12 @@ namespace RandomizerCommon
                 defaultKey.Checked = true;
                 changes = true;
             }
+            foreach (KeyValuePair<Control, bool> enable in toEnable)
+            {
+                enable.Key.Enabled = enable.Value;
+            }
+            enemyseed_TextChanged(null, null);
+            randomize.Enabled = (options["enemy"] || options["item"]) && !error;
             if (changes) SetControlFlags(this);
             simultaneousUpdate = false;
         }
@@ -308,7 +349,7 @@ namespace RandomizerCommon
             }
             else if (options["middancer"]) dancerLevel = "medium";
             if (!options["weaponprogression"]) dancerWeapon = "no guaranteed";
-            earlylothricL.Text = $"Fight Dancer at {dancerLevel} soul level with {dancerWeapon} weapon";
+            earlylothricL.Text = $"May require Dancer at {dancerLevel} soul level with {dancerWeapon} weapon";
             string friedeEstus = options["estusprogression"] ? "most" : "no guaranteed";
             string friedeWeapon = "+10";
             string friedeLevel = "high";
@@ -318,29 +359,17 @@ namespace RandomizerCommon
                 friedeWeapon = "+7";
             }
             if (!options["weaponprogression"]) friedeWeapon = "no guaranteed";
-            earlydlcL.Text = $"Fight Friede at {friedeLevel} soul level, {friedeEstus} estus, and {friedeWeapon} weapon";
-            // Fun with colors
-            if (options.Difficulty <= 85)
-            {
-                BackColor = initialColor;
-            }
-            else
-            {
-                // Ugly blending. But because there's only one hue involved, it's ok
-                double blend = (options.Difficulty - 85) / 15.0;
-                // A bit less strong to preserve readability
-                blend /= 2;
-                BackColor = Color.FromArgb(
-                    (int)(dangerColor.R * blend + initialColor.R * (1 - blend)),
-                    (int)(dangerColor.G * blend + initialColor.G * (1 - blend)),
-                    (int)(dangerColor.B * blend + initialColor.B * (1 - blend)));
-            }
+            earlydlcL.Text = $"May require Friede at {friedeLevel} soul level, {friedeEstus} estus, and {friedeWeapon} weapon";
+
+            chests.Text = "Turn all chests into mimics" + (options["mimics"] ? " (randomized)" : "");
         }
 
         private async void randomize_Click(object sender, EventArgs e)
         {
             if (working) return;
             SetWarning();
+            if (error) return;
+            Random seedRandom = new Random();
             if (!defaultReroll.Checked && fixedseed.Text.Trim() != "")
             {
                 if (uint.TryParse(fixedseed.Text.Trim(), out uint seed))
@@ -355,7 +384,29 @@ namespace RandomizerCommon
             }
             else
             {
-                options.Seed = (uint)new Random().Next();
+                options.Seed = (uint)seedRandom.Next();
+            }
+            bool newEnemySeed = false;
+            if (defaultRerollEnemy.Enabled && !defaultRerollEnemy.Checked && enemyseed.Text.Trim() != "" && enemyseed.Text != enemySeedPlaceholder)
+            {
+                if (uint.TryParse(enemyseed.Text.Trim(), out uint seed))
+                {
+                    options.Seed2 = seed;
+                }
+                else
+                {
+                    SetStatus("Invalid enemy seed", true);
+                    return;
+                }
+            }
+            else if (defaultRerollEnemy.Enabled && defaultRerollEnemy.Checked)
+            {
+                options.Seed2 = (uint)seedRandom.Next();
+                newEnemySeed = true;
+            }
+            else
+            {
+                options.Seed2 = 0;
             }
             SaveOptions();
             RandomizerOptions rand = options.Copy();
@@ -364,17 +415,23 @@ namespace RandomizerCommon
             randomize.Text = $"Running...";
             randomize.BackColor = Color.LightYellow;
             fixedseed.Text = $"{rand.Seed}";
+            if (newEnemySeed)
+            {
+                enemyseed.Text = rand.Seed2.ToString();
+                enemyseed.ForeColor = SystemColors.WindowText;
+            }
 
             Randomizer randomizer = new Randomizer();
             await Task.Factory.StartNew(() => {
                 Directory.CreateDirectory("spoiler_logs");
-                string runId = $"{DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss")}_log_{rand.Seed}_{rand.ConfigHash()}.txt";
+                string seed2 = rand.Seed2 == 0 || rand.Seed2 == rand.Seed ? "" : $"_{rand.Seed2}";
+                string runId = $"{DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss")}_log_{rand.Seed}{seed2}_{rand.ConfigHash()}.txt";
                 TextWriter log = File.CreateText($@"spoiler_logs\{runId}");
                 TextWriter stdout = Console.Out;
                 Console.SetOut(log);
                 try
                 {
-                    randomizer.Randomize(rand, status => { statusL.Text = status; }, encrypted: encrypted);
+                    randomizer.Randomize(rand, SoulsIds.GameSpec.FromGame.DS3, status => { statusL.Text = status; }, preset: selectedPreset, encrypted: encrypted);
                     SetStatus($"Done! Hints and spoilers in spoiler_logs directory as {runId} - Restart your game!!", success: true);
                 }
                 catch (Exception ex)
@@ -396,24 +453,16 @@ namespace RandomizerCommon
 
         private void option_alwaysEnable(object sender, EventArgs e)
         {
+            // For always-on racemode categories
             CheckBox box = (CheckBox)sender;
             box.Checked = true;
-        }
-
-        private void fixedseed_TextChanged(object sender, EventArgs e)
-        {
-            string text = fixedseed.Text.Trim();
-            defaultReroll.Enabled = uint.TryParse(text, out uint val) && val != 0;
-            if (!defaultReroll.Enabled)
-            {
-                defaultReroll.Checked = true;
-            }
         }
 
         private void optionwindow_Click(object sender, EventArgs e)
         {
             using (OptionsForm form = new OptionsForm(options.FullString()))
             {
+                form.Icon = Icon;
                 DialogResult result = form.ShowDialog(this);
                 if (result == DialogResult.OK)
                 {
@@ -434,6 +483,100 @@ namespace RandomizerCommon
                     UpdateEnabled();
                     UpdateLabels();
                     SaveOptions();
+                }
+            }
+        }
+
+        private Preset selectedPreset;
+        private void preset_Click(object sender, EventArgs e)
+        {
+            using (PresetForm presetForm = new PresetForm("dist"))
+            {
+                presetForm.Icon = Icon;
+                DialogResult result = presetForm.ShowDialog(this);
+                if (result == DialogResult.OK)
+                {
+                    bool prevNull = selectedPreset == null;
+                    SetPreset(presetForm.Preset);
+                }
+            }
+        }
+
+        private void SetPreset(Preset preset = null)
+        {
+            selectedPreset = preset;
+            presetL.Text = selectedPreset == null ? "" : "Preset: " + selectedPreset.DisplayName;
+            options.Preset = selectedPreset?.DisplayName;
+            SaveOptions();
+            SetStatus(null);
+        }
+
+        private void fixedseed_TextChanged(object sender, EventArgs e)
+        {
+            string text = fixedseed.Text.Trim();
+            defaultReroll.Enabled = uint.TryParse(text, out uint val) && val != 0;
+            if (!defaultReroll.Enabled)
+            {
+                defaultReroll.Checked = true;
+            }
+        }
+
+        // Copy this from Sekiro
+        private void enemyseed_TextChanged(object sender, EventArgs e)
+        {
+            // Manage placeholder text, because winforms is bad
+            if (enemyseed.Focused && enemyseed.Enabled && enemyseed.Text == enemySeedPlaceholder)
+            {
+                enemyseed.Text = "";
+                enemyseed.ForeColor = SystemColors.WindowText;
+            }
+            if (!enemyseed.Focused && string.IsNullOrWhiteSpace(enemyseed.Text))
+            {
+                enemyseed.Text = enemySeedPlaceholder;
+                enemyseed.ForeColor = SystemColors.GrayText;
+            }
+            // Manage checkbox
+            if (enemyseed.Text == enemySeedPlaceholder || enemyseed.Text == "")
+            {
+                // I guess let it be separate from enemy seed
+                defaultRerollEnemy.Enabled = enemyseed.Enabled;
+                return;
+            }
+            string text = enemyseed.Text.Trim();
+            bool valid = uint.TryParse(text, out uint val) && val != 0;
+            if (defaultReroll.Checked)
+            {
+                defaultRerollEnemy.Enabled = valid;
+                if (!valid && options.Seed2 == 0)
+                {
+                    defaultRerollEnemy.Checked = true;
+                }
+            }
+            reroll_CheckedChanged(null, null);
+        }
+
+        private void reroll_CheckedChanged(object sender, EventArgs e)
+        {
+            if (defaultReroll.Checked)
+            {
+                if (enemy.Checked && !defaultRerollEnemy.Checked && uint.TryParse(enemyseed.Text.Trim(), out _))
+                {
+                    randomize.Text = "Reroll items (same enemies)";
+                }
+                else
+                {
+                    randomize.Text = "Randomize new run!";
+                }
+            }
+            else
+            {
+                if (enemy.Checked && defaultRerollEnemy.Checked)
+                {
+                    randomize.Text = "Reroll enemies (same items)";
+                }
+                else
+                {
+                    randomize.Text = "Run with fixed seed";
                 }
             }
         }

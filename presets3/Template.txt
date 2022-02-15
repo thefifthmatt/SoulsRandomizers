@@ -1,0 +1,2179 @@
+# This is a default template for a preset. It uses YAML as a configuration format.
+# See README.txt for more info, and other examples in this directory.
+# Using a preset is very likely to completely change a seed from what it was previously.
+
+# This will be shown in the UI upon selecting the preset.
+Description: "Custom preset"
+
+# Whether to enable all pools in the UI upon selecting this preset
+RecommendFullRandomization: false
+# Whether to disable all progression options in the UI upon selecting this preset
+RecommendNoEnemyProgression: false            
+
+# Switch for "oops all" mode. In this mode, every enemy in the game (when allowed by randomization settings) is turned into a specific enemy or enemy type.
+# See README.txt for all allowed names.
+# This option is equivalent to changing all default pools (when they are randomized) to that enemy, but they can be overridden per-pool below.
+OopsAll: none
+
+# More specific configurations for which enemies can go to different categories of targets.
+# Weights can be used to select multiple different alternatives within a pool.
+# Each pool group can consist of several names separated by a semicolon. By default, selection will be random across
+# all eligible enemies, but you can specify 'RandomByType: true' to select randomly from the list itself.
+# Additionally, placements will be restricted or disabled entirely if those randomizer options are enabled/disabled.
+# See the example presets.
+
+# Which enemies can be used as sources for bosses?
+# The default for this is other bosses.
+# There are 29 randomized bosses in the game.
+Boss:
+- Weight: 100
+  Pool: default
+
+# Which enemies can be used as sources for minibosses?
+# The default for this is other minibosses.
+# There are 33 randomized minibosses in the game (plus 3 randomized headless).
+Miniboss:
+- Weight: 100
+  Pool: default
+
+# Which enemies can be used as sources for all other enemies?
+# The default for this is other regular enemies.
+# There are ~2000 randomized basic enemies in the game.
+Basic:
+- Weight: 100
+  Pool: default
+
+# When turning a regular enemy into a boss or miniboss, whether to add an appropriate number of phases and HP to match
+BuffBasicEnemiesAsBosses: true
+
+# A semicolon-separated list of enemies or enemy types to not randomize (assign to themselves).
+# It is taken out of its default pool and also custom pools in this case.
+# It can still be assigned to individual enemies below.
+DontRandomize: none
+
+# A semicolon-separated list of enemies or enemy types to remove from all pools.
+# It can still be assigned to individual enemies below.
+# This is overridden by directives to not randomized enemies.
+RemoveSource: none
+
+# Specific assignments for individual randomizable enemies. This overrides any of the above configuration.
+# To use it, change "any" to something else, which specifies which enemy will replace it.
+# This can be the name or number of another enemy; see README for all allowed names.
+# Using a boss as another boss, or a miniboss as another miniboss, takes the source enemy out of the default pool for that category, so each enemy will still be used once if possible. However, the enemy can still appear more than once if used in a custom pool.
+
+# Finally there are some special target names:
+# any: This is the default and allows any enemy in the pool to appear there.
+# norandom: Assigns an enemy to itself. This has the same effect as adding the enemy name to DontRandomize above.
+
+Enemies:
+  # High Wall
+  Consumed King Oceiros 3000830: any
+  Dancer of the Boreal Valley 3000899: any
+  Vordt of the Boreal Valley 3000800: any
+  # Lothric Castle
+  Dragonslayer Armour 3010800: any
+  # Undead Settlement
+  Curse-rotted Greatwood 3100800: any
+  # Archdragon Peak
+  Ancient Wyvern 3200800: any
+  King of the Storm 3200850: any
+  Nameless King 3200851: any
+  # Farron Keep
+  Abyss Watchers 3300801: any
+  Crystal Sage 3300850: any
+  # Grand Archives
+  Lothric, Younger Prince 3410830: any
+  Lorian, Elder Prince 3410832: any
+  # Cathedral
+  Deacons of the Deep 3500800: any
+  # Irithyll
+  Aldrich, Devourer of Gods 3700800: any
+  Pontiff Sulyvahn 3700850: any
+  # Catacombs
+  High Lord Wolnir 3800800: any
+  Old Demon King 3800830: any
+  # Irithyll Dungeon
+  Yhorm the Giant 3900800: any
+  # Firelink Shrine
+  Iudex Gundyr 4000800: any
+  Champion Gundyr 4000830: any
+  # Kiln
+  Lords of Cinder 4100800: any
+  # Ariandel
+  Champion's Gravetender and Gravetender Greatwolf 4500860: any
+  Blackflame Friede 4500800: any
+  Sister Friede 4500801: any
+  # Dreg Heap
+  Demon Prince 5000801: any
+  # Ringed City
+  Darkeater Midir 5100850: any
+  Halflight, Spear of the Church 5100800: any
+  # Filianore's Rest
+  Slave Knight Gael 1 5110801: any
+  Slave Knight Gael 2 5110800: any
+
+  # High Wall
+  Darkwraith 3000660: any
+  Red-Eyed Lothric Knight 3000238: any
+  # Lothric Castle
+  Boreal Outrider Knight 3010610: any
+  # Undead Settlement
+  Boreal Outrider Knight 3100860: any
+  Demon 3100831: any
+  Large Hound Rat 3100570: any
+  # Archdragon Peak
+  Ancient Wyvern Mob 3200300: any
+  # Farron Keep
+  Elder Ghru 3300494: any
+  Elder Ghru 3300495: any
+  Greater Crab 3300200: any
+  Greater Crab 3300510: any
+  Ravenous Crystal Lizard 3300384: any
+  Stray Demon 3300560: any
+  # Grand Archives
+  Boreal Outrider Knight 3410210: any
+  Crystal Sage in Archives 3410200: any
+  # Cathedral
+  Deep Accursed 3500292: any
+  Giant Slave 3500300: any
+  Giant Slave 3500301: any
+  Ravenous Crystal Lizard 3500370: any
+  # Irithyll
+  Deep Accursed 3700355: any
+  Sulyvahn's Beast 3700240: any
+  Sulyvahn's Beast 3700241: any
+  Sulyvahn's Beast 3700242: any
+  # Catacombs
+  Carthus Sandworm 3800499: any
+  Demon 3800500: any
+  # Irithyll Dungeon
+  Giant Slave 3900380: any
+  # Firelink Shrine
+  Ravenous Crystal Lizard 4000380: any
+  Ravenous Crystal Lizard 4000381: any
+  Ravenous Crystal Lizard 4000382: any
+  # Ariandel
+  Greatwolf 4500201: any
+  Greatwolf 4500202: any
+  # Ringed City
+  Bridge Darkeater Midir 5100201: any
+  Dragonslayer Armour 5100285: any
+
+  # High Wall
+  Cathedral Knight 2888024: any
+  Cathedral Knight 3000350: any
+  Cathedral Knight 3000351: any
+  Cathedral Knight 3000352: any
+  Crystal Lizard 3000630: any
+  High Wall Lothric Knight 2888026: any
+  High Wall Lothric Knight 3000230: any
+  High Wall Lothric Knight 3000232: any
+  High Wall Lothric Knight 3000233: any
+  High Wall Lothric Knight 3000237: any
+  Hollow Soldier 2888002: any
+  Hollow Soldier 2888003: any
+  Hollow Soldier 2888004: any
+  Hollow Soldier 2888005: any
+  Hollow Soldier 2888006: any
+  Hollow Soldier 2888007: any
+  Hollow Soldier 2888008: any
+  Hollow Soldier 2888009: any
+  Hollow Soldier 2888010: any
+  Hollow Soldier 2888011: any
+  Hollow Soldier 2888012: any
+  Hollow Soldier 3000254: any
+  Hollow Soldier 3000404: any
+  Hollow Soldier 3000407: any
+  Hollow Soldier 3000408: any
+  Hollow Soldier 3000409: any
+  Hollow Soldier 3000410: any
+  Hollow Soldier 3000411: any
+  Hollow Soldier 3000412: any
+  Hollow Soldier 3000418: any
+  Hollow Soldier 3000419: any
+  Hollow Soldier 3000420: any
+  Hollow Soldier 3000421: any
+  Hollow Soldier 3000423: any
+  Hollow Soldier 3000424: any
+  Hollow Soldier 3000425: any
+  Hollow Soldier 3000426: any
+  Hollow Soldier 3000427: any
+  Hollow Soldier 3000428: any
+  Hollow Soldier 3000431: any
+  Hollow Soldier 3000432: any
+  Hollow Soldier 3000433: any
+  Hollow Soldier 3000434: any
+  Hollow Soldier 3000435: any
+  Hollow Soldier 3000440: any
+  Hollow Soldier 3000441: any
+  Hollow Soldier 3000442: any
+  Hollow Soldier 3000443: any
+  Hollow Soldier 3000444: any
+  Hollow Soldier 3000450: any
+  Hollow Soldier 3000451: any
+  Hollow Soldier 3000452: any
+  Hollow Soldier 3000454: any
+  Hollow Soldier 3000456: any
+  Hollow Soldier 3000457: any
+  Hollow Soldier 3000463: any
+  Hollow Soldier 3000464: any
+  Hollow Soldier 3000471: any
+  Hollow Soldier 3000473: any
+  Hollow Soldier 3000477: any
+  Hollow Soldier 3000478: any
+  Hollow Soldier 3000482: any
+  Hollow Soldier 3000484: any
+  Hollow Soldier 3000486: any
+  Hollow Soldier 3000487: any
+  Hollow Soldier 3000488: any
+  Hollow Soldier 3000490: any
+  Hollow Soldier 3000492: any
+  Hollow Soldier 3000494: any
+  Hollow Soldier 3000495: any
+  Hollow Soldier 3000496: any
+  Hollow Soldier 3000500: any
+  Hollow Soldier 3000502: any
+  Hollow Soldier 3000504: any
+  Hollow Soldier 3000505: any
+  Hollow Soldier 3000507: any
+  Hollow Soldier 3000509: any
+  Hollow Soldier 3000511: any
+  Hollow Soldier 3000520: any
+  Hollow Soldier 3000522: any
+  Hollow Soldier 3000523: any
+  Hollow Soldier 3000525: any
+  Hollow Soldier 3000526: any
+  Hollow Soldier 3000533: any
+  Hollow Soldier 3000537: any
+  Hollow Soldier 3000538: any
+  Hollow Soldier 3000539: any
+  Hollow Soldier 3000540: any
+  Hollow Soldier 3000545: any
+  Hollow Soldier 3000551: any
+  Hollow Soldier 3000560: any
+  Hollow Soldier 3000561: any
+  Hollow Soldier 3000568: any
+  Hollow Soldier 3000570: any
+  Hollow Soldier 3000572: any
+  Hollow Soldier 3000580: any
+  Hollow Soldier 3000592: any
+  Hollow Soldier 3000596: any
+  Hollow Soldier 3000600: any
+  Hollow Soldier 3000601: any
+  Hollow Soldier 3000604: any
+  Hollow Soldier 3000605: any
+  Hollow Soldier 3000607: any
+  Large Hollow Soldier 2888013: any
+  Large Hollow Soldier 2888014: any
+  Large Hollow Soldier 2888015: any
+  Large Hollow Soldier 3000251: any
+  Large Hollow Soldier 3000252: any
+  Large Hollow Soldier 3000253: any
+  Large Hollow Soldier 3000255: any
+  Large Starved Hound 2888029: any
+  Large Starved Hound 3000245: any
+  Lothric Priest 2888028: any
+  Lothric Priest 3000280: any
+  Lothric Priest 3000281: any
+  Mimic Chest 3000620: any
+  Pus of Man 2888001: any
+  Pus of Man 3000611: any
+  Pus of Man 3000613: any
+  Pus of Man 3000615: any
+  Pus of Man 3000616: any
+  Rotten Slug 2888016: any
+  Rotten Slug 2888017: any
+  Rotten Slug 2888018: any
+  Rotten Slug 2888019: any
+  Rotten Slug 2888020: any
+  Rotten Slug 2888021: any
+  Rotten Slug 2888022: any
+  Rotten Slug 2888023: any
+  Serpent-Man 3000651: any
+  Starved Hound 3000240: any
+  Starved Hound 3000242: any
+  Thrall 2888025: any
+  Thrall 3000360: any
+  Thrall 3000361: any
+  Winged Knight 2888027: any
+  # Lothric Castle
+  Crystal Lizard 3010310: any
+  Crystal Lizard 3010311: any
+  Hollow Soldier 2888030: any
+  Hollow Soldier 3010501: any
+  Hollow Soldier 3010502: any
+  Hollow Soldier 3010538: any
+  Hollow Soldier 3010551: any
+  Hollow Soldier 3010555: any
+  Hollow Soldier 3010556: any
+  Hollow Soldier 3010557: any
+  Hollow Soldier 3010558: any
+  Hollow Soldier 3010560: any
+  Hollow Soldier 3010561: any
+  Hollow Soldier 3010562: any
+  Hollow Soldier 3010563: any
+  Hollow Soldier 3010564: any
+  Hollow Soldier 3010565: any
+  Hollow Soldier 3010566: any
+  Lothric Castle Hollow Soldier 2888031: any
+  Lothric Castle Hollow Soldier 2888032: any
+  Lothric Castle Hollow Soldier 2888033: any
+  Lothric Castle Hollow Soldier 2888034: any
+  Lothric Castle Hollow Soldier 2888035: any
+  Lothric Castle Hollow Soldier 2888036: any
+  Lothric Castle Hollow Soldier 2888037: any
+  Lothric Castle Hollow Soldier 2888038: any
+  Lothric Castle Hollow Soldier 2888039: any
+  Lothric Castle Hollow Soldier 2888040: any
+  Lothric Castle Hollow Soldier 3010503: any
+  Lothric Castle Hollow Soldier 3010504: any
+  Lothric Castle Hollow Soldier 3010505: any
+  Lothric Castle Hollow Soldier 3010507: any
+  Lothric Castle Hollow Soldier 3010510: any
+  Lothric Castle Hollow Soldier 3010511: any
+  Lothric Castle Hollow Soldier 3010512: any
+  Lothric Castle Hollow Soldier 3010520: any
+  Lothric Castle Hollow Soldier 3010521: any
+  Lothric Castle Hollow Soldier 3010567: any
+  Lothric Castle Hollow Soldier 3010569: any
+  Lothric Castle Hollow Soldier 3010570: any
+  Lothric Castle Hollow Soldier 3010571: any
+  Lothric Castle Hollow Soldier 3010572: any
+  Lothric Castle Large Hollow Soldier 2888041: any
+  Lothric Castle Large Hollow Soldier 2888042: any
+  Lothric Castle Large Hollow Soldier 3010430: any
+  Lothric Castle Large Hollow Soldier 3010431: any
+  Lothric Castle Large Hollow Soldier 3010432: any
+  Lothric Castle Lothric Knight 2888043: any
+  Lothric Castle Lothric Knight 2888044: any
+  Lothric Castle Lothric Knight 2888045: any
+  Lothric Castle Lothric Knight 3010414: any
+  Lothric Castle Lothric Knight 3010415: any
+  Lothric Castle Lothric Knight 3010417: any
+  Lothric Castle Lothric Knight 3010418: any
+  Lothric Castle Lothric Knight 3010419: any
+  Lothric Castle Lothric Knight 3010420: any
+  Lothric Priest 2888046: any
+  Lothric Priest 2888047: any
+  Lothric Priest 2888048: any
+  Lothric Priest 2888049: any
+  Lothric Priest 3010460: any
+  Mimic Chest 3010300: any
+  Mimic Chest 3010301: any
+  Pus of Man 3010602: any
+  Pus of Man 3010604: any
+  Pus of Man 3010835: any
+  Pus of Man 3010836: any
+  Winged Knight 3010450: any
+  Winged Knight 3010451: any
+  # Undead Settlement
+  Cage Spider 3100300: any
+  Cage Spider 3100301: any
+  Cage Spider 3100302: any
+  Cage Spider 3100305: any
+  Cage Spider 3100306: any
+  Cage Spider 3100307: any
+  Cage Spider 3100308: any
+  Cage Spider 3100330: any
+  Cage Spider 3100331: any
+  Cage Spider 3100332: any
+  Cage Spider 3100333: any
+  Cathedral Evangelist 2888055: any
+  Cathedral Evangelist 3100603: any
+  Cathedral Evangelist 3100604: any
+  Cathedral Evangelist 3100605: any
+  Cathedral Evangelist 3100606: any
+  Crystal Lizard 3100610: any
+  Crystal Lizard 3100611: any
+  Hollow Manservant 3100350: any
+  Hollow Manservant 3100351: any
+  Hollow Manservant 3100353: any
+  Hollow Manservant 3100356: any
+  Hollow Manservant 3100357: any
+  Hollow Manservant 3100359: any
+  Hollow Soldier 3100451: any
+  Hollow Soldier 3100453: any
+  Hollow Soldier 3100454: any
+  Hollow Soldier 3100455: any
+  Hollow Soldier 3100456: any
+  Hollow Soldier 3100457: any
+  Hollow Soldier 3100458: any
+  Hollow Soldier 3100460: any
+  Hollow Soldier 3100461: any
+  Hollow Soldier 3100462: any
+  Hollow Soldier 3100463: any
+  Hollow Soldier 3100464: any
+  Hollow Soldier 3100465: any
+  Hollow Soldier 3100466: any
+  Hollow Soldier 3100468: any
+  Hound Rat 2888073: any
+  Hound Rat 2888074: any
+  Hound Rat 2888075: any
+  Hound Rat 3100550: any
+  Hound Rat 3100551: any
+  Hound Rat 3100552: any
+  Hound Rat 3100556: any
+  Hound Rat 3100557: any
+  Hound Rat 3100559: any
+  Hound Rat 3100560: any
+  Hound Rat 3100561: any
+  Hound Rat 3100562: any
+  Large Starved Hound 2888070: any
+  Peasant Hollow 2888056: any
+  Peasant Hollow 2888057: any
+  Peasant Hollow 2888058: any
+  Peasant Hollow 2888059: any
+  Peasant Hollow 2888060: any
+  Peasant Hollow 2888061: any
+  Peasant Hollow 2888062: any
+  Peasant Hollow 2888063: any
+  Peasant Hollow 2888064: any
+  Peasant Hollow 2888065: any
+  Peasant Hollow 2888066: any
+  Peasant Hollow 2888067: any
+  Peasant Hollow 2888068: any
+  Peasant Hollow 2888069: any
+  Peasant Hollow 3100200: any
+  Peasant Hollow 3100201: any
+  Peasant Hollow 3100205: any
+  Peasant Hollow 3100206: any
+  Peasant Hollow 3100207: any
+  Peasant Hollow 3100209: any
+  Peasant Hollow 3100210: any
+  Peasant Hollow 3100211: any
+  Peasant Hollow 3100212: any
+  Peasant Hollow 3100213: any
+  Peasant Hollow 3100214: any
+  Peasant Hollow 3100216: any
+  Peasant Hollow 3100225: any
+  Peasant Hollow 3100226: any
+  Peasant Hollow 3100227: any
+  Peasant Hollow 3100228: any
+  Peasant Hollow 3100231: any
+  Peasant Hollow 3100232: any
+  Peasant Hollow 3100236: any
+  Peasant Hollow 3100240: any
+  Peasant Hollow 3100241: any
+  Peasant Hollow 3100242: any
+  Peasant Hollow 3100243: any
+  Peasant Hollow 3100246: any
+  Peasant Hollow 3100247: any
+  Peasant Hollow 3100268: any
+  Peasant Hollow 3100269: any
+  Peasant Hollow 3100270: any
+  Peasant Hollow 3100271: any
+  Peasant Hollow 3100280: any
+  Peasant Hollow 3100281: any
+  Peasant Hollow 3100295: any
+  Peasant Hollow 3100602: any
+  Skeleton 3100380: any
+  Skeleton 3100381: any
+  Skeleton 3100382: any
+  Skeleton 3100384: any
+  Skeleton 3100385: any
+  Skeleton 3100386: any
+  Skeleton 3100387: any
+  Starved Hound 2888071: any
+  Starved Hound 2888072: any
+  Starved Hound 3100203: any
+  Starved Hound 3100204: any
+  Starved Hound 3100504: any
+  Starved Hound 3100505: any
+  Starved Hound 3100506: any
+  Starved Hound 3100507: any
+  Starved Hound 3100508: any
+  Starved Hound 3100590: any
+  Starved Hound 3100592: any
+  Thrall 2888052: any
+  Thrall 2888053: any
+  Thrall 2888054: any
+  Thrall 3100401: any
+  Thrall 3100403: any
+  Thrall 3100404: any
+  Thrall 3100405: any
+  Thrall 3100406: any
+  Thrall 3100407: any
+  Thrall 3100411: any
+  Thrall 3100412: any
+  Thrall 3100413: any
+  Thrall 3100416: any
+  Thrall 3100417: any
+  Thrall 3100433: any
+  Thrall 3100434: any
+  # Archdragon Peak
+  Crystal Lizard 3200259: any
+  Large Serpent-Man 3200211: any
+  Large Serpent-Man 3200228: any
+  Large Serpent-Man 3200231: any
+  Large Serpent-Man 3200244: any
+  Large Serpent-Man 3200260: any
+  Large Serpent-Man 3200261: any
+  Large Serpent-Man 3200262: any
+  Rock Lizard 3200500: any
+  Rock Lizard 3200501: any
+  Rock Lizard 3200504: any
+  Rock Lizard 3200505: any
+  Rock Lizard 3200506: any
+  Rock Lizard 3200508: any
+  Rock Lizard 3200509: any
+  Rock Lizard 3200510: any
+  Rock Lizard 3200511: any
+  Rock Lizard 3200512: any
+  Rock Lizard 3200513: any
+  Serpent-Man 3200200: any
+  Serpent-Man 3200201: any
+  Serpent-Man 3200202: any
+  Serpent-Man 3200203: any
+  Serpent-Man 3200204: any
+  Serpent-Man 3200205: any
+  Serpent-Man 3200210: any
+  Serpent-Man 3200212: any
+  Serpent-Man 3200220: any
+  Serpent-Man 3200221: any
+  Serpent-Man 3200222: any
+  Serpent-Man 3200223: any
+  Serpent-Man 3200224: any
+  Serpent-Man 3200225: any
+  Serpent-Man 3200226: any
+  Serpent-Man 3200227: any
+  Serpent-Man 3200229: any
+  Serpent-Man 3200230: any
+  Serpent-Man 3200232: any
+  Serpent-Man 3200233: any
+  Serpent-Man 3200236: any
+  Serpent-Man 3200237: any
+  Serpent-Man 3200240: any
+  Serpent-Man 3200241: any
+  Serpent-Man 3200242: any
+  Serpent-Man 3200243: any
+  Serpent-Man 3200245: any
+  Serpent-Man 3200246: any
+  Serpent-Man 3200263: any
+  Serpent-Man 3200264: any
+  Serpent-Man 3200265: any
+  Serpent-Man 3200266: any
+  Serpent-Man 3200267: any
+  Serpent-Man 3200269: any
+  Serpent-Man Summoner 3200235: any
+  Serpent-Man Summoner 3200255: any
+  # Farron Keep
+  Basilisk 2888132: any
+  Basilisk 2888133: any
+  Basilisk 2888134: any
+  Basilisk 2888135: any
+  Basilisk 2888136: any
+  Basilisk 2888137: any
+  Basilisk 2888138: any
+  Basilisk 2888139: any
+  Basilisk 2888140: any
+  Basilisk 2888141: any
+  Basilisk 2888142: any
+  Black Knight 3300382: any
+  Cathedral Evangelist 3300355: any
+  Corvian 3300440: any
+  Corvian 3300441: any
+  Corvian 3300442: any
+  Corvian 3300443: any
+  Corvian 3300444: any
+  Corvian 3300475: any
+  Corvian 3300476: any
+  Corvian 3300477: any
+  Corvian 3300478: any
+  Corvian 3300479: any
+  Corvian 3300481: any
+  Corvian 3300482: any
+  Corvian 3300483: any
+  Corvian 3300484: any
+  Corvian 3300485: any
+  Corvian 3300486: any
+  Corvian 3300487: any
+  Corvian 3300488: any
+  Corvian 3300489: any
+  Crystal Lizard 3300385: any
+  Crystal Lizard 3300386: any
+  Crystal Lizard 3300387: any
+  Crystal Lizard 3300388: any
+  Crystal Lizard 3300389: any
+  Crystal Lizard 3300390: any
+  Crystal Lizard 3300391: any
+  Darkwraith 3300372: any
+  Darkwraith 3300373: any
+  Darkwraith 3300381: any
+  Elder Ghru 3300490: any
+  Elder Ghru 3300491: any
+  Elder Ghru 3300492: any
+  Elder Ghru 3300493: any
+  Ghru Grunt 3300400: any
+  Ghru Grunt 3300401: any
+  Ghru Grunt 3300402: any
+  Ghru Grunt 3300403: any
+  Ghru Grunt 3300404: any
+  Ghru Grunt 3300405: any
+  Ghru Grunt 3300406: any
+  Ghru Grunt 3300407: any
+  Ghru Grunt 3300408: any
+  Ghru Grunt 3300410: any
+  Ghru Grunt 3300411: any
+  Ghru Grunt 3300412: any
+  Ghru Grunt 3300413: any
+  Ghru Grunt 3300414: any
+  Ghru Grunt 3300415: any
+  Ghru Grunt 3300416: any
+  Ghru Grunt 3300417: any
+  Ghru Grunt 3300418: any
+  Ghru Grunt 3300419: any
+  Ghru Grunt 3300420: any
+  Ghru Grunt 3300421: any
+  Ghru Grunt 3300422: any
+  Ghru Grunt 3300423: any
+  Ghru Grunt 3300424: any
+  Ghru Grunt 3300425: any
+  Ghru Grunt 3300426: any
+  Ghru Grunt 3300427: any
+  Ghru Grunt 3300428: any
+  Ghru Grunt 3300429: any
+  Ghru Grunt 3300430: any
+  Ghru Grunt 3300431: any
+  Ghru Grunt 3300432: any
+  Ghru Grunt 3300433: any
+  Ghru Grunt 3300434: any
+  Ghru Grunt 3300435: any
+  Greater Crab 3300201: any
+  Hollow Manservant 3300340: any
+  Hollow Manservant 3300341: any
+  Hollow Soldier 3300550: any
+  Hollow Soldier 3300551: any
+  Hollow Soldier 3300552: any
+  Hollow Soldier 3300553: any
+  Hollow Soldier 3300554: any
+  Hollow Soldier 3300555: any
+  Hollow Soldier 3300556: any
+  Large Starved Hound 2888128: any
+  Large Starved Hound 2888129: any
+  Large Starved Hound 2888130: any
+  Lesser Crab 2888143: any
+  Lesser Crab 2888144: any
+  Lesser Crab 2888145: any
+  Lesser Crab 2888146: any
+  Lesser Crab 2888147: any
+  Lesser Crab 2888148: any
+  Lesser Crab 2888149: any
+  Lesser Crab 2888150: any
+  Lesser Crab 2888151: any
+  Lesser Crab 2888152: any
+  Lesser Crab 2888153: any
+  Lesser Crab 2888154: any
+  Lesser Crab 2888155: any
+  Lesser Crab 2888156: any
+  Lesser Crab 2888157: any
+  Lesser Crab 2888158: any
+  Lesser Crab 3300210: any
+  Lesser Crab 3300211: any
+  Lesser Crab 3300212: any
+  Lycanthrope 3300230: any
+  Lycanthrope 3300231: any
+  Lycanthrope 3300234: any
+  Lycanthrope 3300235: any
+  Lycanthrope 3300236: any
+  Lycanthrope Hunter 3300250: any
+  Lycanthrope Hunter 3300252: any
+  Lycanthrope Hunter 3300262: any
+  Lycanthrope Hunter 3300263: any
+  Lycanthrope Hunter 3300264: any
+  Lycanthrope Hunter 3300265: any
+  Lycanthrope Hunter 3300266: any
+  Lycanthrope Hunter 3300267: any
+  Lycanthrope Hunter 3300269: any
+  Lycanthrope Hunter 3300270: any
+  Lycanthrope Hunter 3300271: any
+  Lycanthrope Hunter 3300272: any
+  Lycanthrope Hunter 3300273: any
+  Lycanthrope Hunter 3300274: any
+  Lycanthrope Hunter 3300281: any
+  Lycanthrope Hunter 3300283: any
+  Lycanthrope Hunter 3300284: any
+  Lycanthrope Hunter 3300285: any
+  Lycanthrope Hunter 3300286: any
+  Maggot Belly Starved Hound 2888131: any
+  Poisonhorn Bug 2888159: any
+  Poisonhorn Bug 2888160: any
+  Poisonhorn Bug 2888161: any
+  Poisonhorn Bug 2888162: any
+  Poisonhorn Bug 2888163: any
+  Poisonhorn Bug 2888164: any
+  Poisonhorn Bug 2888165: any
+  Poisonhorn Bug 2888166: any
+  Poisonhorn Bug 2888167: any
+  Poisonhorn Bug 2888168: any
+  Poisonhorn Bug 2888169: any
+  Poisonhorn Bug 2888170: any
+  Poisonhorn Bug 2888171: any
+  Poisonhorn Bug 2888172: any
+  Poisonhorn Bug 2888173: any
+  Poisonhorn Bug 2888174: any
+  Poisonhorn Bug 2888175: any
+  Poisonhorn Bug 2888176: any
+  Poisonhorn Bug 2888177: any
+  Road of Sacrifices Hollow Soldier 3300300: any
+  Road of Sacrifices Hollow Soldier 3300301: any
+  Road of Sacrifices Hollow Soldier 3300302: any
+  Road of Sacrifices Hollow Soldier 3300303: any
+  Road of Sacrifices Hollow Soldier 3300304: any
+  Road of Sacrifices Hollow Soldier 3300305: any
+  Road of Sacrifices Hollow Soldier 3300306: any
+  Road of Sacrifices Hollow Soldier 3300307: any
+  Road of Sacrifices Hollow Soldier 3300309: any
+  Road of Sacrifices Hollow Soldier 3300310: any
+  Road of Sacrifices Hollow Soldier 3300311: any
+  Road of Sacrifices Hollow Soldier 3300312: any
+  Road of Sacrifices Hollow Soldier 3300313: any
+  Road of Sacrifices Hollow Soldier 3300314: any
+  Road of Sacrifices Sorcerer 3300330: any
+  Road of Sacrifices Sorcerer 3300331: any
+  Road of Sacrifices Sorcerer 3300332: any
+  Road of Sacrifices Sorcerer 3300333: any
+  Rotten Slug 2888081: any
+  Rotten Slug 2888082: any
+  Rotten Slug 2888083: any
+  Rotten Slug 2888084: any
+  Rotten Slug 2888085: any
+  Rotten Slug 2888086: any
+  Rotten Slug 2888087: any
+  Rotten Slug 2888088: any
+  Rotten Slug 2888089: any
+  Rotten Slug 2888090: any
+  Rotten Slug 2888091: any
+  Rotten Slug 2888092: any
+  Rotten Slug 2888093: any
+  Rotten Slug 2888094: any
+  Rotten Slug 2888095: any
+  Rotten Slug 2888096: any
+  Rotten Slug 2888097: any
+  Rotten Slug 2888098: any
+  Rotten Slug 2888099: any
+  Rotten Slug 2888100: any
+  Rotten Slug 2888101: any
+  Rotten Slug 2888102: any
+  Rotten Slug 2888103: any
+  Rotten Slug 2888104: any
+  Rotten Slug 2888105: any
+  Rotten Slug 2888106: any
+  Rotten Slug 2888107: any
+  Rotten Slug 2888108: any
+  Rotten Slug 2888109: any
+  Rotten Slug 2888110: any
+  Rotten Slug 2888111: any
+  Rotten Slug 2888112: any
+  Rotten Slug 2888113: any
+  Rotten Slug 2888114: any
+  Rotten Slug 2888115: any
+  Rotten Slug 2888116: any
+  Rotten Slug 2888117: any
+  Rotten Slug 2888118: any
+  Rotten Slug 2888119: any
+  Rotten Slug 2888120: any
+  Rotten Slug 2888121: any
+  Rotten Slug 2888122: any
+  Rotten Slug 2888123: any
+  Rotten Slug 2888124: any
+  Rotten Slug 2888125: any
+  Rotten Slug 2888126: any
+  Rotten Slug 3300500: any
+  Rotten Slug 3300501: any
+  Rotten Slug 3300502: any
+  Rotten Slug 3300503: any
+  Rotten Slug 3300504: any
+  Rotten Slug 3300505: any
+  Rotten Slug 3300506: any
+  Rotten Slug 3300507: any
+  Rotten Slug 3300508: any
+  # Grand Archives
+  Archives Gargoyle 3410250: any
+  Archives Gargoyle 3410251: any
+  Archives Gargoyle 3410252: any
+  Archives Gargoyle 3410253: any
+  Archives Gargoyle 3410254: any
+  Corpse-grub 2888197: any
+  Corvian 3410400: any
+  Corvian 3410401: any
+  Corvian 3410402: any
+  Corvian 3410405: any
+  Corvian 3410407: any
+  Crystal Lizard 3410370: any
+  Crystal Lizard 3410371: any
+  Crystal Lizard 3410372: any
+  Crystal Lizard 3410373: any
+  Crystal Lizard 3410374: any
+  Crystal Lizard 3410375: any
+  Crystal Lizard 3410376: any
+  Crystal Lizard 3410377: any
+  Grand Archives Hollow Soldier 2888178: any
+  Grand Archives Hollow Soldier 2888179: any
+  Grand Archives Hollow Soldier 3410550: any
+  Grand Archives Hollow Soldier 3410551: any
+  Grand Archives Hollow Soldier 3410552: any
+  Grand Archives Hollow Soldier 3410553: any
+  Grand Archives Hollow Soldier 3410554: any
+  Grand Archives Hollow Soldier 3410555: any
+  Grand Archives Hollow Soldier 3410556: any
+  Grand Archives Hollow Soldier 3410557: any
+  Grand Archives Hollow Soldier 3410558: any
+  Grand Archives Hollow Soldier 3410559: any
+  Grand Archives Scholar 2888186: any
+  Grand Archives Scholar 2888187: any
+  Grand Archives Scholar 2888188: any
+  Grand Archives Scholar 2888189: any
+  Grand Archives Scholar 2888190: any
+  Grand Archives Scholar 2888191: any
+  Grand Archives Scholar 2888192: any
+  Grand Archives Scholar 2888193: any
+  Grand Archives Scholar 2888194: any
+  Grand Archives Scholar 2888195: any
+  Grand Archives Scholar 2888196: any
+  Grand Archives Scholar 3410600: any
+  Grand Archives Scholar 3410601: any
+  Grand Archives Scholar 3410602: any
+  Grand Archives Scholar 3410603: any
+  Lothric Castle Lothric Knight 2888183: any
+  Lothric Castle Lothric Knight 2888184: any
+  Lothric Castle Lothric Knight 2888185: any
+  Red-Eyed Lothric Knight 3410420: any
+  Red-Eyed Lothric Knight 3410421: any
+  Red-Eyed Lothric Knight 3410422: any
+  Red-Eyed Lothric Knight 3410423: any
+  Thrall 2888180: any
+  Thrall 2888181: any
+  Thrall 2888182: any
+  Thrall 3410302: any
+  Thrall 3410303: any
+  Thrall 3410304: any
+  Thrall 3410305: any
+  Thrall 3410308: any
+  Thrall 3410311: any
+  Thrall 3410313: any
+  Thrall 3410314: any
+  Thrall 3410315: any
+  Thrall 3410316: any
+  Winged Knight 3410500: any
+  Winged Knight 3410501: any
+  Winged Knight 3410502: any
+  # Cathedral
+  Anor Londo Writhing Flesh 3500340: any
+  Anor Londo Writhing Flesh 3500344: any
+  Anor Londo Writhing Flesh 3500349: any
+  Anor Londo Writhing Flesh 3500351: any
+  Anor Londo Writhing Flesh 3500352: any
+  Anor Londo Writhing Flesh 3500353: any
+  Anor Londo Writhing Flesh 3500354: any
+  Anor Londo Writhing Flesh 3500355: any
+  Anor Londo Writhing Flesh 3500356: any
+  Anor Londo Writhing Flesh 3500357: any
+  Anor Londo Writhing Flesh 3500358: any
+  Anor Londo Writhing Flesh 3500359: any
+  Cathedral Deacon 3500582: any
+  Cathedral Deacon 3500583: any
+  Cathedral Deacon 3500584: any
+  Cathedral Deacon 3500585: any
+  Cathedral Deacon 3500586: any
+  Cathedral Deacon 3500587: any
+  Cathedral Deacon 3500588: any
+  Cathedral Deacon 3500589: any
+  Cathedral Evangelist 2888202: any
+  Cathedral Evangelist 3500290: any
+  Cathedral Evangelist 3500291: any
+  Cathedral Hollow Soldier 3500201: any
+  Cathedral Hollow Soldier 3500202: any
+  Cathedral Hollow Soldier 3500203: any
+  Cathedral Hollow Soldier 3500204: any
+  Cathedral Hollow Soldier 3500205: any
+  Cathedral Hollow Soldier 3500206: any
+  Cathedral Hollow Soldier 3500207: any
+  Cathedral Hollow Soldier 3500208: any
+  Cathedral Hollow Soldier 3500209: any
+  Cathedral Hollow Soldier 3500210: any
+  Cathedral Hollow Soldier 3500211: any
+  Cathedral Hollow Soldier 3500212: any
+  Cathedral Hollow Soldier 3500213: any
+  Cathedral Hollow Soldier 3500214: any
+  Cathedral Hollow Soldier 3500215: any
+  Cathedral Hollow Soldier 3500216: any
+  Cathedral Hollow Soldier 3500217: any
+  Cathedral Hollow Soldier 3500218: any
+  Cathedral Hollow Soldier 3500219: any
+  Cathedral Hollow Soldier 3500220: any
+  Cathedral Hollow Soldier 3500221: any
+  Cathedral Hollow Soldier 3500226: any
+  Cathedral Hollow Soldier 3500227: any
+  Cathedral Hollow Soldier 3500228: any
+  Cathedral Hollow Soldier 3500229: any
+  Cathedral Hollow Soldier 3500230: any
+  Cathedral Hollow Soldier 3500231: any
+  Cathedral Hollow Soldier 3500233: any
+  Cathedral Hollow Soldier 3500234: any
+  Cathedral Hollow Soldier 3500235: any
+  Cathedral Hollow Soldier 3500236: any
+  Cathedral Hollow Soldier 3500238: any
+  Cathedral Hollow Soldier 3500240: any
+  Cathedral Hollow Soldier 3500241: any
+  Cathedral Hollow Soldier 3500242: any
+  Cathedral Hollow Soldier 3500243: any
+  Cathedral Hollow Soldier 3500244: any
+  Cathedral Hollow Soldier 3500248: any
+  Cathedral Hollow Soldier 3500249: any
+  Cathedral Hollow Soldier 3500250: any
+  Cathedral Hollow Soldier 3500255: any
+  Cathedral Hollow Soldier 3500257: any
+  Cathedral Hollow Soldier 3500258: any
+  Cathedral Knight 3500310: any
+  Cathedral Knight 3500311: any
+  Cathedral Knight 3500312: any
+  Cathedral Knight 3500315: any
+  Cathedral Knight 3500316: any
+  Cathedral Knight 3500317: any
+  Cathedral Knight 3500318: any
+  Cathedral Large Hollow Soldier 3500260: any
+  Cathedral Large Hollow Soldier 3500261: any
+  Cathedral Large Hollow Soldier 3500262: any
+  Cathedral Large Hollow Soldier 3500263: any
+  Corpse-grub 3500650: any
+  Corpse-grub 3500651: any
+  Corpse-grub 3500652: any
+  Corpse-grub 3500653: any
+  Corpse-grub 3500654: any
+  Corpse-grub 3500655: any
+  Corpse-grub 3500656: any
+  Corpse-grub 3500657: any
+  Corpse-grub 3500658: any
+  Corpse-grub 3500659: any
+  Corpse-grub 3500661: any
+  Corpse-grub 3500662: any
+  Corpse-grub 3500663: any
+  Corpse-grub 3500666: any
+  Corpse-grub 3500667: any
+  Corpse-grub 3500668: any
+  Corpse-grub 3500669: any
+  Corpse-grub 3500670: any
+  Crystal Lizard 3500372: any
+  Crystal Lizard 3500373: any
+  Grave Warden 3500321: any
+  Grave Warden 3500325: any
+  Grave Warden 3500326: any
+  Infested Corpse 3500500: any
+  Infested Corpse 3500501: any
+  Infested Corpse 3500502: any
+  Infested Corpse 3500503: any
+  Infested Corpse 3500509: any
+  Large Starved Hound 3500280: any
+  Large Starved Hound 3500281: any
+  Large Starved Hound 3500282: any
+  Large Starved Hound 3500283: any
+  Large Starved Hound 3500284: any
+  Mimic Chest 3500360: any
+  Reanimated Corpse 3500401: any
+  Reanimated Corpse 3500402: any
+  Reanimated Corpse 3500404: any
+  Reanimated Corpse 3500405: any
+  Reanimated Corpse 3500406: any
+  Reanimated Corpse 3500407: any
+  Reanimated Corpse 3500409: any
+  Reanimated Corpse 3500410: any
+  Reanimated Corpse 3500411: any
+  Reanimated Corpse 3500412: any
+  Reanimated Corpse 3500413: any
+  Reanimated Corpse 3500414: any
+  Reanimated Corpse 3500415: any
+  Reanimated Corpse 3500416: any
+  Reanimated Corpse 3500417: any
+  Reanimated Corpse 3500418: any
+  Reanimated Corpse 3500419: any
+  Reanimated Corpse 3500420: any
+  Reanimated Corpse 3500421: any
+  Reanimated Corpse 3500422: any
+  Reanimated Corpse 3500423: any
+  Reanimated Corpse 3500424: any
+  Reanimated Corpse 3500426: any
+  Reanimated Corpse 3500427: any
+  Reanimated Corpse 3500428: any
+  Reanimated Corpse 3500429: any
+  Reanimated Corpse 3500430: any
+  Reanimated Corpse 3500434: any
+  Reanimated Corpse 3500435: any
+  Reanimated Corpse 3500436: any
+  Reanimated Corpse 3500437: any
+  Reanimated Corpse 3500438: any
+  Reanimated Corpse 3500439: any
+  Reanimated Corpse 3500440: any
+  Reanimated Corpse 3500441: any
+  Reanimated Corpse 3500442: any
+  Reanimated Corpse 3500443: any
+  Reanimated Corpse 3500444: any
+  Reanimated Corpse 3500447: any
+  Reanimated Corpse 3500448: any
+  Reanimated Corpse 3500450: any
+  Reanimated Corpse 3500451: any
+  Reanimated Corpse 3500452: any
+  Reanimated Corpse 3500453: any
+  Reanimated Corpse 3500454: any
+  Reanimated Corpse 3500455: any
+  Reanimated Corpse 3500456: any
+  Reanimated Corpse 3500460: any
+  Reanimated Corpse 3500461: any
+  Reanimated Corpse 3500463: any
+  Reanimated Corpse 3500464: any
+  Reanimated Corpse 3500465: any
+  Reanimated Corpse 3500471: any
+  Reanimated Corpse 3500472: any
+  Reanimated Corpse 3500473: any
+  Reanimated Corpse 3500474: any
+  Reanimated Corpse 3500475: any
+  Reanimated Corpse 3500476: any
+  Reanimated Corpse 3500477: any
+  Reanimated Corpse 3500479: any
+  Reanimated Corpse 3500480: any
+  Reanimated Corpse 3500481: any
+  Reanimated Corpse 3500482: any
+  Reanimated Corpse 3500483: any
+  Reanimated Corpse 3500484: any
+  Reanimated Corpse 3500485: any
+  Reanimated Corpse 3500487: any
+  Reanimated Corpse 3500488: any
+  Reanimated Corpse 3500489: any
+  Reanimated Corpse 3500490: any
+  Reanimated Corpse 3500491: any
+  Reanimated Corpse 3500492: any
+  Reanimated Corpse 3500493: any
+  Reanimated Corpse 3500494: any
+  Reanimated Corpse 3500495: any
+  Reanimated Corpse 3500496: any
+  Reanimated Corpse 3500497: any
+  Reanimated Corpse 3500498: any
+  Reanimated Corpse 3500499: any
+  Thrall 2888200: any
+  Thrall 2888201: any
+  Thrall 3500600: any
+  Thrall 3500601: any
+  Thrall 3500604: any
+  Thrall 3500606: any
+  Thrall 3500607: any
+  Thrall 3500608: any
+  Thrall 3500609: any
+  Thrall 3500612: any
+  Thrall 3500613: any
+  Thrall 3500616: any
+  Thrall 3500617: any
+  Thrall 3500618: any
+  Thrall 3500620: any
+  Thrall 3500622: any
+  Thrall 3500623: any
+  Thrall 3500627: any
+  Thrall 3500628: any
+  Thrall 3500629: any
+  Thrall 3500633: any
+  Thrall 3500634: any
+  Thrall 3500637: any
+  Thrall 3500638: any
+  Thrall 3500639: any
+  Thrall 3500640: any
+  Thrall 3500641: any
+  Thrall 3500642: any
+  # Irithyll
+  Anor Londo Writhing Flesh 2888238: any
+  Anor Londo Writhing Flesh 2888239: any
+  Anor Londo Writhing Flesh 2888240: any
+  Anor Londo Writhing Flesh 2888241: any
+  Anor Londo Writhing Flesh 2888242: any
+  Anor Londo Writhing Flesh 3700390: any
+  Anor Londo Writhing Flesh 3700391: any
+  Anor Londo Writhing Flesh 3700392: any
+  Anor Londo Writhing Flesh 3700393: any
+  Anor Londo Writhing Flesh 3700394: any
+  Anor Londo Writhing Flesh 3700395: any
+  Anor Londo Writhing Flesh 3700396: any
+  Anor Londo Writhing Flesh 3700397: any
+  Anor Londo Writhing Flesh 3700398: any
+  Anor Londo Writhing Flesh 3700399: any
+  Cathedral Evangelist 3700350: any
+  Corvian 3700405: any
+  Crystal Lizard 3700300: any
+  Crystal Lizard 3700301: any
+  Crystal Lizard 3700302: any
+  Crystal Lizard 3700303: any
+  Crystal Lizard 3700304: any
+  Fire Witch 2888257: any
+  Fire Witch 3700230: any
+  Fire Witch 3700231: any
+  Fire Witch 3700232: any
+  Fire Witch 3700233: any
+  Irirthyll Deacon 2888252: any
+  Irirthyll Deacon 2888253: any
+  Irirthyll Deacon 2888254: any
+  Irirthyll Deacon 2888255: any
+  Irirthyll Deacon 2888256: any
+  Irirthyll Deacon 3700382: any
+  Irirthyll Tall Deacon 2888245: any
+  Irirthyll Tall Deacon 2888246: any
+  Irirthyll Tall Deacon 2888247: any
+  Irirthyll Tall Deacon 2888248: any
+  Irirthyll Tall Deacon 2888249: any
+  Irirthyll Tall Deacon 2888250: any
+  Irirthyll Tall Deacon 2888251: any
+  Irirthyll Tall Deacon 3700381: any
+  Irithyll Giant Slave 3700325: any
+  Irithyll Giant Slave 3700326: any
+  Irithyll Starved Hound 3700252: any
+  Irithyll Starved Hound 3700253: any
+  Irithyll Starved Hound 3700254: any
+  Irithyll Starved Hound 3700255: any
+  Irithyll Starved Hound 3700256: any
+  Irithyll Starved Hound 3700257: any
+  Irithyll Starved Hound 3700258: any
+  Irithyll Starved Hound 3700259: any
+  Irithyllian Slave 2888205: any
+  Irithyllian Slave 2888206: any
+  Irithyllian Slave 2888207: any
+  Irithyllian Slave 2888208: any
+  Irithyllian Slave 2888209: any
+  Irithyllian Slave 2888210: any
+  Irithyllian Slave 2888211: any
+  Irithyllian Slave 2888212: any
+  Irithyllian Slave 2888213: any
+  Irithyllian Slave 2888214: any
+  Irithyllian Slave 2888215: any
+  Irithyllian Slave 2888216: any
+  Irithyllian Slave 2888217: any
+  Irithyllian Slave 2888218: any
+  Irithyllian Slave 2888219: any
+  Irithyllian Slave 2888220: any
+  Irithyllian Slave 2888221: any
+  Irithyllian Slave 2888222: any
+  Irithyllian Slave 2888223: any
+  Irithyllian Slave 2888224: any
+  Irithyllian Slave 2888225: any
+  Irithyllian Slave 2888226: any
+  Irithyllian Slave 2888227: any
+  Irithyllian Slave 2888228: any
+  Irithyllian Slave 2888229: any
+  Irithyllian Slave 2888230: any
+  Irithyllian Slave 2888231: any
+  Irithyllian Slave 2888232: any
+  Irithyllian Slave 3700260: any
+  Irithyllian Slave 3700261: any
+  Irithyllian Slave 3700262: any
+  Irithyllian Slave 3700263: any
+  Irithyllian Slave 3700264: any
+  Irithyllian Slave 3700265: any
+  Irithyllian Slave 3700266: any
+  Irithyllian Slave 3700271: any
+  Irithyllian Slave 3700273: any
+  Irithyllian Slave 3700274: any
+  Irithyllian Slave 3700275: any
+  Irithyllian Slave 3700276: any
+  Irithyllian Slave 3700277: any
+  Irithyllian Slave 3700278: any
+  Irithyllian Slave 3700279: any
+  Irithyllian Slave 3700280: any
+  Irithyllian Slave 3700281: any
+  Irithyllian Slave 3700282: any
+  Irithyllian Slave 3700283: any
+  Irithyllian Slave 3700284: any
+  Irithyllian Slave 3700285: any
+  Irithyllian Slave 3700286: any
+  Irithyllian Slave 3700287: any
+  Irithyllian Slave 3700288: any
+  Irithyllian Slave 3700289: any
+  Irithyllian Slave 3700290: any
+  Irithyllian Slave 3700291: any
+  Irithyllian Slave 3700292: any
+  Irithyllian Slave 3700293: any
+  Irithyllian Slave 3700294: any
+  Irithyllian Slave 3700295: any
+  Irithyllian Slave 3700296: any
+  Irithyllian Slave 3700297: any
+  Irithyllian Slave 3700298: any
+  Irithyllian Slave 3700299: any
+  Mimic Chest 3700400: any
+  Pontiff Knight 2888236: any
+  Pontiff Knight 2888237: any
+  Pontiff Knight 3700200: any
+  Pontiff Knight 3700201: any
+  Pontiff Knight 3700202: any
+  Pontiff Knight 3700206: any
+  Pontiff Knight 3700207: any
+  Pontiff Knight 3700211: any
+  Pontiff Knight 3700212: any
+  Pontiff Knight 3700213: any
+  Pontiff Knight 3700214: any
+  Pontiff Knight 3700215: any
+  Sewer Centipede 3700330: any
+  Sewer Centipede 3700331: any
+  Sewer Centipede 3700332: any
+  Sewer Centipede 3700333: any
+  Sewer Centipede 3700334: any
+  Sewer Centipede 3700335: any
+  Sewer Centipede 3700336: any
+  Sewer Centipede 3700337: any
+  Sewer Centipede 3700338: any
+  Sewer Centipede 3700339: any
+  Sewer Centipede 3700340: any
+  Sewer Centipede 3700341: any
+  Silver Knight 2888233: any
+  Silver Knight 2888234: any
+  Silver Knight 2888235: any
+  Silver Knight 3700360: any
+  Silver Knight 3700361: any
+  Silver Knight 3700362: any
+  Silver Knight 3700363: any
+  Silver Knight 3700365: any
+  Silver Knight 3700366: any
+  Silver Knight 3700367: any
+  Silver Knight 3700368: any
+  Silver Knight 3700369: any
+  Wide Deacon 2888243: any
+  Wide Deacon 2888244: any
+  Wide Deacon 3700380: any
+  # Catacombs
+  Basilisk 2888264: any
+  Basilisk 2888265: any
+  Basilisk 2888266: any
+  Basilisk 2888267: any
+  Basilisk 2888268: any
+  Basilisk 2888269: any
+  Basilisk 2888270: any
+  Black Knight 3800391: any
+  Black Knight 3800395: any
+  Bonewheel Skeleton 2888261: any
+  Bonewheel Skeleton 2888262: any
+  Bonewheel Skeleton 2888263: any
+  Bonewheel Skeleton 3800293: any
+  Bonewheel Skeleton 3800294: any
+  Bonewheel Skeleton 3800295: any
+  Bonewheel Skeleton 3800296: any
+  Carthus Curved Sword Skeleton 3800300: any
+  Carthus Curved Sword Skeleton 3800302: any
+  Carthus Curved Sword Skeleton 3800305: any
+  Carthus Curved Sword Skeleton 3800306: any
+  Carthus Curved Sword Skeleton 3800309: any
+  Carthus Curved Sword Skeleton 3800311: any
+  Carthus Curved Sword Skeleton 3800312: any
+  Carthus Curved Sword Skeleton 3800313: any
+  Carthus Shotel Skeleton 3800320: any
+  Carthus Shotel Skeleton 3800321: any
+  Carthus Shotel Skeleton 3800322: any
+  Carthus Shotel Skeleton 3800324: any
+  Carthus Shotel Skeleton 3800327: any
+  Carthus Shotel Skeleton 3800328: any
+  Catacombs Writhing Flesh 3800400: any
+  Catacombs Writhing Flesh 3800401: any
+  Catacombs Writhing Flesh 3800402: any
+  Catacombs Writhing Flesh 3800403: any
+  Catacombs Writhing Flesh 3800404: any
+  Catacombs Writhing Flesh 3800405: any
+  Catacombs Writhing Flesh 3800406: any
+  Catacombs Writhing Flesh 3800407: any
+  Catacombs Writhing Flesh 3800408: any
+  Catacombs Writhing Flesh 3800409: any
+  Catacombs Writhing Flesh 3800410: any
+  Catacombs Writhing Flesh 3800411: any
+  Catacombs Writhing Flesh 3800412: any
+  Crystal Lizard 3800552: any
+  Crystal Lizard 3800553: any
+  Crystal Lizard 3800554: any
+  Crystal Lizard 3800555: any
+  Crystal Lizard 3800556: any
+  Demon Cleric 3800340: any
+  Demon Cleric 3800342: any
+  Demon Cleric 3800343: any
+  Demon Cleric 3800344: any
+  Demonic Statue 3800530: any
+  Demonic Statue 3800531: any
+  Demonic Statue 3800532: any
+  Greater Crab 3800490: any
+  Greater Crab 3800491: any
+  Greater Crab 3800492: any
+  Greater Crab 3800493: any
+  Greater Crab 3800494: any
+  Greater Crab 3800495: any
+  Greater Crab 3800496: any
+  Hound Rat 3800454: any
+  Hound Rat 3800455: any
+  Hound Rat 3800456: any
+  Hound Rat 3800457: any
+  Hound Rat 3800458: any
+  Hound Rat 3800462: any
+  Hound Rat 3800463: any
+  Hound Rat 3800464: any
+  Hound Rat 3800465: any
+  Hound Rat 3800466: any
+  Hound Rat 3800470: any
+  Hound Rat 3800471: any
+  Hound Rat 3800472: any
+  Hound Rat 3800473: any
+  Hound Rat 3800474: any
+  Hound Rat 3800475: any
+  Large Hound Rat 3800481: any
+  Large Hound Rat 3800483: any
+  Lesser Crab 3800498: any
+  Mimic Chest 3800550: any
+  Skeleton 2888259: any
+  Skeleton 2888260: any
+  Skeleton 3800200: any
+  Skeleton 3800201: any
+  Skeleton 3800202: any
+  Skeleton 3800203: any
+  Skeleton 3800204: any
+  Skeleton 3800205: any
+  Skeleton 3800206: any
+  Skeleton 3800207: any
+  Skeleton 3800208: any
+  Skeleton 3800209: any
+  Skeleton 3800210: any
+  Skeleton 3800211: any
+  Skeleton 3800212: any
+  Skeleton 3800213: any
+  Skeleton 3800214: any
+  Skeleton 3800215: any
+  Skeleton 3800216: any
+  Skeleton 3800217: any
+  Skeleton 3800218: any
+  Skeleton 3800219: any
+  Skeleton 3800220: any
+  Skeleton 3800221: any
+  Skeleton 3800240: any
+  Skeleton 3800241: any
+  Skeleton 3800242: any
+  Skeleton 3800243: any
+  Skeleton 3800244: any
+  Skeleton 3800245: any
+  Skeleton 3800246: any
+  Skeleton 3800248: any
+  Skeleton 3800249: any
+  Skeleton 3800252: any
+  Skeleton 3800253: any
+  Skeleton 3800255: any
+  Skeleton 3800256: any
+  Skeleton 3800257: any
+  Skeleton 3800258: any
+  Skeleton 3800259: any
+  Skeleton 3800260: any
+  Skeleton 3800263: any
+  Skeleton 3800264: any
+  Skeleton 3800265: any
+  Skeleton 3800266: any
+  Skeleton 3800267: any
+  Skeleton 3800268: any
+  Skeleton 3800269: any
+  Skeleton 3800270: any
+  Skeleton 3800271: any
+  Skeleton 3800272: any
+  Skeleton 3800273: any
+  Skeleton 3800274: any
+  Skeleton 3800278: any
+  Skeleton 3800279: any
+  Skeleton 3800280: any
+  Skeleton 3800281: any
+  Skeleton 3800282: any
+  Skeleton 3800283: any
+  Skeleton 3800284: any
+  Skeleton 3800285: any
+  Skeleton 3800286: any
+  Skeleton 3800287: any
+  Skeleton 3800288: any
+  Smouldering Ghru Grunt 3800350: any
+  Smouldering Ghru Grunt 3800351: any
+  Smouldering Ghru Grunt 3800352: any
+  Smouldering Ghru Grunt 3800353: any
+  Smouldering Ghru Grunt 3800354: any
+  Smouldering Ghru Grunt 3800356: any
+  Smouldering Ghru Grunt 3800357: any
+  Smouldering Ghru Grunt 3800358: any
+  Smouldering Ghru Grunt 3800359: any
+  Smouldering Ghru Grunt 3800360: any
+  Smouldering Ghru Grunt 3800361: any
+  Smouldering Ghru Grunt 3800362: any
+  Smouldering Ghru Grunt 3800363: any
+  Smouldering Ghru Grunt 3800364: any
+  Smouldering Ghru Grunt 3800365: any
+  Smouldering Ghru Grunt 3800366: any
+  Smouldering Ghru Grunt 3800367: any
+  Smouldering Writhing Flesh 3800420: any
+  Smouldering Writhing Flesh 3800421: any
+  Smouldering Writhing Flesh 3800422: any
+  Smouldering Writhing Flesh 3800423: any
+  Smouldering Writhing Flesh 3800424: any
+  Smouldering Writhing Flesh 3800425: any
+  Smouldering Writhing Flesh 3800426: any
+  Smouldering Writhing Flesh 3800427: any
+  Smouldering Writhing Flesh 3800428: any
+  Smouldering Writhing Flesh 3800429: any
+  Smouldering Writhing Flesh 3800430: any
+  Smouldering Writhing Flesh 3800431: any
+  Smouldering Writhing Flesh 3800432: any
+  Smouldering Writhing Flesh 3800433: any
+  Smouldering Writhing Flesh 3800434: any
+  # Irithyll Dungeon
+  Basilisk 3900321: any
+  Basilisk 3900322: any
+  Basilisk 3900323: any
+  Basilisk 3900324: any
+  Basilisk 3900325: any
+  Cage Spider 3900271: any
+  Cage Spider 3900272: any
+  Cage Spider 3900273: any
+  Cage Spider 3900274: any
+  Cage Spider 3900275: any
+  Cage Spider 3900276: any
+  Cage Spider 3900277: any
+  Crystal Lizard 3900340: any
+  Crystal Lizard 3900341: any
+  Crystal Lizard 3900342: any
+  Crystal Lizard 3900343: any
+  Hound Rat 3900300: any
+  Hound Rat 3900301: any
+  Hound Rat 3900302: any
+  Hound Rat 3900303: any
+  Hound Rat 3900304: any
+  Hound Rat 3900305: any
+  Hound Rat 3900306: any
+  Hound Rat 3900307: any
+  Hound Rat 3900308: any
+  Hound Rat 3900309: any
+  Hound Rat 3900310: any
+  Hound Rat 3900311: any
+  Hound Rat 3900312: any
+  Hound Rat 3900313: any
+  Hound Rat 3900314: any
+  Hound Rat 3900317: any
+  Hound Rat 3900318: any
+  Infested Corpse 3900259: any
+  Irirthyll Dungeon Peasant Hollow 3900280: any
+  Irirthyll Dungeon Peasant Hollow 3900290: any
+  Irirthyll Dungeon Peasant Hollow 3900291: any
+  Irirthyll Dungeon Peasant Hollow 3900292: any
+  Irirthyll Dungeon Peasant Hollow 3900293: any
+  Irirthyll Dungeon Peasant Hollow 3900294: any
+  Irirthyll Dungeon Peasant Hollow 3900295: any
+  Irirthyll Dungeon Peasant Hollow 3900296: any
+  Irirthyll Dungeon Peasant Hollow 3900297: any
+  Irirthyll Dungeon Peasant Hollow 3900298: any
+  Irirthyll Dungeon Peasant Hollow 3900299: any
+  Jailer 2888274: any
+  Jailer 2888275: any
+  Jailer 2888276: any
+  Jailer 2888277: any
+  Jailer 2888278: any
+  Jailer 2888279: any
+  Jailer 2888280: any
+  Jailer 2888281: any
+  Jailer 3900200: any
+  Jailer 3900201: any
+  Jailer 3900202: any
+  Jailer 3900203: any
+  Jailer 3900204: any
+  Jailer 3900205: any
+  Jailer 3900206: any
+  Jailer 3900207: any
+  Jailer 3900210: any
+  Jailer 3900213: any
+  Jailer 3900214: any
+  Jailer 3900215: any
+  Jailer 3900216: any
+  Jailer 3900217: any
+  Jailer 3900218: any
+  Jailer 3900219: any
+  Jailer 3900220: any
+  Jailer 3900221: any
+  Jailer 3900222: any
+  Jailer 3900223: any
+  Jailer 3900225: any
+  Jailer 3900226: any
+  Jailer 3900392: any
+  Jailer 3900393: any
+  Jailer 3900394: any
+  Jailer 3900395: any
+  Large Hound Rat 3900315: any
+  Large Hound Rat 3900316: any
+  Lycanthrope 3900379: any
+  Mimic Chest 3900350: any
+  Mimic Chest 3900351: any
+  Mimic Chest 3900352: any
+  Mimic Chest 3900353: any
+  Mimic Chest 3900354: any
+  Mimic Chest 3900355: any
+  Mimic Chest 3900356: any
+  Monstrosity of Sin 3900370: any
+  Monstrosity of Sin 3900371: any
+  Monstrosity of Sin 3900372: any
+  Monstrosity of Sin 3900373: any
+  Profaned Capital Gargoyle 3900360: any
+  Profaned Capital Gargoyle 3900361: any
+  Profaned Capital Gargoyle 3900362: any
+  Profaned Capital Gargoyle 3900363: any
+  Profaned Capital Gargoyle 3900364: any
+  Reanimated Corpse 2888271: any
+  Reanimated Corpse 3900250: any
+  Reanimated Corpse 3900251: any
+  Reanimated Corpse 3900253: any
+  Reanimated Corpse 3900254: any
+  Reanimated Corpse 3900255: any
+  Reanimated Corpse 3900256: any
+  Reanimated Corpse 3900257: any
+  Reanimated Corpse 3900262: any
+  Reanimated Corpse 3900263: any
+  Reanimated Corpse 3900264: any
+  Reanimated Corpse 3900265: any
+  Reanimated Corpse 3900267: any
+  Reanimated Corpse 3900268: any
+  Reanimated Corpse 3900269: any
+  Sewer Centipede 2888272: any
+  Sewer Centipede 2888273: any
+  Sewer Centipede 3900330: any
+  Sewer Centipede 3900331: any
+  Sewer Centipede 3900332: any
+  Sewer Centipede 3900333: any
+  Sewer Centipede 3900334: any
+  Sewer Centipede 3900335: any
+  Sewer Centipede 3900336: any
+  Sewer Centipede 3900337: any
+  Sewer Centipede 3900338: any
+  Sewer Centipede 3900339: any
+  Wretch 3900230: any
+  Wretch 3900231: any
+  Wretch 3900233: any
+  Wretch 3900234: any
+  Wretch 3900240: any
+  Wretch 3900241: any
+  Wretch 3900242: any
+  Wretch 3900243: any
+  Wretch 3900244: any
+  # Firelink Shrine
+  Black Knight 4000300: any
+  Black Knight 4000301: any
+  Black Knight 4000302: any
+  Black Knight 4000303: any
+  Cemetery Hollow 4000202: any
+  Cemetery Hollow 4000204: any
+  Cemetery Hollow 4000205: any
+  Cemetery Hollow 4000206: any
+  Cemetery Hollow 4000207: any
+  Cemetery Hollow 4000209: any
+  Cemetery Hollow 4000210: any
+  Cemetery Hollow 4000211: any
+  Cemetery Hollow 4000212: any
+  Cemetery Hollow 4000213: any
+  Cemetery Hollow 4000214: any
+  Cemetery Hollow 4000215: any
+  Cemetery Hollow 4000216: any
+  Cemetery Hollow 4000217: any
+  Cemetery Hollow 4000218: any
+  Cemetery Hollow 4000219: any
+  Cemetery Hollow 4000220: any
+  Cemetery Hollow 4000221: any
+  Cemetery Hollow 4000239: any
+  Cemetery Hollow 4000240: any
+  Cemetery Hollow 4000241: any
+  Cemetery Hollow 4000242: any
+  Cemetery Hollow 4000243: any
+  Cemetery Hollow 4000244: any
+  Cemetery Hollow 4000247: any
+  Cemetery Hollow 4000254: any
+  Cemetery Hollow 4000256: any
+  Cemetery Hollow 4000261: any
+  Cemetery Hollow 4000262: any
+  Cemetery Hollow 4000263: any
+  Cemetery Hollow 4000265: any
+  Cemetery Hollow 4000280: any
+  Cemetery Hollow 4000281: any
+  Cemetery Hollow 4000282: any
+  Cemetery Hollow 4000283: any
+  Cemetery Hollow 4000284: any
+  Cemetery Hollow 4000285: any
+  Cemetery Hollow 4000286: any
+  Cemetery Hollow 4000287: any
+  Cemetery Hollow 4000288: any
+  Cemetery Hollow 4000289: any
+  Corvian 4000352: any
+  Corvian 4000355: any
+  Corvian 4000356: any
+  Corvian 4000357: any
+  Crystal Lizard 4000390: any
+  Grave Warden 4000330: any
+  Grave Warden 4000331: any
+  Large Starved Hound 4000360: any
+  Starved Hound 4000361: any
+  Starved Hound 4000362: any
+  Starved Hound 4000363: any
+  Starved Hound 4000364: any
+  Starved Hound 4000365: any
+  Starved Hound 4000366: any
+  # Ariandel
+  Ariandel Greater Crab 4500670: any
+  Ariandel Greater Crab 4500671: any
+  Ariandel Greater Crab 4500672: any
+  Corvian 4500383: any
+  Corvian 4500384: any
+  Corvian 4500385: any
+  Corvian 4500386: any
+  Corvian Knight 4500401: any
+  Corvian Knight 4500403: any
+  Corvian Knight 4500404: any
+  Corvian Knight 4500405: any
+  Corvian Knight 4500407: any
+  Corvian Settler 4500414: any
+  Corvian Settler 4500416: any
+  Corvian Settler 4500417: any
+  Corvian Settler 4500418: any
+  Corvian Settler 4500419: any
+  Corvian Settler 4500420: any
+  Corvian Settler 4500421: any
+  Corvian Settler 4500422: any
+  Corvian Settler 4500423: any
+  Corvian Settler 4500424: any
+  Corvian Settler 4500425: any
+  Corvian Settler 4500426: any
+  Corvian Settler 4500427: any
+  Corvian Settler 4500428: any
+  Corvian Settler 4500429: any
+  Corvian Settler 4500430: any
+  Corvian Settler 4500431: any
+  Corvian Settler 4500432: any
+  Corvian Settler 4500433: any
+  Corvian Settler 4500434: any
+  Corvian Settler 4500435: any
+  Corvian Settler 4500437: any
+  Corvian Settler 4500438: any
+  Corvian Settler 4500440: any
+  Corvian Settler 4500441: any
+  Corvian Settler 4500443: any
+  Corvian Settler 4500444: any
+  Corvian Settler 4500448: any
+  Corvian Settler 4500449: any
+  Corvian Settler 4500450: any
+  Corvian Settler 4500451: any
+  Corvian Settler 4500452: any
+  Corvian Settler 4500453: any
+  Corvian Settler 4500454: any
+  Corvian Settler 4500455: any
+  Corvian Settler 4500456: any
+  Corvian Settler 4500458: any
+  Corvian Settler 4500459: any
+  Corvian Settler 4500460: any
+  Corvian Settler 4500461: any
+  Corvian Settler 4500463: any
+  Corvian Settler 4500464: any
+  Corvian Settler 4500465: any
+  Corvian Settler 4500466: any
+  Corvian Settler 4500467: any
+  Corvian Settler 4500468: any
+  Corvian Settler 4500469: any
+  Corvian Settler 4500470: any
+  Corvian Settler 4500471: any
+  Corvian Settler 4500472: any
+  Corvian Settler 4500474: any
+  Corvian Settler 4500475: any
+  Corvian Settler 4500477: any
+  Corvian Settler 4500478: any
+  Corvian Settler 4500481: any
+  Corvian Settler 4500483: any
+  Corvian Settler 4500484: any
+  Corvian Settler 4500485: any
+  Corvian Settler 4500486: any
+  Corvian Settler 4500487: any
+  Corvian Settler 4500488: any
+  Corvian Settler 4500489: any
+  Corvian Settler 4500490: any
+  Corvian Settler 4500491: any
+  Corvian Settler 4500492: any
+  Corvian Settler 4500493: any
+  Corvian Settler 4500494: any
+  Corvian Settler 4500495: any
+  Corvian Settler 4500496: any
+  Corvian Settler 4500497: any
+  Crystal Lizard 4500680: any
+  Crystal Lizard 4500682: any
+  Crystal Lizard 4500684: any
+  Crystal Lizard 4500685: any
+  Crystal Lizard 4500687: any
+  Crystal Lizard 4500688: any
+  Crystal Lizard 4500689: any
+  Farron Follower 4500520: any
+  Farron Follower 4500523: any
+  Farron Follower 4500524: any
+  Farron Follower 4500525: any
+  Farron Follower 4500526: any
+  Farron Follower 4500527: any
+  Farron Follower 4500528: any
+  Farron Follower 4500529: any
+  Farron Follower 4500530: any
+  Farron Follower 4500531: any
+  Farron Follower 4500532: any
+  Farron Follower 4500533: any
+  Farron Follower 4500534: any
+  Farron Follower 4500535: any
+  Farron Follower 4500537: any
+  Farron Follower 4500538: any
+  Farron Follower 4500539: any
+  Farron Follower 4500540: any
+  Farron Follower 4500541: any
+  Farron Follower 4500542: any
+  Farron Follower 4500543: any
+  Farron Follower 4500544: any
+  Farron Follower 4500545: any
+  Farron Follower 4500546: any
+  Farron Follower 4500547: any
+  Farron Follower 4500548: any
+  Farron Follower 4500549: any
+  Farron Follower 4500552: any
+  Farron Follower 4500553: any
+  Farron Follower 4500554: any
+  Farron Follower 4500555: any
+  Farron Follower 4500557: any
+  Farron Follower 4500558: any
+  Farron Follower 4500559: any
+  Farron Follower 4500566: any
+  Farron Follower 4500567: any
+  Farron Follower 4500568: any
+  Farron Follower 4500569: any
+  Farron Follower 4500570: any
+  Farron Follower 4500571: any
+  Farron Follower 4500572: any
+  Farron Follower 4500574: any
+  Farron Follower 4500575: any
+  Farron Follower 4500576: any
+  Farron Follower 4500577: any
+  Farron Follower 4500579: any
+  Farron Follower 4500581: any
+  Farron Follower 4500582: any
+  Farron Follower 4500585: any
+  Farron Follower 4500586: any
+  Farron Follower 4500587: any
+  Farron Follower 4500588: any
+  Farron Follower 4500589: any
+  Giant Fly 4500600: any
+  Giant Fly 4500602: any
+  Giant Fly 4500603: any
+  Giant Fly 4500604: any
+  Giant Fly 4500605: any
+  Giant Fly 4500606: any
+  Giant Fly 4500608: any
+  Giant Fly 4500609: any
+  Giant Fly 4500610: any
+  Giant Fly 4500611: any
+  Giant Fly 4500613: any
+  Giant Fly 4500614: any
+  Giant Fly 4500616: any
+  Giant Fly 4500617: any
+  Giant Fly 4500618: any
+  Giant Fly 4500619: any
+  Giant Fly 4500620: any
+  Giant Fly 4500621: any
+  Giant Fly 4500622: any
+  Giant Fly 4500623: any
+  Giant Fly 4500624: any
+  Giant Fly 4500626: any
+  Giant Fly 4500627: any
+  Giant Fly 4500628: any
+  Giant Fly 4500629: any
+  Giant Fly 4500630: any
+  Giant Fly 4500631: any
+  Giant Fly 4500632: any
+  Giant Fly 4500633: any
+  Giant Fly 4500634: any
+  Giant Fly 4500636: any
+  Giant Fly 4500637: any
+  Giant Fly 4500638: any
+  Giant Fly 4500639: any
+  Giant Fly 4500640: any
+  Giant Fly 4500641: any
+  Giant Fly 4500642: any
+  Giant Fly 4500643: any
+  Giant Fly 4500644: any
+  Giant Fly 4500645: any
+  Giant Fly 4500646: any
+  Giant Fly 4500647: any
+  Giant Fly 4500648: any
+  Giant Fly 4500649: any
+  Giant Fly 4500650: any
+  Giant Fly 4500651: any
+  Giant Fly 4500652: any
+  Giant Fly 4500653: any
+  Larger Wolf 4500210: any
+  Larger Wolf 4500211: any
+  Larger Wolf 4500212: any
+  Larger Wolf 4500213: any
+  Larger Wolf 4500214: any
+  Larger Wolf 4500215: any
+  Larger Wolf 4500216: any
+  Larger Wolf 4500217: any
+  Larger Wolf 4500218: any
+  Larger Wolf 4500219: any
+  Larger Wolf 4500220: any
+  Millwood Knight 4500500: any
+  Millwood Knight 4500501: any
+  Millwood Knight 4500503: any
+  Millwood Knight 4500504: any
+  Millwood Knight 4500506: any
+  Millwood Knight 4500507: any
+  Millwood Knight 4500509: any
+  Millwood Knight 4500510: any
+  Millwood Knight 4500511: any
+  Millwood Knight 4500512: any
+  Millwood Knight 4500513: any
+  Millwood Knight 4500515: any
+  Millwood Knight 4500516: any
+  Millwood Knight 4500517: any
+  Millwood Knight 4500518: any
+  Millwood Knight 4500519: any
+  Sewer Centipede 4500390: any
+  Sewer Centipede 4500391: any
+  Smaller Wolf 4500240: any
+  Smaller Wolf 4500241: any
+  Smaller Wolf 4500242: any
+  Smaller Wolf 4500243: any
+  Smaller Wolf 4500244: any
+  Smaller Wolf 4500245: any
+  Smaller Wolf 4500246: any
+  Smaller Wolf 4500247: any
+  Smaller Wolf 4500248: any
+  Smaller Wolf 4500249: any
+  Smaller Wolf 4500250: any
+  Smaller Wolf 4500251: any
+  Smaller Wolf 4500252: any
+  Smaller Wolf 4500253: any
+  Smaller Wolf 4500254: any
+  Smaller Wolf 4500255: any
+  Smaller Wolf 4500256: any
+  Smaller Wolf 4500257: any
+  Smaller Wolf 4500258: any
+  Smaller Wolf 4500259: any
+  Smaller Wolf 4500260: any
+  Smaller Wolf 4500261: any
+  Smaller Wolf 4500262: any
+  Tree Woman 4500320: any
+  Tree Woman 4500321: any
+  Tree Woman 4500322: any
+  Tree Woman 4500323: any
+  Tree Woman 4500324: any
+  Tree Woman 4500325: any
+  Tree Woman 4500326: any
+  Tree Woman 4500327: any
+  Tree Woman 4500328: any
+  Tree Woman 4500329: any
+  Tree Woman 4500330: any
+  Tree Woman 4500331: any
+  Tree Woman 4500334: any
+  Tree Woman 4500335: any
+  Tree Woman 4500336: any
+  Tree Woman 4500337: any
+  Tree Woman 4500338: any
+  Tree Woman 4500339: any
+  Tree Woman 4500340: any
+  Tree Woman 4500342: any
+  Tree Woman 4500344: any
+  Tree Woman 4500347: any
+  Tree Woman 4500348: any
+  Tree Woman 4500350: any
+  Tree Woman 4500352: any
+  Tree Woman 4500353: any
+  Tree Woman 4500354: any
+  # Dreg Heap
+  Angel Pilgrim 5000210: any
+  Angel Pilgrim 5000211: any
+  Angel Pilgrim 5000212: any
+  Dreg Heap Lothric Knight 5000222: any
+  Dreg Heap Lothric Knight 5000223: any
+  Dreg Heap Lothric Knight 5000224: any
+  Dreg Heap Lothric Knight 5000225: any
+  Dreg Heap Lothric Knight 5000226: any
+  Dreg Heap Thrall 5000270: any
+  Dreg Heap Thrall 5000271: any
+  Dreg Heap Thrall 5000273: any
+  Dreg Heap Thrall 5000274: any
+  Dreg Heap Thrall 5000276: any
+  Dreg Heap Thrall 5000279: any
+  Dreg Heap Thrall 5000280: any
+  Dreg Heap Thrall 5000282: any
+  Dreg Heap Thrall 5000284: any
+  Dreg Heap Thrall 5000286: any
+  Dreg Heap Thrall 5000287: any
+  Dreg Heap Thrall 5000288: any
+  Dreg Heap Thrall 5000290: any
+  Dreg Heap Thrall 5000291: any
+  Harald Legion Knight 5000230: any
+  Harald Legion Knight 5000231: any
+  Harald Legion Knight 5000232: any
+  Harald Legion Knight 5000233: any
+  Harald Legion Knight 5000236: any
+  Harald Legion Knight 5000237: any
+  Murkman 5000400: any
+  Murkman 5000401: any
+  Murkman 5000402: any
+  Murkman 5000403: any
+  Murkman 5000404: any
+  Murkman 5000405: any
+  Murkman 5000406: any
+  Murkman 5000407: any
+  Murkman 5000408: any
+  Murkman 5000409: any
+  Murkman 5000410: any
+  Murkman 5000420: any
+  Murkman 5000421: any
+  Murkman 5000422: any
+  Murkman 5000423: any
+  Murkman 5000424: any
+  Murkman 5000425: any
+  Murkman 5000426: any
+  Murkman 5000427: any
+  Murkman 5000440: any
+  Murkman 5000441: any
+  Murkman 5000442: any
+  Murkman 5000443: any
+  Murkman 5000444: any
+  Murkman 5000445: any
+  Murkman 5000446: any
+  Murkman 5000447: any
+  Murkman 5000448: any
+  Murkman 5000450: any
+  Murkman 5000451: any
+  Murkman 5000452: any
+  Murkman 5000453: any
+  Murkman 5000455: any
+  Murkman 5000456: any
+  Murkman 5000457: any
+  Murkman 5000458: any
+  Murkman 5000459: any
+  Murkman 5000460: any
+  Murkman 5000461: any
+  Murkman 5000462: any
+  Murkman 5000463: any
+  Murkman 5000464: any
+  Murkman 5000470: any
+  Murkman 5000471: any
+  Murkman 5000472: any
+  Murkman 5000473: any
+  Murkman 5000474: any
+  Murkman 5000475: any
+  Murkman 5000476: any
+  Murkman 5000477: any
+  Murkman 5000478: any
+  Murkman 5000479: any
+  Murkman Summoner 5000300: any
+  Murkman Summoner 5000301: any
+  Murkman Summoner 5000303: any
+  Murkman Summoner 5000310: any
+  Murkman Summoner 5000311: any
+  Murkman Summoner 5000315: any
+  Murkman Summoner 5000316: any
+  Murkman Summoner 5000317: any
+  Murkman Summoner 5000319: any
+  Murkman Summoner 5000320: any
+  Murkman Summoner 5000321: any
+  Murkman Summoner 5000322: any
+  Murkman Summoner 5000323: any
+  Murkman Summoner 5000324: any
+  Murkman Summoner 5000325: any
+  Murkman Summoner 5000326: any
+  Murkman Summoner 5000327: any
+  Murkman Summoner 5000328: any
+  Murkman Summoner 5000329: any
+  Murkman Summoner 5000330: any
+  Murkman Summoner 5000331: any
+  Murkman Summoner 5000332: any
+  Murkman Summoner 5000333: any
+  Murkman Summoner 5000335: any
+  Murkman Summoner 5000337: any
+  Poisonhorn Bug 5000550: any
+  Poisonhorn Bug 5000551: any
+  Poisonhorn Bug 5000552: any
+  Poisonhorn Bug 5000553: any
+  Poisonhorn Bug 5000554: any
+  Poisonhorn Bug 5000555: any
+  Poisonhorn Bug 5000556: any
+  Poisonhorn Bug 5000557: any
+  Poisonhorn Bug 5000558: any
+  Poisonhorn Bug 5000559: any
+  Poisonhorn Bug 5000560: any
+  Poisonhorn Bug 5000561: any
+  Poisonhorn Bug 5000562: any
+  Poisonhorn Bug 5000563: any
+  Poisonhorn Bug 5000564: any
+  Poisonhorn Bug 5000565: any
+  Poisonhorn Bug 5000566: any
+  Poisonhorn Bug 5000567: any
+  Poisonhorn Bug 5000568: any
+  Poisonhorn Bug 5000569: any
+  Poisonhorn Bug 5000570: any
+  Poisonhorn Bug 5000571: any
+  Poisonhorn Bug 5000572: any
+  Poisonhorn Bug 5000573: any
+  Poisonhorn Bug 5000574: any
+  Poisonhorn Bug 5000575: any
+  Poisonhorn Bug 5000576: any
+  Poisonhorn Bug 5000577: any
+  Poisonhorn Bug 5000578: any
+  Poisonhorn Bug 5000579: any
+  Poisonhorn Bug 5000580: any
+  Poisonhorn Bug 5000581: any
+  Poisonhorn Bug 5000582: any
+  Poisonhorn Bug 5000583: any
+  Poisonhorn Bug 5000584: any
+  Poisonhorn Bug 5000585: any
+  Poisonhorn Bug 5000586: any
+  Poisonhorn Bug 5000587: any
+  Poisonhorn Bug 5000588: any
+  Poisonhorn Bug 5000589: any
+  Poisonhorn Bug 5000590: any
+  # Ringed City
+  Crystal Lizard 5100290: any
+  Crystal Lizard 5100291: any
+  Crystal Lizard 5100294: any
+  Crystal Lizard 5100296: any
+  Harald Legion Knight 5100260: any
+  Harald Legion Knight 5100261: any
+  Harald Legion Knight 5100263: any
+  Harald Legion Knight 5100264: any
+  Harald Legion Knight 5100265: any
+  Harald Legion Knight 5100266: any
+  Hobbled Cleric 5100501: any
+  Hobbled Cleric 5100502: any
+  Hobbled Cleric 5100504: any
+  Hobbled Cleric 5100505: any
+  Hobbled Cleric 5100506: any
+  Hobbled Cleric 5100507: any
+  Hobbled Cleric 5100510: any
+  Hobbled Cleric 5100511: any
+  Hobbled Cleric 5100512: any
+  Hobbled Cleric 5100514: any
+  Hobbled Cleric 5100515: any
+  Hobbled Cleric 5100516: any
+  Hobbled Cleric 5100517: any
+  Hobbled Cleric 5100518: any
+  Hobbled Cleric 5100519: any
+  Hobbled Cleric 5100520: any
+  Hobbled Cleric 5100521: any
+  Hobbled Cleric 5100522: any
+  Hobbled Cleric 5100530: any
+  Judicator 5100300: any
+  Judicator 5100310: any
+  Judicator 5100320: any
+  Locust Preacher 5100340: any
+  Locust Preacher 5100341: any
+  Locust Preacher 5100342: any
+  Locust Preacher 5100343: any
+  Locust Preacher 5100344: any
+  Locust Preacher 5100345: any
+  Locust Preacher 5100346: any
+  Locust Preacher 5100347: any
+  Locust Preacher 5100348: any
+  Locust Preacher 5100349: any
+  Locust Preacher 5100350: any
+  Locust Preacher 5100351: any
+  Locust Preacher 5100352: any
+  Locust Preacher 5100353: any
+  Locust Preacher 5100354: any
+  Locust Preacher 5100355: any
+  Locust Preacher 5100356: any
+  Locust Preacher 5100357: any
+  Locust Preacher 5100358: any
+  Locust Preacher 5100359: any
+  Mimic Chest 5100298: any
+  Ringed City Cleric 5100400: any
+  Ringed City Cleric 5100401: any
+  Ringed City Cleric 5100402: any
+  Ringed City Cleric 5100403: any
+  Ringed City Cleric 5100404: any
+  Ringed City Cleric 5100405: any
+  Ringed City Cleric 5100406: any
+  Ringed City Cleric 5100407: any
+  Ringed City Cleric 5100408: any
+  Ringed City Cleric 5100409: any
+  Ringed City Cleric 5100410: any
+  Ringed City Cleric 5100411: any
+  Ringed City Cleric 5100414: any
+  Ringed City Cleric 5100415: any
+  Ringed City Cleric 5100416: any
+  Ringed City Cleric 5100422: any
+  Ringed City Cleric 5100423: any
+  Ringed City Cleric 5100425: any
+  Ringed City Cleric 5100426: any
+  Ringed City Cleric 5100428: any
+  Ringed City Cleric 5100432: any
+  Ringed City Cleric 5100433: any
+  Ringed City Cleric 5100434: any
+  Ringed City Cleric 5100435: any
+  Ringed City Cleric 5100436: any
+  Ringed City Cleric 5100437: any
+  Ringed City Cleric 5100438: any
+  Ringed City Cleric 5100439: any
+  Ringed City Cleric 5100440: any
+  Ringed City Cleric 5100441: any
+  Ringed City Cleric 5100449: any
+  Ringed City Cleric 5100460: any
+  Ringed City Cleric 5100461: any
+  Ringed City Cleric 5100462: any
+  Ringed City Cleric 5100463: any
+  Ringed City Cleric 5100464: any
+  Ringed City Cleric 5100465: any
+  Ringed City Cleric 5100469: any
+  Ringed City Skeleton 5100280: any
+  Ringed City Skeleton 5100281: any
+  Ringed City Skeleton 5100282: any
+  Ringed City Skeleton 5100550: any
+  Ringed City Skeleton 5100551: any
+  Ringed City Skeleton 5100552: any
+  Ringed City Skeleton 5100553: any
+  Ringed City Skeleton 5100554: any
+  Ringed City Skeleton 5100555: any
+  Ringed City Skeleton 5100556: any
+  Ringed City Skeleton 5100557: any
+  Ringed Knight 5100240: any
+  Ringed Knight 5100241: any
+  Ringed Knight 5100242: any
+  Ringed Knight 5100243: any
+  Ringed Knight 5100244: any
+  Ringed Knight 5100245: any
+  Ringed Knight 5100246: any
+  Ringed Knight 5100247: any
+  Ringed Knight 5100248: any
+  Ringed Knight 5100249: any
+  Ringed Knight 5100250: any
+  Ringed Knight 5100251: any
+  Ringed Knight 5100252: any
+  Ringed Knight 5100253: any
+  Small Locust Preacher 2888284: any
+  Small Locust Preacher 2888285: any
+  Small Locust Preacher 5100360: any
+  Small Locust Preacher 5100361: any
+  Small Locust Preacher 5100362: any
+  Small Locust Preacher 5100363: any
+  Small Locust Preacher 5100364: any
+  Small Locust Preacher 5100365: any
+  Small Locust Preacher 5100366: any
+  Small Locust Preacher 5100367: any
+  Small Locust Preacher 5100368: any
+  Small Locust Preacher 5100369: any
+  Small Locust Preacher 5100370: any
+  Small Locust Preacher 5100371: any
+  Small Locust Preacher 5100372: any
+  Small Locust Preacher 5100373: any
+  Small Locust Preacher 5100374: any
+  Small Locust Preacher 5100375: any
+  Small Locust Preacher 5100376: any
+  Small Locust Preacher 5100380: any
+  Small Locust Preacher 5100383: any
+  Small Locust Preacher 5100384: any
+  Small Locust Preacher 5100385: any
+  Small Locust Preacher 5100386: any
+  Small Locust Preacher 5100387: any
+  Small Locust Preacher 5100388: any
+  Small Locust Preacher 5100390: any
+  Small Locust Preacher 5100391: any
+  Small Locust Preacher 5100392: any
+  Small Locust Preacher 5100393: any
+  Small Locust Preacher 5100394: any
+  Small Locust Preacher 5100395: any
+  Small Locust Preacher 5100396: any
+  Small Locust Preacher 5100397: any
+  Small Locust Preacher 5100398: any
+  # Filianore's Rest
+  Passive Locust Preacher 5110300: any
+  Ringed Knight 5110240: any

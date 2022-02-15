@@ -109,7 +109,7 @@ namespace RandomizerCommon
                             uint type = (uint)row[$"LotItemCategory0{i}"].Value;
                             int points = (short)row[$"LotItemBasePoint0{i}"].Value;
                             int quantity = (byte)row[$"LotItemNum{i}"].Value;
-                            ItemKey item = new ItemKey(LocationData.LotTypes[type], id);
+                            ItemKey item = new ItemKey(game.LotItemTypes[type], id);
                             string itemText = $"{itemLot}[{locs}]";
                             // Check out script about CC, btw
                             List<string> info = new List<string>();
@@ -165,7 +165,10 @@ namespace RandomizerCommon
                                     scope = new ItemScope(ScopeType.MODEL, model);
                                 }
                             }
-                            LocationKey location = new LocationKey(LocationType.LOT, itemLot, itemText, entities, quantity, baseLocation);
+                            float chance = (float)points / totalPoints;
+                            LocationKey location = new LocationKey(
+                                LocationType.LOT, itemLot, itemText, entities,
+                                quantity, chance, baseLocation);
                             data.AddLocation(item, scope, location);
                             if (baseLocation == null)
                             {
@@ -200,7 +203,7 @@ namespace RandomizerCommon
                 ItemKey item = new ItemKey((ItemType)type, id);
                 string text = $"{shopName}{qwcText}{quantityText}";
                 text = $"{shopID}[{text}]";
-                LocationKey location = new LocationKey(LocationType.SHOP, shopID, text, new List<EntityId>(), quantity, null);
+                LocationKey location = new LocationKey(LocationType.SHOP, shopID, text, new List<EntityId>(), quantity, 1, null);
                 ItemScope scope;
                 if (eventFlag != -1)
                 {
@@ -316,7 +319,7 @@ namespace RandomizerCommon
             Dictionary<EntityId, EntityId> objects = new Dictionary<EntityId, EntityId>();
             Dictionary<int, List<EntityId>> usedNpcs = new Dictionary<int, List<EntityId>>();
             Dictionary<int, List<EntityId>> usedEntities = new Dictionary<int, List<EntityId>>();
-            foreach (KeyValuePair<string, MSB3> entry in game.Maps)
+            foreach (KeyValuePair<string, MSB3> entry in game.DS3Maps)
             {
                 string location = game.Locations[entry.Key];
                 foreach (MSB3.Part.Object part in entry.Value.Parts.Objects)
@@ -342,7 +345,7 @@ namespace RandomizerCommon
                     }
                 }
             }
-            foreach (KeyValuePair<string, MSB3> entry in game.Maps)
+            foreach (KeyValuePair<string, MSB3> entry in game.DS3Maps)
             {
                 string location = game.Locations[entry.Key];
                 foreach (MSB3.Event.Treasure treasure in entry.Value.Events.Treasures)

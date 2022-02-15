@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RandomizerCommon.Properties;
-using static RandomizerCommon.Preset;
 using static RandomizerCommon.Util;
 
 namespace RandomizerCommon
@@ -84,7 +83,7 @@ namespace RandomizerCommon
             bool isValidOption(string s)
             {
                 if (validOptions.Contains(s)) return true;
-                if (uint.TryParse(s, out var ignored)) return true;
+                if (uint.TryParse(s, out _)) return true;
                 return false;
             }
             previousOpts = new HashSet<string>(defaultOpts.Split(' '));
@@ -113,7 +112,6 @@ namespace RandomizerCommon
 
             fixedseed.Text = options.Seed == 0 ? "" : $"{options.Seed}";
             enemyseed.Text = options.Seed2 == 0 || options.Seed == options.Seed2 ? "" : $"{options.Seed2}";
-            // Also need to set enemy seed. This may be done by enemyseed text change handler?
 
             if (options.Preset == null)
             {
@@ -123,7 +121,7 @@ namespace RandomizerCommon
             {
                 try
                 {
-                    Preset preset = LoadPreset(options.Preset, extractOopsAll: true);
+                    Preset preset = Preset.LoadPreset(options.Preset, extractOopsAll: true);
                     SetPreset(preset);
                 }
                 catch (Exception e)
@@ -187,8 +185,8 @@ namespace RandomizerCommon
         {
             options.Difficulty = difficulty.Value;
             UpdateLabels();
-            SaveOptions();
             SetStatus(null);
+            SaveOptions();
         }
 
         private void option_CheckedChanged(object sender, EventArgs e)
@@ -203,7 +201,6 @@ namespace RandomizerCommon
             SaveOptions();
             SetStatus(null);
         }
-
 
         private void defaultReroll_CheckedChanged(object sender, EventArgs e)
         {
@@ -401,7 +398,7 @@ namespace RandomizerCommon
         private Preset selectedPreset;
         private void preset_Click(object sender, EventArgs e)
         {
-            using (PresetForm presetForm = new PresetForm())
+            using (PresetForm presetForm = new PresetForm("dists"))
             {
                 DialogResult result = presetForm.ShowDialog(this);
                 if (result == DialogResult.OK)
@@ -424,6 +421,7 @@ namespace RandomizerCommon
                 }
             }
         }
+
         private void SetPreset(Preset preset = null)
         {
             selectedPreset = preset;
@@ -502,7 +500,7 @@ namespace RandomizerCommon
                 Console.SetOut(log);
                 try
                 {
-                    randomizer.Randomize(rand, status => { SetStatus(status); }, sekiro: true, preset: selectedPreset);
+                    randomizer.Randomize(rand, SoulsIds.GameSpec.FromGame.SDT, status => { SetStatus(status); }, preset: selectedPreset);
                     SetStatus($"Done! Hints and spoilers in spoiler_logs directory as {runId} - Restart your game!!", success: true);
                     success = true;
                 }
@@ -523,7 +521,6 @@ namespace RandomizerCommon
             working = false;
             if (success) RefreshImage();
         }
-
 
         private void optionwindow_Click(object sender, EventArgs e)
         {

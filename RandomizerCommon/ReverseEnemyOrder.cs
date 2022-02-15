@@ -14,11 +14,10 @@ using static RandomizerCommon.LocationData.ItemScope;
 
 namespace RandomizerCommon
 {
-    // Messy code to generate reverse enemy order run
-    // Honestly this is probably more work than just listing every enemy in the game
+    // Messy code to generate various heuristics
     public class ReverseEnemyOrder
     {
-        public void FogDS3(GameData game, LocationData data, AnnotationData ann)
+        private Dictionary<int, string> GetDS3Bonfires(GameData game)
         {
             HashSet<int> allBonfires = new HashSet<int>
             {
@@ -111,7 +110,6 @@ namespace RandomizerCommon
                 [3202900] = "Archdragon Start",  // Spawn point
             };
 
-
             GameEditor editor = new GameEditor(GameSpec.FromGame.DS3);
             Dictionary<string, FMG> menuFMGs = editor.LoadBnd($@"{editor.Spec.GameDir}\msg\engus\menu_dlc2.msgbnd.dcx", (p, n) => FMG.Read(p));
 
@@ -135,7 +133,433 @@ namespace RandomizerCommon
             {
                 names[entry.Key] = entry.Value;
             }
+            return names;
+        }
 
+        public void EnemyDS3(GameData game, Dictionary<int, EnemyInfo> fullInfos)
+        {
+            // The main purpose here is section categorization rather than logical area categorization, so this is more compact than FogDS3
+            Dictionary<int, string> names = GetDS3Bonfires(game);
+            List<Path> paths = new List<Path>
+            {
+                new Path
+                {
+                    Section = 1,
+                    Maps = new List<string> { "firelink" },
+                    Conds = new List<int> { 1 },
+                    Bonfires = new List<int>
+                    {
+                        4000110,  // Cemetery Start
+                        4001951,  // Cemetery of Ash
+                        4001952,  // Iudex Gundyr
+                        4001950,  // Firelink Shrine
+                    }
+                },
+                new Path
+                {
+                    Section = 1,
+                    Maps = new List<string> { "highwall" },
+                    Bonfires = new List<int>
+                    {
+                        3001950,  // High Wall of Lothric
+                        3001955,  // Tower on the Wall
+                        3001952,  // Vordt of the Boreal Valley
+                    }
+                },
+                new Path
+                {
+                    Section = 1,
+                    Maps = new List<string> { "settlement" },
+                    Bonfires = new List<int>
+                    {
+                        3101954,  // Foot of the High Wall
+                        3101950,  // Undead Settlement
+                        3101952,  // Cliff Underside
+                        3101953,  // Dilapidated Bridge
+                        3101951,  // Pit of Hollows
+                    }
+                },
+                new Path
+                {
+                    Section = 1,
+                    Maps = new List<string> { "settlement" },
+                    Bonfires = new List<int>
+                    {
+                        3301956,  // Road of Sacrifices
+                        3101951,  // Pit of Hollows
+                    }
+                },
+                new Path
+                {
+                    Section = 2,
+                    Maps = new List<string> { "farronkeep" },
+                    Bonfires = new List<int>
+                    {
+                        3301956,  // Road of Sacrifices
+                        3301950,  // Halfway Fortress
+                    }
+                },
+                new Path
+                {
+                    Section = 2,
+                    Maps = new List<string> { "farronkeep" },
+                    Bonfires = new List<int>
+                    {
+                        3301950,  // Halfway Fortress
+                        3301957,  // Crucifixion Woods
+                        3301952,  // Crystal Sage
+                    }
+                },
+                new Path
+                {
+                    Section = 2,
+                    Maps = new List<string> { "farronkeep", "cathedral" },
+                    Bonfires = new List<int>
+                    {
+                        3301952,  // Crystal Sage
+                        3501953,  // Cathedral of the Deep
+                        3501950,  // Cleansing Chapel
+                        3501951,  // Deacons of the Deep
+                    }
+                },
+                new Path
+                {
+                    Section = 2,
+                    Maps = new List<string> { "farronkeep" },
+                    Bonfires = new List<int>
+                    {
+                        3301953,  // Farron Keep
+                        3301954,  // Keep Ruins
+                        3301958,  // Farron Keep Perimeter
+                        3301951,  // Abyss Watchers
+                    }
+                },
+                new Path
+                {
+                    Section = 3,
+                    Maps = new List<string> { "catacombs" },
+                    Bonfires = new List<int>
+                    {
+                        3301951,  // Abyss Watchers
+                        3801956,  // Catacombs of Carthus
+                        3801950,  // High Lord Wolnir
+                        3701957,  // Irithyll of the Boreal Valley
+                    }
+                },
+                new Path
+                {
+                    Section = 3,
+                    Maps = new List<string> { "catacombs" },
+                    Bonfires = new List<int>
+                    {
+                        3801950,  // High Lord Wolnir
+                        3801951,  // Abandoned Tomb
+                        3801952,  // Old King's Antechamber
+                        3801953,  // Demon Ruins
+                        3801954,  // Old Demon King
+                    }
+                },
+                new Path
+                {
+                    Section = 3,
+                    Maps = new List<string> { "irithyll" },
+                    Bonfires = new List<int>
+                    {
+                        3701957,  // Irithyll of the Boreal Valley
+                        3701954,  // Central Irithyll
+                        3701950,  // Church of Yorshka
+                        3701951,  // Pontiff Sulyvahn
+                        3701956,  // Water Reserve
+                        3701958,  // Prison Tower
+                        3701953,  // Anor Londo
+                        3701952,  // Aldrich, Devourer of Gods
+                    }
+                },
+                new Path
+                {
+                    Section = 3,
+                    Maps = new List<string> { "irithyll", "dungeon" },
+                    Bonfires = new List<int>
+                    {
+                        3701955,  // Distant Manor
+                        3901950,  // Irithyll Dungeon
+                        3901952,  // Profaned Capital
+                        3901951,  // Yhorm the Giant
+                    }
+                },
+                new Path
+                {
+                    Section = 4,
+                    Maps = new List<string> { "highwall" },
+                    Bonfires = new List<int>
+                    {
+                        3001954,  // Dancer of the Boreal Valley
+                        3001951,  // Oceiros, the Consumed King
+                    }
+                },
+                new Path
+                {
+                    Section = 4,
+                    Maps = new List<string> { "firelink" },
+                    Conds = new List<int> { 2 },
+                    Bonfires = new List<int>
+                    {
+                        4001953,  // Untended Graves
+                        4001954,  // Champion Gundyr
+                        4001950,  // Firelink Shrine
+                    }
+                },
+                new Path
+                {
+                    Section = 4,
+                    Maps = new List<string> { "lothric" },
+                    Bonfires = new List<int>
+                    {
+                        3011950,  // Lothric Castle
+                        3011952,  // Dragon Barracks
+                        3011951,  // Dragonslayer Armour
+                    }
+                },
+                new Path
+                {
+                    Section = 4,
+                    Maps = new List<string> { "archives" },
+                    Bonfires = new List<int>
+                    {
+                        3411951,  // Grand Archives
+                        3411950,  // Twin Princes
+                    }
+                },
+                new Path
+                {
+                    Section = 4,
+                    Maps = new List<string> { "archdragon" },
+                    Bonfires = new List<int>
+                    {
+                        3202900,  // Archdragon Start
+                        3201950,  // Archdragon Peak
+                        3201953,  // Dragon-Kin Mausoleum
+                        3201951,  // Nameless King
+                        3201952,  // Great Belfry
+                    }
+                },
+                new Path
+                {
+                    Section = 4,
+                    Maps = new List<string> { "ariandel" },
+                    Bonfires = new List<int>
+                    {
+                        4501951,  // Snowfield
+                        4501952,  // Rope Bridge Cave
+                        4501953,  // Corvian Settlement
+                        4501954,  // Snowy Mountain Pass
+                    }
+                },
+                new Path
+                {
+                    Section = 4,
+                    Maps = new List<string> { "ariandel" },
+                    Bonfires = new List<int>
+                    {
+                        4501952,  // Rope Bridge Cave
+                        4501957,  // Depths of the Painting
+                        4501956,  // Champion's Gravetender
+                    }
+                },
+                new Path
+                {
+                    Section = 4,
+                    Maps = new List<string> { "ariandel" },
+                    Bonfires = new List<int>
+                    {
+                        4501954,  // Snowy Mountain Pass
+                        4501955,  // Ariandel Chapel
+                        4501950,  // Sister Friede
+                    }
+                },
+                new Path
+                {
+                    Section = 5,
+                    Maps = new List<string> { "dregheap" },
+                    Bonfires = new List<int>
+                    {
+                        5001951,  // The Dreg Heap
+                        5001952,  // Earthen Peak Ruins
+                        5001953,  // Within the Earthen Peak Ruins
+                        5001950,  // The Demon Prince
+                    }
+                },
+                new Path
+                {
+                    Section = 5,
+                    Maps = new List<string> { "ringedcity" },
+                    Bonfires = new List<int>
+                    {
+                        5101952,  // Mausoleum Lookout
+                        5101953,  // Ringed Inner Wall
+                        5101954,  // Ringed City Streets
+                        5101955,  // Shared Grave
+                        5101950,  // Church of Filianore
+                        // 5101951,  // Darkeater Midir
+                    }
+                },
+                new Path
+                {
+                    Section = 5,
+                    Maps = new List<string> { "filianore" },
+                    Bonfires = new List<int>
+                    {
+                        5111951,  // Filianore's Rest
+                        5111950,  // Slave Knight Gael
+                    }
+                },
+                new Path
+                {
+                    Section = 5,
+                    Maps = new List<string> { "kiln" },
+                    Bonfires = new List<int>
+                    {
+                        4101951,  // Kiln of the First Flame
+                        4101952,  // The First Flame
+                    }
+                },
+            };
+
+            Dictionary<int, MSB3.Part.Enemy> enemies = new Dictionary<int, MSB3.Part.Enemy>();
+            Dictionary<int, Vector3> points = new Dictionary<int, Vector3>();
+            foreach (KeyValuePair<string, MSB3> entry in game.DS3Maps)
+            {
+                if (!game.Locations.ContainsKey(entry.Key)) continue;
+                string map = game.Locations[entry.Key];
+                MSB3 msb = entry.Value;
+                foreach (MSB3.Part e in msb.Parts.GetEntries())
+                {
+                    if (names.ContainsKey(e.EntityID)) points[e.EntityID] = e.Position;
+                    if (e is MSB3.Part.Enemy enemy)
+                    {
+                        enemies[e.EntityID] = enemy;
+                    }
+                }
+                foreach (MSB3.Region e in msb.Regions.GetEntries())
+                {
+                    if (names.ContainsKey(e.EntityID)) points[e.EntityID] = e.Position;
+                }
+            }
+
+            string pathText(int p)
+            {
+                int first = paths[p].Bonfires.First();
+                int last = paths[p].Bonfires.Last();
+                return $"{paths[p].Area} [{names[first]}->{names[last]}]";
+            }
+
+            List<List<EnemyClass>> typeGroups = new List<List<EnemyClass>>
+            {
+                new List<EnemyClass> { EnemyClass.Boss },
+                new List<EnemyClass> { EnemyClass.Basic, EnemyClass.Mimic, EnemyClass.CrystalLizard },
+                // Do these NPCs' areas generally match those of surrounding enemies?
+                new List<EnemyClass> { EnemyClass.Miniboss },
+                new List<EnemyClass> { EnemyClass.HostileNPC },
+            };
+            List<EnemyClass> types = typeGroups.SelectMany(c => c).ToList();
+            Dictionary<int, EnemyInfo> infos = fullInfos.Values.Where(e => types.Contains(e.Class)).ToDictionary(e => e.ID, e => e);
+
+            Dictionary<int, (int, float)> chosenPath = new Dictionary<int, (int, float)>();
+            foreach (EnemyInfo info in infos.Values)
+            {
+                float score = float.PositiveInfinity;
+                MSB3.Part.Enemy e = enemies[info.ID];
+                Vector3 pos = e.Position;
+                string map = game.Locations[info.Map];
+                for (int path = 0; path < paths.Count; path++)
+                {
+                    // Do some very basic filtering here, as it's nowhere near as involved as Sekiro
+                    Path p = paths[path];
+                    List<string> maps = p.Maps;
+                    if (!maps.Contains(map)) continue;
+                    int section = p.Section;
+                    List<int> cond = p.Conds;
+                    if (cond != null && cond.Count > 0)
+                    {
+                        bool passed = true;
+                        bool firelinkLayer = (e.MapStudioLayer & 1) != 0;
+                        foreach (int c in cond)
+                        {
+                            if (c == 1)
+                            {
+                                passed &= firelinkLayer;
+                            }
+                            else if (c == 2)
+                            {
+                                passed &= !firelinkLayer;
+                            }
+                            else throw new Exception($"{p}");
+                        }
+                        if (!passed) continue;
+                    }
+                    List<int> order = p.Bonfires;
+
+                    for (int i = 0; i < order.Count - 1; i++)
+                    {
+                        Vector3 p1 = points[order[i]];
+                        Vector3 p2 = points[order[i + 1]];
+                        float dist1 = Vector3.Distance(p1, pos);
+                        float dist2 = Vector3.Distance(p2, pos);
+                        float dist = dist1 + dist2;
+                        if (info.ID == 9999999) Console.WriteLine($"Found dist {dist1} to {names[order[i]]}, and {dist2} to {names[order[i + 1]]}. TOTAL {dist}");
+                        if (dist < score)
+                        {
+                            score = dist;
+                            chosenPath[info.ID] = (path, i + Vector3.Distance(p1, pos) / dist);
+                        }
+                    }
+                }
+                if (float.IsInfinity(score)) throw new Exception($"{info.ID} had nothing checked for it");
+            }
+
+            // InvestigateDS3Scaling(game, typeGroups, infos, paths, chosenPath); return;
+
+            bool scalingSection = true;
+            if (scalingSection)
+            {
+                Dictionary<int, int> allSections = chosenPath.ToDictionary(e => e.Key, e => paths[e.Value.Item1].Section);
+                foreach (EnemyInfo info in fullInfos.Values)
+                {
+                    if (!allSections.ContainsKey(info.ID) && info.Class == EnemyClass.Helper && allSections.TryGetValue(info.OwnedBy, out int section))
+                    {
+                        allSections[info.ID] = section;
+                    }
+                }
+                foreach (KeyValuePair<int, int> entry in allSections.OrderBy(e => (e.Value, e.Key)))
+                {
+                    Console.WriteLine($"  {entry.Key}: {entry.Value}");
+                }
+                return;
+            }
+
+            bool debugOutput = true;
+            foreach (List<EnemyClass> typeGroup in typeGroups)
+            {
+                List<string> order = new List<string>();
+                foreach (KeyValuePair<int, (int, float)> entry in chosenPath.OrderBy(e => (e.Value, e.Key)))
+                {
+                    int id = entry.Key;
+                    EnemyInfo info = infos[id];
+                    if (!typeGroup.Contains(info.Class)) continue;
+                    if (debugOutput) Console.WriteLine($"{info.DebugText}\n- {pathText(entry.Value.Item1)}, progress {entry.Value.Item2}\n");
+                    // TODO: Add the preset-addressable name for the enemy
+                    // order.Add($"{info.ExtraName ?? names[id]} {id}");
+                }
+                for (int i = 0; i < order.Count; i++)
+                {
+                    if (!debugOutput) Console.WriteLine($"  {order[i]}: {order[order.Count - 1 - i]}");
+                }
+            }
+        }
+
+        public void FogDS3(GameData game, LocationData data, AnnotationData ann)
+        {
+            Dictionary<int, string> names = GetDS3Bonfires(game);
             List<Path> paths = new List<Path>
             {
                 new Path
@@ -518,7 +942,7 @@ namespace RandomizerCommon
 
             // TODO: May need to switch to map + name
             Dictionary<int, Vector3> points = new Dictionary<int, Vector3>();
-            foreach (KeyValuePair<string, MSB3> entry in game.Maps)
+            foreach (KeyValuePair<string, MSB3> entry in game.DS3Maps)
             {
                 if (!game.Locations.ContainsKey(entry.Key)) continue;
                 string map = game.Locations[entry.Key];
@@ -763,7 +1187,7 @@ namespace RandomizerCommon
             // But just use item locations instead tbh
             FogLocations enemyLocs = new FogLocations();
             List<FogCoordinate> coords = new List<FogCoordinate>();
-            foreach (KeyValuePair<string, MSB3> entry in game.Maps)
+            foreach (KeyValuePair<string, MSB3> entry in game.DS3Maps)
             {
                 if (!game.Locations.ContainsKey(entry.Key)) continue;
                 string map = game.Locations[entry.Key];
@@ -810,7 +1234,7 @@ namespace RandomizerCommon
                 "c1480", "c1490",  // Irithyll phantoms
                 "c6120", "c6121",  // Painting child
             };
-            foreach (KeyValuePair<string, MSB3> entry in game.Maps)
+            foreach (KeyValuePair<string, MSB3> entry in game.DS3Maps)
             {
                 if (!game.Locations.ContainsKey(entry.Key)) continue;
                 string map = game.Locations[entry.Key];
@@ -888,6 +1312,158 @@ namespace RandomizerCommon
             public List<string> Maps { get; set; }
             public List<int> Conds { get; set; }
             public List<int> Bonfires { get; set; }
+        }
+
+        public Dictionary<int, int> InvestigateDS3Scaling(
+            GameData game, List<List<EnemyClass>> typeGroups, Dictionary<int, EnemyInfo> infos, List<Path> paths, Dictionary<int, (int, float)> chosenPath)
+        {
+            Dictionary<int, MSB3.Part.Enemy> enemies = new Dictionary<int, MSB3.Part.Enemy>();
+            foreach (KeyValuePair<string, MSB3> entry in game.DS3Maps)
+            {
+                if (!game.Locations.ContainsKey(entry.Key)) continue;
+                string map = game.Locations[entry.Key];
+                MSB3 msb = entry.Value;
+                foreach (MSB3.Part.Enemy e in msb.Parts.Enemies)
+                {
+                    enemies[e.EntityID] = e;
+                }
+            }
+
+            // Findings: Hp is not changed. It's done through maxHpRate.
+            // getSoul has some weird data (14 >>> 15), just smooth it out I guess
+            // Phys attack power scaling is slightly less than other power scaling types.
+            // Other categories then, defense and regist change rate
+            List<string> scaleSp =
+                ("maxHpRate maxStaminaCutRate physAtkPowerRate magicAtkPowerRate fireAtkPowerRate thunderAtkPowerRate staminaAttackRate darkAttackPowerRate "
+                // These are all in DS3 and not Sekiro
+                + "physDefRate magicDefRate fireDefRate thunderDefRate darkDefRate registPoisonChangeRate registToxicChangeRate registBloodChangeRate registCurseChangeRate registFrostChangeRate").Split(' ').ToList();
+            List<string> scaleNpc = "Hp getSoul".Split(' ').ToList();  // speffect3: 7000 vs 7130. 7060/7092/7040/7070, 7040/7140/7135
+            List<string> allFields = scaleSp.Concat(scaleNpc).ToList();
+            // Disp: ModelDispMask0 -> ModelDispMask31
+            // Npc param has GameClearSpEffectID
+            // Bases for enemy models which are basically equivalent, like c1105 and c1106
+            HashSet<int> reskins = new HashSet<int> { 1070, 1100, 1105, 1200, 1210, 1240, 1280, 1440, 1445, 2130, 2190 };
+            Dictionary<(string, int, int), List<float>> allScales = new Dictionary<(string, int, int), List<float>>();
+            Dictionary<int, int> allSections = new Dictionary<int, int>();
+            foreach (List<EnemyClass> typeGroup in typeGroups)
+            {
+                // Consider two enemies the same if they have the same think id, or same disp mask
+                // Or for minibosses, if they are just the same model, that's probably fine
+                Dictionary<string, List<int>> thinks = new Dictionary<string, List<int>>();
+                Dictionary<string, List<int>> masks = new Dictionary<string, List<int>>();
+                Dictionary<string, List<int>> bosses = new Dictionary<string, List<int>>();
+                List<string> order = new List<string>();
+                Dictionary<int, int> sections = new Dictionary<int, int>();
+                foreach (KeyValuePair<int, (int, float)> entry in chosenPath.OrderBy(e => (e.Value, e.Key)))
+                {
+                    int id = entry.Key;
+                    EnemyInfo info = infos[id];
+                    if (!typeGroup.Contains(info.Class)) continue;
+                    MSB3.Part.Enemy e = enemies[id];
+                    int path = entry.Value.Item1;
+                    int section = paths[path].Section;
+                    if (info.Class == EnemyClass.Basic && section == 1 && paths[path].Maps.Contains("firelink"))
+                    {
+                        // Exclude cemetery hollows, they are super underleveled
+                        continue;
+                    }
+                    if (e.ModelName == "c0000") continue;
+                    sections[id] = section;
+                    allSections[id] = section;
+                    string baseModel = e.ModelName;
+                    int modelId = int.Parse(baseModel.Substring(1));
+                    modelId -= (modelId % 5);
+                    if (reskins.Contains(modelId))
+                    {
+                        baseModel = $"c{modelId}:d4";
+                    }
+                    string model = game.ModelName(e.ModelName);
+                    if (typeGroup.Contains(EnemyClass.Miniboss) || typeGroup.Contains(EnemyClass.Boss))
+                    {
+                        AddMulti(bosses, model, id);
+                        continue;
+                    }
+                    string think = $"{model} {e.ThinkParamID}";
+                    AddMulti(thinks, think, id);
+                    PARAM.Row npc = game.Params["NpcParam"][e.NPCParamID];
+                    if (e.NPCParamID > 0 && npc != null)
+                    {
+                        uint mask = 0;
+                        for (int i = 0; i < 32; i++)
+                        {
+                            if ((byte)npc[$"ModelDispMask{i}"].Value == 1)
+                            {
+                                mask |= ((uint)1 << i);
+                            }
+                        }
+                        string dispMask = $"{model} 0x{mask:X8}";
+                        AddMulti(masks, dispMask, id);
+                    }
+                }
+                foreach (KeyValuePair<string, List<int>> entry in thinks.Concat(masks.Concat(bosses)))
+                {
+                    if (entry.Value.Count == 1) continue;
+                    List<int> secs = entry.Value.Select(i => sections[i]).Distinct().ToList();
+                    if (secs.Count == 1) continue;
+
+                    Console.WriteLine($"{entry.Key}: {string.Join(",", entry.Value.Select(i => $"{i}[{sections[i]}]"))}");
+                    SortedDictionary<string, List<(int, float)>> fieldValues = new SortedDictionary<string, List<(int, float)>>();
+                    foreach (int id in entry.Value)
+                    {
+                        MSB3.Part.Enemy e = enemies[id];
+                        PARAM.Row npc = game.Params["NpcParam"][e.NPCParamID];
+                        if (e.NPCParamID == 0 || npc == null) continue;
+                        Dictionary<string, float> values = new Dictionary<string, float>();
+                        foreach (string f in scaleNpc)
+                        {
+                            values[f] = float.Parse(npc[f].Value.ToString());
+                        }
+                        int spVal = (int)npc["spEffectId3"].Value;  // GameClearSpEffectID is for NG+ only, or time-of-day only, or something like that
+                        PARAM.Row sp = game.Params["SpEffectParam"][spVal];
+                        if (spVal > 0 && sp != null)
+                        {
+                            foreach (string f in scaleSp)
+                            {
+                                values[f] = float.Parse(sp[f].Value.ToString());
+                            }
+                        }
+                        foreach (KeyValuePair<string, float> val in values)
+                        {
+                            AddMulti(fieldValues, val.Key, (sections[id], val.Value));
+                        }
+                    }
+                    foreach (KeyValuePair<string, List<(int, float)>> val in fieldValues)
+                    {
+                        // Console.WriteLine($"  {val.Key}: {string.Join(", ", val.Value.OrderBy(v => v).Select(v => $"[{v.Item1}]{v.Item2}"))}");
+                        Dictionary<int, float> bySection = val.Value.GroupBy(v => v.Item1).ToDictionary(g => g.Key, g => g.Select(v => v.Item2).Average());
+                        List<string> sorts = new List<string>();
+                        foreach (int i in bySection.Keys)
+                        {
+                            foreach (int j in bySection.Keys)
+                            {
+                                if (i >= j) continue;
+                                float ratio = bySection[j] / bySection[i];
+                                if (float.IsNaN(ratio) || float.IsInfinity(ratio) || ratio == 1 || ratio == 0) continue;
+                                sorts.Add($"{i}{j}: {ratio:f3}x");
+                                AddMulti(allScales, (val.Key, i, j), ratio);
+                                // Can be used for complete table, but easier to leave out for lower diagonal
+                                // AddMulti(allScales, (val.Key, j, i), 1 / ratio);
+                            }
+                        }
+                        if (sorts.Count > 0) Console.WriteLine($"  {val.Key}: {string.Join(", ", sorts)}");
+                    }
+                }
+            }
+            foreach (string field in allFields)
+            {
+                Console.WriteLine($"-- {field} ({allScales.Where(k => k.Key.Item1 == field).Sum(e => e.Value.Count)})");
+                for (int i = 1; i <= 5; i++)
+                {
+                    // row: the target class. column: the source class. value: how much to multiply to place the source in the target.
+                    Console.WriteLine("  " + string.Join(" ", Enumerable.Range(1, 5).Select(j => allScales.TryGetValue((field, j, i), out List<float> floats) ? $"{floats.Average():f5}," : "        ")));
+                }
+            }
+            return allSections;
         }
 
         public void WriteList(GameData game, Dictionary<int, EnemyInfo> fullInfos)
@@ -1218,7 +1794,7 @@ namespace RandomizerCommon
             Dictionary<int, Vector3> points = new Dictionary<int, Vector3>();
 
             // Find location of all bonfires
-            foreach (KeyValuePair<string, MSBS> entry in game.Smaps)
+            foreach (KeyValuePair<string, MSBS> entry in game.SekiroMaps)
             {
                 if (!game.Locations.ContainsKey(entry.Key)) continue;
                 string map = game.Locations[entry.Key];
@@ -1280,7 +1856,7 @@ namespace RandomizerCommon
                         AddMulti(eventFlags, check, val);
                     }
                 }
-                foreach (KeyValuePair<string, MSBS> entry in game.Smaps)
+                foreach (KeyValuePair<string, MSBS> entry in game.SekiroMaps)
                 {
                     if (!game.Locations.ContainsKey(entry.Key)) continue;
                     string map = game.Locations[entry.Key];
@@ -1336,6 +1912,7 @@ namespace RandomizerCommon
             possiblePaths[1100330] = new List<int> { 7 };
 
             Console.WriteLine("Categories");
+            // Mapping from entity id to (chosen path, progress along path)
             Dictionary<int, (int, float)> chosenPath = new Dictionary<int, (int, float)>();
             foreach (EnemyInfo info in infos.Values)
             {
@@ -1385,145 +1962,7 @@ namespace RandomizerCommon
 
             if (investigateScaling)
             {
-                Dictionary<int, MSBS.Part.Enemy> enemies = new Dictionary<int, MSBS.Part.Enemy>();
-                foreach (KeyValuePair<string, MSBS> entry in game.Smaps)
-                {
-                    if (!game.Locations.ContainsKey(entry.Key)) continue;
-                    string map = game.Locations[entry.Key];
-                    MSBS msb = entry.Value;
-                    foreach (MSBS.Part.Enemy e in msb.Parts.Enemies)
-                    {
-                        enemies[e.EntityID] = e;
-                    }
-                }
-
-                // Exclude these from scaling considerations, since they are not really part of the area (meant for when visiting later)
-                HashSet<int> phantomGroups = new HashSet<int>
-                {
-                    // Ashina phantoms
-                    1505201, 1505211, 1705200, 1705201, 2005200, 2005201,
-                    // Sunken Valley phantoms
-                    1505202, 1505212, 2005210, 2005211,
-                    // Mibu Village phantoms
-                    1705220, 1705221, 2005220, 2005221,
-                };
-
-                // haveSoulRate Unk85: NG+ only
-                // EventFlagId: used for scaling speffect
-                // There are these overall groups: vitality, damage, experience, cash. (is there haveSoulRate for cash/xp? maybe it's Unk85)
-                List<string> scaleSp = "maxHpRate maxStaminaCutRate physAtkPowerRate magicAtkPowerRate fireAtkPowerRate thunderAtkPowerRate staminaAttackRate darkAttackPowerRate NewGameBonusUnk".Split(' ').ToList();
-                List<string> scaleNpc = "Hp getSoul stamina staminaRecoverBaseVal Experience".Split(' ').ToList();
-                List<string> allFields = scaleSp.Concat(scaleNpc).ToList();
-                // Disp: ModelDispMask0 -> ModelDispMask31
-                // Npc param has GameClearSpEffectID
-                Dictionary<(string, int, int), List<float>> allScales = new Dictionary<(string, int, int), List<float>>();
-                Dictionary<int, int> allSections = new Dictionary<int, int>();
-                foreach (List<EnemyClass> typeGroup in typeGroups)
-                {
-                    // Consider two enemies the same if they have the same think id, or same disp mask
-                    // Or for minibosses, if they are just the same model, that's probably fine
-                    Dictionary<string, List<int>> thinks = new Dictionary<string, List<int>>();
-                    Dictionary<string, List<int>> masks = new Dictionary<string, List<int>>();
-                    Dictionary<string, List<int>> bosses = new Dictionary<string, List<int>>();
-                    List<string> order = new List<string>();
-                    Dictionary<int, int> sections = new Dictionary<int, int>();
-                    foreach (KeyValuePair<int, (int, float)> entry in chosenPath.OrderBy(e => (e.Value, e.Key)))
-                    {
-                        int id = entry.Key;
-                        EnemyInfo info = infos[id];
-                        if (!typeGroup.Contains(info.Class)) continue;
-                        MSBS.Part.Enemy e = enemies[id];
-                        int path = entry.Value.Item1;
-                        int section = paths[path].Section;
-                        sections[id] = section;
-                        allSections[id] = section;
-                        if (e.EntityGroupIDs.Any(g => phantomGroups.Contains(g))) continue;
-                        string model = game.ModelName(e.ModelName);
-                        if (typeGroup.Contains(EnemyClass.Miniboss) || typeGroup.Contains(EnemyClass.Boss))
-                        {
-                            AddMulti(bosses, model, id);
-                            continue;
-                        }
-                        string think = $"{model} {e.ThinkParamID}";
-                        AddMulti(thinks, think, id);
-                        PARAM.Row npc = game.Params["NpcParam"][e.NPCParamID];
-                        if (e.NPCParamID > 0 && npc != null)
-                        {
-                            uint mask = 0;
-                            for (int i = 0; i < 32; i++)
-                            {
-                                if ((byte)npc[$"ModelDispMask{i}"].Value == 1)
-                                {
-                                    mask |= ((uint)1 << i);
-                                }
-                            }
-                            string dispMask = $"{model} 0x{mask:X8}";
-                            AddMulti(masks, dispMask, id);
-                        }
-                    }
-                    foreach (KeyValuePair<string, List<int>> entry in thinks.Concat(masks.Concat(bosses)))
-                    {
-                        if (entry.Value.Count == 1) continue;
-                        List<int> secs = entry.Value.Select(i => sections[i]).Distinct().ToList();
-                        if (secs.Count == 1) continue;
-
-                        Console.WriteLine($"{entry.Key}: {string.Join(",", entry.Value.Select(i => $"{i}[{sections[i]}]"))}");
-                        SortedDictionary<string, List<(int, float)>> fieldValues = new SortedDictionary<string, List<(int, float)>>();
-                        foreach (int id in entry.Value)
-                        {
-                            MSBS.Part.Enemy e = enemies[id];
-                            PARAM.Row npc = game.Params["NpcParam"][e.NPCParamID];
-                            if (e.NPCParamID == 0 || npc == null) continue;
-                            Dictionary<string, float> values = new Dictionary<string, float>();
-                            foreach (string f in scaleNpc)
-                            {
-                                values[f] = float.Parse(npc[f].Value.ToString());
-                            }
-                            int spVal = (int)npc["EventFlagId"].Value;  // GameClearSpEffectID is for NG+ only, or time-of-day only, or something like that
-                            PARAM.Row sp = game.Params["SpEffectParam"][spVal];
-                            if (spVal > 0 && sp != null)
-                            {
-                                foreach (string f in scaleSp)
-                                {
-                                    values[f] = float.Parse(sp[f].Value.ToString());
-                                }
-                            }
-                            foreach (KeyValuePair<string, float> val in values)
-                            {
-                                AddMulti(fieldValues, val.Key, (sections[id], val.Value));
-                            }
-                        }
-                        foreach (KeyValuePair<string, List<(int, float)>> val in fieldValues)
-                        {
-                            // Console.WriteLine($"  {val.Key}: {string.Join(", ", val.Value.OrderBy(v => v).Select(v => $"[{v.Item1}]{v.Item2}"))}");
-                            Dictionary<int, float> bySection = val.Value.GroupBy(v => v.Item1).ToDictionary(g => g.Key, g => g.Select(v => v.Item2).Average());
-                            List<string> sorts = new List<string>();
-                            foreach (int i in bySection.Keys)
-                            {
-                                foreach (int j in bySection.Keys)
-                                {
-                                    if (i >= j) continue;
-                                    float ratio = bySection[j] / bySection[i];
-                                    if (float.IsNaN(ratio) || float.IsInfinity(ratio) || ratio == 1 || ratio == 0) continue;
-                                    sorts.Add($"{i}{j}: {ratio:f3}x");
-                                    AddMulti(allScales, (val.Key, i, j), ratio);
-                                    // Can be used for complete table, but easier to leave out for lower diagonal
-                                    // AddMulti(allScales, (val.Key, j, i), 1 / ratio);
-                                }
-                            }
-                            if (sorts.Count > 0) Console.WriteLine($"  {val.Key}: {string.Join(", ", sorts)}");
-                        }
-                    }
-                }
-                foreach (string field in allFields)
-                {
-                    Console.WriteLine($"-- {field} ({allScales.Where(k => k.Key.Item1 == field).Sum(e => e.Value.Count)})");
-                    for (int i = 1; i <= 5; i++)
-                    {
-                        // row: the target class. column: the source class. value: how much to multiply to place the source in the target.
-                        Console.WriteLine("  " + string.Join(" ", Enumerable.Range(1, 5).Select(j => allScales.TryGetValue((field, j, i), out List<float> floats) ? $"{floats.Average():f5}," : "        ")));
-                    }
-                }
+                Dictionary<int, int> allSections = InvestigateSekiroScaling(game, typeGroups, infos, paths, chosenPath);
                 foreach (EnemyInfo info in fullInfos.Values)
                 {
                     if (!allSections.ContainsKey(info.ID) && info.Class == EnemyClass.Helper && allSections.TryGetValue(info.OwnedBy, out int section))
@@ -1556,7 +1995,152 @@ namespace RandomizerCommon
             }
         }
 
-        void InvestigateSpEffects(GameData game)
+        Dictionary<int, int> InvestigateSekiroScaling(
+            GameData game, List<List<EnemyClass>> typeGroups, Dictionary<int, EnemyInfo> infos, List<Path> paths, Dictionary<int, (int, float)> chosenPath)
+        {
+            Dictionary<int, MSBS.Part.Enemy> enemies = new Dictionary<int, MSBS.Part.Enemy>();
+            foreach (KeyValuePair<string, MSBS> entry in game.SekiroMaps)
+            {
+                if (!game.Locations.ContainsKey(entry.Key)) continue;
+                string map = game.Locations[entry.Key];
+                MSBS msb = entry.Value;
+                foreach (MSBS.Part.Enemy e in msb.Parts.Enemies)
+                {
+                    enemies[e.EntityID] = e;
+                }
+            }
+
+            // Exclude these from scaling considerations, since they are not really part of the area (meant for when visiting later)
+            HashSet<int> phantomGroups = new HashSet<int>
+                {
+                    // Ashina phantoms
+                    1505201, 1505211, 1705200, 1705201, 2005200, 2005201,
+                    // Sunken Valley phantoms
+                    1505202, 1505212, 2005210, 2005211,
+                    // Mibu Village phantoms
+                    1705220, 1705221, 2005220, 2005221,
+                };
+
+            // haveSoulRate Unk85: NG+ only
+            // EventFlagId: used for scaling speffect
+            // There are these overall groups: vitality, damage, experience, cash. (is there haveSoulRate for cash/xp? maybe it's Unk85)
+            List<string> scaleSp = "maxHpRate maxStaminaCutRate physAtkPowerRate magicAtkPowerRate fireAtkPowerRate thunderAtkPowerRate staminaAttackRate darkAttackPowerRate NewGameBonusUnk".Split(' ').ToList();
+            List<string> scaleNpc = "Hp getSoul stamina staminaRecoverBaseVal Experience".Split(' ').ToList();
+            List<string> allFields = scaleSp.Concat(scaleNpc).ToList();
+            // Disp: ModelDispMask0 -> ModelDispMask31
+            // Npc param has GameClearSpEffectID
+            Dictionary<(string, int, int), List<float>> allScales = new Dictionary<(string, int, int), List<float>>();
+            Dictionary<int, int> allSections = new Dictionary<int, int>();
+            foreach (List<EnemyClass> typeGroup in typeGroups)
+            {
+                // Consider two enemies the same if they have the same think id, or same disp mask
+                // Or for minibosses, if they are just the same model, that's probably fine
+                Dictionary<string, List<int>> thinks = new Dictionary<string, List<int>>();
+                Dictionary<string, List<int>> masks = new Dictionary<string, List<int>>();
+                Dictionary<string, List<int>> bosses = new Dictionary<string, List<int>>();
+                List<string> order = new List<string>();
+                Dictionary<int, int> sections = new Dictionary<int, int>();
+                foreach (KeyValuePair<int, (int, float)> entry in chosenPath.OrderBy(e => (e.Value, e.Key)))
+                {
+                    int id = entry.Key;
+                    EnemyInfo info = infos[id];
+                    if (!typeGroup.Contains(info.Class)) continue;
+                    MSBS.Part.Enemy e = enemies[id];
+                    int path = entry.Value.Item1;
+                    int section = paths[path].Section;
+                    sections[id] = section;
+                    allSections[id] = section;
+                    if (e.EntityGroupIDs.Any(g => phantomGroups.Contains(g))) continue;
+                    string model = game.ModelName(e.ModelName);
+                    if (typeGroup.Contains(EnemyClass.Miniboss) || typeGroup.Contains(EnemyClass.Boss))
+                    {
+                        AddMulti(bosses, model, id);
+                        continue;
+                    }
+                    string think = $"{model} {e.ThinkParamID}";
+                    AddMulti(thinks, think, id);
+                    PARAM.Row npc = game.Params["NpcParam"][e.NPCParamID];
+                    if (e.NPCParamID > 0 && npc != null)
+                    {
+                        uint mask = 0;
+                        for (int i = 0; i < 32; i++)
+                        {
+                            if ((byte)npc[$"ModelDispMask{i}"].Value == 1)
+                            {
+                                mask |= ((uint)1 << i);
+                            }
+                        }
+                        string dispMask = $"{model} 0x{mask:X8}";
+                        AddMulti(masks, dispMask, id);
+                    }
+                }
+                foreach (KeyValuePair<string, List<int>> entry in thinks.Concat(masks.Concat(bosses)))
+                {
+                    if (entry.Value.Count == 1) continue;
+                    List<int> secs = entry.Value.Select(i => sections[i]).Distinct().ToList();
+                    if (secs.Count == 1) continue;
+
+                    Console.WriteLine($"{entry.Key}: {string.Join(",", entry.Value.Select(i => $"{i}[{sections[i]}]"))}");
+                    SortedDictionary<string, List<(int, float)>> fieldValues = new SortedDictionary<string, List<(int, float)>>();
+                    foreach (int id in entry.Value)
+                    {
+                        MSBS.Part.Enemy e = enemies[id];
+                        PARAM.Row npc = game.Params["NpcParam"][e.NPCParamID];
+                        if (e.NPCParamID == 0 || npc == null) continue;
+                        Dictionary<string, float> values = new Dictionary<string, float>();
+                        foreach (string f in scaleNpc)
+                        {
+                            values[f] = float.Parse(npc[f].Value.ToString());
+                        }
+                        int spVal = (int)npc["EventFlagId"].Value;  // GameClearSpEffectID is for NG+ only, or time-of-day only, or something like that
+                        PARAM.Row sp = game.Params["SpEffectParam"][spVal];
+                        if (spVal > 0 && sp != null)
+                        {
+                            foreach (string f in scaleSp)
+                            {
+                                values[f] = float.Parse(sp[f].Value.ToString());
+                            }
+                        }
+                        foreach (KeyValuePair<string, float> val in values)
+                        {
+                            AddMulti(fieldValues, val.Key, (sections[id], val.Value));
+                        }
+                    }
+                    foreach (KeyValuePair<string, List<(int, float)>> val in fieldValues)
+                    {
+                        // Console.WriteLine($"  {val.Key}: {string.Join(", ", val.Value.OrderBy(v => v).Select(v => $"[{v.Item1}]{v.Item2}"))}");
+                        Dictionary<int, float> bySection = val.Value.GroupBy(v => v.Item1).ToDictionary(g => g.Key, g => g.Select(v => v.Item2).Average());
+                        List<string> sorts = new List<string>();
+                        foreach (int i in bySection.Keys)
+                        {
+                            foreach (int j in bySection.Keys)
+                            {
+                                if (i >= j) continue;
+                                float ratio = bySection[j] / bySection[i];
+                                if (float.IsNaN(ratio) || float.IsInfinity(ratio) || ratio == 1 || ratio == 0) continue;
+                                sorts.Add($"{i}{j}: {ratio:f3}x");
+                                AddMulti(allScales, (val.Key, i, j), ratio);
+                                // Can be used for complete table, but easier to leave out for lower diagonal
+                                // AddMulti(allScales, (val.Key, j, i), 1 / ratio);
+                            }
+                        }
+                        if (sorts.Count > 0) Console.WriteLine($"  {val.Key}: {string.Join(", ", sorts)}");
+                    }
+                }
+            }
+            foreach (string field in allFields)
+            {
+                Console.WriteLine($"-- {field} ({allScales.Where(k => k.Key.Item1 == field).Sum(e => e.Value.Count)})");
+                for (int i = 1; i <= 5; i++)
+                {
+                    // row: the target class. column: the source class. value: how much to multiply to place the source in the target.
+                    Console.WriteLine("  " + string.Join(" ", Enumerable.Range(1, 5).Select(j => allScales.TryGetValue((field, j, i), out List<float> floats) ? $"{floats.Average():f5}," : "        ")));
+                }
+            }
+            return allSections;
+        }
+
+        public void InvestigateSpEffects(GameData game)
         {
             Dictionary<string, PARAM> Params = game.Params;
 

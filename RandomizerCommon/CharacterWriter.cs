@@ -189,7 +189,7 @@ namespace RandomizerCommon
             Dictionary<ItemKey, StatReq> requirements = new Dictionary<ItemKey, StatReq>();
             HashSet<ItemKey> crossbows = new HashSet<ItemKey>();
             PARAM magics = game.Param("Magic");
-            bool twoHand = options["startingtwohand"];
+            bool twoHand = !options["onehand"];
             foreach (ItemKey key in data.Data.Keys)
             {
                 if (key.Type == ItemType.WEAPON)
@@ -289,12 +289,18 @@ namespace RandomizerCommon
             armors.Sort((a, b) => a.Weight.CompareTo(b.Weight));
 
             PARAM chara = game.Param("CharaInitParam");
-            // Just for testing ;)
-            bool cheat = false;
+            bool allowCheat = false;
+            bool printChars = true;
+#if DEBUG
+            allowCheat = true;
+            printChars = false;
+#endif
+            bool cheat = allowCheat && options["cheat"];
             for (int i = 0; i < 10; i++)
             {
                 PARAM.Row row = chara[startId + i];
                 // First, always fudge magic to 10, so that Orbeck quest is possible.
+                // This could alternatively be an ESD edit.
                 if ((sbyte)row["baseMag"].Value < 10)
                 {
                     row["baseMag"].Value = (sbyte)10;
@@ -319,7 +325,7 @@ namespace RandomizerCommon
                 float weaponWeight = 0f;
                 int attSlots = 0;
                 bool crossbowSelected = false;
-                Console.WriteLine($"Randomizing starting equipment for {chClass.Name}");
+                if (printChars) Console.WriteLine($"Randomizing starting equipment for {chClass.Name}");
                 foreach (KeyValuePair<string, EquipCategory> entry in baseStart.Concat(chClass.Start))
                 {
                     EquipCategory cat = entry.Value;
@@ -364,7 +370,7 @@ namespace RandomizerCommon
                         weaponWeight += weights[selected];
                     }
                     attSlots = requirements[selected].Att;
-                    Console.WriteLine($"  {entry.Key} is now {game.Name(selected)}, meets requirements by {statDiffs[selected]}");
+                    if (printChars) Console.WriteLine($"  {entry.Key} is now {game.Name(selected)}, meets requirements by {statDiffs[selected]}");
                 }
                 int statChange = dynamicReqs.Eligible(chReqs);
                 if (statChange < 0)
@@ -381,8 +387,11 @@ namespace RandomizerCommon
                 if (availableSets.Count == 0) availableSets = new List<ArmorSet> { armors[0] };
                 ArmorSet selectedArmor = Choice(random, availableSets);
                 armors.Remove(selectedArmor);
-                Console.WriteLine($"  Armor: {string.Join(", ", selectedArmor.Ids.Select(id => game.Name(new ItemKey(ItemType.ARMOR, id))))}");
-                Console.WriteLine($"  Weight: weapons {weaponWeight:0.##} + armor {selectedArmor.Weight:0.##} / {totalWeight:0.##} = {100*(weaponWeight+selectedArmor.Weight)/totalWeight:0.##}%");
+                if (printChars)
+                {
+                    Console.WriteLine($"  Armor: {string.Join(", ", selectedArmor.Ids.Select(id => game.Name(new ItemKey(ItemType.ARMOR, id))))}");
+                    Console.WriteLine($"  Weight: weapons {weaponWeight:0.##} + armor {selectedArmor.Weight:0.##} / {totalWeight:0.##} = {100 * (weaponWeight + selectedArmor.Weight) / totalWeight:0.##}%");
+                }
                 for (int j = 0; j < 4; j++)
                 {
                     if ((int)row[armorSlots[j]].Value != -1)
@@ -427,8 +436,8 @@ namespace RandomizerCommon
             };
             foreach (PARAM.Row row in chara.Rows.Where(r => r.ID > startId + 10))
             {
-                string name = game.CharacterName((int)row.ID);
-                if (name == "?CHARACTER?") continue;
+                string name = game.CharacterName(row.ID);
+                if (name == null) continue;
                 ArmorSet selectedArmor;
                 if (!npcArmors.ContainsKey(name))
                 {
@@ -444,7 +453,7 @@ namespace RandomizerCommon
                     armorLimit = Math.Min(20, armorLimit);
                     selectedArmor = npcArmors[name] = armors[random.Next(armorLimit)];
                     armors.Remove(selectedArmor);
-                    Console.WriteLine($"Armor for {name}: {100 * weightLimit / totalWeight:0.##}% -> {100 * (selectedArmor.Weight + weaponWeight) / totalWeight:0.##}%: {string.Join(", ", selectedArmor.Ids.Select(id => game.Name(new ItemKey(ItemType.ARMOR, id))))}");
+                    if (printChars) Console.WriteLine($"Armor for {name}: {100 * weightLimit / totalWeight:0.##}% -> {100 * (selectedArmor.Weight + weaponWeight) / totalWeight:0.##}%: {string.Join(", ", selectedArmor.Ids.Select(id => game.Name(new ItemKey(ItemType.ARMOR, id))))}");
                 }
                 selectedArmor = npcArmors[name];
                 for (int j = 0; j < 4; j++)
