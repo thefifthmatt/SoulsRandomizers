@@ -1,0 +1,250 @@
+# Used for armor, but also Mausoleum duplication
+9101 after defeating Godrick
+9104 after defeating Morgott
+9107 after defeating Hoarah Loux
+9108 after defeating Astel, Naturalborn of the Void
+9111 after defeating Lichdragon Fortissax
+9112 after defeating Mohg, Lord of Blood
+9115 after defeating Dragonlord Placidusax
+9116 after defeating Maliketh
+9118 after defeating Rennala
+9119 after defeating Royal Knight Loretta
+9120 after defeating Malenia
+9122 after defeating Rykard
+9123 after defeating Elden Beast
+9130 after defeating Radahn
+9131 after defeating Fire Giant
+9133 after defeating Regal Ancestor Spirit
+9182 after defeating Elemer of the Briar
+9184 after defeating Commander Niall
+60150 after getting Golden Tailoring Tools
+# These flags are set based on item get flags
+65810 after getting Ash of War: Impaling Thrust
+65811 after getting Ash of War: Piercing Fang
+65812 after getting Ash of War: Spinning Slash
+65813 after getting Ash of War: Repeating Thrust
+65814 after getting Ash of War: Double Slash
+65815 after getting Ash of War: Unsheathe
+65816 after getting Ash of War: Sword Dance
+65818 after getting Ash of War: Quickstep
+65819 after getting Ash of War: Bloodhound's Step
+65820 after getting Ash of War: Lion's Claw
+65821 after getting Ash of War: Stamp (Upward Cut)
+65822 after getting Ash of War: Stamp (Sweep)
+65823 after getting Ash of War: Wild Strikes
+65824 after getting Ash of War: Earthshaker
+65825 after getting Ash of War: Kick
+65826 after getting Ash of War: Ground Slam
+65827 after getting Ash of War: Hoarah Loux's Earthshaker
+65828 after getting Ash of War: Barbaric Roar
+65829 after getting Ash of War: War Cry
+65830 after getting Ash of War: Troll's Roar
+65831 after getting Ash of War: Braggart's Roar
+65832 after getting Ash of War: Endure
+65833 after getting Ash of War: Charge Forth
+65834 after getting Ash of War: Square Off
+65835 after getting Ash of War: Giant Hunt
+65836 after getting Ash of War: Spinning Strikes
+65837 after getting Ash of War: Storm Assault
+65838 after getting Ash of War: Stormcaller
+65839 after getting Ash of War: Storm Blade
+65840 after getting Ash of War: Vacuum Slice
+65841 after getting Ash of War: Storm Stomp
+65842 after getting Ash of War: Determination
+65843 after getting Ash of War: Royal Knight's Resolve
+65844 after getting Ash of War: Prelate's Charge
+65845 after getting Ash of War: Eruption
+65846 after getting Ash of War: Flaming Strike
+65847 after getting Ash of War: Black Flame Tornado
+65848 after getting Ash of War: Flame of the Redmanes
+65849 after getting Ash of War: Thunderbolt
+65850 after getting Ash of War: Lightning Slash
+65851 after getting Ash of War: Lightning Ram
+65852 after getting Ash of War: Loretta's Slash
+65853 after getting Ash of War: Spinning Weapon
+65854 after getting Ash of War: Glintblade Phalanx
+65855 after getting Ash of War: Glintstone Pebble
+65856 after getting Ash of War: Gravitas
+65857 after getting Ash of War: Carian Grandeur
+65858 after getting Ash of War: Carian Greatsword
+65859 after getting Ash of War: Waves of Darkness
+65860 after getting Ash of War: Cragblade
+65861 after getting Ash of War: Sacred Blade
+65862 after getting Ash of War: Prayerful Strike
+65863 after getting Ash of War: Golden Land
+65864 after getting Ash of War: Sacred Ring of Light
+65865 after getting Ash of War: Golden Slam
+65866 after getting Ash of War: Golden Vow
+65867 after getting Ash of War: Sacred Order
+65868 after getting Ash of War: Shared Order
+65869 after getting Ash of War: Beast's Roar
+65870 after getting Ash of War: Phantom Slash
+65871 after getting Ash of War: Spectral Lance
+65872 after getting Ash of War: Raptor of the Mists
+65873 after getting Ash of War: White Shadow's Lure
+65874 after getting Ash of War: Poison Moth Flight
+65875 after getting Ash of War: Poisonous Mist
+65876 after getting Ash of War: Blood Tax
+65877 after getting Ash of War: Bloody Slash
+65878 after getting Ash of War: Lifesteal Fist
+65879 after getting Ash of War: Blood Blade
+65880 after getting Ash of War: Assassin's Gambit
+65881 after getting Ash of War: Seppuku
+65882 after getting Ash of War: Ice Spear
+65883 after getting Ash of War: Chilling Mist
+65884 after getting Ash of War: Hoarfrost Stomp
+65885 after getting Ash of War: No Skill
+65886 after getting Ash of War: Shield Bash
+65887 after getting Ash of War: Shield Crash
+65888 after getting Ash of War: Barricade Shield
+65889 after getting Ash of War: Parry
+65890 after getting Ash of War: Carian Retaliation
+65891 after getting Ash of War: Storm Wall
+65892 after getting Ash of War: Golden Parry
+65893 after getting Ash of War: Thops's Barrier
+65894 after getting Ash of War: Holy Ground
+65895 after getting Ash of War: Vow of the Indomitable
+65896 after getting Ash of War: Barrage
+65897 after getting Ash of War: Mighty Shot
+65898 after getting Ash of War: Sky Shot
+65899 after getting Ash of War: Through and Through
+65900 after getting Ash of War: Enchanted Shot
+65901 after getting Ash of War: Rain of Arrows
+# qwc flag is directly the item get flag of each cookbook
+67000 after getting Nomadic Warrior's Cookbook [1]
+67010 after getting Nomadic Warrior's Cookbook [3]
+67020 after getting Nomadic Warrior's Cookbook [6]
+67030 after getting Nomadic Warrior's Cookbook [10]
+67050 after getting Nomadic Warrior's Cookbook [7]
+67060 after getting Nomadic Warrior's Cookbook [12]
+67070 after getting Nomadic Warrior's Cookbook [19]
+67080 after getting Nomadic Warrior's Cookbook [13]
+67090 after getting Nomadic Warrior's Cookbook [23]
+67100 after getting Nomadic Warrior's Cookbook [17]
+67110 after getting Nomadic Warrior's Cookbook [2]
+67120 after getting Nomadic Warrior's Cookbook [21]
+67130 after getting Missionary's Cookbook [6]
+67200 after getting Armorer's Cookbook [1]
+67210 after getting Armorer's Cookbook [2]
+67220 after getting Nomadic Warrior's Cookbook [11]
+67230 after getting Nomadic Warrior's Cookbook [20]
+67250 after getting Armorer's Cookbook [7]
+67260 after getting Armorer's Cookbook [4]
+67270 after getting Nomadic Warrior's Cookbook [18]
+67280 after getting Armorer's Cookbook [3]
+67290 after getting Nomadic Warrior's Cookbook [16]
+67300 after getting Armorer's Cookbook [6]
+67310 after getting Armorer's Cookbook [5]
+67400 after getting Glintstone Craftsman's Cookbook [4]
+67410 after getting Glintstone Craftsman's Cookbook [1]
+67420 after getting Glintstone Craftsman's Cookbook [5]
+67430 after getting Nomadic Warrior's Cookbook [9]
+67440 after getting Glintstone Craftsman's Cookbook [8]
+67450 after getting Glintstone Craftsman's Cookbook [2]
+67460 after getting Glintstone Craftsman's Cookbook [6]
+67470 after getting Glintstone Craftsman's Cookbook [7]
+67480 after getting Glintstone Craftsman's Cookbook [3]
+67600 after getting Missionary's Cookbook [2]
+67610 after getting Missionary's Cookbook [1]
+67630 after getting Missionary's Cookbook [5]
+67640 after getting Missionary's Cookbook [4]
+67650 after getting Missionary's Cookbook [3]
+67800 after getting Nomadic Warrior's Cookbook [4]
+67830 after getting Nomadic Warrior's Cookbook [5]
+67840 after getting Perfumer's Cookbook [1]
+67850 after getting Perfumer's Cookbook [2]
+67860 after getting Perfumer's Cookbook [3]
+67870 after getting Nomadic Warrior's Cookbook [14]
+67880 after getting Nomadic Warrior's Cookbook [8]
+67890 after getting Nomadic Warrior's Cookbook [22]
+67900 after getting Nomadic Warrior's Cookbook [15]
+67910 after getting Nomadic Warrior's Cookbook [24]
+67920 after getting Perfumer's Cookbook [4]
+68000 after getting Ancient Dragon Apostle's Cookbook [1]
+68010 after getting Ancient Dragon Apostle's Cookbook [2]
+68020 after getting Ancient Dragon Apostle's Cookbook [4]
+68030 after getting Ancient Dragon Apostle's Cookbook [3]
+68200 after getting Fevor's Cookbook [1]
+68210 after getting Fevor's Cookbook [3]
+68220 after getting Fevor's Cookbook [2]
+68230 after getting Missionary's Cookbook [7]
+68400 after getting Frenzied's Cookbook [1]
+68410 after getting Frenzied's Cookbook [2]
+10009516 after completing Gostoc's quest
+11009455 after Corhyn moves to Leyndell
+# bell item = flag - 11109710 + 8910
+11109745 after giving Bone Peddler's Bell Bearing
+11109746 after giving Meat Peddler's Bell Bearing
+11109747 after giving Medicine Peddler's Bell Bearing
+11109748 after giving Gravity Stone Peddler's Bell Bearing
+11109751 after giving Smithing-Stone Miner's Bell Bearing [1]
+11109752 after giving Smithing-Stone Miner's Bell Bearing [2]
+11109753 after giving Smithing-Stone Miner's Bell Bearing [3]
+11109754 after giving Smithing-Stone Miner's Bell Bearing [4]
+11109755 after giving Somberstone Miner's Bell Bearing [1]
+11109756 after giving Somberstone Miner's Bell Bearing [2]
+11109757 after giving Somberstone Miner's Bell Bearing [3]
+11109758 after giving Somberstone Miner's Bell Bearing [4]
+11109759 after giving Somberstone Miner's Bell Bearing [5]
+11109760 after giving Glovewort Picker's Bell Bearing [1]
+11109761 after giving Glovewort Picker's Bell Bearing [2]
+11109762 after giving Glovewort Picker's Bell Bearing [3]
+11109763 after giving Ghost-Glovewort Picker's Bell Bearing [1]
+11109764 after giving Ghost-Glovewort Picker's Bell Bearing [2]
+11109765 after giving Ghost-Glovewort Picker's Bell Bearing [3]
+11109770 after defeating Maliketh, if not already gotten
+11109771 after defeating Maliketh, if not already gotten
+11109772 after defeating Maliketh, if not already gotten
+11109773 after defeating Maliketh, if not already gotten
+11109774 after getting two Great Runes, if not already gotten
+11109775 after getting two Great Runes, if not already gotten
+11109776 after getting two Great Runes, if not already gotten
+11109777 after Finger Reader Enia dies, if not already gotten
+11109781 after giving Smithing-Stone Miner's Bell Bearing [1] or Somberstone Miner's Bell Bearing [1]
+11109874 after giving Fire Monks' Prayerbook
+11109875 after giving Giant's Prayerbook
+11109876 after giving Godskin Prayerbook
+11109877 after giving Two Fingers' Prayerbook
+11109878 after giving Assassin's Prayerbook
+11109881 after giving Golden Order Principia
+11109883 after giving Dragon Cult Prayerbook
+11109884 after giving Ancient Dragon Prayerbook
+11109919 after giving Seluvis's Potion to Nepheli
+14009267 after siding with Sellen in her questline
+16009208 after Bernahl joins Volcano Manor
+16009208 after Bernahl joins Volcano Manor
+35009326 after giving Seluvis's Potion to Dung Eater
+1034450800 after defeating Glintstone Dragon Smarag
+1034509360 after defeating Bloodhound Knight Darriwil
+1034509450 after giving Conspectus Scroll
+1034509451 after giving Royal House Scroll
+1034509455 after giving Academy Scroll
+1035530800 after defeating Magma Wyrm behind Fort Laiedd
+1036439209 after buying something from Boggart
+1036489208 after giving Boc the Gold Sewing Needle
+1037469300 after giving Conspectus Scroll
+1037469301 after giving Royal House Scroll
+1037469305 after giving Fire Monk's Prayerbook
+1037469306 after giving Giant's Prayerbook
+1037469307 after giving Godskin Prayerbook
+1037469308 after giving Two Fingers' Prayerbook
+1037469309 after giving Assassin's Prayerbook
+1037469312 after giving Golden Order Principia
+1037469314 after giving Dragon Cult Prayerbook
+1037469315 after giving Ancient Dragon Prayerbook
+1037469316 after giving Academy Scroll
+1038419270 before Patches moves to Volcano Manor
+1038419271 after Patches moves to Volcano Manor
+1038519257 after giving Millicent the Valkyrie's Prosthesis
+1040529255 after Corhyn first moves to Altus Plateau
+1040549205 after Corhyn moves to Goldmask in Altus Plateau
+1042369416 after approaching Ranni in her rise, if not met at Church of Elleh
+1043360800 after defeating Flying Dragon Agheel
+1044369244 after giving Conspectus Scroll
+1044369245 after giving Royal House Scroll
+1044369250 after giving Academy Scroll
+1044529255 after Boggart moves to Capital Outskirts
+1048370800 after defeating Decaying Ekzykes
+1050400800 after defeating Elder Dragon Grayoll
+1050560800 after defeating Great Wyrm Theodorix
+1254560800 after defeating Borealis the Freezing Fog

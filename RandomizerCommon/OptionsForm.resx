@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label1.Text" xml:space="preserve">
+  <data name="strL.Text" xml:space="preserve">
     <value>This text box allows you to give your options and seed to someone else (after running randomization) and to copy someone else's options.
 This string can also be found on the first line of hint/spoiler logs in the spoiler_logs directory.
 Also, you can set it to blank to restore all default options.</value>

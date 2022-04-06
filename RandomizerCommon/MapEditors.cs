@@ -44,7 +44,7 @@ namespace RandomizerCommon
             // Clear entity groups for an enemy
             public abstract void ClearGroups(TEnemy e);
             // Copy group data from a source enemy into its transplant
-            public abstract void CopyGroups(TMap msb, EnemyData source, Dictionary<int, int> groupMapping, TEnemy target, int removeTarget = 0);
+            public abstract void CopyGroups(EnemyData source, Dictionary<int, int> groupMapping, TEnemy target, int removeTarget = 0);
             // Remove some enemies by entity id
             public abstract void RemoveEnemies(TMap msb, Predicate<int> filter);
             // Delete metadata that references unused enemies and objects
@@ -149,29 +149,9 @@ namespace RandomizerCommon
                 for (int i = 0; i < e.EntityGroups.Length; i++) e.EntityGroups[i] = -1;
             }
 
-            public override void CopyGroups(MSB3 msb, EnemyData source, Dictionary<int, int> groupMapping, MSB3.Part.Enemy target, int removeTarget = 0)
+            public override void CopyGroups(EnemyData source, Dictionary<int, int> groupMapping, MSB3.Part.Enemy target, int removeTarget = 0)
             {
-                if (groupMapping.Count == 0 && removeTarget == 0)
-                {
-                    return;
-                }
-                if (removeTarget > 0)
-                {
-                    int removeIndex = Array.IndexOf(target.EntityGroups, removeTarget);
-                    if (removeIndex >= 0)
-                    {
-                        target.EntityGroups[removeIndex] = -1;
-                    }
-                }
-                foreach (int groupToAdd in source.Group.SelectMany(g => groupMapping.TryGetValue(g, out int g2) ? new int[] { g2 } : new int[] { }))
-                {
-                    int groupIndex = Array.IndexOf(target.EntityGroups, -1);
-                    if (groupIndex == -1)
-                    {
-                        throw new Exception($"Ran out of group slots mapping {groupToAdd} from {source.ID} -> {target.EntityID}");
-                    }
-                    target.EntityGroups[groupIndex] = groupToAdd;
-                }
+                CopyGroupsInternal(source, groupMapping, target.EntityGroups, removeTarget);
             }
 
             public override void RemoveEnemies(MSB3 msb, Predicate<int> removePredicate)
@@ -385,12 +365,9 @@ namespace RandomizerCommon
                 for (int i = 0; i < e.EntityGroupIDs.Length; i++) e.EntityGroupIDs[i] = -1;
             }
 
-            public override void CopyGroups(MSBS msb, EnemyData source, Dictionary<int, int> groupMapping, MSBS.Part.Enemy target, int removeTarget = 0)
+            public override void CopyGroups(EnemyData source, Dictionary<int, int> groupMapping, MSBS.Part.Enemy target, int removeTarget = 0)
             {
-                if (groupMapping.Count > 0 || removeTarget > 0)
-                {
-                    throw new NotImplementedException($"Sekiro randomizer doesn't support transplanting entity groups ({source.ID} -> {target.EntityID})");
-                }
+                CopyGroupsInternal(source, groupMapping, target.EntityGroupIDs, removeTarget);
             }
 
             public override void RemoveEnemies(MSBS msb, Predicate<int> removePredicate)
@@ -484,7 +461,10 @@ namespace RandomizerCommon
                 int enemyIndex = 0;
                 foreach (int fromEnemy in enemyIds)
                 {
-                    if (!reloc.TryGetValue(fromEnemy, out int target)) throw new Exception($"No target found for {fromEnemy} from generator {id}");
+                    if (!reloc.TryGetValue(fromEnemy, out int target))
+                    {
+                        throw new Exception($"No target found for {fromEnemy} from generator {id}");
+                    }
                     MSBS.Part.Enemy enemy = msb.Parts.Enemies.Find(e => e.EntityID == target);
                     gen2.SpawnPartNames[enemyIndex++] = enemy.Name;
                 }
@@ -552,6 +532,31 @@ namespace RandomizerCommon
                     RegisterObject(name);
                     ObjectDecl.Add(name);
                 }
+            }
+        }
+
+        private static void CopyGroupsInternal(EnemyData source, Dictionary<int, int> groupMapping, int[] targetGroups, int removeTarget)
+        {
+            if (groupMapping.Count == 0 && removeTarget == 0)
+            {
+                return;
+            }
+            if (removeTarget > 0)
+            {
+                int removeIndex = Array.IndexOf(targetGroups, removeTarget);
+                if (removeIndex >= 0)
+                {
+                    targetGroups[removeIndex] = -1;
+                }
+            }
+            foreach (int groupToAdd in source.Group.SelectMany(g => groupMapping.TryGetValue(g, out int g2) ? new int[] { g2 } : new int[] { }))
+            {
+                int groupIndex = Array.IndexOf(targetGroups, -1);
+                if (groupIndex == -1)
+                {
+                    throw new Exception($"Ran out of group slots mapping {groupToAdd} from {source.ID} -> {targetGroups}");
+                }
+                targetGroups[groupIndex] = groupToAdd;
             }
         }
 

@@ -1,0 +1,760 @@
+DebugInfo:
+- 71000 - Stormveil Castle - Godrick the Grafted - in m10_00_00_00 (Stormveil Castle)
+- 71001 - Stormhill - Margit, the Fell Omen - in m10_00_00_00 (Stormveil Castle)
+- 71002 - Stormhill - Castleward Tunnel - in m10_00_00_00 (Stormveil Castle)
+- 71003 - Stormveil Castle - Gateside Chamber - in m10_00_00_00 (Stormveil Castle)
+- 71004 - Stormveil Castle - Stormveil Cliffside - in m10_00_00_00 (Stormveil Castle)
+- 71005 - Stormveil Castle - Rampart Tower - in m10_00_00_00 (Stormveil Castle)
+- 71006 - Stormveil Castle - Liftside Chamber - in m10_00_00_00 (Stormveil Castle)
+- 71007 - Stormveil Castle - Secluded Cell - in m10_00_00_00 (Stormveil Castle)
+- 71008 - Stormveil Castle - Stormveil Main Gate - in m10_00_00_00 (Stormveil Castle)
+- 71100 - Leyndell, Royal Capital - Elden Throne - in m11_00_00_00 (Leyndell, Royal Capital)
+- 71101 - Leyndell, Royal Capital - Erdtree Sanctuary - in m11_00_00_00 (Leyndell, Royal Capital)
+- 71102 - Leyndell, Royal Capital - East Capital Rampart - in m11_00_00_00 (Leyndell, Royal Capital)
+- 71103 - Leyndell, Royal Capital - Lower Capital Church - in m11_00_00_00 (Leyndell, Royal Capital)
+- 71104 - Leyndell, Royal Capital - Avenue Balcony - in m11_00_00_00 (Leyndell, Royal Capital)
+- 71105 - Leyndell, Royal Capital - West Capital Rampart - in m11_00_00_00 (Leyndell, Royal Capital)
+- 71107 - Leyndell, Royal Capital - Queen's Bedchamber - in m11_00_00_00 (Leyndell, Royal Capital)
+- 71108 - Leyndell, Royal Capital - Fortified Manor, First Floor - in m11_00_00_00 (Leyndell, Royal Capital)
+- 71109 - Leyndell, Royal Capital - Divine Bridge - in m11_00_00_00 (Leyndell, Royal Capital)
+- 71120 - Leyndell, Ashen Capital - Elden Throne - in m11_05_00_00 (Leyndell, Ashen Capital)
+- 71121 - Leyndell, Ashen Capital - Erdtree Sanctuary - in m11_05_00_00 (Leyndell, Ashen Capital)
+- 71122 - Leyndell, Ashen Capital - East Capital Rampart - in m11_05_00_00 (Leyndell, Ashen Capital)
+- 71123 - Leyndell, Ashen Capital - Leyndell, Capital of Ash - in m11_05_00_00 (Leyndell, Ashen Capital)
+- 71124 - Leyndell, Ashen Capital - Queen's Bedchamber - in m11_05_00_00 (Leyndell, Ashen Capital)
+- 71125 - Leyndell, Ashen Capital - Divine Bridge - in m11_05_00_00 (Leyndell, Ashen Capital)
+- 71190 - Roundtable Hold - Table of Lost Grace - in m11_10_00_00 (Roundtable Hold)
+- 71210 - Ainsel River - Dragonkin Soldier of Nokstella - in m12_01_00_00 (Ainsel River)
+- 71211 - Ainsel River - Ainsel River Well Depths - in m12_01_00_00 (Ainsel River)
+- 71212 - Ainsel River - Ainsel River Sluice Gate - in m12_01_00_00 (Ainsel River)
+- 71213 - Ainsel River - Ainsel River Downstream - in m12_01_00_00 (Ainsel River)
+- 71214 - Ainsel River Main - Ainsel River Main - in m12_01_00_00 (Ainsel River)
+- 71215 - Ainsel River Main - Nokstella, Eternal City - in m12_01_00_00 (Ainsel River)
+- 71216 - Lake of Rot - Lake of Rot Shoreside - in m12_01_00_00 (Ainsel River)
+- 71218 - Lake of Rot - Grand Cloister - in m12_01_00_00 (Ainsel River)
+- 71219 - Ainsel River Main - Nokstella Waterfall Basin - in m12_01_00_00 (Ainsel River)
+- 71220 - Nokron, Eternal City - Great Waterfall Basin - in m12_02_00_00 (Siofra River)
+- 71221 - Nokron, Eternal City - Mimic Tear - in m12_02_00_00 (Siofra River)
+- 71222 - Siofra River - Siofra River Bank - in m12_02_00_00 (Siofra River)
+- 71223 - Siofra River - Worshippers' Woods - in m12_02_00_00 (Siofra River)
+- 71224 - Nokron, Eternal City - Ancestral Woods - in m12_02_00_00 (Siofra River)
+- 71225 - Nokron, Eternal City - Aqueduct-Facing Cliffs - in m12_02_00_00 (Siofra River)
+- 71226 - Nokron, Eternal City - Night's Sacred Ground - in m12_02_00_00 (Siofra River)
+- 71227 - Siofra River - Below the Well - in m12_02_00_00 (Siofra River)
+- 71230 - Deeproot Depths - Prince of Death's Throne - in m12_03_00_00 (Deeproot Depths)
+- 71231 - Deeproot Depths - Root-Facing Cliffs - in m12_03_00_00 (Deeproot Depths)
+- 71232 - Deeproot Depths - Great Waterfall Crest - in m12_03_00_00 (Deeproot Depths)
+- 71233 - Deeproot Depths - Deeproot Depths - in m12_03_00_00 (Deeproot Depths)
+- 71234 - Deeproot Depths - The Nameless Eternal City - in m12_03_00_00 (Deeproot Depths)
+- 71235 - Deeproot Depths - Across the Roots - in m12_03_00_00 (Deeproot Depths)
+- 71240 - Ainsel River - Astel, Naturalborn of the Void - in m12_04_00_00 (Ainsel River - Boss)
+- 71250 - Mohgwyn Palace - Cocoon of the Empyrean - in m12_05_00_00 (Mohgwyn Palace)
+- 71251 - Mohgwyn Palace - Palace Approach Ledge-Road - in m12_05_00_00 (Mohgwyn Palace)
+- 71252 - Mohgwyn Palace - Dynasty Mausoleum Entrance - in m12_05_00_00 (Mohgwyn Palace)
+- 71253 - Mohgwyn Palace - Dynasty Mausoleum Midpoint - in m12_05_00_00 (Mohgwyn Palace)
+- 71270 - Siofra River - Siofra River Well Depths - in m12_07_00_00 (Siofra River Bank)
+- 71271 - Nokron, Eternal City - Nokron, Eternal City - in m12_07_00_00 (Siofra River Bank)
+- 71300 - Crumbling Farum Azula - Maliketh, the Black Blade - in m13_00_00_00 (Crumbling Farum Azula)
+- 71301 - Crumbling Farum Azula - Dragonlord Placidusax - in m13_00_00_00 (Crumbling Farum Azula)
+- 71302 - Crumbling Farum Azula - Dragon Temple Altar - in m13_00_00_00 (Crumbling Farum Azula)
+- 71303 - Crumbling Farum Azula - Crumbling Beast Grave - in m13_00_00_00 (Crumbling Farum Azula)
+- 71304 - Crumbling Farum Azula - Crumbling Beast Grave Depths - in m13_00_00_00 (Crumbling Farum Azula)
+- 71305 - Crumbling Farum Azula - Tempest-Facing Balcony - in m13_00_00_00 (Crumbling Farum Azula)
+- 71306 - Crumbling Farum Azula - Dragon Temple - in m13_00_00_00 (Crumbling Farum Azula)
+- 71307 - Crumbling Farum Azula - Dragon Temple Transept - in m13_00_00_00 (Crumbling Farum Azula)
+- 71308 - Crumbling Farum Azula - Dragon Temple Lift - in m13_00_00_00 (Crumbling Farum Azula)
+- 71309 - Crumbling Farum Azula - Dragon Temple Rooftop - in m13_00_00_00 (Crumbling Farum Azula)
+- 71310 - Crumbling Farum Azula - Beside the Great Bridge - in m13_00_00_00 (Crumbling Farum Azula)
+- 71400 - Academy of Raya Lucaria - Raya Lucaria Grand Library - in m14_00_00_00 (Academy of Raya Lucaria)
+- 71401 - Academy of Raya Lucaria - Debate Parlor - in m14_00_00_00 (Academy of Raya Lucaria)
+- 71402 - Academy of Raya Lucaria - Church of the Cuckoo - in m14_00_00_00 (Academy of Raya Lucaria)
+- 71403 - Academy of Raya Lucaria - Schoolhouse Classroom - in m14_00_00_00 (Academy of Raya Lucaria)
+- 71500 - Elphael, Brace of the Haligtree - Malenia, Goddess of Rot - in m15_00_00_00 (Miquella's Haligtree)
+- 71501 - Elphael, Brace of the Haligtree - Prayer Room - in m15_00_00_00 (Miquella's Haligtree)
+- 71502 - Elphael, Brace of the Haligtree - Elphael Inner Wall - in m15_00_00_00 (Miquella's Haligtree)
+- 71503 - Elphael, Brace of the Haligtree - Drainage Channel - in m15_00_00_00 (Miquella's Haligtree)
+- 71504 - Elphael, Brace of the Haligtree - Haligtree Roots - in m15_00_00_00 (Miquella's Haligtree)
+- 71505 - Miquella's Haligtree - Haligtree Promenade - in m15_00_00_00 (Miquella's Haligtree)
+- 71506 - Miquella's Haligtree - Haligtree Canopy - in m15_00_00_00 (Miquella's Haligtree)
+- 71507 - Miquella's Haligtree - Haligtree Town - in m15_00_00_00 (Miquella's Haligtree)
+- 71508 - Miquella's Haligtree - Haligtree Town Plaza - in m15_00_00_00 (Miquella's Haligtree)
+- 71600 - Volcano Manor - Rykard, Lord of Blasphemy - in m16_00_00_00 (Volcano Manor)
+- 71601 - Volcano Manor - Temple of Eiglay - in m16_00_00_00 (Volcano Manor)
+- 71602 - Volcano Manor - Volcano Manor - in m16_00_00_00 (Volcano Manor)
+- 71603 - Volcano Manor - Prison Town Church - in m16_00_00_00 (Volcano Manor)
+- 71604 - Volcano Manor - Guest Hall - in m16_00_00_00 (Volcano Manor)
+- 71605 - Volcano Manor - Audience Pathway - in m16_00_00_00 (Volcano Manor)
+- 71606 - Volcano Manor - Abductor Virgin - in m16_00_00_00 (Volcano Manor)
+- 71607 - Volcano Manor - Subterranean Inquisition Chamber - in m16_00_00_00 (Volcano Manor)
+- 71800 - Stranded Graveyard - Cave of Knowledge - in m18_00_00_00 (Stranded Graveyard)
+- 71801 - Stranded Graveyard - Stranded Graveyard - in m18_00_00_00 (Stranded Graveyard)
+- 71900 - Stone Platform - Fractured Marika - in m19_00_00_00 (Stone Platform)
+- 73000 - Weeping Peninsula - Tombsward Catacombs - in m30_00_00_00 (Tombsward Catacombs)
+- 73001 - Weeping Peninsula - Impaler's Catacombs - in m30_01_00_00 (Impaler's Catacombs)
+- 73002 - Limgrave - Stormfoot Catacombs - in m30_02_00_00 (Stormfoot Catacombs)
+- 73003 - Liurnia of the Lakes - Road's End Catacombs - in m30_03_00_00 (Road's End Catacombs)
+- 73004 - Limgrave - Murkwater Catacombs - in m30_04_00_00 (Murkwater Catacombs)
+- 73005 - Liurnia of the Lakes - Black Knife Catacombs - in m30_05_00_00 (Black Knife Catacombs)
+- 73006 - Liurnia of the Lakes - Cliffbottom Catacombs - in m30_06_00_00 (Cliffbottom Catacombs)
+- 73007 - Mt. Gelmir - Wyndham Catacombs - in m30_07_00_00 (Wyndham Catacombs)
+- 73008 - Altus Plateau - Sainted Hero's Grave - in m30_08_00_00 (Sainted Hero's Grave)
+- 73009 - Mt. Gelmir - Gelmir Hero's Grave - in m30_09_00_00 (Gelmir Hero's Grave)
+- 73010 - Capital Outskirts - Auriza Hero's Grave - in m30_10_00_00 (Auriza Hero's Grave)
+- 73011 - Stormhill - Deathtouched Catacombs - in m30_11_00_00 (Deathtouched Catacombs)
+- 73012 - Altus Plateau - Unsightly Catacombs - in m30_12_00_00 (Unsightly Catacombs)
+- 73013 - Capital Outskirts - Auriza Side Tomb - in m30_13_00_00 (Auriza Side Tomb)
+- 73014 - Caelid - Minor Erdtree Catacombs - in m30_14_00_00 (Minor Erdtree Catacombs)
+- 73015 - Caelid - Caelid Catacombs - in m30_15_00_00 (Caelid Catacombs)
+- 73016 - Caelid - War-Dead Catacombs - in m30_16_00_00 (War-Dead Catacombs)
+- 73017 - Flame Peak - Giant-Conquering Hero's Grave - in m60_50_53_00 (Mountaintops of the Giants - East Zamor Ruins; Flame Peak - Giant-Conquering Hero's Grave Entrance)
+- 73018 - Flame Peak - Giants' Mountaintop Catacombs - in m60_50_53_00 (Mountaintops of the Giants - East Zamor Ruins; Flame Peak - Giant-Conquering Hero's Grave Entrance)
+- 73019 - Consecrated Snowfield - Consecrated Snowfield Catacombs - in m60_50_55_00 (Consecrated Snowfield - Consecrated Snowfield Catacombs Entrance)
+- 73020 - Forbidden Lands - Hidden Path to the Haligtree - in m30_20_00_00 (Hidden Path to the Haligtree)
+- 73100 - Limgrave - Murkwater Cave - in m60_43_37_00 (Limgrave - Agheel Lake North, Murkwater Cave Entrance)
+- 73101 - Weeping Peninsula - Earthbore Cave - in m31_01_00_00 (Earthbore Cave)
+- 73102 - Weeping Peninsula - Tombsward Cave - in m60_42_33_00 (Weeping Peninsula - Tombsward; Weeping Evergaol; Tombsward Cave Entrance)
+- 73103 - Limgrave - Groveside Cave - in m31_03_00_00 (Groveside Cave)
+- 73104 - Liurnia of the Lakes - Stillwater Cave - in m31_04_00_00 (Stillwater Cave)
+- 73105 - Liurnia of the Lakes - Lakeside Crystal Cave - in m31_05_00_00 (Lakeside Crystal Cave)
+- 73106 - Liurnia of the Lakes - Academy Crystal Cave - in m31_06_00_00 (Academy Crystal Cave)
+- 73107 - Mt. Gelmir - Seethewater Cave - in m31_07_00_00 (Seethewater Cave)
+- 73109 - Mt. Gelmir - Volcano Cave - in m31_09_00_00 (Volcano Cave)
+- 73110 - Greyoll's Dragonbarrow - Dragonbarrow Cave - in m31_10_00_00 (Dragonbarrow Cave)
+- 73111 - Greyoll's Dragonbarrow - Sellia Hideaway - in m31_11_00_00 (Sellia Hideaway)
+- 73112 - Consecrated Snowfield - Cave of the Forlorn - in m31_12_00_00 (Cave of the Forlorn)
+- 73115 - Limgrave - Coastal Cave - in m31_15_00_00 (Coastal Cave)
+- 73117 - Limgrave - Highroad Cave - in m31_17_00_00 (Highroad Cave)
+- 73118 - Altus Plateau - Perfumer's Grotto - in m31_18_00_00 (Perfumer's Grotto)
+- 73119 - Altus Plateau - Sage's Cave - in m31_19_00_00 (Sage's Cave)
+- 73120 - Caelid - Abandoned Cave - in m31_20_00_00 (Abandoned Cave)
+- 73121 - Caelid - Gaol Cave - in m31_21_00_00 (Gaol Cave)
+- 73122 - Mountaintops of the Giants - Spiritcaller Cave - in m60_53_56_00 (Mountaintops of the Giants - Southwest Freezing Lake, Lord Contender's Evergaol, Spiritcaller Cave Entrance)
+- 73200 - Weeping Peninsula - Morne Tunnel - in m32_00_00_00 (Morne Tunnel)
+- 73201 - Limgrave - Limgrave Tunnels - in m60_43_37_00 (Limgrave - Agheel Lake North, Murkwater Cave Entrance)
+- 73202 - Liurnia of the Lakes - Raya Lucaria Crystal Tunnel - in m60_37_47_00 (Liurnia of the Lakes - South of Mausoleum Compound, Raya Lucaria Crystal Tunnel Entrance)
+- 73204 - Altus Plateau - Old Altus Tunnel - in m60_38_53_00 (Altus Plateau - Old Altus Tunnel Entrance)
+- 73205 - Altus Plateau - Altus Tunnel - in m32_05_00_00 (Altus Tunnel)
+- 73207 - Caelid - Gael Tunnel - in m60_46_39_00 (Limgrave - Rear Gael Tunnel Entrance; Caelid - Gael Tunnel Entrance)
+- 73207 - Caelid - Rear Gael Tunnel Entrance - in m32_07_00_00 (Gael Tunnel)
+- 73208 - Caelid - Sellia Crystal Tunnel - in m32_08_00_00 (Sellia Crystal Tunnel)
+- 73211 - Consecrated Snowfield - Yelough Anix Tunnel - in m60_47_55_00 (Consecrated Snowfield - Yelough Anix Ruins, Yelough Anix Tunnel Entrance)
+- 73410 - Stormhill - Limgrave Tower Bridge - in m34_10_00_00 (Divine Tower of Limgrave)
+- 73412 - Stormhill - Divine Tower of Limgrave - in m34_10_00_00 (Divine Tower of Limgrave)
+- 73420 - Liurnia of the Lakes - Study Hall Entrance - in m34_11_00_00 (Divine Tower of Liurnia)
+- 73421 - Liurnia of the Lakes - Liurnia Tower Bridge - in m34_11_00_00 (Divine Tower of Liurnia)
+- 73422 - Liurnia of the Lakes - Divine Tower of Liurnia - in m34_11_00_00 (Divine Tower of Liurnia)
+- 73430 - Capital Outskirts - Divine Tower of West Altus - in m34_12_00_00 (Divine Tower of West Altus)
+- 73431 - Capital Outskirts - Sealed Tunnel - in m60_43_50_00 (Capital Outskirts - Minor Erdtree Church, Sealed Tunnel Entrance)
+- "73432 - Capital Outskirts - Divine Tower of West Altus: Gate - in m34_12_00_00 (Divine Tower of West Altus)"
+- "73440 - Greyoll's Dragonbarrow - Divine Tower of Caelid: Basement - in m34_13_00_00 (Divine Tower of Caelid)"
+- "73441 - Greyoll's Dragonbarrow - Divine Tower of Caelid: Center - in m34_13_00_00 (Divine Tower of Caelid)"
+- "73450 - Forbidden Lands - Divine Tower of East Altus: Gate - in m34_14_00_00 (Divine Tower of East Altus)"
+- 73451 - Forbidden Lands - Divine Tower of East Altus - in m34_14_00_00 (Divine Tower of East Altus)
+- 73460 - Greyoll's Dragonbarrow - Isolated Divine Tower - in m34_15_00_00 (Isolated Divine Tower)
+- 73500 - Subterranean Shunning-Grounds - Cathedral of the Forsaken - in m35_00_00_00 (Subterranean Shunning-Grounds)
+- 73501 - Subterranean Shunning-Grounds - Underground Roadside - in m35_00_00_00 (Subterranean Shunning-Grounds)
+- 73502 - Subterranean Shunning-Grounds - Forsaken Depths - in m35_00_00_00 (Subterranean Shunning-Grounds)
+- 73503 - Subterranean Shunning-Grounds - Leyndell Catacombs - in m35_00_00_00 (Subterranean Shunning-Grounds)
+- 73504 - Subterranean Shunning-Grounds - Frenzied Flame Proscription - in m35_00_00_00 (Subterranean Shunning-Grounds)
+- 73900 - Ruin-Strewn Precipice - Magma Wyrm - in m39_20_00_00 (Ruin-Strewn Precipice)
+- 73901 - Ruin-Strewn Precipice - Ruin-Strewn Precipice - in m39_20_00_00 (Ruin-Strewn Precipice)
+- 73902 - Ruin-Strewn Precipice - Ruin-Strewn Precipice Overlook - in m39_20_00_00 (Ruin-Strewn Precipice)
+- Start flag 3061 --- 76100 to 76199
+- 76100 - Limgrave - Church of Elleh - in m60_42_36_00 (Limgrave - Church of Elleh, Stranded Graveyard Exit)
+- 76101 - Limgrave - The First Step - in m60_42_36_00 (Limgrave - Church of Elleh, Stranded Graveyard Exit)
+- 76102 - Stormhill - Stormhill Shack - in m60_41_38_00 (Stormhill - Stormhill Shack, Stormveil Castle Entrance)
+- 76103 - Limgrave - Artist's Shack - in m60_44_38_00 (Limgrave - Artist's Shack)
+- 76104 - Limgrave - Third Church of Marika - in m60_46_38_00 (Limgrave - Third Church of Marika, Gaol Cave Exit)
+- 76105 - Limgrave - Fort Haight West - in m60_45_36_00 (Limgrave - Fort Haight West)
+- 76106 - Limgrave - Agheel Lake South - in m60_44_35_00 (Limgrave - Agheel Lake South, Forlorn Hound Evergaol)
+- 76108 - Limgrave - Agheel Lake North - in m60_43_37_00 (Limgrave - Agheel Lake North, Murkwater Cave Entrance)
+- 76110 - Limgrave - Church of Dragon Communion - in m60_41_35_00 (Limgrave - Church of Dragon Communion, Coastal Cave Exit)
+- 76111 - Limgrave - Gatefront - in m60_42_37_00 (Limgrave - Gatefront, Stormhill Evergaol, Groveside Cave Entrance, Limgrave Tunnels Entrance)
+- 76113 - Limgrave - Seaside Ruins - in m60_43_35_00 (Limgrave - Seaside Ruins)
+- 76114 - Limgrave - Mistwood Outskirts - in m60_44_37_00 (Limgrave - Mistwood Outskirts)
+- 76116 - Limgrave - Murkwater Coast - in m60_43_38_00 (Limgrave - Murkwater Coast, Murkwater Catacombs Entrance)
+- 76117 - Stormhill - Saintsbridge - in m60_43_39_00 (Stormhill - Saintsbridge, Deathtouched Catacombs Entrance, Highroad Cave Entrance)
+- 76118 - Stormhill - Warmaster's Shack - in m60_42_38_00 (Stormhill - Warmaster's Shack, Stormgate)
+- 76119 - Limgrave - Summonwater Village Outskirts - in m60_44_39_00 (Limgrave - Summonwater Village Outskirts)
+- 76120 - Limgrave - Waypoint Ruins Cellar - in m60_44_36_00 (Limgrave - Waypoint Ruins)
+- 76150 - Weeping Peninsula - Church of Pilgrimage - in m60_43_34_00 (Weeping Peninsula - Church of Pilgrimage, Demi-Human Forest Ruins)
+- 76151 - Weeping Peninsula - Castle Morne Rampart - in m60_44_33_00 (Weeping Peninsula - Castle Morne Rampart, Ailing Village Outskirts)
+- 76152 - Weeping Peninsula - Tombsward - in m60_42_33_00 (Weeping Peninsula - Tombsward; Weeping Evergaol; Tombsward Cave Entrance)
+- 76153 - Weeping Peninsula - South of the Lookout Tower - in m60_44_33_00 (Weeping Peninsula - Castle Morne Rampart, Ailing Village Outskirts)
+- 76154 - Weeping Peninsula - Ailing Village Outskirts - in m60_44_33_00 (Weeping Peninsula - Castle Morne Rampart, Ailing Village Outskirts)
+- 76155 - Weeping Peninsula - Beside the Crater-Pocked Glade - in m60_45_33_00 (Weeping Peninsula - Beside the Crater-Pocked Glade, Oridys's Rise)
+- 76156 - Weeping Peninsula - Isolated Merchant's Shack - in m60_41_32_00 (Weeping Peninsula - Isolated Merchant's Shack)
+- 76157 - Weeping Peninsula - Bridge of Sacrifice - in m60_44_34_00 (Weeping Peninsula - Bridge of Sacrifice, Forest Lookout Tower, Earthbore Cave Entrance)
+- 76158 - Weeping Peninsula - Castle Morne Lift - in m60_43_31_00 (Weeping Peninsula - Castle Morne)
+- 76159 - Weeping Peninsula - Behind the Castle - in m60_43_31_00 (Weeping Peninsula - Castle Morne)
+- 76160 - Weeping Peninsula - Beside the Rampart Gaol - in m60_43_31_00 (Weeping Peninsula - Castle Morne)
+- 76161 - Weeping Peninsula - Morne Moangrave - in m60_43_30_00 (Weeping Peninsula - Morne Moangrave)
+- 76162 - Weeping Peninsula - Fourth Church of Marika - in m60_41_33_00 (Weeping Peninsula - Fourth Church of Marika, Witchbane Ruins)
+- Start flag 3062 --- 76200 to 76299
+- 76200 - Liurnia of the Lakes - Lake-Facing Cliffs - in m60_39_40_00 (Liurnia of the Lakes - Lake-Facing Cliffs, Stormveil Castle Exit, Stillwater Cave Entrance)
+- 76201 - Liurnia of the Lakes - Liurnia Lake Shore - in m60_38_40_00 (Liurnia of the Lakes - Liurnia Lake Shore)
+- 76202 - Liurnia of the Lakes - Laskyar Ruins - in m60_38_41_00 (Liurnia of the Lakes - Laskyar Ruins, Malefactor's Evergaol)
+- 76203 - Liurnia of the Lakes - Scenic Isle - in m60_37_42_00 (Liurnia of the Lakes - Scenic Isle, Laskyar Ruins)
+- 76204 - Liurnia of the Lakes - Academy Gate Town - in m60_37_44_00 (Liurnia of the Lakes - Gate Town Southeast)
+- 76205 - Liurnia of the Lakes - South Raya Lucaria Gate - in m60_35_45_00 (Liurnia of the Lakes - South Raya Lucaria Gate)
+- 76206 - Liurnia of the Lakes - Main Academy Gate - in m60_35_46_00 (Liurnia of the Lakes - Main Academy Gate, Academy of Raya Lucaria Entrance)
+- 76207 - Bellum Highway - East Raya Lucaria Gate - in m60_36_48_00 (Bellum Highway - East Raya Lucaria Gate)
+- 76208 - Bellum Highway - Bellum Church - in m60_36_49_00 (Liurnia of the Lakes - Southeast Ravine, Lake at Caria Manor Entrance; Bellum Highway - Bellum Church)
+- 76209 - Bellum Highway - Grand Lift of Dectus - in m60_38_50_00 (Liurnia of the Lakes - Ravine-Veiled Village; Bellum Highway - Grand Lift of Dectus; Altus Plateau - Altus Plateau; Ruin-Strewn Precipice Entrance)
+- 76210 - Liurnia of the Lakes - Foot of the Four Belfries - in m60_33_46_00 (Liurnia of the Lakes - Foot of the Four Belfries)
+- 76211 - Liurnia of the Lakes - Sorcerer's Isle - in m60_34_47_00 (Liurnia of the Lakes - Sorcerer's Isle West, East Belfry)
+- 76212 - Liurnia of the Lakes - Northern Liurnia Lake Shore - in m60_34_48_00 (Liurnia of the Lakes - Northern Liurnia Lake Shore, Kingsrealm Ruins)
+- 76213 - Liurnia of the Lakes - Road to the Manor - in m60_34_49_00 (Liurnia of the Lakes - Road to the Manor)
+- 76214 - Liurnia of the Lakes - Main Caria Manor Gate - in m60_35_50_00 (Liurnia of the Lakes - Caria Manor)
+- 76215 - Liurnia of the Lakes - Slumbering Wolf's Shack - in m60_36_41_00 (Liurnia of the Lakes - Slumbering Wolf's Shack, Lakeside Crystal Cave Entrance)
+- 76216 - Liurnia of the Lakes - Boilprawn Shack - in m60_36_43_00 (Liurnia of the Lakes - Boilprawn Shack, Fallen Ruins of the Lake)
+- 76217 - Liurnia of the Lakes - Artist's Shack - in m60_38_45_00 (Liurnia of the Lakes - Artist's Shack, Eastern Liurnia Lake Shore)
+- 76218 - Liurnia of the Lakes - Revenger's Shack - in m60_33_44_00 (Liurnia of the Lakes - Revenger's Shack)
+- 76219 - Liurnia of the Lakes - Folly on the Lake - in m60_35_43_00 (Liurnia of the Lakes - Folly on the Lake, South Rose Church)
+- 76220 - Liurnia of the Lakes - Village of the Albinaurics - in m60_34_42_00 (Liurnia of the Lakes - Village of the Albinaurics; Moonlight Altar - Moonfolk Ruins)
+- 76221 - Liurnia of the Lakes - Liurnia Highway North - in m60_39_42_00 (Liurnia of the Lakes - Liurnia Highway North)
+- 76222 - Liurnia of the Lakes - Gate Town Bridge - in m60_38_43_00 (Liurnia of the Lakes - Gate Town Bridge)
+- 76223 - Liurnia of the Lakes - Eastern Liurnia Lake Shore - in m60_38_45_00 (Liurnia of the Lakes - Artist's Shack, Eastern Liurnia Lake Shore)
+- 76224 - Liurnia of the Lakes - Church of Vows - in m60_37_46_00 (Liurnia of the Lakes - Church of Vows)
+- 76225 - Liurnia of the Lakes - Ruined Labyrinth - in m60_38_47_00 (Liurnia of the Lakes - Ruined Labyrinth, Uld Palace Ruins)
+- 76226 - Liurnia of the Lakes - Mausoleum Compound - in m60_37_48_00 (Liurnia of the Lakes - Mausoleum Compound)
+- 76227 - Liurnia of the Lakes - The Four Belfries - in m60_33_47_00 (Liurnia of the Lakes - The Four Belfries, Giant's Caravan Below)
+- 76228 - Liurnia of the Lakes - Ranni's Rise - in m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise)
+- 76229 - Liurnia of the Lakes - Ravine-Veiled Village - in m60_38_50_00 (Liurnia of the Lakes - Ravine-Veiled Village; Bellum Highway - Grand Lift of Dectus; Altus Plateau - Altus Plateau; Ruin-Strewn Precipice Entrance)
+- 76230 - Liurnia of the Lakes - Manor Upper Level - in m60_35_50_00 (Liurnia of the Lakes - Caria Manor)
+- 76231 - Liurnia of the Lakes - Manor Lower Level - in m60_35_50_00 (Liurnia of the Lakes - Caria Manor)
+- 76232 - Liurnia of the Lakes - Royal Moongazing Grounds - in m60_35_50_00 (Liurnia of the Lakes - Caria Manor)
+- 76233 - Liurnia of the Lakes - Gate Town North - in m60_36_45_00 (Liurnia of the Lakes - Gate Town Northwest)
+- 76234 - Liurnia of the Lakes - Eastern Tableland - in m60_38_46_00 (Liurnia of the Lakes - Eastern Tableland, Ainsel River Well)
+- 76235 - Liurnia of the Lakes - The Ravine - in m60_36_49_00 (Liurnia of the Lakes - Southeast Ravine, Lake at Caria Manor Entrance; Bellum Highway - Bellum Church)
+- 76236 - Liurnia of the Lakes - Fallen Ruins of the Lake - in m60_36_43_00 (Liurnia of the Lakes - Boilprawn Shack, Fallen Ruins of the Lake)
+- 76237 - Liurnia of the Lakes - Converted Tower - in m60_34_43_00 (Liurnia of the Lakes - Converted Tower)
+- 76238 - Liurnia of the Lakes - Behind Caria Manor - in m60_36_50_00 (Liurnia of the Lakes - Behind Caria Manor, Royal Grave Evergaol, Part of Ravine)
+- 76239 - Bellum Highway - Frenzied Flame Village Outskirts - in m60_38_48_00 (Bellum Highway - Frenzied Flame Village, Minor Erdtree)
+- 76240 - Bellum Highway - Church of Inhibition - in m60_37_49_00 (Bellum Highway - Church of Inhibition, Southwest of Grand Lift of Dectus)
+- 76241 - Liurnia of the Lakes - Temple Quarter - in m60_34_44_00 (Liurnia of the Lakes - Temple Quarter)
+- 76242 - Liurnia of the Lakes - East Gate Bridge Trestle - in m60_35_47_00 (Liurnia of the Lakes - Testu's Rise, East Gate Bridge Trestle)
+- 76243 - Liurnia of the Lakes - Crystalline Woods - in m60_34_46_00 (Liurnia of the Lakes - Crystalline Woods, Path to the Four Belfries)
+- 76244 - Liurnia of the Lakes - Liurnia Highway South - in m60_39_41_00 (Liurnia of the Lakes - Liurnia Highway South, Purified Ruins, Cliffbottom Catacombs Entrance)
+- 76245 - Liurnia of the Lakes - Jarburg - in m60_39_44_00 (Liurnia of the Lakes - Jarburg, Divine Tower of Liurnia Entrance)
+- 76247 - Liurnia of the Lakes - Ranni's Chamber - in m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise)
+- 76250 - Moonlight Altar - Moonlight Altar - in m60_34_41_00 (Moonlight Altar - Deep Ainsel Well)
+- 76251 - Moonlight Altar - Cathedral of Manus Celes - in m60_35_42_00 (Liurnia of the Lakes - West Albinauric Village; Moonlight Altar - Cathedral of Manus Celes)
+- 76252 - Moonlight Altar - Altar South - in m60_33_40_00 (Moonlight Altar - Altar South, Chelona's Rise)
+- Start flag 3063 --- 76300 to 76399
+- 76300 - Altus Plateau - Abandoned Coffin - in m60_37_51_00 (Altus Plateau - Abandoned Coffin, Ruin-Strewn Precipice Exit)
+- 76301 - Altus Plateau - Altus Plateau - in m60_38_50_00 (Liurnia of the Lakes - Ravine-Veiled Village; Bellum Highway - Grand Lift of Dectus; Altus Plateau - Altus Plateau; Ruin-Strewn Precipice Entrance)
+- 76302 - Altus Plateau - Erdtree-Gazing Hill - in m60_38_51_00 (Altus Plateau - Erdtree-Gazing Hill, Lux Ruins)
+- 76303 - Altus Plateau - Altus Highway Junction - in m60_39_51_00 (Altus Plateau - Altus Highway Junction)
+- 76304 - Altus Plateau - Forest-Spanning Greatbridge - in m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance)
+- 76305 - Altus Plateau - Rampartside Path - in m60_41_52_00 (Altus Plateau - Rampartside Path, Altus Tunnel Entrance)
+- 76306 - Altus Plateau - Bower of Bounty - in m60_40_53_00 (Altus Plateau - Bower of Bounty, Writheblood Ruins)
+- 76307 - Altus Plateau - Road of Iniquity Side Path - in m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path)
+- 76308 - Altus Plateau - Windmill Village - in m60_41_54_00 (Altus Plateau - West Windmill Village)
+- 76309 - Capital Outskirts - Outer Wall Phantom Tree - in m60_42_51_00 (Capital Outskirts - Outer Wall Phantom Tree)
+- 76310 - Capital Outskirts - Minor Erdtree Church - in m60_43_50_00 (Capital Outskirts - Minor Erdtree Church, Sealed Tunnel Entrance)
+- 76311 - Capital Outskirts - Hermit Merchant's Shack - in m60_43_53_00 (Capital Outskirts - Northeast Outer Wall Battleground, Hermit Merchant's Shack)
+- 76312 - Capital Outskirts - Outer Wall Battleground - in m60_43_53_00 (Capital Outskirts - Northeast Outer Wall Battleground, Hermit Merchant's Shack)
+- 76313 - Altus Plateau - Windmill Heights - in m60_42_55_00 (Altus Plateau - Windmill Heights)
+- 76314 - Capital Outskirts - Capital Rampart - in m60_45_52_00 (Capital Outskirts - Capital Rampart, Auriza Side Tomb Entrance)
+- 76320 - Altus Plateau - Shaded Castle Ramparts - in m60_39_54_00 (Altus Plateau - Shaded Castle)
+- 76321 - Altus Plateau - Shaded Castle Inner Gate - in m60_39_54_00 (Altus Plateau - Shaded Castle)
+- 76322 - Altus Plateau - Castellan's Hall - in m60_39_54_00 (Altus Plateau - Shaded Castle)
+- 76350 - Mt. Gelmir - Bridge of Iniquity - in m60_39_53_00 (Altus Plateau - Mirage Rise; Mt. Gelmir - Bridge of Iniquity)
+- 76351 - Mt. Gelmir - First Mt. Gelmir Campsite - in m60_38_54_00 (Mt. Gelmir - First Mt. Gelmir Campsite, Corpse-Stench Shack; Altus Plateau - West of Shaded Castle)
+- 76352 - Mt. Gelmir - Ninth Mt. Gelmir Campsite - in m60_36_54_00 (Mt. Gelmir - Ninth Mt. Gelmir Campsite, Road of Iniquity, Volcano Manor Entrance)
+- 76353 - Mt. Gelmir - Road of Iniquity - in m60_36_54_00 (Mt. Gelmir - Ninth Mt. Gelmir Campsite, Road of Iniquity, Volcano Manor Entrance)
+- 76354 - Mt. Gelmir - Seethewater River - in m60_37_52_00 (Mt. Gelmir - Seethewater River, Hermit Village, Wyndham Catacombs Entrance, Sage's Cave Entrance, Abductor Virgins Exit)
+- 76355 - Mt. Gelmir - Seethewater Terminus - in m60_35_53_00 (Mt. Gelmir - Seethewater Terminus)
+- 76356 - Mt. Gelmir - Craftsman's Shack - in m60_36_52_00 (Mt. Gelmir - Craftsman's Shack, Hermit's Shack)
+- 76357 - Mt. Gelmir - Primeval Sorcerer Azur - in m60_37_53_00 (Mt. Gelmir - Primeval Sorcerer Azur, Gelmir Hero's Grave Entrance)
+- Start flag 3064 --- 76400 to 76499
+- 76400 - Caelid - Smoldering Church - in m60_46_40_00 (Caelid - Smoldering Church, Rotview Balcony)
+- 76401 - Caelid - Rotview Balcony - in m60_46_40_00 (Caelid - Smoldering Church, Rotview Balcony)
+- 76402 - Caelid - Fort Gael North - in m60_47_39_00 (Caelid - Fort Gael North)
+- 76403 - Caelid - Caelem Ruins - in m60_47_40_00 (Caelid - Caelem Ruins, Forsaken Ruins, Minor Erdtree, Minor Erdtree Catacombs Entrance)
+- 76404 - Caelid - Cathedral of Dragon Communion - in m60_48_36_00 (Caelid - Cathedral of Dragon Communion, Caelid Catacombs Entrance)
+- 76405 - Caelid - Caelid Highway South - in m60_48_37_00 (Caelid - Caelid Highway South)
+- 76406 - Swamp of Aeonia - Aeonia Swamp Shore - in m60_48_38_00 (Caelid - West Aeonia Swamp)
+- 76407 - Swamp of Aeonia - Astray from Caelid Highway North - in m60_48_38_00 (Caelid - West Aeonia Swamp)
+- 76409 - Caelid - Smoldering Wall - in m60_48_39_00 (Caelid - Smoldering Wall, Abandoned Cave Entrance)
+- 76410 - Caelid - Deep Siofra Well - in m60_48_40_00 (Caelid - Deep Siofra Well; Greyoll's Dragonbarrow - Dragonbarrow West)
+- 76411 - Caelid - Southern Aeonia Swamp Bank - in m60_49_37_00 (Caelid - Southern Aeonia Swamp Bank)
+- 76412 - Swamp of Aeonia - Heart of Aeonia - in m60_49_38_00 (Caelid - East Aeonia Swamp)
+- 76413 - Swamp of Aeonia - Inner Aeonia - in m60_49_38_00 (Caelid - East Aeonia Swamp)
+- 76414 - Caelid - Sellia Backstreets - in m60_49_39_00 (Caelid - West Sellia, Sellia Crystal Tunnel Entrance)
+- 76415 - Caelid - Chair-Crypt of Sellia - in m60_49_39_00 (Caelid - West Sellia, Sellia Crystal Tunnel Entrance)
+- 76416 - Caelid - Sellia Under-Stair - in m60_49_39_00 (Caelid - West Sellia, Sellia Crystal Tunnel Entrance)
+- 76417 - Caelid - Impassable Greatbridge - in m60_50_36_00 (Caelid - Impassable Greatbridge)
+- 76418 - Caelid - Church of the Plague - in m60_50_38_00 (Caelid - Gowry's Shack)
+- 76419 - Caelid - Redmane Castle Plaza - in m60_51_36_00 (Caelid - Redmane Castle)
+- 76420 - Caelid - Chamber Outside the Plaza - in m60_51_36_00 (Caelid - Redmane Castle)
+- 76422 - Caelid - Starscourge Radahn - in m60_52_38_00 (Caelid - Central Radahn Arena)
+- 76450 - Greyoll's Dragonbarrow - Dragonbarrow West - in m60_48_40_00 (Caelid - Deep Siofra Well; Greyoll's Dragonbarrow - Dragonbarrow West)
+- 76451 - Greyoll's Dragonbarrow - Isolated Merchant's Shack - in m60_48_41_00 (Greyoll's Dragonbarrow - Isolated Merchant's Shack)
+- 76452 - Greyoll's Dragonbarrow - Dragonbarrow Fork - in m60_50_40_00 (Greyoll's Dragonbarrow - Dragonbarrow Fork)
+- 76453 - Greyoll's Dragonbarrow - Fort Faroth - in m60_51_39_00 (Greyoll's Dragonbarrow - Fort Faroth)
+- 76454 - Greyoll's Dragonbarrow - Bestial Sanctum - in m60_51_43_00 (Greyoll's Dragonbarrow - Bestial Sanctum)
+- 76455 - Greyoll's Dragonbarrow - Lenne's Rise - in m60_52_41_00 (Greyoll's Dragonbarrow - Southeast Farum Greatbridge, Lenne's Rise)
+- 76456 - Greyoll's Dragonbarrow - Farum Greatbridge - in m60_52_42_00 (Greyoll's Dragonbarrow - Northeast Farum Greatbridge)
+- Start flag 3065 --- 76500 to 76599
+- 76500 - Forbidden Lands - Forbidden Lands - in m60_47_51_00 (Leyndell - Divine Tower of East Altus Entrance; Mountaintops of the Giants - Forbidden Lands Start)
+- 76501 - Mountaintops of the Giants - Zamor Ruins - in m60_49_53_00 (Mountaintops of the Giants - West Zamor Ruins, Grand Lift of Rold)
+- 76502 - Forbidden Lands - Grand Lift of Rold - in m60_49_53_00 (Mountaintops of the Giants - West Zamor Ruins, Grand Lift of Rold)
+- 76503 - Mountaintops of the Giants - Ancient Snow Valley Ruins - in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins)
+- 76504 - Mountaintops of the Giants - Freezing Lake - in m60_52_57_00 (Mountaintops of the Giants - Before Freezing Lake, Heretical Rise)
+- 76505 - Mountaintops of the Giants - First Church of Marika - in m60_54_55_00 (Mountaintops of the Giants - First Church of Marika)
+- 76506 - Flame Peak - Giants' Gravepost - in m60_52_54_00 (Flame Peak - Northeast Giants' Gravepost)
+- 76507 - Flame Peak - Church of Repose - in m60_51_53_00 (Flame Peak - Southwest Giants' Gravepost)
+- 76508 - Flame Peak - Foot of the Forge - in m60_52_53_00 (Flame Peak - Northwest Fire Giant Arena, Foot of the Forge)
+- 76509 - Flame Peak - Fire Giant - in m60_53_52_00 (Flame Peak - Southeast Fire Giant Arena)
+- 76510 - Flame Peak - Forge of the Giants - in m60_54_53_00 (Flame Peak - Forge of the Giants)
+- 76520 - Mountaintops of the Giants - Whiteridge Road - in m60_52_56_00 (Mountaintops of the Giants - Whiteridge Road, Minor Erdtree)
+- 76521 - Mountaintops of the Giants - Snow Valley Ruins Overlook - in m60_51_57_00 (Mountaintops of the Giants - South Castle Sol, Snow Valley Ruins Overlook)
+- 76522 - Mountaintops of the Giants - Castle Sol Main Gate - in m60_51_57_00 (Mountaintops of the Giants - South Castle Sol, Snow Valley Ruins Overlook)
+- 76523 - Mountaintops of the Giants - Church of the Eclipse - in m60_51_57_00 (Mountaintops of the Giants - South Castle Sol, Snow Valley Ruins Overlook)
+- 76524 - Mountaintops of the Giants - Castle Sol Rooftop - in m60_51_57_00 (Mountaintops of the Giants - South Castle Sol, Snow Valley Ruins Overlook)
+- 76550 - Consecrated Snowfield - Consecrated Snowfield - in m60_49_54_00 (Consecrated Snowfield - Hidden Path to the Haligtree, Southeast Foggy Area)
+- 76551 - Consecrated Snowfield - Inner Consecrated Snowfield - in m60_49_55_00 (Consecrated Snowfield - Northeast Foggy Area, Inner Consecrated Snowfield)
+- Overworld --- End flags
+- 76652 - Consecrated Snowfield - Ordina, Liturgical Town - in m60_48_57_00 (Consecrated Snowfield - Ordina, Liturgical Town)
+- 76653 - Consecrated Snowfield - Apostate Derelict - in m60_47_58_00 (Consecrated Snowfield - Apostate Derelict)
+- Categories ---
+- Stormveil Castle; Chapel of Anticipation; Leyndell, Royal Capital; Subterranean Shunning-Grounds; Leyndell, Ashen Capital; Stone Platform; Roundtable Hold; Ainsel River Main; Lake of Rot; Ainsel River; Nokron, Eternal City; Siofra River; Mohgwyn Palace; Deeproot Depths; Crumbling Farum Azula; Academy of Raya Lucaria; Miquella's Haligtree; Elphael, Brace of the Haligtree; Volcano Manor; Limgrave; Stormhill; Weeping Peninsula; Stranded Graveyard; Liurnia of the Lakes; Bellum Highway; Ruin-Strewn Precipice; Moonlight Altar; Altus Plateau; Mt. Gelmir; Capital Outskirts; Caelid; Greyoll's Dragonbarrow; Swamp of Aeonia; Forbidden Lands; Mountaintops of the Giants; Flame Peak; Consecrated Snowfield
+- Logical areas (except minidungeons) ---
+- graveyard graveyard_grave limgrave stormhill roundtable limgrave_coastalcave limgrave_dragonchurch stormveil_start stormveil stormveil_throne limgrave_tower limgrave_tower_inner peninsula liurnia bellum academy academy_courtyard academy_library academy_chest siofra ainsel_start liurnia_studyhall caelid caelid_greatjar dragonbarrow precipice altus outskirts leyndell leyndell_divinebridge leyndell_throne leyndell_erdtree leyndell_tower leyndell_tower_inner sewer sewer_flame sewer_catacombs deeproot_start liurnia_postmanor caelid_radahn caelid_postradahn caelid_tower caelid_tower_inner siofrabank_nokron siofra_nokron deeproot deeproot_dream liurnia_tower gelmir volcano volcano_drawingroom volcano_town volcano_temple outskirts_sealedtunnel altus_tower_inner ainsel lakeofrot ainsel_boss moonlight mountaintops_start mountaintops mountaintops_sol flamepeak farumazula_start farumazula chapel farumazula_limited siofra_limited snowfield_hiddenpath snowfield haligtree haligtree_elphael isolated_tower_inner mohgwyn leyndell2 leyndell2_throne erdtree
+EnableFlag: 3063
+Areas:
+- Includes: graveyard
+  MainBonfire: Stranded Graveyard
+- Includes: graveyard_grave
+  MainBonfire: Stranded Graveyard
+  Boss: 18000800
+- Includes: limgrave
+  MainBonfire: The First Step
+  Bonfires: Limgrave
+  Boss: margit
+- Includes: stormhill
+  MainBonfire: Stormhill Shack
+  Bonfires: Stormhill
+  Boss: margit
+- Includes: roundtable
+  MainBonfire: Table of Lost Grace
+  Bonfires: Roundtable Hold
+- Includes: limgrave_coastalcave limgrave_dragonchurch
+  MainBonfire: Coastal Cave
+  Parent: limgrave
+  Boss: demihumanchief
+- Includes: stormveil_start
+  MainBonfire: Stormveil Main Gate
+  Bonfires: Stormveil Castle
+- Includes: stormveil limgrave_tower limgrave_tower_inner
+  MainBonfire: Stormveil Main Gate
+  Bonfires: Stormveil Castle; !Stormveil Cliffside; !Stormveil Main Gate
+  Boss: godrick
+- Includes: stormveil_throne
+  MainBonfire: Stormveil Main Gate
+- Includes: peninsula
+  MainBonfire: Bridge of Sacrifice
+  Bonfires: Weeping Peninsula
+  Boss: 1043300800
+- Includes: liurnia liurnia_postmanor
+  MainBonfire: Lake-Facing Cliffs
+  Bonfires: Liurnia of the Lakes
+  Boss: loretta
+- Includes: bellum
+  MainBonfire: Bellum Church
+  Bonfires: Bellum Highway
+  Boss: loretta
+- Includes: academy academy_courtyard academy_library academy_chest
+  MainBonfire: Main Academy Gate
+  Bonfires: Academy of Raya Lucaria; Main Academy Gate
+  Boss: rennala
+- Includes: siofra
+  MainBonfire: Siofra River Well Depths
+  Bonfires: Siofra River
+  Boss: ancestor
+- Includes: ainsel_start
+  MainBonfire: Ainsel River Well Depths
+  Bonfires: Ainsel River; !Astel, Naturalborn of the Void
+  Boss: 12010800
+- Includes: liurnia_studyhall liurnia_tower
+  MainBonfire: Study Hall Entrance
+  Bonfires: Study Hall Entrance; Liurnia Tower Bridge; Divine Tower of Liurnia
+- Includes: caelid caelid_greatjar caelid_radahn caelid_postradahn
+  MainBonfire: Smoldering Church
+  Bonfires: Caelid; Swamp of Aeonia
+  Boss: radahn
+- Includes: dragonbarrow caelid_tower caelid_tower_inner
+  MainBonfire: Dragonbarrow West
+  Bonfires: Greyoll's Dragonbarrow
+  Boss: 34130800
+  Comment: Godskin
+- Includes: precipice
+  MainBonfire: Ruin-Strewn Precipice
+  Bonfires: Ruin-Strewn Precipice
+  Boss: makar
+- Includes: altus
+  MainBonfire: Altus Plateau
+  Bonfires: Altus Plateau
+  Boss: 1042550800
+  BossFlag: 1042550800
+- Includes: outskirts
+  MainBonfire: Outer Wall Phantom Tree
+  Bonfires: Capital Outskirts
+  Boss: 1045520800
+  BossFlag: 1045520800
+  Comment: Draconic
+- Includes: leyndell leyndell_throne leyndell_erdtree
+  MainBonfire: Capital Rampart
+  Bonfires: Leyndell, Royal Capital; !Divine Bridge
+  Boss: morgott
+- Includes: leyndell_divinebridge isolated_tower_inner
+  DisplayName: Divine Bridge
+  Comment: This bonfire changes over time so just use direct item hints
+- Includes: leyndell_tower leyndell_tower_inner
+  MainBonfire: 'Divine Tower of East Altus: Gate'
+  Bonfires: Divine Tower of East Altus; Forbidden Lands
+- Includes: sewer sewer_flame
+  MainBonfire: Forsaken Depths
+  Bonfires: Subterranean Shunning-Grounds
+  Boss: mohg
+- Includes: sewer_catacombs
+  MainBonfire: Leyndell Catacombs
+  Parent: sewer
+  Boss: 35000850
+- Includes: deeproot_start deeproot deeproot_dream
+  MainBonfire: Great Waterfall Crest
+  Bonfires: Deeproot Depths
+  Boss: fiaschampions
+- Includes: siofrabank_nokron siofra_nokron
+  MainBonfire: Nokron, Eternal City
+  Bonfires: Nokron, Eternal City
+  Boss: ancestor2
+- Includes: gelmir
+  MainBonfire: Seethewater River
+  Bonfires: Mt. Gelmir
+  Boss: 1036540800
+  BossFlag: 1036540800
+- Includes: volcano
+  MainBonfire: Volcano Manor
+  Bonfires: Mt. Gelmir
+  DisplayName: Volcano Manor
+  Comment: Don't use a boss requirement for this limited location. Beast is ambiguous, Rykard may be unreachable
+- Includes: volcano_drawingroom volcano_town volcano_temple
+  MainBonfire: Volcano Manor
+  Bonfires: Volcano Manor; !Volcano Manor
+  Boss: rykard
+- Includes: outskirts_sealedtunnel
+  MainBonfire: Sealed Tunnel
+  Parent: outskirts
+  Boss: onyxlord
+- Includes: altus_tower_inner
+  MainBonfire: 'Divine Tower of West Altus: Gate'
+  DisplayName: Divine Tower of West Altus
+  Parent: outskirts
+- Includes: ainsel
+  MainBonfire: Ainsel River Main
+  Bonfires: Ainsel River Main
+  Boss: astel
+  Comment: Use Astel here
+- Includes: lakeofrot ainsel_boss
+  MainBonfire: Lake of Rot Shoreside
+  Bonfires: Lake of Rot
+  Boss: astel
+- Includes: moonlight
+  MainBonfire: Moonlight Altar
+  Bonfires: Moonlight Altar
+  Boss: 1034420800
+  BossFlag: 1034420800
+- Includes: mountaintops_start
+  MainBonfire: Forbidden Lands
+  Bonfires: Forbidden Lands
+  Boss: 1049520800
+  BossFlag: 1049520800
+- Includes: mountaintops mountaintops_sol
+  MainBonfire: Zamor Ruins
+  Bonfires: Mountaintops of the Giants
+  Boss: niall
+- Includes: flamepeak
+  MainBonfire: Giants' Gravepost
+  Bonfires: Flame Peak
+  Boss: firegiant
+- Includes: farumazula_start farumazula
+  MainBonfire: Crumbling Beast Grave
+  Bonfires: Crumbling Farum Azula
+  Boss: maliketh
+- Includes: chapel chapel_start
+  DisplayName: Chapel of Anticipation
+- Includes: farumazula_limited
+  DisplayName: Crumbling Farum Azula
+- Includes: siofra_limited
+  DisplayName: Nokron, Eternal City
+- Includes: snowfield_hiddenpath
+  MainBonfire: Hidden Path to the Haligtree
+  Bonfires: Hidden Path to the Haligtree; Consecrated Snowfield
+  Boss: 30200800
+- Includes: snowfield
+  MainBonfire: Consecrated Snowfield
+  Bonfires: Consecrated Snowfield
+  Boss: 1050560800
+  BossFlag: 1050560800
+- Includes: haligtree haligtree_elphael
+  MainBonfire: Haligtree Canopy
+  Bonfires: Miquella's Haligtree; Elphael, Brace of the Haligtree
+  Boss: malenia
+- Includes: mohgwyn
+  MainBonfire: Palace Approach Ledge-Road
+  Bonfires: Mohgwyn Palace
+  Boss: mohg2
+- Includes: leyndell2 leyndell2_throne
+  MainBonfire: Leyndell, Capital of Ash
+  Bonfires: Leyndell, Ashen Capital; !Divine Bridge
+  Boss: godfrey2
+- Includes: erdtree
+  MainBonfire: Fractured Marika
+  DisplayName: Stone Platform
+  Comment: End of regular areas!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+- Includes: peninsula_tombswardcatacombs
+  MainBonfire: Tombsward Catacombs
+  Parent: peninsula
+  Boss: 30000800
+- Includes: peninsula_impalerscatacombs
+  MainBonfire: Impaler's Catacombs
+  Parent: peninsula
+  Boss: 30010800
+- Includes: limgrave_stormfootcatacombs
+  MainBonfire: Stormfoot Catacombs
+  Parent: limgrave
+  Boss: 30020800
+- Includes: liurnia_roadsendcatacombs
+  MainBonfire: Road's End Catacombs
+  Parent: liurnia
+  Boss: 30030800
+- Includes: limgrave_murkwatercatacombs
+  MainBonfire: Murkwater Catacombs
+  Parent: limgrave
+  Boss: 30040800
+- Includes: liurnia_blackknifecatacombs
+  MainBonfire: Black Knife Catacombs
+  Parent: liurnia
+  Boss: 30050800
+  Comment: 30050800 is Cemetery Shade, 30050850 is Black Knight Assassin
+- Includes: liurnia_cliffbottomcatacombs
+  MainBonfire: Cliffbottom Catacombs
+  Parent: liurnia
+  Boss: 30060800
+- Includes: gelmir_wyndhamcatacombs
+  MainBonfire: Wyndham Catacombs
+  Parent: gelmir
+  Boss: 30070800
+- Includes: altus_grave
+  MainBonfire: Sainted Hero's Grave
+  Parent: altus
+  Boss: 30080800
+- Includes: gelmir_grave
+  MainBonfire: Gelmir Hero's Grave
+  Parent: gelmir
+  Boss: 30090800
+- Includes: outskirts_grave
+  MainBonfire: Auriza Hero's Grave
+  Parent: outskirts
+  Boss: 30100800
+- Includes: stormhill_catacombs
+  MainBonfire: Deathtouched Catacombs
+  Parent: stormhill
+  Boss: 30110800
+- Includes: altus_catacombs
+  MainBonfire: Unsightly Catacombs
+  Parent: altus
+  Boss: 30120800
+- Includes: outskirts_sidetomb
+  MainBonfire: Auriza Side Tomb
+  Parent: outskirts
+  Boss: 30130800
+- Includes: caelid_erdtreecatacombs
+  MainBonfire: Minor Erdtree Catacombs
+  Parent: caelid
+  Boss: 30140800
+- Includes: caelid_catacombs
+  MainBonfire: Caelid Catacombs
+  Parent: caelid
+  Boss: 30150800
+- Includes: caelid_wardead
+  MainBonfire: War-Dead Catacombs
+  Parent: caelid_postradahn
+  Boss: 30160800
+- Includes: flamepeak_grave
+  MainBonfire: Giant-Conquering Hero's Grave
+  Parent: flamepeak
+  Boss: 30170800
+- Includes: mountaintops_catacombs
+  MainBonfire: Giants' Mountaintop Catacombs
+  Parent: mountaintops
+  Boss: 30180800
+- Includes: snowfield_catacombs
+  MainBonfire: Consecrated Snowfield Catacombs
+  Parent: snowfield
+  Boss: 30190800
+- Includes: limgrave_murkwatercave
+  MainBonfire: Murkwater Cave
+  Parent: limgrave
+  Comment: Patches
+- Includes: peninsula_earthborecave
+  MainBonfire: Earthbore Cave
+  Parent: peninsula
+  Boss: 31010800
+- Includes: peninsula_tombswardcave
+  MainBonfire: Tombsward Cave
+  Parent: peninsula
+  Boss: 31020800
+- Includes: limgrave_grovesidecave
+  MainBonfire: Groveside Cave
+  Parent: limgrave
+  Boss: 31030800
+- Includes: liurnia_stillwatercave
+  MainBonfire: Stillwater Cave
+  Parent: liurnia
+  Boss: 31040800
+- Includes: liurnia_lakesidecave
+  MainBonfire: Lakeside Crystal Cave
+  Parent: liurnia
+  Boss: 31050800
+- Includes: liurnia_academycave
+  MainBonfire: Academy Crystal Cave
+  Parent: liurnia
+  Boss: 31060800
+- Includes: gelmir_seethewatercave
+  MainBonfire: Seethewater Cave
+  Parent: gelmir
+  Boss: 31070800
+- Includes: gelmir_volcanocave
+  MainBonfire: Volcano Cave
+  Parent: gelmir
+  Boss: 31090800
+- Includes: dragonbarrow_cave
+  MainBonfire: Dragonbarrow Cave
+  Parent: dragonbarrow
+  Boss: 31100800
+- Includes: dragonbarrow_selliahideaway
+  MainBonfire: Sellia Hideaway
+  Parent: dragonbarrow
+  Boss: 31110800
+- Includes: snowfield_cave
+  MainBonfire: Cave of the Forlorn
+  Parent: snowfield
+  Boss: 31120800
+- Includes: limgrave_highroadcave
+  MainBonfire: Highroad Cave
+  Parent: limgrave
+  Boss: 31170800
+- Includes: altus_grotto
+  MainBonfire: Perfumer's Grotto
+  Parent: altus
+  Boss: 31180800
+- Includes: altus_sagescave
+  MainBonfire: Sage's Cave
+  Parent: altus
+  Boss: 31190850
+  Comment: 31190800 is Black Knight Assassin, 31190850 is Necromancer Garris
+- Includes: caelid_abandonedcave
+  MainBonfire: Abandoned Cave
+  Parent: caelid
+  Boss: 31200800
+- Includes: caelid_gaolcave
+  MainBonfire: Gaol Cave
+  Parent: caelid
+  Boss: 31210800
+- Includes: mountaintops_cave
+  MainBonfire: Spiritcaller Cave
+  Parent: mountaintops
+  Boss: 31220800
+- Includes: peninsula_tunnel
+  MainBonfire: Morne Tunnel
+  Parent: peninsula
+  Boss: 32000800
+- Includes: limgrave_tunnels
+  MainBonfire: Limgrave Tunnels
+  Parent: limgrave
+  Boss: 32010800
+- Includes: liurnia_tunnel
+  MainBonfire: Raya Lucaria Crystal Tunnel
+  Parent: liurnia
+  Boss: 32020800
+- Includes: altus_oldtunnel
+  MainBonfire: Old Altus Tunnel
+  Parent: altus
+  Boss: 32040800
+- Includes: altus_tunnel
+  MainBonfire: Altus Tunnel
+  Parent: altus
+  Boss: 32050800
+- Includes: caelid_gaeltunnel
+  MainBonfire: Gael Tunnel
+  Parent: caelid
+  Boss: 32070800
+- Includes: caelid_selliatunnel
+  MainBonfire: Sellia Crystal Tunnel
+  Parent: caelid
+  Boss: 32080800
+- Includes: snowfield_tunnel
+  MainBonfire: Yelough Anix Tunnel
+  Parent: snowfield
+  Boss: 32110800
+Items:
+- Name: academyglintstonekey
+  UnexploredCheck: academy
+- Name: carianinvertedstatue
+  UnexploredCheck: liurnia_studyhall
+- Name: cursemarkofdeath
+- Name: darkmoonring
+  UnexploredCheck: moonlight
+- Name: dectusmedallionleft dectusmedallionright
+  UnexploredCheck: altus
+  Comment: Altus overworld bonfires as an alternate condition
+  Reqs:
+  - CheckItem: self
+  - AltFlag: 3063
+- Name: discardedpalacekey
+- Name: drawingroomkey
+  UnexploredCheck: volcano_town
+  Comment: Acamdey Glintstone Key will suffice here, assuming the Drawing Room itself is not required
+  Reqs:
+  - CheckItem: self
+  - NotAreaCondition: volcano_drawingroom
+    AltItem: academyglintstonekey
+- Name: haligtreesecretmedallionleft haligtreesecretmedallionright
+  UnexploredCheck: snowfield
+- Name: imbuedswordkey1 imbuedswordkey2 imbuedswordkey3
+  DisplayName: Imbued Sword Key
+  Comment: None of these are required individually, it's all based on activated gates
+  Reqs:
+  - AreaCondition: farumazula_limited
+    CheckFlag: 1033460610
+  - AreaCondition: siofra_limited
+    CheckFlag: 1033470610
+  - AreaCondition: chapel
+    CheckFlag: 1034470610
+- Name: purebloodknightsmedal
+  UnexploredCheck: mohgwyn
+  Comment: Getting there is also possible when you have Snowfield access
+  Reqs:
+  - CheckItem: self
+  - AltItem: haligtreesecretmedallionleft
+  - AltItem: haligtreesecretmedallionright
+- Name: roldmedallion
+  UnexploredCheck: mountaintops
+- Name: rustykey
+  UnexploredCheck: stormveil
+  Comment: Not needed when Gostoc opened the gate (10009355 dialogue flag; 10009354 or 10000501 is you opening the gate)
+  Reqs:
+  - CheckItem: self
+  - AltFlag: 10000500
+- Name: runegodrick runerennala
+  UnexploredCheck: leyndell
+  DisplayName: 2 Great Runes
+  Comment: Any two will do, but hint these if that condition is not yet met
+  Reqs:
+  - CheckFlag: 182
+- Name: runemalenia runemohg runemorgott runeradahn runerykard
+  Comment: Only needed if all runes are required, accounted for in requiredItem logic

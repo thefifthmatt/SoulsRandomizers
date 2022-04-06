@@ -1,0 +1,1190 @@
+Config: []
+ConfigItems:
+- GroupName: keyitems
+  HintName: key items
+  Items:
+  - Name: Pureblood Knight's Medal
+  - Name: Rusty Key
+  - Name: Dectus Medallion (Left)
+  - Name: Dectus Medallion (Right)
+  - Name: Rold Medallion
+  - Name: Academy Glintstone Key
+    ID: 3:8109
+  - Name: Carian Inverted Statue
+  - Name: Dark Moon Ring
+  - Name: Drawing-Room Key
+  - ConfigName: runegodrick
+    Name: Godrick's Great Rune
+    ID: 3:8148
+  - ConfigName: runerennala
+    Name: Great Rune of the Unborn
+    ID: 3:10080  # Out of order
+  - ConfigName: runeradahn
+    Name: Radahn's Great Rune
+    ID: 3:8149
+  - ConfigName: runemorgott
+    Name: Morgott's Great Rune
+    ID: 3:8150
+  - ConfigName: runerykard
+    Name: Rykard's Great Rune
+    ID: 3:8151
+  - ConfigName: runemohg
+    Name: Mohg's Great Rune
+    ID: 3:8152
+  - ConfigName: runemalenia
+    Name: Malenia's Great Rune
+    ID: 3:8153
+  - Name: Haligtree Secret Medallion (Left)
+  - Name: Haligtree Secret Medallion (Right)
+  - ConfigName: imbuedswordkey1
+    Name: Imbued Sword Key  # 3:8186
+  - ConfigName: imbuedswordkey2
+    Name: Imbued Sword Key 2  # 3:8186, but synthetic 3:9990
+  - ConfigName: imbuedswordkey3
+    Name: Imbued Sword Key 3  # 3:8186, but synthetic 3:9991
+  - Name: Cursemark of Death
+  - Name: Discarded Palace Key
+- GroupName: remove
+  NoConfigNames: true
+  Items: []
+- GroupName: norandom
+  NoConfigNames: true
+  Items:
+  # Unused/unknown
+  - ID: 3:310
+  - ID: 3:401
+  - ID: 6:5000
+  - ID: 6:5010
+  - ID: 6:5030
+  - ID: 6:5040
+  # NPC bell bearings
+  - ID: 3:8910
+    EndID: 3:8944
+  # Important. May be redundant to slot tags
+  - Name: Spirit Calling Bell
+  - Name: Spectral Steed Whistle
+    ID: 3:130
+  - Name: Crafting Kit
+  - Name: Flask of Crimson Tears
+    ID: 3:1000
+  - Name: Flask of Cerulean Tears
+    ID: 3:1050
+  - Name: Flask of Wondrous Physick
+    ID: 3:250
+  - Name: Whetstone Knife
+  # TODO add to config as norandom, these are slot-dependent.
+  - Name: Baldachin's Blessing
+  - Name: Radiant Baldachin's Blessing
+  - Name: Lantern
+  # Exclude maps for now I guess too
+  - ID: 3:8600
+    EndID: 3:8618
+- GroupName: norandomshop
+  NoConfigNames: true
+  Items:
+  - Name: Rune Arc
+  - Name: Stonesword Key
+  # Only present online. Is this an EquipParamGoods thing?
+  - Name: Furlcalling Finger Remedy
+    ID: 3:150
+  # Mixed limited/unlimited
+  - Name: Fan Daggers
+  # For Alexander's Quest. Figure this out if/when cookbook contents are randomized
+  - Name: Nomadic Warrior's Cookbook [17]
+- GroupName: bosssouls
+  NoConfigNames: true
+  Items:
+  - ID: 3:2950
+    EndID: 3:2964
+- GroupName: ashes
+  HintName: bell bearings
+  # Hunter's bearings, found in the world.
+  Items:
+  - Name: Bone Peddler's Bell Bearing
+  - Name: Meat Peddler's Bell Bearing
+  - Name: Medicine Peddler's Bell Bearing
+  - Name: Gravity Stone Peddler's Bell Bearing
+# These can be added to the key item pool. Their contents are not randomized.
+- GroupName: upgradeashes
+  HintName: bell bearings
+  NoConfigNames: true
+  Items:
+  - ID: 3:8951
+    EndID: 3:8965
+# Essential upgrades, all permanent
+- GroupName: upgrades
+  HintName: upgrade items
+  NoConfigNames: true
+  Items:
+  # Whetblades
+  - ID: 3:8970
+    EndID: 3:8974
+  - Name: Talisman Pouch
+  - Name: Tailoring Tools
+  - Name: Golden Tailoring Tools
+- GroupName: healthhints
+  # Too many of these
+  # HintName: healing items
+  NoConfigNames: true
+  Items:
+  - Name: Golden Seed
+  - Name: Sacred Tear
+- GroupName: questitems
+  HintName: quest items
+  # TODO: Figure out all NPC quests. For now they're potentially impossible/softlocked
+  Items:
+  - Name: Law of Regression
+  - Name: "\"Homing Instinct\" Painting"
+  - Name: "\"Resurrection\" Painting"
+  - Name: "\"Champion's Song\" Painting"
+  - Name: "\"Sorcerer\" Painting"
+  - Name: "\"Prophecy\" Painting"
+  - Name: "\"Flightless Bird\" Painting"
+  - Name: "\"Redmane\" Painting"
+  - Name: Conspectus Scroll
+  - Name: Royal House Scroll
+  - Name: Fire Monks' Prayerbook
+  - Name: Giant's Prayerbook
+  - Name: Godskin Prayerbook
+  - Name: Two Fingers' Prayerbook
+  - Name: Assassin's Prayerbook
+  - Name: Erdtree Prayerbook
+  # Unused: Erdtree Codex
+  - Name: Golden Order Principia
+  # Unused: Golden Order Principles
+  - Name: Dragon Cult Prayerbook
+  - Name: Ancient Dragon Prayerbook
+  - Name: Academy Scroll
+  # Just a few items to make unmissable/hinted
+  - Name: Fingerprint Grape
+  - Name: Letter from Volcano Manor (Istvan)
+    ID: 3:8127
+  - Name: Tonic of Forgetfulness
+  - Name: Serpent's Amnion
+  - Name: Irina's Letter
+  - Name: Letter from Volcano Manor (Rileigh)
+    ID: 3:8132
+  - Name: Red Letter
+  - Name: Rya's Necklace
+    ID: 3:8136
+  - Name: Amber Starlight
+  - Name: Seluvis's Introduction
+  - Name: Sellen's Primal Glintstone
+  - Name: Miniature Ranni
+    ID: 3:8146
+  - Name: Lord of Blood's Favor
+    ID: 3:8154
+  - Name: Fingerslayer Blade
+  - Name: Sewing Needle
+  - Name: Gold Sewing Needle
+  - Name: Seluvis's Potion
+  - Name: Amber Draught
+  - Name: Letter to Bernahl
+  - Name: Letter to Patches
+  - Name: Dancer's Castanets
+  - Name: Sellian Sealbreaker
+  - Name: Black Knifeprint
+  - Name: Academy Glintstone Key (Thops)
+    ID: 3:8174
+  - Name: Mending Rune of Perfect Order
+  - Name: Mending Rune of the Death-Prince
+  - Name: Mending Rune of the Fell Curse
+  - Name: The Stormhawk King
+  - Name: Unalloyed Gold Needle (Millicent)
+    ID: 3:8196
+  - Name: Sewer-Gaol Key
+  - Name: Alexander's Innards
+  - Name: Unalloyed Gold Needle (Broken)
+    ID: 3:8975
+  - Name: Unalloyed Gold Needle (Fixed)
+    ID: 3:8976
+  - Name: Valkyrie's Prosthesis
+  - Name: Beast Eye
+  - Name: Weathered Dagger
+- GroupName: maps
+  NoConfigNames: true
+  Items:
+  - ID: 3:8600
+    EndID: 3:8618
+- GroupName: sorceries
+  NoConfigNames: true
+  Items:
+  - ID: 3:4000
+    EndID: 3:4910
+  # 5000 to 5110 range, except for Death Lightning (5040)
+  - ID: 3:5000
+    EndID: 3:5030
+  - ID: 3:5100
+    EndID: 3:5110
+- GroupName: incantations
+  NoConfigNames: true
+  Items:
+  - ID: 3:5040
+  - ID: 3:6000
+    EndID: 3:7903
+- GroupName: add
+  Items:
+  - Name: Deathbed Smalls
+
+Events:
+- Name: meteor
+  Text: Limgrave Meteor
+  Req: caelid_postradahn
+- Name: ashen
+  Text: Capital Destroyed
+  Req: farumazula AND maliketh
+
+# Boss locations
+- Name: margit
+  Req: stormhill
+- Name: godrick
+  Req: stormveil
+- Name: redwolf
+  Req: academy
+- Name: rennala
+  Req: academy_courtyard
+- Name: radahn
+  Req: caelid_radahn
+- Name: draconic
+  Req: outskirts
+- Name: godfrey
+  Req: leyndell
+- Name: morgott
+  Req: leyndell_throne
+- Name: godskinnoble
+  Req: volcano_town
+- Name: rykard
+  Req: volcano_temple
+- Name: firegiant
+  Req: flamepeak
+# Various non-legacy ones
+- Name: darriwil
+  Req: limgrave
+- Name: demihumanchief
+  Req: limgrave_coastalcave
+- Name: felltwins
+  Req: leyndell_tower
+- Name: onyxlord
+  Req: outskirts_sealedtunnel
+- Name: godskinapostle
+  Req: caelid_tower
+- Name: ancestor
+  Req: siofra
+- Name: mimictear
+  Req: siofrabank_nokron
+- Name: ancestor2
+  Req: siofra_nokron
+- Name: gargoyles
+  Req: siofra_nokron
+- Name: loretta
+  Req: liurnia
+- Name: makar
+  Req: precipice
+- Name: abductors
+  Req: volcano_town
+- Name: elemer
+  Req: altus
+- Name: oneil
+  Req: caelid
+- Name: fiaschampions
+  Req: deeproot
+- Name: mohg
+  Req: sewer
+- Name: mohg2
+  Req: mohgwyn
+- Name: astel
+  Req: ainsel_boss
+- Name: niall
+  Req: mountaintops
+- Name: loretta2
+  Req: haligtree
+- Name: malenia
+  Req: haligtree_elphael
+# End-game
+- Name: godskinduo
+  Req: farumazula_start
+- Name: maliketh
+  Req: farumazula
+- Name: gideon
+  Req: leyndell2
+- Name: godfrey2
+  Req: leyndell2_throne
+- Name: radagon
+  Req: erdtree
+
+Areas:
+- Name: chapel_start
+  Text: Chapel of Anticipation
+  Maps: m10_01_00_00
+- Name: graveyard
+  Text: Stranded Graveyard
+  Req: chapel_start
+  Maps: m18_00_00_00
+  Tags: minidungeon
+- Name: graveyard_grave
+  Text: Limgrave - Fringefolk Hero's Grave
+  Req: graveyard AND limgrave
+  Maps: m18_00_00_00
+  MainMaps: m18_00_00_00
+  Tags: minidungeon
+- Name: limgrave
+  Text: Limgrave
+  Req: graveyard
+  Maps: m60_41_36_00 m60_41_37_00 m60_42_35_00 m60_42_36_00 m60_42_37_00 m60_42_38_00 m60_43_34_00 m60_43_35_00 m60_43_36_00 m60_43_37_00 m60_43_38_00 m60_43_39_00 m60_43_40_00 m60_44_34_00 m60_44_35_00 m60_44_36_00 m60_44_36_10 m60_44_37_00 m60_44_38_00 m60_44_39_00 m60_45_35_00 m60_45_36_00 m60_45_36_10 m60_45_37_00 m60_45_38_00 m60_45_39_00 m60_45_40_00 m60_46_36_00 m60_46_37_00 m60_46_38_00 m60_46_39_00 m60_46_40_00
+- Name: stormhill
+  Text: Stormhill
+  Req: limgrave
+  # Stormveil Castle area message shows up right after Margit
+  Maps: m10_00_00_00 m60_40_38_00 m60_40_39_00 m60_41_37_00 m60_41_38_00 m60_41_39_00 m60_42_37_00 m60_42_38_00 m60_42_39_00 m60_42_40_00 m60_43_38_00 m60_43_39_00 m60_43_40_00
+- Name: roundtable
+  Text: Roundtable Hold
+  Req: stormhill
+  Maps: m11_10_00_00
+- Name: limgrave_coastalcave
+  Text: Limgrave - Coastal Cave
+  Req: limgrave
+  Maps: m31_15_00_00
+  Tags: minidungeon
+- Name: limgrave_dragonchurch
+  Text: Limgrave - Church of Dragon Communion
+  Req: limgrave_coastalcave AND demihumanchief
+  Maps: m60_41_35_00
+- Name: stormveil_start
+  Text: Stormveil Castle
+  Req: stormhill AND margit
+  Maps: m10_00_00_00
+- Name: stormveil
+  Text: Stormveil Castle
+  Req: stormveil_start AND rustykey
+  Maps: m10_00_00_00
+  MainMaps: m10_00_00_00
+- Name: stormveil_throne
+  Text: Stormveil Castle
+  Req: (stormveil AND godrick) OR liurnia
+  Maps: m10_00_00_00
+- Name: limgrave_tower
+  Text: Divine Tower of Limgrave
+  Req: stormveil
+  Maps: m34_10_00_00
+- Name: limgrave_tower_inner
+  Text: Divine Tower of Limgrave
+  Req: stormveil AND runegodrick
+  Maps: m34_10_00_00
+- Name: peninsula
+  Text: Weeping Peninsula
+  Req: limgrave
+  Maps: m60_40_33_00 m60_41_32_00 m60_41_33_00 m60_41_34_00 m60_42_32_00 m60_42_33_00 m60_42_34_00 m60_42_35_00 m60_43_30_00 m60_43_31_00 m60_43_32_00 m60_43_33_00 m60_43_34_00 m60_43_35_00 m60_44_31_00 m60_44_32_00 m60_44_33_00 m60_44_34_00 m60_45_32_00 m60_45_33_00 m60_45_34_00
+- Name: liurnia
+  Text: Liurnia
+  Req: stormhill
+  Maps: m60_33_42_00 m60_33_43_00 m60_33_44_00 m60_33_45_00 m60_33_46_00 m60_33_47_00 m60_34_42_00 m60_34_43_00 m60_34_44_00 m60_34_45_00 m60_34_46_00 m60_34_47_00 m60_34_48_00 m60_34_49_00 m60_34_50_00 m60_35_42_00 m60_35_43_00 m60_35_44_00 m60_35_45_00 m60_35_46_00 m60_35_47_00 m60_35_48_00 m60_35_49_00 m60_35_50_00 m60_36_41_00 m60_36_42_00 m60_36_43_00 m60_36_44_00 m60_36_45_00 m60_36_46_00 m60_36_47_00 m60_36_48_00 m60_36_49_00 m60_36_50_00 m60_37_41_00 m60_37_42_00 m60_37_43_00 m60_37_44_00 m60_37_45_00 m60_37_46_00 m60_37_47_00 m60_37_48_00 m60_37_50_00 m60_38_39_00 m60_38_40_00 m60_38_41_00 m60_38_42_00 m60_38_43_00 m60_38_44_00 m60_38_45_00 m60_38_46_00 m60_38_47_00 m60_38_48_00 m60_38_50_00 m60_39_39_00 m60_39_40_00 m60_39_41_00 m60_39_42_00 m60_39_43_00 m60_39_44_00 m60_39_45_00 m60_39_46_00 m60_39_48_00 m60_40_39_00 m60_40_40_00
+- Name: bellum
+  Text: Bellum Highway
+  Req: liurnia
+  Maps: m60_36_47_00 m60_36_48_00 m60_36_49_00 m60_37_48_00 m60_37_49_00 m60_37_50_00 m60_38_48_00 m60_38_49_00 m60_38_50_00 m60_39_48_00 m60_39_49_00
+- Name: academy
+  Text: Academy of Raya Lucaria
+  Req: liurnia AND academyglintstonekey
+  Maps: m14_00_00_00
+- Name: academy_courtyard
+  Text: Academy of Raya Lucaria
+  Req: academy AND redwolf
+  Maps: m14_00_00_00
+- Name: academy_library
+  Text: Academy of Raya Lucaria
+  Req: academy_courtyard AND rennala
+  Maps: m14_00_00_00
+- Name: academy_chest
+  Text: Academy of Raya Lucaria
+  Req: academy_library AND discardedpalacekey
+  Maps: m14_00_00_00
+- Name: siofra
+  Text: Siofra River
+  Req: limgrave
+  Maps: m12_07_00_00 m12_02_00_00 m12_08_00_00
+- Name: ainsel_start
+  Text: Ainsel River
+  Req: liurnia
+  Maps: m12_01_00_00
+- Name: liurnia_studyhall
+  Text: Divine Tower of Liurnia
+  Req: liurnia
+  Maps: m34_11_00_00
+- Name: caelid
+  Text: Caelid
+  Req: limgrave
+  Maps: m60_48_40_00 m60_46_38_00 m60_46_39_00 m60_46_40_00 m60_47_37_00 m60_47_38_00 m60_47_39_00 m60_47_40_00 m60_48_36_00 m60_48_37_00 m60_48_38_00 m60_48_39_00 m60_49_36_00 m60_49_37_00 m60_49_38_00 m60_49_39_00 m60_50_36_00 m60_50_37_00 m60_50_38_00 m60_50_39_00 m60_51_35_00 m60_51_36_00
+- Name: caelid_greatjar
+  Text: Caelid
+  Req: siofra
+  Maps: m60_47_41_00 m60_47_42_00 m60_48_40_00 m60_49_40_00
+- Name: dragonbarrow
+  Text: Dragonbarrow
+  Req: caelid
+  Maps: m60_48_40_00 m60_48_41_00 m60_49_39_00 m60_49_40_00 m60_49_41_00 m60_50_40_00 m60_50_41_00 m60_51_39_00 m60_51_40_00 m60_51_41_00 m60_51_42_00 m60_51_43_00 m60_52_41_00 m60_52_42_00 m60_52_43_00
+- Name: precipice
+  Text: Ruin-Strewn Precipice
+  Req: liurnia
+  Maps: m39_20_00_00
+- Name: altus
+  Text: Altus Plateau
+  # Req: (nodectus AND precipice AND makar) OR (nodectus AND volcano_inquisition) OR (bellum AND dectusmedallionleft AND dectusmedallionright) 
+  # Just do this to force before Altus for now. It's basically free to get here in many ways.
+  Req: bellum AND dectusmedallionleft AND dectusmedallionright
+  Maps: m60_36_51_00 m60_36_52_00 m60_37_51_00 m60_37_52_00 m60_38_50_00 m60_38_51_00 m60_38_52_00 m60_38_53_00 m60_38_54_00 m60_39_50_00 m60_39_51_00 m60_39_52_00 m60_39_53_00 m60_39_54_00 m60_40_50_00 m60_40_51_00 m60_40_52_00 m60_40_53_00 m60_40_54_00 m60_40_55_00 m60_41_50_00 m60_41_51_00 m60_41_52_00 m60_41_53_00 m60_41_54_00 m60_41_55_00 m60_42_52_00 m60_42_53_00 m60_42_54_00 m60_42_55_00 m60_43_53_00 m60_43_54_00
+- Name: outskirts
+  Text: Capital Outskirts
+  Req: altus
+  Maps: m60_42_50_00 m60_42_51_00 m60_42_52_00 m60_42_53_00 m60_43_50_00 m60_43_51_00 m60_43_52_00 m60_43_53_00 m60_44_52_00 m60_44_53_00 m60_45_51_00 m60_45_52_00 m60_45_52_10 m60_45_53_00
+- Name: leyndell
+  Text: Leyndell
+  # Just hardcode two runes here. In practice they can be exchanged with any others (TODO use a variable and substitute?)
+  Req: runegodrick AND runerennala AND ((outskirts AND draconic) OR (deeproot AND fiaschampions))
+  Until: ashen
+  Maps: m11_00_00_00 m60_45_52_00
+- Name: leyndell_divinebridge
+  Text: Leyndell Divine Bridge
+  # For the sake of easier logic, discount the conditional Leyndell access
+  Req: peninsula
+  Maps: m11_00_00_00
+- Name: leyndell_throne
+  Text: Leyndell
+  Req: leyndell AND godfrey
+  Until: ashen
+  Maps: m11_00_00_00
+- Name: leyndell_erdtree
+  Text: Leyndell
+  Req: leyndell_throne AND morgott
+  Until: ashen
+  Maps: m11_00_00_00
+- Name: leyndell_tower
+  Text: Divine Tower of East Altus
+  Req: leyndell AND leyndell_erdtree
+  Maps: m34_14_00_00
+- Name: leyndell_tower_inner
+  Text: Divine Tower of East Altus
+  Req: leyndell_tower AND felltwins AND (runemorgott OR runemohg)
+  Maps: m34_14_00_00
+- Name: sewer
+  Text: Subterranean Shunning-Grounds
+  Req: leyndell
+  Maps: m35_00_00_00
+- Name: sewer_flame
+  Text: Subterranean Shunning-Grounds
+  Req: sewer AND mohg AND morgott
+  Maps: m35_00_00_00
+- Name: sewer_catacombs
+  Text: Leyndell Catacombs
+  Req: sewer
+  Maps: m35_00_00_00
+  Tags: minidungeon
+- Name: deeproot_start
+  Text: Deeproot Depths
+  Req: sewer_flame
+  Maps: m12_03_00_00
+# Ranni quest 1
+- Name: liurnia_postmanor
+  Text: Liurnia
+  Req: liurnia AND loretta
+  Maps: m60_34_50_00 m60_34_51_00 m60_35_50_00 m60_35_51_00 m60_36_50_00 m60_37_50_00
+  MainMaps: m60_34_50_00 m60_36_50_00
+- Name: caelid_radahn
+  Text: Caelid
+  Req: caelid AND altus  # Technically also postmanor and sellen
+  Maps: m60_50_37_00 m60_51_37_00 m60_51_38_00 m60_52_37_00 m60_52_38_00 m60_52_39_00 m60_52_40_00 m60_53_38_00 m60_53_39_00
+- Name: caelid_postradahn
+  Text: Caelid
+  Req: caelid_radahn AND radahn
+- Name: caelid_tower
+  Text: Divine Tower of Caelid
+  Req: dragonbarrow
+  Maps: m34_13_00_00
+- Name: caelid_tower_inner
+  Text: Divine Tower of Caelid
+  Req: caelid_tower AND runeradahn  # Any intermediate areas?
+  Maps: m34_13_00_00
+- Name: siofrabank_nokron
+  Text: Nokron, Eternal City
+  Req: limgrave AND meteor
+  Maps: m12_07_00_00 m12_02_00_00
+  MainMaps: m12_07_00_00
+- Name: siofra_nokron
+  Text: Nokron, Eternal City
+  Req: siofrabank_nokron AND mimictear
+  Maps: m12_02_00_00 m12_09_00_00
+  MainMaps: m12_02_00_00
+- Name: deeproot
+  Text: Deeproot Depths
+  Req: deeproot_start OR (siofra_nokron AND gargoyles)
+  Maps: m12_03_00_00
+- Name: deeproot_dream
+  Text: Deeproot Depths
+  Req: deeproot AND cursemarkofdeath
+  Maps: m12_03_00_00
+- Name: liurnia_tower
+  Text: Divine Tower of Liurnia
+  Req: liurnia_studyhall AND carianinvertedstatue
+  Maps: m34_11_00_00
+  MainMaps: m34_11_00_00
+# Back to Altus
+- Name: gelmir
+  Text: Mt. Gelmir
+  Req: altus
+  Maps: m60_35_52_00 m60_35_53_00 m60_35_54_00 m60_36_52_00 m60_36_53_00 m60_36_54_00 m60_37_52_00 m60_37_53_00 m60_37_54_00 m60_37_55_00 m60_38_53_00 m60_38_54_00 m60_39_53_00 m60_39_54_00
+- Name: volcano
+  Text: Volcano Manor
+  Req: gelmir
+  Maps: m16_00_00_00
+- Name: volcano_drawingroom
+  Text: Volcano Manor
+  Req: volcano AND drawingroomkey
+  Maps: m16_00_00_00
+- Name: volcano_town
+  Text: Volcano Manor
+  # Add 'altus' condition so that Dectus medallion isn't placed here
+  Req: volcano_drawingroom OR (academy AND altus)
+  Maps: m16_00_00_00
+- Name: volcano_temple
+  Text: Volcano Manor
+  Req: volcano_town AND godskinnoble
+  Maps: m16_00_00_00
+- Name: outskirts_sealedtunnel
+  Text: Capital Outskirts - Sealed Tunnel
+  Req: altus
+  Maps: m34_12_00_00
+  Tags: minidungeon
+- Name: altus_tower_inner
+  Text: Divine Tower of West Altus
+  Req: outskirts_sealedtunnel AND onyxlord AND runerykard
+  Maps: m34_12_00_00
+# Finish Ranni quest
+- Name: ainsel
+  Text: Ainsel River
+  Req: deeproot  # Or Fingerslayer Blade, following the quest
+  Maps: m12_01_00_00
+  MainMaps: m12_01_00_00
+- Name: lakeofrot
+  Text: Lake of Rot
+  Req: ainsel
+  Maps: m12_01_00_00
+- Name: ainsel_boss
+  Text: Ainsel River
+  Req: lakeofrot
+  Maps: m12_04_00_00
+- Name: moonlight
+  # TODO: Have more precise areas later
+  Text: Liurnia
+  Req: ainsel_boss AND astel AND darkmoonring
+  Maps: m60_33_40_00 m60_33_41_00 m60_33_42_00 m60_34_41_00 m60_34_42_00 m60_35_41_00 m60_35_42_00 m60_36_41_00 m60_36_42_00
+  MainMaps: m60_33_40_00 m60_33_41_00 m60_33_42_00 m60_34_41_00 m60_34_42_00 m60_35_41_00 m60_35_42_00 m60_36_41_00 m60_36_42_00
+# Back to Altus
+- Name: mountaintops_start
+  Text: Forbidden Lands
+  Req: leyndell_tower
+  Maps: m60_47_51_00 m60_48_51_00 m60_49_52_00 m60_49_53_00
+- Name: mountaintops
+  Text: Mountaintops of the Giants
+  Req: mountaintops_start AND roldmedallion
+  Maps: m60_49_53_00 m60_50_53_00 m60_50_54_00 m60_50_56_00 m60_50_57_00 m60_51_55_00 m60_51_56_00 m60_51_57_00 m60_51_58_00 m60_52_55_00 m60_52_56_00 m60_52_57_00 m60_52_58_00 m60_53_55_00 m60_53_56_00 m60_53_57_00 m60_53_58_00 m60_54_55_00 m60_54_56_00 m60_54_57_00
+  MainMaps: m60_49_53_00
+- Name: mountaintops_sol
+  Text: Mountaintops of the Giants
+  Req: mountaintops AND niall
+  Maps: m60_51_58_00
+  MainMaps: m60_51_58_00
+- Name: flamepeak
+  Text: Flame Peak
+  Req: mountaintops
+  Maps: m60_50_53_00 m60_50_54_00 m60_51_52_00 m60_51_53_00 m60_51_54_00 m60_52_52_00 m60_52_53_00 m60_52_54_00 m60_53_52_00 m60_53_53_00 m60_53_54_00 m60_54_53_00
+- Name: farumazula_start
+  Text: Farum Azula
+  # Either with Melina or Frenzied Flame (canceling the flame requires farumazula)
+  Req: flamepeak AND firegiant
+  Maps: m13_00_00_00
+- Name: farumazula
+  Text: Farum Azula
+  Req: farumazula_start AND godskinduo
+  Maps: m13_00_00_00
+# Warps
+- Name: chapel
+  Text: Chapel of Anticipation
+  Req: liurnia AND (imbuedswordkey1 AND imbuedswordkey2 AND imbuedswordkey3)
+  Maps: m10_01_00_00
+  MainMaps: m10_01_00_00
+- Name: farumazula_limited  # Pearldrake Talisman
+  Text: Farum Azula via Belfries
+  Req: liurnia AND (imbuedswordkey1 AND imbuedswordkey2 AND imbuedswordkey3)
+  Maps: m13_00_00_00
+- Name: siofra_limited  # Mottled Necklace
+  Text: Siofra River via Belfries
+  Req: liurnia AND (imbuedswordkey1 AND imbuedswordkey2 AND imbuedswordkey3)
+  Maps: m12_02_00_00
+# Optional areas
+- Name: snowfield_hiddenpath
+  Maps: m30_20_00_00
+  Text: Hidden Path to the Haligtree
+  Req: mountaintops_start AND haligtreesecretmedallionleft AND haligtreesecretmedallionright
+  Tags: minidungeon
+- Name: snowfield
+  Text: Consecrated Snowfield
+  Req: snowfield_hiddenpath
+  # m60_50_56_00 m60_50_57_00 are also mountaintops
+  Maps: m60_46_55_00 m60_46_57_00 m60_47_55_00 m60_47_56_00 m60_47_57_00 m60_47_58_00 m60_48_54_00 m60_48_55_00 m60_48_56_00 m60_48_57_00 m60_48_58_00 m60_49_54_00 m60_49_55_00 m60_49_56_00 m60_49_57_00 m60_50_55_00 m60_50_56_00 m60_50_57_00
+- Name: haligtree
+  Text: Haligtree
+  Req: snowfield
+  Maps: m15_00_00_00
+- Name: haligtree_elphael
+  Text: Haligtree
+  Req: haligtree AND loretta2
+  Maps: m15_00_00_00
+- Name: isolated_tower_inner
+  Text: Isolated Divine Tower
+  # The teleporter is activated by activating the elevator, or by default in Ashen Capital
+  Req: leyndell_divinebridge AND leyndell AND runemalenia
+  Maps: m34_15_00_00
+- Name: mohgwyn
+  Text: Mohgwyn
+  Req: snowfield OR (altus AND purebloodknightsmedal)  # Normally unreliable to get to
+  Maps: m12_05_00_00
+# End
+- Name: leyndell2
+  Text: Ashen Leyndell
+  Req: farumazula AND ashen
+  Maps: m11_05_00_00
+- Name: leyndell2_throne
+  Text: Ashen Leyndell
+  Req: leyndell2 AND gideon
+  Maps: m11_05_00_00
+- Name: erdtree
+  Text: Stone Platform
+  # runereq is used to actually enforce this, but put these in good positions regardless of requirement or not
+  Req: leyndell2_throne AND godfrey2 AND runegodrick AND runerennala AND runeradahn AND runemorgott AND runerykard AND runemohg AND runemalenia
+  Maps: m19_00_00_00
+
+# All of the various catacombs
+- Name: peninsula_tombswardcatacombs
+  Maps: m30_00_00_00
+  Text: Weeping Peninsula - Tombsward Catacombs
+  Req: peninsula
+  Tags: minidungeon
+- Name: peninsula_impalerscatacombs
+  Maps: m30_01_00_00
+  Text: Weeping Peninsula - Impaler's Catacombs
+  Req: peninsula
+  Tags: minidungeon
+- Name: limgrave_stormfootcatacombs
+  Maps: m30_02_00_00
+  Text: Limgrave - Stormfoot Catacombs
+  Req: limgrave
+  Tags: minidungeon
+- Name: liurnia_roadsendcatacombs
+  Maps: m30_03_00_00
+  Text: Liurnia - Road's End Catacombs
+  Req: liurnia
+  Tags: minidungeon
+- Name: limgrave_murkwatercatacombs
+  Maps: m30_04_00_00
+  Text: Limgrave - Murkwater Catacombs
+  Req: limgrave
+  Tags: minidungeon
+- Name: liurnia_blackknifecatacombs
+  Maps: m30_05_00_00
+  Text: Liurnia - Black Knife Catacombs
+  Req: liurnia
+  Tags: minidungeon
+- Name: liurnia_cliffbottomcatacombs
+  Maps: m30_06_00_00
+  Text: Liurnia - Cliffbottom Catacombs
+  Req: liurnia
+  Tags: minidungeon
+- Name: gelmir_wyndhamcatacombs
+  Maps: m30_07_00_00
+  Text: Mt. Gelmir - Wyndham Catacombs
+  Req: gelmir
+  Tags: minidungeon
+  # TODO: Connects to m60_37_52_00, m60_38_52_00
+- Name: altus_grave
+  Maps: m30_08_00_00
+  Text: Altus Plateau - Sainted Hero's Grave
+  Req: altus
+  Tags: minidungeon
+- Name: gelmir_grave
+  Maps: m30_09_00_00
+  Text: Mt. Gelmir - Gelmir Hero's Grave
+  Req: gelmir
+  Tags: minidungeon
+- Name: outskirts_grave
+  Maps: m30_10_00_00
+  Text: Capital Outskirts - Auriza Hero's Grave
+  Req: outskirts
+  Tags: minidungeon
+- Name: stormhill_catacombs
+  Maps: m30_11_00_00
+  Text: Stormhill - Deathtouched Catacombs
+  Req: stormhill
+  Tags: minidungeon
+- Name: altus_catacombs
+  Maps: m30_12_00_00
+  Text: Altus Plateau - Unsightly Catacombs
+  Req: altus
+  Tags: minidungeon
+- Name: outskirts_sidetomb
+  Maps: m30_13_00_00
+  Text: Capital Outskirts - Auriza Side Tomb
+  Req: outskirts
+  Tags: minidungeon
+- Name: caelid_erdtreecatacombs
+  Maps: m30_14_00_00
+  Text: Caelid - Minor Erdtree Catacombs
+  Req: caelid
+  Tags: minidungeon
+- Name: caelid_catacombs
+  Maps: m30_15_00_00
+  Text: Caelid Catacombs
+  Req: caelid
+  Tags: minidungeon
+- Name: caelid_wardead
+  Maps: m30_16_00_00
+  Text: Caelid - War-Dead Catacombs
+  Req: caelid_postradahn
+  Tags: minidungeon
+- Name: flamepeak_grave
+  Maps: m30_17_00_00
+  Text: Flame Peak - Giant-Conquering Hero's Grave
+  Req: flamepeak
+  Tags: minidungeon
+- Name: mountaintops_catacombs
+  Maps: m30_18_00_00
+  # Technically not accessible with the rest of Flame Peak
+  Text: Flame Peak - Giants' Mountaintop Catacombs
+  Req: mountaintops
+  Tags: minidungeon
+- Name: snowfield_catacombs
+  Maps: m30_19_00_00
+  Text: Consecrated Snowfield Catacombs
+  Req: snowfield
+  Tags: minidungeon
+# m30_20_00_00 is Hidden Path to the Haligtree, mentioned above
+- Name: limgrave_murkwatercave
+  Maps: m31_00_00_00
+  Text: Limgrave - Murkwater Cave
+  Req: limgrave
+  Tags: minidungeon
+- Name: peninsula_earthborecave
+  Maps: m31_01_00_00
+  Text: Weeping Peninsula - Earthbore Cave
+  Req: peninsula
+  Tags: minidungeon
+- Name: peninsula_tombswardcave
+  Maps: m31_02_00_00
+  Text: Weeping Peninsula - Tombsward Cave
+  Req: peninsula
+  Tags: minidungeon
+- Name: limgrave_grovesidecave
+  Maps: m31_03_00_00
+  Text: Limgrave - Groveside Cave
+  Req: limgrave
+  Tags: minidungeon
+- Name: liurnia_stillwatercave
+  Maps: m31_04_00_00
+  Text: Liurnia - Stillwater Cave
+  Req: liurnia
+  Tags: minidungeon
+- Name: liurnia_lakesidecave
+  Maps: m31_05_00_00
+  Text: Liurnia - Lakeside Crystal Cave
+  Req: liurnia
+  Tags: minidungeon
+- Name: liurnia_academycave
+  Maps: m31_06_00_00
+  Text: Liurnia - Academy Crystal Cave
+  Req: liurnia
+  Tags: minidungeon
+- Name: gelmir_seethewatercave
+  Maps: m31_07_00_00
+  Text: Mt. Gelmir - Seethewater Cave
+  Req: gelmir
+  Tags: minidungeon
+- Name: gelmir_volcanocave
+  Maps: m31_09_00_00
+  Text: Mt. Gelmir - Volcano Cave
+  Req: gelmir
+  Tags: minidungeon
+- Name: dragonbarrow_cave
+  Maps: m31_10_00_00
+  Text: Dragonbarrow Cave
+  Req: dragonbarrow
+  Tags: minidungeon
+- Name: dragonbarrow_selliahideaway
+  Maps: m31_11_00_00
+  Text: Dragonbarrow - Sellia Hideaway
+  Req: dragonbarrow
+  Tags: minidungeon
+- Name: snowfield_cave
+  Maps: m31_12_00_00
+  Text: Consecrated Snowfield - Cave of the Forlorn
+  Req: snowfield
+  Tags: minidungeon
+# m31_15_00_00 is Coastal Cave, has a name above
+- Name: limgrave_highroadcave
+  Maps: m31_17_00_00
+  Text: Limgrave - Highroad Cave
+  Req: limgrave
+  Tags: minidungeon
+- Name: altus_grotto
+  Maps: m31_18_00_00
+  Text: Altus Plateau - Perfumer's Grotto
+  Req: altus
+  Tags: minidungeon
+- Name: altus_sagescave
+  Maps: m31_19_00_00
+  Text: Altus Plateau - Sage's Cave
+  Req: altus
+  Tags: minidungeon
+- Name: caelid_abandonedcave
+  Maps: m31_20_00_00
+  Text: Caelid - Abandoned Cave
+  Req: caelid
+  Tags: minidungeon
+- Name: caelid_gaolcave
+  Maps: m31_21_00_00
+  Text: Caelid - Gaol Cave
+  Req: caelid
+  Tags: minidungeon
+- Name: mountaintops_cave
+  Maps: m31_22_00_00
+  Text: Mountaintops - Spiritcaller Cave
+  Req: mountaintops
+  Tags: minidungeon
+- Name: peninsula_tunnel
+  Maps: m32_00_00_00
+  Text: Weeping Peninsula - Morne Tunnel
+  Req: peninsula
+  Tags: minidungeon
+- Name: limgrave_tunnels
+  Maps: m32_01_00_00
+  Text: Limgrave Tunnels
+  Req: limgrave
+  Tags: minidungeon
+- Name: liurnia_tunnel
+  Maps: m32_02_00_00
+  Text: Liurnia - Raya Lucaria Crystal Tunnel
+  Req: liurnia
+  Tags: minidungeon
+- Name: altus_oldtunnel
+  Maps: m32_04_00_00
+  Text: Old Altus Tunnel
+  Req: altus
+  Tags: minidungeon
+- Name: altus_tunnel
+  Maps: m32_05_00_00
+  Text: Altus Tunnel
+  Req: altus
+  Tags: minidungeon
+- Name: caelid_gaeltunnel
+  Maps: m32_07_00_00
+  Text: Caelid - Gael Tunnel
+  Req: caelid
+  Tags: minidungeon
+- Name: caelid_selliatunnel
+  Maps: m32_08_00_00
+  Text: Caelid - Sellia Crystal Tunnel
+  Req: caelid
+  Tags: minidungeon
+- Name: snowfield_tunnel
+  Maps: m32_11_00_00
+  Text: Consecrated Snowfield - Yelough Anix Tunnel
+  Req: snowfield
+  Tags: minidungeon
+
+# Non-key item restrictions. Can add switch flags at some point.
+PlacementRestrictions:
+- Name: Rusty Key
+  Switch: earlylegacy
+  KeyAreas: limgrave stormveil_start limgrave_coastalcave limgrave_dragonchurch limgrave_stormfootcatacombs limgrave_murkwatercatacombs limgrave_murkwatercave limgrave_grovesidecave limgrave_highroadcave limgrave_tunnels
+- Item:
+    Name: Academy Glintstone Key
+    ID: 3:8109
+  Switch: earlylegacy
+  KeyAreas: liurnia liurnia_studyhall liurnia_postmanor liurnia_roadsendcatacombs liurnia_blackknifecatacombs liurnia_cliffbottomcatacombs liurnia_stillwatercave liurnia_lakesidecave liurnia_academycave liurnia_tunnel
+- Name: Golden Seed
+  Unique:
+  # 7 in Limgrave
+  - Amount: 4
+    UpToAny: limgrave stormveil_start limgrave_coastalcave limgrave_dragonchurch limgrave_stormfootcatacombs limgrave_murkwatercatacombs limgrave_murkwatercave limgrave_grovesidecave limgrave_highroadcave limgrave_tunnels
+  # 2 in Caelid, 5 in Liurnia, 1 in Peninsula, 1 in Siofra. 16 total
+  - Amount: 10
+    Before: altus
+    UseGroups: true
+  # 8 in Altus. 24 total
+  - Amount: 14
+    Before: leyndell
+    UseGroups: true
+  # 1 in Leyndell, 3 in Mountaintops, 1 in Mohgwyn, 1 in Azula. 30 total
+  - After: graveyard
+- Name: Sacred Tear
+  Unique:
+  # 1 in Limgrave, 3 in Peninsula, 3 in Liurnia, 1 in Caelid
+  - Amount: 6
+    Before: altus
+    UseGroups: true
+  # 2 in Altus, 2 in Mountaintops
+  - Amount: 10
+    Before: farumazula_start snowfield
+    UseGroups: true
+- Name: Talisman Pouch
+  # Margit, 1 Great Rune, Godfrey
+  Unique:
+  - Amount: 1
+    UpToAny: limgrave stormveil_start limgrave_coastalcave limgrave_dragonchurch limgrave_stormfootcatacombs limgrave_murkwatercatacombs limgrave_murkwatercave limgrave_grovesidecave limgrave_highroadcave limgrave_tunnels
+  - Amount: 2
+    # or Before: altus/volcano_abduction/precipice
+    UpTo: limgrave
+    UseGroups: true
+  - Amount: 3
+    UpTo: leyndell
+    UseGroups: true
+  - After: graveyard
+- Name: Tailoring Tools
+  Unique:
+  - UpToAny: limgrave stormveil_start limgrave_coastalcave limgrave_dragonchurch limgrave_stormfootcatacombs limgrave_murkwatercatacombs limgrave_murkwatercave limgrave_grovesidecave limgrave_highroadcave limgrave_tunnels
+- Name: Golden Tailoring Tools
+  Unique:
+  - UpTo: limgrave
+    UseGroups: true
+- Name: Iron Whetblade
+  Unique:
+  - UpTo: limgrave
+    UseGroups: true
+- Name: Red-Hot Whetblade
+  Unique:
+  - Before: leyndell
+    UseGroups: true
+- Name: Sanctified Whetblade
+  Unique:
+  - UpTo: leyndell
+    UseGroups: true
+- Name: Glintstone Whetblade
+  Unique:
+  - Before: leyndell
+    UseGroups: true
+- Name: Black Whetblade
+  Unique:
+  - Before: leyndell
+    UseGroups: true
+# 20620 [event 1200 in common, event enemy c3350_9000 (Crystalian - id 32020800 - group 32025100) in m32_02_00_00 (Raya Lucaria Crystal Tunnel)] Smithing-Stone Miner's Bell Bearing [1] - flag 520620
+# 34120900 [asset AEG099_630_9000 (Chest) in m34_12_00_00 (Divine Tower of West Altus)] Smithing-Stone Miner's Bell Bearing [2] - flag 34127900
+# 1049530900 [asset AEG099_630_9000 (Chest - id 1049531900) in m60_49_53_00 (Mountaintops of the Giants - West Zamor Ruins, Grand Lift of Rold)] Smithing-Stone Miner's Bell Bearing [3] - flag 1049537900
+# 10140 [event 1100 in common, event enemy c3560_9001 (Godskin Apostle - id 13000850 - group 13005850,13005100) in m13_00_00_00 (Crumbling Farum Azula)] Smithing-Stone Miner's Bell Bearing [4] - flag 510140
+- Name: Smithing-Stone Miner's Bell Bearing [1]
+  Unique:
+  - UpTo: liurnia
+    After: liurnia
+    UseGroups: true
+- Name: Smithing-Stone Miner's Bell Bearing [2]
+  Unique:
+  - UpTo: altus
+    After: altus
+    Before: gelmir
+    UseGroups: true
+- Name: Smithing-Stone Miner's Bell Bearing [3]
+  Unique:
+  - UpTo: mountaintops
+    After: mountaintops
+    Before: farumazula_start
+    UseGroups: true
+- Name: Smithing-Stone Miner's Bell Bearing [4]
+  Unique:
+  - UpTo: farumazula
+    After: farumazula_start
+    UseGroups: true
+# 20670 [event 1200 in common, event enemy c4680_9000 (Fallingstar Beast - id 32080800 - group 32085800,32085100) in m32_08_00_00 (Sellia Crystal Tunnel)] Somberstone Miner's Bell Bearing [1] - flag 520670
+# 20650 [event 1200 in common, event enemy c3350_9000 (Crystalian - id 32050800 - group 32055800,32055100) in m32_05_00_00 (Altus Tunnel)] Somberstone Miner's Bell Bearing [2] - flag 520650
+# 1054550310 [asset AEG099_620_9001 (Robed Corpse) in m60_54_55_00 (Mountaintops of the Giants - First Church of Marika)] Somberstone Miner's Bell Bearing [3] - flag 1054557310
+# 13000150 [asset AEG099_600_9000 (Smouldering Corpse) in m13_00_00_00 (Crumbling Farum Azula)] Somberstone Miner's Bell Bearing [4] - flag 13007150
+# 13000790 [asset AEG099_610_9079 (Corpse) in m13_00_00_00 (Crumbling Farum Azula)] Somberstone Miner's Bell Bearing [5] - flag 13007790
+- Name: Somberstone Miner's Bell Bearing [1]
+  Unique:
+  - UpTo: caelid
+    After: caelid
+    UseGroups: true
+- Name: Somberstone Miner's Bell Bearing [2]
+  Unique:
+  - UpTo: altus
+    After: altus
+    Before: gelmir
+    UseGroups: true
+- Name: Somberstone Miner's Bell Bearing [3]
+  Unique:
+  - UpTo: mountaintops
+    After: mountaintops
+    Before: farumazula_start
+    UseGroups: true
+- Name: Somberstone Miner's Bell Bearing [4]
+  Unique:
+  - UpTo: farumazula
+    After: farumazula_start
+    UseGroups: true
+- Name: Somberstone Miner's Bell Bearing [5]
+  Unique:
+  - UpTo: farumazula
+    After: farumazula_start
+    UseGroups: true
+# 20120 [event 1200 in common, event enemy c4260_9000 (Erdtree Burial Watchdog - id 30070800 - group 30075100) in m30_07_00_00 (Wyndham Catacombs)] Glovewort Picker's Bell Bearing [1] - flag 520120
+# 20180 [event 1200 in common, event enemy c4640_9000 (Ulcerated Tree Spirit - id 30180800 - group 30185800,30185100) in m30_18_00_00 (Giants' Mountaintop Catacombs)] Glovewort Picker's Bell Bearing [2] - flag 520180
+# 13000910 [asset AEG099_990_9006 (Invisible) in m13_00_00_00 (Crumbling Farum Azula)] Glovewort Picker's Bell Bearing [3] - flag 13007910
+- Name: Glovewort Picker's Bell Bearing [1]
+  Unique:
+  - UpTo: gelmir
+    After: gelmir
+    UseGroups: true
+- Name: Glovewort Picker's Bell Bearing [2]
+  Unique:
+  - UpTo: mountaintops
+    After: mountaintops
+    Before: farumazula_start
+    UseGroups: true
+- Name: Glovewort Picker's Bell Bearing [3]
+  Unique:
+  - UpTo: farumazula
+    After: farumazula_start
+    UseGroups: true
+# 12070400 [asset AEG099_620_9040 (Robed Corpse) in m12_07_00_00 (Siofra River Bank)] Ghost-Glovewort Picker's Bell Bearing [1] - flag 12077400
+# 12010980 [asset AEG099_631_9005 (Lidded River Chest - id 12011678) in m12_01_00_00 (Ainsel River)] Ghost-Glovewort Picker's Bell Bearing [2] - flag 12017980
+# 15000910 [asset AEG099_990_9001 (Invisible) in m15_00_00_00 (Miquella's Haligtree)] Ghost-Glovewort Picker's Bell Bearing [3] - flag 15007910
+- Name: Ghost-Glovewort Picker's Bell Bearing [1]
+  Unique:
+  - UpTo: siofra_nokron
+    After: siofrabank_nokron
+    UseGroups: true
+- Name: Ghost-Glovewort Picker's Bell Bearing [2]
+  Unique:
+  - UpTo: ainsel
+    After: ainsel
+    UseGroups: true
+- Name: Ghost-Glovewort Picker's Bell Bearing [3]
+  Unique:
+  - UpTo: haligtree_elphael
+    After: haligtree
+    UseGroups: true
+- Name: Golden Rune [10]
+  Unique:
+  - After: ainsel leyndell mohgwyn
+- Name: Golden Rune [11]
+  Unique:
+  - After: ainsel leyndell mohgwyn
+- Name: Golden Rune [12]
+  Unique:
+  - After: ainsel leyndell mohgwyn
+- Name: Golden Rune [13]
+  Unique:
+  - After: ainsel leyndell mohgwyn
+- Name: Numen's Rune
+  Unique:
+  - After: mountaintops mohgwyn
+- Name: Hero's Rune [1]
+  Unique:
+  - After: leyndell mohgwyn
+- Name: Hero's Rune [2]
+  Unique:
+  - After: leyndell mohgwyn
+- Name: Hero's Rune [3]
+  Unique:
+  - After: leyndell mohgwyn
+- Name: Hero's Rune [4]
+  Unique:
+  - After: snowfield leyndell2 mohgwyn
+- Name: Hero's Rune [5]
+  Unique:
+  - After: snowfield leyndell2 mohgwyn
+- Name: Lord's Rune
+  Unique:
+  - After: leyndell mohgwyn
+
+# Also add time-sensitive quest items here
+
+SpecialModes:
+- NorandomSwitch: norandom
+  RaceSwitch: always  # racemode
+  Includes: keyitems
+- NorandomSwitch: norandom
+  Includes: upgrades
+  RaceSwitch: always  # racemode
+- RaceSwitch: racemode_health
+  NorandomSwitch: norandom_health
+  Names:
+  - Golden Seed
+  - Sacred Tear
+- RaceSwitch: racemode_upgrades
+  NorandomSwitch: norandom_upgrades
+  Includes: upgradeashes
+# Maybe?
+- NorandomSwitch: norandom_runes
+  Items:
+  - ID: 3:8148
+    EndID: 3:8153
+  - ID: 3:10080
+# This makes sure the ash items are available from key item locations when their contents are eligible key item locations.
+# Said contents are marked with RaceModeTags. The ash locations are not themselves marked, unlike in DS3.
+- RaceSwitch: raceloc_shops
+  Includes: ashes
+
+ItemPriority:
+- ExcludeTags: missable norandom nokey end
+  Includes: keyitems
+- ExcludeTags: missable end
+  Includes: upgrades
+  Names:
+  - Golden Seed
+  - Sacred Tear
+  - Mimic Tear Ashes
+  - Radagon's Soreseal  # +5
+  - Erdtree's Favor +2
+- ExcludeTags: missable nokey shop
+  Includes: ashes upgradeashes
+- ExcludeTags: exclusive norandom crow missable
+  Includes: questitems
+  Names:
+  - Shabriri Grape
+  - Seedbed Curse
+  - Deathroot
+- ExcludeTags: exclusive shop
+  Includes: bosssouls
+- Names:
+  - Buckler
+  - Radagon's Scarseal  # +3
+  - Marika's Scarseal
+  - Marika's Soreseal
+  - Ritual Sword Talisman
+  - Ritual Shield Talisman
+  - Erdtree's Favor
+  - Erdtree's Favor +1
+  - Gold Scarab
+  - Silver Scarab
+  # Good for specific builds
+  - Graven-Mass Talisman
+  - Flock's Canvas Talisman
+  - Shard of Alexander
+  - Rotten Winged Sword Insignia
+  - Radagon Icon
+  Items:
+  # Cracked tears
+  - ID: 3:11000
+    EndID: 3:11031
+- NoPriority: true
+  ExcludeTags: missable
+  Includes: maps  # Ideally maps also excluded from boss/altboss/quest if they can be automatically granted
+  Items:
+  # Cookbooks to perfume bottles
+  - ID: 3:9300
+    EndID: 3:9510
+  # Cracked tears
+  - ID: 3:11000
+    EndID: 3:11031
+- NoPriority: true
+  ExcludeTags: boss altboss shop
+  Items:
+  # Golden Runes etc
+  - ID: 3:2900
+    EndID: 3:2919

@@ -32,6 +32,7 @@ namespace RandomizerCommon
 
             Dictionary<string, bool> config = ann.GetConfig(options.GetLogicOptions());
             Dictionary<string, Expr> configExprs = config.ToDictionary(e => e.Key, e => e.Value ? Expr.TRUE : Expr.FALSE);
+            if (explain) Console.WriteLine($"Using config {string.Join(", ", config)}");
 
             Dictionary<LocationScope, (UniqueCategory, int)> counts = ann.GetUniqueCounts();
             Dictionary<string, Dictionary<UniqueCategory, int>> areaCounts = ann.AllAreas.ToDictionary(e => e.Key, e =>
@@ -41,6 +42,10 @@ namespace RandomizerCommon
                 {
                     (UniqueCategory cat, int count) = counts[scope];
                     dict[cat] += count;
+                }
+                if (false && ann.Slots.Count == 0 && !e.Key.EndsWith("tower_inner") && e.Key != "erdtree" && !e.Key.Contains("0"))
+                {
+                    dict[UniqueCategory.KEY_LOT] = 5;
                 }
                 return dict;
             });
@@ -87,7 +92,7 @@ namespace RandomizerCommon
                 if (dependentAreas.Count == 1 && !other)
                 {
                     equivalentGraph[name] = dependentAreas.First();
-                    if (explain) Console.WriteLine($"Collapsed events for key item generation: {name} -> {frees.First()}");
+                    if (explain) Console.WriteLine($"Collapsed events for key item generation: {name} -> {frees.First()} (all: {string.Join(" ", frees)})");
                 }
                 // This is used for equivalence graph things. Should probably use this information in weight groups instead of actually combining the areas
                 AddMulti(combinedAreas, name, name);
@@ -108,6 +113,7 @@ namespace RandomizerCommon
                     unusedAreas.Add(ev.Name);
                     continue;
                 }
+                // Console.WriteLine($"-- event {name}: {ev.ReqExpr} -> {req}");
                 processDependencies(ev, req.FreeVars(), true);
                 // Events are not dynamically placed anywhere, nor is anything placed inside of them, so they are always added to the graph upfront
                 nodes[name] = new Node
@@ -128,8 +134,7 @@ namespace RandomizerCommon
                     unusedAreas.Add(area.Name);
                     continue;
                 }
-                // Proper aliases are already represented using the BaseArea slot property, skip those
-                if (ann.AreaAliases[name] != name) continue;
+                // Console.WriteLine($"-- area {name}: {area.ReqExpr} -> {req}");
                 processDependencies(area, req.FreeVars(), false);
                 // This is where we used to skip combined areas in DS3, but now weight bases are added automatically
                 nodes[name] = new Node
@@ -166,7 +171,6 @@ namespace RandomizerCommon
             {
                 getBaseName(equivalence.Key);
             }
-            // TODO: Remove combinedAreas
             foreach (KeyValuePair<string, List<string>> entry in combinedAreas)
             {
                 foreach (string alias in entry.Value)
@@ -191,22 +195,25 @@ namespace RandomizerCommon
                 foreach (KeyValuePair<string, HashSet<string>> entry in combinedWeights)
                 {
                     if (explained.Contains(entry.Key)) continue;
-                    Console.WriteLine($"Combined group: [{string.Join(",", entry.Value)}]");
+                    Console.WriteLine($"Combined weights: [{string.Join(",", entry.Value)}]");
                     explained.UnionWith(entry.Value);
                 }
             }
 
-            // TODO: Make the dictionaries less of a slog to produce
+            // TODO: I don't think we need combinedAreas anymore? Only combinedWeights
             combinedAreas = combinedWeights.ToDictionary(e => e.Key, e => e.Value.ToList());
 
             // Last step - calculate rough measures of area difficulty, in terms of minimal number of items required for the area
+            // In Elden Ring, this step encounters recursion with leyndell -> sewer -> sewer_flame -> deeproot -> leyndell
+            HashSet<string> counting = new HashSet<string>();
             int getCumulativeCounts(string name)
             {
                 Node node = nodes[name];
-                if (node.CumKeyCount != -1)
+                if (node.CumKeyCount != -1 || counting.Contains(name))
                 {
                     return node.KeyCount + node.CumKeyCount;
                 }
+                counting.Add(name);
                 List<string> deps = node.Req.FreeVars().Where(free => areas.Contains(free) || ann.Events.ContainsKey(free)).ToList();
                 int count = deps.Select(free => getCumulativeCounts(free)).DefaultIfEmpty().Max();
                 node.CumKeyCount = count;
@@ -222,14 +229,28 @@ namespace RandomizerCommon
 
         public class Assignment
         {
-            public readonly List<ItemKey> Priority = new List<ItemKey>();
-            public readonly HashSet<string> RequiredEvents = new HashSet<string>();
-            public readonly Dictionary<ItemKey, HashSet<string>> Assign = new Dictionary<ItemKey, HashSet<string>>();
-            public readonly Dictionary<ItemKey, List<LocationScope>> RestrictedItems = new Dictionary<ItemKey, List<LocationScope>>();
-            public readonly Dictionary<LocationScope, string> EffectiveLocation = new Dictionary<LocationScope, string>();
-            public readonly Dictionary<string, double> LocationLateness = new Dictionary<string, double>();
-            public readonly Dictionary<string, HashSet<string>> IncludedAreas = new Dictionary<string, HashSet<string>>();
-            public readonly HashSet<ItemKey> NotRequiredKeyItems = new HashSet<ItemKey>();
+            // All key items, in decreasing order of priority
+            public List<ItemKey> Priority = new List<ItemKey>();
+            // Required events to access other areas, to reduce their priority at higher biases
+            public HashSet<string> RequiredEvents = new HashSet<string>();
+            // For a given item key, which areas it can appear in
+            public Dictionary<ItemKey, HashSet<string>> Assign = new Dictionary<ItemKey, HashSet<string>>();
+            // Specific list of locations for quest items
+            public Dictionary<ItemKey, List<LocationScope>> RestrictedItems = new Dictionary<ItemKey, List<LocationScope>>();
+            // When an item effectively becomes available, especially if it has quest dependencies
+            public Dictionary<LocationScope, string> EffectiveLocation = new Dictionary<LocationScope, string>();
+            // The lateness of areas from 0 to 1, based on how many items are accessible by that point
+            public Dictionary<string, double> LocationLateness = new Dictionary<string, double>();
+            // All areas which are required to access the given area.
+            public Dictionary<string, HashSet<string>> IncludedAreas = new Dictionary<string, HashSet<string>>();
+            // Same, but for items.
+            public Dictionary<string, HashSet<string>> IncludedItems = new Dictionary<string, HashSet<string>>();
+            // Areas which can be considered equivalent to each other for heuristic placement purposes (used here for weight management)
+            // These are not all mutually accessible, especially if WeightBase is used, but they should be most of the time.
+            public Dictionary<string, HashSet<string>> CombinedWeights = new Dictionary<string, HashSet<string>>();
+            // Key items which are not required for the ending. Used for in-game hints.
+            // TODO: Can replace with IncludedItems
+            public HashSet<ItemKey> NotRequiredKeyItems = new HashSet<ItemKey>();
         }
 
         public Assignment AssignItems(Random random, RandomizerOptions options, Preset preset)
@@ -239,7 +260,7 @@ namespace RandomizerCommon
             // Right now, assign key items in a random order, with endgame items last.
             // We will get more devious runs from assigning later items later, may be worth looking into, especially for game with clear phases like Sekiro has.
             Shuffle(random, itemOrder);
-            bool isEndgame(string i) => i.StartsWith("cinder") || i == "secretpassagekey";
+            bool isEndgame(string i) => i.StartsWith("cinder") || i == "secretpassagekey" || i.StartsWith("rune");
             itemOrder = itemOrder.OrderBy(i => isEndgame(i) ? 1 : 0).ToList();
 
             // In race mode, always put shinobiprosthetic and younglordsbellcharm first, since there is only one ashinaoutskirts_template spot for key item placement logic
@@ -312,9 +333,17 @@ namespace RandomizerCommon
                     }
                     else
                     {
-                        ItemLocation loc = data.Data[itemKey].Locations.Values.First();
-                        SlotAnnotation sn = ann.Slot(loc.LocScope);
-                        forcemap[item] = sn.Area;
+                        // Check multiple item locations, since some norandom unused slots may be configured
+                        string keyArea = null;
+                        foreach (ItemLocation loc in data.Data[itemKey].Locations.Values)
+                        {
+                            if (ann.Slots.TryGetValue(loc.LocScope, out SlotAnnotation sn) && ann.Areas.ContainsKey(sn.Area))
+                            {
+                                keyArea = sn.Area;
+                            }
+                        }
+                        if (keyArea == null) throw new Exception($"Internal error not randomizing {item}: unknown vanilla location");
+                        forcemap[item] = keyArea;
                     }
                 }
             }
@@ -328,10 +357,13 @@ namespace RandomizerCommon
 
             // Assign key items
             bool debugChoices = false;
+            // public readonly Dictionary<ItemKey, PlacementRestrictionAnnotation> ItemRestrict = new Dictionary<ItemKey, PlacementRestrictionAnnotation>();
             float scaling = options.GetNum("keyitemchainweight");
             Dictionary<string, Expr> reqs = CollapseReqs();
             foreach (string item in itemOrder)
             {
+                ItemKey itemKey = ann.Items[item];
+
                 List<string> allowedAreas = areas.Where(a => !reqs[a].Needs(item)).ToList();
                 if (debugChoices) Console.WriteLine($"\n> {item} not allowed in areas: {string.Join(",", areas.Where(a => !allowedAreas.Contains(a)))}");
                 bool redundant = allowedAreas.Count == areas.Count;
@@ -339,11 +371,18 @@ namespace RandomizerCommon
                 allowedAreas.RemoveAll(a => ann.Areas[a].Until != null && (neededForEvent == null || !neededForEvent.Contains(ann.Areas[a].Until)));
 
                 Dictionary<string, float> specialScaling = new Dictionary<string, float>();
+                // A bit hacky, but prevent Small Lothric Banner from being so prevalent in Firelink Shrine
                 if (item == "smalllothricbanner")
                 {
                     specialScaling = allowedAreas.Where(area => ann.Areas[area].BoringKeyItem).ToDictionary(area => area, _ => 1 / scaling);
                 }
-                // A bit hacky, but prevent Small Lothric Banner from being so prevalent in Firelink Shrine
+                if (ann.ItemRestrict != null && ann.ItemRestrict.TryGetValue(itemKey, out PlacementRestrictionAnnotation restrict) && restrict.KeyAreas != null)
+                {
+                    string[] restrictAreas = restrict.KeyAreas.Split(' ');
+                    specialScaling = allowedAreas.Where(area => !restrictAreas.Contains(area)).ToDictionary(area => area, _ => 0f);
+                    if (specialScaling.Count == allowedAreas.Count) throw new Exception($"Can't place extra-restricted item {item}");
+                    if (debugChoices) Console.WriteLine($">{item} restricted to {string.Join(",", restrictAreas)}");
+                }
                 Dictionary<string, float> weights = allowedAreas.ToDictionary(area => area, area => Weight(area) * (specialScaling.TryGetValue(area, out float sp) ? sp : 1));
 
                 if (debugChoices) Console.WriteLine($"> Choices for {item}: " + string.Join(", ", allowedAreas.OrderBy(a => weights[a]).Select(a => $"{a} {weights[a]}")));
@@ -356,7 +395,6 @@ namespace RandomizerCommon
                 }
                 AddItem(item, selected, forced != null);
 
-                ItemKey itemKey = ann.Items[item];
                 ret.Priority.Add(itemKey);
                 ret.Assign[itemKey] = new HashSet<string> { selected };
                 // Areas should include events there. Except for bell charm being dropped by chained ogre, if that option is enabled
@@ -369,7 +407,7 @@ namespace RandomizerCommon
 
                 // Update weights
                 reqs = CollapseReqs();
-                // If item was not really needed, don't update weighhts
+                // If item was not really needed, don't update weights
                 if (redundant)
                 {
                     if (explain) Console.WriteLine($"{item} is redundant to another key item (does not uniquely make new areas available)");
@@ -431,7 +469,7 @@ namespace RandomizerCommon
                 if (areas.Contains(node.Name))
                 {
                     node.CumKeyCount = ret.IncludedAreas[node.Name].Where(n => nodes[n].Counts != null).Select(n => nodes[n].Count(true, true)).Sum();
-                    if (explain && false) Console.WriteLine($"Quest area {node.Name}: {node.Count(true, true)}/{node.CumKeyCount}: {string.Join(",", ret.IncludedAreas[node.Name])}");
+                    if (explain) Console.WriteLine($"Included {node.Name}: {node.Count(true, true)}/{node.CumKeyCount}: {string.Join(",", ret.IncludedAreas[node.Name])}");
                 }
             }
 
@@ -443,8 +481,10 @@ namespace RandomizerCommon
                 List<ItemKey> requiredItems = requiredForEnd.Where(t => ann.Items.ContainsKey(t)).Select(t => ann.Items[t]).ToList();
                 ret.NotRequiredKeyItems.UnionWith(ret.Priority.Except(requiredItems));
             }
+            // TODO: See if this can/should be cut down
+            ret.IncludedItems = ret.IncludedAreas.ToDictionary(e => e.Key, e => new HashSet<string>(e.Value));
 
-            // The above DFS adds both items and areas together, so remove the items.
+            // The above DFS adds both items and areas together, so remove the items (move them to a separate dictionary).
             foreach (string key in ret.IncludedAreas.Keys.ToList())
             {
                 if (ann.Items.ContainsKey(key))
@@ -528,7 +568,10 @@ namespace RandomizerCommon
                     continue;
                 }
                 Dictionary<string, int> questAreas = questItemAreaSlots[questItem];
-                List<string> allowedAreas = ann.ItemRestrict.ContainsKey(itemKey) ? areas.Intersect(ann.ItemRestrict[itemKey].Unique[0].AllowedAreas(ret.IncludedAreas)).ToList() : areas.ToList();
+                // TODO: Does this contain items? If so, filter those out
+                List<string> allowedAreas = ann.ItemRestrict.ContainsKey(itemKey)
+                    ? areas.Intersect(ann.ItemRestrict[itemKey].Unique[0].AllowedAreas(ret.IncludedAreas, combinedWeights)).ToList()
+                    : areas.ToList();
                 bool allowMissable = ann.ExcludeTags.TryGetValue(itemKey, out HashSet<string> excludeTags) ? !excludeTags.Contains("missable") : true;
                 string selected = WeightedChoice(random, allowedAreas, a => Weight(a, allowMissable, 0.01f, questAreas.ContainsKey(a) ? questAreas[a] : 0));
                 if (explain) Console.WriteLine($"Selecting {questItem} to go in {selected}");
@@ -558,8 +601,10 @@ namespace RandomizerCommon
                 }
             }
             int combinedTotal = areas.Select(a => nodes[a].CumKeyCount).Max();
+            // TODO: Use combinedWeights here if they're the same
             foreach (KeyValuePair<string, List<string>> entry in combinedAreas)
             {
+                ret.CombinedWeights[entry.Key] = new HashSet<string>(entry.Value);
                 double partial = (double) nodes[entry.Key].CumKeyCount / combinedTotal;
                 foreach (string same in entry.Value)
                 {
@@ -573,7 +618,7 @@ namespace RandomizerCommon
         {
             Node node = nodes[area];
             int count = node.Count(allowQuest, true) - removeQuest;
-            if (count == 0)
+            if (count <= 0)
             {
                 return 0;
             }
@@ -662,6 +707,7 @@ namespace RandomizerCommon
                     req = req.Substitute(loops[name].ToDictionary(l => l, l => Expr.FALSE)).Simplify();
                 }
                 // Replace recursively
+                // Console.WriteLine($"Trying to simplify {name} -> {string.Join(", ", req.FreeVars())}");
                 req = req.Substitute(req.FreeVars()
                         .Where(free => nodes.ContainsKey(free))
                         .ToDictionary(free => free, free => simplifyReqs(free)))

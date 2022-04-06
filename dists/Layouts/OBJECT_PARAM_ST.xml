@@ -411,6 +411,11 @@
     <default>0</default>
   </entry>
   <entry>
+    <name>Unk42b</name>
+    <type>u8</type>
+    <default>0</default>
+  </entry>
+  <entry>
     <name>Unk43</name>
     <type>u16</type>
     <default>0</default>

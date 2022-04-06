@@ -127,7 +127,7 @@ namespace RandomizerCommon
                     if (restrict.Unique != null)
                     {
                         PlacementSlotAnnotation restrictSlot = restrict.Unique[0];
-                        HashSet<string> allowedLocs = restrictSlot.AllowedAreas(permutation.IncludedAreas);
+                        HashSet<string> allowedLocs = restrictSlot.AllowedAreas(permutation.IncludedAreas, null);
                         allowedSkillLocations[restrict.Key] = textOrder.Where(t => allowedLocs.Contains(textLocations[t])).ToList();
                     }
                 }
@@ -172,7 +172,7 @@ namespace RandomizerCommon
                     PARAM.Row mat = game.Params["EquipMtrlSetParam"][(int)item["materialSetId"].Value];
                     if (mat != null && (int)mat["MaterialId01"].Value == 1200)
                     {
-                        AddMulti(colCosts, slot.Col, (sbyte)mat["ItemNum01"].Value);
+                        AddMulti(colCosts, slot.Col, (int)(sbyte)mat["ItemNum01"].Value);
                     }
                 }
                 foreach (KeyValuePair<int, int> transfer in skillMapping.OrderBy(k => k.Key))

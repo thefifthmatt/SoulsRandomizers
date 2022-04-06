@@ -1,0 +1,697 @@
+{
+  "language": "Español (España)",
+  "comment": "By default, this uses text from es.json. Make sure to copy translator names from there for credits",
+  "translators": "Your name here",
+  "messages": [
+    {
+      "name": "EldenForm_allitem0",
+      "explanation": "Explanation for regular item placement for 0 bias%, unweighted randomization",
+      "english_text": "All eligible locations for items are equally likely.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_allitem1",
+      "explanation": "Explanation for regular item placement at low bias%, slightly weighted",
+      "english_text": "Most eligible locations for items are equally likely.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_allitem2",
+      "explanation": "Explanation for regular item placement at medium bias%. Desirable items are placed later in the game, or hidden, or dropped by hard bosses",
+      "english_text": "Better rewards for difficult and late locations.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_allitem3",
+      "explanation": "Explanation for regular item placement at high bias%, which is medium but moreso",
+      "english_text": "Much better rewards for difficult and late locations.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_allmaps",
+      "explanation": "Checkbox for mode where the player does not have to collect map fragments or visit places for them to show up on the map",
+      "english_text": "Unlock all map fragments and icons at the start",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_biasGroup",
+      "explanation": "Label for number slider from 0% to 100% which changes randomization from uniform (anything can go anywhere) to weighted (more key item chaining and more preference for later/difficult locations)",
+      "english_text": "Bias",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_default_boss",
+      "explanation": "When checked, bosses with achievements can have important items. Currently this cannot be disabled",
+      "english_text": "Major bosses",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_default_bossL",
+      "explanation": "Explanation for default_boss. {0} is a number like 40. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
+      "english_text": "Approx {0} checks. Includes all bosses which have achievements",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_default_health",
+      "explanation": "Response to healthGroup (Flask upgrades randomized?) which places Golden Seeds/Sacred Tears anywhere",
+      "english_text": "To anywhere",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_default_key",
+      "explanation": "Response to keyGroup (Key items randomized?) which places key items in important locations",
+      "english_text": "To important locations",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_default_reroll",
+      "explanation": "Checkbox under seed number which generates a new seed every time 'Randomize' is clicked, instead of using the existing seed",
+      "english_text": "Reroll seed",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_default_upgrades",
+      "explanation": "Response to healthGroup (Upgrade Bell Bearings randomized?) which places them anywhere",
+      "english_text": "To anywhere",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_defaultRerollEnemy",
+      "explanation": "Checkbox under enemy-specific seed number which behaves like default_reroll for the enemy randomizer seed",
+      "english_text": "Reroll enemy seed seperately",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_earlylegacy",
+      "explanation": "Checkbox for mode where the items to enter Stormveil and Raya Lucaria are available early",
+      "english_text": "Early legacy dungeons are available early",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_earlylegacyL",
+      "explanation": "Explanation for earlylegacy, talking about Rusty Key and Academy Glintstone Key",
+      "english_text": "Place Rusty Key in Limgrave and Academy Key in Liurnia",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_enemyPreviewL",
+      "explanation": "Text explaining that enemy randomizer is not available yet",
+      "english_text": "Implementation in progress!\n\nCheck the mod page for updates. Join the\nFromSoft Randomizer Dev discord server for\nfeedback and early testing.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_enemyseedError",
+      "explanation": "Error message for enemy randomizer seed (not a number, too many digits, etc.)",
+      "english_text": "Invalid enemy seed",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_enemyseedL",
+      "explanation": "Label for enemy randomizer seed textbox",
+      "english_text": "Separate enemy seed:",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_enemyseedPlaceholder",
+      "explanation": "Placeholder text in the enemy randomizer seed textbox when it's empty. By default, if not specified, the enemy randomizer seed is just the same as the overall seed",
+      "english_text": "(same as overall seed)",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_exeButton",
+      "explanation": "Label for button to open file select for eldenring.exe",
+      "english_text": "Select game exe",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_fileCopyOodleError",
+      "explanation": "Error message when a dll in the game directory cannot be found and the user must locate it themselves. This dll is needed to unpack game files, and randomizer needs it, but for copyright reasons it's not distributed inside the randomizer zip",
+      "english_text": "Error: Oodle not found\nCopy oo2core_6_win64.dll from your game directory into the randomizer directory",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_fileExeEmptyError",
+      "explanation": "Validation error when the exe textbox is empty",
+      "english_text": "Error: Game exe not provided",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_fileExeMissingError",
+      "explanation": "Validation error when the exe textbox is not empty but the file referenced does not actually exist",
+      "english_text": "Error: Game exe does not exist",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_fileMissingRegulationError",
+      "explanation": "Validation error when the exe textbox directory does not contain a required game file, regulation.bin",
+      "english_text": "Error: Invalid game exe (cannot find regulation.bin in game directory)",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_fileOodleMissingError",
+      "explanation": "Validation error when the exe textbox directory does not contain a required game file, oo2core_6_win64.dll (see also fileCopyOodleError)",
+      "english_text": "Error: Invalid game exe (cannot find oo2core_6_win64.dll in game directory)",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_fileUnpackError",
+      "explanation": "Error usually encountered when the randomizer exe is run from 7zip etc, without unpacking it. (In the future, this message may be copied inside the program itself, because messages are themselves in metadata files)",
+      "english_text": "Error: Can't find required metadata files.\nFor the randomizer to work, you must unpack it to disk and keep all of the files together",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_fileUxmPatchWarning",
+      "explanation": "Validation warning for game exe textbox. A file that usually indicates the user did UXM Patch does not exist",
+      "english_text": "Warning: UXM output is selected, but the game may not be patched (_backup\\eldenring.exe not found)",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_fileUxmUnpackError",
+      "explanation": "Validation error for the game exe textbox. When the user does UXM Unpack, it adds directories with game data which must exist",
+      "english_text": "Error: UXM output is selected, but the game is not unpacked (event subdirectory not found)",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_fixedseedL",
+      "explanation": "Label for seed number textbox. 'Overall' means it's for both item and enemy randomizer, in the future",
+      "english_text": "Overall seed:",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_healthGroup",
+      "explanation": "Label asking how to randomize Golden Seeds/Sacred Tears",
+      "english_text": "Flask upgrades randomized?",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_hintGroup",
+      "explanation": "Label for options which show hints and item locations inside the game",
+      "english_text": "Hints",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_keyGroup",
+      "explanation": "Label asking how to randomize key items",
+      "english_text": "Key items randomized?",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_keyitem0",
+      "explanation": "Explanation for key item placement for 0 bias%, unweighted randomization",
+      "english_text": "Key items may be in locations that don't require completing much of the game.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_keyitem1",
+      "explanation": "Explanation for key item placement for low bias%. Multiple key items are less likely to be placed in the same area, and more likely to be placed in an area unlocked by a different key item.",
+      "english_text": "Key items will usually be in different areas and depend on each other.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_keyitem2",
+      "explanation": "Explanation for key item placement for medium bias%, low but moreso",
+      "english_text": "Key items will usually be in different areas and form interesting chains.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_keyitem3",
+      "explanation": "Explanation for key item placement for high bias%, medium but moreso",
+      "english_text": "Key items will usually form long chains across different areas.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_languageL",
+      "explanation": "Label for dropdown box to select randomizer UI language",
+      "english_text": "Language:",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_locationGroup",
+      "explanation": "Label for a bunch of options to enable or disable various game locations having important items in them",
+      "english_text": "Important locations",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_markareas",
+      "explanation": "Checkbox to modify Kalé's menu to spend runes to mark overall areas with required items (like Limgrave, Altus Tunnel, Leyndell) on the map",
+      "english_text": "Purchase markers for required areas from Kalé",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_markareasL",
+      "explanation": "Explanation for when you can buy hint markers in-game from Kalé",
+      "english_text": "Markers are unavailable before reaching Altus Plateau",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_markitems",
+      "explanation": "Extension to markareas which also allows you to spend runes to mark the exact location of an item (the corpse to loot, or the boss that drops it)",
+      "english_text": "Purchase markers for exact item locations from Kalé",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_mats",
+      "explanation": "Checkbox to move around items with 'Acquire materials' pickup prompt",
+      "english_text": "Randomize collectible materials like Rowa Fruit",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_matsL",
+      "explanation": "Explanation for 'mats' checkbox. Currently this randomization doesn't happen across the entire game, only within maps.",
+      "english_text": "Move materials nearby their original location",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_mergemods",
+      "explanation": "Checkbox to incorporate existing modifications to regulation.bin (game params) into the randomizer's output",
+      "english_text": "Merge existing param mods",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_miscGroup",
+      "explanation": "Label for miscellaneous options with no other grouping. These usually add non-randomizer-related conveniences",
+      "english_text": "Misc",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_nerfmalenia",
+      "explanation": "Checkbox to disable Malenia healing when she hits you",
+      "english_text": "Disable heal-on-hit by a late-game boss",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_night",
+      "explanation": "When checked, bosses which only spawn at night (Night's Calvalry, Bell Bearing Hunters, etc.) can have important items. Only if raceloc_altboss is enabled",
+      "english_text": "Include night-only bosses",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_nightL",
+      "explanation": "Label for 'night' checkbox. {0} is a number like 10, and is 'additional' with the 'all bosses' label",
+      "english_text": "Approx {0} additional checks",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_nocaves",
+      "explanation": "When checked, location in mini-dungeons *cannot* have important items",
+      "english_text": "Exclude caves, graves, catacombs, and tunnels",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_nocavesL",
+      "explanation": "Explanation for nocaves. This option overrides other options and causes the UI to update accordingly.",
+      "english_text": "Exclude mini-dungeons from all of the above locations",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_norandom",
+      "explanation": "Response to keyGroup (Key items randomized?) which does not randomize key items",
+      "english_text": "No",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_norandom_health",
+      "explanation": "Response to healthGroup (Flask upgrades randomized?) which does not randomize Golden Seeds/Sacred Tears",
+      "english_text": "No",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_norandom_upgrades",
+      "explanation": "Response to healthGroup (Upgrade Bell Bearings randomized?) which does not randomize them",
+      "english_text": "No",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_onehand",
+      "explanation": "When *unchecked*, character creation weapons can require two-handing with starting stats. When checked, weapons are more restricted.",
+      "english_text": "Disallow starting weapons requiring two-handing",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_optionwindow",
+      "explanation": "Button to open dialog box to set all options (checkboxes, seed, etc.) from a text string",
+      "english_text": "Set options from string...",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_overviewL",
+      "explanation": "Long explanation with an overview of the mod. Mainly this points people to the mod page (or README.txt file), plus the spoiler_logs directory",
+      "english_text": "Check the mod page or README for a full list of all key items, important locations, and other details. Find hints and spoilers for item locations in the spoiler_logs directory.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_preset",
+      "explanation": "Button to select custom randomization, especially with enemy randomizer. This feature is not yet implemented",
+      "english_text": "Select challenge run or preset...",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_progressGroup",
+      "explanation": "Label for checkboxes with broad randomization options, like what to randomize and which routing to allow",
+      "english_text": "Game progression",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_raceloc_altboss",
+      "explanation": "When checked, enemies with a boss healthbar can important items, not just achievement bosses",
+      "english_text": "All bosses",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_raceloc_altbossL",
+      "explanation": "Further explanation for raceloc_altboss. {0} is a number like 100 and it depends on the nocaves option",
+      "english_text": "Approx {0} checks. Includes fights with boss healthbars (except Patches)",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_raceloc_health",
+      "explanation": "When checked, trees which normally have Golden Seeds and churches which normally have Sacred Tears can have important items",
+      "english_text": "Golden Seed trees and Sacred Tear Churches",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_raceloc_healthL",
+      "explanation": "Further explanation for raceloc_health. {0} is a number like 30",
+      "english_text": "Approx {0} checks",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_raceloc_shops",
+      "explanation": "When checked, shops can have important items",
+      "english_text": "Merchant shops",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_raceloc_shopsL",
+      "explanation": "Further explanation for raceloc_shops. {0} is a nubmer like 30. This option does not include shops which only sell sorceries or incantations",
+      "english_text": "{0} checks. Does not include spell shops",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_raceloc_talisman",
+      "explanation": "When checked, certain treasures/chests can have important items. These are all of the places which originally had talismans in the unmodified (vanilla) game, which are usually hidden in interesting places.",
+      "english_text": "Vanilla locations of talisman treasures",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_raceloc_talismanL",
+      "explanation": "Further explanation for raceloc_talisman. {0} is a number like 30. This value depends on the nocaves option. Again this is only from corpses/chests/etc, not bosses or other enemies.",
+      "english_text": "Approx {0} checks. Excludes talismans dropped by enemies",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_racemode",
+      "explanation": "When checked, important items can be found in all of the places key items can normally be found in the unmodified (vanilla) game. This option cannot be disabled",
+      "english_text": "Vanilla locations of key items",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_racemode_health",
+      "explanation": "Response to healthGroup (Upgrade Bell Bearings randomized?) which only places them in important locations",
+      "english_text": "To important locations",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_racemode_upgrades",
+      "explanation": "Response to healthGroup (Flask upgrades randomized?) which only places Golden Seeds/Sacred Tears in important locations",
+      "english_text": "To important locations",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_racemodeL",
+      "explanation": "Further explanation for 'Vanilla locations for key items', {0} is a number like 15",
+      "english_text": "Approx {0} checks",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_randomize",
+      "explanation": "Same as randomizeNew",
+      "english_text": "Randomize new run!",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_randomizedFixed",
+      "explanation": "Randomize button when a seed number is provided and 'Reroll seed' is unchecked",
+      "english_text": "Run with fixed seed",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_randomizeEnemyOnly",
+      "explanation": "Randomize button when 'Reroll seed' is unchecked and 'Reroll enemy seed' is checked",
+      "english_text": "Reroll enemies (same items)",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_randomizeItemOnly",
+      "explanation": "Randomize button when 'Reroll seed' is checked and 'Reroll enemy seed' is unchecked",
+      "english_text": "Reroll items (same enemies)",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_randomizeNew",
+      "explanation": "Randomize button when 'Reroll seed' is checked (generates a new seed with new placements etc.)",
+      "english_text": "Randomize new run!",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_restoreAlertTitle",
+      "explanation": "Title of window that pops up to restore files",
+      "english_text": "Restore files",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_restoreButton",
+      "explanation": "Button in the randomizer you can click to restore backup files",
+      "english_text": "Restore backups...",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_restoreConfirmTitle",
+      "explanation": "Title of window that pops up to prompt you to restore backup files. Followed by a list of .randobak files to restore",
+      "english_text": "Restore from these files?",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_restoreErrorBadExe",
+      "explanation": "Validation error in 'Restore backups' flow where the game exe does not exist and the game directory cannot be found",
+      "english_text": "Game exe not found",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_restoreFileFailure",
+      "explanation": "Restore error for a specific .randobak file, {0} is its path",
+      "english_text": "Failed to restore from {0}!",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_restoreFileSuccess",
+      "explanation": "Successful restore for a specific .randobak file, {0} is its path",
+      "english_text": "Restored from {0}",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_restoreNothingToDo",
+      "explanation": "Alert in 'Restore backups' flow when you click the button and it doesn't find anything to restore",
+      "english_text": "No .randobak files found in {0}",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_runereq",
+      "explanation": "When checked, shows the message 'You require more Great Runes' when you try to access Radagon",
+      "english_text": "Require all 7 Great Runes to access the final boss",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_runereqL",
+      "explanation": "Further explanation for runereq. You must find the rune items, but you don't need to go to Divine Towers to make them equippable",
+      "english_text": "Activating the Great Runes is not required",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_runError",
+      "explanation": "Generic randomizer error, {0} is the detailed error message. Also points the user to the spoiler_logs directory",
+      "english_text": "Error encountered: {0}\nIt may work to try again with a different seed. See most recent file in spoiler_logs directory for the full error.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_runErrorGeneric",
+      "explanation": "Shown in the status bar when miscalleneous pre-randomization errors occur",
+      "english_text": "Error encountered",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_runErrorStatus",
+      "explanation": "Shown in the status bar when randomizer files for any reason. {0} is a file name in the spoiler_logs directory",
+      "english_text": "Error! Partial log in spoiler_logs directory as {0}",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_running",
+      "explanation": "Text that replaces the 'Randomize' button when randomization is running",
+      "english_text": "Running...",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_runSuccess",
+      "explanation": "Shown in the status bar when randomization finishes. {0} is a file name in the spoiler_logs directory",
+      "english_text": "Done! Hints and spoilers in spoiler_logs directory as {0} - Restart your game!!",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_seedError",
+      "explanation": "Error shown in the status bar when trying to randomize with an invalid seed (not a number, too many digits, etc.)",
+      "english_text": "Invalid fixed seed",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_spellshops",
+      "explanation": "When checked, shops which normally have sorceries/incantations get random sorceries/incantations",
+      "english_text": "Spell shops still sell spells",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_spellshopsL",
+      "explanation": "Further explanation of spellshops: sorcery shops only get sorceries, and incantation shops only get incantations",
+      "english_text": "Place sorceries/incantations in shops of that type",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_status",
+      "explanation": "Default status bar text. {0} is replaced with credits sentence, and {1} is replaced by a number called the config hash. This is a 5-digit number which depends on the exact set of options the user has enabled.",
+      "english_text": "{0} Current config hash: {1}",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_status_credits",
+      "explanation": "Mod creation credits, {0} is the developer username",
+      "english_text": "Created by {0}.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_status_creditsWithTranslators",
+      "explanation": "Mod creation credits including translators, {0} is the developer username and {1} comes from the 'translators' field",
+      "english_text": "Created by {0}, translated by {1}.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_upgradeExplainL",
+      "explanation": "Long explanation for how randomizing upgrade material Bell Bearings work (for Smithing Stones, Somber Smithing Stones, Grave Glovewort, and Ghost Glovewort). See mod page for more details",
+      "english_text": "If randomized, Smithing Stone and Glovewort Bell Bearings are placed in the same overall area as their vanilla location. Their contents are not randomized.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_upgradeGroup",
+      "explanation": "Label asking how to randomize Bell Bearings with upgrade materials, like Smithing-Stone Miner's Bell Bearing [1]",
+      "english_text": "Upgrade Bell Bearings randomized?",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_uxm",
+      "explanation": "Checkbox to write randomized files to UXM. If unchecked, it assumes Mod Engine installation",
+      "english_text": "Output files for UXM",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_hintMarkArea",
+      "explanation": "Dialog option which appears in-game when the player purchases a hint, to mark the overall area (like Limgrave) of a required item on the map",
+      "english_text": "Mark a required item's area",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_hintMarkItem",
+      "explanation": "Dialog option which appears in-game when the player purchases a hint, to mark the exact location (like the corpse or boss to defeat) of a required item on the map",
+      "english_text": "Mark a required item's exact location (more expensive)",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_hintNoItems",
+      "explanation": "Dialog message which appears in-game when the user tries to purchase a hint, but all items seem to be acquired",
+      "english_text": "No key items left!",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_hintPurchase",
+      "explanation": "Option in Kalé's NPC menu to purchase a map marker for a required item hint, added below the existing 'Purchase' option",
+      "english_text": "Purchase a required item marker",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_hintRequirementFailed",
+      "explanation": "Dialog message which appears in-game when the user tries to purchase a hint, but hint functionality is not available yet (they need to rest at an Altus Plateau Site of Grace first)",
+      "english_text": "Get to the Altus Plateau first!",
+      "text": ""
+    },
+    {
+      "name": "OptionsForm_errorInternal",
+      "explanation": "Internal error for 'Set options from string', when it somehow starts out with invalid options",
+      "english_text": "Invalid options: internal error",
+      "text": ""
+    },
+    {
+      "name": "OptionsForm_errorNoOptions",
+      "explanation": "Validation error for 'Set options from string' when no actual option names are provided, only a number",
+      "english_text": "Invalid options: must contain options",
+      "text": ""
+    },
+    {
+      "name": "OptionsForm_errorNoVersion",
+      "explanation": "Validation error for 'Set options from string', when the given value doesn't contain an option named v1 v2 etc.",
+      "english_text": "Invalid options: must contain a version number",
+      "text": ""
+    },
+    {
+      "name": "OptionsForm_OptionsForm",
+      "explanation": "Title for 'Set options from string' dialog box",
+      "english_text": "Set options string",
+      "text": ""
+    },
+    {
+      "name": "OptionsForm_select",
+      "explanation": "Button in 'Set options from string' dialog box which sets options based on the textbox contents",
+      "english_text": "Select",
+      "text": ""
+    },
+    {
+      "name": "OptionsForm_strL",
+      "explanation": "Long explanation for using 'Set options from string' dialog box. The text box shows the user's current 'option string' (all of their selected options and seed)",
+      "english_text": "This text box allows you to give your options and seed to someone else (after running randomization) and to copy someone else's options.\nThis string can also be found on the first line of hint/spoiler logs in the spoiler_logs directory.\nAlso, you can set it to blank to restore all default options.",
+      "text": ""
+    },
+    {
+      "name": "Randomizer_editPhase",
+      "explanation": "Shown in the status bar while the randomizer is modifying game parameters etc. to randomize them",
+      "english_text": "Editing game files",
+      "text": ""
+    },
+    {
+      "name": "Randomizer_enemyPhase",
+      "explanation": "Shown in the status bar while the randomizer is doing enemy randomization",
+      "english_text": "Randomizing enemies",
+      "text": ""
+    },
+    {
+      "name": "Randomizer_itemPhase",
+      "explanation": "Shown in the status bar while the randomizer is doing item randomization",
+      "english_text": "Randomizing items",
+      "text": ""
+    },
+    {
+      "name": "Randomizer_keyItemError",
+      "explanation": "Error message from the randomizer which indicates an internal logic error, when has to put a key item in an area and can't find any applicable locations. This happens like 5% or 10% of the time depending on how difficult the randomization is to calculate.",
+      "english_text": "Could not place all key items... giving up now. This can happen on some seeds or with some options.",
+      "text": ""
+    },
+    {
+      "name": "Randomizer_loadPhase",
+      "explanation": "Shown in the status bar at the start of randomization, when reading and parsing game files",
+      "english_text": "Loading game data",
+      "text": ""
+    },
+    {
+      "name": "Randomizer_savePhase",
+      "explanation": "Shown in the status bar at the end of randomization, when all randomized files are written out to disk",
+      "english_text": "Writing game files",
+      "text": ""
+    }
+  ]
+}

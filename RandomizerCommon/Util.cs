@@ -16,39 +16,41 @@ namespace RandomizerCommon
 #endif
         }
 
-        public static void AddMulti<K, V>(IDictionary<K, List<V>> dict, K key, V value)
+        public static void AddMulti<K, V, T>(IDictionary<K, T> dict, K key, V value) where T : ICollection<V>, new()
         {
-            if (!dict.ContainsKey(key)) dict[key] = new List<V>();
-            dict[key].Add(value);
+            if (!dict.TryGetValue(key, out T col))
+            {
+                dict[key] = col = new T();
+            }
+            col.Add(value);
         }
 
-        public static void AddMulti<K, V>(IDictionary<K, List<V>> dict, K key, IEnumerable<V> values)
+        public static void AddMulti<K, V, T>(IDictionary<K, T> dict, K key, IEnumerable<V> values) where T : ICollection<V>, new()
         {
-            if (!dict.ContainsKey(key)) dict[key] = new List<V>();
-            dict[key].AddRange(values);
+            if (!dict.TryGetValue(key, out T col))
+            {
+                dict[key] = col = new T();
+            }
+            if (col is ISet<V> set)
+            {
+                set.UnionWith(values);
+            }
+            else if (col is List<V> list)
+            {
+                list.AddRange(values);
+            }
+            else
+            {
+                foreach (V value in values)
+                {
+                    col.Add(value);
+                }
+            }
         }
 
-        public static void AddMulti<K, V>(IDictionary<K, HashSet<V>> dict, K key, V value)
+        public static void AddMulti<K, V, U, T>(IDictionary<K, T> dict, K key, V value, U value2) where T : IDictionary<V, U>, new()
         {
-            if (!dict.ContainsKey(key)) dict[key] = new HashSet<V>();
-            dict[key].Add(value);
-        }
-
-        public static void AddMulti<K, V>(IDictionary<K, HashSet<V>> dict, K key, IEnumerable<V> values)
-        {
-            if (!dict.ContainsKey(key)) dict[key] = new HashSet<V>();
-            dict[key].UnionWith(values);
-        }
-
-        public static void AddMulti<K, V>(IDictionary<K, SortedSet<V>> dict, K key, V value)
-        {
-            if (!dict.ContainsKey(key)) dict[key] = new SortedSet<V>();
-            dict[key].Add(value);
-        }
-
-        public static void AddMulti<K, V, U>(IDictionary<K, Dictionary<V, U>> dict, K key, V value, U value2)
-        {
-            if (!dict.ContainsKey(key)) dict[key] = new Dictionary<V, U>();
+            if (!dict.ContainsKey(key)) dict[key] = new T();
             dict[key][value] = value2;
         }
 

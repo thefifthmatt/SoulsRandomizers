@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace RandomizerCommon
 {
@@ -14,10 +15,13 @@ namespace RandomizerCommon
         public readonly SortedDictionary<LocationScope, List<SlotKey>> Locations = new SortedDictionary<LocationScope, List<SlotKey>>();
         // Replacement lots, used to give treasure carps event drops
         public Dictionary<int, int> NewEntityLots = new Dictionary<int, int>();
+        // Boss flags, for item locations with boss entities
+        public Dictionary<int, int> BossFlags = new Dictionary<int, int>();
 
         public LocationData() { }
 
-        public void AddLocation(ItemKey item, ItemScope scope, LocationKey key) {
+        public void AddLocation(ItemKey item, ItemScope scope, LocationKey key)
+        {
             if (!Data.ContainsKey(item))
             {
                 Data[item] = new ItemLocations();
@@ -107,11 +111,12 @@ namespace RandomizerCommon
         // Keys
         public enum ItemType
         {
-            WEAPON,
-            ARMOR,
-            RING,
-            GOOD,
-            GEM,
+            WEAPON = 0,
+            ARMOR = 1,
+            RING = 2,
+            GOOD = 3,
+            GEM = 4,
+            EQUIP = 6,
         }
 
         public class ItemKey : IComparable<ItemKey>
@@ -128,7 +133,7 @@ namespace RandomizerCommon
                 return $"{Type}:{ID}";
             }
             public override bool Equals(object obj) => obj is ItemKey o && Equals(o);
-            public bool Equals(ItemKey o) => Type == o.Type && ID == o.ID;
+            public bool Equals(ItemKey o) => o != null && Type == o.Type && ID == o.ID;
             public override int GetHashCode() => ((int)Type) << 28 ^ ID;
             public int CompareTo(ItemKey o) => Nest(Type.CompareTo(o.Type), ID.CompareTo(o.ID));
         }
@@ -155,9 +160,11 @@ namespace RandomizerCommon
                 int id = UniqueId;
                 if (OnlyShops)
                 {
-                    id = -1;
+                    // id = -1;
+                    id = 0;
                 }
-                this.IdStr = $"{(int)Type}:{id}:{string.Join(",", ShopIds)}:{string.Join(",", ModelLots)}";
+                // this.IdStr = $"{(int)Type}:{id}:{string.Join(",", ShopIds)}:{string.Join(",", ModelLots)}";
+                this.IdStr = $"{(int)Type}:{id.ToString("0000000000")}:{string.Join(",", ShopIds)}:{string.Join(",", ModelLots)}";
             }
             public override string ToString()
             {
@@ -196,6 +203,8 @@ namespace RandomizerCommon
                 MODEL,
                 // Unique item, not acquirable through normal means
                 SPECIAL,
+                // Resource collected from an asset.
+                ASSET,
             }
             private readonly HashSet<ScopeType> eventTypes = new HashSet<ScopeType> { ScopeType.EVENT, ScopeType.SHOP_INFINITE_EVENT };
             // Item scope is a union of these (only one may be filled in):
@@ -232,9 +241,10 @@ namespace RandomizerCommon
             public readonly List<EntityId> Entities;
             public readonly int Quantity;
             public readonly float Chance;
+            public readonly string Subtype;
             // For a lot, the base lot location, if this is an additional draw. Otherwise null
             public readonly LocationKey Base;
-            public LocationKey(LocationType Type, int ID, string Text, List<EntityId> Entities, int Quantity, float Chance, LocationKey Base)
+            public LocationKey(LocationType Type, int ID, string Text, List<EntityId> Entities, int Quantity, float Chance, LocationKey Base, string Subtype = null)
             {
                 this.Type = Type;
                 this.ID = ID;
@@ -243,13 +253,15 @@ namespace RandomizerCommon
                 this.Quantity = Quantity;
                 this.Chance = Chance;
                 this.Base = Base;
+                this.Subtype = Subtype;
                 if (Base != null && Base.Type != Type)
                 {
                     throw new Exception($"Bad base {Base} for {Text}");
                 }
                 this.maxSlots = 1;
             }
-            public int BaseID {
+            public int BaseID
+            {
                 get
                 {
                     return Base == null ? ID : Base.ID;
@@ -280,11 +292,14 @@ namespace RandomizerCommon
                     maxSlots = value;
                 }
             }
+
+            public string ParamName => (Type == LocationType.LOT ? "ItemLotParam" : "ShopLineupParam") + (Subtype == null ? "" : $"_{Subtype}");
+
             public override string ToString() => Text;
             // Are these really needed?
             public override bool Equals(object obj) => obj is LocationKey o && Equals(o);
-            public bool Equals(LocationKey o) => Type == o.Type && ID == o.ID;
-            public override int GetHashCode() => ((int)Type) << 30 ^ ID;
+            public bool Equals(LocationKey o) => Type == o.Type && ID == o.ID && Subtype == o.Subtype;
+            public override int GetHashCode() => ((int)Type) << 28 ^ ID ^ (Subtype?.GetHashCode() ?? 0);
         }
 
         public class SlotKey : IComparable<SlotKey>
@@ -307,18 +322,25 @@ namespace RandomizerCommon
             public string ToSimpleId() => $"{Item.Type},{Item.ID},{Scope.Type},{Scope.ID}";
         }
 
-        public class EntityId
+        public class EntityId : IComparable<EntityId>
         {
-            // Map name, if extracted from a map. Empty string otherwise
-            public readonly string MapName;
             // Entity name if extracted from a map. Any string otherwise
-            public readonly string EntityName;
+            public string EntityName { get; set; }
+            // Map name, if extracted from a map. Empty string otherwise
+            public string MapName { get; set; }
 
-            public readonly int EntityID;
-            public readonly int NPCParamID;
-            public readonly int CharaInitID;
-            public readonly List<int> GroupIds;
-            public readonly string Type;
+            public int EntityID { get; set; }
+            public int CharaInitID { get; set; }
+            
+            // Mainly internal display info
+            public int NPCParamID { get; set; }
+            public int AssetID { get; set; }
+            public List<int> GroupIds { get; set; }
+            public string Type { get; set; }  // e.g. enemy, object
+            public Vector3? Position { get; set; }
+            public int NameID { get; set; }
+
+            public EntityId() { }
             public EntityId(
                 string MapName, string EntityName,
                 int EntityID=-1, int NPCParamID=-1, int CharaInitID=-1, List<int> GroupIds=null,
@@ -345,26 +367,41 @@ namespace RandomizerCommon
                 }
                 return ids;
             }
-            public string ModelName {
-                get {
-                    int sepIndex = EntityName.IndexOf('_');
+            public string ModelName
+            {
+                get
+                {
+                    int sepIndex = EntityName.LastIndexOf('_');
                     if (MapName == "" || sepIndex <= 0) return null;
-                    return EntityName.Substring(0, sepIndex);
+                    string name = EntityName;
+                    if (name.StartsWith("m") && name.Contains("-"))
+                    {
+                        // Elden Ring big tile names
+                        name = name.Split('-')[1];
+                        sepIndex = name.LastIndexOf('_');
+                    }
+                    return name.Substring(0, sepIndex);
                 }
             }
             public int GetModelID()
             {
                 string model = ModelName;
-                if (model == null || !model.StartsWith("c"))
-                {
-                    return -1;
-                }
-                return int.Parse(model.Substring(1));
+                if (model == null) return -1;
+                else if (model.StartsWith("c")) return int.Parse(model.Substring(1));
+                else if (model.StartsWith("AEG")) return int.Parse(model.Substring(3, 3) + model.Substring(7, 3));
+                return -1;
             }
             public override string ToString() => MapName == "" ? EntityName : (EntityName == "" ? "" : $"{EntityName} @ ") + MapName;
             public override bool Equals(object obj) => obj is EntityId o && Equals(o);
             public bool Equals(EntityId o) => MapName == o.MapName && EntityName == o.EntityName;
             public override int GetHashCode() => MapName.GetHashCode() ^ EntityName.GetHashCode();
+            public int CompareTo(EntityId o) => Nest(MapName.CompareTo(o.MapName), EntityName.CompareTo(o.EntityName));
+            public EntityId DeepCopy()
+            {
+                EntityId other = (EntityId)MemberwiseClone();
+                other.GroupIds = GroupIds == null ? null : GroupIds.ToList();
+                return other;
+            }
         }
 
         private static int Nest(int first, int second)

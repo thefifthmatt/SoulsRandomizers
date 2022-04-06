@@ -1,0 +1,379 @@
+--- Stranded Graveyard
+Minor minidungeon boss in Limgrave - Fringefolk Hero's Grave: Dropped by Ulcerated Tree Spirit. Replaces Golden Seed.
+Minidungeon talisman in Limgrave - Fringefolk Hero's Grave: Guarded by a Grafted Scion. Replaces Erdtree's Favor.
+
+--- Limgrave
+Key item in Limgrave: In a chest at the top of a tower in Fort Haight. Replaces Dectus Medallion (Left).
+Flask upgrade in Limgrave: At the statue in the Church of Pilgrimage on the Weeping Peninsula north coast. Replaces Sacred Tear.
+Flask upgrade in Limgrave: At the statue in the Third Church of Marika, northeast of the Mistwood. Replaces Sacred Tear.
+Flask upgrade in Limgrave: Under a Golden Seed tree in front of Fort Haight. Replaces Golden Seed.
+Shop in Limgrave: Sold by Kale at the Church of Elleh
+Shop in Limgrave: Sold by the Nomadic Merchant between Saintsbridge and Summonwater Village
+Shop in Limgrave: Sold by the Nomadic Merchant in front of Coastal Cave
+Shop in Limgrave: Sold by the Nomadic Merchant in the Mistwood along the road to Fort Haight
+Minidungeon shop in Limgrave - Murkwater Cave: Sold by Patches
+Minor boss in Limgrave: Dropped by Bloodhound Knight Darriwil in Forlorn Hound Evergaol. Replaces Bloodhound's Fang.
+Minor boss in Limgrave: Dropped by Flying Dragon Agheel. Replaces Dragon Heart.
+Minor boss in Limgrave: Dropped by the Tibia Mariner in Summonwater Village. Replaces Deathroot.
+Minor boss in Limgrave: Dropped by the Tree Sentinel before the Church of Elleh. Replaces Golden Halberd.
+Minor minidungeon boss in Limgrave - Coastal Cave: Dropped by Demi-Human Chiefs. Replaces Tailoring Tools, Sewing Needle.
+Minor minidungeon boss in Limgrave - Groveside Cave: Dropped by Beastman of Farum Azula. Replaces Flamedrake Talisman.
+Minor minidungeon boss in Limgrave - Highroad Cave: Dropped by Guardian Golem. Replaces Blue Dancer Charm.
+Minor minidungeon boss in Limgrave - Murkwater Catacombs: Dropped by Grave Warden Duelist. Replaces Banished Knight Engvall.
+Minor minidungeon boss in Limgrave - Stormfoot Catacombs: Dropped by Erdtree Burial Watchdog. Replaces Noble Sorcerer Ashes.
+Minor minidungeon boss in Limgrave Tunnels: Dropped by Stonedigger Troll. Replaces Roar Medallion.
+Minor night boss in Limgrave: Dropped by the Night's Calvary on the bridge eastward of Agheel Lake North. They only spawn at night. Replaces Ash of War: Repeating Thrust.
+Talisman in Limgrave: In a chest down the stairs in Mistwood Ruins. Replaces Axe Talisman.
+Talisman in Limgrave: In a chest down the stairs in Summonwater Village, behind an Imp Statue barrier. Replaces Green Turtle Talisman.
+Talisman in Limgrave: Looping back into the Cave of Knowledge from a cave entrance on the ruined beach to the southeast. Replaces Haligdrake Talisman.
+
+--- Stormhill
+Major boss in Stormhill: Dropped by Margit the Fell Omen or Morgott the Omen King. Replaces Talisman Pouch.
+Flask upgrade in Stormhill: Under a Golden Seed tree along the road from Gatefront to Stormhill Shack. Replaces Golden Seed.
+Minor boss in Stormhill: Dropped by the Crucible Knight in the Stormhill Evergaol. Replaces Aspects of the Crucible: Tail.
+Minor minidungeon boss in Stormhill - Deathtouched Catacombs: Dropped by Black Knife Assassin. Replaces Assassin's Crimson Dagger.
+Minor night boss in Stormhill: Dropped by a Deathbird to the east of Warmaster's Shack. They only spawn at night. Replaces Blue-Feathered Branchsword.
+Minor night boss in Stormhill: Dropped by the Bell Bearing Hunter who invades at Warmaster's Shack at night. Replaces Bone Peddler's Bell Bearing.
+Talisman in Stormhill: In a chest on a walkway at the top of the Gatefront gate, accessed directly northeast of Stormhill Evergaol. Replaces Arrow's Reach Talisman.
+Talisman in Stormhill: On a corpse resting on rubble on the northeast-most cliffside in Stormhill, north of Saintsbridge and Deathtouched Catacombs. Replaces Lance Talisman.
+
+--- Roundtable Hold
+Shop in Roundtable Hold: Sold by Twin Maiden Husks
+
+--- Stormveil Castle
+Key item in Stormveil Castle: In the dark room before the Rusty Key door, guarded by a Banished Knight. Replaces Rusty Key.
+Major boss in Stormveil Castle: Dropped by Godrick the Grafted. Replaces Godrick's Great Rune, Remembrance of the Grafted.
+Flask upgrade in Stormveil Castle: Under a Golden Seed tree on the way to Godrick the Grafted. Replaces Golden Seed.
+Talisman in Stormveil Castle: In a chest in the dark room before the Rusty Key door, guarded by a Banished Knight. Replaces Curved Sword Talisman.
+Talisman in Stormveil Castle: Right outside Rampart Tower Site of Grace (or higher up), jump to an adjacent rooftop to the east. Find the debris of a fallen-over pillar, jump up to the ledge above it, follow the ledge to a small courtyard, and climb a long ladder there. Replaces Claw Talisman.
+
+--- Divine Tower of Limgrave
+Talisman in Divine Tower of Limgrave: Up the stairs after the Limgrave Tower Bridge site of grace. Replaces Boltdrake Talisman.
+
+--- Weeping Peninsula
+Major boss in Weeping Peninsula: Dropped by Leonine Misbegotten south of Castle Morne. Replaces Grafted Blade Greatsword.
+Flask upgrade in Weeping Peninsula: At the statue in Callu Baptismal Church, south of Ailing Village. Replaces Sacred Tear.
+Flask upgrade in Weeping Peninsula: At the statue in the Fourth Church of Marika, near the peninsula's west coast. Replaces Sacred Tear.
+Flask upgrade in Weeping Peninsula: Under the Golden Seed tree straight north of Castle Morne, leaning right when approaching from Castle Morne Rampart. Replaces Golden Seed.
+Shop in Weeping Peninsula: Sold by the Isolated Merchant at the Isolated Merchant Shack near the southwest shore
+Minor boss in Weeping Peninsula: Dropped by Ancient Hero of Zamor in the Weeping Evergaol, northwest of the Fourth Church of Marika near the west coast. Replaces Radagon's Scarseal.
+Minor boss in Weeping Peninsula: Dropped by the Erdtree Avatar at the Weeping Peninsula Minor Erdtree. Replaces Opaline Bubbletear, Crimsonburst Crystal Tear.
+Minor minidungeon boss in Weeping Peninsula - Earthbore Cave: Dropped by Runebear. Replaces Spelldrake Talisman.
+Minor minidungeon boss in Weeping Peninsula - Impaler's Catacombs: Dropped by Erdtree Burial Watchdog. Replaces Demi-Human Ashes.
+Minor minidungeon boss in Weeping Peninsula - Morne Tunnel: Dropped by Scaly Misbegotten. Replaces Rusted Anchor.
+Minor minidungeon boss in Weeping Peninsula - Tombsward Catacombs: Dropped by Cemetery Shade. Replaces Lhutel the Headless.
+Minor minidungeon boss in Weeping Peninsula - Tombsward Cave: Dropped by Miranda the Blighted Bloom. Replaces Viridian Amber Medallion.
+Minor night boss in Weeping Peninsula: Dropped by the Deathbird up the hill directly north of Castle Morne. They only spawn at night. Replaces Sacrificial Axe.
+Minor night boss in Weeping Peninsula: Dropped by the Night's Calvary at Castle Morne Rampart. They only spawn at night. Replaces Ash of War: Barricade Shield.
+Talisman in Weeping Peninsula: In a chest found dropping down an open grate past the Behind the Castle Site of Grace in Castle Morne, crossing a bridge, and climbing a tower ladder. Replaces Twinblade Talisman.
+
+--- Liurnia
+Key item in Liurnia: Given by Albus the Albinauric in Village of the Albinauric if you roll into him (he is disguised as a pot). Replaces Haligtree Secret Medallion (Right).
+Key item in Liurnia: Guarded by Glintstone Dragon Smarag. Replaces Academy Glintstone Key.
+Key item in Liurnia: In a chest at the topmost of the Belfries. Replaces Imbued Sword Key 2.
+Major boss in Liurnia: Dropped by Royal Knight Loretta. Replaces Loretta's Greatbow.
+Flask upgrade in Liurnia: At the statue in Church of Irith, south of Lake-Facing Cliffs Site of Grace. Replaces Sacred Tear.
+Flask upgrade in Liurnia: Under a Golden Seed tree after Manor Upper Level in Caria Manor. Replaces Golden Seed.
+Flask upgrade in Liurnia: Under a Golden Seed tree near the Ravine-Veiled Village before Ruin-Strewn Precipice. Replaces Golden Seed.
+Flask upgrade in Liurnia: Under a Golden Seed tree to the west of the bottom of the heavily guarded stairway up to South Raya Lucaria Gate. Replaces Golden Seed.
+Shop in Liurnia: Sold by Iji
+Shop in Liurnia: Sold by Pidia. He can be found by dropping back down into Caria Manor off a cliffedge from the Three Sisters
+Shop in Liurnia: Sold by the Nomadic Merchant by the Liurnia Lake Shore Site of Grace
+Minor boss in Liurnia: Dropped by Adan, Thief of Fire in the Malefactor's Evergaol. Replaces Flame of the Fell God.
+Minor boss in Liurnia: Dropped by Alecto, Black Knife Ringleader in Ringleader's Evergaol. Replaces Black Knife Tiche.
+Minor boss in Liurnia: Dropped by Bols, Carian Knight in Cuckoo's Evergaol. Replaces Greatblade Phalanx.
+Minor boss in Liurnia: Dropped by Erdtree Avatar at the Minor Erdtree north of Converted Tower in West Liurnia. Replaces Cerulean Crystal Tear, Ruptured Crystal Tear.
+Minor boss in Liurnia: Dropped by Glintstone Dragon Adula. Replaces Dragon Heart 3x.
+Minor boss in Liurnia: Dropped by Glintstone Dragon Smarag. Replaces Dragon Heart.
+Minor boss in Liurnia: Dropped by Omenkiller in Village of the Albinaurics, across the stone bridge from the Site of Grace. Replaces Crucible Knot Talisman.
+Minor boss in Liurnia: Dropped by the Onyx Lord in the Royal Grave Evergaol. Replaces Meteorite.
+Minor boss in Liurnia: Dropped by the Tibia Mariner down the hill from Artist's Shack, to the south. Replaces Deathroot.
+Minor minidungeon boss in Liurnia - Academy Crystal Cave: Dropped by Crystallians. Replaces Crystal Release.
+Minor minidungeon boss in Liurnia - Black Knife Catacombs: Dropped by Black Knife Assassin. Replaces Assassin's Cerulean Dagger.
+Minor minidungeon boss in Liurnia - Black Knife Catacombs: Dropped by Cemetery Shade. Replaces Twinsage Sorcerer Ashes.
+Minor minidungeon boss in Liurnia - Cliffbottom Catacombs: Dropped by Erdtree Burial Watchdog. Replaces Kaiden Sellsword Ashes.
+Minor minidungeon boss in Liurnia - Lakeside Crystal Cave: Dropped by Bloodhound Knight. Replaces Cerulean Amber Medallion.
+Minor minidungeon boss in Liurnia - Raya Lucaria Crystal Tunnel: Dropped by Crystallian. Replaces Smithing-Stone Miner's Bell Bearing [1].
+Minor minidungeon boss in Liurnia - Road's End Catacombs: Dropped by Spiritcaller Snail. Replaces Glintstone Sorcerer Ashes.
+Minor minidungeon boss in Liurnia - Stillwater Cave: Dropped by Cleanrot Knight. Replaces Winged Sword Insignia.
+Minor night boss in Liurnia: Dropped by the Bell Bearing Hunter who invades at Church of Vows at night. Replaces Meat Peddler's Bell Bearing.
+Minor night boss in Liurnia: Dropped by the Death Rite Bird south of Gate Town North. They only spawn at night. Replaces Ancient Death Rancor.
+Minor night boss in Liurnia: Dropped by the Deathbird north of the Scenic Isle Site of Grace. They only spawn at night. Replaces Red-Feathered Branchsword.
+Minor night boss in Liurnia: Dropped by the Night's Calvary east of the Gate Town Bridge Site of Grace. They only spawn at night. Replaces Ash of War: Ice Spear.
+Minidungeon talisman in Liurnia - Lakeside Crystal Cave: In a chest guarded by a Demi-Human Chief. Replaces Spear Talisman.
+Talisman in Liurnia: In a chest in Lunar Estate Ruins, behind an Imp Statue barrier. Replaces Cerulean Amber Medallion +2.
+
+--- Bellum Highway
+Flask upgrade in Bellum Highway: At the statue in Church of Inhibition. Replaces Sacred Tear.
+Flask upgrade in Bellum Highway: At the very interesting statue in Bellum Church. Replaces Sacred Tear.
+Shop in Bellum Highway: Sold by Nomadic Merchant down the cliffside pathway from Bellum Church
+Minor boss in Bellum Highway: Dropped by Erdtree Avatar at the Minor Erdtree south of Frenzied Flame Village in East Liurnia. Replaces Magic-Shrouding Cracked Tear, Lightning-Shrouding Cracked Tear, Holy-Shrouding Cracked Tear.
+Minor night boss in Bellum Highway: Dropped by the Night's Calvary between East Raya Lucaria Gate and Bellum Church. They only spawn at night. Replaces Ash of War: Giant Hunt.
+Talisman in Bellum Highway: In front of a house in Frenzied Flame Village with many soldiers milling about. Replaces Shabriri's Woe.
+
+--- Academy of Raya Lucaria
+Key item in Academy of Raya Lucaria: In a chest unlocked by Discarded Palace Key in the Raya Lucaria Grand Library. Replaces Dark Moon Ring.
+Key item in Academy of Raya Lucaria: On a robed corpse in a rooftop side path, accessed by looping around from Debate Parlor by dropping down past the rubble-strewn stairs. Replaces Imbued Sword Key.
+Major boss in Academy of Raya Lucaria: Dropped by Red Wolf of Radagon. Replaces Memory Stone.
+Major boss in Academy of Raya Lucaria: Dropped by Rennala. Replaces Great Rune of the Unborn, Remembrance of the Full Moon Queen.
+Flask upgrade in Academy of Raya Lucaria: Under a Golden Seed tree in the courtyard after Debate Parlor, along a cliffside in the back right. Replaces Golden Seed.
+Flask upgrade in Academy of Raya Lucaria: Under a Golden Seed tree on a bridge to north of the Main Academy Gate. Replaces Golden Seed.
+Shop in Academy of Raya Lucaria: Sold by Isolated Merchant southeast of Main Academy Gate
+Talisman in Academy of Raya Lucaria: In a chest found dropping down in the garden to the left of the elevator to the Grand Library, then up a ladder. Replaces Glintstone Scarab.
+Talisman in Academy of Raya Lucaria: In a chest found on the second floor of Debate Parlor, found by dropping down immediately to the right after Debate Parlor, then up a ladder and through a broken window. Replaces Radagon Icon.
+Talisman in Academy of Raya Lucaria: In a pile of crystals behind an illusory wall before Debate Parlor on the left, then dropping down to a second room. Replaces Graven-School Talisman.
+Talisman in Academy of Raya Lucaria: On a corpse at the bottom of the giant rotating lift, guarded by an Iron Virgin. Replaces Longtail Cat Talisman.
+
+--- Siofra River
+Major boss in Siofra River: Dropped by Ancestor Spirit. Replaces Ancestral Follower Ashes.
+Flask upgrade in Siofra River: Under a Golden Seed tree past a narrow bridge connecting Worshipper's Woods to Siofra Aqueduct (heading northwest). Replaces Golden Seed.
+Shop in Siofra River: Sold by the Abandoned Merchant overlooking the Giant Miranda Flower. He can be found by ascending up wooden scaffolding near Worshippers' Woods and dropping down towards a short tunnel
+Minor boss in Siofra River: Dropped by Dragonkin Soldier. They can be reached either from Nokron or from a sending gate in Siofra River. Replaces Dragon Halberd.
+Talisman in Siofra River: On the stairs leading up to the Deep Siofra Well. Replaces Clarifying Horn Charm.
+Talisman in Siofra River: Under a waterfall on the right edge of where Dragonkin Soldier can be fought. It can be reached either from Nokron or from a sending gate in Siofra River. Replaces Marika's Scarseal.
+
+--- Ainsel River
+Major boss in Ainsel River: Dropped by Astel, Naturalborn of the Void. Replaces Remembrance of the Naturalborn.
+Major boss in Ainsel River: Dropped by Dragonkin Soldier of Nokstella. Replaces Frozen Lightning Spear.
+Flask upgrade in Ainsel River: Under a Golden Seed tree on a cliffside overlooking the elevator down to Nokstella Waterfall Basin. Replaces Golden Seed.
+Shop in Ainsel River: Sold by the Hermit Merchant in the alcove past the rock-slinging Malformed Star
+Talisman in Ainsel River: Guarded by several giant ants shortly after Ainsel River Downstream. Replaces Immunizing Horn Charm.
+Talisman in Ainsel River: In a lidded chest at the very top of the long series of stairs from Nokstella, Eternal City. Replaces Moon of Nokstella.
+
+--- Divine Tower of Liurnia
+Key item in Divine Tower of Liurnia: At the top of the Divine Tower of Liurnia, accessed after traversing Carian Study Hall. Replaces Cursemark of Death.
+Talisman in Divine Tower of Liurnia: On the second level of rafters in Carian Study Hall. Replaces Cerulean Seed Talisman.
+
+--- Caelid
+Key item in Caelid: In a chest hidden behind a magical barrier in Sellia, accessed by lighting flames around town. Replaces Imbued Sword Key 3.
+Major boss in Caelid: Dropped by Starscourge Radahn. Replaces Radahn's Great Rune, Remembrance of the Starscourge.
+Flask upgrade in Caelid: At the statue in Church of the Plague. Replaces Sacred Tear.
+Flask upgrade in Caelid: Under a Golden Seed tree on the road from Southern Aeonia Swamp Bank to Impassable Greatbridge. Replaces Golden Seed.
+Flask upgrade in Caelid: Under a Golden Seed tree up the stairs at the north end of Sellia. Replaces Golden Seed.
+Shop in Caelid: Sold by the Nomadic Merchant between Astray from Caelid Highway North and Aeonia Swamp Shore
+Shop in Caelid: Sold by the Nomadic Merchant southwest of southern Aeonia Swamp Bank
+Minor boss in Caelid: Dropped by Commander O'Neil in the Heart of Aeonia. Replaces Commander's Standard.
+Minor boss in Caelid: Dropped by Decaying Ekzykes, south of the Caelid Highway South Site of Grace. Replaces Dragon Heart.
+Minor boss in Caelid: Dropped by Nox Swordstress and Nox Priest in the Sellia Chair-Crypt, accessed by lighting flames around town and continuing north. Replaces Nox Flowing Sword.
+Minor boss in Caelid: Dropped by Putrid Avatar down the hill northeast of Smoldering Church. Replaces Greenburst Crystal Tear, Flame-Shrouding Cracked Tear.
+Minor boss in Caelid: Dropped by the Crucible Knight and Misbegotten Warrior at Redmane Castle. They can be accessed either before triggering the Radahn Festival or after defeating him and talking to Jerren. Replaces Ruins Greatsword.
+Minor minidungeon boss in Caelid - Abandoned Cave: Dropped by Cleanrot Knights. Replaces Gold Scarab.
+Minor minidungeon boss in Caelid - Gael Tunnel: Dropped by Magma Wyrm. Replaces Dragon Heart.
+Minor minidungeon boss in Caelid - Gaol Cave: Dropped by Grave Warden Duelist. Replaces Putrid Corpse Ashes.
+Minor minidungeon boss in Caelid - Minor Erdtree Catacombs: Dropped by Erdtree Burial Watchdog. Replaces Mad Pumpkin Head Ashes.
+Minor minidungeon boss in Caelid - Sellia Crystal Tunnel: Dropped by Fallingstar Beast. Replaces Somber Smithing Stone [6].
+Minor minidungeon boss in Caelid - War-Dead Catacombs: Dropped by Putrid Tree Spirit. Replaces Redmane Knight Ogha.
+Minor minidungeon boss in Caelid Catacombs: Dropped by Cemetery Shade. Replaces Kindred of Rot Ashes.
+Minor night boss in Caelid: Dropped by the Death Rite Bird southeast of Southern Aeonia Swamp Bank Site of Grace. They only spawn at night. Replaces Death's Poker.
+Minor night boss in Caelid: Dropped by the Night's Calvary west of Southern Aeonia Swamp Bank Site of Grace. They only spawn at night. Replaces Ash of War: Poison Moth Flight.
+Minidungeon talisman in Caelid - Sellia Crystal Tunnel: Guarded by several Kindred of Rot shortly before the area boss. Replaces Faithful's Canvas Talisman.
+Talisman in Caelid: In a chest at the top of Fort Gael. Replaces Starscourge Heirloom.
+Talisman in Caelid: In a chest at the top of the tower on the west side of Impassable Greatbridge. Replaces Arrow's Sting Talisman.
+Talisman in Caelid: In a chest hidden behind a magical barrier in Sellia, accessed by lighting flames around town. Replaces Spelldrake Talisman +1.
+
+--- Dragonbarrow
+Key item in Dragonbarrow: In a chest up the first ladder at Fort Faroth. Replaces Dectus Medallion (Right).
+Flask upgrade in Dragonbarrow: Under a Golden Seed tree on the road from Farum Greatbridge from Bestial Sanctum. Replaces Golden Seed.
+Shop in Dragonbarrow: Sold by the Isolated Merchant at Isolated Merchant's Shack
+Minor boss in Dragonbarrow: Dropped by Battlemage Hugues in the Sellia Evergaol, atop a cliff overlooking Sellia, accessible from the Dragonbarrow West Site of Grace. Replaces Battlemage Hugues.
+Minor boss in Dragonbarrow: Dropped by Black Blade Kindred in front of Bestial Sanctum. Replaces Gargoyle's Blackblade.
+Minor boss in Dragonbarrow: Dropped by Flying Dragon Greyll on Farum Greatbridge. Replaces Dragon Heart.
+Minor boss in Dragonbarrow: Dropped by the Putrid Avatar at the Dragonbarrow Minor Erdtree. Replaces Opaline Hardtear, Stonebarb Cracked Tear.
+Minor minidungeon boss in Dragonbarrow - Sellia Hideaway: Dropped by Putrid Crystallians. Replaces Crystal Torrent.
+Minor minidungeon boss in Dragonbarrow Cave: Dropped by Beastman of Farum Azula. Replaces Flamedrake Talisman +2.
+Minor night boss in Dragonbarrow: Dropped by the Bell Bearing Hunter who invades at Isolated Merchant's Shack at night. Replaces Gravity Stone Peddler's Bell Bearing.
+Minor night boss in Dragonbarrow: Dropped by the Night's Calvary on the smaller bridge to the east of Farum Greatbridge. They only spawn at night. Replaces Ash of War: Bloodhound's Step.
+Minidungeon talisman in Dragonbarrow Cave: Surrounded by wildlife, down a tunnel guarded by a Runebear. Replaces Bull-Goat's Talisman.
+Talisman in Dragonbarrow: On a corpse found after doing a long series of dropdowns behind Bestial Sanctum. Replaces Dragoncrest Shield Talisman.
+Talisman in Dragonbarrow: On the ground floor of Fort Faroth. Requires ascending to the upper level, descending a ladder to some wooden scaffolding, jumping a gap, and dropping down after a giant rat. Replaces Radagon's Soreseal.
+
+--- Ruin-Strewn Precipice
+Major boss in Ruin-Strewn Precipice: Dropped by Magma Wyrm Makar. Replaces Magma Wyrm's Scalesword.
+
+--- Altus Plateau
+Major boss in Altus Plateau: Dropped by Elemer of the Briar. Replaces Marais Executioner's Sword.
+Flask upgrade in Altus Plateau: At the statue in Stormcaller Church, south of Sainted Hero's Grave. Replaces Sacred Tear.
+Flask upgrade in Altus Plateau: At the statue in the Second Church of Marika (blood dog haunts). Replaces Sacred Tear.
+Flask upgrade in Altus Plateau: Under a Golden Seed tree down the southeast road from Windmill Village. Replaces Golden Seed.
+Flask upgrade in Altus Plateau: Under a Golden Seed tree found up the stairs from Outer Wall Phantom Tree. Replaces Golden Seed.
+Flask upgrade in Altus Plateau: Under a Golden Seed tree next to the Erdtree-Gazing Hill Site of Grace. Replaces Golden Seed.
+Flask upgrade in Altus Plateau: Under a Golden Seed tree, found north of the Altus Highway Junction Site of Grace. Replaces Golden Seed.
+Flask upgrade in Altus Plateau: Under a Golden Seed tree, found north of the Altus Plateau Minor Erdtree. Replaces Golden Seed.
+Flask upgrade in Altus Plateau: Under the Golden Seed tree at Outer Wall Phantom Tree. Replaces Golden Seed.
+Shop in Altus Plateau: Sold by the Nomadic Merchant at the southern end of the Forest-Spanning Greatbridge
+Minor boss in Altus Plateau: Dropped by Ancient Dragon Lansseax up the hill from Abandoned Coffin. Replaces Lansseax's Glaive.
+Minor boss in Altus Plateau: Dropped by Fallingstar Beast to the south of Tree Sentinel Duo, veering right on the path from Altus Highway Junction to Outer Wall Phantom Tree. Replaces Somber Smithing Stone [5].
+Minor boss in Altus Plateau: Dropped by Godefroy the Grafted in the Golden Lineage Evergaol. Replaces Godfrey Icon.
+Minor boss in Altus Plateau: Dropped by Godskin Apostle at the elevated north cliffside of Windmill Village. Replaces Godskin Peeler.
+Minor boss in Altus Plateau: Dropped by the Black Knight Assassin camping out in front of Sainted Hero's Grave. Replaces Black Knife.
+Minor boss in Altus Plateau: Dropped by the Tibia Mariner in Wyndham Ruins. Replaces Deathroot.
+Minor boss in Altus Plateau: Dropped by Tree Sentinel Duo, at the top of the stairs from Altus Highway Junction to Outer Wall Phantom Tree. Replaces Erdtree Greatshield.
+Minor boss in Altus Plateau: Dropped by Wormface at the Altus Plateau Minor Erdtree. Replaces Crimsonspill Crystal Tear, Speckled Hardtear.
+Minor minidungeon boss in Altus Plateau - Perfumer's Grotto: Dropped by Omenkiller and Giant Miranda Flower. Replaces Great Omenkiller Cleaver.
+Minor minidungeon boss in Altus Plateau - Sage's Cave: Dropped by Black Knife Assassin. Replaces Concealing Veil.
+Minor minidungeon boss in Altus Plateau - Sage's Cave: Dropped by Necromancer Garris. Replaces Family Heads.
+Minor minidungeon boss in Altus Plateau - Sainted Hero's Grave: Dropped by Ancient Hero of Zamor. Replaces Ancient Dragon Knight Kristoff.
+Minor minidungeon boss in Altus Plateau - Unsightly Catacombs: Dropped by Perfumer Tricia and Misbegotten Warrior. Replaces Perfumer Tricia.
+Minor minidungeon boss in Altus Tunnel: Dropped by Crystallians. Replaces Somberstone Miner's Bell Bearing [2].
+Minor minidungeon boss in Capital Outskirts - Sealed Tunnel: Dropped by Onyx Lord. Replaces Onyx Lord's Greatsword.
+Minor minidungeon boss in Old Altus Tunnel: Dropped by Stonedigger Troll. Replaces Great Club.
+Minor night boss in Altus Plateau: Dropped by the Deathbird straight east of the Hermit Merchant's Shack. They only spawn at night. Replaces Twinbird Kite Shield.
+Minor night boss in Altus Plateau: Dropped by the Night's Calvary on the road from the Grand Lift of Dectus to Altus Highway Junction. They only spawn at night. Replaces Ash of War: Shared Order.
+Minidungeon talisman in Altus Plateau - Sainted Hero's Grave: Past an Imp Statue barrier beside the Site of Grace. Replaces Crimson Seed Talisman.
+Minidungeon talisman in Altus Plateau - Sainted Hero's Grave: Past an Imp Statue barrier deep in the Catacombs, riding a giant slicing blade to an upper level. Replaces Dragoncrest Shield Talisman +1.
+Minidungeon talisman in Altus Tunnel: From a sidepath deep in the tunnel, on top of a wooden structure which requires dropping down to a branch to access. The rock-slinging Malformed Star from Perfumer's Grotto will attack you here as well. Replaces Arsenal Charm +1.
+Minidungeon talisman in Old Altus Tunnel: In a shack up a ladder from the main mining shaft. Replaces Boltdrake Talisman +1.
+Talisman in Altus Plateau: In a chest after defeating Demi-Human Queen Gilika, down some stairs in Lux Ruins, North of the Altus Plateau Site of Grace. Replaces Ritual Sword Talisman.
+Talisman in Altus Plateau: In a chest down some stairs past an Imp Statue barrier in Wyndham Ruins. Replaces Pearldrake Talisman +1.
+Talisman in Altus Plateau: In a chest under Perfumer's Ruins, found by breaking wooden boards on the ground beside a Giant Miranda Flower. Replaces Perfumer's Talisman.
+
+--- Capital Outskirts
+Shop in Capital Outskirts: Sold by the Hermit Merchant at the Hermit's Merchant Shack
+Minor boss in Capital Outskirts: Dropped by Draconic Tree Sentinel before Capital Rampart. Replaces Dragon Greatclaw.
+Minor minidungeon boss in Capital Outskirts - Auriza Hero's Grave: Dropped by Crucible Knight Duo. Replaces Ordovis's Greatsword.
+Minor minidungeon boss in Capital Outskirts - Auriza Side Tomb: Dropped by Grave Warden Duelist. Replaces Soldjars of Fortune Ashes.
+Minor night boss in Capital Outskirts: Dropped by the Bell Bearing Hunter who invades at Hermit Merchant's Shack at night. Replaces Medicine Peddler's Bell Bearing.
+Minidungeon talisman in Capital Outskirts - Auriza Hero's Grave: Guarded by an Omen deep in the Grave, found dropping down to wooden beams to the left of pillars between two Merciless Chariot patrol routes, up a ladder, and going further down stairs into a tunnel. Replaces Crucible Feather Talisman.
+
+--- Leyndell
+Key item in Leyndell: Given by Melania after defeating Morgott. Replaces Rold Medallion.
+Major boss in Leyndell: Dropped by Godfrey, First Elden Lord, in the Erdtree Sanctuary. Replaces Talisman Pouch.
+Major boss in Leyndell: Dropped by Morgott the Omen King. Replaces Morgott's Great Rune, Remembrance of the Omen King.
+Flask upgrade in Leyndell: Under the Golden Seed tree down the hall from West Capital Rampart, up the giant dragon's wing. Replaces Golden Seed.
+Talisman in Leyndell: On a corpse in front of the Coliseum after West Capital Rampart. Replaces Ritual Shield Talisman.
+
+--- Leyndell Divine Bridge
+Talisman in Leyndell Divine Bridge: In the chest on Divine Bridge. Replaces Blessed Dew Talisman.
+
+--- Divine Tower of East Altus
+Minor boss in Divine Tower of East Altus: Dropped by Fell Twins. Replaces Omenkiller Rollo.
+Talisman in Divine Tower of East Altus: At the top of the stairs leading to the Divine Tower of East Altus and Forbidden Lands. Replaces Flamedrake Talisman +1.
+
+--- Subterranean Shunning-Grounds
+Major boss in Subterranean Shunning-Grounds: Dropped by Mohg the Omen. Replaces Bloodflame Talons.
+Minor minidungeon boss in Leyndell Catacombs: Dropped by Esgar, Priest of Blood. Replaces Lord of Blood's Exultation.
+Minidungeon talisman in Leyndell Catacombs: Behind two illusory walls beside a soldier-summoning Spiritcaller Snail, in the shortcut path up an elevator from Leyndell Catacombs Site of Grace. Replaces Haligdrake Talisman +1.
+Minidungeon talisman in Leyndell Catacombs: Guarded by an Omen. Replaces Crucible Scale Talisman.
+Talisman in Subterranean Shunning-Grounds: In a chest after defeating Mohg the Omen. Replaces Erdtree's Favor +1.
+
+--- Deeproot Depths
+Minor boss in Deeproot Depths: Dropped by Crucible Knight Siluria. Replaces Siluria's Tree.
+Minor boss in Deeproot Depths: Dropped by Fia's Champion. Replaces Fia's Mist.
+
+--- Divine Tower of Caelid
+Minor boss in Divine Tower of Caelid: Dropped by Godskin Apostle. Replaces Godskin Apostle Hood.
+
+--- Nokron, Eternal City
+Major boss in Nokron, Eternal City: Dropped by Mimic Tear. Replaces Larval Tear 2x.
+Major boss in Nokron, Eternal City: Dropped by Regal Ancestor Spirit. Replaces Remembrance of the Regal Ancestor.
+Major boss in Nokron, Eternal City: Dropped by Valiant Gargoyles after Siofra Aqueduct. Replaces Gargoyle's Greatsword.
+Talisman in Nokron, Eternal City: In the room before dropping down to the statue and then lake where Dragonkin Soldier is located. Replaces Clarifying Horn Charm +1.
+Talisman in Nokron, Eternal City: On top of stone beams overlooking the Horned Remains, accessed from a path to the left of Hallowhorn Grounds. Replaces Mottled Necklace +1.
+
+--- Mt. Gelmir
+Flask upgrade in Mt. Gelmir: Under a Golden Seed tree before the Road of Iniquity Site of Grace. Replaces Golden Seed.
+Flask upgrade in Mt. Gelmir: Under a Golden Tree found following Seethwater River north. Replaces Golden Seed.
+Shop in Mt. Gelmir: Sold by the Nomadic Merchant in the long ladder section before Ninth Mt. Gelmir Campsite
+Minor boss in Mt. Gelmir: Dropped by Demi-Human Queen Maggie in Hermit Village. Replaces Memory Stone.
+Minor boss in Mt. Gelmir: Dropped by Full-Grown Fallingstar Beast after Ninth Mt. Gelmir Campsite. Replaces Somber Smithing Stone [6].
+Minor boss in Mt. Gelmir: Dropped by the Magma Wyrm behind Fort Laiedd. Replaces Dragon Heart.
+Minor boss in Mt. Gelmir: Dropped by the Ulcerated Tree Spirit at the Mt. Gelmir Minor Erdtree. Replaces Leaden Hardtear, Cerulean Hidden Tear.
+Minor minidungeon boss in Mt. Gelmir - Gelmir Hero's Grave: Dropped by Red Wolf of the Champion. Replaces Bloodhound Knight Floh.
+Minor minidungeon boss in Mt. Gelmir - Seethewater Cave: Dropped by Kindred of Rot. Replaces Kindred of Rot's Exultation.
+Minor minidungeon boss in Mt. Gelmir - Volcano Cave: Dropped by Demi-Human Queen Margot. Replaces Jar Cannon.
+Minor minidungeon boss in Mt. Gelmir - Wyndham Catacombs: Dropped by Erdtree Burial Watchdog. Replaces Glovewort Picker's Bell Bearing [1].
+Minidungeon talisman in Mt. Gelmir - Wyndham Catacombs: Past an Imp Statue barrier deep in the Catacombs, found up a ladder. Replaces Lightning Scorpion Charm.
+Talisman in Mt. Gelmir: Found at the top of Fort Laiedd. Requires jumping on top of the wall and doing parkour to find the guy saying "They'll never find me". Replaces Fire Scorpion Charm.
+
+--- Volcano Manor
+Key item in Volcano Manor: Given by Tanith upon joining Volcano Manor. Replaces Drawing-Room Key.
+Major boss in Volcano Manor: Dropped by Godskin Noble. Replaces Godskin Stitcher.
+Major boss in Volcano Manor: Dropped by Rykard. Replaces Rykard's Great Rune, Remembrance of the Blasphemous.
+Minor boss in Volcano Manor: Dropped by Abductor Virgins. Replaces Inquisitor's Girandole.
+Talisman in Volcano Manor: From an Imp Statue barrier in the building with the Sending Gate to Audience Pathway, enter the dark room with hanging cages, drop off immediately to the right, and enter through a narrow crevice. Replaces Dagger Talisman.
+Talisman in Volcano Manor: In a tower sealed by an Imp Statue all the way down the path from Prison Town Church. Replaces Crimson Amber Medallion +1.
+
+--- Lake of Rot
+Minor boss in Lake of Rot: Dropped by Dragonkin Soldier. Replaces Dragonscale Blade.
+Talisman in Lake of Rot: Dropped by the lost Ancestral Follower near the start of the lake. Replaces Immunizing Horn Charm +1.
+
+--- Forbidden Lands
+Flask upgrade in Forbidden Lands: Under a Golden Seed tree in Forbidden Lands before the stairs to the Grand Lift of Rold. Replaces Golden Seed.
+Minor boss in Forbidden Lands: Dropped by Black Blade Kindred before the Grand Lift of Rold. Replaces Gargoyle's Black Blades.
+Minor night boss in Forbidden Lands: Dropped by the Night's Calvary on the path from Forbidden Lands to the Grand Lift of Rold. They only spawn at night. Replaces Ash of War: Phantom Slash.
+
+--- Mountaintops of the Giants
+Key item in Mountaintops of the Giants: Atop a tower after defeating Commander Niall. Replaces Haligtree Secret Medallion (Left).
+Major boss in Mountaintops of the Giants: Dropped by Commander Niall in Castle Sol. Replaces Veteran's Prosthesis.
+Flask upgrade in Mountaintops of the Giants: At a statue in the First Church of Marika at the southmost end of Freezing Lake. Replaces Sacred Tear.
+Flask upgrade in Mountaintops of the Giants: Under a Golden Seed tree overlooking a chasm along the right wall of the ascent from Ancient Snow Value Ruins, south of the Freezing Lake Site of Grace. Replaces Golden Seed.
+Shop in Mountaintops of the Giants: Sold by the Hermit Merchant along a cliffside to the west of Stargazer's Ruins
+Minor boss in Mountaintops of the Giants: Dropped by Borealis the Freezing Fog. Replaces Dragon Heart.
+Minor boss in Mountaintops of the Giants: Dropped by Roundtable Knight Vyke in the Lord Contender's Evergaol. Replaces Vyke's Dragonbolt.
+Minor boss in Mountaintops of the Giants: Dropped by self-cloning Erdtree Avatars. Replaces Cerulean Crystal Tear, Crimson Bubbletear.
+Minor boss in Mountaintops of the Giants: Dropped by the Death Rite Bird on the way from Snow Valley Ruins Overlook to Castle Sol. Replaces Death Ritual Spear.
+Minor minidungeon boss in Flame Peak - Giants' Mountaintop Catacombs: Dropped by Ulcerated Tree Spirit. Replaces Golden Seed.
+Minor minidungeon boss in Mountaintops - Spiritcaller Cave: Dropped by Spiritcaller Snail (Godskin Summoner). Replaces Godskin Swaddling Cloth.
+
+--- Flame Peak
+Major boss in Flame Peak: Dropped by Fire Giant. Replaces Remembrance of the Fire Giant.
+Flask upgrade in Flame Peak: At the statue in Church of Repose, in southwest Flame Peak. Replaces Sacred Tear.
+Flask upgrade in Flame Peak: North of Foot of the Forge Site of Grace. Replaces Golden Seed.
+Minor minidungeon boss in Flame Peak - Giant-Conquering Hero's Grave: Dropped by Ancient Hero of Zamor. Replaces Zamor Curved Sword.
+
+--- Farum Azula
+Major boss in Farum Azula: Dropped by Dragonlord Placidusax. Replaces Remembrance of the Dragonlord.
+Major boss in Farum Azula: Dropped by Godskin Duo. Replaces Smithing-Stone Miner's Bell Bearing [4].
+Major boss in Farum Azula: Dropped by Maliketh, the Black Blade. Replaces Remembrance of the Black Blade.
+Flask upgrade in Farum Azula: After using a Stonesword Key and ascending Dragon Temple Lift, past a plaza fountain. Replaces Golden Seed.
+Flask upgrade in Farum Azula: Under a Golden Seed tree guarded by four eagles. From Dragon Temple Rooftop, descend to the platform with the low-health AOE-spamming dragon, and double back along the right edge until you see a thatched red rooftop. Jump the gap to it and jump up again to find the tree. Replaces Golden Seed.
+Talisman in Farum Azula: At the end of a long path dropping down to the left of the low-health AOE-spamming dragon after Dragon Temple Rooftop, up a ladder, an elevator, and another ladder. Replaces Boltdrake Talisman +2.
+Talisman in Farum Azula: Hidden on some floating rubble underneath other rubble right before the building with the Crucible Knight and Dragon Temple Rooftop Site of Grace. Replaces Dragoncrest Shield Talisman +2.
+Talisman in Farum Azula: In a lidded chest behind where Recusant Bernahl invades, down the Great Bridge in the opposite direction from Maliketh. Replaces Old Lord's Talisman.
+
+--- Chapel of Anticipation
+Minor boss in Chapel of Anticipation: Dropped by Grafted Scion. Replaces Ornamental Straight Sword.
+
+--- Farum Azula via Belfries
+Talisman in Farum Azula via Belfries: After a series of dropdowns in the isolated debris. Replaces Pearldrake Talisman.
+
+--- Siofra River via Belfries
+Talisman in Siofra River via Belfries: On a ledge overlooking Siofra River and Nokron in the distance. Replaces Mottled Necklace.
+
+--- Consecrated Snowfield
+Flask upgrade in Consecrated Snowfield: Under a Golden Seed tree in Ordina, Liturgical Town. Replaces Golden Seed.
+Flask upgrade in Consecrated Snowfield: Under a Golden Seed tree in the foggy area northeast of the Consecrated Snowfield Site of Grace. Replaces Golden Seed.
+Minor boss in Consecrated Snowfield: Dropped by Great Wyrm Theodrix at the base of the frozen waterfall, east of the Inner Consecrated Snowfield Site of Grace. Replaces Dragon Heart 3x.
+Minor boss in Consecrated Snowfield: Dropped by the Putrid Avatar at the Consecrated Snowfield Minor Erdtree. Replaces Thorny Cracked Tear, Ruptured Crystal Tear.
+Minor minidungeon boss in Consecrated Snowfield - Cave of the Forlorn: Dropped by Misbegotten Crusader. Replaces Golden Order Greatsword.
+Minor minidungeon boss in Consecrated Snowfield - Yelough Anix Tunnel: Dropped by Astel, Stars of Darkness. Replaces Meteorite of Astel.
+Minor minidungeon boss in Consecrated Snowfield Catacombs: Dropped by Putrid Grave Warden Duelist. Replaces Great Grave Glovewort 2x.
+Minor minidungeon boss in Hidden Path to the Haligtree: Dropped by Stray Mimic Tear. Replaces Blackflame Monk Amon.
+Minor night boss in Consecrated Snowfield: Dropped by a Death Rite Bird at the north end of the frozen-over river, between Ordina and Apostate Derelict. They only spawn at night. Replaces Explosive Ghostflame.
+Minor night boss in Consecrated Snowfield: Dropped by the Night's Calvary Duo tagging alongside the Caravan southwest of Inner Consecrated Snowfield Site of Grace. They only spawn at night. Replaces Ancient Dragon Smithing Stone, Night's Cavalry Helm.
+Minidungeon talisman in Hidden Path to the Haligtree: From the doors to Stray Mimic Tear, head right and up the elevator looping back to the start of the area. Replaces Spelldrake Talisman +2.
+Talisman in Consecrated Snowfield: Guarded by Ancestral Followers to the east of Yelough Anix Ruins. Replaces Stalwart Horn Charm +1.
+
+--- Haligtree
+Major boss in Haligtree: Dropped by Loretta, Knight of the Haligtree. Replaces Loretta's Mastery.
+Major boss in Haligtree: Dropped by Malenia. Replaces Malenia's Great Rune, Remembrance of the Rot Goddess.
+Talisman in Haligtree: In a chest found dropping down twice past Haligtree Town Plaza and doubling back to jump down to a storage room in the reverse direction. Replaces Viridian Amber Medallion +2.
+Talisman in Haligtree: In a chest, guarded by many Kindred of Rot, accessed through a hole in the roof of a building after Drainage Channel. Replaces Dragoncrest Greatshield Talisman.
+Talisman in Haligtree: Past an Imp Statue barrier found dropping down from the bridge with the patrolling Putrid Avatar. Replaces Marika's Soreseal.
+Talisman in Haligtree: Up a ladder after the Haligtree Town Site of Grace then jumping across the gap. Replaces Pearldrake Talisman +2.
+
+--- Mohgwyn
+Major boss in Mohgwyn: Dropped by Mohg, Lord of Blood. Replaces Mohg's Great Rune, Remembrance of the Blood Lord.
+Flask upgrade in Mohgwyn: Under a Golden Seed tree in the lake of blood, visible from the first Site of Grace. Replaces Golden Seed.
+Shop in Mohgwyn: Sold by the Imprisoned Merchant in the cave with Sanguine Nobles before Dynasty Mausoleum Midpoint
+Talisman in Mohgwyn: Among graves on the southwest cliffside of the lake of blood. Replaces Haligdrake Talisman +2.
+
+--- Ashen Leyndell
+Major boss in Ashen Leyndell: Dropped by Hoarah Loux. Replaces Remembrance of Hoarah Loux.
+Minor boss in Ashen Leyndell: Dropped by Gideon. Replaces Scepter of the All-Knowing.
+Talisman in Ashen Leyndell: Guarded by three Ulcerated Tree Spirits, on a tree branch jutting out of the ash found backtracking from the Forbidden Lands Site of Grace. Replaces Erdtree's Favor +2.
+Talisman in Ashen Leyndell: Hanging on a beam accessible by dropping down from Leyndell, Capital of Ash. Replaces Crimson Amber Medallion +2.
+
+--- Stone Platform
+Major boss in Stone Platform: Dropped by Elden Beast. Replaces Elden Remembrance.
+

@@ -277,6 +277,334 @@ namespace RandomizerCommon
             serializer.Serialize(Console.Out, chests.Values.OrderBy(c => (c.Map, c.Name)));
         }
 
+        public void WriteEldenItemEvents(LocationData data)
+        {
+            Dictionary<int, List<int>> additionalEvents = new Dictionary<int, List<int>>();
+            additionalEvents = EldenLocationDataScraper.equivalentEvents.GroupBy(t => t.Value).ToDictionary(t => t.Key, t => t.Select(s => s.Key).ToList());
+            SortedDictionary<int, List<string>> flagItems = new SortedDictionary<int, List<string>>();
+            foreach (KeyValuePair<ItemKey, ItemLocations> item in data.Data)
+            {
+                foreach (ItemLocation loc in item.Value.Locations.Values)
+                {
+                    if (loc.Scope.Type == ItemScope.ScopeType.EVENT)
+                    {
+                        List<int> flags = new List<int> { loc.Scope.ID };
+                        if (additionalEvents.TryGetValue(loc.Scope.ID, out List<int> dupe)) flags.AddRange(dupe);
+                        foreach (int eventFlag in flags)
+                        {
+                            AddMulti(flagItems, eventFlag, game.Name(item.Key));
+                            if (eventFlag >= 60000 && eventFlag < 70000)
+                            {
+                                // Console.WriteLine($"{eventFlag}: {game.Name(item.Key)}");
+                            }
+                        }
+                    }
+                }
+            }
+            Dictionary<(int, int), (int, int)> flagPositions = new Dictionary<(int, int), (int, int)>
+            {
+                [(3, 0)] = (1, 1),
+                [(3, 1)] = (1, 2),
+                [(3, 10)] = (1, 2),
+                [(3, 12)] = (1, 1),
+                [(1003, 0)] = (1, 1),
+                [(1003, 1)] = (1, 1),
+                [(1003, 2)] = (1, 1),
+                [(1003, 3)] = (1, 2),
+                [(1003, 4)] = (1, 2),
+                [(1003, 101)] = (1, 1),
+                [(1003, 103)] = (1, 2),
+                [(2003, 17)] = (0, 1),
+                [(2003, 22)] = (0, 1),
+                [(2003, 63)] = (0, 1),
+                [(2003, 66)] = (1, 1),
+                [(2003, 69)] = (1, 1),
+            };
+            Dictionary<(int, int), string> instrNames = new Dictionary<(int, int), string>
+            {
+                [(3, 0)] = "IfEventFlag",
+                [(3, 1)] = "IfBatchEventFlags",
+                [(3, 10)] = "IfCountEventFlags",
+                [(3, 12)] = "IfEventValue",
+                [(1003, 0)] = "WaitForEventFlag",
+                [(1003, 1)] = "SkipIfEventFlag",
+                [(1003, 2)] = "EndIfEventFlag",
+                [(1003, 3)] = "SkipIfBatchEventFlags",
+                [(1003, 4)] = "EndIfBatchEventFlags",
+                [(1003, 101)] = "GotoIfEventFlag",
+                [(1003, 103)] = "GotoIfBatchEventFlags",
+                [(2003, 17)] = "RandomlySetEventFlagInRange",
+                [(2003, 22)] = "BatchSetEventFlags",
+                [(2003, 63)] = "BatchSetNetworkconnectedEventFlags",
+                [(2003, 66)] = "SetEventFlag",
+                [(2003, 69)] = "SetNetworkconnectedEventFlag",
+            };
+            SortedDictionary<int, List<(int, string)>> eventFlagLocations = new SortedDictionary<int, List<(int, string)>>();
+            Dictionary<int, SortedSet<(string, int, int)>> eventFlagCalls = new Dictionary<int, SortedSet<(string, int, int)>>();
+            string flagDebugInfo(string mapName, string instrName, int aPos, int bPos, int aFlag, int bFlag, int flag, bool isInline)
+            {
+                string aText = isInline ? $"{aFlag}" : $"X{aPos * 4}_4 = {aFlag}";
+                string bText = isInline ? $"{bFlag}" : $"X{bPos * 4}_4 = {bFlag}";
+                string arg = aPos == bPos ? $"({aText})" : $"({aText}, {bText})";
+                string extraFlag = flag == aFlag && flag == bFlag ? "" : $" ({flag})";
+                return $"{game.MapLocationName(mapName)} - {instrName}{arg} - {string.Join(", ", flagItems[flag])}{extraFlag}";
+            }
+            foreach (KeyValuePair<string, EMEVD> entry in game.Emevds)
+            {
+                foreach (EMEVD.Event ev in entry.Value.Events)
+                {
+                    int eventId = (int)ev.ID;
+                    if (eventId >= 9930 && eventId <= 9950) continue; // Debug events
+                    for (int j = 0; j < ev.Instructions.Count; j++)
+                    {
+                        EMEVD.Instruction ins = ev.Instructions[j];
+                        // Check item flags. ER reuses ids in different namespaces so we have to check each individual command.
+                        if (flagPositions.TryGetValue((ins.Bank, ins.ID), out (int, int) range))
+                        {
+                            string instrName = instrNames[(ins.Bank, ins.ID)];
+                            (int aPos, int bPos) = range;
+                            EMEVD.Parameter aParam = ev.Parameters.Find(q => q.InstructionIndex == j && q.TargetStartByte / 4 == aPos);
+                            EMEVD.Parameter bParam = ev.Parameters.Find(q => q.InstructionIndex == j && q.TargetStartByte / 4 == bPos);
+                            if (aParam == null && bParam == null)
+                            {
+                                int aFlag = BitConverter.ToInt32(ins.ArgData, aPos * 4);
+                                int bFlag = BitConverter.ToInt32(ins.ArgData, bPos * 4);
+                                // Console.WriteLine($"{ev.ID} instr {ins.Bank} {ins.ID}: flag {aFlag} to {bFlag}");
+                                if (Math.Abs(aFlag - bFlag) > 1000) throw new Exception("too far apart");
+                                if (aFlag == 0 && bFlag == 0) continue;
+                                for (int flag = aFlag; flag <= bFlag; flag++)
+                                {
+                                    if (flagItems.TryGetValue(flag, out List<string> names))
+                                    {
+                                        AddMulti(eventFlagLocations, eventId, (flag, flagDebugInfo(entry.Key, instrName, aPos, bPos, aFlag, bFlag, flag, true)));
+                                    }
+                                }
+                            }
+                            else if (aParam != null && bParam != null)
+                            {
+                                AddMulti(eventFlagCalls, eventId, (instrName, (int)aParam.SourceStartByte / 4, (int)bParam.SourceStartByte / 4));
+                            }
+                            else throw new Exception($"Mixed {ins.Bank} {ins.ID} in {ev.ID}: {aPos}[{aParam}] {bPos}[{bParam}]");
+                        }
+                    }
+                }
+            }
+            foreach (KeyValuePair<string, EMEVD> entry in game.Emevds)
+            {
+                foreach (EMEVD.Event ev in entry.Value.Events)
+                {
+                    for (int j = 0; j < ev.Instructions.Count; j++)
+                    {
+                        EMEVD.Instruction ins = ev.Instructions[j];
+                        if (ins.Bank == 2000 && (ins.ID == 0 || ins.ID == 6))
+                        {
+                            List<object> args = ins.UnpackArgs(Enumerable.Repeat(EMEVD.Instruction.ArgType.Int32, ins.ArgData.Length / 4));
+                            int offset = 2;
+                            int eventId = (int)args[offset - 1];
+                            if (entry.Key == "m60_35_47_00" && eventId == 1035472200) continue; // Duplicate name. TODO what others of these exist
+                            if (eventFlagCalls.TryGetValue(eventId, out SortedSet<(string, int, int)> ranges))
+                            {
+                                foreach ((string instrName, int aPos, int bPos) in ranges)
+                                {
+                                    int aFlag = (int)args[offset + aPos];
+                                    int bFlag = (int)args[offset + bPos];
+                                    if (Math.Abs(aFlag - bFlag) > 1000) throw new Exception("too far apart");
+                                    if (aFlag == 0 && bFlag == 0) continue;
+                                    for (int flag = aFlag; flag <= bFlag; flag++)
+                                    {
+                                        if (flagItems.TryGetValue(flag, out List<string> names))
+                                        {
+                                            AddMulti(eventFlagLocations, eventId, (flag, flagDebugInfo(entry.Key, instrName, aPos, bPos, aFlag, bFlag, flag, false)));
+                                            // Console.WriteLine($"{eventId} {flagDebugInfo(entry.Key, instrName, aPos, bPos, aFlag, bFlag, flag)}");
+                                            // Console.WriteLine($"{eventId} {instrName}{arg}: {flag} - {string.Join(", ", names.Distinct())}");
+                                        }
+                                    }
+                                    // AddMulti(eventFlagLocations, lot, (entity, $"event {eventId}{entityText}{game.GetLocationSuffix(entry.Key)}"));
+                                }
+                                // Console.WriteLine($"Calling {eventId}({string.Join(", ", args)}) - {string.Join(" ", ranges.Select(r => $"({r.Item1},{r.Item2})"))}");
+                                // Console.WriteLine($"InitializeEvent({string.Join(", ", args)})");
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Now for ESDs. All item event flags seem to be used directly and not as args, which is a big relief.
+            // Mapping from ESD id to (machine name, flag, debug info)
+            SortedDictionary<int, List<(string, int, string)>> talkFlagLocations = new SortedDictionary<int, List<(string, int, string)>>();
+
+            List<ESD.Condition> GetConditions(List<ESD.Condition> condList) => Enumerable.Concat(condList, condList.SelectMany(cond => GetConditions(cond.Subconditions))).ToList();
+            bool searchExpression(byte[] bytes, out List<int> flags)
+            {
+                List<int> exprFlags = null;
+                AST.Expr expr = AST.DisassembleExpression(bytes);
+                expr.Visit(AST.AstVisitor.PostAct(e =>
+                {
+                    if (e is AST.FunctionCall call && (call.Name == "f15" || call.Name == "f101") && call.Args.Count == 1)
+                    {
+                        if (call.Args[0].TryAsInt(out int flag) && flagItems.ContainsKey(flag))
+                        {
+                            if (exprFlags == null) exprFlags = new List<int>();
+                            exprFlags.Add(flag);
+                        }
+                    }
+                }));
+                flags = exprFlags;
+                return flags != null;
+            }
+            string formatExpression(byte[] bytes)
+            {
+                AST.Expr expr = AST.DisassembleExpression(bytes);
+                return expr.ToString();
+            }
+            foreach (KeyValuePair<string, Dictionary<string, ESD>> entry in game.Talk)
+            {
+                foreach (KeyValuePair<string, ESD> esdEntry in entry.Value)
+                {
+                    ESD esd = esdEntry.Value;
+                    int esdId = int.Parse(esdEntry.Key.Substring(1));
+                    foreach (KeyValuePair<long, Dictionary<long, ESD.State>> machine in esd.StateGroups)
+                    {
+                        int machineId = (int)machine.Key;
+                        string machineName = AST.FormatMachine(machineId);
+                        string loc = $"t{esdId:d9}_{machineName}";
+                        foreach (KeyValuePair<long, ESD.State> stateEntry in machine.Value)
+                        {
+                            int stateId = (int)stateEntry.Key;
+                            ESD.State state = stateEntry.Value;
+                            List<ESD.Condition> conds = GetConditions(state.Conditions);
+                            foreach (ESD.CommandCall cmd in new[] { state.EntryCommands, state.WhileCommands, state.ExitCommands, conds.SelectMany(c => c.PassCommands) }.SelectMany(c => c))
+                            {
+                                List<int> cmdFlags = null;
+                                foreach (byte[] arg in cmd.Arguments)
+                                {
+                                    if (searchExpression(arg, out List<int> argFlags))
+                                    {
+                                        if (cmdFlags == null) cmdFlags = new List<int>();
+                                        cmdFlags.AddRange(argFlags);
+                                    }
+                                }
+                                if (cmdFlags != null)
+                                {
+                                    string text = $"c{cmd.CommandBank}_{cmd.CommandID}({string.Join(", ", cmd.Arguments.Select(formatExpression))})";
+                                    foreach (int flag in cmdFlags)
+                                    {
+                                        AddMulti(talkFlagLocations, esdId, (machineName, flag, $"{loc} - {text} - {string.Join(", ", flagItems[flag])} ({flag})"));
+                                    }
+                                }
+                            }
+                            foreach (ESD.Condition cond in state.Conditions)
+                            {
+                                List<int> condFlags = null;
+                                foreach (ESD.Condition subcond in GetConditions(new List<ESD.Condition> { cond }))
+                                {
+                                    byte[] arg = subcond.Evaluator;
+                                    if (arg.Length > 0 && searchExpression(arg, out List<int> subcondFlags))
+                                    {
+                                        if (condFlags == null) condFlags = new List<int>();
+                                        condFlags.AddRange(subcondFlags);
+                                    }
+                                }
+                                if (condFlags != null)
+                                {
+                                    // This might not actually even do anything if conditions aren't used
+                                    string formatCond(ESD.Condition c) => string.Join(
+                                        " && ",
+                                        new List<string> { formatExpression(c.Evaluator) }.Concat(c.Subconditions.Select(formatCond)));
+                                    string text = formatCond(cond);
+                                    foreach (int flag in condFlags)
+                                    {
+                                        AddMulti(talkFlagLocations, esdId, (machineName, flag, $"{loc} - {text} - {string.Join(", ", flagItems[flag])} ({flag})"));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            IDeserializer deserializer = new DeserializerBuilder().Build();
+            Dictionary<int, EventSpec> existing = new Dictionary<int, EventSpec>();
+            using (var reader = File.OpenText($@"{game.Dir}\Base\itemevents.txt"))
+            {
+                EventConfig config = deserializer.Deserialize<EventConfig>(reader);
+                existing = config.ItemEvents.ToDictionary(i => i.ID, i => i);
+            }
+            EventConfig conf = new EventConfig
+            {
+                ItemTalks = new List<EventSpec>(),
+                ItemEvents = new List<EventSpec>(),
+            };
+
+            foreach (KeyValuePair<int, List<(string, int, string)>> entry in talkFlagLocations)
+            {
+                EventSpec spec = new EventSpec
+                {
+                    ID = entry.Key,
+                    Comment = "aaaaaa",
+                    DebugInfo = new List<string>(),
+                    ItemTemplate = new List<ItemTemplate>(),
+                };
+                foreach (string text in entry.Value.Select(f => f.Item3).Distinct())
+                {
+                    spec.DebugInfo.Add(text);
+                }
+                if (existing.TryGetValue(spec.ID, out EventSpec exist))
+                {
+                    spec.Comment = exist.Comment;
+                    spec.ItemTemplate = exist.ItemTemplate;
+                }
+                else
+                {
+                    SortedSet<string> machines = new SortedSet<string>(entry.Value.Select(f => f.Item1));
+                    foreach (string machine in machines)
+                    {
+                        ItemTemplate t = new ItemTemplate
+                        {
+                            Type = "default item loc",
+                            Machine = machine,
+                            EventFlag = string.Join(" ", entry.Value.Where(f => f.Item1 == machine).Select(f => f.Item2).Distinct().OrderBy(x => x)),
+                        };
+                        spec.ItemTemplate.Add(t);
+                    }
+                }
+                conf.ItemTalks.Add(spec);
+            }
+
+            foreach (KeyValuePair<int, List<(int, string)>> entry in eventFlagLocations)
+            {
+                // Console.WriteLine($"Event {entry.Key}");
+                EventSpec spec = new EventSpec
+                {
+                    ID = entry.Key,
+                    Comment = "aaaaaa",
+                    DebugInfo = new List<string>(),
+                    ItemTemplate = new List<ItemTemplate>(),
+                };
+                foreach (string text in entry.Value.Select(f => f.Item2).Distinct())
+                {
+                    spec.DebugInfo.Add(text);
+                }
+                if (existing.TryGetValue(spec.ID, out EventSpec exist))
+                {
+                    spec.Comment = exist.Comment;
+                    spec.ItemTemplate = exist.ItemTemplate;
+                }
+                else
+                {
+                    ItemTemplate t = new ItemTemplate
+                    {
+                        Type = "default item loc",
+                        EventFlag = string.Join(" ", entry.Value.Select(f => f.Item1).Distinct().OrderBy(x => x)),
+                    };
+                    spec.ItemTemplate.Add(t);
+                }
+                conf.ItemEvents.Add(spec);
+            }
+            ISerializer serializer = MakeSerializer();
+            serializer.Serialize(Console.Out, conf);
+        }
+
         public void WriteDS3Events(RandomizerOptions opt, Dictionary<int, EnemyInfo> infos, Dictionary<int, EnemyData> defaultData)
         {
             // Collect all ids first
@@ -647,7 +975,7 @@ namespace RandomizerCommon
                 }
             }
 
-            HashSet<int> processEventsOverride = new HashSet<int> { };
+            HashSet<int> processEventsOverride = new HashSet<int> { 12505310 };
             // Old Dragons: 2500810, 2500811, 2500812, 2500813, 2500814, 2500815, 2500816, 2500817, 2500818, 2500819, 2500820, 2500821, 2500822, 2500823, 2500824, 2500825. Group 2505830
             // Tree Dragons: 2500930, 2500933, 2500934, 2500884, 2500880, 2500881, 2500882, 2500883
             // Divine Dragon: 2500800
@@ -657,6 +985,7 @@ namespace RandomizerCommon
             HashSet<int> processEntitiesOverride = new HashSet<int>
             {
                 // 2500613, 2500614,
+                // 1100850, 1700600, 1700610, 1700620, 1700640,
             };
 
             List<EventSpec> specs = events.CreateEventConfig(eventInfos, isEligible, produceSpec, quickId, processEventsOverride, processEntitiesOverride);

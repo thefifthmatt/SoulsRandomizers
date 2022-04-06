@@ -6,12 +6,14 @@ using System.Numerics;
 using System.Text.RegularExpressions;
 using SoulsIds;
 using static SoulsIds.Events;
+using static SoulsIds.GameSpec;
 using static RandomizerCommon.EventConfig;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.LocationData.ItemScope;
 using static RandomizerCommon.LocationData.LocationKey;
 using static RandomizerCommon.Permutation;
 using static RandomizerCommon.Util;
+using static SoulsFormats.EMEVD.Instruction;
 
 namespace RandomizerCommon
 {
@@ -24,47 +26,53 @@ namespace RandomizerCommon
         private AnnotationData ann;
         private Events events;
         private EventConfig eventConfig;
+        private EldenCoordinator coord;
 
-        private PARAM itemLots;
         private PARAM shops;
-        private PARAM npcs;
 
         // Determination of whether an item is finite, for price classification purposes
         private readonly Dictionary<ItemKey, bool> isItemFiniteCache = new Dictionary<ItemKey, bool>();
         // Prices for items in a given category
         private readonly Dictionary<PriceCategory, List<int>> prices = new Dictionary<PriceCategory, List<int>>();
+        private readonly Dictionary<ItemKey, int> upgradePrices = new Dictionary<ItemKey, int>();
         // List of quantities and drop chances per category
         private readonly Dictionary<PriceCategory, List<Dictionary<int, float>>> dropChances = new Dictionary<PriceCategory, List<Dictionary<int, float>>>();
         // Reversed GameData.ItemLotTypes
-        private readonly Dictionary<ItemType, uint> lotValues;
+        // private readonly Dictionary<ItemType, uint> lotValues;
 
         private static readonly Dictionary<int, float> DEFAULT_CHANCES = new Dictionary<int, float> { { 1, 0.05f } };
 
-        public PermutationWriter(GameData game, LocationData data, AnnotationData ann, Events events, EventConfig eventConfig)
+        public PermutationWriter(GameData game, LocationData data, AnnotationData ann, Events events, EventConfig eventConfig, EldenCoordinator coord = null)
         {
             this.game = game;
             this.data = data;
             this.ann = ann;
             this.events = events;
             this.eventConfig = eventConfig;
-            itemLots = game.Param("ItemLotParam");
+            this.coord = coord;
+            // itemLots = game.Param("ItemLotParam");
             shops = game.Param("ShopLineupParam");
-            npcs = game.Param("NpcParam");
-            lotValues = game.LotItemTypes.ToDictionary(e => e.Value, e => e.Key);
+            // lotValues = game.LotItemTypes.ToDictionary(e => e.Value, e => e.Key);
         }
 
         public enum PriceCategory
         {
-            // First three should match ItemType ordering. Non-goods are very broad, to give the chance for some really good deals.
-            WEAPON, ARMOR, RING,
+            // First few should match ItemType ordering. Non-goods are very broad, to give the chance for some really good deals.
+            WEAPON, ARMOR, RING, GOOD_PLACEHOLDER, GEM,
             // The rest are mainly goods
             SPELLS, ARROWS, FINITE_GOOD, INFINITE_GOOD, UPGRADE, TRANSPOSE,
             // Some Sekiro categories
             REGULAR_GOOD, UNIQUE_GOOD,
         }
 
-        public void Write(Random random, Permutation permutation, RandomizerOptions opt)
+        public class Result
         {
+            public Dictionary<ItemKey, int> ItemEventFlags { get; set; }
+        }
+
+        public Result Write(Random random, Permutation permutation, RandomizerOptions opt)
+        {
+            bool writeSwitch = true;
             foreach (string hintType in ann.HintCategories)
             {
                 Console.WriteLine($"-- Hints for {hintType}:");
@@ -84,6 +92,11 @@ namespace RandomizerCommon
                     Console.WriteLine("(not randomized)");
                 }
                 Console.WriteLine();
+                if (opt["silent"])
+                {
+                    writeSwitch = false;
+                    break;
+                }
             }
             Console.WriteLine("-- End of hints");
 #if !DEBUG
@@ -122,24 +135,32 @@ namespace RandomizerCommon
                 {
                     ItemKey item = entry.Key;
                     PARAM.Row row = game.Item(item);
-                    int price = (int)row[itemValueCells[(int)item.Type]].Value;
-                    int sellPrice = (int)row["sellValue"].Value;
+                    int price = game.EldenRing ? -1 : (int)row[itemValueCells[(int)item.Type]].Value;
+                    // int sellPrice = (int)row["sellValue"].Value;
                     PriceCategory cat = GetPriceCategory(item);
                     foreach (ItemLocation itemLoc in entry.Value.Locations.Values)
                     {
                         foreach (LocationKey loc in itemLoc.Keys.Where(k => k.Type == LocationType.SHOP))
                         {
                             PARAM.Row shop = shops[loc.ID];
+                            if (shop == null) continue;
                             int shopPrice = (int)shop["value"].Value;
                             if (price == -1 && shopPrice == -1) continue;
                             // Don't price regular items toooo high - looking at you, 20k for Tower Key. Key items are priced separately anyway
                             if (cat == PriceCategory.FINITE_GOOD && price > 10000) continue;
-                            AddMulti(prices, cat, shopPrice == -1 ? price : shopPrice);
+                            // No custom shops
+                            if (game.EldenRing && (byte)shop["costType"].Value > 0) continue;
+                            shopPrice = shopPrice == -1 ? price : shopPrice;
+                            AddMulti(prices, cat, shopPrice);
+                            if (cat == PriceCategory.UPGRADE && itemLoc.Scope.Type == ScopeType.SHOP_INFINITE)
+                            {
+                                upgradePrices[item] = shopPrice;
+                            }
                         }
                         if (itemLoc.Scope.Type == ScopeType.MODEL)
                         {
-                            // Console.WriteLine($"Location for {game.Name(item)}: {itemLoc}");
                             Dictionary<int, float> chances = GetDropChances(item, itemLoc);
+                            // Console.WriteLine($"Location for {game.Name(item)}. Chances {string.Join(",", chances)}");
                             if (chances.Count > 0)
                             {
                                 AddMulti(dropChances, cat, chances);
@@ -149,55 +170,151 @@ namespace RandomizerCommon
                 }
             }
 
+            List<string> lotSuffixes = game.EldenRing ? new List<string> { "_map", "_enemy" } : new List<string> { "" };
+
             // TODO: Make this work for DS3 again.
-            List<int> spiritfalls = new List<int> { 51100950, 51300910, 51700990, 51500910, 51110973, 52500940 };
-            bool isPermanent(int eventFlag)
+            Func<int, bool> isPermanent = null;
+            Func<int, int> shopFlagForFixedFlag = null;
+            List<(int, int)> itemLotFlags = null;
+            List<(int, int)> shopFlags = null;
+            Dictionary<int, ItemKey> trackedFlagItems = new Dictionary<int, ItemKey>();
+            // For Elden Ring, map from unpowered flag -> (unpowered item, powered item)
+            Dictionary<int, (ItemKey, ItemKey)> greatRunes = new Dictionary<int, (ItemKey, ItemKey)>
             {
-                return eventFlag >= 6500 && eventFlag < 6800 || eventFlag == 6022 || spiritfalls.Contains(eventFlag);
-            }
-            HashSet<int> allEventFlags = new HashSet<int>(data.Data.Values.SelectMany(locs => locs.Locations.Values.Select(l => l.Scope.EventID).Where(l => l != -1)));
-            List<(int, int)> itemLotFlags = itemLots.Rows.Select(r => ((int)r.ID, (int)r["getItemFlagId"].Value)).OrderBy(r => r.Item1).ToList();
-            int eventFlagForLot(int itemLot)
+                // Godrick's Great Rune
+                [171] = (new ItemKey(ItemType.GOOD, 8148), new ItemKey(ItemType.GOOD, 191)),
+                // Radahn's Great Rune
+                [172] = (new ItemKey(ItemType.GOOD, 8149), new ItemKey(ItemType.GOOD, 192)),
+                // Morgott's Great Rune
+                [173] = (new ItemKey(ItemType.GOOD, 8150), new ItemKey(ItemType.GOOD, 193)),
+                // Rykard's Great Rune
+                [174] = (new ItemKey(ItemType.GOOD, 8151), new ItemKey(ItemType.GOOD, 194)),
+                // Mohg's Great Rune
+                [175] = (new ItemKey(ItemType.GOOD, 8152), new ItemKey(ItemType.GOOD, 195)),
+                // Malenia's Great Rune
+                [176] = (new ItemKey(ItemType.GOOD, 8153), new ItemKey(ItemType.GOOD, 196)),
+                // Great Rune of the Unborn
+                [177] = (new ItemKey(ItemType.GOOD, 10080), new ItemKey(ItemType.GOOD, 10080)),
+            };
+            int greatRuneBaseFlag = greatRunes.Keys.Min();
+            int minimumGoodFlag = 50000000;
+            if (game.Sekiro)
             {
-                int index = itemLotFlags.FindIndex(r => r.Item1 == itemLot);
-                for (int i = index + 1; i < itemLotFlags.Count; i++)
+                List<int> spiritfalls = new List<int> { 51100950, 51300910, 51700990, 51500910, 51110973, 52500940 };
+                // minimumGoodFlag = 0; ??????
+                isPermanent = eventFlag =>
                 {
-                    (int newLot, int flag) = itemLotFlags[i];
-                    if (flag >= 50000000)
+                    return eventFlag >= 6500 && eventFlag < 6800 || eventFlag == 6022 || spiritfalls.Contains(eventFlag);
+                };
+                int fixedShopStart = 71103000;
+                shopFlagForFixedFlag = flag =>
+                {
+                    int offset;
+                    if (flag >= 6700 && flag < 6800)
                     {
+                        offset = flag - 6700;
+                    }
+                    else if (flag >= 6500 && flag < 6510)
+                    {
+                        offset = 100 + (flag - 6500);
+                    }
+                    else if (spiritfalls.Contains(flag))
+                    {
+                        offset = 110 + spiritfalls.IndexOf(flag);
+                    }
+                    else throw new Exception($"Internal error: can't place {flag} in shop");
+                    return fixedShopStart + offset * 10;
+                };
+                itemLotFlags = game.Params["ItemLotParam"].Rows
+                    .Where(r => (int)r["getItemFlagId"].Value > 0)
+                    .Select(r => ((int)r.ID, (int)r["getItemFlagId"].Value)).OrderBy(r => r.Item1).ToList();
+            }
+            else if (game.EldenRing)
+            {
+                minimumGoodFlag = 100000;
+                // Do some early processing of config to find new fixed lots, and also item lots to track
+                HashSet<int> fixedFlags = new HashSet<int>();
+                foreach (EventSpec spec in eventConfig.ItemEvents.Concat(eventConfig.ItemTalks))
+                {
+                    if (spec.ItemTemplate == null) continue;
+                    foreach (ItemTemplate t in spec.ItemTemplate)
+                    {
+                        if (t.Type.Contains("item") && t.EventFlag != null)
+                        {
+                            List<int> flags = t.EventFlag.Split(' ').Select(w => int.Parse(w)).ToList();
+                            if (t.Type == "fixeditem")
+                            {
+                                fixedFlags.UnionWith(flags);
+                            }
+                            else
+                            {
+                                foreach (int flag in flags)
+                                {
+                                    trackedFlagItems[flag] = null;
+                                }
+                            }
+                        }
+                    }
+                }
+                isPermanent = eventFlag =>
+                {
+                    return (eventFlag >= 60000 && eventFlag < 70000) || fixedFlags.Contains(eventFlag);
+                };
+                int fixedShopStart = 100400;
+                shopFlagForFixedFlag = flag =>
+                {
+                    if (greatRunes.ContainsKey(flag))
+                    {
+                        int runeBase = flag - greatRuneBaseFlag;
+                        return fixedShopStart + runeBase * 10;
+                    }
+                    return flag;
+                };
+                itemLotFlags = (game.Params["ItemLotParam_map"].Rows.Concat(game.Params["ItemLotParam_enemy"].Rows))
+                    .Where(r => (uint)r["getItemFlagId"].Value > 0)
+                    .Select(r => ((int)r.ID, (int)(uint)r["getItemFlagId"].Value)).OrderBy(r => r.Item1).ToList();
+                shopFlags = game.Params["ShopLineupParam"].Rows
+                    .Where(r => r.ID < 600000 &&(uint)r["eventFlag_forStock"].Value > 0)
+                    .Select(r => ((int)r.ID, (int)(uint)r["eventFlag_forStock"].Value)).OrderBy(r => r.Item1).ToList();
+            }
+            HashSet<int> allEventFlags = new HashSet<int>(data.Data.Values.SelectMany(locs => locs.Locations.Values.Select(l => l.Scope.EventID).Where(l => l > 0)));
+            if (itemLotFlags != null)
+            {
+                allEventFlags.UnionWith(itemLotFlags.Select(pair => pair.Item2));
+            }
+            if (shopFlags != null)
+            {
+                allEventFlags.UnionWith(shopFlags.Select(pair => pair.Item2));
+            }
+            int eventFlagForLocation(int id, LocationType type)
+            {
+                List<(int, int)> flagList = type == LocationType.LOT ? itemLotFlags : shopFlags;
+                int searchStep = type == LocationType.LOT ? 1 : 10;
+                int index = flagList.FindIndex(r => r.Item1 == id);
+                for (int i = index + 1; i < flagList.Count; i++)
+                {
+                    // Scan forwards for an eligible entry
+                    (int newLot, int flag) = flagList[i];
+                    if (flag >= minimumGoodFlag)
+                    {
+                        // Scan for an unused flag
                         while (allEventFlags.Contains(flag))
                         {
-                            flag++;
+                            flag += searchStep;
                         }
                         allEventFlags.Add(flag);
                         return flag;
                     }
                 }
-                throw new Exception($"{itemLot}, found at index {index}, can't event a dang flag");
-            }
-            int start = 71103000;
-            int shopFlagForPermanentFlag(int flag)
-            {
-                int offset;
-                if (flag >= 6700 && flag < 6800)
-                {
-                    offset = flag - 6700;
-                }
-                else if (flag >= 6500 && flag < 6510)
-                {
-                    offset = 100 + (flag - 6500);
-                }
-                else if (spiritfalls.Contains(flag))
-                {
-                    offset = 110 + spiritfalls.IndexOf(flag);
-                }
-                else throw new Exception($"Internal error: can't place {flag} in shop");
-                return start + offset * 10;
+                throw new Exception($"{type} {id}, found at index {index}, can't event a dang flag");
             }
             // foreach (int flag in shops.Rows.Select(r => (int)r["EventFlag"].Value).Where(f => f > 1000).Distinct().OrderBy(f => f)) Console.WriteLine($"shop {flag}");
+
+            // Map from item to its final item get flag, to be filled in
+            Dictionary<ItemKey, int> itemEventFlags = new Dictionary<ItemKey, int>();
             // Mapping from old permanent event flag to slot key
             Dictionary<SlotKey, int> permanentSlots = new Dictionary<SlotKey, int>();
-            if (game.Sekiro)
+            if (isPermanent != null)
             {
                 foreach (KeyValuePair<ItemKey, ItemLocations> item in data.Data)
                 {
@@ -213,15 +330,24 @@ namespace RandomizerCommon
                                 if (permanentSlots.ContainsKey(source)) throw new Exception($"{eventFlag}");
                                 permanentSlots[source] = eventFlag;
                             }
+                            else if (trackedFlagItems.TryGetValue(eventFlag, out ItemKey assign) && assign == null)
+                            {
+                                // This is pretty hacky: only record the first item, using ItemKey order.
+                                // This distinguishes between Fingerslayer Blade (preferred) and Great Ghost Glovewort (not).
+                                trackedFlagItems[eventFlag] = item.Key;
+                                itemEventFlags[item.Key] = -1;
+                                // Console.WriteLine($"Tracking {game.Name(item.Key)} for {eventFlag}");
+                            }
                         }
                     }
                 }
             }
-            Dictionary<int, ItemKey> randomMaterialItems = new Dictionary<int, ItemKey>();
-            Dictionary<ItemKey, int> randomMaterialEventFlags = new Dictionary<ItemKey, int>();
-            if (!game.Sekiro)
+            // Map from material id (DS3) or shop id (Elden Ring) to boss soul
+            Dictionary<int, ItemKey> bossSoulItems = new Dictionary<int, ItemKey>();
+            // Materials based on boss souls
+            if (game.DS3)
             {
-                Dictionary<int, PARAM.Row> materials = game.Params["EquipMtrlSetParam"].Rows.ToDictionary(e => (int)e.ID, e => e);
+                Dictionary<int, PARAM.Row> materials = game.Params["EquipMtrlSetParam"].Rows.ToDictionary(e => e.ID, e => e);
                 foreach (PARAM.Row row in shops.Rows)
                 {
                     int mat = (int)row["mtrlId"].Value;
@@ -233,16 +359,44 @@ namespace RandomizerCommon
                             if (matGood >= 700 && matGood < 800)
                             {
                                 ItemKey matItem = new ItemKey(ItemType.GOOD, matGood);
-                                randomMaterialItems[mat] = matItem;
-                                randomMaterialEventFlags[matItem] = -1;
+                                bossSoulItems[mat] = matItem;
+                                itemEventFlags[matItem] = -1;
                             }
                         }
                     }
                 }
             }
+            else if (game.EldenRing)
+            {
+                foreach (PARAM.Row row in shops.Rows)
+                {
+                    if (row.ID >= 101775 && row.ID < 101800)
+                    {
+                        ItemKey item = new ItemKey((ItemType)(byte)row["equipType"].Value, (int)row["equipId"].Value);
+                        if (item.Type == ItemType.GOOD && item.ID >= 2950 && item.ID < 2990)
+                        {
+                            bossSoulItems[row.ID] = item;
+                            itemEventFlags[item] = 0;
+                        }
+                    }
+                }
+                // Also, record key item event flags for hints later
+                foreach (ItemKey keyItem in ann.ItemGroups["keyitems"])
+                {
+                    itemEventFlags[keyItem] = 0;
+                }
+
+                // There are a few events/qwcs dependent on getting other items
+                // Duplicating boss souls: should depend on getting the boss soul (QWC edit)
+                // Duplicating ashes of war: should depend on having the item (event edit)
+                // Accessing cookbooks: unfortunately, should depend on having the item (permanent flag)
+                // 60150 golden tailoring tools (permanent flag)
+                // 11109770 etc. has a bunch of equivalent event flags (equivalent)
+                // 1042369416 Lone Wolf Ashes are similar (TODO look through QWCs, but also equivalent-ify these)
+            }
 
             Dictionary<SlotKey, ItemSource> newRows = new Dictionary<SlotKey, ItemSource>();
-            HashSet<int> deleteRows = new HashSet<int>();
+            Dictionary<string, HashSet<int>> deleteRows = new Dictionary<string, HashSet<int>>();
             // Dump all target data per-source, before wiping it out
             foreach (KeyValuePair<RandomSilo, SiloPermutation> entry in permutation.Silos)
             {
@@ -254,7 +408,7 @@ namespace RandomizerCommon
                     {
                         if (locKey.Type == LocationType.LOT)
                         {
-                            deleteRows.Add(locKey.ID);
+                            AddMulti(deleteRows, locKey.ParamName, locKey.ID);
                         }
                     }
                     // Synthetic items, like Path of the Dragon
@@ -265,27 +419,55 @@ namespace RandomizerCommon
                     }
                     // Pick one of the source for item data - they should be equivalent.
                     LocationKey key = source.Keys[0];
-                    PARAM.Row row;
+                    object itemRow;
                     if (key.Type == LocationType.LOT)
                     {
-                        row = itemLots[key.ID];
+                        PARAM.Row row = game.Params[key.ParamName][key.ID];
+                        itemRow = new LotCells { Game = game, Cells = row.Cells.ToDictionary(c => c.Def.InternalName, c => c.Value) };
                     }
                     else
                     {
-                        row = shops[key.ID];
+                        PARAM.Row row = shops[key.ID];
+                        itemRow = new ShopCells { Game = game, Cells = row.Cells.ToDictionary(c => c.Def.InternalName, c => c.Value) };
                     }
-                    Dictionary<string, object> rowDict = row.Cells.ToDictionary(c => c.Def.InternalName, c => c.Value);
-                    newRows[sourceKey] = new ItemSource(source, rowDict);
+                    newRows[sourceKey] = new ItemSource(source, itemRow);
+                }
+            }
+            // Hack for 177 event flag Rennala drop.
+            // It's the only case a no-item event flag drop is used by the game, it seems, so it's not picked up in LocationData.
+            // So don't accidentally automatically grant 177 from Rennala and have it count as acquiring the Great Rune.
+            if (game.EldenRing)
+            {
+                PARAM.Row row = game.Params["ItemLotParam_map"][10182];
+                if (row != null && (uint)row["getItemFlagId"].Value == 177)
+                {
+                    deleteRows["ItemLotParam_map"].Add(10182);
                 }
             }
             int dragonFlag = 0;
             Dictionary<int, int> memoryFlags = new Dictionary<int, int>();
-            Dictionary<int, byte> itemRarity = Enumerable.ToDictionary(itemLots.Rows.Where(row => deleteRows.Contains((int)row.ID)), row => (int)row.ID, row => (byte)row["LotItemRarity"].Value); // new Dictionary<int, byte>();
-            itemLots.Rows = itemLots.Rows.FindAll(row => !deleteRows.Contains((int)row.ID));
+            Dictionary<int, byte> itemRarity = new Dictionary<int, byte>();
+            if (!game.EldenRing)
+            {
+                itemRarity = game.Params["ItemLotParam"].Rows
+                    .Where(row => deleteRows["ItemLotParam"].Contains(row.ID))
+                    .ToDictionary(row => row.ID, row => (byte)row["LotItemRarity"].Value);
+            }
+            foreach (string paramType in deleteRows.Keys)
+            {
+                game.Params[paramType].Rows.RemoveAll(row => deleteRows[paramType].Contains(row.ID));
+            }
+            List<ItemKey> syntheticUniqueItems = new List<ItemKey>
+            {
+                game.ItemForName("Imbued Sword Key"), game.ItemForName("Imbued Sword Key 2"), game.ItemForName("Imbued Sword Key 3"),
+            };
 
-            List<string> raceModeInfo = new List<string>();
+            // Tuple of (area, tag type, description)
+            List<(string, string, string)> raceModeInfo = new List<(string, string, string)>();
             Dictionary<int, int> rewrittenFlags = new Dictionary<int, int>();
             Dictionary<int, int> shopPermanentFlags = new Dictionary<int, int>();
+            HashSet<string> defaultFilter = new HashSet<string> { "ignore" };
+            bool debugPerm = false;
             Console.WriteLine($"-- Spoilers:");
             foreach (KeyValuePair<RandomSilo, SiloPermutation> siloEntry in permutation.Silos)
             {
@@ -301,18 +483,43 @@ namespace RandomizerCommon
                     foreach (SlotKey sourceKey in mapping.Value)
                     {
                         ItemKey item = sourceKey.Item;
+                        if (syntheticUniqueItems.Contains(item))
+                        {
+                            item = syntheticUniqueItems[0];
+                        }
                         int quantity = data.Location(sourceKey).Quantity;
                         string quantityStr = quantity == 1 ? "" : $" {quantity}x";
-                        Console.WriteLine($"{game.DisplayName(item)}{quantityStr}{ann.GetLocationDescription(targetKey, targetLocation.Keys)}");
+                        string desc = ann.GetLocationDescription(targetKey, excludeTags: defaultFilter, coord: coord);
+                        if (desc != null && writeSwitch)
+                        {
+                            Console.WriteLine($"{game.DisplayName(item, quantity)}{desc}");
+                        }
+#if DEBUG
+                        if (desc == null && writeSwitch)
+                        {
+                            desc = ann.GetLocationDescription(targetKey, coord: coord);
+                            Console.WriteLine($"{game.DisplayName(item, quantity)}{desc} - ignored");
+                        }
+#endif
                         bool printChances = true;
                         if (opt["racemodeinfo"])
                         {
                             HashSet<string> filterTags = ann.RaceModeTags;
-                            filterTags = new HashSet<string> { "lizard" };
-                            string desc = ann.GetLocationDescription(targetKey, targetLocation.Keys, filterTags);
-                            if (!string.IsNullOrEmpty(desc)) raceModeInfo.Add(desc);
+                            string raceDesc = ann.GetLocationDescription(targetKey, filterTags);
+                            if (!string.IsNullOrEmpty(raceDesc))
+                            {
+                                // Look up tags just to include better filtering info.
+                                // This is slightly outside of the scope of this module.
+                                if (ann.Slots.TryGetValue(data.Location(targetKey).LocScope, out AnnotationData.SlotAnnotation slot))
+                                {
+                                    filterTags = new HashSet<string>(filterTags);
+                                    filterTags.UnionWith(new[] { "night", "minidungeon", "missable", "norandom" });
+                                    string raceTags = string.Join(" ", slot.TagList.Intersect(filterTags).OrderBy(x => x));
+                                    raceModeInfo.Add((slot.Area, raceTags, raceDesc));
+                                }
+                            }
                         }
-                        bool isDragon = !game.Sekiro && item.Equals(new ItemKey(ItemType.GOOD, 9030));
+                        bool isDragon = game.DS3 && item.Equals(new ItemKey(ItemType.GOOD, 9030));
                         // Don't need to add own item if there is a separate carrier for the event flag
                         if (isDragon && mapping.Value.Count > 1)
                         {
@@ -321,8 +528,8 @@ namespace RandomizerCommon
                         }
 
                         ItemSource source = newRows[sourceKey];
-                        Dictionary<string, object> shopCells = null;
-                        Dictionary<string, object> lotCells = null;
+                        ShopCells shopCells = null;
+                        LotCells lotCells = null;
                         int price = -1;
                         bool originalShop = false;
                         if (source.Row == null)
@@ -331,14 +538,14 @@ namespace RandomizerCommon
                             shopCells = ShopCellsForItem(item);
                             MakeSellable(item);
                         }
-                        else if (source.Row.ContainsKey("shopType"))
+                        else if (source.Row is ShopCells)
                         {
-                            shopCells = source.Row;
+                            shopCells = (ShopCells)source.Row;
                             originalShop = true;
                         }
-                        else if (source.Row.ContainsKey("ItemLotId1"))
+                        else if (source.Row is LotCells)
                         {
-                            lotCells = source.Row;
+                            lotCells = (LotCells)source.Row;
                         }
                         else throw new Exception($"Unknown item source");
                         // TODO: Assigning enemy drops to other enemy drops/infinite shops, should scope which item is being referred to
@@ -348,6 +555,7 @@ namespace RandomizerCommon
                             // Console.WriteLine($"{game.Name(item)}: {source.Loc} -> {target.Text}");
                             if (target.Type == LocationType.LOT)
                             {
+                                // Console.WriteLine($"{game.Name(item)}: setting lot target, source is {source.Loc}. lotCells {lotCells} shopCells {shopCells}.");
                                 if (siloType == RandomSilo.MIXED)
                                 {
                                     Warn($"Mixed silo {source.Loc} going to {target}");
@@ -355,47 +563,53 @@ namespace RandomizerCommon
                                 }
                                 if (lotCells == null)
                                 {
-                                    Dictionary<string, object> sourceShop = shopCells;
+                                    ShopCells sourceShop = shopCells;
                                     if (isDragon)
                                     {
                                         // If path of the dragon, there is an additional scripted award, so change base to ember to avoid confusing duplication
-                                        sourceShop = new Dictionary<string, object>(sourceShop);
-                                        sourceShop["EquipId"] = 500;
+                                        sourceShop = sourceShop.DeepCopy();
+                                        sourceShop.Item = game.ItemForName("Ember");
+                                        // sourceShop["EquipId"] = 500;
                                     }
-                                    lotCells = ShopToItemLot(sourceShop, item, random);
+                                    lotCells = ShopToItemLot(sourceShop, item, random, writeSwitch);
                                 }
                                 else if (targetLocation.Scope.Type == ScopeType.MODEL)
                                 {
                                     if (originalShop)
                                     {
-                                        lotCells = ShopToItemLot(shopCells, item, random);
+                                        lotCells = ShopToItemLot(shopCells, item, random, writeSwitch);
                                     }
                                     else
                                     {
                                         Dictionary<int, float> chances = GetDropChances(item, data.Location(sourceKey));
                                         if (chances.Count == 0) chances = DEFAULT_CHANCES;
-                                        lotCells = ProcessModelLot(lotCells, item, chances, printChances);
+                                        lotCells = ProcessModelLot(lotCells, item, chances, printChances && writeSwitch);
                                         printChances = false;
                                     }
                                 }
                                 if (permanentSlots.TryGetValue(sourceKey, out int permanentFlag))
                                 {
-                                    lotCells["getItemFlagId"] = permanentFlag;
+                                    if (debugPerm) Console.WriteLine($"Changing lot flag from temp {eventFlag} to permanent {permanentFlag}");
                                     rewrittenFlags[eventFlag] = permanentFlag;
+                                    lotCells.EventFlag = permanentFlag;
                                 }
                                 else if (permanentSlots.TryGetValue(targetKey, out int flagToClear))
                                 {
-                                    int tempFlag = rewrittenFlags.TryGetValue(eventFlag, out int existingFlag) ? existingFlag : eventFlagForLot(target.BaseID);
-                                    lotCells["getItemFlagId"] = tempFlag;
+                                    if (!rewrittenFlags.TryGetValue(eventFlag, out int tempFlag))
+                                    {
+                                        tempFlag = eventFlagForLocation(target.BaseID, LocationType.LOT);
+                                    }
+                                    if (debugPerm) Console.WriteLine($"Changing lot flag from permanent {flagToClear} to temp {tempFlag}");
                                     rewrittenFlags[eventFlag] = tempFlag;
+                                    lotCells.EventFlag = tempFlag;
                                 }
                                 else
                                 {
-                                    lotCells["getItemFlagId"] = eventFlag;
+                                    lotCells.EventFlag = eventFlag;
                                 }
-                                setEventFlag = (int)lotCells["getItemFlagId"];
+                                setEventFlag = lotCells.EventFlag;
                                 // Crow sources are special items so they won't be removed, they must be overwritten
-                                AddLot(target.BaseID, lotCells, itemRarity, siloType == RandomSilo.CROW);
+                                AddLot(target.ParamName, target.BaseID, lotCells, itemRarity, siloType == RandomSilo.CROW);
                             }
                             else
                             {
@@ -410,35 +624,58 @@ namespace RandomizerCommon
                                     shopCells = ItemLotToShop(lotCells, item);
                                 }
                                 // If mixed, event flag is present or not based on which shop entry this is (infinite or not)
-                                bool infiniteMixed = siloType == RandomSilo.MIXED && (short)shopCells["sellQuantity"] <= 0;
+                                bool infiniteMixed = siloType == RandomSilo.MIXED && shopCells.Quantity <= 0;
                                 // Ignore scope event flag for shop assignment, because some shops also form multidrops
-                                int shopEventFlag = (int)shops[target.ID]["EventFlag"].Value;
+                                object originalFlag = shops[target.ID][game.EldenRing ? "eventFlag_forStock" : "EventFlag"].Value;
+                                int shopEventFlag = game.EldenRing ? (int)(uint)originalFlag : (int)originalFlag;
                                 if (permanentSlots.TryGetValue(sourceKey, out int permanentFlag))
                                 {
-                                    // Way too many event flags involved here.
-                                    // There is permanent flag (persists across NG, applies to item only)
-                                    // There is shop permanent flag (previously unused, always set with permanent flag)
-                                    // There is old shop flag (does not apply to item)
-                                    int shopPermanentFlag = shopFlagForPermanentFlag(permanentFlag);
-                                    rewrittenFlags[shopEventFlag] = shopPermanentFlag;
-                                    shopPermanentFlags[shopPermanentFlag] = permanentFlag;
-                                    shopEventFlag = shopPermanentFlag;
+                                    if (shopFlagForFixedFlag != null)
+                                    {
+                                        // Way too many event flags involved here.
+                                        // There is permanent flag (persists across NG, applies to item only)
+                                        // There is shop permanent flag (previously unused, always set with permanent flag)
+                                        // There is old shop flag (does not apply to item)
+                                        // TODO: This needs to be reverified after merge with Elden logic
+                                        int shopPermanentFlag = shopFlagForFixedFlag(permanentFlag);
+                                        shopPermanentFlags[shopPermanentFlag] = permanentFlag;
+                                        permanentFlag = shopPermanentFlag;
+                                    }
+                                    if (debugPerm) Console.WriteLine($"Changing shop flag from temp {shopEventFlag} to permanent {permanentFlag}");
+                                    rewrittenFlags[shopEventFlag] = permanentFlag;
+                                    shopEventFlag = permanentFlag;
                                 }
-                                shopCells["EventFlag"] = infiniteMixed ? -1 : shopEventFlag;
-                                setEventFlag = (int)shopCells["EventFlag"];
+                                else if (permanentSlots.TryGetValue(targetKey, out int flagToClear))
+                                {
+                                    if (!rewrittenFlags.TryGetValue(shopEventFlag, out int tempFlag))
+                                    {
+                                        tempFlag = eventFlagForLocation(target.BaseID, LocationType.SHOP);
+                                    }
+                                    if (debugPerm) Console.WriteLine($"Changing shop flag from permanent {flagToClear} to temp {tempFlag}");
+                                    rewrittenFlags[shopEventFlag] = tempFlag;
+                                    shopEventFlag = tempFlag;
+                                }
+                                shopCells.EventFlag = infiniteMixed ? -1 : shopEventFlag;
+                                setEventFlag = shopCells.EventFlag;
                                 int baseShop = target.ID / 100;
                                 if (price == -1)
                                 {
-                                    if (siloType == RandomSilo.SELF && shopCells.ContainsKey("value"))
+                                    if (siloType == RandomSilo.SELF && shopCells.Cells.ContainsKey("value"))
                                     {
-                                        price = (int)shopCells["value"];
+                                        // Don't use price calculation for non-randomized shops (can this ever be not defined?)
+                                        price = shopCells.Value;
                                     }
                                     else
                                     {
-                                        bool isTranspose = game.Sekiro ? (baseShop == 10000 || baseShop == 25000) : targetLocation.Scope.Type == ScopeType.MATERIAL;
+                                        bool isTranspose = game.Sekiro
+                                            ? (baseShop == 10000 || baseShop == 25000)
+                                            : targetLocation.Scope.Type == ScopeType.MATERIAL;
                                         price = Price(permutation, siloType, item, isTranspose, random);
                                     }
-                                    Console.WriteLine($"  (cost: {price})");
+                                    if (desc != null && writeSwitch)
+                                    {
+                                        Console.WriteLine($"  (cost: {price})");
+                                    }
                                 }
                                 // Ignoring selected price for offering box
                                 int targetPrice = price;
@@ -452,8 +689,12 @@ namespace RandomizerCommon
                                 {
                                     targetPrice = price - price / 10;
                                 }
-                                shopCells["value"] = targetPrice;
-                                if (target.ID == 110006) Console.WriteLine($"Staff shop: {string.Join(", ", shopCells)}");
+                                // Likewise for custom shops in Elden Ring
+                                if (game.EldenRing && (byte)shops[target.ID]["costType"].Value > 0)
+                                {
+                                    targetPrice = (int)shops[target.ID]["value"].Value;
+                                }
+                                shopCells.Value = targetPrice;
                                 SetShop(target.ID, shopCells);
                             }
                         }
@@ -470,37 +711,92 @@ namespace RandomizerCommon
                                 }
                             }
                         }
-                        else
+                        else if (game.DS3)
                         {
                             if (isDragon)
                             {
                                 if (setEventFlag == -1) throw new Exception("Path of the Dragon added to lot without event flag");
                                 dragonFlag = setEventFlag;
                             }
-                            if (randomMaterialEventFlags.ContainsKey(item) && setEventFlag > 0)
-                            {
-                                randomMaterialEventFlags[item] = setEventFlag;
-                            }
+                        }
+                        // Use sourceKey.Item, instead of item, for synthetic item tracking per source
+                        if (itemEventFlags.ContainsKey(sourceKey.Item) && itemEventFlags[sourceKey.Item] <= 0 && setEventFlag > 0)
+                        {
+                            itemEventFlags[sourceKey.Item] = setEventFlag;
                         }
                     }
                 }
             }
-            itemLots.Rows = itemLots.Rows.OrderBy(r => r.ID).ToList();
+            foreach (string suffix in lotSuffixes)
+            {
+                PARAM itemLots = game.Params["ItemLotParam" + suffix];
+                itemLots.Rows = itemLots.Rows.OrderBy(r => r.ID).ToList();
+            }
             Console.WriteLine("-- End of item spoilers");
             Console.WriteLine();
 
             // Hacky convenience function for generating race mode list
             if (opt["racemodeinfo"])
             {
+                Dictionary<string, List<(string, string)>> areaEntries = new Dictionary<string, List<(string, string)>>();
+                SortedDictionary<string, string> tagTypes = new SortedDictionary<string, string>
+                {
+                    ["altboss"] = "5Minor boss",
+                    ["altboss minidungeon"] = "5Minor minidungeon boss",
+                    ["altboss night"] = "5Minor night boss",
+                    ["boss"] = "1Major boss",
+                    ["church"] = "2Flask upgrade",
+                    ["minidungeon raceshop"] = "4Minidungeon shop",
+                    ["minidungeon talisman"] = "6Minidungeon talisman",
+                    ["racemode"] = "0Key item",
+                    ["raceshop"] = "3Shop",
+                    ["seedtree"] = "2Flask upgrade",
+                    ["talisman"] = "6Talisman",
+                };
+                HashSet<string> actualTypes = new HashSet<string>();
+                Dictionary<string, List<string>> replaces = new Dictionary<string, List<string>>();
+                // Sorta terrible but better than doing it by hand
+                string hack = ". Replaces ";
+                foreach (var val in raceModeInfo)
+                {
+                    (string area, string tags, string desc) = val;
+                    if (!tagTypes.ContainsKey(tags)) tagTypes[tags] = null;
+                    actualTypes.Add(tags);
+                    string replace = desc.Substring(desc.IndexOf(hack) + hack.Length).TrimEnd('.');
+                    desc = desc.Substring(0, desc.IndexOf(hack));
+                    string fullDesc = $"{tagTypes[tags] ?? $"???? {tags}"}{desc}";
+                    if (ann.Areas[area].Tags != null && ann.Areas[area].Tags.Contains("minidungeon"))
+                    {
+                        // Hardcode this one, rare since it's a minidungeon following a key item
+                        area = area == "snowfield_hiddenpath" ? "snowfield" : ann.Areas[area].Req.Split(' ')[0];
+                    }
+                    AddMulti(areaEntries, ann.Areas[area].Text, (fullDesc, tags));
+                    if (!tags.Contains("raceshop"))
+                    {
+                        AddMulti(replaces, fullDesc, replace);
+                    }
+                }
                 HashSet<string> visited = new HashSet<string>();
+                Dictionary<string, List<string>> finalEntries = new Dictionary<string, List<string>>();
                 foreach (AnnotationData.AreaAnnotation areaAnn in ann.Areas.Values)
                 {
+                    if (areaAnn.Name == "chapel_start") continue;
                     if (!visited.Add(areaAnn.Text)) continue;
-                    List<string> items = raceModeInfo.Where(r => r != null && r.StartsWith($" in {areaAnn.Text}:")).ToList();
-                    foreach (string item in Enumerable.Reverse(items.Distinct()))
+                    if (!areaEntries.TryGetValue(areaAnn.Text, out List<(string, string)> descs)) continue;
+                    Console.WriteLine("--- " + areaAnn.Text);
+                    foreach ((string desc, string tags) in descs.OrderBy(x => x).Distinct())
                     {
-                        Console.WriteLine("In" + item.Substring(3));
+                        string text = desc.Substring(1);
+                        if (replaces.ContainsKey(desc)) text += $". Replaces {string.Join(", ", replaces[desc].Distinct())}.";
+                        Console.WriteLine(text);
+                        AddMulti(finalEntries, tags, text);
                     }
+                    Console.WriteLine();
+                }
+                foreach (KeyValuePair<string, string> entry in tagTypes)
+                {
+                    if (!actualTypes.Contains(entry.Key)) continue;
+                    Console.WriteLine($"[\"{entry.Key}\"] = \"{entry.Value}\",  // {finalEntries[entry.Key].Count}");
                 }
             }
 
@@ -859,9 +1155,9 @@ namespace RandomizerCommon
                         // Use unused lot 3440 and unused event flag range 930-950ish
                         ItemKey memory = new ItemKey(ItemType.GOOD, 5400);
                         int memoryLot = 3440;  // unused lot
-                        Dictionary<string, object> memCells = ShopToItemLot(ShopCellsForItem(memory), memory, random);
-                        memCells["getItemFlagId"] = -1;
-                        AddLot(memoryLot, memCells, itemRarity);
+                        LotCells memCells = ShopToItemLot(ShopCellsForItem(memory), memory, random, false);
+                        memCells.EventFlag = -1;
+                        AddLot("ItemLotParam", memoryLot, memCells, itemRarity, false);
 
                         EMEVD.Event memEv = new EMEVD.Event(930, EMEVD.Event.RestBehaviorType.Default);
                         memEv.Instructions.Add(new EMEVD.Instruction(1003, 2, new List<object> { (byte)0, (byte)1, (byte)2, 0 }));  // End if self event flag + slot
@@ -871,7 +1167,7 @@ namespace RandomizerCommon
                         memEv.Parameters.Add(new EMEVD.Parameter(1, 4, 0, 4));
                         memEv.Parameters.Add(new EMEVD.Parameter(2, 4, 0, 4));
                         entry.Value.Events.Add(memEv);
-                        
+
                         int slot = 0;
                         foreach (KeyValuePair<int, int> mem in memoryFlags)
                         {
@@ -891,7 +1187,7 @@ namespace RandomizerCommon
                     }
                 }
             }
-            else
+            else if (game.DS3)
             {
                 // DS3 edits
                 if (dragonFlag <= 0 && !opt["norandom"])
@@ -915,7 +1211,7 @@ namespace RandomizerCommon
                 foreach (PARAM.Row row in shops.Rows)
                 {
                     int mat = (int)row["mtrlId"].Value;
-                    if (mat > 0 && randomMaterialItems.TryGetValue(mat, out ItemKey soul) && randomMaterialEventFlags.TryGetValue(soul, out int soulFlag) && soulFlag > 0)
+                    if (mat > 0 && bossSoulItems.TryGetValue(mat, out ItemKey soul) && itemEventFlags.TryGetValue(soul, out int soulFlag) && soulFlag > 0)
                     {
                         row["qwcID"].Value = soulFlag;
                     }
@@ -1039,34 +1335,398 @@ namespace RandomizerCommon
                     }
                 }
             }
-        }
-        private class BasicLocation
-        {
-            public string CollisionName;
-            public Vector3 Position;
-            public Vector3 Rotation;
-            public static BasicLocation Get(MSB3.Part part, string collisionName=null)
+            else if (game.EldenRing)
             {
-                string col;
-                if (part is MSB3.Part.Enemy e) col = e.CollisionName;
-                else if (part is MSB3.Part.Object o) col = o.CollisionName;
-                else throw new Exception(part.ModelName);
-                if (col == null || col == "")
+                // Replace duplication boss defeat flags with soul get flags
+                foreach (PARAM.Row row in shops.Rows)
                 {
-                    if (collisionName == null) throw new Exception($"Bad location randomization for {part.Name}");
-                    col = collisionName;
+                    if (bossSoulItems.TryGetValue(row.ID, out ItemKey soul) && itemEventFlags.TryGetValue(soul, out int soulFlag) && soulFlag > 0)
+                    {
+                        row["eventFlag_forRelease"].Value = soulFlag;
+                    }
                 }
-                return new BasicLocation { CollisionName = col, Position = part.Position, Rotation = part.Rotation };
+
+                HashSet<(ItemTemplate, int)> completedTemplates = new HashSet<(ItemTemplate, int)>();
+                bool getFlagEdit(string type, int flag, out int targetFlag, out ItemKey item)
+                {
+                    targetFlag = 0;
+                    item = null;
+                    if (type.StartsWith("item") && item != null)
+                    {
+                        if (trackedFlagItems.TryGetValue(flag, out item) && itemEventFlags.TryGetValue(item, out int itemFlag)
+                            && itemFlag > 0 && itemFlag != flag)
+                        {
+                            targetFlag = itemFlag;
+                            return true;
+                        }
+                    }
+                    else if (type.StartsWith("loc"))
+                    {
+                        // rewrittenFlags is the alteration of an item lot or shop's flag, so location checks should use the new flag
+                        if (rewrittenFlags.TryGetValue(flag, out int newFlag) && newFlag != flag)
+                        {
+                            targetFlag = newFlag;
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                // Unfortunately, clone and modify entire Sekiro emevd routine because it depends on EMEDF and we don't have a usable one
+                Dictionary<int, EventSpec> templates = eventConfig.ItemEvents.ToDictionary(e => e.ID, e => e);
+
+                Dictionary<(int, int), (int, int)> flagPositions = new Dictionary<(int, int), (int, int)>
+                {
+                    [(3, 0)] = (1, 1),
+                    [(3, 1)] = (1, 2),
+                    [(3, 10)] = (1, 2),
+                    [(3, 12)] = (1, 1),
+                    [(1003, 0)] = (1, 1),
+                    [(1003, 1)] = (1, 1),
+                    [(1003, 2)] = (1, 1),
+                    [(1003, 3)] = (1, 2),
+                    [(1003, 4)] = (1, 2),
+                    [(1003, 101)] = (1, 1),
+                    [(1003, 103)] = (1, 2),
+                    [(2003, 17)] = (0, 1),
+                    [(2003, 22)] = (0, 1),
+                    [(2003, 63)] = (0, 1),
+                    [(2003, 66)] = (1, 1),
+                    [(2003, 69)] = (1, 1),
+                };
+
+                Dictionary<int, EMEVD.Event> commonEvents = game.Emevds["common_func"].Events.ToDictionary(e => (int)e.ID, e => e);
+                foreach (KeyValuePair<string, EMEVD> entry in game.Emevds)
+                {
+                    EMEVD emevd = entry.Value;
+                    Dictionary<int, EMEVD.Event> fileEvents = entry.Value.Events.ToDictionary(e => (int)e.ID, e => e);
+                    foreach (EMEVD.Event e in emevd.Events)
+                    {
+                        for (int i = 0; i < e.Instructions.Count; i++)
+                        {
+                            EMEVD.Instruction init = e.Instructions[i];
+                            if (!(init.Bank == 2000 && (init.ID == 0 || init.ID == 6))) continue;
+                            List<object> initArgs = init.UnpackArgs(Enumerable.Repeat(ArgType.Int32, init.ArgData.Length / 4));
+                            int offset = 2;
+                            int callee = (int)initArgs[1];
+                            if (!templates.TryGetValue(callee, out EventSpec ev)) continue;
+                            if (ev.ItemTemplate.Count == 0) throw new Exception($"event {callee} has no templates");
+                            if (ev.ItemTemplate[0].Type == "remove")
+                            {
+                                // Remove action by removing initialization, for now. Can garbage collect later if desired.
+                                e.Instructions[i] = new EMEVD.Instruction(1014, 69);
+                                continue;
+                            }
+                            // Source flag and event to edit. We're not copying the event so only one type of pass is required.
+                            List<(int, EMEVD.Event, ItemTemplate)> eventCopies = new List<(int, EMEVD.Event, ItemTemplate)>();
+                            foreach (ItemTemplate t in ev.ItemTemplate)
+                            {
+                                // Types: item itemarg, loc locarg, fixeditem, default, ashdupe, singleton, remove
+                                if (t.Type == "remove" || t.Type == "fixeditem" || t.Type == "default") continue;
+                                List<int> templateFlags = t.EventFlag == null ? new List<int>() : t.EventFlag.Split(' ').Select(int.Parse).ToList();
+                                List<int> flags;
+                                if (t.Type.Contains("arg"))
+                                {
+                                    if (t.EventFlagArg == null) throw new Exception($"Internal error: No arg defined for item flag in {callee}");
+                                    if (!TryArgSpec(t.EventFlagArg.Split(' ').Last(), out int pos))
+                                    {
+                                        throw new Exception($"Internal error: Bad argspec {callee}");
+                                    }
+                                    int argFlag = (int)initArgs[offset + pos];
+                                    if (!templateFlags.Contains(argFlag))
+                                    {
+                                        // Console.WriteLine($"{callee}: {t.EventFlagArg} {argFlag} not an item flag");
+                                        continue;
+                                    }
+                                    flags = new List<int> { argFlag };
+                                }
+                                else if (t.Type == "ashdupe" || t.Type == "singleton")
+                                {
+                                    flags = new List<int> { 0 };
+                                }
+                                else
+                                {
+                                    flags = templateFlags;
+                                }
+                                foreach (int flag in flags)
+                                {
+                                    if (t.Type.Contains("arg"))
+                                    {
+                                        eventCopies.Add((flag, null, t));
+                                    }
+                                    else if (fileEvents.TryGetValue(callee, out EMEVD.Event theEvent) || commonEvents.TryGetValue(callee, out theEvent))
+                                    {
+                                        if (completedTemplates.Contains((t, flag))) continue;
+                                        completedTemplates.Add((t, flag));
+                                        eventCopies.Add((flag, theEvent, t));
+                                    }
+                                    else
+                                    {
+                                        throw new Exception($"Initialized event {callee} but absent from {entry.Key} and not specified in args");
+                                    }
+                                }
+                            }
+                            foreach (var copy in eventCopies)
+                            {
+                                (int flag, EMEVD.Event e2, ItemTemplate t) = copy;
+                                // Types: item itemarg, loc locarg, ashdupe, singleton
+                                if (t.Type == "ashdupe")
+                                {
+                                    // In this case, edit the event. Simplified version of it:
+                                    // Event 65810. X0_4 = duplication shop qwc, X4_4 = get event flag
+                                    // EndIf(EventFlag(X0_4));
+                                    // WaitFor(EventFlag(X4_4));
+                                    // SetEventFlag(TargetEventFlagType.EventFlag, X0_4, ON);
+                                    // if (!EventFlag(65800)) SetEventFlag(TargetEventFlagType.EventFlag, 65800, ON);
+                                    // Unfortunately, PlayerHasItem doesn't work for gems. We need to do an off->on check.
+                                    OldParams pre = OldParams.Preprocess(e2);
+                                    // EndIfEventFlag(EventEndType.End, ON, TargetFlagType.EventFlag, X4_4)
+                                    EMEVD.Instruction check = new EMEVD.Instruction(1003, 2, new List<object> { (byte)0, (byte)1, (byte)0, 0 });
+                                    pre.AddParameters(check, new List<EMEVD.Parameter> { new EMEVD.Parameter(0, 4, 4, 4) });
+                                    e2.Instructions.Insert(0, check);
+                                    pre.Postprocess();
+                                    continue;
+                                }
+                                else if (t.Type == "singleton")
+                                {
+                                    OldParams pre = OldParams.Preprocess(e2);
+                                    // EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventIDSlotNumber, 0)
+                                    EMEVD.Instruction check = new EMEVD.Instruction(1003, 2, new List<object> { (byte)0, (byte)1, (byte)2, 0 });
+                                    e2.Instructions.Insert(0, check);
+                                    pre.Postprocess();
+                                    continue;
+                                }
+                                if (flag <= 0) throw new Exception($"Internal error: Flag missing for {callee} item flag rewrite");
+
+                                if (!getFlagEdit(t.Type, flag, out int targetFlag, out ItemKey item))
+                                {
+                                    continue;
+                                }
+
+                                bool edited = false;
+                                if (t.EventFlagArg != null)
+                                {
+                                    foreach (string arg in t.EventFlagArg.Split(' '))
+                                    {
+                                        if (!TryArgSpec(arg, out int pos))
+                                        {
+                                            throw new Exception($"Internal error: Bad argspec {callee}");
+                                        }
+                                        initArgs[offset + pos] = targetFlag;
+                                        init.PackArgs(initArgs);
+                                        edited = true;
+                                    }
+                                }
+                                else if (e2 != null)
+                                {
+                                    for (int j = 0; j < e2.Instructions.Count; j++)
+                                    {
+                                        EMEVD.Instruction ins = e2.Instructions[j];
+                                        if (flagPositions.TryGetValue((ins.Bank, ins.ID), out (int, int) range))
+                                        {
+                                            (int aPos, int bPos) = range;
+                                            List<object> args = ins.UnpackArgs(Enumerable.Repeat(ArgType.Int32, ins.ArgData.Length / 4));
+                                            int flagVal = (int)args[bPos];
+                                            if (flag != flagVal) continue;
+                                            // Custom case for item checks: check item directly, if it can be done in-place
+                                            // This doesn't get all of them, there are a few skips/gotos/ends e.g. in 12042400, 1050563700
+                                            if (item != null && (int)item.Type <= 3 && ins.Bank == 3 && ins.ID == 0)
+                                            {
+                                                // 3[00] IfEventFlag(sbyte group, byte flagState, byte flagType, int flag)
+                                                args = ins.UnpackArgs(new[] { ArgType.SByte, ArgType.Byte, ArgType.Byte, ArgType.Int32 });
+                                                // 3[04] IfPlayerHasdoesntHaveItem(sbyte group, byte itemType, int itemId, byte ownState)
+                                                e2.Instructions[j] = ins = new EMEVD.Instruction(3, 4);
+                                                ins.PackArgs(new List<object> { args[0], (byte)item.Type, item.ID, args[1] });
+                                            }
+                                            else
+                                            {
+                                                args[aPos] = args[bPos] = targetFlag;
+                                                ins.PackArgs(args);
+                                            }
+                                            edited = true;
+                                        }
+                                    }
+                                }
+                                if (!edited) new Exception($"Couldn't apply flag edit {flag} -> {targetFlag} to {callee}");
+                                if (e2 != null && commonEvents.ContainsKey(callee))
+                                {
+                                    game.WriteEmevds.Add("common_func");
+                                }
+                                else
+                                {
+                                    game.WriteEmevds.Add(entry.Key);
+                                }
+                            }
+                        }
+                    }
+                    void addNewEvent(int id, IEnumerable<EMEVD.Instruction> instrs, EMEVD.Event.RestBehaviorType rest = EMEVD.Event.RestBehaviorType.Default)
+                    {
+                        EMEVD.Event ev = new EMEVD.Event(id, rest);
+                        // ev.Instructions.AddRange(instrs.Select(t => events.ParseAdd(t)));
+                        ev.Instructions.AddRange(instrs);
+                        emevd.Events.Add(ev);
+                        emevd.Events[0].Instructions.Add(new EMEVD.Instruction(2000, 0, new List<object> { 0, (uint)id, (uint)0 }));
+                    }
+                    if (entry.Key == "common")
+                    {
+                        List<EMEVD.Instruction> runeInstrs = new List<EMEVD.Instruction>();
+                        // Basic basic structure: if get either runes, and the base flag is not set
+                        int reg = 1;
+                        foreach (KeyValuePair<int, (ItemKey, ItemKey)> rune in greatRunes)
+                        {
+                            int flag = rune.Key;
+                            ItemKey a = rune.Value.Item1;
+                            ItemKey b = rune.Value.Item2;
+                            runeInstrs.AddRange(new List<EMEVD.Instruction>
+                            {
+                                // IfEventFlag(reg, OFF, TargetEventFlagType.EventFlag, flag)
+                                new EMEVD.Instruction(3, 0, new List<object> { (sbyte)reg, (byte)0, (byte)0, flag }),
+                                // IfPlayerHasdoesntHaveItem(-reg, a.Type, a.ID, OwnershipState.Owns = 1)
+                                // IfPlayerHasdoesntHaveItem(-reg, b.Type, b.ID, OwnershipState.Owns = 1)
+                                new EMEVD.Instruction(3, 4, new List<object> { (sbyte)-reg, (byte)a.Type, a.ID, (byte)1 }),
+                                new EMEVD.Instruction(3, 4, new List<object> { (sbyte)-reg, (byte)b.Type, b.ID, (byte)1 }),
+                                // IfConditionGroup(reg, ON, -reg)
+                                new EMEVD.Instruction(0, 0, new List<object> { (sbyte)reg, (byte)1, (sbyte)-reg }),
+                                // IfConditionGroup(-10, ON, reg)
+                                new EMEVD.Instruction(0, 0, new List<object> { (sbyte)-10, (byte)1, (sbyte)reg }),
+                            });
+                            reg++;
+                        }
+                        // IfConditionGroup(MAIN, ON, -10)
+                        runeInstrs.Add(new EMEVD.Instruction(0, 0, new List<object> { (sbyte)0, (byte)1, (sbyte)-10 }));
+                        // runeInstrs.Add(new EMEVD.Instruction(2003, 4, new List<object> { 997220 }));
+                        reg = 1;
+                        foreach (KeyValuePair<int, (ItemKey, ItemKey)> rune in greatRunes)
+                        {
+                            int flag = rune.Key;
+                            runeInstrs.AddRange(new List<EMEVD.Instruction>
+                            {
+                                // SkipIfConditionGroupStateCompiled(1, OFF, reg)
+                                new EMEVD.Instruction(1000, 7, new List<object> { (byte)1, (byte)0, (byte)reg }),
+                                // SetEventFlag(TargetEventFlagType.EventFlag, flag, ON)
+                                new EMEVD.Instruction(2003, 66, new List<object> { (byte)0, flag, (byte)1 }),
+                            });
+                            reg++;
+                        }
+                        // We could loop this, but there are weird states (like flag on but no item)
+                        // so it's simpler just to make it happen a single time on reload.
+                        addNewEvent(19003130, runeInstrs, EMEVD.Event.RestBehaviorType.Restart);
+                    }
+                }
+
+                // Now ESDs. AST should make this a lot simpler than the Sekiro case
+                Dictionary<int, EventSpec> talkTemplates = eventConfig.ItemTalks.ToDictionary(e => e.ID, e => e);
+
+                AST.Expr esdFunction(string name, List<int> args)
+                {
+                    return new AST.FunctionCall
+                    {
+                        Name = name,
+                        Args = args.Select(a => (AST.Expr)new AST.ConstExpr { Value = a }).ToList(),
+                    };
+                }
+                byte[] rewriteArg(byte[] bytes, Dictionary<int, string> flagEdits)
+                {
+                    AST.Expr expr = AST.DisassembleExpression(bytes);
+                    bool modified = false;
+                    expr = expr.Visit(AST.AstVisitor.Post(e =>
+                    {
+                        if (e is AST.FunctionCall call && (call.Name == "f15" || call.Name == "f101") && call.Args.Count == 1)
+                        {
+                            if (call.Args[0].TryAsInt(out int flag)
+                                && flagEdits.TryGetValue(flag, out string editType)
+                                && getFlagEdit(editType, flag, out int targetFlag, out ItemKey item))
+                            {
+                                modified = true;
+                                if (item != null && (int)item.Type <= 3)
+                                {
+                                    // DoesPlayerHaveItem(type, id)
+                                    return esdFunction("f16", new List<int> { (int)item.Type, item.ID });
+                                }
+                                else
+                                {
+                                    // EventFlag(targetFlag)
+                                    return esdFunction("f15", new List<int> { targetFlag });
+                                }
+                            }
+                        }
+                        return null;
+                    }));
+                    return modified ? AST.AssembleExpression(expr) : null;
+                }
+
+                List<ESD.Condition> GetConditions(List<ESD.Condition> condList) => Enumerable.Concat(condList, condList.SelectMany(cond => GetConditions(cond.Subconditions))).ToList();
+                foreach (KeyValuePair<string, Dictionary<string, ESD>> entry in game.Talk)
+                {
+                    bool modified = false;
+                    foreach (KeyValuePair<string, ESD> esdEntry in entry.Value)
+                    {
+                        ESD esd = esdEntry.Value;
+                        int esdId = int.Parse(esdEntry.Key.Substring(1));
+                        if (!talkTemplates.TryGetValue(esdId, out EventSpec spec) || spec.ItemTemplate == null) continue;
+
+                        // We have some edits to do
+                        foreach (KeyValuePair<long, Dictionary<long, ESD.State>> machine in esd.StateGroups)
+                        {
+                            int machineId = (int)machine.Key;
+                            string machineName = AST.FormatMachine(machineId);
+                            List<ItemTemplate> machineTemplates = spec.ItemTemplate.Where(t => t.Machine == machineName).ToList();
+                            if (machineTemplates.Count == 0) continue;
+
+                            Dictionary<int, string> flagEdits = new Dictionary<int, string>();
+                            foreach (ItemTemplate t in machineTemplates)
+                            {
+                                if (t.Type == "default" || t.Type == "fixeditem") continue;
+                                if ((t.Type != "item" && t.Type != "loc") || t.EventFlag == null)
+                                {
+                                    throw new Exception($"Internal error: unknown ESD edit in {esdId} {machineName}");
+                                }
+                                foreach (int flag in t.EventFlag.Split(' ').Select(int.Parse))
+                                {
+                                    flagEdits[flag] = t.Type;
+                                }
+                            }
+                            if (flagEdits.Count == 0) continue;
+
+                            foreach (KeyValuePair<long, ESD.State> stateEntry in machine.Value)
+                            {
+                                int stateId = (int)stateEntry.Key;
+                                ESD.State state = stateEntry.Value;
+                                List<ESD.Condition> conds = GetConditions(state.Conditions);
+                                foreach (ESD.CommandCall cmd in new[] { state.EntryCommands, state.WhileCommands, state.ExitCommands, conds.SelectMany(c => c.PassCommands) }.SelectMany(c => c))
+                                {
+                                    for (int i = 0; i < cmd.Arguments.Count; i++)
+                                    {
+                                        byte[] arg2 = rewriteArg(cmd.Arguments[i], flagEdits);
+                                        if (arg2 != null)
+                                        {
+                                            cmd.Arguments[i] = arg2;
+                                            modified = true;
+                                        }
+                                    }
+                                }
+                                foreach (ESD.Condition cond in conds)
+                                {
+                                    byte[] eval2 = rewriteArg(cond.Evaluator, flagEdits);
+                                    if (eval2 != null)
+                                    {
+                                        cond.Evaluator = eval2;
+                                        modified = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (modified)
+                    {
+                        game.WriteESDs.Add(entry.Key);
+                    }
+                }
+                // End Elden Ring edits
             }
-            public void Set(MSB3.Part part)
-            {
-                if (part is MSB3.Part.Enemy e) e.CollisionName = CollisionName;
-                else if (part is MSB3.Part.Object o) o.CollisionName = CollisionName;
-                else throw new Exception(part.ModelName);
-                part.Position = Position;
-                part.Rotation = Rotation;
-            }
+            return new Result { ItemEventFlags = itemEventFlags };
         }
+
         private static readonly Regex phraseRe = new Regex(@"\s*;\s*");
 
         private PriceCategory GetSekiroPriceCategory(ItemKey key)
@@ -1079,16 +1739,32 @@ namespace RandomizerCommon
         {
             // Effectively don't use transpose category - instead use rules for base category.
             // if (isTranspose) return PriceCategory.TRANSPOSE;
-            if (key.Type != ItemType.GOOD)
+            if (game.EldenRing)
             {
-                if (key.Type == ItemType.WEAPON && key.ID >= 400000 && key.ID < 500000)
+                if (key.Type != ItemType.GOOD)
                 {
-                    return PriceCategory.ARROWS;
+                    if (key.Type == ItemType.WEAPON && key.ID >= 50000000 && key.ID < 60000000)
+                    {
+                        return PriceCategory.ARROWS;
+                    }
+                    return (PriceCategory)key.Type;
                 }
-                return (PriceCategory)key.Type;
+                if (key.ID >= 4000 && key.ID < 8000) return PriceCategory.SPELLS;
+                if (key.ID >= 10100 & key.ID < 11000) return PriceCategory.UPGRADE;
             }
-            if (key.ID >= 1200000) return PriceCategory.SPELLS;
-            if (key.ID >= 1000 & key.ID <= 1030) return PriceCategory.UPGRADE;
+            else
+            {
+                if (key.Type != ItemType.GOOD)
+                {
+                    if (key.Type == ItemType.WEAPON && key.ID >= 400000 && key.ID < 500000)
+                    {
+                        return PriceCategory.ARROWS;
+                    }
+                    return (PriceCategory)key.Type;
+                }
+                if (key.ID >= 1200000) return PriceCategory.SPELLS;
+                if (key.ID >= 1000 & key.ID <= 1030) return PriceCategory.UPGRADE;
+            }
             if (!isItemFiniteCache.ContainsKey(key))
             {
                 // If infinite shop, item is infinite
@@ -1164,10 +1840,17 @@ namespace RandomizerCommon
                 // Upgrade materials roughly same. Unique ones on sale because of how many are moved to shops usually.
                 if (cat == PriceCategory.UPGRADE)
                 {
-                    int basePrice = (int)row[itemValueCells[(int)item.Type]].Value;
-                    return siloType == RandomSilo.FINITE ? basePrice / 2 : basePrice;
+                    if (game.EldenRing && upgradePrices.TryGetValue(item, out int upgradePrice))
+                    {
+                        return siloType == RandomSilo.FINITE ? upgradePrice * 8 / 10 : upgradePrice;
+                    }
+                    else if (game.DS3)
+                    {
+                        int basePrice = (int)row[itemValueCells[(int)item.Type]].Value;
+                        return siloType == RandomSilo.FINITE ? basePrice / 2 : basePrice;
+                    }
                 }
-                int sellPrice = (int)row["sellValue"].Value;
+                int sellPrice = item.Type == ItemType.GEM ? 0 : (int)row["sellValue"].Value;
                 // If it's a soul, make it cost a more than the soul cost.
                 if (cat == PriceCategory.FINITE_GOOD && sellPrice >= 2000)
                 {
@@ -1199,15 +1882,16 @@ namespace RandomizerCommon
                 }
                 if (isTranspose && random.NextDouble() < 0.4)
                 {
+                    // TODO: Elden Ring boss shops?
                     price = 0;
                 }
                 return price;
             }
         }
 
-        private void AddLot(int baseLot, Dictionary<string, object> cells, Dictionary<int, byte> itemRarity, bool overwrite = false)
+        private void AddLot(string paramName, int baseLot, LotCells cells, Dictionary<int, byte> itemRarity, bool overwrite)
         {
-            PARAM itemLots = game.Param("ItemLotParam");
+            PARAM itemLots = game.Param(paramName);
             int targetLot = baseLot;
             PARAM.Row row = null;
             if (overwrite)
@@ -1220,9 +1904,10 @@ namespace RandomizerCommon
                 {
                     targetLot++;
                 }
-                row = game.AddRow("ItemLotParam", targetLot);
+                row = game.AddRow(paramName, targetLot);
             }
-            foreach (KeyValuePair<string, object> cell in cells)
+            // Console.WriteLine($"Setting lot {baseLot}: {string.Join(", ", cells.Cells)}");
+            foreach (KeyValuePair<string, object> cell in cells.Cells)
             {
                 if (cell.Key == "LotItemRarity")
                 {
@@ -1236,16 +1921,19 @@ namespace RandomizerCommon
             }
         }
 
-        private void SetShop(int targetShop, Dictionary<string, object> cells)
+        private void SetShop(int targetShop, ShopCells cells)
         {
             PARAM shops = game.Param("ShopLineupParam");
             PARAM.Row row = shops[targetShop];
-            foreach (KeyValuePair<string, object> cell in cells)
+            foreach (KeyValuePair<string, object> cell in cells.Cells)
             {
-                if (cell.Key != "qwcID" && cell.Key != "mtrlId")  // This is right... right?
-                {
-                    row[cell.Key].Value = cell.Value;
-                }
+                if (cell.Key == "qwcID" || cell.Key == "eventFlag_forRelease" || cell.Key == "mtrlId"
+                    || cell.Key == "costType") continue;
+                row[cell.Key].Value = cell.Value;
+            }
+            if (!cells.Cells.ContainsKey("nameMsgId"))
+            {
+                row["nameMsgId"].Value = -1;
             }
         }
 
@@ -1258,7 +1946,7 @@ namespace RandomizerCommon
                 chances[loc.Quantity] = Math.Min(chance, loc.Chance);
             }
             // From the way the rest of the randomizer is balanced, exclude DS3 upgrade materials from being too good
-            if (key.Type == ItemType.GOOD && key.ID >= 1000 && key.ID <= 1030)
+            if (game.DS3 && key.Type == ItemType.GOOD && key.ID >= 1000 && key.ID <= 1030)
             {
                 float chanceMult = 0.2f / chances.Values.Sum();
                 if (chanceMult < 1)
@@ -1269,82 +1957,82 @@ namespace RandomizerCommon
             return chances;
         }
 
-        private Dictionary<string, object> ProcessModelLot(Dictionary<string, object> lotCells, ItemKey key, Dictionary<int, float> sourceChances, bool print)
+        private LotCells ProcessModelLot(LotCells lotCells, ItemKey key, Dictionary<int, float> sourceChances, bool print)
         {
-            lotCells = new Dictionary<string, object>(lotCells);
+            lotCells = lotCells.DeepCopy();
             // Clear existing items out
             for (int i = 1; i <= 8; i++)
             {
-                lotCells[$"ItemLotId{i}"] = 0;
-                lotCells[$"LotItemCategory0{i}"] = 0xFFFFFFFF;
-                lotCells[$"LotItemBasePoint0{i}"] = (short)0;
-                SetItemLotCount(lotCells, i, 0);
+                lotCells[i] = null;
+                lotCells.SetPoints(i, 0);
+                lotCells.SetQuantity(i, 0);
             }
             // Disable resource drops in Sekiro as well
-            lotCells["LotItemNum1"] = (byte)0;
+            if (game.Sekiro)
+            {
+                lotCells.Cells["LotItemNum1"] = (byte)0;
+            }
             SetItemLotChances(lotCells, key, sourceChances, print);
             return lotCells;
         }
 
-        private Dictionary<string, object> ShopCellsForItem(ItemKey item)
+        private ShopCells ShopCellsForItem(ItemKey item)
         {
-            return new Dictionary<string, object>()
+            ShopCells cells = new ShopCells
             {
-                { "EquipId", item.ID },
-                { "equipType", (byte)item.Type },
-                { "sellQuantity", (short)1 }
+                Game = game,
+                Cells = new Dictionary<string, object>(),
             };
+            cells.Item = item;
+            cells.Quantity = 1;
+            return cells;
         }
 
-        private void SetItemLotCount(Dictionary<string, object> cells, int i, int quantity)
-        {
-            if (game.Sekiro)
-            {
-                cells[$"NewLotItemNum{i}"] = (ushort)quantity;
-            }
-            else
-            {
-                cells[$"LotItemNum{i}"] = (byte)quantity;
-            }
-        }
-
-        private void SetItemLotChances(Dictionary<string, object> cells, ItemKey key, Dictionary<int, float> quants, bool print)
+        private void SetItemLotChances(LotCells cells, ItemKey key, Dictionary<int, float> quants, bool print)
         {
             int drop = 0;
             int i = 1;
             foreach (KeyValuePair<int, float> quant in quants)
             {
-                cells[$"ItemLotId{i}"] = key.ID;
-                cells[$"LotItemCategory0{i}"] = lotValues[key.Type];
-                SetItemLotCount(cells, i, quant.Key);
+                cells[i] = key;
+                cells.SetQuantity(i, quant.Key);
                 int points = (int)Math.Round(1000 * quant.Value);
-                cells[$"LotItemBasePoint0{i}"] = (short)points;
+                cells.SetPoints(i, points);
                 if (print) Console.WriteLine($"  Drop chance for {quant.Key}: {points / 10.0}%");
                 drop += points;
                 i++;
                 if (i >= 8) break;
             }
-            cells[$"LotItemCategory0{i}"] = 0xFFFFFFFF;
-            cells[$"LotItemBasePoint0{i}"] = (short)Math.Max(0, 1000 - drop);
+            cells[i] = null;
+            cells.SetPoints(i, (short)Math.Max(0, 1000 - drop));
         }
 
-        private Dictionary<string, object> ShopToItemLot(Dictionary<string, object> shopCells, ItemKey key, Random random)
+        private LotCells ShopToItemLot(ShopCells shopCells, ItemKey key, Random random, bool print)
         {
-            Dictionary<string, object> lotCells = new Dictionary<string, object>();
-            lotCells["ItemLotId1"] = (int)shopCells["EquipId"];
-            // Make default quantity 0, and also disable resource drop flag in Sekiro
-            lotCells["LotItemNum1"] = (byte)0;
-            lotCells["LotItemCategory01"] = lotValues[(ItemType)(byte)shopCells["equipType"]];
-            int quantity = (short)shopCells["sellQuantity"];
+            LotCells lotCells = new LotCells { Game = game, Cells = new Dictionary<string, object>() };
+            // Disable resource drop flag in Sekiro
+            if (game.Sekiro)
+            {
+                lotCells.Cells["LotItemNum1"] = (byte)0;
+            }
+            if (!game.EldenRing)
+            {
+                lotCells.Cells["cumulateNumFlagId"] = -1;
+            }
+
+            lotCells[1] = shopCells.Item;
+            lotCells.SetQuantity(1, 0);
+            int quantity = shopCells.Quantity;
             if (quantity > 0)
             {
-                // Ring of sacrifice multi-drops do not work
+                // Ring of sacrifice multi-drops do not work in DS3
+                // ...make this shop-only instead?
                 if (key.Equals(new ItemKey(ItemType.RING, 20210)) && quantity > 1)
                 {
                     quantity = 1;
                 }
-                SetItemLotCount(lotCells, 1, quantity);
-                lotCells["LotItemBasePoint01"] = (short)100;
+                lotCells.SetQuantity(1, quantity);
+                lotCells.SetPoints(1, 100);
             }
             else
             {
@@ -1358,60 +2046,53 @@ namespace RandomizerCommon
                 {
                     chances = DEFAULT_CHANCES;
                 }
-                SetItemLotChances(lotCells, key, chances, true);
+                SetItemLotChances(lotCells, key, chances, print);
             }
-            lotCells["cumulateNumFlagId"] = -1;
             return lotCells;
         }
 
-        private Dictionary<string, object> ItemLotToShop(Dictionary<string, object> lotCells, ItemKey itemKey)
+        private ShopCells ItemLotToShop(LotCells lotCells, ItemKey itemKey)
         {
-            Dictionary<string, object> shopCells = new Dictionary<string, object>();
+            ShopCells shopCells = new ShopCells { Game = game, Cells = new Dictionary<string, object>() };
             // For an item like this, assume QWC id stays the same
             ItemKey lotKey = null;
             int totalPoints = 0;
             for (int i = 1; i <= 8; i++)
             {
-                totalPoints += (short)lotCells[$"LotItemBasePoint0{i}"];
+                totalPoints += lotCells.GetPoints(i);
             }
             for (int i = 1; i <= 8; i++)
             {
-                if ((int)lotCells[$"ItemLotId{i}"] == 0)
-                {
-                    continue;
-                }
-                lotKey = new ItemKey(game.LotItemTypes[(uint)lotCells[$"LotItemCategory0{i}"]], (int)lotCells[$"ItemLotId{i}"]);
-                if (!lotKey.Equals(itemKey))
+                lotKey = lotCells[i];
+                if (!itemKey.Equals(lotKey))
                 {
                     lotKey = null;
                     continue;
                 }
                 if (game.Sekiro && lotKey.Type == ItemType.WEAPON && lotKey.ID == 680000)
                 {
-                    shopCells["EquipId"] = 2420;
-                    shopCells["equipType"] = (byte)3;
+                    // Selling Mibu Breathing Technique
+                    shopCells.Item = new ItemKey(ItemType.GOOD, 2420);
                 }
                 else
                 {
-                    shopCells["EquipId"] = lotKey.ID;
-                    shopCells["equipType"] = (byte)lotKey.Type;
+                    shopCells.Item = lotKey;
                 }
-                int basePoints = (short)lotCells[$"LotItemBasePoint0{i}"];
+                int basePoints = lotCells.GetPoints(i);
                 if (basePoints == totalPoints)
                 {
                     // TODO: If no event id or material id, this won't do much. But that is intended?
-                    shopCells["sellQuantity"] = (short)(game.Sekiro ? (ushort)lotCells[$"NewLotItemNum{i}"] : (byte)lotCells[$"LotItemNum{i}"]);
+                    shopCells.Quantity = lotCells.GetQuantity(i);
                 }
                 else
                 {
-                    shopCells["sellQuantity"] = (short)-1;
+                    shopCells.Quantity = -1;
                 }
                 break;
             }
             if (lotKey == null)
             {
-                Console.WriteLine($"XX Invalid source location for {itemKey}!! {String.Join(", ", lotCells.Select(e => e.Key + " = " + e.Value))}");
-                return null;
+                throw new Exception($"Internal error: Invalid source location for {itemKey} from {string.Join(", ", lotCells.Cells.Select(e => e.Key + " = " + e.Value))}");
             }
             MakeSellable(lotKey);
             return shopCells;
@@ -1433,7 +2114,7 @@ namespace RandomizerCommon
                     itemRow["shopId"].Value = 100;
                 }
             }
-            else
+            else if (game.DS3)
             {
                 PARAM.Row itemRow = game.Item(key);
                 PARAM.Cell costCell = itemRow[itemValueCells[(int)key.Type]];
@@ -1443,14 +2124,175 @@ namespace RandomizerCommon
                     costCell.Value = 1000;
                 }
             }
+            // TODO: Anything for Elden Ring?
+        }
+
+        public abstract class ItemRow<T> where T : ItemRow<T>, new()
+        {
+            public GameData Game { get; set; }
+            public Dictionary<string, object> Cells { get; set; }
+            public T DeepCopy()
+            {
+                return new T { Game = Game, Cells = new Dictionary<string, object>(Cells) };
+            }
+        }
+
+        public class ShopCells : ItemRow<ShopCells>
+        {
+            public ItemKey Item
+            {
+                get
+                {
+                    return new ItemKey((ItemType)(byte)Cells["equipType"], (int)Cells[Game.EldenRing ? "equipId" : "EquipId"]);
+                }
+                set
+                {
+                    Cells[Game.EldenRing ? "equipId" : "EquipId"] = value.ID;
+                    Cells["equipType"] = (byte)value.Type;
+                }
+            }
+            public int EventFlag
+            {
+                get => Game.EldenRing ? (int)(uint)Cells["eventFlag_forStock"] : (int)Cells["EventFlag"];
+                set
+                {
+                    if (Game.EldenRing)
+                    {
+                        Cells["eventFlag_forStock"] = value > 0 ? (uint)value : 0u;
+                    }
+                    else
+                    {
+                        Cells["EventFlag"] = value > 0 ? value : -1;
+                    }
+                }
+            }
+            public int Quantity
+            {
+                get => (short)Cells["sellQuantity"];
+                set
+                {
+                    Cells["sellQuantity"] = (short)value;
+                }
+            }
+            public int Value
+            {
+                get => (int)Cells["value"];
+                set
+                {
+                    Cells["value"] = value;
+                }
+            }
+        }
+
+        // TODO: Ugh we should probably use subtyping for this
+        public class LotCells : ItemRow<LotCells>
+        {
+            public int EventFlag
+            {
+                get => Game.EldenRing ? (int)(uint)Cells["getItemFlagId"] : (int)Cells["getItemFlagId"];
+                set
+                {
+                    if (Game.EldenRing)
+                    {
+                        Cells["getItemFlagId"] = value > 0 ? (uint)value : 0u;
+                    }
+                    else
+                    {
+                        Cells["getItemFlagId"] = value > 0 ? value : -1;
+                    }
+                }
+            }
+            public ItemKey this[int i]
+            {
+                get
+                {
+                    if (Game.EldenRing)
+                    {
+                        int id = (int)Cells[$"lotItemId0{i}"];
+                        if (id == 0) return null;
+                        return new ItemKey(Game.LotItemTypes[(uint)(int)Cells[$"lotItemCategory0{i}"]], id);
+                    }
+                    else
+                    {
+                        int id = (int)Cells[$"ItemLotId{i}"];
+                        if (id == 0) return null;
+                        return new ItemKey(Game.LotItemTypes[(uint)Cells[$"LotItemCategory0{i}"]], id);
+                    }
+                }
+                set
+                {
+                    if (Game.EldenRing)
+                    {
+                        Cells[$"lotItemId0{i}"] = value == null ? 0 : value.ID;
+                        Cells[$"lotItemCategory0{i}"] = value == null ? 0 : (int)Game.LotValues[value.Type];
+                    }
+                    else
+                    {
+                        Cells[$"ItemLotId{i}"] = value == null ? 0 : value.ID;
+                        Cells[$"LotItemCategory0{i}"] = value == null ? 0xFFFFFFFFu : Game.LotValues[value.Type];
+                    }
+                }
+            }
+            public int GetPoints(int i)
+            {
+                if (Game.EldenRing)
+                {
+                    return (ushort)Cells[$"lotItemBasePoint0{i}"];
+                }
+                else
+                {
+                    return (short)Cells[$"LotItemBasePoint0{i}"];
+                }
+            }
+            public void SetPoints(int i, int points)
+            {
+                if (Game.EldenRing)
+                {
+                    Cells[$"lotItemBasePoint0{i}"] = (ushort)points;
+                }
+                else
+                {
+                    Cells[$"LotItemBasePoint0{i}"] = (short)points;
+                }
+            }
+            public int GetQuantity(int i)
+            {
+                if (Game.Sekiro)
+                {
+                    return (ushort)Cells[$"NewLotItemNum{i}"];
+                }
+                else if (Game.EldenRing) 
+                {
+                    return (byte)Cells[$"lotItemNum0{i}"];
+                }
+                else
+                {
+                    return (byte)Cells[$"LotItemNum{i}"];
+                }
+            }
+            public void SetQuantity(int i, int quantity)
+            {
+                if (Game.Sekiro)
+                {
+                    Cells[$"NewLotItemNum{i}"] = (ushort)quantity;
+                }
+                else if (Game.EldenRing)
+                {
+                    Cells[$"lotItemNum0{i}"] = (byte)quantity;
+                }
+                else
+                {
+                    Cells[$"LotItemNum{i}"] = (byte)quantity;
+                }
+            }
         }
 
         private class ItemSource
         {
             public readonly ItemLocation Loc;
             // Maybe use a Row object? But it might be nice to edit shops in place...
-            public readonly Dictionary<string, object> Row;
-            public ItemSource(ItemLocation loc, Dictionary<string, object> row)
+            public readonly object Row;
+            public ItemSource(ItemLocation loc, object row)
             {
                 this.Loc = loc;
                 this.Row = row;

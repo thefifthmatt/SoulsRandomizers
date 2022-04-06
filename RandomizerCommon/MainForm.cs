@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RandomizerCommon.Properties;
+using static SoulsIds.GameSpec;
 
 namespace RandomizerCommon
 {
@@ -13,7 +14,8 @@ namespace RandomizerCommon
     {
         private static readonly string enemySeedPlaceholder = "(same as overall seed)";
 
-        private RandomizerOptions options = new RandomizerOptions(false);
+        private Messages messages = new Messages(null);
+        private RandomizerOptions options = new RandomizerOptions(FromGame.DS3);
         private string defaultOpts = null;
         private HashSet<string> previousOpts = new HashSet<string>();
         private bool simultaneousUpdate;
@@ -38,7 +40,7 @@ namespace RandomizerCommon
             enemyseed.LostFocus += enemyseed_TextChanged;
 
             // The rest of initialization
-            RandomizerOptions initialOpts = new RandomizerOptions(false);
+            RandomizerOptions initialOpts = new RandomizerOptions(FromGame.DS3);
             SetControlFlags(this, initialOpts);
             defaultOpts = initialOpts.FullString();
 
@@ -75,7 +77,7 @@ namespace RandomizerCommon
                 return false;
             }
             previousOpts = new HashSet<string>(defaultOpts.Split(' '));
-            options = RandomizerOptions.Parse(previousOpts, false, isValidOption);
+            options = RandomizerOptions.Parse(previousOpts, FromGame.DS3, isValidOption);
 
             // New defaults
             if (previousOpts.Contains("v2") || previousOpts.Contains("v3"))
@@ -460,7 +462,7 @@ namespace RandomizerCommon
 
         private void optionwindow_Click(object sender, EventArgs e)
         {
-            using (OptionsForm form = new OptionsForm(options.FullString()))
+            using (OptionsForm form = new OptionsForm(messages, options.FullString()))
             {
                 form.Icon = Icon;
                 DialogResult result = form.ShowDialog(this);

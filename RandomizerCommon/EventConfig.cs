@@ -152,22 +152,35 @@ namespace RandomizerCommon
 
         public class Dupe
         {
+            // Whether to skip rewriting entities for a loc event, e.g. if modifying original enemy behavior
+            public bool NoRewrite { get; set; }
             // The existing enemy arg and the dupe arg position to add, when parameterized, or entity otherwise
             // Implies rewrite when not locarg, and the rewrite it limited to the entity
             public string Entity { get; set; }
-            // Health bar entity (parameter or id) whose dupe should have different indices
+            // Health bar name id whose dupe should have different indices and name
             public string HealthBar { get; set; }
+            // Health bar name id parameter, to add at the end after Entity args
+            public string HealthBarArg { get; set; }
             // Condition groups, when and/or logic mismatches. <source group> [<source 2 group> <combined group>].
             // By default uses 12, 13 as replacement groups (only used by butterfly end, miniboss start)
             public string Condition { get; set; }
+            // Generators to add to dupe rewrite map, to duplicate for different enemies
+            // This is meant for loc events, as chr events should use chrgen regions.
+            public string Generator { get; set; }
+            // When rewriting an event, add a quick delay between animations
+            public int DelayAnimation { get; set; }
         }
 
         public class ItemTemplate
         {
-            // item, any, loc, carp
+            // item, any, loc, carp, default (ER)
             public string Type { get; set; }
-            // The event flag to potentially rewrite
+            // Documentation on edits being made
+            public string Comment { get; set; }
+            // The event flag to potentially rewrite (space-separate list)
             public string EventFlag { get; set; }
+            // The argument to edit, if an arg event. If a second is given, copies the second to the first.
+            public string EventFlagArg { get; set; }
             // The item lot to use for the event flag replacement. TODO: implement
             public string ItemLot { get; set; }
             // The shop slot qwc to use for the event flag replacement. May not be needed, since shop event flags are unambiguous

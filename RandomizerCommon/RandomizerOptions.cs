@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using static SoulsIds.GameSpec;
 
 namespace RandomizerCommon
 {
     public class RandomizerOptions
     {
         private SortedDictionary<string, bool> opt = new SortedDictionary<string, bool>();
+        private SortedDictionary<string, string> str = new SortedDictionary<string, string>();
         private Dictionary<string, float> num = new Dictionary<string, float>();
         private int difficulty;
 
         public RandomizerOptions Copy()
         {
             // Copies most things, except not the seed and preset (maybe can revisit this when revisiting DS3)
-            return new RandomizerOptions(Sekiro)
+            return new RandomizerOptions(Game)
             {
                 opt = new SortedDictionary<string, bool>(opt),
+                str = new SortedDictionary<string, string>(str),
                 num = new Dictionary<string, float>(num),
                 difficulty = difficulty,
                 Seed = Seed,
@@ -24,27 +27,32 @@ namespace RandomizerCommon
             };
         }
 
-        public RandomizerOptions(bool Sekiro)
+        public RandomizerOptions(FromGame game)
         {
-            this.Sekiro = Sekiro;
-            if (Sekiro)
+            Game = game;
+            if (game == FromGame.SDT)
             {
                 opt["v1"] = false;
                 opt["v2"] = false;
                 opt["v3"] = false;
                 opt["v4"] = true;
             }
-            else
+            else if (game == FromGame.DS3)
             {
                 opt["v2"] = false;
                 opt["v3"] = false;
                 opt["v4"] = true;
             }
+            else if (game == FromGame.ER)
+            {
+                opt["v1"] = false;
+                opt["v2"] = true;
+            }
         }
 
-        public static RandomizerOptions Parse(IEnumerable<string> args, bool Sekiro, Predicate<string> optionsFilter = null)
+        public static RandomizerOptions Parse(IEnumerable<string> args, FromGame game, Predicate<string> optionsFilter = null)
         {
-            RandomizerOptions options = new RandomizerOptions(Sekiro);
+            RandomizerOptions options = new RandomizerOptions(game);
             uint seed = 0;
             uint seed2 = 0;
             int difficulty = 0;
@@ -82,6 +90,11 @@ namespace RandomizerCommon
                     }
                     numIndex++;
                 }
+                else if (arg.Contains(":"))
+                {
+                    string[] parts = arg.Split(new[] { ':' }, 2);
+                    options.str[parts[0]] = parts[1];
+                }
                 else
                 {
                     if (optionsFilter != null && !optionsFilter(arg)) continue;
@@ -91,6 +104,18 @@ namespace RandomizerCommon
             options.Difficulty = difficulty;
             options.Seed = seed;
             options.Seed2 = seed2;
+            if (options.str.TryGetValue("bias", out string valStr) && int.TryParse(valStr, out int val))
+            {
+                options.Difficulty = val;
+            }
+            if (options.str.TryGetValue("seed", out valStr) && uint.TryParse(valStr, out uint uval))
+            {
+                options.Seed = uval;
+            }
+            if (options.str.TryGetValue("seed2", out valStr) && uint.TryParse(valStr, out uval))
+            {
+                options.Seed2 = uval;
+            }
             if (preset.Count > 0) options.Preset = string.Join(" ", preset);
             return options;
         }
@@ -109,18 +134,20 @@ namespace RandomizerCommon
                 }
             }
         }
+
         public int Difficulty
         {
             get { return difficulty; }
             set {
                 difficulty = Math.Max(0, Math.Min(100, value));
                 // Linear scaling for these params, from 0 to 1. But severity may depend on game
-                if (Sekiro)
+                if (Game == FromGame.ER)
                 {
+                    // So far, unfair is not used in ER
                     num["unfairweight"] = FromRange(40, 80);
                     num["veryunfairweight"] = FromRange(70, 100);
-                    num["keyitemdifficulty"] = FromRange(20, 60);
-                    num["allitemdifficulty"] = FromRange(0, 80);
+                    num["keyitemdifficulty"] = FromRange(40, 100);
+                    num["allitemdifficulty"] = FromRange(0, 100);
                 }
                 else
                 {
@@ -146,7 +173,7 @@ namespace RandomizerCommon
             return 1f * (difficulty - start) / (end - start);
         }
 
-        public bool Sekiro { get; set; }
+        private FromGame Game { get; set; }
         public uint Seed { get; set; }
         public uint Seed2 { get; set; }
         public string Preset { get; set; }
@@ -156,20 +183,39 @@ namespace RandomizerCommon
             return num[name];
         }
 
-        private static HashSet<string> logiclessOptions = new HashSet<string> { "mergemods" };
+        private static HashSet<string> logiclessOptions = new HashSet<string> { "mergemods", "uxm" };
+
         public SortedSet<string> GetLogicOptions()
         {
             return new SortedSet<string>(opt.Where(e => e.Value && !logiclessOptions.Contains(e.Key)).Select(e => e.Key));
         }
+
         public SortedSet<string> GetOptions()
         {
             return new SortedSet<string>(opt.Where(e => e.Value).Select(e => e.Key));
         }
 
-        public string ConfigString(bool includeSeed = false, bool includePreset = false, bool onlyLogic = true) =>
-            $"{string.Join(" ", onlyLogic ? GetLogicOptions() : GetOptions())} {Difficulty}" +
-            $"{(includeSeed ? $" {Seed}" : "")}{(includeSeed && Seed2 != 0 && Seed2 != Seed ? $" {Seed2}" : "")}" +
-            $"{(!string.IsNullOrEmpty(Preset) && includePreset ? $" --preset {Preset}" : "")}";
+        public string ConfigString(bool includeSeed = false, bool includePreset = false, bool onlyLogic = true)
+        {
+            string result = string.Join(" ", onlyLogic ? GetLogicOptions() : GetOptions());
+            // Colon syntax should be safe to use for other games, but test it out first.
+            // At some point, we could switch to using the str dictionary directly.
+            result += Game == FromGame.ER ? $" bias:{Difficulty}" : $" {Difficulty}";
+            if (includeSeed)
+            {
+                result += Game == FromGame.ER ? $" seed:{Seed}" : $" {Seed}";
+                if (Seed2 != 0 && Seed2 != Seed)
+                {
+                    result += Game == FromGame.ER ? $" seed2:{Seed2}" : $" {Seed2}";
+                }
+            }
+            if (!string.IsNullOrEmpty(Preset) && includePreset)
+            {
+                result += $" --preset {Preset}";
+            }
+            return result;
+        }
+
         public string FullString() => ConfigString(includeSeed: true, includePreset: true, onlyLogic: false);
         public override string ToString() => ConfigString(includeSeed: true, includePreset: true, onlyLogic: false);
         public string ConfigHash() => (JavaStringHash(ConfigString(includeSeed: false, includePreset: true, onlyLogic: true)) % 99999).ToString().PadLeft(5, '0');

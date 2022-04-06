@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.IO;
 using Pidgin;
 using Pidgin.Expression;
 using YamlDotNet.Serialization;
@@ -9,6 +10,7 @@ using static Pidgin.Parser;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.LocationData.ItemScope;
 using static RandomizerCommon.Util;
+using System.Numerics;
 
 namespace RandomizerCommon
 {
@@ -30,11 +32,10 @@ namespace RandomizerCommon
         // Areas that events belong to, when they uniquely belong to one
         public readonly Dictionary<string, string> EventAreas = new Dictionary<string, string>();
         public readonly Dictionary<string, List<string>> AreaEvents = new Dictionary<string, List<string>>();
-        // The 'main' area for area aliases. To be phased out; combining areas automatically was a bad idea.
-        public readonly Dictionary<string, string> AreaAliases = new Dictionary<string, string>();
         // All named items with logic associated with them.
         public readonly Dictionary<string, ItemKey> Items = new Dictionary<string, ItemKey>();
         // Contents of item groups by names, used for various purposes
+        // Required ones: keyitems, questitems, remove
         public readonly Dictionary<string, List<ItemKey>> ItemGroups = new Dictionary<string, List<ItemKey>>();
         // Mapping from item group names to hint group names used for them
         public readonly Dictionary<string, string> HintGroups = new Dictionary<string, string>();
@@ -46,10 +47,12 @@ namespace RandomizerCommon
         public readonly Dictionary<ItemKey, PlacementRestrictionAnnotation> ItemRestrict = new Dictionary<ItemKey, PlacementRestrictionAnnotation>();
         // Forbidden placement flags for various items
         public readonly Dictionary<ItemKey, HashSet<string>> ExcludeTags = new Dictionary<ItemKey, HashSet<string>>();
-        // Exclude tags for key items specifically
+        // Exclude tags for key items specifically. Used for counting purposes and ash placement.
         public readonly HashSet<string> NoKeyTags = new HashSet<string>();
-        // Exclude tags for quest items specifically
-        public readonly HashSet<string> NoQuestTags = new HashSet<string>();
+        // Exclude tags for quest items specifically. Used for counting purposes.
+        private readonly HashSet<string> NoQuestTags = new HashSet<string>();
+        // Exclude tags for race mode items. Used for exclude tags
+        private readonly HashSet<string> NoRaceModeTags = new HashSet<string>();
         // Eligible tags for race mode locations
         public readonly HashSet<string> RaceModeTags = new HashSet<string>();
         // Items which should be placed in race mode locations
@@ -78,6 +81,7 @@ namespace RandomizerCommon
         };
         private List<string> locationOrder;
         private Dictionary<string, int> locationIndex;
+        private Dictionary<string, List<string>> mapIdAreas = new Dictionary<string, List<string>>();
 
         public AnnotationData(GameData game, LocationData data)
         {
@@ -91,10 +95,23 @@ namespace RandomizerCommon
         {
             Annotations ann;
             IDeserializer deserializer = new DeserializerBuilder().Build();
-            using (var reader = game.NewAnnotationReader())
+            string annPath = $@"{game.Dir}\Base\annotations.txt";
+            using (var reader = File.OpenText(annPath))
             {
                 ann = deserializer.Deserialize<Annotations>(reader);
             }
+            string slotPath = $@"{game.Dir}\Base\itemslots.txt";
+            if (File.Exists(slotPath))
+            {
+                if (ann.Slots.Count > 0) throw new Exception($"Internal error: Item slots defined in {annPath}:");
+                Annotations slotAnn;
+                using (var reader = File.OpenText(slotPath))
+                {
+                    slotAnn = deserializer.Deserialize<Annotations>(reader);
+                }
+                ann.Slots = slotAnn.Slots;
+            }
+
             // Config vars
             foreach (ConfigAnnotation config in ann.Config)
             {
@@ -102,34 +119,75 @@ namespace RandomizerCommon
             }
             configVars = ann.Config;
             // Items
-            ItemKey itemForAnnotation(ItemAnnotation item)
+            List<ItemKey> itemsForAnnotation(ItemAnnotation item)
             {
                 if (item.ID != null)
                 {
                     string[] parts = item.ID.Split(':');
-                    return new ItemKey((ItemType)int.Parse(parts[0]), int.Parse(parts[1]));
+                    ItemKey key = new ItemKey((ItemType)int.Parse(parts[0]), int.Parse(parts[1]));
+                    if (item.EndID == null)
+                    {
+                        return new List<ItemKey> { key };
+                    }
+                    else
+                    {
+                        parts = item.EndID.Split(':');
+                        ItemKey end = new ItemKey((ItemType)int.Parse(parts[0]), int.Parse(parts[1]));
+                        if (key.Type != end.Type || key.ID > end.ID)
+                        {
+                            throw new Exception($"Invalid item range {key} {end}");
+                        }
+                        List<ItemKey> ret = new List<ItemKey>();
+                        if (end.ID - key.ID < 100)
+                        {
+                            for (int i = key.ID; i <= end.ID; i++)
+                            {
+                                ItemKey cand = new ItemKey(key.Type, i);
+                                if (game.Names().ContainsKey(cand))
+                                {
+                                    ret.Add(cand);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // This is a SortedDictionary but it's not easily binary-searchable by index afaik
+                            foreach (KeyValuePair<ItemKey, string> entry in game.Names())
+                            {
+                                ItemKey cand = entry.Key;
+                                if (cand.Type == key.Type && cand.ID >= key.ID && cand.ID <= end.ID)
+                                {
+                                    ret.Add(cand);
+                                }
+                            }
+                        }
+                        if (ret.Count == 0) throw new Exception($"Empty item range {key} {end}");
+                        return ret;
+                    }
                 }
                 else
                 {
-                    return game.ItemForName(item.Name);
+                    return new List<ItemKey> { game.ItemForName(item.Name) };
                 }
             }
             List<string> hints = new List<string>();
             foreach (ConfigItemAnnotation configItems in ann.ConfigItems)
             {
+                ItemGroups[configItems.GroupName] = new List<ItemKey>();
                 foreach (ItemAnnotation item in configItems.Items)
                 {
-                    if (item.ConfigName == null)
+                    if (item.ConfigName == null && item.Name != null)
                     {
                         item.ConfigName = Regex.Replace(item.Name.ToLowerInvariant(), @"[^a-z]", "");
                     }
-                    item.Key = itemForAnnotation(item);
+                    item.Keys = itemsForAnnotation(item);
                     if (!configItems.NoConfigNames)
                     {
                         if (Items.ContainsKey(item.ConfigName)) throw new Exception($"Duplicate item under config name {item.ConfigName}");
-                        Items[item.ConfigName] = item.Key;
+                        if (item.Keys.Count != 1) throw new Exception($"Config names disallowed for ranged item {item.ID}");
+                        Items[item.ConfigName] = item.Keys[0];
                     }
-                    AddMulti(ItemGroups, configItems.GroupName, item.Key);
+                    AddMulti(ItemGroups, configItems.GroupName, item.Keys);
                 }
                 if (configItems.HintName != null)
                 {
@@ -147,7 +205,7 @@ namespace RandomizerCommon
                 }
                 if (group.Items != null)
                 {
-                    group.Keys.AddRange(group.Items.Select(item => itemForAnnotation(item)));
+                    group.Keys.AddRange(group.Items.SelectMany(item => itemsForAnnotation(item)));
                 }
                 if (group.Includes != null)
                 {
@@ -169,7 +227,7 @@ namespace RandomizerCommon
                     {
                         exclude.Add("until");
                     }
-                    if (!options["dlc1"])
+                    if (game.DS3 && !options["dlc1"])
                     {
                         // In DS3, some handmaid shops become available from DLC1
                         exclude.Add("dlc1");
@@ -186,6 +244,7 @@ namespace RandomizerCommon
                     {
                         NoQuestTags.UnionWith(exclude);
                     }
+                    // Other exclude tags are added later for 
                     foreach (ItemKey key in group.Keys)
                     {
                         AddMulti(ExcludeTags, key, exclude);
@@ -195,6 +254,7 @@ namespace RandomizerCommon
             ItemPriority.AddRange(ann.ItemPriority.Where(priority => !priority.NoPriority));
             bool isSwitchDisabled(string sw)
             {
+                if (sw == "always") return false;
                 return sw != null && !sw.Split(' ').All(opt => options[opt]);
             }
             foreach (PlacementRestrictionAnnotation placement in ann.PlacementRestrictions)
@@ -204,17 +264,25 @@ namespace RandomizerCommon
                 {
                     continue;
                 }
-                if (placement.Name != null || placement.Item != null)
+                List<ItemKey> keys = new List<ItemKey>();
+                if (placement.Name != null)
                 {
-                    placement.Key = placement.Name == null ? itemForAnnotation(placement.Item) : game.ItemForName(placement.Name);
+                    keys.Add(game.ItemForName(placement.Name));
+                }
+                else if (placement.Item != null)
+                {
+                    keys.AddRange(itemsForAnnotation(placement.Item));
                 }
                 else if (placement.Includes != null)
                 {
-                    List<ItemKey> items = ItemGroups[placement.Includes];
-                    placement.Key = items[0];
-                    placement.OtherKeys = items.Skip(1).ToList();
+                    keys.AddRange(ItemGroups[placement.Includes]);
                 }
                 else throw new Exception();
+                placement.Key = keys[0];
+                if (keys.Count > 1)
+                {
+                    placement.OtherKeys = keys.Skip(1).ToList();
+                }
                 ItemRestrict[placement.Key] = placement;
             }
             // Set up race mode tags
@@ -227,7 +295,7 @@ namespace RandomizerCommon
                     RaceModeTags.Add("headless");
                 }
             }
-            else
+            else if (game.DS3)
             {
                 RaceModeTags.UnionWith(new[] { "boss", "racemode" });
                 if (options["raceloc_ashes"])
@@ -253,6 +321,38 @@ namespace RandomizerCommon
                     RaceModeTags.Add("ring");
                 }
             }
+            else if (game.EldenRing)
+            {
+                RaceModeTags.UnionWith(new[] { "racemode", "boss" });
+                if (options["raceloc_health"])
+                {
+                    RaceModeTags.UnionWith(new[] { "seedtree", "church" });
+                }
+                if (options["raceloc_shops"])
+                {
+                    RaceModeTags.Add("raceshop");
+                }
+                if (options["raceloc_altboss"])
+                {
+                    RaceModeTags.Add("altboss");
+                }
+                if (options["raceloc_talisman"])
+                {
+                    RaceModeTags.Add("talisman");
+                }
+                if (!options["night"])
+                {
+                    NoRaceModeTags.Add("night");
+                }
+                if (options["nocaves"])
+                {
+                    NoRaceModeTags.Add("minidungeon");
+                }
+            }
+            if (ItemGroups.ContainsKey("norandom"))
+            {
+                NorandomItems.UnionWith(ItemGroups["norandom"]);
+            }
             if (ann.SpecialModes != null)
             {
                 foreach (SpecialModeAnnotation group in ann.SpecialModes)
@@ -270,7 +370,7 @@ namespace RandomizerCommon
                     }
                     if (group.Items != null)
                     {
-                        items.UnionWith(group.Items.Select(itemForAnnotation));
+                        items.UnionWith(group.Items.SelectMany(itemsForAnnotation));
                     }
                     if (group.Includes != null)
                     {
@@ -285,6 +385,13 @@ namespace RandomizerCommon
                         RaceModeItems.UnionWith(items);
                     }
                 }
+            }
+            // Process race mode items and race mode exclude tags together
+            // For now, in Elden Ring, key items are race-mode-only
+            NoKeyTags.UnionWith(NoRaceModeTags);
+            foreach (ItemKey key in RaceModeItems)
+            {
+                AddMulti(ExcludeTags, key, NoRaceModeTags);
             }
             // Areas
             Parser<char, Expr> parser = ExprParser();
@@ -309,9 +416,25 @@ namespace RandomizerCommon
             {
                 parseReq(area);
                 Areas[area.Name] = area;
-                // Aliases don't do anything anymore. TODO: Fully remove.
-                AreaAliases[area.Name] = area.Name;
                 AllAreas[area.Name] = new List<LocationScope>();
+                if (area.Maps != null)
+                {
+                    foreach (string mapId in area.Maps.Split(' '))
+                    {
+                        AddMulti(mapIdAreas, mapId, area.Name);
+                    }
+                }
+            }
+            foreach (AreaAnnotation area in ann.Areas)
+            {
+                if (area.MainMaps != null)
+                {
+                    foreach (string mapId in area.MainMaps.Split(' '))
+                    {
+                        mapIdAreas[mapId].Remove(area.Name);
+                        mapIdAreas[mapId].Insert(0, area.Name);
+                    }
+                }
             }
             HashSet<string> configVarNames = new HashSet<string>(GetConfig(new HashSet<string>()).Keys);
             foreach (AreaAnnotation area in ann.Events)
@@ -346,6 +469,8 @@ namespace RandomizerCommon
                 if (!strSlots.ContainsKey(key))
                 {
                     // Warn
+                    // TODO: Fill these in
+                    if (game.EldenRing) continue;
                     Console.WriteLine($"Warning: No annotation for slot {key}, with slots {string.Join(", ", entry.Value.Select(s => $"{s} at {string.Join(", ", data.Location(s).Keys)}"))}");
                     continue;
                 }
@@ -364,15 +489,18 @@ namespace RandomizerCommon
             {
                 LocationScope scope = entry.Key;
                 SlotAnnotation slot = entry.Value;
-                if (!Areas.TryGetValue(slot.Area, out AreaAnnotation areaAnn)) throw new Exception($"Slot {scope} has unknown area {slot.Area}");
-                slot.AreaUntil = areaAnn.Until;
-                slot.SetTags(scope.OnlyShops, options);
+                if (!Areas.TryGetValue(slot.Area, out AreaAnnotation areaAnn) && slot.Area != "unknown")
+                {
+                    throw new Exception($"Slot {scope} has unknown area {slot.Area}");
+                }
+                slot.AreaUntil = areaAnn?.Until;
+                slot.SetTags(scope.OnlyShops, options, areaAnn?.Tags);
                 foreach (string tag in slot.TagList)
                 {
                     if (tag.Contains(':'))
                     {
                         string[] parts = tag.Split(':');
-                        if (parts.Length != 2 || !Items.TryGetValue(parts[1], out ItemKey tagItem)) throw new Exception($"Bad scoped tag {tag} in {scope}");
+                        if (parts.Length != 2 || !Items.TryGetValue(parts[1], out ItemKey tagItem)) throw new Exception($"Bad scoped item tag {tag} in {scope}");
                         if (slot.TagItems == null) slot.TagItems = new Dictionary<string, List<ItemKey>>();
                         AddMulti(slot.TagItems, parts[0], tagItem);
                     }
@@ -382,7 +510,6 @@ namespace RandomizerCommon
                 {
                     slot.ItemReqs = new List<ItemKey>();
                     slot.AreaReqs = new List<string>();
-                    slot.FullAreaReqs = new List<string>();
                     foreach (string questReq in slot.QuestReqs.Split(' '))
                     {
                         if (Items.ContainsKey(questReq))
@@ -391,32 +518,36 @@ namespace RandomizerCommon
                         }
                         else if (Areas.ContainsKey(questReq))
                         {
-                            slot.AreaReqs.Add(AreaAliases[questReq]);
-                            slot.FullAreaReqs.Add(questReq);
+                            slot.AreaReqs.Add(questReq);
                         }
-                        else throw new Exception($"QuestReq {questReq} is neither an item or area");
+                        else if (EventAreas.TryGetValue(questReq, out string eventArea))
+                        {
+                            // TODO: I'm not sure if event info is available everywhere so just transform it here
+                            slot.AreaReqs.Add(eventArea);
+                        }
+                        else throw new Exception($"QuestReq {questReq} is neither an item or area or area-eligible event");
                     }
                 }
                 // Include area as part of key items counting
                 string effectiveArea = slot.Area;
                 // In the special case of quests at the start with dependencies elsewhere, don't treat those as available after Firelink, for purpose of key item counting
-                if ((slot.Area == "firelink" || slot.Area == "ashinaoutskirts_temple") && slot.QuestReqs != null && slot.AreaReqs.Count > 0)
+                if ((slot.Area == "firelink" || slot.Area == "ashinaoutskirts_temple" || slot.Area == "roundtable")
+                    && slot.QuestReqs != null && slot.AreaReqs.Count > 0)
                 {
                     effectiveArea = slot.AreaReqs[0];
                 }
-                if (!game.Sekiro && !slot.TagList.Contains("boss") && (slot.TagList.Contains("mid") || slot.TagList.Contains("late")))
+                if (game.DS3 && !slot.TagList.Contains("boss") && (slot.TagList.Contains("mid") || slot.TagList.Contains("late")))
                 {
                     Areas[effectiveArea].HasProgression = true;
-                }
-                if (AreaAliases[effectiveArea] != effectiveArea)
-                {
-                    effectiveArea = AreaAliases[effectiveArea];
                 }
                 if (slot.Area != effectiveArea)
                 {
                     slot.BaseArea = effectiveArea;
                 }
-                AddMulti(AllAreas, slot.GetArea(), scope);
+                if (slot.Area != "unknown")
+                {
+                    AddMulti(AllAreas, slot.GetArea(), scope);
+                }
             }
         }
 
@@ -425,7 +556,7 @@ namespace RandomizerCommon
             // Add special unique items into game
             foreach (ItemKey addItem in ItemGroups["add"])
             {
-                // Mostly to exclude Path of the Dragon
+                // Mostly to exclude Path of the Dragon from being added when key items are not randomized
                 if (NorandomItems.Contains(addItem)) continue;
                 data.AddLocationlessItem(addItem);
             }
@@ -473,8 +604,9 @@ namespace RandomizerCommon
                 {
                     slot.Before = processLocations(slot.Before);
                     slot.UpTo = processLocations(slot.UpTo);
+                    slot.UpToAny = processLocations(slot.UpToAny);
                     slot.After = processLocations(slot.After);
-                    return slot.Before == null && slot.UpTo == null && slot.After == null;
+                    return slot.Before == null && slot.UpTo == null && slot.UpToAny != null && slot.After == null;
                 });
             }
             foreach (PlacementRestrictionAnnotation restrict in ItemRestrict.Values)
@@ -487,6 +619,7 @@ namespace RandomizerCommon
             }
         }
 
+        // For creationg new items, like esoteric texts -> skills
         public void CopyRestrictions(Dictionary<ItemKey, ItemKey> mapping)
         {
             foreach (ItemPriorityAnnotation priority in ItemPriority)
@@ -514,6 +647,19 @@ namespace RandomizerCommon
             }
         }
 
+        public List<string> ItemAreasForMap(string mapId)
+        {
+            if (game.EldenRing)
+            {
+                if (!mapIdAreas.TryGetValue(mapId, out List<string> mapAreas)) throw new Exception($"No item region defined for {mapId}");
+                return mapAreas;
+            }
+            else
+            {
+                return new List<string> { game.Locations[mapId] };
+            }
+        }
+
         // Hints and heuristics
         public SlotAnnotation Slot(LocationScope scope)
         {
@@ -529,15 +675,28 @@ namespace RandomizerCommon
                 ItemLocation loc = data.Location(key);
                 locationSet.UnionWith(loc.GetLocations());
             }
-            string location = game.Sekiro ? "ashinaoutskirts_temple" : "firelink";
+            string location = game.Sekiro ? "ashinaoutskirts_temple" : (game.EldenRing ? "limgrave" : "firelink");
             if (locationSet.Count > 0)
             {
-                location = locationOrder[locationSet.Select(loc => AreaAliases.TryGetValue(loc, out string b) ? b : loc).Select(loc => locationIndex[loc]).DefaultIfEmpty().Min()];
+                if (game.EldenRing)
+                {
+                    string mapId = locationSet.OrderBy(loc => (loc == "m11_10_00_00" ? 1 : 0, loc)).First();
+                    location = ItemAreasForMap(mapId)[0];
+                }
+                else
+                {
+                    location = locationOrder[locationSet.Select(loc => locationIndex[loc]).DefaultIfEmpty().Min()];
+                }
             }
             SlotAnnotation slot = new SlotAnnotation
             {
                 Area = location,
             };
+            if (game.EldenRing)
+            {
+                // By default, unspecified slots are missable. And just to be safe, assets never randomizable
+                slot.Tags = scope.Type == ScopeType.ASSET ? "norandom" : "missable";
+            }
             slot.SetTags(scope.OnlyShops, null);
             return slot;
         }
@@ -555,9 +714,16 @@ namespace RandomizerCommon
 
         private string FullArea(string area)
         {
-            if (game.Sekiro && !Areas.ContainsKey(area)) return area;
+            if (!game.DS3 && !Areas.ContainsKey(area))
+            {
+                if (game.EldenRing && game.LocationNames.TryGetValue(area, out string mapName))
+                {
+                    return mapName;
+                }
+                return area;
+            }
             if (!Areas.ContainsKey(area)) throw new Exception($"Unknown area {area}");
-            return Areas[area].Text;
+            return Areas[area].Text ?? area;
         }
 
         public string GetLocationHint(SlotKey key, SortedSet<string> specialLocation=null)
@@ -567,7 +733,8 @@ namespace RandomizerCommon
             LocationScope scope = loc.LocScope;
             List<SlotKey> sources = data.Location(scope);
             string specialText = "";
-            if (specialLocation != null && specialLocation.Count > 0) {
+            if (specialLocation != null && specialLocation.Count > 0)
+            {
                 specialText = $", available after {string.Join("/", specialLocation.Select(a => FullArea(a)))}";
             }
             string text;
@@ -592,14 +759,17 @@ namespace RandomizerCommon
             }
             else
             {
+                // This doesn't work as well for Elden Ring, because map names are not area shortnames.
+                // Requires some indirection in FullArea. Ideally just fill in all slots.
                 SortedSet<string> locs = loc.GetLocations();
                 text = $"In {(locs.Count == 0 ? "???" : string.Join(", ", locs.Select(a => FullArea(a))))}{specialText}";
             }
             return text;
         }
 
-        public string GetLocationDescription(SlotKey key, List<LocationKey> locations=null, HashSet<string> filterTags = null)
+        public string GetLocationDescription(SlotKey key, HashSet<string> filterTags = null, HashSet<string> excludeTags = null, EldenCoordinator coord = null)
         {
+            // Previously this method took List<LocationKey> for targetLocation.Keys, for filtering, but this is no longer used.
             ItemLocation loc = data.Location(key);
             LocationScope scope = loc.LocScope;
             // Can do data.Location(scope) to list all items in the same scope, but this is more specific and useful.
@@ -608,31 +778,61 @@ namespace RandomizerCommon
             {
                 SortedSet<string> models = new SortedSet<string>();
                 SortedSet<string> locs = new SortedSet<string>();
+                List<EntityId> entities = loc.Keys
+                    .SelectMany(k => k.Entities)
+                    .Where(e => !string.IsNullOrEmpty(e.MapName))
+                    .ToList();
+                if (game.EldenRing) entities.RemoveAll(e => e.ModelName == "c1000");
                 foreach (SlotKey sourceKey in sources)
                 {
-                    models.UnionWith(loc.Keys.SelectMany(k => k.Entities.Select(e => game.EntityName(e))));
-                    locs.UnionWith(loc.Keys.SelectMany(k => k.Entities.Select(e => e.MapName)));
+                    models.UnionWith(entities.Select(e => game.EntityName(e)));
+                    locs.UnionWith(entities.Select(e => e.MapName));
                 }
-                string auto = $"{scope.Description()} from {(models.Count == 0 ? "???" : string.Join(", ", models))}";
-                if (addPlace) auto = $"{auto} in {(locs.Count == 0 ? "???" : string.Join(", ", locs.Select(a => FullArea(a))))}";
-                return auto;
+                string auto = $"From {(models.Count == 0 ? "???" : string.Join(", ", models))}";
+                if (game.EldenRing && coord != null && scope.Type != ScopeType.MODEL)
+                {
+                    List<EntityId> mapEntities = entities
+                        .Where(e => e.Type != null && (e.Type.Contains("asset") || e.Type.Contains("enemy")))
+                        .ToList();
+                    if (mapEntities.Count == 1 && mapEntities[0].Position is Vector3 pos)
+                    {
+                        auto = $"{auto}. Near {coord.ClosestLandmark(mapEntities[0].MapName, pos)}";
+                    }
+                }
+                string placeText = "";
+                if (addPlace && scope.Type != ScopeType.MODEL)
+                {
+                    if (game.EldenRing)
+                    {
+                        string mapId = locs.OrderBy(m => (m == "m11_10_00_00" ? 1 : 0, m)).FirstOrDefault();
+                        if (mapId != null)
+                        {
+                            placeText = " in " + (game.LocationNames.TryGetValue(mapId, out string mapName) ? mapName : mapId);
+                        }
+                    }
+                    else
+                    {
+                        placeText = $" in {(locs.Count == 0 ? "???" : string.Join(", ", locs.Select(a => FullArea(a))))}";
+                    }
+                }
+                if (addPlace) placeText += ": ";
+                return placeText + auto;
             };
             string text;
-            if (Slots.ContainsKey(scope))
+            if (Slots.TryGetValue(scope, out SlotAnnotation slot) && !(slot.Text != null && slot.Text.Contains("aaa")))
             {
-                SlotAnnotation slot = Slots[scope];
                 bool marked = slot.TagList.Contains("XX") || (slot.Text != null && slot.Text.Contains("XX"));
-                text = $" in {FullArea(slot.Area)}:{(marked ? " XX" : "")} {(slot.Text == "auto" || slot.Text == null ? autoText(false) : slot.Text.TrimEnd(new char[] { '.' }))}";
+                string slotText = slot.Text == null || slot.Text == "auto" ? autoText(false) : slot.Text.TrimEnd(new char[] { '.' });
+                text = $" in {FullArea(slot.Area)}:{(marked ? " XX" : "")} {slotText}";
                 if (filterTags != null && !slot.HasAnyTags(filterTags)) return null;
-                // if (filterTags != null && slot.HasAnyTags(NoKeyTags)) return null;
-
+                if (excludeTags != null && slot.HasAnyTags(excludeTags)) return null;
             }
             else
             {
                 if (filterTags != null) return null;
-                text = $": {autoText(true)}";
+                text = autoText(true);
             }
-            List<string> original = sources.Select(k => game.DisplayName(k.Item)).ToList();
+            List<string> original = sources.Select(k => game.DisplayName(k.Item, loc.Quantity)).ToList();
             if (original.Count > 5)
             {
                 original = original.Take(5).Concat(new[] { "etc" }).ToList();
@@ -719,6 +919,7 @@ namespace RandomizerCommon
                 Slots = new List<SlotAnnotation>();
             }
         }
+
         public class SpecialModeAnnotation
         {
             public string RaceSwitch { get; set; }
@@ -727,6 +928,7 @@ namespace RandomizerCommon
             public List<string> Names { get; set; }
             public List<ItemAnnotation> Items { get; set; }
         }
+
         public class ItemPriorityAnnotation
         {
             public bool NoPriority { get; set; }
@@ -738,12 +940,14 @@ namespace RandomizerCommon
             [YamlIgnore]
             public List<ItemKey> Keys { get; set; }
         }
+
         public class PlacementRestrictionAnnotation
         {
             public string Name { get; set; }
             public ItemAnnotation Item { get; set; }
             public string Includes { get; set; }
             public string Switch { get; set; }
+            public string KeyAreas { get; set; }
             public List<PlacementSlotAnnotation> Unique { get; set; }
             public List<PlacementSlotAnnotation> Shop { get; set; }
             public List<PlacementSlotAnnotation> Drop { get; set; }
@@ -752,36 +956,49 @@ namespace RandomizerCommon
             [YamlIgnore]
             public List<ItemKey> OtherKeys { get; set; }
         }
+
         public class PlacementSlotAnnotation
         {
             public int Amount { get; set; }
             public string Before { get; set; }
             public string UpTo { get; set; }
+            public string UpToAny { get; set; }
             public string After { get; set; }
+            public bool UseGroups { get; set; }
             public PlacementSlotAnnotation()
             {
                 this.Amount = -1;
             }
-            public HashSet<string> AllowedAreas(Dictionary<string, HashSet<string>> includedAreas, bool debug=false)
+            public HashSet<string> AllowedAreas(Dictionary<string, HashSet<string>> includedAreas, Dictionary<string, HashSet<string>> areaGroups, bool debug=false)
             {
-                debug = Before == "guardianape senpou_sanctum";
+                debug = false; // UpTo == "haligtree_elphael";
                 List<HashSet<string>> requirements = new List<HashSet<string>>();
-                Func<string, IEnumerable<string>> getAreasUpTo = loc =>
+                IEnumerable<string> getAreasUpTo(string loc)
                 {
                     if (!includedAreas.ContainsKey(loc)) throw new Exception($"Unknown area {loc} in {this}");
-                    // If unused areas, consider this to mean 'all areas'
+                    IEnumerable<string> ret;
                     if (includedAreas[loc].Count == 0)
                     {
-                        return includedAreas.Where(e => e.Value.Count > 0).Select(e => e.Key);
+                        // If unused areas, consider this to mean 'all areas'
+                        ret = includedAreas.Where(e => e.Value.Count > 0).Select(e => e.Key);
                     }
-                    return includedAreas[loc];
+                    else
+                    {
+                        ret = includedAreas[loc];
+                    }
+                    if (UseGroups && areaGroups != null)
+                    {
+                        return ret.SelectMany(a => areaGroups.TryGetValue(a, out HashSet<string> group) ? group : new HashSet<string> { a }).Distinct();
+                    }
+                    return ret;
                 };
                 if (Before != null)
                 {
                     foreach (string loc in Before.Split(' '))
                     {
                         HashSet<string> locs = new HashSet<string>(getAreasUpTo(loc).Where(a => !includedAreas[a].Contains(loc)));
-                        if (debug) Console.WriteLine($"Before: {loc} -> {string.Join(",", locs)}. Out of {string.Join(",", getAreasUpTo(loc))}");
+                        if (debug) Console.WriteLine($"Before: {loc} -> {string.Join(",", locs)}");
+                        // if (debug) Console.WriteLine($"Before candidates: {string.Join(",", getAreasUpTo(loc))}");
                         requirements.Add(locs);
                     }
                 }
@@ -793,6 +1010,17 @@ namespace RandomizerCommon
                         if (debug) Console.WriteLine($"UpTo: {loc} -> {string.Join(",", locs)}");
                         requirements.Add(locs);
                     }
+                }
+                if (UpToAny != null)
+                {
+                    HashSet<string> upto = new HashSet<string>();
+                    foreach (string loc in UpToAny.Split(' '))
+                    {
+                        HashSet<string> locs = new HashSet<string>(getAreasUpTo(loc));
+                        if (debug) Console.WriteLine($"UpToAny: {loc} -> {string.Join(",", locs)}");
+                        upto.UnionWith(locs);
+                    }
+                    requirements.Add(upto);
                 }
                 if (After != null)
                 {
@@ -812,11 +1040,12 @@ namespace RandomizerCommon
                 {
                     allLocs.IntersectWith(requirements[i]);
                 }
-                if (debug) Console.WriteLine($"Final locations of {this}: {string.Join(",", allLocs)}");
+                if (debug) Console.WriteLine($"** Final: {this}: {string.Join(",", allLocs)}");
                 return allLocs;
             }
-            public override string ToString() => $"Slot[{Amount}] Before [{Before}] UpTo [{UpTo}] After [{After}]";
+            public override string ToString() => $"{(UseGroups ? "Group " : "")}Slot[{Amount}] Before [{Before}] UpTo [{UpTo}] UpToAny [{UpToAny}] After [{After}]";
         }
+
         public class ConfigItemAnnotation
         {
             public string GroupName { get; set; }
@@ -824,24 +1053,29 @@ namespace RandomizerCommon
             public bool NoConfigNames { get; set; }
             public List<ItemAnnotation> Items { get; set; }
         }
+
         public class ItemAnnotation
         {
             public string ConfigName { get; set; }
             public string Name { get; set; }
             public string ID { get; set; }
+            public string EndID { get; set; }
             [YamlIgnore]
-            public ItemKey Key { get; set; }
+            public List<ItemKey> Keys { get; set; }
         }
+
         public class SlotAnnotation
         {
             public string Key { get; set; }
             public List<string> DebugText { get; set; }
             public string Text { get; set; }
+            public string Comment { get; set; }
             public string Area { get; set; }
-            public string Tags { get; set; }
             public string QuestReqs { get; set; }
-            public string Event { get; set; }
             public string Until { get; set; }
+            public string FullArea { get; set; }  // Ignored, just for filling in area when multiple exist
+            public string Event { get; set; }
+            public string Tags { get; set; }
             [YamlIgnore]
             public HashSet<string> TagList { get; set; }
             [YamlIgnore]
@@ -850,20 +1084,24 @@ namespace RandomizerCommon
             public string AreaUntil { get; set; }
             // TODO: Replace uses with TagList directly.
             public HashSet<string> GetTags() => TagList;
-            public void SetTags(bool shopOnly, RandomizerOptions opt)
+            public void SetTags(bool shopOnly, RandomizerOptions opt, string areaTags = null)
             {
                 string tagsStr = Tags;
                 if (tagsStr != null && tagsStr.Contains("aaaaa"))
                 {
                     tagsStr = "missable";
                 }
-                if (tagsStr == null || tagsStr == "")
+                if (string.IsNullOrWhiteSpace(tagsStr))
                 {
                     TagList = new HashSet<string>();
                 }
                 else
                 {
                     TagList = new HashSet<string>(tagsStr.Split(' '));
+                }
+                if (!string.IsNullOrWhiteSpace(areaTags))
+                {
+                    TagList.UnionWith(areaTags.Split(' '));
                 }
                 // Add synthetic tag for shops - mainly to control when items are available unlimited. If not already present
                 if (!TagList.Contains("shop") && !TagList.Contains("noshop"))
@@ -886,6 +1124,7 @@ namespace RandomizerCommon
                         }
                     }
                 }
+                // opt may be null, so only check it if there's a manual tag
                 if (TagList.Contains("carp") && !opt["carpsanity"])
                 {
                     TagList.Add("norandom");
@@ -893,6 +1132,10 @@ namespace RandomizerCommon
                 if (TagList.Contains("ng+") && opt["nongplusrings"])
                 {
                     TagList.Add("norandom");
+                }
+                if ((TagList.Contains("sorceries") || TagList.Contains("incantations")) && opt["spellshops"])
+                {
+                    TagList.Add("restrict");
                 }
                 // Boss implies late, unless specified otherwise
                 if (TagList.Contains("boss") && !TagList.Contains("early") && !TagList.Contains("mid"))
@@ -904,8 +1147,6 @@ namespace RandomizerCommon
             public List<ItemKey> ItemReqs { get; set; }
             [YamlIgnore]
             public List<string> AreaReqs { get; set; }
-            [YamlIgnore]
-            public List<string> FullAreaReqs { get; set; }
 
             public (int, int) GetAreaIndex()
             {
@@ -941,48 +1182,39 @@ namespace RandomizerCommon
             [YamlIgnore]
             public string BaseArea { get; set; }
         }
+
         public class AreaAnnotation
         {
+            // Internal name
             public string Name { get; set; }
+            // Display name
             public string Text { get; set; }
-            public string DetailedText { get; set; }
+            // Requirements expression
             public string Req { get; set; }
+            // Item unavailability event for the entire area
+            // TODO: Override these... "always" works?
             public string Until { get; set; }
+            // Combined weight area for item ordering
             public string WeightBase { get; set; }
+            // Events which always precede other events, for directly calculating all dependent items (?)
             public string AlwaysBefore { get; set; }
+            // If there is no name<->map mapping above, space-separated map ids for this area. May overlap with other areas.
+            public string Maps { get; set; }
+            // Maps which should get automatically assigned here.
+            // Otherwise, they get automatically assigned to the first area in the list in which they appear.
+            public string MainMaps { get; set; }
+            // Do not use. I think we can delete this.
             public List<string> Aliases { get; set; }
+            // Deprioritize the area for key item weights
             public bool BoringKeyItem { get; set; }
+            // Tags to copy to slots in the area
+            public string Tags { get; set; }
             [YamlIgnore]
             public Expr ReqExpr { get; set; }
             [YamlIgnore]
             public bool HasProgression { get; set; }
-
-            private Dictionary<(string, int), int> AliasRankings = new Dictionary<(string, int), int>();
-            private SortedSet<string> AliasNames = new SortedSet<string>();
-            public (int, int) GetSubAreaIndex(string subArea, int locationIndex)
-            {
-                if (AliasRankings.Count == 0)
-                {
-                    ParseAliases();
-                }
-                (string, int) loc = (subArea, locationIndex);
-                if (!AliasRankings.ContainsKey(loc)) throw new Exception($"Unknown subarea {subArea} for {Name}: only [{string.Join(", ", AliasNames)}]");
-                return (AliasRankings[loc], Aliases.Count);
-            }
-            public SortedSet<string> GetAliasNames()
-            {
-                if (AliasNames.Count == 0 && Aliases.Count > 0)
-                {
-                    ParseAliases();
-                }
-                return AliasNames;
-            }
-            private void ParseAliases()
-            {
-                // TODO: Fully delete this feature.
-                throw new Exception("Internal error: removed feature");
-            }
         }
+
         public class ConfigAnnotation
         {
             public string Opt { get; set; }
@@ -1047,6 +1279,7 @@ namespace RandomizerCommon
         {
             Parser<char, Expr> ident = Token(Letter.Then(LetterOrDigit.Or(Char('_')).ManyString(), (h, t) => h + t))
                 .Select<Expr>(name => Expr.Named(name));
+            // TODO: Using lowercase AND or OR apparently is ignored. Probably just handroll a parser at some point.
             return ExpressionParser.Build<char, Expr>(
                 expr => (
                     OneOf(
@@ -1060,6 +1293,7 @@ namespace RandomizerCommon
                 )
             );
         }
+
         public class Expr
         {
             public static readonly Expr TRUE = new Expr(new List<Expr>(), true, null);
@@ -1197,14 +1431,36 @@ namespace RandomizerCommon
             }
         }
 
-        public void Save(bool initial=false)
+        public void Save(bool initial=false, bool filter = false, EldenCoordinator coord = null)
         {
             Annotations ann = new Annotations();
+            bool interestingEldenItem(ItemKey item)
+            {
+                if (item.Type == ItemType.RING) return true;
+                if (item.Type != ItemType.GOOD) return false;
+                int id = item.ID;
+                return (id == 181 // Whistle
+                    || (id >= 100 && id < 190) // Multiplayer items
+                    || (id >= 191 && id < 300) // GRs and physick
+                    || (id >= 1000 && id < 1100) // Flasks
+                    || id == 2080 // Blasphemous Claw
+                    || id == 2090 // Deathroot
+                    || (item.ID >= 2130 && item.ID <= 2250) // Celestial Dew to Prattling Pates
+                    // Exclude Stonesword Key 8000 for now
+                    || (item.ID >= 8010 && item.ID <= 8650) // Most key items and map fragments
+                    || (item.ID >= 8850 && item.ID < 9000) // Scrolls, bell bearings, whetblades, misc keys
+                    // 9300 to 9500 excl, various cookbooks
+                    || (item.ID >= 9990 && item.ID <= 9999) // Custom items
+                    || (item.ID >= 10010 && item.ID <= 10060) // Important upgrades (flask, memory, talisman)
+                    || item.ID == 10080 // Rennala GR
+                    // 10100 to 10919: Upgrade materials
+                    );
+            }
             foreach (KeyValuePair<LocationScope, List<SlotKey>> entry in data.Locations)
             {
                 LocationScope scope = entry.Key;
                 // Skip model keys for now, there is not much to configure
-                if (scope.Type == ScopeType.MODEL)
+                if (scope.Type == ScopeType.MODEL || scope.Type == ScopeType.ASSET)
                 {
                     continue;
                 }
@@ -1212,48 +1468,139 @@ namespace RandomizerCommon
                 // Generate debug text and keys afresh no matter what
                 List<string> debugText = new List<string>();
                 SortedSet<string> locationSet = new SortedSet<string>();
-                SortedSet<string> models = new SortedSet<string>();
+                SortedSet<EntityId> entities = new SortedSet<EntityId>();
+                HashSet<LocationKey.LocationType> locTypes = new HashSet<LocationKey.LocationType>();
                 foreach (SlotKey key in entry.Value)
                 {
                     ItemLocation loc = data.Location(key);
                     debugText.Add($"{game.Name(key.Item)} - {loc}");
                     locationSet.UnionWith(loc.GetLocations());
-                    models.UnionWith(loc.Keys.SelectMany(k => k.Entities.Select(e => game.EntityName(e))));
+                    entities.UnionWith(loc.Keys.SelectMany(k => k.Entities));
+                    locTypes.UnionWith(loc.Keys.Select(k => k.Type));
                 }
-                List<int> locations = locationSet.Select(loc => locationIndex[loc]).ToList();
-                locations.Sort();
-                // First area that's not firelink, if in multiple areas
-                int firstLoc = locations.Count() == 0 ? 99 : locations[locations[0] == 0 && locations.Count() > 1 ? 1 : 0];
+                SortedSet<string> models = new SortedSet<string>(
+                    entities.Select(e => game.EntityName(e, true, true)));
+                List<EntityId> mapEntities = entities.Where(e => e.Type != null && (e.Type.Contains("asset") || e.Type.Contains("enemy"))).ToList();
 
-                if (debugText.Count() > 1 && (locations.Count() > 1 || models.Count() > 1))
+                // Elden Ring filtering: only list shops, unique-ish items, talismans, boss drops
+                if (game.EldenRing && filter)
                 {
-                    debugText.Insert(0, $"{entry.Key.Description()} from [{string.Join(", ", models)}] in [{string.Join(", ", locations.Select(loc => locationOrder[loc]))}]");
+                    bool eligible = false;
+                    foreach (SlotKey key in entry.Value)
+                    {
+                        if (interestingEldenItem(key.Item))
+                        {
+                            eligible = true;
+                            break;
+                        }
+                        if (game.Name(key.Item).Contains("?ITEM?"))
+                        {
+                            // Put these in the config just to disable them from randomization
+                            eligible = true;
+                            break;
+                        }
+                    }
+                    if (locTypes.Contains(LocationKey.LocationType.SHOP))
+                    {
+                        eligible = true;
+                    }
+                    if (entities.Any(e => e.Type != null && e.Type.Contains("event")))
+                    {
+                        eligible = true;
+                    }
+                    if (models.Any(m => m.Contains("Chest")))
+                    {
+                        eligible = true;
+                    }
+                    if (mapEntities.Count != 1)
+                    {
+                        // Disambiguate ambiguous entries and norandom bad ones
+                        eligible = true;
+                    }
+                    if (!eligible) continue;
                 }
+
+                int locId;
+                List<string> itemAreas;  // A map in the case of Elden Ring, regular location otherwise
+                if (game.EldenRing)
+                {
+                    if (locationSet.Count == 0)
+                    {
+                        locId = 9999;
+                        itemAreas = new List<string>();
+                    }
+                    else
+                    {
+                        List<string> mapIds = locationSet.OrderBy(loc => (loc == "m11_10_00_00" ? 1 : 0, loc)).ToList();
+                        string mapId = mapIds[0];
+                        if (mapId.StartsWith("m60"))
+                        {
+                            // e.g. m60_51_36_00
+                            locId = int.Parse(mapId.Substring(4, 2) + mapId.Substring(7, 2));
+                        }
+                        else
+                        {
+                            // e.g. m34_11_00_00
+                            locId = int.Parse(mapId.Substring(1, 2) + mapId.Substring(4, 2));
+                        }
+                        itemAreas = mapIds.SelectMany(m => ItemAreasForMap(m)).Distinct().ToList();
+                    }
+                    // locationSet.FirstOrDefault()
+                    // Console.WriteLine(string.Join(", ", locationSet));
+                }
+                else
+                {
+                    List<int> locations = locationSet.Select(loc => locationIndex[loc]).ToList();
+                    locations.Sort();
+                    // First area that's not firelink, if in multiple areas
+                    locId = locations.Count() == 0 ? 99 : locations[locations[0] == 0 && locations.Count() > 1 ? 1 : 0];
+                    itemAreas = locId == 99 ? new List<string>() : new List<string> { locationOrder[locId] };
+                }
+
+                if (debugText.Count() > 1 && (locationSet.Count() > 1 || models.Count() > 1))
+                {
+                    // debugText.Insert(0, $"{entry.Key.Description()} from [{string.Join(", ", models)}] in [{string.Join(", ", locations.Select(loc => locationOrder[loc]))}]");
+                    // TODO map names?
+                    debugText.Insert(0, $"{entry.Key.Description()} in [{string.Join(", ", locationSet.Select(l => game.MapLocationName(l)))}]");
+                }
+                // List<EntityId> mapEntities = entities.Where(e => e.Type != null && (e.Type.Contains("asset") || e.Type.Contains("enemy"))).ToList();
+                if (mapEntities.Count <= 2 && coord != null)
+                {
+                    foreach (EntityId id in mapEntities)
+                    {
+                        if (id.Position is Vector3 pos)
+                        {
+                            debugText.Add("By " + coord.ClosestLandmark(id.MapName, pos, true));
+                        }
+                    }
+                }
+                // if (entry.Key.ToString() == "0:10007440::") Console.WriteLine(string.Join(" / ", models));
+                string area = itemAreas.FirstOrDefault() ?? "";
                 SlotAnnotation slot = new SlotAnnotation
                 {
-                    Key = $"{firstLoc.ToString("00")},{entry.Key}",
+                    Key = $"{locId.ToString(game.EldenRing ? "0000" : "00")},{entry.Key}",
                     DebugText = debugText,
-                    Area = firstLoc == 99 ? "" : locationOrder[firstLoc],
+                    // Area = firstLoc == 99 ? "" : locationOrder[firstLoc],
+                    Area = area,
+                    FullArea = itemAreas.Count > 1 || (existing != null && area != existing.Area && itemAreas.Count > 0) ? string.Join(" ", itemAreas) : null,
                 };
                 if (existing != null)
                 {
-                    if (existing.Area != null)
-                    {
-                        slot.Area = existing.Area;
-                    }
-                    if (existing.Tags != null)
-                    {
-                        slot.Tags = existing.Tags;
-                    }
-                    if (existing.Text != null)
-                    {
-                        slot.Text = existing.Text;
-                    }
+                    if (existing.Area != null) slot.Area = existing.Area;
+                    if (existing.Tags != null) slot.Tags = existing.Tags;
+                    if (existing.Text != null) slot.Text = existing.Text;
+                    if (existing.Event != null) slot.Event = existing.Event;
+                    if (existing.Until != null) slot.Until = existing.Until;
+                    if (existing.Comment != null) slot.Comment = existing.Comment;
+                    if (existing.QuestReqs != null) slot.QuestReqs = existing.QuestReqs;
                 }
-                else if (initial)
+                if (slot.Tags == null)
                 {
-                    slot.Tags = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-                    slot.Text = "auto";
+                    slot.Tags = itemAreas.Count > 0 ? "aaaaaaaaaaaaaaaaa" : "norandom ignore";
+                }
+                if (slot.Text == null)
+                {
+                    slot.Text = "aaaaaaaaaaaaaaaaa";
                 }
                 ann.Slots.Add(slot);
             }

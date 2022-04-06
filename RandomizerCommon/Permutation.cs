@@ -4,6 +4,7 @@ using System.Linq;
 using static RandomizerCommon.AnnotationData;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.LocationData.ItemScope;
+using static RandomizerCommon.Messages;
 using static RandomizerCommon.Util;
 
 namespace RandomizerCommon
@@ -13,6 +14,8 @@ namespace RandomizerCommon
         private GameData game;
         private LocationData data;
         private AnnotationData ann;
+        private Messages messages;
+
         private bool explain;
         public readonly Dictionary<RandomSilo, SiloPermutation> Silos = new Dictionary<RandomSilo, SiloPermutation>();
         public readonly Dictionary<ItemKey, double> ItemLateness = new Dictionary<ItemKey, double>();
@@ -22,22 +25,31 @@ namespace RandomizerCommon
         // public readonly SortedDictionary<HintCategory, Dictionary<SlotKey, SlotKey>> Hints = new SortedDictionary<HintCategory, Dictionary<SlotKey, SlotKey>>();\
         public readonly Dictionary<string, Dictionary<SlotKey, SlotKey>> Hints = new Dictionary<string, Dictionary<SlotKey, SlotKey>>();
         public Dictionary<string, HashSet<string>> IncludedAreas => assign.IncludedAreas;
+        public Dictionary<string, HashSet<string>> IncludedItems => assign.IncludedItems;
         public HashSet<ItemKey> NotRequiredKeyItems => assign.NotRequiredKeyItems;
         // Only in logic runs
         private KeyItemsPermutation.Assignment assign;
         private readonly Dictionary<ItemKey, SlotKey> specialAssign = new Dictionary<ItemKey, SlotKey>();
 
-        public Permutation(GameData game, LocationData data, AnnotationData ann, bool explain=false)
+        [Localize]
+        private static readonly Text keyItemError = new Text(
+            "Could not place all key items... giving up now. This can happen on some seeds or with some options.",
+            "Randomizer_keyItemError");
+
+        public Permutation(GameData game, LocationData data, AnnotationData ann, Messages messages, bool explain=false)
         {
             this.game = game;
             this.data = data;
             this.ann = ann;
+            this.messages = messages;
             this.explain = explain;
             foreach (RandomSilo siloType in Enum.GetValues(typeof(RandomSilo)))
             {
                 Silos[siloType] = new SiloPermutation { Type = siloType };
             }
             HashSet<ItemKey> remove = new HashSet<ItemKey>(ann.ItemGroups["remove"]);
+            ann.ItemGroups.TryGetValue("norandomshop", out List<ItemKey> norandomShop);
+
             foreach (KeyValuePair<LocationScope, List<SlotKey>> entry in data.Locations)
             {
                 LocationScope locScope = entry.Key;
@@ -49,6 +61,7 @@ namespace RandomizerCommon
                     SlotAnnotation slotAnn = ann.Slots[locScope];
                     if (slotAnn.TagList.Contains("norandom")) norandoms.Add(null);
                     if (slotAnn.TagItems != null && slotAnn.TagItems.TryGetValue("norandom", out List<ItemKey> items)) norandoms.AddRange(items);
+                    if (norandomShop != null && slotAnn.HasTag("shop")) norandoms.AddRange(norandomShop);
                     // Crow targets get special handling
                     crow = slotAnn.TagList.Contains("crow");
                     if (slotAnn.TagList.Contains("remove"))
@@ -68,19 +81,22 @@ namespace RandomizerCommon
                 {
                     ItemLocation location = data.Location(itemLocKey);
                     ItemScope scope = location.Scope;
+                    // TODO: Randomize these as items? but not as lots
+                    if (scope.Type == ScopeType.ASSET) continue;
+                    ItemKey item = itemLocKey.Item;
                     RandomSilo siloType = canPermuteTo[scope.Type];
                     if (removeSlot)
                     {
                         AddMulti(Silos[RandomSilo.REMOVE].Mapping, itemLocKey, itemLocKey);
                         Silos[RandomSilo.FINITE].ExcludeTargets.Add(itemLocKey);
                     }
-                    else if (remove.Contains(itemLocKey.Item))
+                    else if (remove.Contains(item))
                     {
                         // If only the item is removed, still allow the target slot to be used
                         AddMulti(Silos[RandomSilo.REMOVE].Mapping, itemLocKey, itemLocKey);
                         sourceSilos.Add(siloType);
                     }
-                    else if (norandoms.Contains(null) || norandoms.Contains(itemLocKey.Item) || ann.NorandomItems.Contains(itemLocKey.Item))
+                    else if (norandoms.Contains(null) || norandoms.Contains(item) || ann.NorandomItems.Contains(item))
                     {
                         // If nonrandom, do the mapping here
                         AddMulti(Silos[RandomSilo.SELF].Mapping, itemLocKey, itemLocKey);
@@ -95,12 +111,13 @@ namespace RandomizerCommon
                     else
                     {
                         RandomSilo itemSilo = siloType;
-                        if (gearTypes.Contains(itemLocKey.Item.Type)
-                            && gearSiloVariants.TryGetValue(itemSilo, out RandomSilo gearSilo)
-                            // Exclude arrows a bit hackily
-                            && itemLocKey.Item.ID >= 1000000)
+                        if (isGear(item) && gearSiloVariants.TryGetValue(itemSilo, out RandomSilo gearSilo))
                         {
                             itemSilo = gearSilo;
+                        }
+                        if (scope.Type == ScopeType.MODEL && location.Keys.All(k => k.Chance >= 0.99))
+                        {
+                            itemSilo = RandomSilo.INFINITE_CERTAIN;
                         }
                         Silos[itemSilo].Sources.Add(itemLocKey);
                         sourceSilos.Add(itemSilo);
@@ -140,6 +157,8 @@ namespace RandomizerCommon
             INFINITE_SHOP,
             // Infinite gear items, which are shared across shops and models
             INFINITE_GEAR,
+            // Infinite model drops which are also guaranteed
+            INFINITE_CERTAIN,
         }
         // List of what can permute to what.
         public static readonly Dictionary<ScopeType, RandomSilo> canPermuteTo = new Dictionary<ScopeType, RandomSilo>
@@ -153,12 +172,20 @@ namespace RandomizerCommon
             // In theory go from this to finite + infinite pair, and vice versa... but that is some super complicated multiplexing
             { ScopeType.SHOP_INFINITE_EVENT, RandomSilo.MIXED },
         };
-        public static readonly Dictionary<RandomSilo, RandomSilo> gearSiloVariants = new Dictionary<RandomSilo, RandomSilo>
+        private static readonly Dictionary<RandomSilo, RandomSilo> gearSiloVariants = new Dictionary<RandomSilo, RandomSilo>
         {
             [RandomSilo.INFINITE] = RandomSilo.INFINITE_GEAR,
             [RandomSilo.INFINITE_SHOP] = RandomSilo.INFINITE_GEAR,
         };
-        public static readonly HashSet<ItemType> gearTypes = new HashSet<ItemType> { ItemType.WEAPON, ItemType.ARMOR };
+        private bool isGear(ItemKey item)
+        {
+            if (item.Type == ItemType.ARMOR) return true;
+            // Arrows are at the start
+            if (game.DS3 && item.Type == ItemType.WEAPON && item.ID >= 1000000) return true;
+            // Arrows are at the end
+            if (game.EldenRing && item.Type == ItemType.WEAPON && item.ID < 50000000) return true;
+            return false;
+        }
         private static readonly HashSet<RandomSilo> specialSiloTypes = new HashSet<RandomSilo> { RandomSilo.SELF, RandomSilo.REMOVE, RandomSilo.CROW };
         public class SiloPermutation
         {
@@ -214,7 +241,7 @@ namespace RandomizerCommon
                 SlotAnnotation slot = ann.Slot(loc);
                 // dlc1 tag is special hack to disable Captain's Ashes locations
                 // also, hack to avoid Sekiro locations... please remove this...
-                if (assign.IncludedAreas[slot.GetArea()].Count == 0 || (slot.TagList.Contains("dlc1") && !options["dlc1"]))
+                if (slot.GetArea() == "unknown" || assign.IncludedAreas[slot.GetArea()].Count == 0 || (slot.TagList.Contains("dlc1") && !options["dlc1"]))
                 {
                     unusedLocations.Add(entry.Key);
                     unusedSlots.UnionWith(entry.Value);
@@ -244,11 +271,14 @@ namespace RandomizerCommon
                 { "enemy", 1 },
                 { "shop", 1 },
                 { "outoftheway", 2 },
+                { "hardenemy", 2 },
                 { "hidden", 3 },
                 { "reqevent", 3 },
                 { "ambush", 4 },
                 { "miniboss", 5 },
                 { "minibossrespawn", 5 },
+                { "altboss", 5 },
+                { "altbossnight", 5 },
                 { "boss", 6 },
                 { "deadend", 6 },
                 { "premium", 6 },
@@ -283,22 +313,19 @@ namespace RandomizerCommon
                     continue;
                 }
                 // Demote events which unlock other items anyway
-                if (slot.Event != null && assign.RequiredEvents.Contains(slot.Event) && (tags.Contains("miniboss") || tags.Contains("boss")))
+                if (slot.Event != null && assign.RequiredEvents.Contains(slot.Event) && (tags.Contains("miniboss") || tags.Contains("altboss") || tags.Contains("boss")))
                 {
+                    tags.Remove("altboss");
                     tags.Remove("miniboss");
                     tags.Remove("boss");
                     tags.Add("reqevent");
                 }
                 double maxWeight = Math.Pow(2, keyItemDifficulty);
                 string gameLocation = assign.EffectiveLocation.ContainsKey(entry.Key) ? assign.EffectiveLocation[entry.Key] : slot.GetArea();
-                if (assign.IncludedAreas[gameLocation].Count == 0) continue;
+                if (gameLocation == "unknown" || assign.IncludedAreas[gameLocation].Count == 0) continue;
                 // Weights for key items (lateness within location)
                 (double, double) keyWeight = (1, maxWeight);
                 (int location, int maxItemLocation) = slot.GetAreaIndex();
-                if (ann.AreaAliases[slot.Area] != slot.Area)
-                {
-                    (location, maxItemLocation) = ann.Areas[slot.BaseArea].GetSubAreaIndex(slot.Area, location);
-                }
                 // Oof hardcoding... but these areas are so small, it's more of a challenge to put the item anywhere in the area, for key items
                 if (gameLocation.StartsWith("firelink") || gameLocation == "highwall" || tags.Contains("deadend")) location = maxItemLocation - 1;
                 keyWeight = GetSubRange(keyWeight, location, maxItemLocation);
@@ -327,8 +354,9 @@ namespace RandomizerCommon
             Dictionary<ItemKey, float[]> itemWeights = new Dictionary<ItemKey, float[]>();
             // Add some buffer between priority items and others in DS3
             // In Sekiro there are much fewer items, so high priority items can afford to spread out more evenly.
-            int itemGap = game.Sekiro ? 0 : 2;
-            double maxItemWeight = Math.Pow(game.Sekiro ? 1.2 : 2, ann.ItemPriority.Count + itemGap + 1);
+            // In Elden Ring I guess do the same.
+            int itemGap = !game.DS3 ? 0 : 2;
+            double maxItemWeight = Math.Pow(!game.DS3 ? 1.2 : 2, ann.ItemPriority.Count + itemGap + 1);
             int priority = ann.ItemPriority.Count + itemGap;
             foreach (ItemPriorityAnnotation group in ann.ItemPriority)
             {
@@ -343,7 +371,10 @@ namespace RandomizerCommon
                 {
                     if (group.Includes != "keyitems" || assign.Priority.Contains(key))
                     {
-                        itemWeights[key] = countWeights;
+                        if (!itemWeights.ContainsKey(key))
+                        {
+                            itemWeights[key] = countWeights;
+                        }
                     }
                 }
                 priority--;
@@ -388,8 +419,11 @@ namespace RandomizerCommon
                     if (slots == null) return ret;
                     foreach (PlacementSlotAnnotation slot in slots)
                     {
-                        // TODO: Make sure this returns areas and not items from within KeyItemsPermutation
-                        HashSet<string> locs = new HashSet<string>(slot.AllowedAreas(assign.IncludedAreas).Where(a => ann.Areas.ContainsKey(a)));
+                        // Note: These locs must contain eligible events, or else it won't be possible to place items there
+                        // (the event takes precedence over the area when both exist)
+                        HashSet<string> locs = new HashSet<string>(
+                            slot.AllowedAreas(assign.IncludedAreas, assign.CombinedWeights)
+                                .Where(a => ann.Areas.ContainsKey(a) || ann.Events.ContainsKey(a)));
                         ret.Add(new PendingItemSlot
                         {
                             AllowedLocations = locs,
@@ -414,7 +448,7 @@ namespace RandomizerCommon
                         {
                             Slots = pendingSlotsFromPlacement(restrict.Unique, key, null),
                         };
-                        bool debug = game.Name(key) == "No item";
+                        bool debug = game.Name(key) == "Carian Inverted Statue name";
                         pending.Explain = debug;
                         if (debug) Console.WriteLine($"- Partitions for {game.Name(key)}");
                         pending.AddPartitions();
@@ -495,7 +529,8 @@ namespace RandomizerCommon
                     int beadCount = 0;
                     raceItems.RemoveAll(item =>
                     {
-                        if (item.ID == 4000)
+                        // 20 out of 40 beads in Sekiro, or 20 out of 33 golden seeds in Elden Ring (12 flasks). 10 flasks would be around 12 seeds.
+                        if ((game.Sekiro && item.ID == 4000) || (game.EldenRing && item.ID == 10010))
                         {
                             beadCount++;
                             if (beadCount > 20) return true;
@@ -507,9 +542,24 @@ namespace RandomizerCommon
                     raceItemSlots = WeightedShuffle(new Random((int)options.Seed + 10), raceItemSlots, getItemWeight);
                     mainItems.AddRange(raceItemSlots);
                 }
+                bool debugSortedEntries = false;
                 if (mainItems.Count() > 0)
                 {
                     List<SlotKey> mainLocations = WeightedShuffle(random, targets, slot => keyWeights.ContainsKey(slot) ? keyWeights[slot] : 0.001f);
+#if DEBUG
+                    Console.WriteLine($"{siloType} main: Mapping {mainItems.Count} sources");
+#endif
+                    if (debugSortedEntries && ann.RaceModeItems.Count > 0)
+                    {
+                        Console.WriteLine("### MAIN ITEMS AND LOCATIONS");
+                        for (int i = 0; i < mainLocations.Count; i++)
+                        {
+                            if (ann.Slot(data.Location(mainLocations[i]).LocScope) is SlotAnnotation s && s.HasAnyTags(ann.RaceModeTags))
+                            {
+                                Console.WriteLine($"{s.Area} - {s.Text}");
+                            }
+                        }
+                    }
                     AssignItemsToLocations(random, silo, mainItems, mainLocations, restrictions, assign.EffectiveLocation, partialLocations: true);
                 }
                 // Other items
@@ -517,7 +567,6 @@ namespace RandomizerCommon
                 items = WeightedShuffle(random, items, getItemWeight);
                 List<SlotKey> locations = WeightedShuffle(random, targets, slot => weights.ContainsKey(slot) ? weights[slot] : 0.001f);
                 // A complete ordered list of non-key items and locations
-                bool debugSortedEntries = false;
                 if (siloType == RandomSilo.FINITE && debugSortedEntries)
                 {
                     Console.WriteLine("### ITEMS AND LOCATIONS");
@@ -579,6 +628,7 @@ namespace RandomizerCommon
             {
                 Hints[type] = new Dictionary<SlotKey, SlotKey>();
             }
+
             // Fill in hint log, and also sort ring items roughly by progression in the game (to avoid disappointing later drops)
             Dictionary<int, List<(SlotKey, SlotKey)>> ringGroups = new Dictionary<int, List<(SlotKey, SlotKey)>>();
             foreach (KeyValuePair<SlotKey, List<SlotKey>> entry in Silos[RandomSilo.FINITE].Mapping)
@@ -587,6 +637,7 @@ namespace RandomizerCommon
                 {
                     SlotKey source = entry.Value[i];
                     SlotKey target = entry.Key;
+                    // Console.WriteLine($"hint for {game.Name(source.Item)}");
                     if (hintItems.ContainsKey(source.Item))
                     {
                         Hints[hintItems[source.Item]][source] = target;
@@ -601,6 +652,7 @@ namespace RandomizerCommon
                     }
                 }
             }
+
             foreach (List<(SlotKey, SlotKey)> pairs in ringGroups.Values)
             {
                 if (pairs.Count == 1) continue;
@@ -617,6 +669,7 @@ namespace RandomizerCommon
                 }
             }
         }
+
         public void NoLogic(Random random)
         {
             // Simple flat permutation algorithm. Almost all gets stuck at High Wall.
@@ -634,6 +687,8 @@ namespace RandomizerCommon
                 AssignItemsToLocations(random, silo, silo.Sources, targets, new Dictionary<ItemKey, PendingItem>(), new Dictionary<LocationScope, string>());
             }
         }
+
+        // Used for hints
         public SortedSet<string> SpecialLocation(LocationScope scope)
         {
             // Replication of EffectiveLocation logic, but with precise knowledge of dependent item locations
@@ -642,7 +697,7 @@ namespace RandomizerCommon
             SlotAnnotation slot = ann.Slots[scope];
             if (slot.QuestReqs == null) return null;
             return new SortedSet<string>(Enumerable.Concat(
-                slot.FullAreaReqs,
+                slot.AreaReqs,
                 slot.ItemReqs.Select(item =>
                 {
                     if (specialAssign.ContainsKey(item))
@@ -971,17 +1026,38 @@ namespace RandomizerCommon
             {
                 return false;
             }
-            // Special restriction to make scale shop items better
-            if (ann.Slots.TryGetValue(loc, out SlotAnnotation prem) && prem.TagList.Contains("premium") && ann.ItemGroups.ContainsKey("premium") && !ann.ItemGroups["premium"].Contains(item))
+            // Special restriction to make various other items better or accord to specific lists
+            if (ann.Slots.TryGetValue(loc, out SlotAnnotation prem))
             {
-                return false;
+                if (prem.TagList.Contains("premium"))
+                {
+                    if (game.Sekiro && ann.ItemGroups.ContainsKey("premium") && !ann.ItemGroups["premium"].Contains(item))
+                    {
+                        return false;
+                    }
+                    else if (game.EldenRing && prem.TagList.Contains("transpose") && !data.Data[item].Unique)
+                    {
+                        return false;
+                    }
+                }
+                if (game.EldenRing && prem.TagList.Contains("restrict"))
+                {
+                    if (prem.TagList.Contains("sorceries") && ann.ItemGroups.ContainsKey("sorceries") && !ann.ItemGroups["sorceries"].Contains(item))
+                    {
+                        return false;
+                    }
+                    else if (prem.TagList.Contains("incantations") && ann.ItemGroups.ContainsKey("incantations") && !ann.ItemGroups["incantations"].Contains(item))
+                    {
+                        return false;
+                    }
+                }
             }
             if (!queue.Restrict.ContainsKey(item))
             {
                 return true;
             }
             // Hacky check for Path of the Dragon - must be attached to an event
-            if (item.Equals(new ItemKey(ItemType.GOOD, 9030)) && itemLoc.Scope.Type != ScopeType.EVENT)
+            if (game.DS3 && item.Equals(new ItemKey(ItemType.GOOD, 9030)) && itemLoc.Scope.Type != ScopeType.EVENT)
             {
                 return false;
             }
@@ -995,9 +1071,9 @@ namespace RandomizerCommon
             string location = queue.EffectiveLocation.ContainsKey(loc) ? queue.EffectiveLocation[loc] : slotAnn.GetArea();
             ItemLocation sourceLoc = data.Location(sourceKey);
             int minQuant = sourceLoc.Keys.Select(k => k.Quantity).Where(k => k > 0).DefaultIfEmpty(1).Min();
-            // Also, premium shop items should be singletons
+            // Also, premium shop items should have quantity 1, so only 1 can be sold
             if (slotAnn.TagList.Contains("premium") && minQuant > 1) return false;
-            bool debug = game.Name(item) == "No item";
+            bool debug = false; // game.Name(item) == "Ghost-Glovewort Picker's Bell Bearing [3]" && location.Contains("haligtree");
             bool result = pending.PlaceItem(slotAnn.TagList, location, slotAnn.GetArea(), slotAnn.Event, minQuant, debug);
             if (pending.Explain || debug)
             {
@@ -1033,12 +1109,14 @@ namespace RandomizerCommon
                     from++;
                 }
             }
+            Predicate<SlotAnnotation> debugSlot = null;
+            debugSlot = null; // sa => sa.Area == "farumazula";
             foreach (SlotKey targetKey in locations)
             {
                 ItemLocation targetLoc = data.Location(targetKey);
-                bool debug = false;  // Another per-item debug helper
-                SlotAnnotation sn = debug && ann.Slots.TryGetValue(targetLoc.LocScope, out SlotAnnotation slotAnn) ? slotAnn : null;
-                if (debug) Console.WriteLine($"PLACE: - Location: {sn.Text} in {sn.Area}, Partial {partialLocations}. Queue: [{string.Join(",", queue.Queue.Select(s => game.Name(s.Item)))}]");
+                SlotAnnotation sn = debugSlot != null && ann.Slots.TryGetValue(targetLoc.LocScope, out SlotAnnotation slotAnn) && debugSlot(slotAnn) ? slotAnn : null;
+                bool debug = sn != null;
+                if (debug) Console.WriteLine($"PLACE: - {targetLoc.LocScope}: [{sn?.Text}] in [{sn?.Area}], Partial {partialLocations}. Queue: [{string.Join(",", queue.Queue.Select(s => game.Name(s.Item)))}]");
                 if (!silo.Mapping.ContainsKey(targetKey))
                 {
                     SlotKey fromQueue = TryGetPending(targetKey, queue);
@@ -1098,7 +1176,7 @@ namespace RandomizerCommon
                     SlotKey fromQueue = TryGetPending(targetKey, queue);
                     ItemLocation targetLoc = data.Location(targetKey);
                     if (fromQueue == null) continue;
-                    if (explain) Console.WriteLine($"Trying to fit restricted item {game.Name(fromQueue.Item)} after main loop");
+                    if (explain) Console.WriteLine($"Fitting restricted item {game.Name(fromQueue.Item)} after main loop -> {targetLoc}");
                     if (GetAvailableSlot(silo, targetKey) == null)
                     {
                         SlotKey victim = silo.Mapping[targetKey][0];
@@ -1107,6 +1185,7 @@ namespace RandomizerCommon
                         // Really this pass-based system should be rewritten to avoid such destructive behavior, or at least make better decisions naturally.
                         if (ann.ItemGroups["keyitems"].Contains(victim.Item))
                         {
+                            if (explain) Console.WriteLine($"  Skipping {game.Name(victim.Item)}, it would dislodge a key item");
                             queue.Enqueue(fromQueue);
                             continue;
                         }
@@ -1128,8 +1207,12 @@ namespace RandomizerCommon
             if (explain && queue.Queue.Count != 0) Console.WriteLine($"Couldn't satisfy {queue.Queue.Count} restricted items");
             pushedLocations.Reverse();
             otherItems.AddRange(queue.Queue);
-            if (partialLocations && otherItems.Count > 0) throw new Exception($"Could not place all key items... giving up now. This can happen with full race mode.");
+            if (partialLocations && otherItems.Count > 0)
+            {
+                throw new Exception(messages.Get(keyItemError));
+            }
             if (explain) Console.WriteLine($"Attempting to satisfy {pushedLocations.Count} remaining locations with {otherItems.Count} items");
+            bool debugEnd = false;
             foreach (SlotKey sourceKey in otherItems)
             {
                 SlotKey targetKey = null;
@@ -1139,13 +1222,13 @@ namespace RandomizerCommon
                     {
                         targetKey = pushedLocations[pushedLocations.Count - 1];
                         pushedLocations.RemoveAt(pushedLocations.Count - 1);
-                        if (explain) Console.WriteLine($"Assigning {game.Name(sourceKey.Item)} to unused spot {targetKey}");
+                        if (explain && debugEnd) Console.WriteLine($"Assigning {game.Name(sourceKey.Item)} to unused spot {targetKey}");
                     }
                     else
                     {
                         int targetIndex = random.Next(locations.Count());
                         targetKey = GetAvailableSlot(silo, locations[targetIndex]);
-                        if (explain) Console.WriteLine($"Assigning {game.Name(sourceKey.Item)} to random spot {targetKey}");
+                        if (explain && debugEnd) Console.WriteLine($"Assigning {game.Name(sourceKey.Item)} to random spot {targetKey}");
                     }
                 }
                 AddMulti(silo.Mapping, targetKey, sourceKey);

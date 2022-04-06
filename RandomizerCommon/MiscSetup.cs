@@ -9,6 +9,9 @@ using System.Text.RegularExpressions;
 using SoulsIds;
 using SoulsFormats;
 using static SoulsIds.Events;
+using static SoulsFormats.EMEVD.Instruction;
+using static RandomizerCommon.Messages;
+using static RandomizerCommon.LocationData;
 
 namespace RandomizerCommon
 {
@@ -89,6 +92,22 @@ namespace RandomizerCommon
             return ret == null;
         }
 
+        [Localize]
+        private static readonly Text fileUnpackError = new Text(
+            "Error: Can't find required metadata files.\nFor the randomizer to work, you must unpack it to disk and keep all of the files together",
+            "EldenForm_fileUnpackError");
+
+        public static bool CheckRequiredEldenFiles(Messages messages, out string ret)
+        {
+            // Return true if no errors
+            ret = null;
+            if (!Directory.Exists("diste"))
+            {
+                ret = messages.Get(fileUnpackError);
+            }
+            return ret == null;
+        }
+
         // Note: Doesn't return error or not (use ret != null for that), returns if fatal or not
         public static bool CheckSekiroModEngine(out string ret)
         {
@@ -134,6 +153,114 @@ namespace RandomizerCommon
             {
                 ret = "Warning: Unknown version of Sekiro Mod Engine detected\r\nUse the latest official release, and update the randomizer if there is an update";
                 return false;
+            }
+            return false;
+        }
+
+        [Localize]
+        private static readonly Text fileCopyOodleError = new Text(
+            "Error: Oodle not found\nCopy oo2core_6_win64.dll from your game directory into the randomizer directory",
+            "EldenForm_fileCopyOodleError");
+
+        public static bool ModifyEldenRingFiles(Messages messages, string exe, out string ret)
+        {
+            ret = null;
+            // Make a backup save
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            appData = $@"{appData}\EldenRing";
+            if (Directory.Exists(appData))
+            {
+                string[] saveDirs = Directory.GetDirectories(appData);
+                foreach (string saveDir in saveDirs)
+                {
+                    // Also ER0000.sl2.bak steam_autocloud.vdf
+                    string saveFile = $@"{saveDir}\ER0000.sl2";
+                    string saveBackup = $@"{saveDir}\ER0000.sl2.randobak";
+                    if (File.Exists(saveFile) && !File.Exists(saveBackup) && !Directory.Exists(saveBackup))
+                    {
+                        File.Copy(saveFile, saveBackup, false);
+                    }
+                }
+            }
+            if (!File.Exists("oo2core_6_win64.dll"))
+            {
+                string gameDir = Path.GetDirectoryName(exe);
+                if (File.Exists($@"{gameDir}\oo2core_6_win64.dll"))
+                {
+                    File.Copy($@"{gameDir}\oo2core_6_win64.dll", "oo2core_6_win64.dll");
+                }
+                else
+                {
+                    ret = messages.Get(fileCopyOodleError);
+                }
+            }
+            return ret == null;
+        }
+
+        [Localize]
+        private static readonly Text fileExeEmptyError = new Text(
+            "Error: Game exe not provided",
+            "EldenForm_fileExeEmptyError");
+        [Localize]
+        private static readonly Text fileExeMissingError = new Text(
+            "Error: Game exe does not exist",
+            "EldenForm_fileExeMissingError");
+        [Localize]
+        private static readonly Text fileRegulationMissingError = new Text(
+            "Error: Invalid game exe (cannot find regulation.bin in game directory)",
+            "EldenForm_fileMissingRegulationError");
+        [Localize]
+        private static readonly Text fileOodleMissingError = new Text(
+            "Error: Invalid game exe (cannot find oo2core_6_win64.dll in game directory)",
+            "EldenForm_fileOodleMissingError");
+        [Localize]
+        private static readonly Text fileUxmUnpackError = new Text(
+            "Error: UXM output is selected, but the game is not unpacked (event subdirectory not found)",
+            "EldenForm_fileUxmUnpackError");
+        [Localize]
+        private static readonly Text fileUxmPatchWarning = new Text(
+            @"Warning: UXM output is selected, but the game may not be patched (_backup\eldenring.exe not found)",
+            "EldenForm_fileUxmPatchWarning");
+
+        public static bool CheckEldenRingMods(Messages messages, bool uxm, string exe, out string ret)
+        {
+            // Return true if fatal error
+            ret = null;
+            if (string.IsNullOrWhiteSpace(exe))
+            {
+                ret = messages.Get(fileExeEmptyError);
+                return true;
+            }
+            if (!File.Exists(exe))
+            {
+                ret = messages.Get(fileExeMissingError);
+                return true;
+            }
+            string gameDir = Path.GetDirectoryName(exe);
+            if (!File.Exists($@"{gameDir}\regulation.bin"))
+            {
+                ret = messages.Get(fileRegulationMissingError);
+                return true;
+            }
+            if (!File.Exists($@"{gameDir}\oo2core_6_win64.dll"))
+            {
+                ret = messages.Get(fileOodleMissingError);
+                return true;
+            }
+            // Do UXM warnings only in UXM mode
+            if (uxm)
+            {
+                // Check for a random important file
+                if (!Directory.Exists($@"{gameDir}\event"))
+                {
+                    ret = messages.Get(fileUxmUnpackError);
+                    return true;
+                }
+                // Check exe patched. This is less reliable, as other patch systems exist, and don't MD5 an 80 MB file here
+                if (!File.Exists($@"{gameDir}\_backup\eldenring.exe"))
+                {
+                    ret = messages.Get(fileUxmPatchWarning);
+                }
             }
             return false;
         }
@@ -252,7 +379,7 @@ namespace RandomizerCommon
                     if (!usedFiles.Contains(file.Name))
                     {
                         string overrideFile = $@"configs\dist\{Path.GetFileName(file.Name)}";
-                        if (File.Exists(overrideFile))
+                        if (false && File.Exists(overrideFile))
                         {
                             Console.WriteLine("Override " + overrideFile);
                             file.Bytes = File.ReadAllBytes(overrideFile);
@@ -307,7 +434,8 @@ namespace RandomizerCommon
             string inDir = new DirectoryInfo($@"{outDir}\..\sfx").FullName;
             string prefix = ds3 ? "frpg_" : "";
             // Note: DS3 files are 6 MB and 295 MB respectively, so, we need a more selective strategy for resources.
-            string[] suffixes = ds3 ? new[] { "_effect", "_resource" } : new[] { "" };
+            // "_resource"
+            string[] suffixes = ds3 ? new[] { "_effect" } : new[] { "" };
             foreach (string suffix in suffixes)
             {
                 string commonPath = $@"{inDir}\{prefix}sfxbnd_commoneffects{suffix}.ffxbnd.dcx";
@@ -316,7 +444,7 @@ namespace RandomizerCommon
                 BND4 sfxCommon = BND4.Read(commonPath);
                 HashSet<string> sfxFiles = new HashSet<string>(sfxCommon.Files.Select(f => f.Name));
                 Console.WriteLine(string.Join(",", maps));
-                foreach (string map in maps.Select(m => m.Substring(0, 3)).Distinct())
+                foreach (string map in maps.Select(m => m.Split('_')[0]).Distinct())
                 {
                     string path = $@"{inDir}\{prefix}sfxbnd_{map}{suffix}.ffxbnd.dcx";
                     if (!File.Exists(path)) continue;
@@ -402,7 +530,7 @@ namespace RandomizerCommon
 
         public static void SekiroCommonPass(GameData game, Events events, RandomizerOptions opt)
         {
-            Dictionary<string, PARAM> Params = game.Params;
+            GameData.ParamDictionary Params = game.Params;
 
             // Snap (for convenience, but can also softlock the player)
             if (opt["snap"]) Params["EquipParamGoods"][3980]["goodsUseAnim"].Value = (sbyte)84;
@@ -454,6 +582,7 @@ namespace RandomizerCommon
                         }
                     }
                     // Add permanent shop placement flags. Also.... abuse this for headless ape bestowal lot, if enemy rando is enabled.
+                    // Slight hack to ignore this for specific preset
                     if (opt["enemy"] && opt["bosses"] && commonInit)
                     {
                         entry.Value.Events[0].Instructions.Add(new EMEVD.Instruction(2000, 0, new List<object> { maxPermSlot + 1, (uint)750, (uint)9307, (uint)9314 }));
@@ -462,9 +591,287 @@ namespace RandomizerCommon
             }
         }
 
-        public static readonly List<string> Langs = new List<string>
+        public static void EldenCommonPass(GameData game, RandomizerOptions opt)
         {
-            "deude", "engus", "frafr", "itait", "jpnjp", "korkr", "polpl", "porbr", "rusru", "spaar", "spaes", "thath", "zhocn", "zhotw",
+            HashSet<(int, int)> deleteCommands = new HashSet<(int, int)>
+            {
+                (2003, 28),  // Achievement
+                (2007, 15),  // Tutorial popup
+            };
+            List<int> debugLots = new List<int>
+            {
+                997200, // Rowa
+                997210, // Golden Rowa
+                997220, // Rimed Rowa
+                998400, // Cave Moss
+                998410, // Budding Cave Moss
+                998420, // Crystal Cave Moss
+            };
+            if (opt["nerfmalenia"])
+            {
+                foreach (PARAM.Row row in game.Params["SpEffectParam"].Rows)
+                {
+                    if (row.ID >= 18400 && row.ID < 18420)
+                    {
+                        row["changeHpRate"].Value = 0f;
+                    }
+                }
+            }
+            // 71801 is graveyard flag, 102 is "definitely in limgrave"?
+            // This one should be opening the graveyard exit but it seems to activate straight away
+            int mapUnlockFlag = 18000021;
+            if (opt["allmaps"])
+            {
+                foreach (PARAM.Row row in game.Params["WorldMapPointParam"].Rows)
+                {
+                    if ((int)row["textId1"].Value > 0)
+                    {
+                        row["eventFlagId"].Value = (uint)mapUnlockFlag;
+                    }
+                }
+            }
+            EMEVD.Instruction debugLot(int i)
+            {
+                return new EMEVD.Instruction(2003, 4, new List<object> { debugLots[i] });
+            }
+            // game.Params["AssetEnvironmentGeometryParam"][277011]["HP"].Value = (short)500;
+            foreach (KeyValuePair<string, EMEVD> entry in game.Emevds)
+            {
+                string map = entry.Key;
+                EMEVD emevd = entry.Value;
+                void addNewEvent(int id, IEnumerable<EMEVD.Instruction> instrs, EMEVD.Event.RestBehaviorType rest = EMEVD.Event.RestBehaviorType.Default)
+                {
+                    EMEVD.Event ev = new EMEVD.Event(id, rest);
+                    // ev.Instructions.AddRange(instrs.Select(t => events.ParseAdd(t)));
+                    ev.Instructions.AddRange(instrs);
+                    emevd.Events.Add(ev);
+                    emevd.Events[0].Instructions.Add(new EMEVD.Instruction(2000, 0, new List<object> { 0, (uint)id, (uint)0 }));
+                }
+                foreach (EMEVD.Event e in entry.Value.Events)
+                {
+                    // Some custom edits
+                    if (false && e.ID == 6905)
+                    {
+                        e.Instructions.Insert(1, debugLot(1));
+                        e.Instructions.Insert(0, debugLot(0));
+                    }
+                    for (int i = 0; i < e.Instructions.Count; i++)
+                    {
+                        EMEVD.Instruction ins = e.Instructions[i];
+                        // Instr instr = events.Parse(e.Instructions[i]);
+                        bool delete = false;
+                        if (deleteCommands.Contains((ins.Bank, ins.ID)))
+                        {
+                            delete = true;
+                        }
+                        if (delete)
+                        {
+                            EMEVD.Instruction newInstr = new EMEVD.Instruction(1014, 69);
+                            e.Instructions[i] = newInstr;
+                            e.Parameters = e.Parameters.Where(p => p.InstructionIndex != i).ToList();
+                            game.WriteEmevds.Add(entry.Key);
+                        }
+                    }
+                }
+                if (entry.Key == "common")
+                {
+#if DEBUG
+                    // Testing event
+                    addNewEvent(19003105, new List<EMEVD.Instruction>
+                    {
+                        // If event flag, give lot
+                        // new EMEVD.Instruction(1003, 1, new List<object> { (byte)1, (byte)0, (byte)0, 110 }), debugLot(0),
+                        // new EMEVD.Instruction(1003, 1, new List<object> { (byte)1, (byte)0, (byte)0, 197 }), debugLot(1),
+                        // new EMEVD.Instruction(1003, 1, new List<object> { (byte)1, (byte)0, (byte)0, 177 }), debugLot(2),
+                        // Wait for event flag, give lot
+                        // new EMEVD.Instruction(3, 0, new List<object> { (byte)0, (byte)1, (byte)0, 187 }), debugLot(3),
+                        // Item posession check
+                        // IfPlayerHasdoesntHaveItem(OR01, ItemType.Gem = 4, X, OwnershipState.Owns = 1)
+                        // new EMEVD.Instruction(3, 4, new List<object> { (byte)5, (byte)4, 60100, (byte)1 }),
+                        // new EMEVD.Instruction(1000, 1, new List<object>{ (byte)1, (byte)0, (byte)5 }), debugLot(0),
+                    });
+                    List<string> gifts = new List<string>();
+                    // gifts.Add("Mimic Tear Ashes +10");
+                    // gifts.AddRange(new List<string> { "Mushroom Crown", "Mushroom Head", "Mushroom Body", "Mushroom Arms", "Mushroom Legs" });
+                    // Black raptor set also pretty cool. And fingerprint set
+                    Dictionary<ItemKey, int> giftAmounts = gifts.ToDictionary(g => game.ItemForName(g), g => 1);
+                    // giftAmounts[new ItemKey(ItemType.GOOD, 8136)] = 1;
+                    // game.Params["ItemLotParam_map"][34110080]["lotItemId01"].Value = 8151;
+                    if (opt["cheatgift"] && giftAmounts.Count > 0)
+                    {
+                        int lotId = 12020840;
+                        PARAM.Row row = null;
+                        ItemKey checkItem = null;
+                        foreach (KeyValuePair<ItemKey, int> giftEntry in giftAmounts)
+                        {
+                            if (row == null)
+                            {
+                                row = game.Params["ItemLotParam_map"][lotId];
+                            }
+                            else
+                            {
+                                row = game.AddRow("ItemLotParam_map", lotId + 1, lotId);
+                                lotId++;
+                            }
+                            ItemKey item = giftEntry.Key;
+                            row["lotItemId01"].Value = item.ID;
+                            row["lotItemCategory01"].Value = (int)game.LotValues[item.Type];
+                            row["lotItemNum01"].Value = (int)game.LotValues[item.Type];
+                            if (checkItem == null) checkItem = item;
+                        }
+                        game.Params["ItemLotParam_map"].Rows.Sort((a, b) => (a.ID.CompareTo(b.ID)));
+                        // game.Params["ItemLotParam_map"][12020840]["ItemLotId1"].Value = 207010;
+                        addNewEvent(19003106, new List<EMEVD.Instruction>
+                        {
+                            // IfPlayerHasdoesntHaveItem(MAIN, ItemType.Goods = 3, 207010, OwnershipState.Owns = 0)
+                            new EMEVD.Instruction(3, 4, new List<object> { (byte)0, (byte)checkItem.Type, checkItem.ID, (byte)0 }),
+                            // EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventIDSlotNumber, 0)
+                            // new EMEVD.Instruction(1003, 2, new List<object> { (byte)0, (byte)1, (byte)2, 0 }),
+                            // DirectlyGivePlayerItem(ItemType.Goods = 3, 207010, 12027885, 1), yet again fails
+                            // new EMEVD.Instruction(2003, 43, new List<object> { (byte)3, 207000, 12027780, 1 }),
+                            // SetEventFlag(TargetEventFlagType.EventFlag, 12027840, OFF)
+                            new EMEVD.Instruction(2003, 66, new List<object> { (byte)0, 12027840, (byte)0 }),
+                            // Item lot
+                            new EMEVD.Instruction(2003, 4, new List<object> { 12020840 }),
+                        });
+                    }
+#endif
+                    // Event for Varre
+                    // Use 19003110 as base for "real" stuff. 19003130 in PermutationWriter
+                    addNewEvent(19003110, new List<EMEVD.Instruction>
+                    {
+                        // The dialogue trigger is 1035449207 and it sets 1035449235 (progress quest) and 3198 ("update me" flag)
+                        // EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 1035449235)
+                        new EMEVD.Instruction(1003, 2, new List<object> { (byte)0, (byte)1, (byte)0, 1035449235 }),
+                        // IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, 1035449207)
+                        new EMEVD.Instruction(3, 0, new List<object> { (sbyte)0, (byte)1, (byte)0, 1035449207 }),
+                        // debugLot(2),
+                        // SetEventFlag(TargetEventFlagType.EventFlag, 1035449235, ON)
+                        // SetEventFlag(TargetEventFlagType.EventFlag, 3198, ON)
+                        new EMEVD.Instruction(2003, 66, new List<object> { (byte)0, 1035449235, (byte)1 }),
+                        new EMEVD.Instruction(2003, 66, new List<object> { (byte)0, 3198, (byte)1 }),
+                    });
+
+                    if (opt["allmaps"])
+                    {
+                        // Event 1600 does map gifts, but just piggyback on item flags
+                        // Mapping from item id to item flag. For now though just use map-activated flags directly...
+                        SortedDictionary<int, int> mapFlags = new SortedDictionary<int, int>
+                        {
+                            [8600] = 62010,  // Map: Limgrave, West
+                            [8601] = 62011,  // Map: Weeping Peninsula
+                            [8602] = 62012,  // Map: Limgrave, East
+                            [8603] = 62020,  // Map: Liurnia, East
+                            [8604] = 62021,  // Map: Liurnia, North
+                            [8605] = 62022,  // Map: Liurnia, West
+                            [8606] = 62030,  // Map: Altus Plateau
+                            [8607] = 62031,  // Map: Leyndell, Royal Capital
+                            [8608] = 62032,  // Map: Mt. Gelmir
+                            [8609] = 62040,  // Map: Caelid
+                            [8610] = 62041,  // Map: Dragonbarrow
+                            [8611] = 62050,  // Map: Mountaintops of the Giants, West
+                            [8612] = 62051,  // Map: Mountaintops of the Giants, East
+                            [8613] = 62060,  // Map: Ainsel River
+                            [8614] = 62061,  // Map: Lake of Rot
+                            [8615] = 62063,  // Map: Siofra River
+                            [8616] = 62062,  // Map: Mohgwyn Palace
+                            [8617] = 62064,  // Map: Deeproot Depths
+                            [8618] = 62052,  // Map: Consecrated Snowfield
+                        };
+                        if (true)
+                        {
+                            // Simpler event, just wait for entry into Limgrave
+                            List<EMEVD.Instruction> instrs = new List<EMEVD.Instruction>();
+                            // IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, 102)
+                            instrs.Add(new EMEVD.Instruction(3, 0, new List<object> { (sbyte)0, (byte)1, (byte)0, mapUnlockFlag }));
+                            foreach (KeyValuePair<int, int> mapFlag in mapFlags)
+                            {
+                                int flag = mapFlag.Value; // + 1000: just used for notification evidently
+                                // SetEventFlag(TargetEventFlagType.EventFlag, flag, ON)
+                                instrs.Add(new EMEVD.Instruction(2003, 66, new List<object> { (byte)0, flag, (byte)1 }));
+                            }
+                            addNewEvent(19003111, instrs);
+                        }
+                        else
+                        {
+                            EMEVD.Event disc = emevd.Events.Find(ev => ev.ID == 1600);
+                            if (disc == null) throw new Exception($"Couldn't locate event to enable all maps");
+                            int bannerIndex = disc.Instructions.FindIndex(ins => ins.Bank == 2007 && ins.ID == 2);
+                            if (bannerIndex == -1) throw new Exception($"Couldn't locate index to enable all maps");
+
+                            OldParams pre = OldParams.Preprocess(disc);
+                            List<EMEVD.Instruction> instrs = new List<EMEVD.Instruction>();
+                            foreach (KeyValuePair<int, int> mapFlag in mapFlags)
+                            {
+                                int flag = mapFlag.Value; // + 1000: just used for notification evidently
+                                // SetEventFlag(TargetEventFlagType.EventFlag, flag, ON)
+                                instrs.Add(new EMEVD.Instruction(2003, 66, new List<object> { (byte)0, flag, (byte)1 }));
+                                // We could give items, but we'd run out of condition groups for checking if they have it, so meh
+                            }
+                            disc.Instructions.InsertRange(bannerIndex + 1, instrs);
+                            pre.Postprocess();
+                        }
+                    }
+                    game.WriteEmevds.Add(entry.Key);
+                }
+                if (entry.Key == "m19_00_00_00" && opt["runereq"])
+                {
+                    EMEVD.Event fog = emevd.Events.Find(ev => ev.ID == 19002500);
+                    if (fog == null) throw new Exception($"Couldn't locate event in {entry.Key} to make final boss require all Great Runes");
+                    OldParams pre = OldParams.Preprocess(fog);
+                    int labelIndex = fog.Instructions.FindIndex(ins => ins.Bank == 1014 && ins.ID == 1);
+                    int sfxIndex = fog.Instructions.FindIndex(Math.Max(labelIndex, 0), ins => ins.Bank == 2006 && ins.ID == 4);
+                    if (labelIndex < 0 || sfxIndex < 0 || sfxIndex != labelIndex + 1)
+                    {
+                        throw new Exception($"Couldn't locate index to make final boss require all Great Runes ({labelIndex} {sfxIndex})");
+                    }
+                    fog.Instructions.InsertRange(sfxIndex, new List<EMEVD.Instruction>
+                    {
+                        // SkipIfEventFlag(<lines>, ON, TargetEventFlagType.EventFlag, 187)
+                        new EMEVD.Instruction(1003, 1, new List<object> { (byte)6, (byte)1, (byte)0, 187 }),
+                        // 9320 = Examine
+                        // IfActionButton(OR05, 9320, 19001500)
+                        new EMEVD.Instruction(3, 24, new List<object> { (sbyte)-5, 9320, 19001500 }),
+                        // IfEventFlag(OR05, ON, TargetEventFlagType.EventFlag, 187)
+                        new EMEVD.Instruction(3, 0, new List<object> { (sbyte)-5, (byte)1, (byte)0, 187 }),
+                        // IfConditionGroup(MAIN, ON, OR05)
+                        new EMEVD.Instruction(0, 0, new List<object> { (sbyte)0, (byte)1, (sbyte)-5 }),
+                        // EndIfEventFlag(EventEndType.Restart, ON, TargetEventFlagType.EventFlag, 187)
+                        new EMEVD.Instruction(1003, 2, new List<object> { (byte)1, (byte)1, (byte)0, 187 }),
+                        // WaitFixedTimeSeconds(0.5)
+                        // new EMEVD.Instruction(1001, 0, new List<object> { (float)0.5 }),
+                        // 20003 = You cannot proceed without more Great Runes
+                        // DisplayGenericDialog(20003, PromptType.YESNO = 0, NumberofOptions.NoButtons = 6, 19001500, 3)
+                        new EMEVD.Instruction(2007, 1, new List<object> { 20003, (short)0, (short)6, 19001500, 3f }),
+                        // EndUnconditionally(EventEndType.Restart)
+                        new EMEVD.Instruction(1000, 4, new List<object> { (byte)1 }),
+                    });
+                    pre.Postprocess();
+
+                    game.WriteEmevds.Add(entry.Key);
+                }
+            }
+        }
+
+        public static readonly Dictionary<string, string> Langs = new Dictionary<string, string>
+        {
+            // The commented out languages are technically the full CultureInfo equivalent.
+            // However, we're only using this dictionary if we have a specific game language in the first place,
+            // so there is no point to having finer-grained resolution because it can't be utilized in-game.
+            ["deude"] = "de", // de-DE
+            ["engus"] = "en", // en-US
+            ["frafr"] = "fr", // fr-FR
+            ["itait"] = "it", // it-IT
+            ["jpnjp"] = "ja", // ja-JP
+            ["korkr"] = "ko", // ko-KR
+            ["polpl"] = "pl", // pl-PL
+            ["porbr"] = "pt-BR", // pt-BR
+            ["rusru"] = "ru", // ru-RU
+            ["spaar"] = "es", // es-AR
+            ["spaes"] = "es-ES", // es-ES
+            ["thath"] = "th", // th-TH
+            ["zhocn"] = "zh", // zh-CN
+            ["zhotw"] = "zh", // zh-CN
         };
         public static readonly List<string> NoDS3Langs = new List<string> { "thath" };
 
@@ -497,7 +904,7 @@ namespace RandomizerCommon
             @"sfx",  // This should be a no-op with enemy rando
             @"shader",
             @"sound",
-        }.SelectMany(t => t.Contains("$lang") ? Langs.Select(l => t.Replace("$lang", l)) : new[] { t }).ToList();
+        }.SelectMany(t => t.Contains("$lang") ? Langs.Keys.Select(l => t.Replace("$lang", l)) : new[] { t }).ToList();
         private static List<string> extensions = new List<string>
         {
             ".hks", ".dcx", ".gfx", ".dds", ".fsb", ".fev", ".itl", ".tpf", ".entryfilelist", ".hkxbdt", ".hkxbhd", "Data0.bdt"
@@ -523,6 +930,105 @@ namespace RandomizerCommon
                 }
             }
             return allFiles;
+        }
+
+        public static void UpdateEldenRing(GameData game, RandomizerOptions opt)
+        {
+            if (opt["undcx"])
+            {
+                game.UnDcx(GameSpec.ForGame(GameSpec.FromGame.ER).GameDir + @"\map\mapstudio");
+                foreach (string lang in Langs.Keys)
+                {
+                    game.DumpMessages(GameSpec.ForGame(GameSpec.FromGame.ER).GameDir + $@"\msg\{lang}");
+                }
+                return;
+            }
+            List<string> flatFiles = new List<string> { @"regulation.bin", @"event", @"script\talk", @"map\mapstudio" };
+            List<string> nestedFiles = new List<string> { @"msg" };
+            string gameDir = @"C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game";
+            string outDir = @"diste\Vanilla";
+            List<string> unusedGameFiles = new List<string>();
+            List<string> unusedVanillaFiles = Directory.GetFiles(outDir).Select(Path.GetFileName).ToList();
+            List<(string, string)> copy = new List<(string, string)>();
+            foreach (string flat in flatFiles)
+            {
+                string nextFlat = $@"{gameDir}\{flat}";
+                if (File.Exists(nextFlat))
+                {
+                    string prevFlat = $@"{outDir}\{flat}";
+                    if (GetMD5Hash(prevFlat) == GetMD5Hash(nextFlat))
+                    {
+                        Console.WriteLine($"Same {nextFlat} -> {prevFlat}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Different {nextFlat} -> {prevFlat}");
+                        copy.Add((nextFlat, prevFlat));
+                    }
+                    unusedVanillaFiles.Remove(flat);
+                }
+                else if (Directory.Exists(nextFlat))
+                {
+                    unusedGameFiles.AddRange(Directory.GetFiles(nextFlat).Select(Path.GetFileName));
+                    foreach (string prev in Directory.GetFiles(outDir))
+                    {
+                        string sub = Path.GetFileName(prev);
+                        string next = $@"{nextFlat}\{sub}";
+                        if (File.Exists(next))
+                        {
+                            unusedVanillaFiles.Remove(sub);
+                            if (GetMD5Hash(prev) == GetMD5Hash(next))
+                            {
+                                Console.WriteLine($"Same {next} -> {prev}");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Different {next} -> {prev}");
+                                copy.Add((next, prev));
+                            }
+                        }
+                        unusedGameFiles.Remove(sub);
+                    }
+                }
+                else throw new Exception(nextFlat);
+            }
+            foreach (string nest in nestedFiles)
+            {
+                // Don't check unused ones here, we expect a bunch of em
+                string[] allFiles = Directory.GetFiles($@"{outDir}\{nest}", "*", SearchOption.AllDirectories);
+                foreach (string prev in allFiles)
+                {
+                    string sub = prev.Substring(prev.IndexOf(nest));
+                    string next = $@"{gameDir}\{sub}";
+                    if (GetMD5Hash(prev) == GetMD5Hash(next))
+                    {
+                        Console.WriteLine($"Same {next} -> {prev}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Different {next} -> {prev}");
+                        copy.Add((next, prev));
+                    }
+                }
+            }
+            foreach (string unused in unusedGameFiles)
+            {
+                Console.WriteLine($"Unused {unused}");
+            }
+            foreach (string unused in unusedVanillaFiles)
+            {
+                Console.WriteLine($"Deleted {unused}");
+            }
+            bool wetrun = opt["wetrun"];
+            string drySuffix = wetrun ? "" : " (dryrun)";
+            foreach ((string next, string prev) in copy)
+            {
+                Console.WriteLine($"Copy {next} -> {prev}{drySuffix}");
+                if (wetrun)
+                {
+                    File.Copy(next, prev, true);
+                }
+            }
         }
     }
 }

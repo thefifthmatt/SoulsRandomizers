@@ -113,12 +113,14 @@ namespace RandomizerCommon
             [3] = ItemType.ARMOR,
             [4] = ItemType.RING,
             [5] = ItemType.GEM,
+            [6] = ItemType.EQUIP,
         };
 
-        public readonly Dictionary<string, string> Locations;
-        public readonly Dictionary<string, string> RevLocations;
-        public readonly Dictionary<string, string> LocationNames;
+        public Dictionary<string, string> Locations;
+        public Dictionary<string, string> RevLocations;
+        public Dictionary<string, string> LocationNames;
         public readonly Dictionary<uint, ItemType> LotItemTypes;
+        public readonly Dictionary<ItemType, uint> LotValues;
         // Currently unused, as int/byte conversions with equipType are valid... currently.
         // TODO see if gem is sellable in Elden Ring.
         public readonly Dictionary<int, ItemType> ShopItemTypes = new Dictionary<int, ItemType>
@@ -127,22 +129,56 @@ namespace RandomizerCommon
             [1] = ItemType.ARMOR,
             [2] = ItemType.RING,
             [3] = ItemType.GOOD,
+            [4] = ItemType.GEM,
         };
 
         // Actual data
         private Dictionary<string, PARAM.Layout> Layouts = new Dictionary<string, PARAM.Layout>();
         private Dictionary<string, PARAMDEF> Defs = new Dictionary<string, PARAMDEF>();
-        public Dictionary<string, PARAM> Params = new Dictionary<string, PARAM>();
+        public ParamDictionary Params = new ParamDictionary();
         public Dictionary<string, IMsb> Maps = new Dictionary<string, IMsb>();
         public Dictionary<string, EMEVD> Emevds = new Dictionary<string, EMEVD>();
         public Dictionary<string, FMG> ItemFMGs = new Dictionary<string, FMG>();
-        public Dictionary<string, Dictionary<string, FMG>> OtherItemFMGs = new Dictionary<string, Dictionary<string, FMG>>();
         public Dictionary<string, FMG> MenuFMGs = new Dictionary<string, FMG>();
+        public Dictionary<string, Dictionary<string, FMG>> OtherItemFMGs = new Dictionary<string, Dictionary<string, FMG>>();
+        public Dictionary<string, Dictionary<string, FMG>> OtherMenuFMGs = new Dictionary<string, Dictionary<string, FMG>>();
         public Dictionary<string, Dictionary<string, ESD>> Talk = new Dictionary<string, Dictionary<string, ESD>>();
 
+        // Lazily applies paramdefs
+        public class ParamDictionary
+        {
+            public Dictionary<string, PARAM> Inner = new Dictionary<string, PARAM>();
+            public Dictionary<string, PARAM.Layout> Layouts { get; set; }
+            public Dictionary<string, PARAMDEF> Defs { get; set; }
+
+            public PARAM this[string key]
+            {
+                get
+                {
+                    if (!Inner.TryGetValue(key, out PARAM param)) throw new Exception($"Internal error: Param {key} not found");
+                    if (param.AppliedParamdef == null)
+                    {
+                        if (Defs != null && param.ApplyParamdefCarefully(Defs.Values))
+                        {
+                            // It worked
+                        }
+                        else if (Layouts != null && Layouts.TryGetValue(param.ParamType, out PARAM.Layout layout))
+                        {
+                            param.ApplyParamdef(layout.ToParamdef(param.ParamType, out _));
+                        }
+                        else throw new Exception($"Internal error: Param {key} has no def file");
+                    }
+                    return param;
+                }
+            }
+            public bool ContainsKey(string key) => Inner.ContainsKey(key);
+            public IEnumerable<string> Keys => Inner.Keys;
+        }
+
         // Names
-        private SortedDictionary<ItemKey, string> itemNames = new SortedDictionary<ItemKey, string>();
-        private SortedDictionary<string, List<ItemKey>> revItemNames = new SortedDictionary<string, List<ItemKey>>();
+        public SortedDictionary<ItemKey, string> ItemNames = new SortedDictionary<ItemKey, string>();
+        public SortedDictionary<string, List<ItemKey>> RevItemNames = new SortedDictionary<string, List<ItemKey>>();
+
         private SortedDictionary<int, string> qwcNames = new SortedDictionary<int, string>();
         private SortedDictionary<int, string> lotNames = new SortedDictionary<int, string>();
         private SortedDictionary<int, string> characterSplits = new SortedDictionary<int, string>();
@@ -159,40 +195,25 @@ namespace RandomizerCommon
             if (EldenRing)
             {
                 Editor.Spec.DefDir = $@"{dir}\Defs";
+                // Editor.Spec.DefDir = $@"..\ParamdexNew\ER\Defs";
             }
             else
             {
                 Editor.Spec.LayoutDir = $@"{dir}\Layouts";
             }
             LotItemTypes = EldenRing ? ErLotItemTypes : MaskLotItemTypes;
-            // Locations. TODO load better
-            if (EldenRing)
-            {
-                Locations = new Dictionary<string, string>();
-                LocationNames = new Dictionary<string, string>();
-            }
-            else if (DS3)
-            {
-                Locations = DS3LocationNames;
-                LocationNames = DS3MapNames;
-            }
-            else if (Sekiro)
-            {
-                Locations = SekiroLocationNames;
-                LocationNames = SekiroMapNames;
-            }
-            RevLocations = Locations.ToDictionary(e => e.Value, e => e.Key);
+            LotValues = LotItemTypes.ToDictionary(e => e.Value, e => e.Key);
         }
 
         // The IMsb interface is not usable directly, so in lieu of making GameData extremely generic, add these casts
         public Dictionary<string, MSB3> DS3Maps => Maps.ToDictionary(e => e.Key, e => e.Value as MSB3);
         public Dictionary<string, MSBS> SekiroMaps => Maps.ToDictionary(e => e.Key, e => e.Value as MSBS);
+        public Dictionary<string, MSBX> EldenMaps => Maps.ToDictionary(e => e.Key, e => e.Value as MSBX);
 
         public void Load(string modDir=null)
         {
-            this.ModDir = modDir;
+            ModDir = modDir;
             LoadNames();
-            LoadLayouts();
             LoadParams();
             LoadMapData();
             LoadTalk();
@@ -202,6 +223,7 @@ namespace RandomizerCommon
 
         public void UnDcx(string dir)
         {
+            Directory.CreateDirectory($@"{dir}\dcx");
             foreach (string path in Directory.GetFiles(dir, "*.dcx"))
             {
                 string name = Path.GetFileNameWithoutExtension(path);
@@ -227,10 +249,11 @@ namespace RandomizerCommon
         public PARAM.Row Item(ItemKey key)
         {
             if (!Sekiro) key = NormalizeWeapon(key);
+            if (key.Type == ItemType.EQUIP) return null;
             return Params[itemParams[(int) key.Type]][key.ID];
         }
 
-        public PARAM.Row AddRow(string name, int id)
+        public PARAM.Row AddRow(string name, int id, int oldId = -1)
         {
             PARAM param = Params[name];
             if (param[id] != null)
@@ -240,14 +263,11 @@ namespace RandomizerCommon
             }
             PARAM.Row row = new PARAM.Row(id, "", param.AppliedParamdef);
             param.Rows.Add(row);
+            if (oldId >= 0)
+            {
+                GameEditor.CopyRow(param[oldId], row);
+            }
             return row;
-        }
-
-        public StreamReader NewAnnotationReader()
-        {
-            string testFile = $@"{Dir}\Base\annotations.txt";
-            if (File.Exists(testFile)) return File.OpenText(testFile);
-            return File.OpenText($@"{Dir}\Base\annotations.yaml");
         }
 
         private static ItemKey NormalizeWeapon(ItemKey key)
@@ -269,36 +289,54 @@ namespace RandomizerCommon
                 key = new ItemKey(key.Type, key.ID - (key.ID % 100));
             }
             // suffix += $" {key.ID}";
-            return (itemNames.ContainsKey(key) ? itemNames[key] : $"?ITEM?" + $" ({(int)key.Type}:{key.ID})") + suffix;
+            return (ItemNames.ContainsKey(key) ? ItemNames[key] : $"?ITEM?" + $" ({(int)key.Type}:{key.ID})") + suffix;
         }
 
-        private static readonly Dictionary<ItemKey, string> customNames = new Dictionary<ItemKey, string>
+        private static readonly Dictionary<ItemKey, string> customNamesDS3 = new Dictionary<ItemKey, string>
         {
             { new ItemKey(ItemType.GOOD, 2123), "Cinders of a Lord (Abyss Watchers)" },
             { new ItemKey(ItemType.GOOD, 2124), "Cinders of a Lord (Aldrich)" },
             { new ItemKey(ItemType.GOOD, 2125), "Cinders of a Lord (Yhorm)" },
             { new ItemKey(ItemType.GOOD, 2126), "Cinders of a Lord (Lothric)" },
         };
-
-        public string DisplayName(ItemKey key)
+        private static readonly Dictionary<ItemKey, string> customNamesElden = new Dictionary<ItemKey, string>
         {
-            if (DS3 && customNames.TryGetValue(key, out string name))
+            { new ItemKey(ItemType.GOOD, 8127), "Letter from Volcano Manor (Istvan)" },
+            { new ItemKey(ItemType.GOOD, 8132), "Letter from Volcano Manor (Rileigh)" },
+            { new ItemKey(ItemType.GOOD, 8174), "Academy Glintstone Key (Thops)" },
+            { new ItemKey(ItemType.GOOD, 8196), "Unalloyed Gold Needle (Milicent)" },
+            { new ItemKey(ItemType.GOOD, 8975), "Unalloyed Gold Needle (Broken)" },
+            { new ItemKey(ItemType.GOOD, 8976), "Unalloyed Gold Needle (Fixed)" },
+        };
+
+        public string DisplayName(ItemKey key, int quantity = 1)
+        {
+            if (DS3 && customNamesDS3.TryGetValue(key, out string name))
             {
                 return name;
             }
-            return Name(key);
+            if (EldenRing && customNamesElden.TryGetValue(key, out name))
+            {
+                return name;
+            }
+            if (key.Type == ItemType.EQUIP)
+            {
+                return "NPC Equipment";
+            }
+            string quantityStr = quantity <= 1 ? "" : $" {quantity}x";
+            return Name(key) + quantityStr;
         }
 
         public ItemKey ItemForName(string name)
         {
-            if (!revItemNames.ContainsKey(name)) throw new Exception($"Internal error: missing name {name}");
-            if (revItemNames[name].Count != 1) throw new Exception($"Internal error: ambiguous name {name} could be {string.Join(" or ", revItemNames[name])}");
-            return revItemNames[name][0];
+            if (!RevItemNames.ContainsKey(name)) throw new Exception($"Internal error: missing name {name}");
+            if (RevItemNames[name].Count != 1) throw new Exception($"Internal error: ambiguous name {name} could be {string.Join(" or ", RevItemNames[name])}");
+            return RevItemNames[name][0];
         }
 
         public SortedDictionary<ItemKey, string> Names()
         {
-            return itemNames;
+            return ItemNames;
         }
 
         public string LotName(int id)
@@ -313,6 +351,10 @@ namespace RandomizerCommon
 
         public string CharacterName(int id)
         {
+            if (EldenRing)
+            {
+                return characterSplits.TryGetValue(id, out string n) ? n : null;
+            }
             int chType = 0;
             foreach (KeyValuePair<int, string> entry in characterSplits)
             {
@@ -341,19 +383,34 @@ namespace RandomizerCommon
             return modelNames.Values.ToList();
         }
 
-        public string EntityName(EntityId entity, bool detail=false)
+        public static bool ExtractModelName(string name, out string modelName)
         {
-            int split = entity.EntityName.IndexOf('_');
+            modelName = null;
+            int split = name.LastIndexOf('_');
             if (split == -1)
             {
-                return entity.EntityName;
+                return false;
             }
-            // What is even happening here. This is horrific
-            string model = entity.EntityName.Substring(0, split);
-            string modelName = model;
-            if (model == "c0000")
+            modelName = name.Substring(0, split);
+            // Elden Ring cross-map names
+            if (modelName.StartsWith("m") && modelName.Contains('-'))
             {
-                modelName = CharacterName(entity.CharaInitID) ?? "c0000";
+                modelName = modelName.Split('-')[1];
+            }
+            return true;
+        }
+
+        public string EntityName(EntityId entity, bool detail = false, bool mapName = false)
+        {
+            string mapSuffix = mapName && !string.IsNullOrEmpty(entity.MapName) ? " in " + MapLocationName(entity.MapName) : "";
+            if (!ExtractModelName(entity.EntityName, out string model))
+            {
+                return entity.EntityName + mapSuffix;
+            }
+            string modelName = model;
+            if (modelName == "c0000")
+            {
+                modelName = CharacterName(entity.CharaInitID) ?? (EldenRing ? $"Human {entity.CharaInitID}" : "c0000");
             }
             if (modelNames.ContainsKey(modelName))
             {
@@ -362,7 +419,7 @@ namespace RandomizerCommon
             if (!detail)
             {
                 // Note this doesn't do a CharacterName override, so using sparingly, or fix this
-                return modelName;
+                return modelName + mapSuffix;
             }
             List<string> details = new List<string>();
             if (modelName != model)
@@ -377,9 +434,41 @@ namespace RandomizerCommon
             {
                 details.Add($"group {string.Join(",", entity.GroupIds)}");
             }
+            if (entity.NameID > 0)
+            {
+                string fmgName = ItemFMGs["NpcName"][entity.NameID];
+                if (!string.IsNullOrEmpty(fmgName))
+                {
+                    details.Add($"<{fmgName}>");
+                }
+            }
             return (entity.Type == null ? "" : $"{entity.Type} ")
                 + entity.EntityName
-                + (details.Count > 0 ? $" ({string.Join(" - ", details)})" : "");
+                + (details.Count > 0 ? $" ({string.Join(" - ", details)})" : "")
+                + mapSuffix;
+        }
+
+        public string MapLocationName(string mapId)
+        {
+            return $"{mapId}" + (LocationNames.TryGetValue(mapId, out string mapName) ? $" ({mapName})" : "");
+        }
+
+        // Map name utility functions
+        // Especially in Elden Ring, maps are stored in param field bytes
+        public static List<byte> ParseMap(string map) => map.TrimStart('m').Split('_').Select(p => byte.Parse(p)).ToList();
+
+        public static string FormatMap(IEnumerable<byte> bytes)
+        {
+            return "m" + string.Join("_", bytes.Select(b => b == 0xFF ? "XX" : $"{b:d2}"));
+        }
+
+        private readonly List<string> ParamMapIdFields = new List<string> { "areaNo", "gridXNo", "gridZNo" };
+        public List<byte> GetMapParts(PARAM.Row row, List<string> fields = null)
+        {
+            if (fields == null) fields = ParamMapIdFields;
+            List<byte> bytes = fields.Select(f => (byte)row[f].Value).ToList();
+            while (bytes.Count < 4) bytes.Add(0);
+            return bytes;
         }
 
         public void SaveSekiro(string outPath)
@@ -414,7 +503,7 @@ namespace RandomizerCommon
 #endif
             }
 
-            WriteModDependentBnd(outPath, $@"{Dir}\Base\gameparam.parambnd.dcx", $@"param\gameparam\gameparam.parambnd.dcx", Params);
+            WriteModDependentBnd(outPath, $@"{Dir}\Base\gameparam.parambnd.dcx", $@"param\gameparam\gameparam.parambnd.dcx", Params.Inner);
             WriteModDependentBnd(outPath, $@"{Dir}\Base\item.msgbnd.dcx", $@"msg\engus\item.msgbnd.dcx", ItemFMGs);
             WriteModDependentBnd(outPath, $@"{Dir}\Base\menu.msgbnd.dcx", $@"msg\engus\menu.msgbnd.dcx", MenuFMGs);
             foreach (KeyValuePair<string, Dictionary<string, FMG>> entry in OtherItemFMGs)
@@ -426,9 +515,177 @@ namespace RandomizerCommon
             Console.WriteLine("Success!");
         }
 
+        public static void RestoreBackupsInternal(string outPath)
+        {
+            Console.WriteLine("Restoring from " + outPath);
+
+            foreach (string bakPath in GetBackupFiles(outPath))
+            {
+                string dest = GetRestoreName(bakPath);
+                Console.WriteLine($"Restoring {dest}");
+                RestoreBackup(bakPath);
+            }
+        }
+
+        public static List<string> GetBackupFiles(string outPath)
+        {
+            List<string> restoreDirs = new List<string>
+            {
+                $@"{outPath}",
+                $@"{outPath}\event",
+                $@"{outPath}\script\talk",
+                $@"{outPath}\map\mapstudio",
+            };
+            restoreDirs.AddRange(MiscSetup.Langs.Keys.Select(lang => $@"{outPath}\msg\{lang}"));
+            List<string> backups = new List<string>();
+            foreach (string restoreDir in restoreDirs)
+            {
+                if (Directory.Exists(restoreDir))
+                {
+                    backups.AddRange(Directory.GetFiles(restoreDir, "*.randobak"));
+                }
+            }
+            return backups;
+        }
+
+        public static string GetRestoreName(string bakPath)
+        {
+            if (!bakPath.EndsWith(".randobak")) throw new Exception($"Cannot restore {bakPath}, must end in .randobak");
+            return bakPath.Substring(0, bakPath.Length - ".randobak".Length);
+        }
+
+        public static void RestoreBackup(string bakPath)
+        {
+            string dest = GetRestoreName(bakPath);
+            if (!File.Exists(dest))
+            {
+                // This will generally only happen if the user deleted it.
+                // We can warn that we're restoring it? idk
+                // Console.WriteLine($"Warning: {dest} does not exist");
+            }
+            else
+            {
+                File.Delete(dest);
+            }
+            File.Move(bakPath, dest);
+        }
+
+        public HashSet<string> WriteEmevds = new HashSet<string>();
+        public HashSet<string> WriteESDs = new HashSet<string>();
+        public HashSet<string> WriteMSBs = new HashSet<string>();
+        public bool WriteFMGs = false;
+        public void SaveEldenRing(string outPath, bool uxm)
+        {
+            Console.WriteLine("Writing to " + outPath);
+            // Sorry TK, Oodle is 2slow
+            DCX.Type overrideDcx = DCX.Type.DCX_DFLT_11000_44_9;
+            // overrideDcx = DCX.Type.DCX_KRAK;
+            writtenFiles.Clear();
+            {
+                string basePath = $@"{Dir}\Vanilla\regulation.bin";
+                string path = $@"{outPath}\regulation.bin";
+                if (ModDir != null)
+                {
+                    string modPath = $@"{ModDir}\regulation.bin.randobak";
+                    string modPath2 = $@"{ModDir}\regulation.bin";
+                    if (File.Exists(modPath)) basePath = modPath;
+                    else if (File.Exists(modPath2)) basePath = modPath2;
+                }
+                AddModFile(path);
+                if (uxm) Backup(path);
+                Editor.OverrideBndRel(basePath, path, Params.Inner, f => f.AppliedParamdef == null ? null : f.Write(), dcx: overrideDcx);
+            }
+
+            // Event scripts
+            foreach (KeyValuePair<string, EMEVD> entry in Emevds)
+            {
+                string path = $@"{outPath}\event\{entry.Key}.emevd.dcx";
+                if (!AddBackupOrRestoreFile(path, WriteEmevds.Contains(entry.Key), uxm)) continue;
+                entry.Value.Write(path, overrideDcx);
+#if DEBUG
+                string scriptFile = path + ".js";
+                if (File.Exists(scriptFile))
+                {
+                    Console.WriteLine($"Deleting {scriptFile}");
+                    File.Delete(scriptFile);
+                }
+#endif
+            }
+
+            // ESDs
+            foreach (KeyValuePair<string, Dictionary<string, ESD>> entry in Talk)
+            {
+                string path = $@"{outPath}\script\talk\{entry.Key}.talkesdbnd.dcx";
+                if (!AddBackupOrRestoreFile(path, WriteESDs.Contains(entry.Key), uxm)) continue;
+                string basePath = $@"{Dir}\Vanilla\{entry.Key}.talkesdbnd.dcx";
+                Editor.OverrideBndRel(basePath, path, entry.Value, f => f.Write(), dcx: overrideDcx);
+            }
+
+            // Maps
+            foreach (KeyValuePair<string, IMsb> entry in Maps)
+            {
+                string path = $@"{outPath}\map\mapstudio\{entry.Key}.msb.dcx";
+                if (!AddBackupOrRestoreFile(path, WriteMSBs.Contains(entry.Key), uxm)) continue;
+                entry.Value.Write(path, overrideDcx);
+            }
+
+            // Text
+            {
+                // Just menu for now, and no override for now. Also other languages
+                string path = $@"{outPath}\msg\engus\menu.msgbnd.dcx";
+                if (AddBackupOrRestoreFile(path, WriteFMGs, uxm))
+                {
+                    string basePath = $@"{Dir}\Vanilla\msg\engus\menu.msgbnd.dcx";
+                    Editor.OverrideBndRel(basePath, path, MenuFMGs, f => f.Write(), dcx: overrideDcx);
+                }
+                foreach (KeyValuePair<string, Dictionary<string, FMG>> entry in OtherMenuFMGs)
+                {
+                    path = $@"{outPath}\msg\{entry.Key}\menu.msgbnd.dcx";
+                    if (AddBackupOrRestoreFile(path, WriteFMGs, uxm))
+                    {
+                        string basePath = $@"{Dir}\Vanilla\msg\{entry.Key}\menu.msgbnd.dcx";
+                        Editor.OverrideBndRel(basePath, path, entry.Value, f => f.Write(), dcx: overrideDcx);
+                    }
+                }
+            }
+        }
+
+        private static string Backup(string file)
+        {
+            string bak = file + ".randobak";
+            if (!File.Exists(bak))
+            {
+                File.Copy(file, bak, false);
+            }
+            return bak;
+        }
+
+        private bool AddBackupOrRestoreFile(string path, bool write, bool uxm)
+        {
+            if (write)
+            {
+                AddModFile(path);
+                if (uxm) Backup(path);
+                return true;
+            }
+            else if (uxm)
+            {
+                string bak = path + ".randobak";
+                if (File.Exists(bak))
+                {
+                    RestoreBackup(bak);
+                }
+            }
+            else if (File.Exists(path))
+            {
+                Console.WriteLine($"Deleting {path}");
+                File.Delete(path);
+            }
+            return false;
+        }
+
         public void SaveDS3(string outPath, bool encrypted)
         {
-            // This is a bit duplicate, like previous version of Sekiro code
             Console.WriteLine("Writing to " + outPath);
             writtenFiles.Clear();
 
@@ -454,7 +711,7 @@ namespace RandomizerCommon
                 }
                 string path = encrypted ? $@"{outPath}\Data0.bdt" : $@"{outPath}\param\gameparam\gameparam.parambnd.dcx";
                 AddModFile(path);
-                Editor.OverrideBndRel(basePath, path, Params, f => f.Write());
+                Editor.OverrideBndRel(basePath, path, Params.Inner, f => f.Write());
             }
 
             // Messages
@@ -492,9 +749,9 @@ namespace RandomizerCommon
         private void AddModFile(string path)
         {
             path = FullName(path);
-#if !DEBUG
+//#if !DEBUG
             Console.WriteLine($"Writing {path}");
-#endif
+//#endif
             writtenFiles.Add(path);
         }
 
@@ -550,14 +807,31 @@ namespace RandomizerCommon
                 if (!EldenRing && itemParams[i] == "EquipParamGem") continue;
                 foreach (KeyValuePair<ItemKey, string> entry in Editor.LoadNames(itemParams[i], n => new ItemKey((ItemType)i, int.Parse(n)), true))
                 {
-                    itemNames[entry.Key] = entry.Value;
-                    AddMulti(revItemNames, entry.Value, entry.Key);
+                    ItemNames[entry.Key] = entry.Value;
+                    AddMulti(RevItemNames, entry.Value, entry.Key);
                 }
             }
             if (characterSplits.Count == 0)
             {
                 characterSplits[0] = "UNUSED";
             }
+            if (EldenRing)
+            {
+                LocationNames = Editor.LoadNames("MapName", n => n, false);
+                // For now, don't have special location names, but we can maybe do this for legacy dungeons or have prefixes
+                Locations = LocationNames.ToDictionary(e => e.Key, e => e.Key);
+            }
+            else if (DS3)
+            {
+                LocationNames = DS3MapNames;
+                Locations = DS3LocationNames;
+            }
+            else if (Sekiro)
+            {
+                LocationNames = SekiroMapNames;
+                Locations = SekiroLocationNames;
+            }
+            RevLocations = Locations.ToDictionary(e => e.Value, e => e.Key);
         }
 
         // https://github.com/JKAnderson/Yapped/blob/master/Yapped/FormMain.cs
@@ -575,18 +849,25 @@ namespace RandomizerCommon
 
         private void LoadParams()
         {
+            bool lazy = true;
+            Dictionary<string, PARAM> dict;
             string path;
+            if (!lazy)
+            {
+                // Delay loading layouts if we'll do it in ParamDictionary
+                LoadLayouts();
+            }
             if (DS3)
             {
                 path = $@"{Dir}\Base\Data0.bdt";
                 string modPath1 = $@"{ModDir}\param\gameparam\gameparam.parambnd.dcx";
                 string modPath2 = $@"{ModDir}\Data0.bdt";
-                if (File.Exists(modPath1))
+                if (ModDir != null && File.Exists(modPath1))
                 {
                     Console.WriteLine($"Using modded file {modPath1}");
                     path = modPath1;
                 }
-                else if (File.Exists(modPath2))
+                else if (ModDir != null && File.Exists(modPath2))
                 {
                     Console.WriteLine($"Using modded file {modPath2}");
                     path = modPath2;
@@ -595,13 +876,13 @@ namespace RandomizerCommon
                 {
                     throw new Exception($"Missing param file: {path}");
                 }
-                Params = Editor.LoadParams(path, Layouts, allowError: true);
+                dict = Editor.LoadParams(path, layouts: Layouts, allowError: true);
             }
-            else
+            else if (Sekiro)
             {
                 path = $@"{Dir}\Base\gameparam.parambnd.dcx";
                 string modPath = $@"{ModDir}\param\gameparam\gameparam.parambnd.dcx";
-                if (File.Exists(modPath))
+                if (ModDir != null && File.Exists(modPath))
                 {
                     Console.WriteLine($"Using modded file {modPath}");
                     path = modPath;
@@ -610,15 +891,40 @@ namespace RandomizerCommon
                 {
                     throw new Exception($"Missing param file: {path}");
                 }
-                if (Sekiro)
-                {
-                    Params = Editor.LoadParams(path, Layouts, allowError: false);
-                }
-                else
-                {
-                    Params = Editor.LoadParams(path, Defs);
-                }
+                dict = Editor.LoadParams(path, layouts: Layouts, allowError: false);
             }
+            else if (EldenRing)
+            {
+                path = $@"{Dir}\Vanilla\regulation.bin";
+                string modPath = $@"{ModDir}\regulation.bin.randobak";
+                string modPath2 = $@"{ModDir}\regulation.bin";
+                if (ModDir != null && File.Exists(modPath))
+                {
+                    Console.WriteLine($"Using modded file {modPath}");
+                    path = modPath;
+                }
+                else if (ModDir != null && File.Exists(modPath2))
+                {
+                    Console.WriteLine($"Using modded file {modPath2}");
+                    path = modPath2;
+                }
+                if (!File.Exists(path))
+                {
+                    throw new Exception($"Missing param file: {path}");
+                }
+                dict = Editor.LoadParams(path, defs: Defs);
+            }
+            else throw new Exception();
+            if (lazy)
+            {
+                LoadLayouts();
+            }
+            Params = new ParamDictionary
+            {
+                Inner = dict,
+                Layouts = Layouts,
+                Defs = Defs,
+            };
         }
 
         private void LoadMapData()
@@ -639,7 +945,7 @@ namespace RandomizerCommon
             }
             else
             {
-                Maps = Editor.Load("Base", path => EldenLocationDataScraper.ReadMSB(path), "*.msb.dcx");
+                Maps = Editor.Load("Vanilla", path => (IMsb)MSBX.Read(path), "*.msb.dcx");
             }
         }
 
@@ -647,30 +953,37 @@ namespace RandomizerCommon
         {
             if (!DS3)
             {
-                Talk = Editor.LoadBnds("Base", (data, path) => ESD.Read(data), "*.talkesdbnd.dcx");
+                Talk = Editor.LoadBnds(EldenRing ? "Vanilla" : "Base", (data, path) => ESD.Read(data), "*.talkesdbnd.dcx");
                 MaybeOverrideFromModDir(Talk, name => $@"script\talk\{name}.talkesdbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => ESD.Read(data)));
-                List<string> missing = Locations.Keys.Concat(new[] { "m00_00_00_00" }).Except(Talk.Keys).ToList();
-                if (missing.Count != 0) throw new Exception($@"Missing talkesdbnds in dist\Base: {string.Join(", ", missing)}");
+                if (Sekiro)
+                {
+                    List<string> missing = Locations.Keys.Concat(new[] { "m00_00_00_00" }).Except(Talk.Keys).ToList();
+                    if (missing.Count != 0) throw new Exception($@"Missing talkesdbnds in dist\Base: {string.Join(", ", missing)}");
+                }
             }
         }
 
         private void LoadScripts()
         {
-            Emevds = Editor.Load("Base", path => EMEVD.Read(path), "*.emevd.dcx");
+            Emevds = Editor.Load(EldenRing ? "Vanilla" : "Base", path => EMEVD.Read(path), "*.emevd.dcx");
             MaybeOverrideFromModDir(Emevds, name => $@"event\{name}.emevd.dcx", path => EMEVD.Read(path));
-            List<string> missing = Locations.Keys.Concat(new[] { "common", "common_func" }).Except(Emevds.Keys).ToList();
-            if (missing.Count != 0) throw new Exception($@"Missing emevds in dist\Base: {string.Join(", ", missing)}");
+            if (!EldenRing)
+            {
+                List<string> missing = Locations.Keys.Concat(new[] { "common", "common_func" }).Except(Emevds.Keys).ToList();
+                if (missing.Count != 0) throw new Exception($@"Missing emevds in dist\Base: {string.Join(", ", missing)}");
+            }
         }
 
         private void LoadText()
         {
+            // TODO: Surely we can merge these
             if (Sekiro)
             {
                 ItemFMGs = Editor.LoadBnd($@"{Dir}\Base\item.msgbnd.dcx", (data, path) => FMG.Read(data));
                 ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
                 MenuFMGs = Editor.LoadBnd($@"{Dir}\Base\menu.msgbnd.dcx", (data, path) => FMG.Read(data));
                 MenuFMGs = MaybeOverrideFromModDir(MenuFMGs, @"msg\engus\menu.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
-                foreach (string lang in MiscSetup.Langs)
+                foreach (string lang in MiscSetup.Langs.Keys)
                 {
                     if (lang == "engus") continue;
                     OtherItemFMGs[lang] = Editor.LoadBnd($@"{Dir}\Base\msg\{lang}\item.msgbnd.dcx", (data, path) => FMG.Read(data));
@@ -681,11 +994,21 @@ namespace RandomizerCommon
             {
                 ItemFMGs = Editor.LoadBnd($@"{Dir}\Base\msg\engus\item_dlc2.msgbnd.dcx", (data, path) => FMG.Read(data));
                 ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item_dlc2.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
-                foreach (string lang in MiscSetup.Langs)
+                foreach (string lang in MiscSetup.Langs.Keys)
                 {
                     if (lang == "engus" || MiscSetup.NoDS3Langs.Contains(lang)) continue;
                     OtherItemFMGs[lang] = Editor.LoadBnd($@"{Dir}\Base\msg\{lang}\item_dlc2.msgbnd.dcx", (data, path) => FMG.Read(data));
                     OtherItemFMGs[lang] = MaybeOverrideFromModDir(OtherItemFMGs[lang], $@"msg\{lang}\item_dlc2.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
+                }
+            }
+            else if (EldenRing)
+            {
+                ItemFMGs = Editor.LoadBnd($@"{Dir}\Vanilla\msg\engus\item.msgbnd.dcx", (data, path) => FMG.Read(data));
+                MenuFMGs = Editor.LoadBnd($@"{Dir}\Vanilla\msg\engus\menu.msgbnd.dcx", (data, path) => FMG.Read(data));
+                foreach (string lang in MiscSetup.Langs.Keys)
+                {
+                    if (lang == "engus") continue;
+                    OtherMenuFMGs[lang] = Editor.LoadBnd($@"{Dir}\Vanilla\msg\{lang}\menu.msgbnd.dcx", (data, path) => FMG.Read(data));
                 }
             }
         }
@@ -693,7 +1016,7 @@ namespace RandomizerCommon
         // TODO: Instead of doing this, make the paths themselves more editable?
         private T MaybeOverrideFromModDir<T>(T original, string path, Func<string, T> parser)
         {
-            if (ModDir == null) return original;
+            if (ModDir == null || EldenRing) return original;
             string modPath = $@"{ModDir}\{path}";
             if (File.Exists(modPath))
             {
@@ -705,14 +1028,14 @@ namespace RandomizerCommon
 
         private void MaybeOverrideFromModDir<T>(Dictionary<string, T> files, Func<string, string> relpath, Func<string, T> parser)
         {
-            if (ModDir == null) return;
+            if (ModDir == null || EldenRing) return;
             foreach (string key in files.Keys.ToList())
             {
                 files[key] = MaybeOverrideFromModDir(files[key], relpath(key), parser);
             }
         }
 
-        // Some helper functionality things
+        // Some helper functionality things. These require strict params
         public void SearchParamInt(uint id, string field=null)
         {
             bool matches(string cell)
@@ -723,7 +1046,7 @@ namespace RandomizerCommon
                 return false;
             }
             Console.WriteLine($"-- Searching params for {id}");
-            foreach (KeyValuePair<string, PARAM> param in Params)
+            foreach (KeyValuePair<string, PARAM> param in Params.Inner)
             {
                 foreach (PARAM.Row row in param.Value.Rows)
                 {
@@ -745,7 +1068,7 @@ namespace RandomizerCommon
         public void SearchParamFloat(float id)
         {
             Console.WriteLine($"-- Searching params for {id}");
-            foreach (KeyValuePair<string, PARAM> param in Params)
+            foreach (KeyValuePair<string, PARAM> param in Params.Inner)
             {
                 foreach (PARAM.Row row in param.Value.Rows)
                 {

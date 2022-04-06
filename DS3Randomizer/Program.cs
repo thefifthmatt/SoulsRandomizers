@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using RandomizerCommon;
+using static SoulsIds.GameSpec;
 
 namespace DS3Randomizer
 {
@@ -23,8 +24,7 @@ namespace DS3Randomizer
             {
                 // If given command line args, go into command line mode.
                 AttachConsole(-1);
-                bool sekiro = false;
-                RandomizerOptions options = RandomizerOptions.Parse(args, sekiro);
+                RandomizerOptions options = RandomizerOptions.Parse(args, FromGame.DS3);
                 if (options.Seed == 0)
                 {
                     options.Seed = (uint)new Random().Next();
@@ -41,7 +41,7 @@ namespace DS3Randomizer
                 }
                 string outPath = @"C:\Program Files (x86)\Steam\steamapps\common\DARK SOULS III\Game\randomizer";
                 new Randomizer().Randomize(
-                    options, SoulsIds.GameSpec.FromGame.DS3, status => Console.WriteLine("## " + status), outPath, preset);
+                    options, FromGame.DS3, status => Console.WriteLine("## " + status), outPath, preset);
                 Application.Exit();
             }
             else

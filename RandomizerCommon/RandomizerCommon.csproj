@@ -102,9 +102,19 @@
   <ItemGroup>
     <Compile Include="AnnotationData.cs" />
     <Compile Include="CharacterWriter.cs" />
+    <Compile Include="EldenCoordinator.cs" />
+    <Compile Include="EldenDataPrinter.cs" />
+    <Compile Include="EldenForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EldenForm.Designer.cs">
+      <DependentUpon>EldenForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="EldenLocationDataScraper.cs" />
+    <Compile Include="EldenMaterialRandomizer.cs" />
     <Compile Include="EnemyAnnotations.cs" />
     <Compile Include="EnemyConfigGen.cs" />
+    <Compile Include="HintMarker.cs" />
     <Compile Include="MapEditors.cs" />
     <Compile Include="EnemyLocations.cs" />
     <Compile Include="EnemyRandomizer.cs" />
@@ -114,6 +124,8 @@
     <Compile Include="KeyItemsPermutation.cs" />
     <Compile Include="LocationData.cs" />
     <Compile Include="LocationDataScraper.cs" />
+    <Compile Include="Messages.cs" />
+    <Compile Include="MSBX.cs" />
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +141,12 @@
     <Compile Include="Preset.cs" />
     <Compile Include="ReverseEnemyOrder.cs" />
     <Compile Include="ScalingEffects.cs" />
+    <Compile Include="ScrollDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScrollDialog.Designer.cs">
+      <DependentUpon>ScrollDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="SekiroForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -151,11 +169,17 @@
     <Compile Include="SkillSplitter.cs" />
     <Compile Include="SkillWriter.cs" />
     <Compile Include="Util.cs" />
+    <EmbeddedResource Include="EldenForm.resx">
+      <DependentUpon>EldenForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OptionsForm.resx">
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PresetForm.resx">
       <DependentUpon>PresetForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScrollDialog.resx">
+      <DependentUpon>ScrollDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SekiroForm.resx">
       <DependentUpon>SekiroForm.cs</DependentUpon>

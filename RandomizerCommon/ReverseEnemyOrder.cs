@@ -2142,7 +2142,7 @@ namespace RandomizerCommon
 
         public void InvestigateSpEffects(GameData game)
         {
-            Dictionary<string, PARAM> Params = game.Params;
+            GameData.ParamDictionary Params = game.Params;
 
             Dictionary<string, List<string>> getFieldValues(string p)
             {
