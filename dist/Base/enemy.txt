@@ -11569,7 +11569,7 @@ Enemies:
   DebugText: firelink - c5110_0001 - npc 511100 - think 511100 - team StrongEnemy - id 4000830 - Gundyr
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Change Character HitMask; Display Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat; IF Character Dead/Alive; IF Character HP Ratio; Initialize Common Event; Play SE; Set Character AI State; Set Character Animation State; Set Character Immortality; Set Character Invincibility; Set Lock On Point; Set Network Update Authority; Set Network Update Rate
   Class: Boss
-  Tags: mid excludeearly
+  Tags: mid excludeearly exclude:3000800  # TODO: Vordt doesn't wake up on first encounter somehow
   ExtraName: Champion Gundyr
   FullName: Champion $1
   PartName: Gundyr

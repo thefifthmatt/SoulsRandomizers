@@ -10536,7 +10536,7 @@ EnemyEvents:
     - Cmd: IfEntityInoutsideRadiusOfEntity(AND_01, InsideOutsideState.Inside, 4000830, 10000, 25, 1)
       After: 4002831
     Segments:
-    - Type: disable
+    - Type: dead
       Start: GotoIfEventFlag(Label.LABEL0, OFF, TargetEventFlagType.EventFlag, 14000830)
       Commands:
       - SetCharacterAnimationState(4000830, Disabled)
@@ -14087,10 +14087,14 @@ EnemyEvents:
   - SetNetworkconnectedEventFlag(15005809, ON)
 - Template:
   - Type: multichronlyboss
+    Comment: Slight delay in case start flag is enabled on the same frame AI is disabled in combined setup/start
     Entity: 5000801
     DefeatFlag: 15000800
     StartFlag: 15005809
     Remove: 15005811; DisplayBossHealthBar
+    Add:
+    - Cmd: WaitFixedTimeFrames(10)
+      After: IfConditionGroup(MAIN, PASS, OR_01)
   ID: 15005811
   Comment: Setup for 2nd prince, with some duplication. The start flag is not the main flag, but the only one used here
   DebugInfo:

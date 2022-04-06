@@ -3694,7 +3694,7 @@ EnemyEvents:
   - Type: chr
     Entity: 1000810
     Dupe:
-      HealthBar: 1000810
+      HealthBar: 1000810 905090
   DebugInfo:
   - 1000800 (c5090_0000 - Lady Butterfly)
   - 1000810 (c5090_0001 - Lady Butterfly)
@@ -4111,6 +4111,9 @@ EnemyEvents:
     Camera: 510
     Name: entity
     # StartCmd: 402
+  - Type: loc
+    Dupe:
+      Condition: 2; 5
   DebugInfo:
   - 1000900 (c5060_0001 - Owl)
   - region 1002810 (領域_ボス戦開始)
@@ -5420,12 +5423,14 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 11115200
   Comment: To Ashina Castle after Blazing Bull
-  Dupe: rewrite
   Template:
   - Type: loc
     Entity: 1110210
     Remove: Force Animation Playback (1110210,20000,0,0,0,0,1)
     Invincibility: 1110210
+  - Type: loc
+    Dupe:
+      DelayAnimation: 1110210
   DebugInfo:
   - region 1112445 (Event_火牛_広場領域_複合)
   - 1110203 (c1010_0012 - Ashina Soldier)
@@ -7037,12 +7042,12 @@ EnemyEvents:
   - Type: loc
     Remove: Display Boss Health Bar (0,1110800,0,907100)
     Dupe:
-      Entity: -1
+      NoRewrite: true
   - Type: chr
-    Entity: 1110800
+    Entity: 1110801
     Remove: Display Boss Health Bar (0,1110800,0,907100)
     Dupe:
-      HealthBar: 1110800
+      HealthBar: 1110801 907110
   DebugInfo:
   - 1110800 (c7100_0000 - Genichiro Ashina)
   - 1110801 (c7110_0001 - Genichiro, Way of Tomoe)
@@ -7179,6 +7184,7 @@ EnemyEvents:
   - Type: loc
     Dupe:
       Entity: X0 X8
+      HealthBar: 1110850 905060
   - Type: locarg
     Dupe:
       Entity: X0 X8
@@ -7294,7 +7300,7 @@ EnemyEvents:
   - Type: loc
     Remove: Display Boss Health Bar
     Dupe:
-      Entity: -1
+      NoRewrite: true
   DebugInfo:
   - 1110850 (c5060_0000 - Owl)
   DebugCommands:
@@ -7395,7 +7401,7 @@ EnemyEvents:
     - Cmd: IF Event Flag (0,1,0,11115901)
       Before: start
     Dupe:
-      Entity: -1
+      NoRewrite: true
   - Type: chr
     Entity: 1110900
     ProgressFlag: 11115900
@@ -7505,7 +7511,7 @@ EnemyEvents:
     - Cmd: IF Event Flag (0,1,0,11115902)
       Before: WAIT Fixed Time (Seconds)
     Dupe:
-      Entity: -1
+      NoRewrite: true
   - Type: chr
     Entity: 1110920
     NewEvent:
@@ -7550,7 +7556,7 @@ EnemyEvents:
     Entity: 1110920
     ProgressFlag: 11115900
     Dupe:
-      HealthBar: 1110920
+      HealthBar: 1110920 905401
   DebugInfo:
   - 1110920 (c5430_0000 - Isshin)
   - 1110921 (c1000_0006 - Invisible - not random)
@@ -9444,7 +9450,7 @@ EnemyEvents:
   - Type: loc
     Remove: Display Boss Health Bar
     Dupe:
-      Entity: -1
+      NoRewrite: true
   DebugInfo:
   - 1120830 (c7110_0000 - Genichiro, Way of Tomoe)
   - 1120860 (c5400_0000 - Sword Saint Isshin)
@@ -9588,7 +9594,7 @@ EnemyEvents:
     - Cmd: Set Event Flag (11120860,1)
       Before: Set Event Flag (11125706,1)
     Dupe:
-      Entity: -1
+      NoRewrite: true
   - Type: chr
     Entity: 1120860
     NewEvent:
@@ -9629,7 +9635,7 @@ EnemyEvents:
     Entity: 1120860
     ProgressFlag: 11125830
     Dupe:
-      HealthBar: 1120860
+      HealthBar: 1120860 905400
   DebugInfo:
   - 1120860 (c5400_0000 - Sword Saint Isshin)
   DebugCommands:
@@ -9752,7 +9758,7 @@ EnemyEvents:
   - Type: loc
     Remove: Set Event Flag (11120860,1)
     Dupe:
-      Entity: -1
+      NoRewrite: true
   DebugInfo:
   - 1120860 (c5400_0000 - Sword Saint Isshin)
   DebugCommands:
@@ -11378,7 +11384,7 @@ EnemyEvents:
       Before: Handle Boss Defeat
     - Cmd: Set Event Flag (11700800,1)
     Dupe:
-      Entity: -1
+      NoRewrite: true
   - Type: chr
     Entity: 1700800
     NewEvent:
@@ -11766,7 +11772,7 @@ EnemyEvents:
   - Type: loc
     Remove: Display Boss Health Bar
     Dupe:
-      Entity: -1
+      NoRewrite: true
   DebugInfo:
   - 1700800 (c5100_0000 - Guardian Ape)
   DebugCommands:
@@ -12526,10 +12532,12 @@ EnemyEvents:
   - + Set Character AI State (Entity ID = 2000601*, Disabled/Enabled = 1)
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005345
-  Comment: Interaction between crickets and gourd seed seeker. Doesn't do much anymore
-  Dupe: rewrite
+  Comment: Interaction between crickets and gourd seed seeker. Doesn't do much anymore?
   Template:
   - Type: default
+  - Type: loc
+    Dupe:
+      Generator: 2002295 2002296 2002297 2002298 2002299
   DebugInfo:
   - 2000281 (c1211_0005 - Cricket)
   - 2000282 (c1211_0006 - Cricket)
@@ -12612,9 +12620,12 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12005350
   Comment: Other interaction between seeker and crickets
-  Dupe: copyarg
   Template:
   - Type: default
+  - Type: chrarg
+    Regions:
+    - arg chrgen 2003634 2003635 2003636
+    Dupe: {}
   DebugInfo:
   - 2000630 (c1210_0003 - Infested Seeker)
   - 2000634 (c1211_0030 - Cricket)
@@ -13084,7 +13095,7 @@ EnemyEvents:
   - Type: loc
     Comment: Use combined form, due to healthbars being unreliable
     Dupe:
-      HealthBar: 2000800
+      HealthBar: 2000800 901260
   DebugInfo:
   - 2000801 (c1260_0000 - Folding Screen Monkey)
   - 2000802 (c1260_0001 - Folding Screen Monkey)
@@ -13272,7 +13283,7 @@ EnemyEvents:
 - ID: 12005830
   Comment: Some speffect for non-invisible monkeys. Likely only applies to them?
   Template:
-  - Type: chr
+  - Type: chrarg
     DefeatFlag: 9405
   DebugInfo:
   - 2000801 (c1260_0000 - Folding Screen Monkey)
@@ -13336,7 +13347,7 @@ EnemyEvents:
 - ID: 12005840
   Comment: Creates NPC parts for non-invisible monkeys
   Template:
-  - Type: chrpart
+  - Type: chrpartarg
     DefeatFlag: 9405
   DebugInfo:
   - 2000801 (c1260_0000 - Folding Screen Monkey)
@@ -13677,9 +13688,12 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005895
   Comment: More helper monkeys
-  Dupe: copyarg
   Template:
   - Type: default
+  - Type: chrarg
+    Regions:
+    - arg chrgen 2003805 2003806 2003807
+    Dupe: {}
   DebugInfo:
   - 2000800 (c1000_0009 - Invisible - not random)
   - region 2002851 (稚児猿_Y22)
@@ -13711,9 +13725,12 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12005900
   Comment: Even more helper monkeys
-  Dupe: copyarg
   Template:
   - Type: default
+  - Type: chrarg
+    Regions:
+    - arg chrgen 2003805 2003808 2003806 2003809 2003807 2003811
+    Dupe: {}
   DebugInfo:
   - 2000800 (c1000_0009 - Invisible - not random)
   - region 2002851 (稚児猿_Y22)
@@ -13944,7 +13961,7 @@ EnemyEvents:
   - Type: loc
     Dupe:
       Entity: 2500406
-      HealthBar: 2500406
+      HealthBar: 2500406 911310
       Condition: -1
   DebugInfo:
   - 2500406 (c1310_0006 - Okami Warrior)
@@ -13981,8 +13998,9 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505216
   Comment: Lightning
+  Dupe: rewrite
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500406
     DefeatFlag: 12500215
   - Type: loc
@@ -14128,6 +14146,7 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505435
   Comment: Setting speffects on warriors overlooking the bull
+  Dupe: copyarg
   Template:
   - Type: default
   DebugInfo:
@@ -14429,7 +14448,6 @@ EnemyEvents:
   - + Force Character Death (Entity ID = 2505700*, Should Receive Souls = 0)
 - ID: 12505801
   Comment: Start old dragons
-  Dupe: rewrite
   Template:
   - Type: loc
     Entity: 2500812
@@ -14440,6 +14458,13 @@ EnemyEvents:
     Add:
     - Cmd: Change Character Enable State (2500800,0)  # Also, to be extra safe, disable the character
       After: Set Lock On Point (2500800,222,0)
+  - Type: loc
+    Comment: Rewrite, and incidentally, other old dragons need generators too
+    Add:
+    - Cmd: IF Character Dead/Alive (0,2500800,0,0,1)
+      After: IF Action Button
+    Dupe:
+      Generator: 2503900
   DebugInfo:
   - 2500806 (c1001_0010 - Invisible - not random)
   - region 2502821 (event_ワープ用_雲海)
@@ -14546,9 +14571,14 @@ EnemyEvents:
       After: Label 0 ()
     - Cmd: GOTO IF Character Has SpEffect (2,X0_4,3530001,0,0,1)
       After: Set SpEffect (0,3530510)
+    - Cmd: Set Event Flag (12505899, 1)
+      After: Increment Event Value
   - Type: chrarg
     Comment: The other progress flags don't matter, as they are never set?
     ProgressFlag: 12505828
+    Add:
+    - Cmd: Set Event Flag (12505899, 1)
+      After: Increment Event Value
     Dupe: {}
   DebugInfo:
   - 2500810 (c5300_0025 - Old Dragon)
@@ -14673,7 +14703,6 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 1)
 - ID: 12505837
   Comment: Management for old dragon who is used for the boss health bar. Seemingly, the event runs while its HP ratio is <= 1 (not backread?), and increments the flag twice 0->2->4. Also try removing
-  Dupe: 2500810
   Template:
   - Type: default
   DebugInfo:
@@ -14689,9 +14718,12 @@ EnemyEvents:
   Template:
   - Type: loc
     Comment: Most of the flags seem fine to use as a combined summoning system, other than the ending flag
-    Remove: 12505881
+    Remove: 12505881; IF Event Value
+    Add:
+    - Cmd: IF Event Flag (0,1,0,12505899)
+      After: IF Event Value
     Dupe:
-      Entity: -1
+      NoRewrite: true
   DebugInfo:
   - 2500811 (c5300_0000 - Old Dragon)
   DebugCommands:
@@ -14714,9 +14746,14 @@ EnemyEvents:
   Comment: Spawning the tree dragons, after 12505878 (set on summoning speffect). X4 are [1,2,2], and X8 are [30,1,1]. Sets an AI command randomly as well to prompt the spawning.
   Template:
   - Type: loc
-    Remove: 12505881
+    Remove: 12505881; IF Event Value
+    Add:
+    - Cmd: IF Event Flag (1,1,0,12505899)
+      After: IF Event Value
+    #- Cmd: Award Item Lot (62208)
+    #  After: IF Condition Group (0,1,1)
     Dupe:
-      Entity: -1
+      NoRewrite: true
   DebugInfo:
   - 2500930 (c5310_0000 - Tree Dragon)
   - 2500934 (c5310_0004 - Tree Dragon)
@@ -14776,7 +14813,7 @@ EnemyEvents:
 - ID: 12505851
   Comment: Allows Old Dragon HP bar display, until 3530040 (death animation), and again on 3530041 (spawn animation). Doesn't really do much for replacement enemies, although could use alive/dead status.
   Template:
-  - Type: chr
+  - Type: chrarg
     DefeatFlag: 9310
   DebugInfo:
   - 2500811 (c5300_0000 - Old Dragon)
@@ -14824,7 +14861,9 @@ EnemyEvents:
   - Type: loc
     Replace: 2505830 -> 2500812
   - Type: loc
+    #Replace: 2500812 -> 2505830
     Dupe:
+      #NoRewrite: true
       Condition: 1
   DebugInfo:
   - group 2505830 [2500812 (c5300_0001 - Old Dragon), 2500813 (c5300_0002 - Old Dragon), 2500814 (c5300_0003 - Old Dragon), 2500815 (c5300_0004 - Old Dragon), 2500816 (c5300_0005 - Old Dragon), 2500817 (c5300_0006 - Old Dragon), 2500818 (c5300_0007 - Old Dragon), 2500819 (c5300_0008 - Old Dragon), 2500820 (c5300_0009 - Old Dragon), 2500821 (c5300_0010 - Old Dragon), 2500822 (c5300_0011 - Old Dragon), 2500823 (c5300_0012 - Old Dragon), 2500824 (c5300_0013 - Old Dragon), 2500825 (c5300_0014 - Old Dragon)]
@@ -14841,7 +14880,9 @@ EnemyEvents:
   - Type: loc
     Replace: 2505830 -> 2500812
   - Type: loc
+    #Replace: 2500812 -> 2505830
     Dupe:
+      #NoRewrite: true
       Condition: 1
   DebugInfo:
   - group 2505830 [2500812 (c5300_0001 - Old Dragon), 2500813 (c5300_0002 - Old Dragon), 2500814 (c5300_0003 - Old Dragon), 2500815 (c5300_0004 - Old Dragon), 2500816 (c5300_0005 - Old Dragon), 2500817 (c5300_0006 - Old Dragon), 2500818 (c5300_0007 - Old Dragon), 2500819 (c5300_0008 - Old Dragon), 2500820 (c5300_0009 - Old Dragon), 2500821 (c5300_0010 - Old Dragon), 2500822 (c5300_0011 - Old Dragon), 2500823 (c5300_0012 - Old Dragon), 2500824 (c5300_0013 - Old Dragon), 2500825 (c5300_0014 - Old Dragon)]
@@ -14887,7 +14928,6 @@ EnemyEvents:
   - END Unconditionally (Execution End Type = 0)
 - ID: 12505880
   Comment: End Divine Dragon and warp to Ashina Castle
-  Dupe: rewrite
   Template:
   - Type: end
     Entity: 2500800
@@ -14906,6 +14946,28 @@ EnemyEvents:
       Cmd: (De)activate Object (2501815,0)
     - Before: Set Event Flag (12500880,1)
       Cmd: END Unconditionally (0)
+  - Type: loc
+    Comment: Yet another annoying split end case
+    Remove: 12500880
+    Add:
+    - Cmd: IF Event Flag (0,1,0,12505801)
+      Before: start
+    - Cmd: IF Event Flag (0,1,0,12505869)
+      After: IF Character HP Ratio
+    - Cmd: Set Event Flag (12500880,1)
+      After: IF Character HP Ratio
+    Dupe:
+      NoRewrite: true
+  - Type: chr
+    Entity: 2500800
+    NewEvent:
+    - IF Event Flag (0,1,0,12505801)
+    - IF Character Has SpEffect (-1,2500800,201000,1,0,1)
+    - IF Character Dead/Alive (-1,2500800,1,0,1)
+    - IF Condition Group (0,1,-1)
+    - IF Character HP Ratio (0,2500800,5,0,0,1)
+    - Set Event Flag (12505869,1)
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   - region 1112953 (チェックポイント_03_リスポン位置)
@@ -14976,14 +15038,23 @@ EnemyEvents:
     - Cmd: (De)activate Object (2501800,0)
       Before: Set Character AI State (2500800,1)
   - Type: loc
-    Remove: Display Boss Health Bar (0,2500810,0,905200)
+    Remove: Display Boss Health Bar (0,2500810,0,905200); 2505800
+    Add:
+    - Cmd: Set Event Flag (12505893,1)
+      After: Set Event Flag (12505881,1)
     Dupe:
-      Entity: -1
-  - Type: chr
+      NoRewrite: true
+  - Type: multichr
     Entity: 2500800
-    Remove: Display Boss Health Bar (0,2500810,0,905200)
+    ProgressFlag: 12505881
+    Remove: Display Boss Health Bar (0,2500810,0,905200); Warp Character and Copy Floor; 2505800
+    Add:
+    - Cmd: IF Event Flag (0,1,0,12505893)
+      After: Warp Character and Copy Floor
+    - Cmd: Set Character Backread State (2505800,1)
+      After: Warp Character and Copy Floor
     Dupe:
-      HealthBar: 2500800
+      HealthBar: 2500800 905200
   DebugInfo:
   - group 2505800 [2500811 (c5300_0000 - Old Dragon), 2500812 (c5300_0001 - Old Dragon), 2500813 (c5300_0002 - Old Dragon), 2500814 (c5300_0003 - Old Dragon), 2500815 (c5300_0004 - Old Dragon), 2500816 (c5300_0005 - Old Dragon), 2500817 (c5300_0006 - Old Dragon), 2500818 (c5300_0007 - Old Dragon), 2500819 (c5300_0008 - Old Dragon), 2500820 (c5300_0009 - Old Dragon), 2500821 (c5300_0010 - Old Dragon), 2500822 (c5300_0011 - Old Dragon), 2500823 (c5300_0012 - Old Dragon), 2500824 (c5300_0013 - Old Dragon), 2500825 (c5300_0014 - Old Dragon), 2500810 (c5300_0025 - Old Dragon), 2500930 (c5310_0000 - Tree Dragon), 2500933 (c5310_0003 - Tree Dragon), 2500934 (c5310_0004 - Tree Dragon)]
   - 2500800 (c5200_0000 - Divine Dragon)
@@ -15053,12 +15124,16 @@ EnemyEvents:
 - ID: 12505887
   Comment: Shoots a bullet after the fight starts (and 5 seconds have passed), and also on event flags 12505889 and 12505890, forcing a Divine Dragon animation playback in that case. Also changes the music with flag 12505883
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: 12505881
     Remove: 9318
     RemoveDupe: IF Event Flag; Set Event Flag; Shoot Bullet; Force Animation Playback
+  - Type: chr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Dupe: {}
   - Type: loc
     Entity: 2500800
     Remove: 12505888; 12505889; Force Animation Playback; Shoot Bullet
@@ -15106,6 +15181,13 @@ EnemyEvents:
       Before: END Unconditionally (0)
     - Cmd: Set Character AI State (2500800,1)
       Before: END Unconditionally (0)
+  - Type: chr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Add:
+    - Cmd: Set Event Flag (12505888,1)
+      Before: END Unconditionally (0)
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   DebugInit:
@@ -15121,7 +15203,7 @@ EnemyEvents:
 - ID: 12505889
   Comment: Sets wire searchability after the phase starts, and then when dragon gets down to 30% health, changes update rate of a tree dragon, and may triggers phase 2
   Template:
-  - Type: multichronly
+  - Type: multichronlymove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: -1
@@ -15129,6 +15211,13 @@ EnemyEvents:
     Remove: WAIT Fixed Time (Seconds); END Unconditionally
     Add:
     - Cmd: Set Event Flag (12505889,1)
+  - Type: multichr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Add:
+    - Cmd: Set Event Flag (12505889,1)
+      Before: END Unconditionally (0)
+    Dupe: {}
   DebugInfo:
   - 2500880 (c5310_0008 - Tree Dragon)
   - 2500800 (c5200_0000 - Divine Dragon)
@@ -15146,13 +15235,20 @@ EnemyEvents:
 - ID: 12505890
   Comment: When Dragon gets down to 30% health, does something with the 5 tree branches, and ends when the Divine Dragon has a speffect
   Template:
-  - Type: multichronly
+  - Type: multichronlymove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: -1
     Remove: END Unconditionally
     Add:
     - Cmd: Set Event Flag (12505890,1)
+  - Type: multichr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Add:
+    - Cmd: Set Event Flag (12505890,1)
+      Before: END Unconditionally (0)
+    Dupe: {}
   DebugInfo:
   - 2500883 (c5310_0011 - Tree Dragon)
   - 2500884 (c5310_0007 - Tree Dragon)
@@ -15178,7 +15274,7 @@ EnemyEvents:
 - ID: 12505891
   Comment: After the Divine Dragon gets down to 30% health and has a speffect, warp the last 3 tree dragons to various spots relative to the divine dragon, and shoot a bullet toward what is probably the middle one. Can repeat.
   Template:
-  - Type: multichr
+  - Type: multichrmove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: -1
@@ -15187,6 +15283,17 @@ EnemyEvents:
     - event chrrel 2502844
     - event chrrel 2502845
     - arg chrrel 2502842
+  - Type: multichr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890 12505940 12505941 12505942 12505943 12505944
+    Add:
+    - Cmd: Set Event Flag (12505868,1)
+    - Cmd: Set Event Flag (12505868,0)
+    Regions:
+    - event chrrel 2502844
+    - event chrrel 2502845
+    - arg chrrel 2502842
+    Dupe: {}
   DebugInfo:
   - region 2502844 (ストームジャンプ触手_出現領域(サブ2))
   - region 2502845 (ストームジャンプ触手_出現領域(サブ1))
@@ -15231,11 +15338,15 @@ EnemyEvents:
 - ID: 12505894
   Comment: When the player has a speffect after the Divine Dragon phase starts, Divine Dragon shoots a bullet, and so does the player
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: 12505881
     Remove: 9318
+  - Type: chr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   DebugInit:
@@ -15253,11 +15364,15 @@ EnemyEvents:
 - ID: 12505895
   Comment: Activates some objects on Divine Dragon during certain attacks
   Template:
-  - Type: multichronly
+  - Type: multichronlymove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: 12505881
     Remove: 9318
+  - Type: multichr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   DebugInit:
@@ -15281,11 +15396,15 @@ EnemyEvents:
 - ID: 12505896
   Comment: At the end of the Divine Dragon fight, shooting a bullet, when player has neither of two speffects and Divine Dragon does have a speffect (set during big swoop animation)
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: -1
     RemoveDupe: IF Event Flag; Shoot Bullet
+  - Type: chr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   DebugInit:
@@ -15307,11 +15426,15 @@ EnemyEvents:
 - ID: 12505897
   Comment: When player has speffect during the fight, shoot several bullets
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: 12505881
     Remove: 9318
+  - Type: chr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   DebugInit:
@@ -15332,11 +15455,15 @@ EnemyEvents:
 - ID: 12505898
   Comment: Set lockon points for Divine Dragon with different speffects
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: 12505881
     Remove: 9318
+  - Type: chr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   DebugInit:
@@ -15355,11 +15482,15 @@ EnemyEvents:
 - ID: 12505900
   Comment: Based on Divine Dragon having speffect 5039 or not, change hitmasks. (Perhaps during sword swipe, or neck swipe?)
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: 12505881
     Remove: 9318
+  - Type: chr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   DebugInit:
@@ -15377,12 +15508,15 @@ EnemyEvents:
 - ID: 12505901
   Comment: Shortly after Divine Dragon starts, warp Tree Dragon to a dummypoly of Divine Dragon, attach objects to it, and disable them all. The tree ordering by entity id is 50 54 55 56 53.
   Template:
-  - Type: multichronly
+  - Type: multichronlymove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: -1
     Remove: WAIT Fixed Time (Seconds) (1)  # Pop up as soon as possible
-    # TreeDragons: X0; Attach Object to Character
+  - Type: multichr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   - 2500880 (c5310_0008 - Tree Dragon)
@@ -15422,12 +15556,16 @@ EnemyEvents:
 - ID: 12505906
   Comment: Shortly after Divine Dragon starts and tree dragon gets speffects, enable/disable various objects on tree dragons based on speffect, and repeat
   Template:
-  - Type: multichronly
+  - Type: multichronlymove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: -1
     Remove: WAIT Fixed Time (Seconds) (1)  # Pop up as soon as possible
     # TreeDragons: X0; Set Object Interaction; (De)activate Object
+  - Type: multichr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Dupe: {}
   DebugInfo:
   - 2500880 (c5310_0008 - Tree Dragon)
   - 2500881 (c5310_0009 - Tree Dragon)
@@ -15482,10 +15620,14 @@ EnemyEvents:
 - ID: 12505911
   Comment: Requests different AI commands for tree dragons based on speffects, including disabling them on speffect 3520062. Can also warp them back to their original position, and clear their event flag
   Template:
-  - Type: multichronly
+  - Type: multichronlymove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: -1
+  - Type: multichr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890 12505940 12505941 12505942 12505943 12505944
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   - 2500880 (c5310_0008 - Tree Dragon)
@@ -15531,10 +15673,14 @@ EnemyEvents:
 - ID: 12505916
   Comment: When player has a speffect (up to 5 different instantiations, in 5310 range), shoot bullet, and clear the given event flag in the range 12505940-12505944 (tree having lightning)
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: -1
+  - Type: chr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890 12505940 12505941 12505942 12505943 12505944
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   DebugCommands:
@@ -15551,10 +15697,14 @@ EnemyEvents:
 - ID: 12505921
   Comment: Also waits for speffects on the tree dragons, and if their event flag is set, shoot the given bullet parameter, and restart when the flag is set again. Until the final phase
   Template:
-  - Type: multichronly
+  - Type: multichronlymove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: -1
+  - Type: multichr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890 12505940 12505941 12505942 12505943 12505944
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   - 2500880 (c5310_0008 - Tree Dragon)
@@ -15592,7 +15742,7 @@ EnemyEvents:
 - ID: 12505926
   Comment: From the start of Divine Dragon (after 8 seconds in total), until the big phase, set a random event flag every 18 seconds, which adds lightning to the trees. Make this just 3 trees for most arenas.
   Template:
-  - Type: multichronly
+  - Type: multichronlymove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: -1
@@ -15625,6 +15775,10 @@ EnemyEvents:
     Add:
     - Cmd: IF Event Flag (0,1,0,12505881)
       After: 9310
+  - Type: multichr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890 12505940 12505941 12505942 12505943 12505944
+    Dupe: {}
   DebugCommands:
   - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9310)
   - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 12505889)
@@ -15636,11 +15790,15 @@ EnemyEvents:
 - ID: 12505927
   Comment: When the Divine Dragon has the given speffect (and one other), play the given animation, and repeat. Unclear what these do
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: 12505881
     Remove: 9318
+  - Type: chr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   DebugInit:
@@ -15660,7 +15818,7 @@ EnemyEvents:
 - ID: 12505929
   Comment: With player with the given speffect in final phase, warp to dragon dummypoly 42, or to given region, depending on the speffect. Region is "storm jump alignment". Add life check to prevent interference between dragon warps, if that's a thing.
   Template:
-  - Type: multichronly
+  - Type: multichronlymove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: -1
@@ -15671,6 +15829,23 @@ EnemyEvents:
       After: WAIT Fixed Time (Frames)
     Regions:
     - arg chrrel 2502843
+  - Type: loc
+    Comment: TODO this is a good place to use progress speffects
+    Add:
+    - Cmd: IF Character Has SpEffect (1,2500800,3520012,1,0,1)
+      # If Event Flag (1,1,0,12505868)
+      Before: IF Condition Group
+    Dupe:
+      NoRewrite: true
+  - Type: chr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890 # 12505868
+    Add:
+    - Cmd: IF Character Has SpEffect (1,2500800,3520012,1,0,1)
+      Before: IF Condition Group
+    Regions:
+    - arg chrrel 2502843
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   - region 2502843 (ストームジャンプ位置合わせ)
@@ -15731,11 +15906,15 @@ EnemyEvents:
 - ID: 12505939
   Comment: From start of Divine Dragon until warp to Ashina Castle, every 5 + (5 to 10) seconds, shoot a bullet. This is the responsible for the visual lightning striking effect behind him.
   Template:
-  - Type: chr
+  - Type: chrmove
     Entity: 2500800
     DefeatFlag: 9310
     StartFlag: 12505881
     Remove: 9318
+  - Type: chr
+    Entity: 2500800
+    ProgressFlag: 12505881 12505888 12505889 12505890
+    Dupe: {}
   DebugInfo:
   - 2500800 (c5200_0000 - Divine Dragon)
   DebugInit:
@@ -15794,7 +15973,6 @@ EnemyEvents:
   - Set Area CameraSetParam SubID (CameraSetParam SubID = -1)
 - ID: 12505960
   Comment: Start true monk. Immortality is managed elsewhere, so add it explicitly here, since it's a boss
-  Dupe: rewrite
   Template:
   - Type: start
     Entity: 2500850
@@ -15810,6 +15988,9 @@ EnemyEvents:
     RemoveDupe: Change Character Enable State; Set Character Animation State; Force Character Death; END Unconditionally (0)
     Regions:
     - event distdragon 2502850
+  - Type: loc
+    Dupe:
+      DelayAnimation: 2500850
   DebugInfo:
   - 2500850 (c5000_0000 - Corrupted Monk)
   - 2500851 (c5005_0000 - Corrupted Monk Illusion)
@@ -16443,9 +16624,12 @@ EnemyEvents:
   - Delete Map SFX (Entity ID = X12_4, Only Delete Root = 0)
   - END Unconditionally (Execution End Type = 0)
 - ID: 20004111
-  Comment: Enabling characters based on event flags
+  Comment: Enabling characters based on event flags, including for hirata 2
   Template:
   - Type: default
+  - Type: chrarg
+    Entities: 1000209 1000238 1000263
+    Dupe: {}
   DebugInfo:
   - group 1005600 [1000202 (c1550_0002 - Bandit), 1000203 (c1550_0003 - Bandit), 1000204 (c1550_0004 - Bandit), 1000205 (c1550_0005 - Bandit), 1000208 (c1550_0008 - Bandit), 1000210 (c1550_0010 - Bandit), 1000212 (c1550_0012 - Bandit), 1000241 (c1550_0041 - Bandit), 1000242 (c1550_0042 - Bandit), 1000243 (c1550_0043 - Bandit), 1000244 (c1550_0044 - Bandit), 1000259 (c1550_0059 - Bandit), 1000260 (c1550_0060 - Bandit), 1000262 (c1550_0062 - Bandit), 1000264 (c1550_0064 - Bandit), 1000265 (c1550_0065 - Bandit)]
   - group 1005601 [1000333 (c1050_0003 - Shinobi Hunter), 1000334 (c1050_0004 - Shinobi Hunter), 1000410 (c1150_0010 - Hound), 1000411 (c1150_0011 - Hound), 1000412 (c1150_0012 - Hound), 1000361 (c1180_0001 - Taro Troop), 1000362 (c1180_0002 - Taro Troop), 1000363 (c1180_0003 - Taro Troop), 1000351 (c1470_0001 - Lone Shadow), 1000352 (c1470_0002 - Lone Shadow), 1000354 (c1470_0004 - Lone Shadow), 1000355 (c1470_0005 - Lone Shadow), 1000277 (c1550_0077 - Bandit), 1000278 (c1550_0078 - Bandit), 1000279 (c1550_0079 - Bandit), 1000281 (c1550_0081 - Bandit), 1000282 (c1550_0082 - Bandit), 1000283 (c1550_0083 - Bandit), 1000284 (c1550_0084 - Bandit), 1000285 (c1550_0085 - Bandit), 1000288 (c1550_0088 - Bandit), 1000289 (c1550_0089 - Bandit), 1000290 (c1550_0090 - Bandit), 1000291 (c1550_0091 - Bandit), 1000292 (c1550_0092 - Bandit), 1000293 (c1550_0093 - Bandit), 1000294 (c1550_0094 - Bandit)]
@@ -18086,7 +18270,7 @@ EnemyEvents:
 - ID: 20005310
   Comment: Requests an AI command upon combat state
   Template:
-  - Type: chr
+  - Type: chrarg
   DebugInfo:
   - 1100216 (c1010_0016 - Ashina Soldier)
   - 1500510 (c1150_0000 - Hound)
@@ -18156,10 +18340,11 @@ EnemyEvents:
   - Type: locarg
     Dupe:
       Entity: X0 X16
+      HealthBarArg: X4
   - Type: common
     Dupe:
       Entity: X0 X16
-      HealthBar: X4
+      HealthBar: X0 X4
       Condition: 2; -4
   DebugInfo:
   - 1000300 (c1070_0000 - Shura Samurai)
@@ -18998,7 +19183,7 @@ EnemyEvents:
 - ID: 20005400
   Comment: Creating NPC parts which are breakable by prosthetic tools
   Template:
-  - Type: chrpart
+  - Type: chrpartarg
   DebugInfo:
   - 1000208 (c1550_0008 - Bandit)
   - 1000209 (c1550_0009 - Bandit)
@@ -19042,7 +19227,7 @@ EnemyEvents:
 - ID: 20005401
   Comment: NPC part for greatshield taro troop
   Template:
-  - Type: chrpart
+  - Type: chrpartarg
   DebugInfo:
   - 1000361 (c1180_0001 - Taro Troop)
   - 2000670 (c1180_0000 - Taro Troop)
@@ -19070,7 +19255,7 @@ EnemyEvents:
 - ID: 20005410
   Comment: NPC part for Taro troops with poor-fitting armor
   Template:
-  - Type: chrpart
+  - Type: chrpartarg
   DebugInfo:
   - 1000363 (c1180_0003 - Taro Troop)
   - 1110432 (c1180_0002 - Taro Troop)
@@ -19104,7 +19289,7 @@ EnemyEvents:
 - ID: 20005411
   Comment: NPC part for Shigekichi
   Template:
-  - Type: chrpart
+  - Type: chrpartarg
   DebugInfo:
   - 1100480 (c1070_0000 - Shura Samurai)
   DebugInit:
@@ -19215,7 +19400,7 @@ EnemyEvents:
 - ID: 20005430
   Comment: Headless event
   Template:
-  - Type: chrpart
+  - Type: chrpartarg
   DebugInfo:
   - 1100330 (c1350_0000 - Headless)
   - 1500680 (c1350_0000 - Headless)
@@ -19232,7 +19417,7 @@ EnemyEvents:
 - ID: 20005431
   Comment: Headless event, controls slow walk
   Template:
-  - Type: chr
+  - Type: chrarg
   DebugInfo:
   - 1100330 (c1350_0000 - Headless)
   - 1500680 (c1350_0000 - Headless)
@@ -19260,7 +19445,7 @@ EnemyEvents:
 - ID: 20005432
   Comment: Headless event
   Template:
-  - Type: chr
+  - Type: chrarg
   DebugInfo:
   - 1100330 (c1350_0000 - Headless)
   - 1500680 (c1350_0000 - Headless)
@@ -19294,7 +19479,7 @@ EnemyEvents:
 - ID: 20005433
   Comment: Headless warping event, but based on player area. Right now dist replace is not possible on common events, but do this eventually.
   Template:
-  - Type: chr
+  - Type: chrarg
   DebugInfo:
   - 1100330 (c1350_0000 - Headless)
   - region 1102331 (event_首なし_第一首塚_戦闘領域)
@@ -19330,7 +19515,7 @@ EnemyEvents:
 - ID: 20005440
   Comment: Shichimen event
   Template:
-  - Type: chrpart
+  - Type: chrpartarg
   DebugInfo:
   - 1300200 (c1080_0000 - Shichimen Warrior)
   - 1700520 (c1080_0000 - Shichimen Warrior)
@@ -19344,7 +19529,7 @@ EnemyEvents:
 - ID: 20005442
   Comment: Shichimen event
   Template:
-  - Type: chr
+  - Type: chrarg
   DebugInfo:
   - 1300200 (c1080_0000 - Shichimen Warrior)
   - 1700520 (c1080_0000 - Shichimen Warrior)
@@ -19380,7 +19565,7 @@ EnemyEvents:
 - ID: 20005444
   Comment: Shichimen event
   Template:
-  - Type: chr
+  - Type: chrarg
   DebugInfo:
   - 1300200 (c1080_0000 - Shichimen Warrior)
   - 1700520 (c1080_0000 - Shichimen Warrior)
@@ -19402,7 +19587,7 @@ EnemyEvents:
 - ID: 20005446
   Comment: Shichimen event, but spawns bullets in places in arena, they need to be moved xx
   Template:
-  - Type: chr
+  - Type: chrarg
   DebugInfo:
   - 1300200 (c1080_0000 - Shichimen Warrior)
   - region 1302360 (event_七面武者_怨霊弾召喚ポイント0)
@@ -19465,7 +19650,7 @@ EnemyEvents:
 - ID: 20005448
   Comment: Warps Shichimen warrior away
   Template:
-  - Type: chr
+  - Type: chrarg
     Regions:
     - arg arenapoint 1302359 1302357 1302356 1302358 1302355 1702532 1702535 1702534 1702532 2502586 2502585
     - arg arenapartition 1302351 1302352 1302353 1302354 1702520 1702526 1702523 1702527 2502580 2502581
@@ -19552,7 +19737,7 @@ EnemyEvents:
 - ID: 20005460
   Comment: NPC part for O'Rin
   Template:
-  - Type: chrpart
+  - Type: chrpartarg
   DebugInfo:
   - 1500690 (c7000_0000 - O'Rin)
   DebugInit:
@@ -19563,7 +19748,7 @@ EnemyEvents:
 - ID: 20005462
   Comment: Also NPC part for O'Rin
   Template:
-  - Type: chr
+  - Type: chrpartarg
   DebugInfo:
   - 1500690 (c7000_0000 - O'Rin)
   DebugInit:
@@ -19755,3 +19940,240 @@ EnemyEvents:
   - Set Event Flag (Event Flag ID = X0_4, Flag State = 1)
   - + IF Entity In/Outside Radius Of Entity (Result Condition Group = 0, Desired State = 0, Target Entity A ID = 10000, Target Entity B ID = X4_4*, Target Distance = X12_4, Minimum Number of Targets = 1)
   - END Unconditionally (Execution End Type = 1)
+# Dupe special events
+- ID: 11105850
+  Comment: none
+  Template:
+  - Type: default
+  - Type: chr
+    Entity: 1100850
+    Add:
+    - Cmd: WAIT Fixed Time (Seconds) (1)
+      Before: Set SpEffect
+    Dupe: {}
+  DebugInfo:
+  - region 1102865 (logic_大蛇_渓谷警戒判定領域2_攻撃洞窟演出)
+  - region 1102896 (logic_大蛇_逃げ切りエリア_上)
+  - 1100850 (c5010_0001 - Great Serpent)
+  - 1100851 (c1000_0001 - Invisible)
+  DebugInit:
+  - Initialize Event (0, 11105850, X0_4 = 1100850*, X4_4 = 1100851*)
+  DebugCommands:
+  - SKIP IF Event Flag (Number Of Skipped Lines = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 8302)
+  - GOTO IF Event Flag (Label = 0, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 11100850)
+  - + Change Character Enable State (Entity ID = X0_4*, Disabled/Enabled = 0)
+  - + Set Character Animation State (Entity ID = X0_4*, Disabled/Enabled = 0)
+  - + Set Character Backread State (Entity ID = X0_4*, Removed = 1)
+  - + Change Character Enable State (Entity ID = X4_4*, Disabled/Enabled = 0)
+  - + Set Character Animation State (Entity ID = X4_4*, Disabled/Enabled = 0)
+  - + Set Character Backread State (Entity ID = X4_4*, Removed = 1)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11100850)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 8302)
+  - Label 0 ()
+  - + Change Character Enable State (Entity ID = X0_4*, Disabled/Enabled = 1)
+  - + Change Character Enable State (Entity ID = X4_4*, Disabled/Enabled = 1)
+  - + Set Character Backread State (Entity ID = X0_4*, Removed = 0)
+  - + Set Character Backread State (Entity ID = X4_4*, Removed = 0)
+  - SKIP IF Event Flag (Number Of Skipped Lines = 1, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 8310)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 1102865*, Number of Target Characters = 1)
+  - SKIP IF Event Flag (Number Of Skipped Lines = 1, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 8310)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 1102896*, Number of Target Characters = 1)
+  - + Set SpEffect (Entity ID = X0_4*, SpEffect ID = 3501033)
+  - Set Event Flag (Event Flag ID = 11100850, Flag State = 1)
+  - SKIP IF Event Flag (Number Of Skipped Lines = 1, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 11105877)
+  - Set Event Flag (Event Flag ID = 9353, Flag State = 1)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 11105851
+  Comment: none
+  Template:
+  - Type: default
+  - Type: chr
+    Entity: 1100850
+    Regions:
+    - event chrrel 1102860
+    Dupe: {}
+  DebugInfo:
+  - 1100850 (c5010_0001 - Great Serpent)
+  - region 1102860 (event_大蛇初期位置)
+  - 1100851 (c1000_0001 - Invisible)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11100850)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 2)
+  - + Set Character Gravity (Entity ID = 1100850*, Disabled/Enabled = 0)
+  - + Set Character Default Backread State (Entity ID = 1100850*, Disabled/Enabled = 1)
+  - + Set Network Update Rate (Entity ID = 1100850*, Use Fixed Frequency = 1, Update Frequency = 0)
+  - + Issue Short Warp Request (Entity ID = 1100850*, Warp Type = 1, Warp Destination Entity ID = 1102860*, Dummypoly ID = -1)
+  - + Set Character Gravity (Entity ID = 1100851*, Disabled/Enabled = 0)
+  - + Set Character Invincibility (Entity ID = 1100851*, Disabled/Enabled = 1)
+  - + Set Network Update Rate (Entity ID = 1100851*, Use Fixed Frequency = 1, Update Frequency = 0)
+  - + Issue Short Warp Request (Entity ID = 1100851*, Warp Type = 1, Warp Destination Entity ID = 1102860*, Dummypoly ID = -1)
+  - + Set Character Default Backread State (Entity ID = 1100851*, Disabled/Enabled = 1)
+  - END Unconditionally (Execution End Type = 0)
+- ID: 11105853
+  Comment: none
+  Template:
+  - Type: default
+  - Type: chr
+    Entity: 1100850
+    Add:
+    - Cmd: WAIT Fixed Time (Seconds) (1)
+      After: IF Condition Group
+    Dupe: {}
+  DebugInfo:
+  - 1100850 (c5010_0001 - Great Serpent)
+  - 1100851 (c1000_0001 - Invisible)
+  - region 1102870 (logic_大蛇_渓谷警戒判定領域1_攻撃木)
+  - region 1102871 (logic_大蛇_渓谷警戒判定領域2_茂み攻撃)
+  - region 1102891 (logic_大蛇_御神木前判定用領域_攻撃洞窟の外)
+  - region 1102890 (logic_大蛇_御神木前判定用領域_攻撃洞窟の中)
+  - region 1102892 (logic_大蛇_御神木前判定用領域_攻撃正面常時監視奥)
+  - region 1102893 (logic_大蛇_御神木前判定用領域_攻撃正面常時監視手前)
+  - region 1102886 (logic_大蛇_御神木前判定用領域_輿から逃げるまで)
+  - region 1102866 (logic_大蛇_渓谷警戒判定領域_張り付き崖からショートカットルート)
+  DebugInit:
+  - Initialize Event (0, 11105853, X0_4 = 1100850*, X4_4 = 1100851*, X8_4 = 205026, X12_4 = 1102870*)
+  - Initialize Event (1, 11105853, X0_4 = 1100850*, X4_4 = 1100851*, X8_4 = 205028, X12_4 = 1102871*)
+  - Initialize Event (2, 11105853, X0_4 = 1100850*, X4_4 = 1100851*, X8_4 = 205030, X12_4 = 1102891*)
+  - Initialize Event (3, 11105853, X0_4 = 1100850*, X4_4 = 1100851*, X8_4 = 205031, X12_4 = 1102890*)
+  - Initialize Event (4, 11105853, X0_4 = 1100850*, X4_4 = 1100851*, X8_4 = 205032, X12_4 = 1102892*)
+  - Initialize Event (5, 11105853, X0_4 = 1100850*, X4_4 = 1100851*, X8_4 = 205037, X12_4 = 1102892*)
+  - Initialize Event (6, 11105853, X0_4 = 1100850*, X4_4 = 1100851*, X8_4 = 205038, X12_4 = 1102892*)
+  - Initialize Event (7, 11105853, X0_4 = 1100850*, X4_4 = 1100851*, X8_4 = 205038, X12_4 = 1102893*)
+  - Initialize Event (8, 11105853, X0_4 = 1100850*, X4_4 = 1100851*, X8_4 = 205035, X12_4 = 1102886*)
+  - Initialize Event (9, 11105853, X0_4 = 1100850*, X4_4 = 1100851*, X8_4 = 205034, X12_4 = 1102886*)
+  - Initialize Event (10, 11105853, X0_4 = 1100850*, X4_4 = 1100851*, X8_4 = 205025, X12_4 = 1102866*)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11100850)
+  - + Set SpEffect (Entity ID = X4_4*, SpEffect ID = 3501040)
+  - + IF Character Has SpEffect (Result Condition Group = 1, Target Entity ID = X0_4*, SpEffect ID = X8_4, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = 1, Desired State = 1, Target Entity ID = 10000, Area Entity ID = X12_4*, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 1, Target Condition Group = 1)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - + Clear SpEffect (Entity ID = X4_4*, SpEffect ID = 3501040)
+  - + IF Character Has SpEffect (Result Condition Group = 2, Target Entity ID = X0_4*, SpEffect ID = X8_4, Should Have = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = 2, Desired State = 1, Target Entity ID = 10000, Area Entity ID = X12_4*, Number of Target Characters = 1)
+  - IF Condition Group (Result Condition Group = 0, Desired Condition Group State = 0, Target Condition Group = 2)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 11105870
+  Comment: none
+  Template:
+  - Type: default
+  - Type: chr
+    Entity: 1100850
+    Add:
+    - Cmd: WAIT Fixed Time (Seconds) (1)
+      After: IF In/Outside Area
+    Dupe: {}
+  DebugInfo:
+  - region 1102695 (BGM_切替領域_蛇谷)
+  - 1100850 (c5010_0001 - Great Serpent)
+  - 1100851 (c1000_0001 - Invisible)
+  DebugInit:
+  - Initialize Event (0, 11105870, X0_4 = 1100850*, X4_4 = 1100851*)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11100850)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 1102695*, Number of Target Characters = 1)
+  - + Warp Character and Copy Floor (Entity ID = X4_4*, Warp Type = 2, Warp Destination Entity ID = X0_4*, Dummypoly ID = 15, Entity ID to Copy Floor From = X0_4*)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 11105878
+  Comment: none
+  Template:
+  - Type: default
+  - Type: chr
+    Entity: 1100850
+    Add:
+    - Cmd: WAIT Fixed Time (Seconds) (1)
+      Before: SKIP IF Event Flag
+    Dupe: {}
+  DebugInfo:
+  - region 1102869 (event_大蛇領域全体)
+  - 1100850 (c5010_0001 - Great Serpent)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11100850)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 1102869*, Number of Target Characters = 1)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 0, Target Entity ID = 10000, Area Entity ID = 1102869*, Number of Target Characters = 1)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11100850)
+  - SKIP IF Event Flag (Number Of Skipped Lines = 1, Desired Flag State = 0, Target Event Flag Type = 0, Target Event Flag ID = 11105877)
+  - + Force Animation Playback (Entity ID = 1100850*, Animation ID = 21003, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 11105879
+  Comment: none
+  Template:
+  - Type: default
+  - Type: chr
+    Entity: 1100850
+    Add:
+    - Cmd: WAIT Fixed Time (Seconds) (1)
+      After: IF In/Outside Area
+    Dupe: {}
+  DebugInfo:
+  - region 1102868 (event_大蛇_PCが逃げた時大蛇リセット領域)
+  - 1100850 (c5010_0001 - Great Serpent)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11100850)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 1102868*, Number of Target Characters = 1)
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11100850)
+  - + Request Character Animation Reset (Entity ID = 1100850*, Interpolation Method = 1)
+  - + Change Character DispMask (Entity ID = 1100850*, Bit Number = 10, Switch Type = 1)
+  - + Change Character DispMask (Entity ID = 1100850*, Bit Number = 11, Switch Type = 0)
+  - Set Event Flag (Event Flag ID = 11105877, Flag State = 0)
+  - + Clear SpEffect (Entity ID = 1100850*, SpEffect ID = 3501030)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 0, Target Entity ID = 10000, Area Entity ID = 1102868*, Number of Target Characters = 1)
+  - END Unconditionally (Execution End Type = 1)
+- ID: 11105898
+  Comment: none
+  Template:
+  - Type: default
+  - Type: chr
+    Entity: 1100850
+    Add:
+    - Cmd: WAIT Fixed Time (Seconds) (1)
+      Before: Force Animation Playback
+    Dupe: {}
+  DebugInfo:
+  - region 1102898 (event_大蛇登場予兆)
+  - 1100850 (c5010_0001 - Great Serpent)
+  DebugCommands:
+  - END IF Event Flag (Execution End Type = 0, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 11100850)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 1, Target Entity ID = 10000, Area Entity ID = 1102898*, Number of Target Characters = 1)
+  - WAIT Fixed Time (Seconds) (Number Of Seconds = 1)
+  - + Force Animation Playback (Entity ID = 1100850*, Animation ID = 20000, Should Loop = 0, Should Wait For Completion = 1, Ignore Wait For Transition = 0, Unknown = 0, Unknown = 1)
+- ID: 12505310
+  Comment: none
+  Template:
+  - Type: default
+  - Type: chrarg
+    Add:
+    - Cmd: WAIT Fixed Time (Seconds) (0.5)
+      After: IF In/Outside Area
+    Dupe: {}
+  DebugInfo:
+  - 2500310 (c5050_0000 - Giant Carp)
+  - region 2502310 (Event_Box_錦鯉登場領域)
+  - 2500313 (c5050_0003 - Giant Carp)
+  - region 2502312 (Event_Composite_錦鯉登場領域2)
+  DebugInit:
+  - Initialize Event (0, 12505310, X0_4 = 2500310*, X4_4 = 2502310*, X8_4 = 21002, X12_4 = 20000, X16_4 = 12500310)
+  - Initialize Event (1, 12505310, X0_4 = 2500313*, X4_4 = 2502312*, X8_4 = 21002, X12_4 = 20001, X16_4 = 12500311)
+  DebugCommands:
+  - GOTO IF Event Flag (Label = 20, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = 9370)
+  - GOTO IF Event Flag (Label = 20, Desired Flag State = 1, Target Event Flag Type = 0, Target Event Flag ID = X16_4)
+  - + Set Character MapHit (Entity ID = X0_4*, Disabled = 1)
+  - + Set Network Update Rate (Entity ID = X0_4*, Use Fixed Frequency = 1, Update Frequency = 0)
+  - + Force Animation Playback (Entity ID = X0_4*, Animation ID = X8_4, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 1, Unknown = 0, Unknown = 1)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - + Set Network Update Rate (Entity ID = X0_4*, Use Fixed Frequency = 0, Update Frequency = 0)
+  - + IF In/Outside Area (Result Condition Group = 0, Desired State = 1, Target Entity ID = 10000, Area Entity ID = X4_4*, Number of Target Characters = 1)
+  - + Set Character Default Backread State (Entity ID = X0_4*, Disabled/Enabled = 1)
+  - + IF Character Backread Status (Result Condition Group = 0, Target Entity ID = X0_4*, Is Backread = 1, Comparison Type = 0, Number of Target Characters = 1)
+  - + Set Character MapHit (Entity ID = X0_4*, Disabled = 1)
+  - + Set Network Update Rate (Entity ID = X0_4*, Use Fixed Frequency = 1, Update Frequency = 0)
+  - WAIT Fixed Time (Frames) (Number Of Frames = 1)
+  - + Force Animation Playback (Entity ID = X0_4*, Animation ID = X12_4, Should Loop = 0, Should Wait For Completion = 1, Ignore Wait For Transition = 1, Unknown = 0, Unknown = 1)
+  - + Force Animation Playback (Entity ID = X0_4*, Animation ID = X8_4, Should Loop = 0, Should Wait For Completion = 0, Ignore Wait For Transition = 1, Unknown = 0, Unknown = 1)
+  - Set Event Flag (Event Flag ID = X16_4, Flag State = 1)
+  - Label 20 ()
+  - + Change Character Enable State (Entity ID = X0_4*, Disabled/Enabled = 0)
+  - + Set Character Animation State (Entity ID = X0_4*, Disabled/Enabled = 0)
+  - + Set Character Backread State (Entity ID = X0_4*, Removed = 1)
+  - END Unconditionally (Execution End Type = 0)

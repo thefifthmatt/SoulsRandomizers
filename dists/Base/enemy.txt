@@ -294,6 +294,7 @@ Enemies:
   ItemName: shinobihunter
   FullName: Shinobi Hunter $1
   PartName: Enshin of Misen
+  DupeName: Samurai Hunter Enshin of Misen
   NpcName: 911060
   Arena: 70.368 -802.347 303.849 80 15 5 40
 - ID: 1000331
@@ -563,6 +564,7 @@ Enemies:
   ExtraName: Lone Shadow Masanaga the Spear-Bearer (Hirata)
   FullName: Lone Shadow $1 the Spear-Bearer
   PartName: Masanaga
+  DupeName: Purple Dog Guy
   NpcName: 911472
   EnemyType: loneshadow
   Arena: 68.793 -766.379 425.982 30 20 10 8
@@ -1152,7 +1154,8 @@ Enemies:
   Name: c1000_0001
   DebugText: m11_00_00_00 - c1000_0001 - npc 10003000 - think 50101050 - id 1100851 (1105600) - Invisible
   Events: Set Character Gravity; Set Character Invincibility; Set Network Update Rate; Issue Short Warp Request; Set Character Default Backread State; Warp Character and Copy Floor; Set SpEffect; Clear SpEffect; IF Character AI State; Set Character AI ID; Change Character Enable State; Set Character Animation State; Set Character Backread State
-  Class: None
+  Class: None  # Snake helper?
+  DupeEvents: []
 - ID: 1100493
   Name: c1000_0003
   DebugText: m11_00_00_00 - c1000_0003 - npc 10007000 - think 0 - id 1100493 (1105610) - Invisible
@@ -1515,6 +1518,7 @@ Enemies:
   ExtraName: General Naomori Kawarada
   FullName: General $1
   PartName: Naomori Kawarada
+  DupeName: Lieutenant Naomori Kawarada
   NpcName: 911021
   Arena: 212.014 -38.225 2.915 -130.3 23 10 13 0 5
 - ID: 1100301
@@ -1526,6 +1530,7 @@ Enemies:
   ExtraName: General Tenzen Yamauchi
   FullName: General $1
   PartName: Tenzen Yamauchi
+  DupeName: Major Tenzen Yamauchi
   NpcName: 911022
   EnemyType: general
   Arena: 100.416 -42.555 147.864 10 38 10 15
@@ -1539,6 +1544,7 @@ Enemies:
   ExtraName: Shigekichi of the Red Guard
   FullName: $1 of the Red Guard
   PartName: Shigekichi
+  DupeName: Shigekichi of the Blue Guard
   NpcName: 911072
   Arena: 100.416 -42.555 147.864 10 38 10 15
 - ID: 1100321
@@ -1850,6 +1856,8 @@ Enemies:
   Events: Set Character Gravity; Set Character Default Backread State; Set Network Update Rate; Issue Short Warp Request; IF Character Has SpEffect; Force Animation Playback; Request Character Animation Reset; Change Character DispMask; Clear SpEffect; Warp Character and Copy Floor; Request Character AI Command; Change Character Enable State; Set Character Animation State; Set Character Backread State; Set SpEffect
   Class: None
   DupeEvents: [11105850, 11105851, 11105853, 11105865, 11105866, 11105870, 11105877, 11105878, 11105879, 11105898]
+  ExtraArenas:
+    dupe: 147.257 -3.600 -71.557 10.000
 - ID: 1100310
   Name: c5020_0000
   DebugText: m11_00_00_00 - c5020_0000 - npc 50202000 - think 50200010 - id 1100310 (1105600) - Chained Ogre
@@ -1859,6 +1867,7 @@ Enemies:
   ItemName: chainedogre
   FullName: Chained $1
   PartName: Chained Ogre
+  DupeName: Bound Ogre
   NpcName: 915020
   EnemyType: chainedogre
   Arena: 133.416 -44.660 136.173 5.9 9 10 25
@@ -2539,6 +2548,7 @@ Enemies:
   ExtraName: General Kuranosuke Matsomoto
   FullName: General $1
   PartName: Kuranosuke Matsomoto
+  DupeName: Colonel Kuranosuke Matsomoto
   NpcName: 911023
   EnemyType: general
   Arena: -151.777 -7.351 208.964 55 10 15 23 -22 0
@@ -2890,6 +2900,8 @@ Enemies:
   DebugText: m11_01_00_00 - c1340_0000 - npc 13400000 - think 13400000 - id 1110660 - Underwater Headless
   Events: Set SpEffect; Clear SpEffect; IF Character Dead/Alive; IF Character AI State; IF Character Backread Status; IF Entity Loaded; Display Miniboss Health Bar; Set Network Update Rate; IF Character Has SpEffect; Request Character AI Command; SKIP IF Character Has SpEffect; IF Entity In/Outside Radius Of Entity; Force Character Target; Change Character Enable State; Set Character Animation State; Set Character Backread State; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; Force Character Death
   Class: None  # Cannot be deathblown abovewater, and replacements can't be deathblown underwater
+  DupeEvents: []
+  DupeName: Headless
   Tags: mid
   Arena: -74.927 -11.081 284.347 130 25 10 25
 - ID: 1110640
@@ -2968,6 +2980,7 @@ Enemies:
   FullName: Blazing $1
   PartName: Blazing Bull
   ItemName: blazingbull
+  DupeName: Igneous Ox
   NpcName: 911370
   Arena: -248.134 -29.761 152.658 150 40 10 9 0 -4
 - ID: 1110500
@@ -3000,6 +3013,7 @@ Enemies:
   ExtraName: Ashina Elite Jinsuke Saze
   FullName: Ashina Elite - $1
   PartName: Jinsuke Saze
+  DupeName: Dojo Master - Jinsuke Saze
   NpcName: 911400
   EnemyType: fencer
   Arena: -109.62 40.613 239.4 48 18 6 17
@@ -3038,6 +3052,7 @@ Enemies:
   ExtraName: Ashina Elite Ujinari Mizuo
   FullName: Ashina Elite - $1
   PartName: Ujinari Mizuo
+  DupeName: Hallway Master - Ujinari Mizuo
   NpcName: 911401
   EnemyType: fencer
   Arena: -75.758 26.004 197.036 -43 5 10 22
@@ -3249,6 +3264,7 @@ Enemies:
   FullName: Lone Shadow $1
   PartName: Vilehand
   NpcName: 911471
+  DupeName: Purple Poison Guy
   EnemyType: loneshadow
   Arena: -109.62 40.613 239.4 48 18 6 17
 - ID: 1110308
@@ -3281,6 +3297,7 @@ Enemies:
   ExtraName: Lone Shadow Masanaga the Spear-Bearer (Ashina Castle)
   FullName: Lone Shadow $1 the Spear-Bearer
   PartName: Masanaga
+  DupeName: Purple Yashariku Guy
   NpcName: 911472
   EnemyType: loneshadow
   Arena: 60.356 -30.955 360.743 10 3 6 19
@@ -3431,6 +3448,7 @@ Enemies:
   ItemName: chainedogre2
   FullName: Chained $1
   PartName: Chained Ogre
+  DupeName: Shackled Ogre
   NpcName: 915020
   EnemyType: chainedogre
   DefeatFlag: 11110620
@@ -3475,6 +3493,7 @@ Enemies:
   ExtraName: Isshin Ashina
   FullName: $1 Ashina
   PartName: Isshin
+  DupeName: Nishin Ashina
   NpcName: 905401
   DefeatFlag: 9316
   StartFlag: 11115921
@@ -3501,7 +3520,7 @@ Enemies:
   ExtraName: Genichiro Ashina
   FullName: $1 Ashina
   PartName: Genichiro
-  DupeName: Gen-chan
+  DupeName: Gen-kun
   NpcName: 907100
   OwnedBy: 1110801
   StartFlag: 11115801
@@ -3517,6 +3536,7 @@ Enemies:
   ExtraName: Genichiro, Way of Tomoe (Lightning)
   FullName: $1, Way of Tomoe
   PartName: Genichiro
+  DupeName: Gen-chan
   NpcName: 907110
   StartFlag: 11115802
   DefeatFlag: 9303
@@ -3566,6 +3586,7 @@ Enemies:
   FullName: $1, the Gentle Blade
   PartName: Emma
   NpcName: 907400
+  DupeName: Shura...
   OwnedBy: 1110920
   StartFlag: 11115901
   Tags: mortal mid
@@ -3831,6 +3852,7 @@ Enemies:
   ExtraName: Seven Ashina Spears 2
   FullName: Seven Ashina Spears - $1
   PartName: Shume Masaji Oniwa
+  DupeName: Seven Ashina Spears - The Second One
   NpcName: 911025
   ItemName: sevenspears2
   EnemyType: sevenspears
@@ -3844,6 +3866,7 @@ Enemies:
   ExtraName: Seven Ashina Spears 1
   FullName: Seven Ashina Spears - $1
   PartName: Shikibu Toshikatsu Yamauchi
+  DupeName: Seven Ashina Spears - The First One
   ItemName: sevenspears
   NpcName: 911024
   EnemyType: sevenspears
@@ -3912,6 +3935,7 @@ Enemies:
   ExtraName: Lone Shadow Longswordsman
   FullName: Lone Shadow $1
   PartName: Longswordsman
+  DupeName: Purple Guy
   NpcName: 911470
   DefeatFlag: 11120450
   EnemyType: loneshadow
@@ -3927,6 +3951,7 @@ Enemies:
   ExtraName: Sword Saint Isshin
   FullName: $1, the Sword Saint
   PartName: Sword Saint Isshin
+  DupeName: Isshin, the Spear Saint
   NpcName: 905400
   StartFlag: 11125861
   DefeatFlag: 9312
@@ -3952,6 +3977,7 @@ Enemies:
   PartName: Genichiro
   NpcName: 907101
   StartFlag: 11125810
+  DupeName: Genichiro Ashina
   DefeatFlag: 11120801  # Set on defeat and by outskirts event, although not used by reservoir events
   Arena: -382.628 -44.459 174.480 32 35 10 55 0 -3
   DragonArena: -395.925 -44.214 123.286 -155 0 0 0
@@ -3968,6 +3994,7 @@ Enemies:
   ExtraName: Genichiro, Way of Tomoe (Mortal Blade)
   FullName: $1, Way of Tomoe
   PartName: Genichiro
+  DupeName: Gen-sama
   NpcName: 907110
   StartFlag: 11125831
   # OwlArena: -385.464 -45.979 174.957 -2 76 30 140
@@ -4432,6 +4459,7 @@ Enemies:
   ExtraName: Tokujiro the Glutton
   FullName: $1 the Glutton
   PartName: Tokujiro
+  DupeName: Tokujiru the Sloth
   NpcName: 911070
   EnemyType: drunkard
   Arena: -183.056 -377.456 846.410 5 18 10 9 0 20
@@ -4699,7 +4727,7 @@ Enemies:
   Tags: early reasonable
   Category: Red
   ExtraName: Mist Noble
-  DupeName: The Hardest Enemy in the Game, And Now There's *Two* of Them?! Please Laugh.
+  DupeName: '*Two* of the Hardest Enemy in the Game?? Please Laugh.'
   ItemName: mistnoble
   FullName: Mist $1
   PartName: Mist Noble
@@ -5353,6 +5381,7 @@ Enemies:
   ExtraName: Corrupted Monk
   FullName: Corrupted $1
   PartName: Corrupted Monk
+  DupeName: True Monk
   NpcName: 905000
   DefeatFlag: 9306
   StartFlag: 11505801
@@ -5367,6 +5396,7 @@ Enemies:
   Tags: mid npcpart
   FullName: $1 of the Water
   PartName: O'Rin
+  DupeName: Lady Rin
   NpcName: 917000
   Arena: -149.93 -411.988 1282.5 -31 22 10 24
 - ID: 1500703
@@ -5914,6 +5944,7 @@ Enemies:
   DebugText: m17_00_00_00 - c1250_0011 - npc 12500010 - think 12500000 - id 1700650 - Valley Monkey
   Events: SKIP IF Character Has SpEffect; Set SpEffect; IF Character Dead/Alive; IF Character Has SpEffect; IF In/Outside Area; Force Animation Playback; Warp Character and Copy Floor; Set Character Gravity; Set Character Invincibility; Set Character Animation State; Clear SpEffect; Set Network Update Rate; Set Character MapHit; IF Character Backread Status; IF Character AI State; IF Damage Type; IF Character Posture Ratio; GOTO IF Character Has SpEffect; Force Character Target
   Class: None  # Puppeteer
+  DupeEvents: [11705643, 11705644]
 - ID: 1700316
   Name: c1250_0012
   DebugText: m17_00_00_00 - c1250_0012 - npc 12500020 - think 12500001 - id 1700316 (1705299) - Valley Monkey
@@ -6344,6 +6375,7 @@ Enemies:
   ItemName: headlessape
   FullName: Guardian $1
   PartName: Guardian Ape
+  DupeName: Guarded Ape
   NpcName: 905100
   StartFlag: 11705851
   DefeatFlag: 9307
@@ -6547,6 +6579,7 @@ Enemies:
   ExtraName: Long-arm Centipede Sen'un
   FullName: Long-arm Centipede $1
   PartName: Sen'un
+  DupeName: Centipede Daddy
   NpcName: 911040
   EnemyType: centipede
   Arena: -708.221 49.126 564.014 23 12 5 20
@@ -7373,6 +7406,7 @@ Enemies:
   DebugText: m20_00_00_00 - c1360_0001 - npc 13600001 - think 13600000 - id 2000240 - Assassin (Senpou)
   Events: Set SpEffect; Set Character Invincibility; Warp Character and Set Floor; Force Animation Playback; IF Character Has SpEffect; Set Character Home; Set Event Point; IF In/Outside Area; Issue Short Warp Request
   Class: None  # Puppeteer
+  DupeEvents: [12005290]
 - ID: 2000375
   Name: c1360_0002
   DebugText: m20_00_00_00 - c1360_0002 - npc 13600030 - think 13600003 - id 2000375 - Assassin (Senpou)
@@ -8543,12 +8577,16 @@ Enemies:
   Events: Change Character Enable State; Set Character Animation State; Set Character Backread State; Create NPC Part; Set NPC Part SE and SFX; IF Number of Character Health Bars; IF Character Dead/Alive; IF Character AI State; IF Character Backread Status; IF Entity Loaded; Display Miniboss Health Bar; Set Network Update Rate; IF Character Has SpEffect; Request Character AI Command; SKIP IF Character Has SpEffect; Set SpEffect; IF Entity In/Outside Radius Of Entity; Force Character Target; Clear SpEffect; IF Character HP Ratio; IF Number of Character Health Bars (Other); IF Character DrawGroup State; Force Character Death
   Class: None  # Cannot be deathblown abovewater, and replacements can't be deathblown underwater
   Tags: late npcpart
+  DupeEvents: []
+  DupeName: Headless
   Arena: -33.375 -5.450 348.270 50 10 10 6 0 -8
 - ID: 2500551
   Name: c1340_0001
   DebugText: m25_00_00_00 - c1340_0001 - npc 13401001 - think 13401001 - id 2500551 - Underwater Headless
   Events: Change Character Enable State; Set Character Animation State; Set Character Backread State; Create NPC Part; Set NPC Part SE and SFX; Force Character Death; Request Character AI Command; SKIP IF Character Has SpEffect; Set SpEffect; IF Character Has SpEffect; IF Entity In/Outside Radius Of Entity; IF Character AI State; IF Entity Loaded; IF Character Backread Status; IF Character Dead/Alive; Force Character Target; Clear SpEffect
   Class: None
+  DupeEvents: []
+  DupeName: Headless
   Tags: npcpart
 - ID: 2500570
   Name: c1380_0000
@@ -8559,6 +8597,7 @@ Enemies:
   ItemName: sakurabull
   FullName: $1 of the Palace
   PartName: Sakura Bull
+  DupeName: Minamoto Livestock
   NpcName: 911371
   Regions:
   - event arenabox 2502572 2502573  # walkroute 3/5. in the passageway
@@ -8621,6 +8660,7 @@ Enemies:
   DebugText: m25_00_00_00 - c5050_0000 - npc 50500000 - think 0 - id 2500310 - Giant Carp
   Events: Set Character MapHit; Set Network Update Rate; Force Animation Playback; Set Character Default Backread State; IF Character Backread Status; Change Character Enable State; Set Character Animation State; Set Character Backread State
   Class: None
+  DupeEvents: []
 - ID: 2500311
   Name: c5050_0001
   DebugText: m25_00_00_00 - c5050_0001 - npc 50500000 - think 50500000 - id 2500311 - Giant Carp
@@ -8637,6 +8677,7 @@ Enemies:
   DebugText: m25_00_00_00 - c5050_0003 - npc 50500000 - think 0 - id 2500313 - Giant Carp
   Events: Set Character MapHit; Set Network Update Rate; Force Animation Playback; Set Character Default Backread State; IF Character Backread Status; Change Character Enable State; Set Character Animation State; Set Character Backread State
   Class: None
+  DupeEvents: []
 - ID: 2500800
   Name: c5200_0000
   DebugText: m25_00_00_00 - c5200_0000 - npc 52000000 - think 52000000 - id 2500800 - Divine Dragon
@@ -8648,12 +8689,15 @@ Enemies:
   FullName: Divine $1
   PartName: Divine Dragon
   DupeName: Sakura Dragon
+  Groups: [2505820]  # Tree Dragons
   NpcName: 905200
   StartFlag: 12505881
   DefeatFlag: 9310
   Arena: -29.051 389.556 300.000 -90 150 10 150
   ExtraArenas:
     dupe: -27.039 388.980 354.247 82.242 0 0 0
+    # dupe: -28.387 388.980 364.140 82.242
+    # dupe: -39.238 388.980 369.990 53.405
   Phases: 1
 - ID: 2500811
   Name: c5300_0000
@@ -8667,6 +8711,7 @@ Enemies:
   DebugText: m25_00_00_00 - c5300_0001 - npc 53000011 - think 53000010 - id 2500812 (2505800,2505830) - Old Dragon
   Events: IF Character HP Value; GOTO IF Character Has SpEffect; Change Character DispMask; IF Character Dead/Alive; Set SpEffect; Set Character Event Target; Set Character HP Bar Display; IF Character Has SpEffect
   Class: None  # Used in script
+  DupeEvents: []
 - ID: 2500813
   Name: c5300_0002
   DebugText: m25_00_00_00 - c5300_0002 - npc 53000011 - think 53000010 - id 2500813 (2505800,2505830) - Old Dragon

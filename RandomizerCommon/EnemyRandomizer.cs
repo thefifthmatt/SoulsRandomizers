@@ -82,10 +82,10 @@ namespace RandomizerCommon
                 if (entityBase >= entityMax) throw new Exception("Internal error: Can't create more entities: out of ids");
                 return entityBase++;
             }
-            // In DS3, used Filianore map
-            int entityGroupBase = 5115000;
+            // Filianore/Dungeon again
+            int entityGroupBase = game.DS3 ? 5115000 : 1305000;
             int entityGroupSkip = 5115800; // Skip Gael group
-            int entityGroupMax = 5116000;
+            int entityGroupMax = game.DS3 ? 5116000 : 1306000;
             int newGroupEntity()
             {
                 if (entityGroupBase == entityGroupSkip) entityGroupBase++;
@@ -100,6 +100,20 @@ namespace RandomizerCommon
             {
                 ann = deserializer.Deserialize<EnemyAnnotations>(reader);
             }
+
+            List<EnemyClass> randomizedTypes = new List<EnemyClass>
+            {
+                EnemyClass.Basic,
+                EnemyClass.Miniboss,
+                EnemyClass.Boss,
+                // Sekiro
+                EnemyClass.FoldingMonkey,
+                EnemyClass.TutorialBoss,
+                // DS3
+                EnemyClass.HostileNPC,
+                // Dupe mode
+                EnemyClass.DupeOnly,
+            };
 
             // Enemy multiplier modifies the config itself
             bool dupeEnabled = preset != null && preset.EnemyMultiplier > 1;
@@ -141,7 +155,7 @@ namespace RandomizerCommon
                                 OwnedBy = info.OwnedBy,
                                 ExtraName = info.ExtraName,
                             };
-                            if (info.Class == EnemyClass.DupeOnly)
+                            if (!randomizedTypes.Contains(info.Class))
                             {
                                 dupeInfo.Class = EnemyClass.DupeOnly;
                             }
@@ -207,20 +221,6 @@ namespace RandomizerCommon
             }
 
             Dictionary<int, EnemyData> defaultData = new Dictionary<int, EnemyData>();
-            List<EnemyClass> randomizedTypes = new List<EnemyClass>
-            {
-                EnemyClass.Basic,
-                EnemyClass.Miniboss,
-                EnemyClass.Boss,
-                // Sekiro
-                EnemyClass.FoldingMonkey,
-                EnemyClass.TutorialBoss,
-                // DS3
-                EnemyClass.HostileNPC,
-                // Dupe mode
-                EnemyClass.DupeOnly,
-            };
-
             // Ignoring DLC is a bit tricky because of how many systems there are.
             // For the most part, try to randomize DLC enemies to themselves, rather than totally ignoring them.
             HashSet<string> ignoredMaps = new HashSet<string>();
@@ -495,7 +495,7 @@ namespace RandomizerCommon
                 else randomOldDragons = 1;
             }
 
-            Dictionary<string, PARAM> Params = game.Params;
+            GameData.ParamDictionary Params = game.Params;
 
             // Make all scaling speffects, even if we're not using them in this run.
             // Mapping from (source section, target section) to (scaling without xp, scaling with xp)
@@ -1100,7 +1100,7 @@ namespace RandomizerCommon
                 // Note, infos[toEntity] may not exist if fromEntity is a helper
                 // However, defaultData[toEntity] is added if it didn't exist previously
                 if (infos.TryGetValue(toEntity, out EnemyInfo toInfo) && toInfo.HasTag("dupe")
-                    && toInfo.SplitFrom == fromEntity && !type.Contains("gen"))
+                    && toInfo.SplitFrom == fromEntity && !type.Contains("gen") && !type.Contains("chr"))
                 {
                     // For basic warp/detection/etc. arenas, preserve them for dupes
                     return res;
@@ -1147,7 +1147,7 @@ namespace RandomizerCommon
                         setCacheableRegion(region, bID);
                     }
                 }
-                else if (type == "chrgenangel")
+                else if (type.StartsWith("chrgen"))
                 {
                     foreach (int region in regions)
                     {
@@ -1157,7 +1157,11 @@ namespace RandomizerCommon
                         {
                             foreach (TRegion b in bs)
                             {
-                                b.Position = e.Position + new Vector3(0f, angelHeight, 0f);
+                                b.Position = e.Position;
+                                if (type == "chrgenangel")
+                                {
+                                    b.Position += new Vector3(0f, angelHeight, 0f);
+                                }
                             }
                             setCacheableRegion(region, newGen);
                         }
@@ -1740,7 +1744,7 @@ namespace RandomizerCommon
                 if (source == infos[target].SplitFrom) return true;
                 if (game.Sekiro)
                 {
-                    // Hirata Masanaga. Don't forbid replacement from having dogs past the limit, but limit the global number of dogs.
+                    // Hirata Masanaga. Don't forbid having dogs past the limit, but limit the global number of dogs.
                     if (source == 1000353 && !withinMaxAllowed(source, target, 60, true)) return false;
                     // True Monk does not need helpers
                     if (source == 2500850 && !withinMaxAllowed(source, target, 60)) return false;
@@ -1830,7 +1834,7 @@ namespace RandomizerCommon
                                 }
                             }
                         }
-                        enemyEditor.CopyGroups(msb, data, groupMapping, e, infos[target].RemoveGroup);
+                        enemyEditor.CopyGroups(data, groupMapping, e, infos[target].RemoveGroup);
 
                         // TODO: Put all specific locations in config as primary arena
                         // Shichimen bad placement? or gravity?
@@ -2041,7 +2045,7 @@ namespace RandomizerCommon
                                 helperMapping[(target, helper)] = target2;
                                 revMapping[target2] = helper;
                                 ownerMap[target2] = entry.Key;
-                                enemyEditor.CopyGroups(msb, data2, groupMapping, e2);
+                                enemyEditor.CopyGroups(data2, groupMapping, e2);
                                 if (infos[helper].Regions != null && uniqueTarget)
                                 {
                                     // There is not really any "default" data for helpers, but this is needed just for the purpose of regions
@@ -2566,8 +2570,14 @@ namespace RandomizerCommon
                 if (!nameIds.TryGetValue((target, id), out int nameId))
                 {
                     // Use the part name, otherwise keep things simple and use the model name, for English name
-                    string sourceName = infos[source].PartName ?? game.ModelCharacterName(defaultData[source].Model, defaultData[source].Char);
-                    string fullName = infos[target].FullName != null ? infos[target].FullName.Replace("$1", sourceName) : sourceName;
+                    string sourceModelName = game.ModelCharacterName(defaultData[source].Model, defaultData[source].Char);
+                    string fullName = infos[target].FullName == null
+                        ? sourceModelName
+                        : infos[target].FullName.Replace("$1", infos[source].PartName ?? sourceModelName);
+                    if (infos[target].HasTag("dupe") && infos[target].SplitFrom == source)
+                    {
+                        fullName = infos[source].DupeName ?? infos[source].ExtraName ?? sourceModelName;
+                    }
                     // In-place replacement would be nice, but there are duplicate usages across phases
                     nameId = baseNameId++;
                     nameIds[(target, id)] = nameId;
@@ -2764,6 +2774,7 @@ namespace RandomizerCommon
                         {
                             if (!t.Type.Contains("chr"))
                             {
+                                // Don't count this against normal removal if it's a dupe event and dupe is disabled
                                 if (t.Dupe == null || !dupeEnabled)
                                 {
                                     canRemove = false;
@@ -2777,13 +2788,22 @@ namespace RandomizerCommon
                             {
                                 if (!t.Type.Contains("arg"))
                                 {
-                                    // This needs to be cleaned up in configs
-                                    // Console.WriteLine($"{callee}: bad type {t.Type}");
+                                    throw new Exception($"Internal error for {t.Type} {callee}: no entity defined");
                                 }
                                 List<int> intArgs = getIntArgs(originalInit.Args.Skip(originalInit.Offset));
-                                argEntity = intArgs.Find(a => infos.ContainsKey(a) || ignoreEnemies.Contains(a));
-                                // This system is kind of suspicious, not many edits are possible with it.
-                                // Require the template type to be explicit in DS3.
+                                if (t.Entities != null)
+                                {
+                                    List<int> selectArgs = intArgs.Intersect(t.Entities.Split(' ').Select(int.Parse)).ToList();
+                                    if (selectArgs.Count == 0)
+                                    {
+                                        continue;
+                                    }
+                                    argEntity = selectArgs[0];
+                                }
+                                else
+                                {
+                                    argEntity = intArgs.Find(a => infos.ContainsKey(a) || ignoreEnemies.Contains(a));
+                                }
                                 if (argEntity == 0)
                                 {
                                     // There are some events with just blanked out args
@@ -2838,6 +2858,7 @@ namespace RandomizerCommon
                                     canRemove = true;
                                 }
                             }
+                            // Console.WriteLine($"Template {callee} {t.Type} mapping {entity} -> {string.Join(",", targets)}");
                             // # of events should not be a problem, since there is a global multichr limit for some enemies, but we'll see
                             if (t.Type.StartsWith("multichronly"))
                             {
@@ -2865,7 +2886,7 @@ namespace RandomizerCommon
                                 targets.RemoveAll(target =>
                                     !(dupeEnabled && infos[target].HasTag("dupe") && infos[target].SplitFrom == entity));
                             }
-                            // Console.WriteLine($"Template {callee} {t.Type} mapping {entity} -> {string.Join(",", targets)}");
+                            
                             // If no targets left at this point, nothing to do
                             if (targets.Count == 0) continue;
 
@@ -2988,10 +3009,6 @@ namespace RandomizerCommon
                             if (entity != 0)
                             {
                                 fillEntityIdMapping(reloc, entity, target, t.Type.StartsWith("multichr"));
-                                if (t.Regions != null)
-                                {
-                                    transplantRegionSpecs(reloc, distReplace, t.Regions, entity, target, getIntArgs(init.Args));
-                                }
                                 if (t.Dupe != null)
                                 {
                                     // Find the dupe index from the mapping
@@ -3004,6 +3021,10 @@ namespace RandomizerCommon
                                         }
                                         else Console.WriteLine($"No dupe index found in {entity}->{target}, {originalInit}");
                                     }
+                                }
+                                if (t.Regions != null)
+                                {
+                                    transplantRegionSpecs(dupeReloc ?? reloc, distReplace, t.Regions, entity, target, getIntArgs(init.Args));
                                 }
                                 // Also we need to make a copy of the instruction at this point, so we don't edit the original
                                 init = events.CopyInit(init, e2);
@@ -3182,7 +3203,7 @@ namespace RandomizerCommon
                                             {
                                                 // Find instances of DisplayBossHealthBar and rewrite them
                                                 (string startCmd, List<string> addArgs) = ParseCommandString(cmd);
-                                                if (startCmd == "DisplayBossHealthBar")
+                                                if (startCmd.Contains("BossHealthBar"))
                                                 {
                                                     int nameSource = int.Parse(addArgs[1]);
                                                     int targetNameId = int.Parse(addArgs[3]);
@@ -3435,6 +3456,7 @@ namespace RandomizerCommon
                                         }
                                         // These are optional, since they may be arguments. TODO use optional edits for this
                                         reloc[flag] = newFlag;
+                                        // if (callee == 12505926) Console.WriteLine($"rewrite: {flag}->{newFlag}");
                                     }
                                 }
                             }
@@ -3548,22 +3570,52 @@ namespace RandomizerCommon
                                     }
                                 }
                             }
-                            if (t.Dupe?.Entity != null && t.Type == "locarg")
+                            if (t.Dupe != null)
                             {
-                                string[] parts = t.Dupe.Entity.Split(' ');
-                                if (events.ParseArgSpec(parts[0], out int pos))
+                                if (t.Type == "locarg" && t.Dupe.Entity != null)
                                 {
-                                    int source = (int)init[init.Offset + pos];
-                                    if (dupeMap.TryGetValue(source, out List<int> dupes))
+                                    // Rewrite initialization to add extra argument
+                                    string[] parts = t.Dupe.Entity.Split(' ');
+                                    if (events.ParseArgSpec(parts[0], out int sourcePos) && events.ParseArgSpec(parts[1], out int targetPos))
                                     {
-                                        init.Args.AddRange(dupes.Select(x => (object)x));
+                                        int source = (int)init[init.Offset + sourcePos];
+                                        if (init.Args.Count != init.Offset + targetPos)
+                                        {
+                                            throw new Exception($"Expected {targetPos} arguments, found {init.Args.Count} (offset {init.Offset}) in {init}, trying to add dupe entities");
+                                        }
+                                        if (!dupeMap.TryGetValue(source, out List<int> dupeArgs))
+                                        {
+                                            dupeArgs = Enumerable.Repeat(source, dupeCount).ToList();
+                                        }
+                                        if (events.ParseArgSpec(t.Dupe.HealthBarArg, out int namePos))
+                                        {
+                                            int nameBase = (int)init[init.Offset + namePos];
+                                            foreach (int dupe in dupeArgs.ToList())
+                                            {
+                                                dupeArgs.Add(GetCleverName(nameBase, source, dupe));
+                                            }
+                                        }
+                                        init.Args.AddRange(dupeArgs.Select(x => (object)x));
+                                        init.Modified = true;
+                                        init.Save();
                                     }
-                                    else
+                                }
+                                if (t.Dupe.Generator != null)
+                                {
+                                    // Expand dupeMap with the given generators
+                                    // These are used for rewrite-based edits and don't require modifications to reloc map
+                                    foreach (string genPart in t.Dupe.Generator.Split(' '))
                                     {
-                                        init.Args.AddRange(Enumerable.Repeat((object)source, dupeCount));
+                                        int gen = int.Parse(genPart);
+                                        if (dupeMap.ContainsKey(gen)) continue;
+                                        int dupeGen(int index)
+                                        {
+                                            (_, int result) = enemyEditor.MakeGeneratorCopy(
+                                                maps, newEntity, entry.Key, entry.Key, gen, generators, dupeRelocs[index]);
+                                            return result;
+                                        }
+                                        dupeMap[gen] = Enumerable.Range(0, dupeCount).Select(dupeGen).ToList();
                                     }
-                                    init.Modified = true;
-                                    init.Save();
                                 }
                             }
 
@@ -3667,10 +3719,11 @@ namespace RandomizerCommon
                                             instr.Save();
                                             e2.Instructions[j] = instr.Val;
                                         }
-                                        // A different healthbar change, for dupe events
+                                        // A different healthbar change, for dupe events. These are assumed to be the chr entity.
                                         if (t.Dupe?.HealthBar != null && entity != 0 && (instr.Name == "Display Boss Health Bar" || instr.Name == "Display Miniboss Health Bar"))
                                         {
                                             instr[2] = (short)1;
+                                            instr[3] = GetCleverName((int)instr[3], entity, target);
                                             instr.Save();
                                             e2.Instructions[j] = instr.Val;
                                         }
@@ -3702,9 +3755,9 @@ namespace RandomizerCommon
                                 // Apply multi-line edits
                                 events.ApplyAdds(edits, e2, pre);
 
-                                // Dupe rewrite is handled by postprocessing
-                                // TODO handle with start/end
-                                if (t.Dupe != null && t.Type != "locarg" && entity == 0)
+                                // Dupe rewrite of event itself is handled by postprocessing
+                                // TODO handle with start/end (?)
+                                if (t.Dupe != null && t.Type != "locarg" && entity == 0 && !t.Dupe.NoRewrite)
                                 {
                                     // Searches can be scoped to specific entities
                                     bool restrict = false;
@@ -3725,6 +3778,13 @@ namespace RandomizerCommon
                                             searches[$"X{sourcePos * 4}_4"] = Enumerable.Range(0, dupeCount)
                                                 .Select(x => (object)$"X{(targetPos + x) * 4}_4")
                                                 .ToList();
+                                            if (t.Dupe.HealthBar != null && events.ParseArgSpec(t.Dupe.HealthBar.Split(' ')[1], out int healthPos))
+                                            {
+                                                int nameStart = targetPos + dupeCount;
+                                                searches[$"X{healthPos * 4}_4"] = Enumerable.Range(0, dupeCount)
+                                                    .Select(x => (object)$"X{(nameStart + x) * 4}_4")
+                                                    .ToList();
+                                            }
                                         }
                                         else throw new Exception($"Badly formatted dupe entity in {callee}: {t.Dupe.Entity}");
                                     }
@@ -3786,12 +3846,12 @@ namespace RandomizerCommon
                                             for (int c = 0; c < dupeCount; c++)
                                             {
                                                 // Automatic feature in boss fights: add slight delay between activations
-                                                if (instr.Name == "Force Animation Playback" && ev.Template.Any(s => s.Type == "start"))
+                                                if (t.Dupe.DelayAnimation > 0 && instr.Name == "Force Animation Playback")
                                                 {
-                                                    // Non-looping
-                                                    if ((byte)instr[2] == 0)
+                                                    // Non-looping for entity in question
+                                                    if ((int)instr[0] == t.Dupe.DelayAnimation && (byte)instr[2] == 0)
                                                     {
-                                                        // e2.Instructions.Insert(j, events.ParseAdd($"WAIT Fixed Time (Seconds) (0.5)"));
+                                                        e2.Instructions.Insert(j, events.ParseAdd($"WAIT Fixed Time (Seconds) (0.5)"));
                                                     }
                                                 }
                                                 foreach (KeyValuePair<int, List<object>> replace in replaces)
@@ -3807,9 +3867,28 @@ namespace RandomizerCommon
                                                 if (instr.Name == "Display Boss Health Bar" || instr.Name == "Display Miniboss Health Bar")
                                                 {
                                                     instr[2] = (short)(c + 1);
-                                                    // Invalid name thing, for now
-                                                    instr[3] = 100;
-                                                    Console.WriteLine($"{instr} from {string.Join(", ", replaces.Select(r => $"{r.Key}={string.Join(",", r.Value)}"))}");
+                                                    // Console.WriteLine($"{instr} from {string.Join(", ", replaces.Select(r => $"{r.Key}={string.Join(",", r.Value)}"))}");
+                                                    if (instr[1] is int nameEntity)
+                                                    {
+                                                        // In-place name editing with fixed entity
+                                                    }
+                                                    else if (!(instr[3] is int))
+                                                    {
+                                                        // This is also fine, HealthBarArg should handle variable names
+                                                        nameEntity = -1;
+                                                    }
+                                                    else if (t.Dupe.HealthBar != null && int.TryParse(t.Dupe.HealthBar.Split(' ')[0], out int sourceNameEntity))
+                                                    {
+                                                        // With fixed name, entity should be provided by the config
+                                                        nameEntity = dupeMap[sourceNameEntity][c];
+                                                        // Console.WriteLine($"--------- your name is {nameEntity} for {t.Dupe.HealthBar}, with {revMapping[nameEntity]}");
+                                                    }
+                                                    else throw new Exception($"Not enough information to add health bar in {callee}: {instr}");
+                                                    if (nameEntity > 0 && revMapping.TryGetValue(nameEntity, out int sourceEntity))
+                                                    {
+                                                        // Console.WriteLine($"entity name {sourceEntity}->{nameEntity}");
+                                                        instr[3] = GetCleverName((int)instr[3], sourceEntity, nameEntity);
+                                                    }
                                                 }
                                                 if (rewriteDef.TryGetValue(j, out int newCond))
                                                 {
@@ -3942,9 +4021,9 @@ namespace RandomizerCommon
                                         Instr instr = events.Parse(e2.Instructions[j]);
                                         // if (instr.Init) throw new Exception($"Unexpected event initialization in template event {e.ID}");
                                         events.RewriteInts(instr, reloc);
-                                        if (t.ProgressFlag == "11115900") Console.WriteLine($"made {instr}");
                                         if (dupeReloc != null) events.RewriteInts(instr, dupeReloc);
                                         instr.Save();
+                                        // if (callee == 12505926) Console.WriteLine($"rewrite: {instr}");
                                     }
                                 }
                             }
@@ -4031,14 +4110,14 @@ namespace RandomizerCommon
                 else
                 {
                     customEvents[e.Name] = e;
-                    AddMulti(newInitializations, "common_func", (null, ev));
+                    AddMulti(newInitializations, "common_func", ((EMEVD.Instruction)null, ev));
                 }
             }
 
             void addCommonFuncInit(string name, int target, List<object> args)
             {
                 EMEVD.Instruction init = new EMEVD.Instruction(2000, 6, new List<object> { customEvents[name].ID }.Concat(args));
-                AddMulti(newInitializations, ownerMap[target], (init, null));
+                AddMulti(newInitializations, ownerMap[target], (init, (EMEVD.Event)null));
             }
             Dictionary<int, int> targetSourceNPCs = new Dictionary<int, int>();
             foreach (KeyValuePair<int, int> transfer in revMapping)
@@ -4292,7 +4371,8 @@ namespace RandomizerCommon
                 Params["ThrowParam"][15400590]["ThrowKindParamID0"].Value = 250001;
                 // And also Divine Dragon
                 Params["ThrowParam"][15200090]["ThrowKindParamID0"].Value = 250001;
-                if (mapping.ContainsKey(2500800))
+                if (mapping.TryGetValue(2500800, out List<int> targets)
+                    && targets.Any(t => !(infos.TryGetValue(t, out EnemyInfo info) && info.HasTag("dupe") && info.SplitFrom == 2500800)))
                 {
                     Params["ThrowParam"][15200090]["Dist"].Value = (float)16;
                     Params["ThrowParam"][15200090]["UpperYrange"].Value = (float)20;
