@@ -182,6 +182,7 @@ Groups:
   - Ashina Soldier - Rifle
   - Okami Warrior - Bow  # Allow lightning Okami, some fun crowd control potentially
   - Okami Warrior - Ball
+  - Chained Ogre
   # Hard to find
   - Rock Diver
   # Phantoms are whatever
@@ -4088,7 +4089,7 @@ Enemies:
   DebugText: m13_00_00_00 - c1080_0000 - npc 10800000 - think 10800000 - id 1300200 - Shichimen Warrior
   Events: IF Character AI State; Force Character Target; IF Character Dead/Alive; IF Character Backread Status; IF Entity Loaded; Display Miniboss Health Bar; Set Network Update Rate; IF Character Has SpEffect; Set Character Gravity; Set Character MapHit; Force Animation Playback; IF Damage Type; IF Character Posture Ratio; SKIP IF Character Has SpEffect; GOTO IF Character Has SpEffect; Change Character Enable State; Set Character Animation State; Set Character Backread State; Set SpEffect; IF Character HP Ratio; IF Number of Character Health Bars (Other); Clear SpEffect; IF Character DrawGroup State; Force Character Death; Request Character AI Command; IF Entity In/Outside Radius Of Entity; Create NPC Part; Set NPC Part SE and SFX; IF Character Has Event Message; Shoot Bullet; IF Number of Character Health Bars; Request Character AI Re-plan; Set Lock On Point; Warp Character and Copy Floor
   Class: Miniboss
-  Tags: mid npcpart exclude:1000800 exclude:1000810
+  Tags: mid npcpart exclude:1000800 exclude:1000810 exclude:1110440 exclude:2500570
   ItemName: shichimen
   FullName: Shichimen $1
   PartName: Shichimen Warrior
