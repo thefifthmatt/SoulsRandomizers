@@ -106,6 +106,8 @@ namespace RandomizerCommon
             // An option which must be enabled (or not) for this check to be considered. This is ignored on the second pass.
             public string OptionCondition { get; set; }
             public string NotOptionCondition { get; set; }
+            // Which pass to check it in, first or second
+            public string PassCondition { get; set; }
             // The item to use a flag for direct hinting, and item possession for dependencies.
             // Either "self" or null, currently
             public string CheckItem { get; set; }
@@ -192,20 +194,31 @@ namespace RandomizerCommon
         private static readonly Text hintRequirementFailed =
             new Text("Get to the Altus Plateau first!", "GameMenu_hintRequirementFailed");
         [Localize]
+        private static readonly Text hintRequirementFailedBoss =
+            new Text("Exact location hints in an area are only\n" +
+                     "available after defeating the area's main boss.", "GameMenu_hintRequirementFailedBoss");
+        [Localize]
+        private static readonly Text hintRequirementFailedOption =
+            new Text("The randomizer option for exact location hints was not enabled.", "GameMenu_hintRequirementFailedOption");
+        [Localize]
         private static readonly Text hintMarkArea =
-            new Text("Mark a required item's area", "GameMenu_hintMarkArea");
+            new Text("Mark a required item's overall area", "GameMenu_hintMarkArea");
         [Localize]
         private static readonly Text hintMarkItem =
             new Text("Mark a required item's exact location (more expensive)", "GameMenu_hintMarkItem");
         [Localize]
         private static readonly Text hintNoItems =
             new Text("No key items left!", "GameMenu_hintNoItems");
+        [Localize]
+        private static readonly Text hintLabelArea =
+            new Text("Somewhere in {0}", "GameMenu_hintLabelArea");
 
         public void Write(RandomizerOptions opt, Permutation perm, PermutationWriter.Result permResult)
         {
             // Get some bonfire names
             FMG placeFmg = game.ItemFMGs["PlaceName"];
             FMG warpFmg = game.MenuFMGs["GR_MenuText"];
+            int newPlaceBase = 9404000;
             Dictionary<string, int> revNameIds = new Dictionary<string, int>();
             foreach (FMG.Entry entry in placeFmg.Entries)
             {
@@ -334,6 +347,14 @@ namespace RandomizerCommon
                         if (req.NotAreaCondition != null && requiredAreas.Contains(req.NotAreaCondition)) return true;
                         if (req.OptionCondition != null && !opt[req.OptionCondition]) return true;
                         if (req.NotOptionCondition != null && opt[req.NotOptionCondition]) return true;
+                        // In first pass, filters the checks to only required items
+                        if (req.PassCondition == "second") return true;
+                        return false;
+                    });
+                    item.Reqs.RemoveAll(req =>
+                    {
+                        // In second pass, use full reqs list
+                        if (req.PassCondition == "first") return true;
                         return false;
                     });
                 }
@@ -495,14 +516,32 @@ namespace RandomizerCommon
             int startMarkerFlag = 78700;
             int markerFlag = startMarkerFlag;
 
-            void placeBonfireMarker(HintArea area, int appearFlag, int disappearFlag, bool ignore)
+            Dictionary<string, int> vagueNameIds = new Dictionary<string, int>();
+            int getVagueNameId(string text)
+            {
+                if (!revNameIds.TryGetValue(text, out int oldId))
+                {
+                    throw new Exception($"Internal error: unknown game location: {text}");
+                }
+                if (vagueNameIds.TryGetValue(text, out int newId))
+                {
+                    return newId;
+                }
+                vagueNameIds[text] = newId = newPlaceBase++;
+                game.WriteFMGs = true;
+                FMGArg oldName = new FMGArg { FMGName = "PlaceName", ID = oldId, BaseText = text };
+                messages.SetFMGEntry(game.ItemFMGs, game.OtherItemFMGs, "PlaceName", newId, hintLabelArea, oldName);
+                return newId;
+            }
+
+            void placeBonfireMarker(HintArea area, int placeNameId, int appearFlag, int disappearFlag, bool ignore)
             {
                 PARAM.Row row = game.Params["BonfireWarpParam"][area.MainBonfireId];
                 List<byte> mapParts = game.GetMapParts(row);
                 string mapId = formatMap(mapParts);
                 Vector3 mapPos = new Vector3((float)row["posX"].Value, (float)row["posY"].Value, (float)row["posZ"].Value);
                 addConditionalMark(
-                    revNameIds[area.DisplayName], mapId, mapPos + new Vector3(20, 0, -20),
+                    placeNameId, mapId, mapPos + new Vector3(20, 0, -20),
                     appearFlag, disappearFlag, ignore);
             }
 
@@ -512,14 +551,15 @@ namespace RandomizerCommon
             {
                 if (area.BossMarker > 0 || area.BossId?.Position == null || area.BossFlag <= 0) continue;
                 string mapName = area.BossId.MapName;
+                int vagueNameId = getVagueNameId(area.DisplayName);
                 if (area.MainBonfireId > 0 && miniRe.IsMatch(mapName))
                 {
-                    placeBonfireMarker(area, markerFlag, area.BossFlag, false);
+                    placeBonfireMarker(area, vagueNameId, markerFlag, area.BossFlag, false);
                 }
                 else
                 {
                     addConditionalMark(
-                        revNameIds[area.DisplayName], area.BossId.MapName, (Vector3)area.BossId.Position,
+                        vagueNameId, area.BossId.MapName, (Vector3)area.BossId.Position,
                         markerFlag, area.BossFlag, false);
                 }
                 area.BossMarker = markerFlag++;
@@ -537,7 +577,8 @@ namespace RandomizerCommon
                 HintArea area = areas[place];
                 if (area.MainBonfireId > 0)
                 {
-                    placeBonfireMarker(area, markerFlag, itemFlag, false);
+                    int vagueNameId = getVagueNameId(area.DisplayName);
+                    placeBonfireMarker(area, vagueNameId, markerFlag, itemFlag, false);
                     itemAreaMarkers[item] = markerFlag++;
                 }
                 if (itemLocations.TryGetValue(key, out EntityId id) && id.Position is Vector3 pos)
@@ -669,16 +710,18 @@ namespace RandomizerCommon
             int kaleBaseNewMsg = 28000050;
             int addMsg(Text text)
             {
-                int msg = kaleBaseNewMsg++;
+                int msgId = kaleBaseNewMsg++;
                 game.WriteFMGs = true;
-                messages.SetFMGEntry(game.MenuFMGs, game.OtherMenuFMGs, "EventTextForTalk", msg, text);
-                return msg;
+                messages.SetFMGEntry(game.MenuFMGs, game.OtherMenuFMGs, "EventTextForTalk", msgId, text);
+                return msgId;
             }
             int talkListMsg = addMsg(hintPurchase);
             int markNoMsg = addMsg(hintRequirementFailed);
             int markAreaMsg = addMsg(hintMarkArea);
             int markItemMsg = addMsg(hintMarkItem);
             int noItemsMsg = addMsg(hintNoItems);
+            int markNoBossMsg = addMsg(hintRequirementFailedBoss);
+            int markNoOptionMsg = addMsg(hintRequirementFailedOption);
 
             string kaleTalkId = "t800006000";
             ESD kale = null;
@@ -874,18 +917,20 @@ namespace RandomizerCommon
                     // Show boss location
                     // Except for now, for UI simplicity, just show it as a limited option.
                     List<ESD.State> bossAlts = OpenOptionMenu(
-                        markMachine, markAlts[1], new List<int> { markAreaMsg, donateNoMsg }, ref baseId);
-                    AST.CallMachine(bossAlts[0], markReturnId, 122, areaMarkerArg, cheap);
-                    AST.CallState(bossAlts[1], markReturnId);
+                        markMachine, markAlts[1], new List<int> { markAreaMsg, markItemMsg, donateNoMsg }, ref baseId);
+                    AST.CallMachine(bossAlts[0], markReturnId, 122, bossMarkerArg, cheap);
+                    ShowDialog(bossAlts[1], markReturnId, markNoBossMsg);
                     AST.CallState(bossAlts[2], markReturnId);
+                    AST.CallState(bossAlts[3], markReturnId);
                 }
                 else
                 {
                     List<ESD.State> areaAlts = OpenOptionMenu(
-                        markMachine, markStartState, new List<int> { markAreaMsg, donateNoMsg }, ref baseId);
+                        markMachine, markStartState, new List<int> { markAreaMsg, markItemMsg, donateNoMsg }, ref baseId);
                     AST.CallMachine(areaAlts[0], markReturnId, 122, areaMarkerArg, cheap);
-                    AST.CallState(areaAlts[1], markReturnId);
+                    ShowDialog(areaAlts[1], markReturnId, markNoOptionMsg);
                     AST.CallState(areaAlts[2], markReturnId);
+                    AST.CallState(areaAlts[3], markReturnId);
                 }
             }
 
@@ -997,8 +1042,7 @@ namespace RandomizerCommon
                 };
                 areas.Add(mark);
             }
-            ISerializer serializer = new SerializerBuilder().DisableAliases().Build();
-            Console.WriteLine(serializer.Serialize(areas));
+            Console.WriteLine(GameData.Serializer.Serialize(areas));
 
         }
 

@@ -19,11 +19,34 @@ namespace RandomizerCommon
         [Localize]
         private static readonly Text editPhase = new Text("Editing game files", "Randomizer_editPhase");
         [Localize]
-        private static readonly Text writePhase = new Text("Writing game files", "Randomizer_savePhase");
+        private static readonly Text savePhase = new Text("Writing game files", "Randomizer_savePhase");
+        [Localize]
+        private static readonly Text saveMapPhase = new Text("Writing map data: {0}%", "Randomizer_saveMapPhase");
+        [Localize]
+        private static readonly Text restartMsg = new Text(
+            "Error: Mismatch between regulation.bin and other randomizer files.\nMake sure all randomizer files are present, the game has been restarted\nafter randomization, and the game and regulation.bin versions are compatible.",
+            "GameMenu_restart");
 
-        // TODO: There are way too many arguments here
-        // And should we be using... ugh... dependency injection
-        public void Randomize(RandomizerOptions opt, FromGame type, Action<string> notify = null, string outPath = null, Preset preset = null, Messages messages = null, bool encrypted = true, string gameExe = null)
+        [Localize]
+        private static readonly Text mergeMissingError =
+            new Text("Error merging mods: directory {0} not found", "Randomizer_mergeMissingError");
+        [Localize]
+        private static readonly Text mergeWrongDirError =
+            new Text("Error merging mods: already running from {0} directory", "Randomizer_mergeWrongDirError");
+
+        public static readonly string EldenVersion = "v0.5.5";
+
+        // TODO: There are way too many arguments here. Dependency injection or something?
+        public void Randomize(
+            RandomizerOptions opt,
+            FromGame type,
+            Action<string> notify = null,
+            string outPath = null,
+            Preset preset = null,
+            Messages messages = null,
+            bool encrypted = true,
+            string gameExe = null,
+            string modDir = null)
         {
             messages = messages ?? new Messages(null);
             string distDir = type == FromGame.ER ? "diste" : (type == FromGame.SDT ? "dists" : "dist");
@@ -48,7 +71,7 @@ namespace RandomizerCommon
                     outPath = Directory.GetCurrentDirectory();
                 }
             }
-            bool header = !opt.GetOptions().Any(o => o.StartsWith("dump"));
+            bool header = !opt.GetOptions().Any(o => o.StartsWith("dump")) && !opt["configgen"];
             if (!header)
             {
                 notify = null;
@@ -62,25 +85,42 @@ namespace RandomizerCommon
             int seed = (int)opt.Seed;
 
             notify?.Invoke(messages.Get(loadPhase));
-            string modDir = null;
+
+            DirectoryInfo modDirInfo = null;
             if (opt["mergemods"])
             {
-                if (type == FromGame.ER)
+                // Previous Elden Ring UXM merge behavior
+                // modDir = Path.GetDirectoryName(gameExe);
+                string modPath = type == FromGame.SDT ? "mods" : "mod";
+                modDirInfo = new DirectoryInfo($@"{outPath}\..\{modPath}");
+            }
+            else if (!string.IsNullOrWhiteSpace(modDir))
+            {
+                modDirInfo = new DirectoryInfo(modDir);
+            }
+            string outModDir = null;
+            if (modDirInfo != null)
+            {
+                if (!modDirInfo.Exists)
                 {
-                    modDir = Path.GetDirectoryName(gameExe);
+                    throw new Exception(messages.Get(mergeMissingError, modDirInfo.FullName));
                 }
-                else
+                outModDir = modDirInfo.FullName;
+                if (outModDir != null && new DirectoryInfo(outPath).FullName == outModDir)
                 {
-                    string modPath = type == FromGame.DS3 ? "mod" : "mods";
-                    DirectoryInfo modDirInfo = new DirectoryInfo($@"{outPath}\..\{modPath}");
-                    if (!modDirInfo.Exists) throw new Exception($"Can't merge mods: {modDirInfo.FullName} not found");
-                    modDir = modDirInfo.FullName;
-                    if (new DirectoryInfo(outPath).FullName == modDir) throw new Exception($"Can't merge mods: already running from 'mods' directory");
+                    throw new Exception(messages.Get(mergeWrongDirError, modDirInfo.Name));
                 }
             }
+
             GameData game = new GameData(distDir, type);
-            game.Load(modDir);
-            // MiscSetup.UpdateEldenRing(game, opt); return;
+            game.Load(outModDir);
+
+#if DEBUG
+            if (opt["update"])
+            {
+                MiscSetup.UpdateEldenRing(game, opt);
+                return;
+            }
             // game.UnDcx(ForGame(FromGame.ER).GameDir + @"\map\mapstudio"); return;
             // game.SearchParamInt(14000800); return;
             // foreach (string lang in MiscSetup.Langs) game.DumpMessages(GameSpec.ForGame(GameSpec.FromGame.ER).GameDir + $@"\msg\{lang}"); return;
@@ -88,6 +128,7 @@ namespace RandomizerCommon
             // game.DumpMessages(GameSpec.ForGame(GameSpec.FromGame.DS1R).GameDir + @"\msg\ENGLISH"); return;
             // MiscSetup.CombineSFX(game.Maps.Keys.Concat(new[] { "dlc1", "dlc2" }).ToList(), GameSpec.ForGame(GameSpec.FromGame.DS3).GameDir + @"\combinedai", true); return;
             // MiscSetup.CombineAI(game.Maps.Keys.ToList(), ForGame(FromGame.DS3).GameDir + @"\combinedai", true); return;
+#endif
 
             // Prologue
             if (header)
@@ -100,6 +141,16 @@ namespace RandomizerCommon
                 if (opt["item"])
                 {
                     Console.WriteLine("Ctrl+F 'Hints' to see item placement hints, or Ctrl+F for a specific item name.");
+                }
+                if (type == FromGame.ER)
+                {
+                    Console.WriteLine($"Version: {EldenVersion}");
+                }
+                if (preset != null)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"-- Preset");
+                    Console.WriteLine(preset.ToYamlString());
                 }
                 Console.WriteLine();
 #if !DEBUG
@@ -135,7 +186,7 @@ namespace RandomizerCommon
                     LocationData data = scraper.FindItems(game);
                     AnnotationData anns = new AnnotationData(game, data);
                     anns.Load(opt);
-                    anns.AddEnemyLocations(locations);
+                    anns.ProcessRestrictions(locations);
 
                     SkillSplitter.Assignment split = null;
                     if (!opt["norandom_skills"] && opt["splitskills"])
@@ -171,7 +222,7 @@ namespace RandomizerCommon
             }
             else if (game.DS3)
             {
-                Events events = new Events($@"{game.Dir}\Base\ds3-common.emedf.json", true);
+                Events events = new Events($@"{game.Dir}\Base\ds3-common.emedf.json", darkScriptMode: true);
                 EventConfig eventConfig;
                 using (var reader = File.OpenText($@"{game.Dir}\Base\events.txt"))
                 {
@@ -222,17 +273,17 @@ namespace RandomizerCommon
                     game.SaveDS3(outPath, encrypted);
                 }
             }
-            // Locations for bosses with weird second phases (Rennala 2, Elden Beast, Deeproot Dragon? lichdragon - )
-            // Clean up all aaaaaaaaaaa log entries
-            // For enemy drop in logs, don't show map
-            // Unlock all maps upon entering Limgrave
             else if (game.EldenRing)
             {
+#if DEBUG
                 if (opt["noitem"])
                 {
                     new EldenDataPrinter().PrintData(game, opt);
                     return;
                 }
+#endif
+                LocationData data = null;
+                PermutationWriter.Result permResult = null;
                 if (opt["item"])
                 {
                     notify?.Invoke(messages.Get(itemPhase));
@@ -244,8 +295,13 @@ namespace RandomizerCommon
                     }
 
                     EldenCoordinator coord = new EldenCoordinator(game, opt["debugcoords"]);
+                    if (opt["dumpcoords"])
+                    {
+                        coord.DumpJS(game);
+                        return;
+                    }
                     EldenLocationDataScraper scraper = new EldenLocationDataScraper();
-                    LocationData data = scraper.FindItems(game, coord, opt);
+                    data = scraper.FindItems(game, coord, opt);
                     if (data == null || opt["dumplot"] || opt["dumpitemflag"])
                     {
                         return;
@@ -257,8 +313,9 @@ namespace RandomizerCommon
                         ann.Save(initial: false, filter: opt["annfilter"], coord: coord);
                         return;
                     }
+                    ann.ProcessRestrictions(null);
                     ann.AddSpecialItems();
-                    // new HintMarker(game, data, ann, coord).Write(opt, null); return;
+                    ann.AddMaterialItems(opt["mats"]);
 
                     Random random = new Random(seed);
                     Permutation perm = new Permutation(game, data, ann, messages, explain: opt["explain"]);
@@ -266,8 +323,8 @@ namespace RandomizerCommon
 
                     notify?.Invoke(messages.Get(editPhase));
                     random = new Random(seed + 1);
-                    PermutationWriter writer = new PermutationWriter(game, data, ann, null, itemEventConfig, coord);
-                    PermutationWriter.Result permResult = writer.Write(random, perm, opt);
+                    PermutationWriter writer = new PermutationWriter(game, data, ann, null, itemEventConfig, messages, coord);
+                    permResult = writer.Write(random, perm, opt);
 
                     if (opt["markareas"])
                     {
@@ -277,20 +334,74 @@ namespace RandomizerCommon
                     if (opt["mats"])
                     {
                         random = new Random(seed + 1);
-                        new EldenMaterialRandomizer(game, data).Randomize(random);
+                        new EldenMaterialRandomizer(game, data, ann).Randomize(random, perm);
                     }
 
                     random = new Random(seed + 2);
                     CharacterWriter characters = new CharacterWriter(game, data);
                     characters.Write(random, opt);
                 }
+                else if (!(opt["nooutfits"] && opt["nostarting"]))
+                {
+                    // Partially load item data just for identifying eligible starting weapons
+                    EldenCoordinator coord = new EldenCoordinator(game, false);
+                    EldenLocationDataScraper scraper = new EldenLocationDataScraper();
+                    data = scraper.FindItems(game, coord, opt);
+                    Random random = new Random(seed + 2);
+                    CharacterWriter characters = new CharacterWriter(game, data);
+                    characters.Write(random, opt);
+                }
+                if (opt["enemy"])
+                {
+                    notify?.Invoke(messages.Get(enemyPhase));
 
-                MiscSetup.EldenCommonPass(game, opt);
+                    EventConfig enemyConfig;
+                    string emedfPath = null;
+                    string path = $@"{game.Dir}\Base\events.txt";
+#if DEV
+                    if (opt["full"] || opt["configgen"])
+                    {
+                        emedfPath = @"configs\diste\er-common.emedf.json";
+                        path = @"configs\diste\events.txt";
+                    }
+#endif
+                    using (var reader = File.OpenText(path))
+                    {
+                        IDeserializer deserializer = new DeserializerBuilder().Build();
+                        enemyConfig = deserializer.Deserialize<EventConfig>(reader);
+                    }
+                    Events events = new Events(
+                        emedfPath,
+                        darkScriptMode: true,
+                        paramAwareMode: true,
+                        valueSpecs: enemyConfig.ValueTypes);
+                    new EnemyRandomizer(game, events, enemyConfig).Run(opt, preset);
+                }
+
+                MiscSetup.EldenCommonPass(game, opt, permResult);
 
                 if (!opt["dryrun"])
                 {
-                    notify?.Invoke(messages.Get(writePhase));
-                    game.SaveEldenRing(outPath, opt["uxm"]);
+                    notify?.Invoke(messages.Get(savePhase));
+                    string options = $"Produced by Elden Ring Randomizer {EldenVersion} by thefifthmatt. Do not distribute. Options and seed: {opt}";
+                    int mapPercent = -1;
+                    void notifyMap(double val)
+                    {
+                        int percent = (int)Math.Floor(val * 100);
+                        if (percent > mapPercent && percent <= 100)
+                        {
+#if !DEBUG
+                            notify?.Invoke(messages.Get(saveMapPhase, percent));
+#endif
+                            mapPercent = percent;
+                        }
+                    }
+                    game.WriteFMGs = true;
+                    messages.SetFMGEntry(
+                        game.MenuFMGs, game.OtherMenuFMGs, "EventTextForMap",
+                        RuntimeParamChecker.RestartMessageId, restartMsg);
+
+                    game.SaveEldenRing(outPath, opt["uxm"], options, notifyMap);
                 }
             }
         }

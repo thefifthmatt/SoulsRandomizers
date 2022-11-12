@@ -244,7 +244,9 @@ namespace RandomizerCommon
             public readonly string Subtype;
             // For a lot, the base lot location, if this is an additional draw. Otherwise null
             public readonly LocationKey Base;
-            public LocationKey(LocationType Type, int ID, string Text, List<EntityId> Entities, int Quantity, float Chance, LocationKey Base, string Subtype = null)
+            public LocationKey(
+                LocationType Type, int ID, string Text,
+                List<EntityId> Entities, int Quantity, float Chance, LocationKey Base, string Subtype = null)
             {
                 this.Type = Type;
                 this.ID = ID;
@@ -332,13 +334,16 @@ namespace RandomizerCommon
             public int EntityID { get; set; }
             public int CharaInitID { get; set; }
             
-            // Mainly internal display info
+            // Mainly internal display info. Not defined for all games
             public int NPCParamID { get; set; }
             public int AssetID { get; set; }
             public List<int> GroupIds { get; set; }
             public string Type { get; set; }  // e.g. enemy, object
             public Vector3? Position { get; set; }
             public int NameID { get; set; }
+            public int TalkID { get; set; }
+            // This is a bit messy. Covers _01 and _02 maps in Elden Ring, for display purposes.
+            public string OriginalMapName { get; set; }
 
             public EntityId() { }
             public EntityId(

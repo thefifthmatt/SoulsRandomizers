@@ -603,7 +603,13 @@ namespace RandomizerCommon
         private Random random = new Random();
         private void RefreshImage()
         {
-            List<Image> mascots = new List<Image> { Resources.WolfSip, Resources.EmmaSip, Resources.IdolSip };
+#if DEV_RELEASE
+            List<Image> mascots = new List<Image>
+            {
+                Resources.WolfSip,
+                Resources.EmmaSip,
+                Resources.IdolSip
+            };
             List<Image> items = new List<Image>
             {
                 Resources.Ako,
@@ -687,6 +693,7 @@ namespace RandomizerCommon
             mascot.Visible = !look;
             itemPic.Visible = look;
             catPic.Visible = look;
+#endif
         }
         private int lastItemPic = -1;
         private int lastCatPic = -1;

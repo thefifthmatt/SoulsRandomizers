@@ -289,8 +289,12 @@ namespace RandomizerCommon
 
         private readonly List<EquipCategory> ArmorCats = new List<EquipCategory> { EquipCategory.HEAD, EquipCategory.BODY, EquipCategory.ARM, EquipCategory.LEG };
 
-        public void Write(Random random, RandomizerOptions options)
+        public void Write(Random random, RandomizerOptions opt)
         {
+            if (opt["nooutfits"] && opt["nostarting"])
+            {
+                return;
+            }
             GameCharacters g = new GameCharacters
             {
                 StartId = 3000,
@@ -335,13 +339,18 @@ namespace RandomizerCommon
             Dictionary<ItemKey, StatReq> requirements = new Dictionary<ItemKey, StatReq>();
             HashSet<ItemKey> crossbows = new HashSet<ItemKey>();
             PARAM magics = game.Param("Magic");
-            bool twoHand = !options["onehand"];
+            bool twoHand = !opt["onehand"];
             SortedDictionary<int, List<ItemKey>> cats = new SortedDictionary<int, List<ItemKey>>();
             foreach (ItemKey key in data.Data.Keys)
             {
                 if (key.Type == ItemType.WEAPON)
                 {
                     PARAM.Row row = game.Item(key);
+                    if (row == null)
+                    {
+                        Console.WriteLine($"Warning: nonexistent {key} found in character equipment data");
+                        continue;
+                    }
                     EquipCategory mainCat = EquipCategory.WEAPON;
                     int weaponCategory = (byte)row["weaponCategory"].Value;
                     AddMulti(cats, weaponCategory, key);
@@ -398,6 +407,11 @@ namespace RandomizerCommon
                 else if (key.Type == ItemType.ARMOR)
                 {
                     PARAM.Row row = game.Item(key);
+                    if (row == null)
+                    {
+                        Console.WriteLine($"Warning: nonexistent {key} found in character equipment data");
+                        continue;
+                    }
                     for (int i = 0; i < 4; i++)
                     {
                         if ((byte)row[g.ArmorTypes[i]].Value == 1)
@@ -457,7 +471,7 @@ namespace RandomizerCommon
             allowCheat = true;
             printChars = false;
 #endif
-            bool cheat = allowCheat && options["cheat"];
+            bool cheat = allowCheat && opt["cheat"];
 
             List<float> eldenWeights = new List<float>
             {
@@ -487,6 +501,7 @@ namespace RandomizerCommon
 
             for (int i = 0; i < 10; i++)
             {
+                if (opt["nostarting"]) break;
                 PARAM.Row row = chara[g.StartId + i];
                 int getStat(string name)
                 {
@@ -532,6 +547,11 @@ namespace RandomizerCommon
                     Arc = getStat("baseLuc"),
                     Att = attAmt,
                 };
+                if (opt["nohand"])
+                {
+                    // To ignore requirements: simulate being at very high stats
+                    chReqs.Str = chReqs.Dex = chReqs.Int = chReqs.Fai = chReqs.Arc = 90;
+                }
                 StatReq dynamicReqs = chReqs;
                 double fudgeFactor = 1.5;
                 float weaponWeight = 0f;
@@ -611,7 +631,7 @@ namespace RandomizerCommon
                     }
                 }
                 int statChange = dynamicReqs.Eligible(chReqs);
-                if (statChange < 0)
+                if (statChange < 0 && !opt["nohand"])
                 {
                     setStat("baseStr", dynamicReqs.Str);
                     setStat("baseDex", dynamicReqs.Dex);
@@ -668,10 +688,13 @@ namespace RandomizerCommon
                     }
                 }
             }
+
             // Now, have fun with NPCs
+            if (opt["nooutfits"]) return;
             // Just remove Symbol of Avarice first (may not matter with Irregulator, but those are more chaotic anyway)
             if (game.DS3) armors.RemoveAll(set => set.Ids[0] == 78500000);
-            Dictionary<string, ArmorSet> npcArmors = new Dictionary<string, ArmorSet>();
+            Dictionary<int, ArmorSet> npcArmors = new Dictionary<int, ArmorSet>();
+            Dictionary<string, int> npcNameRows = new Dictionary<string, int>();
             Func<ItemType, PARAM.Cell, float> cellWeight = (type, cell) =>
             {
                 int id = (int)cell.Value;
@@ -685,7 +708,11 @@ namespace RandomizerCommon
                 string name = game.CharacterName(row.ID);
                 if (name == null || name.Contains("Mimic Tear") || name == "Human") continue;
                 ArmorSet selectedArmor;
-                if (!npcArmors.ContainsKey(name))
+                if (!npcNameRows.TryGetValue(name, out int baseId))
+                {
+                    npcNameRows[name] = baseId = row.ID / 10;
+                }
+                if (!npcArmors.ContainsKey(baseId))
                 {
                     float weaponWeight = g.WeaponSlots.Select(slot => cellWeight(ItemType.WEAPON, row[slot])).Sum();
                     float armorWeight = g.ArmorSlots.Select(slot => cellWeight(ItemType.ARMOR, row[slot])).Sum();
@@ -697,11 +724,11 @@ namespace RandomizerCommon
                         armorLimit = armors.Count - 1;
                     }
                     armorLimit = Math.Min(20, armorLimit);
-                    selectedArmor = npcArmors[name] = armors[random.Next(armorLimit)];
+                    npcArmors[baseId] = selectedArmor = armors[random.Next(armorLimit)];
                     armors.Remove(selectedArmor);
                     if (printChars) Console.WriteLine($"Armor for {name}: {100 * weightLimit / totalWeight:0.##}% -> {100 * (selectedArmor.Weight + weaponWeight) / totalWeight:0.##}%: {string.Join(", ", selectedArmor.Ids.Select(id => game.Name(new ItemKey(ItemType.ARMOR, id))))}");
                 }
-                selectedArmor = npcArmors[name];
+                selectedArmor = npcArmors[baseId];
                 for (int j = 0; j < 4; j++)
                 {
                     if ((int)row[g.ArmorSlots[j]].Value != -1)

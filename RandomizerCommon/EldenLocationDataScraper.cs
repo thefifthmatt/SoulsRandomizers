@@ -49,9 +49,31 @@ namespace RandomizerCommon
             };
             if (opt["dumplot"]) syntheticUniqueItems.Clear();
 
+            if (opt["html"]) EldenDataPrinter.WriteHTMLHeader("Elden Ring Item Analysis");
+            void writeHtmlSection(string name, string color)
+            {
+                Console.WriteLine($"<h2>{name}</h2><div style=\"background-color: {color};\">");
+            }
+            void endHtmlSection()
+            {
+                Console.WriteLine("</div>");
+            }
+            void dump(string text)
+            {
+                if (opt["html"])
+                {
+                    Console.WriteLine(System.Net.WebUtility.HtmlEncode(text));
+                }
+                else
+                {
+                    Console.WriteLine(text);
+                }
+            }
             foreach (string lotType in new List<string> { "map", "enemy" })
             {
-                PARAM itemLots = game.Params[$"ItemLotParam_{lotType}"];
+                string paramName = $"ItemLotParam_{lotType}";
+                PARAM itemLots = game.Params[paramName];
+                if (opt["html"]) writeHtmlSection(paramName, lotType == "map" ? "#FFF" : "#F8FFFF");
                 LocationKey prevLocation = null;
                 foreach (KeyValuePair<int, List<EntityId>> entry in allLocs.UsedItemLots[lotType])
                 {
@@ -252,7 +274,7 @@ namespace RandomizerCommon
                             if (!isBase && opt["dumplot"]) text2 = "^";
                             if (eventFlag > 0) lotOutput += $" - flag {eventFlag}";
                             // string inter = $"[x{row["Unk94"].Value} y{row["Unk95"].Value}]";
-                            Console.WriteLine($"{itemLot} [{text2}] {lotOutput}");
+                            dump($"{itemLot} [{text2}] {lotOutput}");
                         }
 
                         itemLot++;
@@ -264,6 +286,7 @@ namespace RandomizerCommon
                 {
                     prevLocation.MaxSlots = 6;
                 }
+                if (opt["html"]) endHtmlSection();
             }
             
             Dictionary<int, LocationKey> shopLocations = new Dictionary<int, LocationKey>();
@@ -285,143 +308,151 @@ namespace RandomizerCommon
                 111000, // Self tailoring
                 112000, // Ash of War duplication. This may require event flag edits
             };
-            foreach (PARAM.Row row in game.Params["ShopLineupParam"].Rows.Concat(game.Params["ShopLineupParam_Recipe"].Rows))
+            foreach (string shopType in new[] { null, "Recipe" })
             {
-                int shopID = row.ID;
-                List<int> baseShops = getBaseShops(shopID);
-                if (baseShops.Count == 0)
+                string suffix = shopType == null ? "" : $"_{shopType}";
+                string paramName = "ShopLineupParam" + suffix;
+                if (opt["html"]) writeHtmlSection(paramName, shopType == null ? "#FFF" : "#F8FFFF");
+                foreach (PARAM.Row row in game.Params[paramName].Rows)
                 {
-                    // Console.WriteLine($"No base shop for {shopID}");
-                    if (!addUnused) continue;
-                }
-                else if (baseShops.All(baseShop => excludeBaseShops.Contains(baseShop)))
-                {
-                    // Exclude some known bad/nonrandomized shop ranges
-                    if (!addUnused) continue;
-                }
-
-                int qwc = (int)(uint)row["eventFlag_forRelease"].Value;
-                int type = (byte)row["equipType"].Value;
-                int id = (int)row["equipId"].Value;
-                int quantity = (short)row["sellQuantity"].Value;
-                int eventFlag = (int)(uint)row["eventFlag_forStock"].Value;
-                int material = (int)row["mtrlId"].Value;
-                int value = (int)row["value"].Value;
-                int display = (int)row["nameMsgId"].Value;
-                int purchaseType = (byte)row["costType"].Value;
-                qwcs[shopID] = qwc;
-                // string quantityText = quantity == -1 ? "" : $" ({quantity})"; // (unlimited)
-                // string qwcText = qwc == -1 ? "" : $" {game.QwcName(qwc)}";
-                ItemKey item = new ItemKey((ItemType)type, id);
-                List<string> costs = new List<string>();
-                PARAM.Row matRow = material <= 0 ? null : game.Params["EquipMtrlSetParam"][material];
-                if (matRow != null)
-                {
-                    for (int i = 1; i <= 5; i++)
+                    int shopID = row.ID;
+                    List<int> baseShops = getBaseShops(shopID);
+                    if (baseShops.Count == 0)
                     {
-                        int matItem = (int)matRow[$"materialId0{i}"].Value;
-                        int matType = (byte)matRow[$"materialCate0{i}"].Value;
-                        int matQuant = (sbyte)matRow[$"itemNum0{i}"].Value;
-                        if (matItem > 0)
+                        // Console.WriteLine($"No base shop for {shopID}");
+                        if (!addUnused) continue;
+                    }
+                    else if (baseShops.All(baseShop => excludeBaseShops.Contains(baseShop)))
+                    {
+                        // Exclude some known bad/nonrandomized shop ranges
+                        if (!addUnused) continue;
+                    }
+
+                    int qwc = (int)(uint)row["eventFlag_forRelease"].Value;
+                    int type = (byte)row["equipType"].Value;
+                    int id = (int)row["equipId"].Value;
+                    int quantity = (short)row["sellQuantity"].Value;
+                    int eventFlag = (int)(uint)row["eventFlag_forStock"].Value;
+                    int material = (int)row["mtrlId"].Value;
+                    int value = (int)row["value"].Value;
+                    int display = (int)row["nameMsgId"].Value;
+                    int purchaseType = (byte)row["costType"].Value;
+                    qwcs[shopID] = qwc;
+                    // string quantityText = quantity == -1 ? "" : $" ({quantity})"; // (unlimited)
+                    // string qwcText = qwc == -1 ? "" : $" {game.QwcName(qwc)}";
+                    ItemKey item = new ItemKey((ItemType)type, id);
+                    List<string> costs = new List<string>();
+                    PARAM.Row matRow = material <= 0 ? null : game.Params["EquipMtrlSetParam"][material];
+                    if (matRow != null)
+                    {
+                        for (int i = 1; i <= 5; i++)
                         {
-                            ItemKey mat = new ItemKey(matTypes[matType], matItem);
-                            string matQuantString = matQuant > 1 ? $" {matQuant}x" : "";
-                            costs.Add($"{ItemName(game, mat)}{matQuantString}");
+                            int matItem = (int)matRow[$"materialId0{i}"].Value;
+                            int matType = (byte)matRow[$"materialCate0{i}"].Value;
+                            int matQuant = (sbyte)matRow[$"itemNum0{i}"].Value;
+                            if (matItem > 0)
+                            {
+                                ItemKey mat = new ItemKey(matTypes[matType], matItem);
+                                string matQuantString = matQuant > 1 ? $" {matQuant}x" : "";
+                                costs.Add($"{ItemName(game, mat)}{matQuantString}");
+                            }
+                            // costText = $" for {materialQuant} {game.Name(new ItemKey(ItemType.GOOD, materialItem))}";
                         }
-                        // costText = $" for {materialQuant} {game.Name(new ItemKey(ItemType.GOOD, materialItem))}";
                     }
-                }
-                if (value != 0)
-                {
-                    if (value < 0) throw new Exception($"{row.ID}");
-                    // 930: 0, 96: 4, 21: 1, 9: 2, 5: 3
-                    List<string> units = new List<string> { "rune", "Dragon Heart", "Starlight Shard", "unknown", "Lost Ashes of War" };
-                    string unit = units[purchaseType];
-                    costs.Add(value == 1 ? $"{value} {unit}" : $"{value} {unit}s");
-                }
-                // string shopText = $"{qwcText}{quantityText}{costText} - event {eventFlag}";
-                SortedSet<EntityId> entities = new SortedSet<EntityId>();
-                foreach (int baseShop in baseShops)
-                {
-                    if (baseShop == 110000)
+                    if (value != 0)
                     {
-                        entities.Add(new EntityId("", "Boc"));
+                        if (value < 0) throw new Exception($"{row.ID}");
+                        // 930: 0, 96: 4, 21: 1, 9: 2, 5: 3
+                        List<string> units = new List<string> { "rune", "Dragon Heart", "Starlight Shard", "unknown", "Lost Ashes of War" };
+                        string unit = units[purchaseType];
+                        costs.Add(value == 1 ? $"{value} {unit}" : $"{value} {unit}s");
                     }
-                    else if (baseShop == 111000)
+                    // string shopText = $"{qwcText}{quantityText}{costText} - event {eventFlag}";
+                    SortedSet<EntityId> entities = new SortedSet<EntityId>();
+                    foreach (int baseShop in baseShops)
                     {
-                        entities.Add(new EntityId("", "Sites of Grace"));
+                        if (baseShop == 110000)
+                        {
+                            entities.Add(new EntityId("", "Boc"));
+                        }
+                        else if (baseShop == 111000)
+                        {
+                            entities.Add(new EntityId("", "Sites of Grace"));
+                        }
+                        else if (allLocs.UsedBaseShops.TryGetValue(baseShop, out List<EntityId> baseEntities))
+                        {
+                            entities.UnionWith(baseEntities);
+                        }
                     }
-                    else if (allLocs.UsedBaseShops.TryGetValue(baseShop, out List<EntityId> baseEntities))
-                    {
-                        entities.UnionWith(baseEntities);
-                    }
-                }
 
-                string source = "unknown";
-                if (entities.Count > 0)
-                {
-                    SortedSet<string> sources = new SortedSet<string>();
-                    sources.UnionWith(entities.Select(e => game.EntityName(e, true, true)));
-                    source = $"{string.Join(", ", sources)}";
-                }
-                string flagText = "";
-                if (display > 0) flagText += $" - display {display}";
-                if (eventFlag > 0) flagText += $" - flag {eventFlag}";
-                if (qwc > 0)
-                {
-                    // if (!opt["dumpshop"])
-                    flagText += $" - qwc {qwc}";
-                    flagText += $" - {game.QwcName(qwc)}";
-                }
-                if (opt["dumpshop"] && source != lastSource)
-                {
-                    Console.WriteLine($"--- {source}");
-                    lastSource = source;
-                }
-                string quantityStr = quantity > 0 ? $" {quantity}x" : "";
-                string costText = "";
-                if (costs.Count > 0) costText = " for " + string.Join(", ", costs);
-                string shopSuffix = $"{quantityStr}{costText}{flagText}";
+                    string source = "unknown";
+                    if (entities.Count > 0)
+                    {
+                        SortedSet<string> sources = new SortedSet<string>();
+                        sources.UnionWith(entities.Select(e => game.EntityName(e, true, true)));
+                        source = $"{string.Join(", ", sources)}";
+                    }
+                    string flagText = "";
+                    if (display > 0) flagText += $" - display {display}";
+                    if (eventFlag > 0) flagText += $" - flag {eventFlag}";
+                    if (qwc > 0)
+                    {
+                        // if (!opt["dumpshop"])
+                        flagText += $" - qwc {qwc}";
+                        flagText += $" - {game.QwcName(qwc)}";
+                    }
+                    if (opt["dumpshop"] && source != lastSource)
+                    {
+                        Console.WriteLine($"--- {source}");
+                        lastSource = source;
+                    }
+                    string quantityStr = quantity > 0 ? $" {quantity}x" : "";
+                    string costText = "";
+                    if (costs.Count > 0) costText = " for " + string.Join(", ", costs);
+                    string shopSuffix = $"{quantityStr}{costText}{flagText}";
 
-                if (opt["dumpshop"])
-                {
-                    Console.WriteLine($"{shopID}: {ItemName(game, item)}{shopSuffix}");
-                }
-                if (opt["dumpspells"])
-                {
-                    if (shopID < 600000 && item.Type == ItemType.GOOD && item.ID >= 4000 && item.ID < 8000)
+                    if (opt["dumpshop"])
                     {
-                        AddMulti(spellShops, item, (shopID, eventFlag));
+                        dump($"{shopID}: {ItemName(game, item)}{shopSuffix}");
                     }
-                }
-                LocationKey location = new LocationKey(
-                    LocationType.SHOP, shopID, $"shop {shopID}[{source}]{shopSuffix}", entities.ToList(), quantity, 1, null);
-                ItemScope scope;
-                if (eventFlag > 0)
-                {
-                    if (equivalentEvents.ContainsKey(eventFlag))
+                    if (opt["dumpspells"])
                     {
-                        eventFlag = equivalentEvents[eventFlag];
+                        if (shopID < 600000 && item.Type == ItemType.GOOD && item.ID >= 4000 && item.ID < 8000)
+                        {
+                            AddMulti(spellShops, item, (shopID, eventFlag));
+                        }
                     }
-                    if (quantity <= 0)
+                    LocationKey location = new LocationKey(
+                        LocationType.SHOP, shopID, $"shop {shopID}[{source}]{shopSuffix}",
+                        entities.ToList(), quantity, 1, null, shopType);
+                    ItemScope scope;
+                    if (eventFlag > 0)
                     {
-                        // Console.WriteLine($"XX No quantity for event flag shop entry {shopID}");
+                        if (equivalentEvents.ContainsKey(eventFlag))
+                        {
+                            eventFlag = equivalentEvents[eventFlag];
+                        }
+                        if (quantity <= 0)
+                        {
+                            // Console.WriteLine($"XX No quantity for event flag shop entry {shopID}");
+                        }
+                        ScopeType scopeType = quantity > 0 ? ScopeType.EVENT : ScopeType.SHOP_INFINITE;
+                        scope = new ItemScope(scopeType, eventFlag);
                     }
-                    ScopeType scopeType = quantity > 0 ? ScopeType.EVENT : ScopeType.SHOP_INFINITE;
-                    scope = new ItemScope(scopeType, eventFlag);
+                    // TODO: Figure out what to do with materials. Most of these are probably not randomized.
+                    else if (false)
+                    {
+                        int materialItem = (int)game.Params["EquipMtrlSetParam"][material]["MaterialId01"].Value;
+                        scope = new ItemScope(ScopeType.MATERIAL, materialItem);
+                    }
+                    else
+                    {
+                        // Console.WriteLine($"infinite eventless {shopID}: {ItemName(game, item)}{shopSuffix}");
+                        scope = new ItemScope(ScopeType.SHOP_INFINITE, -1);
+                    }
+                    data.AddLocation(item, scope, location);
                 }
-                // TODO: Figure out what to do with materials. Most of these are probably not randomized.
-                else if (false)
-                {
-                    int materialItem = (int)game.Params["EquipMtrlSetParam"][material]["MaterialId01"].Value;
-                    scope = new ItemScope(ScopeType.MATERIAL, materialItem);
-                }
-                else
-                {
-                    // Console.WriteLine($"infinite eventless {shopID}: {ItemName(game, item)}{shopSuffix}");
-                    scope = new ItemScope(ScopeType.SHOP_INFINITE, -1);
-                }
-                data.AddLocation(item, scope, location);
+                if (opt["html"]) endHtmlSection();
             }
             if (opt["dumpspells"])
             {
@@ -481,14 +512,16 @@ namespace RandomizerCommon
                     loc.LocScope = locationScope;
                     // if (flags.Count >= 2) Console.WriteLine($"{loc}");
                 }
-                entry.Value.Unique = unique > 0;
+                entry.Value.Unique = entry.Key.Type != ItemType.ARMOR && unique > 0;
             }
 
+#if DEV
             if (opt["dumpitemflag"])
             {
                 new EnemyConfigGen(game, null, null).WriteEldenItemEvents(data);
                 return null;
             }
+#endif
 
             return data;
         }
@@ -803,8 +836,9 @@ namespace RandomizerCommon
                 }
             }
             // Map from NPC param ids to name ids
+            // Boss names take priority over this, and CharaInitParam ids are used for humans.
+            // This particular mapping is mainly used for merchant shops, to match up map point entries with Bell Bearing flags.
             Dictionary<int, int> npcParamNames = new Dictionary<int, int>();
-            // This isn't actually used, since the main purpose is to identify bosses, and this is redundant with CharaInitParam names...
             foreach (PARAM.Row row in game.Params["NpcParam"].Rows)
             {
                 int nameId = (int)row["nameId"].Value;
@@ -906,8 +940,6 @@ namespace RandomizerCommon
                 }
             }
 
-            Dictionary<string, MSBX> maps = game.Maps.ToDictionary(e => e.Key, e => e.Value as MSBX);
-
             HashSet<int> trackAssets = new HashSet<int>(game.Params["AssetEnvironmentGeometryParam"].Rows
                 .Where(r => (int)r["pickUpItemLotParamId"].Value > 0)
                 .Select(r => r.ID));
@@ -922,28 +954,29 @@ namespace RandomizerCommon
                 }
                 return fullMap;
             }
-            foreach (KeyValuePair<string, MSBX> entry in maps)
+            foreach (KeyValuePair<string, MSBE> entry in game.EldenMaps)
             {
                 string location = entry.Key;
-                MSBX msb = entry.Value;
-                foreach (MSBX.Part part in msb.PartsX)
+                MSBE msb = entry.Value;
+                foreach (MSBE.Part part in msb.Parts.GetEntries())
                 {
                     EntityId id;
                     int esdId = 0;
-                    string typeStr = part.Type.ToString().ToLowerInvariant();
-                    if (part.Type == MSBX.PartType.Enemy) // part.Type == MSBX.PartType.DummyEnemy
+                    string typeStr = part.GetType().Name.ToLowerInvariant();
+                    if (part is MSBE.Part.Enemy e) // part is MSBE.Part.DummyEnemy
                     {
-                        esdId = part.TalkID;
+                        esdId = e.TalkID;
                         string partLocation = entityMapName(location, part.Name);
                         List<int> groupIDs = part.EntityGroupIDs.Where(groupID => groupID > 0).Select(g => (int)g).ToList();
-                        id = new EntityId(partLocation, part.Name, (int)part.EntityID, part.NPCParamID, part.CharaInitID, groupIDs, Type: typeStr);
+                        id = new EntityId(partLocation, part.Name, (int)part.EntityID, e.NPCParamID, e.CharaInitID, groupIDs, Type: typeStr);
+                        id.TalkID = esdId;
                     }
-                    else if (part.Type == MSBX.PartType.Asset || part.Type == MSBX.PartType.DummyAsset || logEntities)
+                    else if (part is MSBE.Part.Asset || part is MSBE.Part.DummyAsset || logEntities)
                     {
                         string partLocation = entityMapName(location, part.Name);
                         List<int> groupIDs = part.EntityGroupIDs.Where(groupID => groupID > 0).Select(g => (int)g).ToList();
                         id = new EntityId(partLocation, part.Name, (int)part.EntityID, GroupIds: groupIDs, Type: typeStr);
-                        if (part.Type == MSBX.PartType.Asset)
+                        if (part is MSBE.Part.Asset)
                         {
                             int modelId = id.GetModelID();
                             // Filter these so we don't have to rifle through a million assets later
@@ -966,10 +999,15 @@ namespace RandomizerCommon
                         // Convert local coords to match MapName if they mismatch
                         Vector3 global = coord.ToGlobalCoords(location, part.Position).Item1;
                         id.Position = coord.ToLocalCoords(id.MapName, global);
+                        id.OriginalMapName = location;
                     }
                     if (entityNpcNames.TryGetValue(id.EntityID, out SortedSet<int> nameIds))
                     {
                         id.NameID = nameIds.First();
+                    }
+                    else if (npcParamNames.TryGetValue(id.NPCParamID, out int paramNameId))
+                    {
+                        id.NameID = paramNameId;
                     }
 
                     objects[id] = id;
@@ -1026,24 +1064,23 @@ namespace RandomizerCommon
                     AddMulti(ret.UsedBaseShops, entry.Key, usedEsds.ContainsKey(esd) ? usedEsds[esd] : esdEntity(esd, "unused "));
                 }
             }
-            foreach (KeyValuePair<string, MSBX> entry in maps)
+            foreach (KeyValuePair<string, MSBE> entry in game.EldenMaps)
             {
                 string location = entry.Key;
-                MSBX msb = entry.Value;
-                foreach (MSBX.Treasure treasure in msb.Treasures)
+                MSBE msb = entry.Value;
+                foreach (MSBE.Event.Treasure treasure in msb.Events.Treasures)
                 {
-                    if (treasure.PartID >= 0)
+                    if (treasure.TreasurePartName != null)
                     {
-                        MSBX.Part part = msb.PartsX[treasure.PartID];
-                        EntityId id = new EntityId(location, part.Name);
-                        if (!objects.ContainsKey(id))
+                        EntityId keyId = new EntityId(location, treasure.TreasurePartName);
+                        if (!objects.TryGetValue(keyId, out EntityId id))
                         {
-                            if (logUnused) Console.WriteLine($"Missing entity for treasure {part.Name} and lot {treasure.ItemLotID}");
+                            // This will happen for dummy assets, but that is fine
+                            if (logUnused) Console.WriteLine($"Missing entity for treasure {treasure.TreasurePartName} and lot {treasure.ItemLotID}");
                             continue;
                         }
-                        if (part.Type == MSBX.PartType.DummyAsset) continue;
-                        AddMulti(ret.UsedItemLots["map"], treasure.ItemLotID, objects[id]);
-                        // Console.WriteLine($"Treasure {game.EntityName(id, true)}: lot {treasure.ItemLotID}, action {treasure.ActionButtonParamID}, chest {treasure.InChest}");
+                        if (id.Type == "dummyasset") continue;
+                        AddMulti(ret.UsedItemLots["map"], treasure.ItemLotID, id);
                     }
                 }
             }

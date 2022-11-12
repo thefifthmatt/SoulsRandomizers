@@ -1,696 +1,1578 @@
 {
   "language": "日本語",
-  "translators": "Your name here",
+  "translators": "Kuroko",
   "messages": [
     {
       "name": "EldenForm_allitem0",
       "explanation": "Explanation for regular item placement for 0 bias%, unweighted randomization",
       "english_text": "All eligible locations for items are equally likely.",
-      "text": ""
+      "text": "アイテムの配置先はすべて均等になります。"
     },
     {
       "name": "EldenForm_allitem1",
       "explanation": "Explanation for regular item placement at low bias%, slightly weighted",
       "english_text": "Most eligible locations for items are equally likely.",
-      "text": ""
+      "text": "アイテムの配置先はほとんど均等になります。"
     },
     {
       "name": "EldenForm_allitem2",
       "explanation": "Explanation for regular item placement at medium bias%. Desirable items are placed later in the game, or hidden, or dropped by hard bosses",
       "english_text": "Better rewards for difficult and late locations.",
-      "text": ""
+      "text": "難易度が高い後半マップに良いアイテムがより配置されます。"
     },
     {
       "name": "EldenForm_allitem3",
       "explanation": "Explanation for regular item placement at high bias%, which is medium but moreso",
       "english_text": "Much better rewards for difficult and late locations.",
-      "text": ""
+      "text": "難易度が高い後半マップに良いアイテムがたくさん配置されます。"
     },
     {
       "name": "EldenForm_allmaps",
       "explanation": "Checkbox for mode where the player does not have to collect map fragments or visit places for them to show up on the map",
       "english_text": "Unlock all map fragments and icons at the start",
-      "text": ""
+      "text": "すべての地図断片とアイコンを最初から解禁"
     },
     {
       "name": "EldenForm_biasGroup",
       "explanation": "Label for number slider from 0% to 100% which changes randomization from uniform (anything can go anywhere) to weighted (more key item chaining and more preference for later/difficult locations)",
       "english_text": "Bias",
-      "text": ""
+      "text": "バイアス"
+    },
+    {
+      "name": "EldenForm_bosshp",
+      "explanation": "When checked, non-boss enemies can have their HP increased when they become boss enemies (e.g. Crab the Fell Omen)",
+      "english_text": "Increase HP for regular enemies as bosses",
+      "text": "ボスとして現れた雑魚敵の HP を増加"
+    },
+    {
+      "name": "EldenForm_confirmCreatePreset",
+      "explanation": "Confirm prompt to write a preset file from an options file. {0} is the file name. \n means to insert a newline - do not put spaces around it.",
+      "english_text": "Create preset file?\n{0}",
+      "text": "以下のプリセットファイルが作成されます。\n{0}"
+    },
+    {
+      "name": "EldenForm_confirmOverwritePreset",
+      "explanation": "Same as confirmCreatePreset, but when the file already exists",
+      "english_text": "Overwrite preset file?\n{0}",
+      "text": "以下のプリセットファイルが上書きされます。よろしいですか？\n{0}"
+    },
+    {
+      "name": "EldenForm_convenienceGroup",
+      "explanation": "Label for options in the Misc tab which allow changes to the game to make playthroughs more convenient and straightforward, unrelated to randomization",
+      "english_text": "Convenience",
+      "text": "便利系"
+    },
+    {
+      "name": "EldenForm_customGroup",
+      "explanation": "Label for enemy randomizer options for custom enemy distribution",
+      "english_text": "Customization",
+      "text": "カスタマイズ"
     },
     {
       "name": "EldenForm_default_boss",
       "explanation": "When checked, bosses with achievements can have important items. Currently this cannot be disabled",
       "english_text": "Major bosses",
-      "text": ""
+      "text": "大ボス"
     },
     {
       "name": "EldenForm_default_bossL",
       "explanation": "Explanation for default_boss. {0} is a number like 40. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
       "english_text": "Approx {0} checks. Includes all bosses which have achievements",
-      "text": ""
+      "text": "約 {0} をチェック - 実績付きのボス"
+    },
+    {
+      "name": "EldenForm_default_custom",
+      "explanation": "When checked, enables customizing enemy placement through PresetEditForm",
+      "english_text": "Custom enemy placement",
+      "text": "敵をカスタム配置"
     },
     {
       "name": "EldenForm_default_health",
       "explanation": "Response to healthGroup (Flask upgrades randomized?) which places Golden Seeds/Sacred Tears anywhere",
       "english_text": "To anywhere",
-      "text": ""
+      "text": "すべての場所"
     },
     {
       "name": "EldenForm_default_key",
       "explanation": "Response to keyGroup (Key items randomized?) which places key items in important locations",
       "english_text": "To important locations",
-      "text": ""
+      "text": "重要な場所"
     },
     {
       "name": "EldenForm_default_reroll",
       "explanation": "Checkbox under seed number which generates a new seed every time 'Randomize' is clicked, instead of using the existing seed",
       "english_text": "Reroll seed",
-      "text": ""
+      "text": "シードを再生成させる"
+    },
+    {
+      "name": "EldenForm_default_twohand",
+      "explanation": "Radio button under starting class randomization which allows starting with weapons which require two-handing to use (slightly under real strength requirements)",
+      "english_text": "Allow weapons requiring two-handing",
+      "text": "両手持ちで使用可能となる武器を含める"
     },
     {
       "name": "EldenForm_default_upgrades",
       "explanation": "Response to healthGroup (Upgrade Bell Bearings randomized?) which places them anywhere",
       "english_text": "To anywhere",
-      "text": ""
+      "text": "すべての場所"
     },
     {
       "name": "EldenForm_defaultRerollEnemy",
       "explanation": "Checkbox under enemy-specific seed number which behaves like default_reroll for the enemy randomizer seed",
       "english_text": "Reroll enemy seed seperately",
-      "text": ""
+      "text": "敵シードを別個に再生成させる"
     },
     {
       "name": "EldenForm_earlylegacy",
       "explanation": "Checkbox for mode where the items to enter Stormveil and Raya Lucaria are available early",
       "english_text": "Early legacy dungeons are available early",
-      "text": ""
+      "text": "序盤のレガシーダンジョンは序盤から攻略可"
     },
     {
       "name": "EldenForm_earlylegacyL",
       "explanation": "Explanation for earlylegacy, talking about Rusty Key and Academy Glintstone Key",
       "english_text": "Place Rusty Key in Limgrave and Academy Key in Liurnia",
-      "text": ""
+      "text": "リムグレイブ内に錆びた鍵、リエーニエ内に学院の鍵を配置します"
+    },
+    {
+      "name": "EldenForm_editnames",
+      "explanation": "When checked",
+      "english_text": "Edit boss names",
+      "text": "ボスの名前を編集"
+    },
+    {
+      "name": "EldenForm_enemyPage",
+      "explanation": "Main checkbox and tab for Enemy Randomizer",
+      "english_text": "Enemy Randomizer",
+      "text": "Enemy Randomizer"
     },
     {
       "name": "EldenForm_enemyPreviewL",
       "explanation": "Text explaining that enemy randomizer is not available yet",
       "english_text": "Implementation in progress!\n\nCheck the mod page for updates. Join the\nFromSoft Randomizer Dev discord server for\nfeedback and early testing.",
-      "text": ""
+      "text": "実装途中です！\n\nMod の公開ページから更新をチェックできます。\nFromSoft Randomizer Dev discord サーバーに参加すれば\nフィードバックしたり、早期テストに参加できます。"
     },
     {
       "name": "EldenForm_enemyseedError",
       "explanation": "Error message for enemy randomizer seed (not a number, too many digits, etc.)",
       "english_text": "Invalid enemy seed",
-      "text": ""
+      "text": "不正な敵シード"
     },
     {
       "name": "EldenForm_enemyseedL",
       "explanation": "Label for enemy randomizer seed textbox",
       "english_text": "Separate enemy seed:",
-      "text": ""
+      "text": "敵シード（別個）:"
     },
     {
       "name": "EldenForm_enemyseedPlaceholder",
       "explanation": "Placeholder text in the enemy randomizer seed textbox when it's empty. By default, if not specified, the enemy randomizer seed is just the same as the overall seed",
       "english_text": "(same as overall seed)",
-      "text": ""
+      "text": "(全体シードと同一)"
+    },
+    {
+      "name": "EldenForm_enemyWarningL",
+      "explanation": "Note in enemy tab about stability of the randomizer. This advice may change over time. Quitting to main menu does usually make sounds load in better.",
+      "english_text": "Warning: Placing too many bosses in the game may result in crashes and frame rate drops. Also, if enemies stop making sounds, you can usually save+quit to remedy this.",
+      "text": "注意: ボスを大量に配置すると強制終了したり、FPS が低下してしまう場合があります。敵が音を出さなくなった場合、終了して保存すると治るでしょう。"
     },
     {
       "name": "EldenForm_exeButton",
       "explanation": "Label for button to open file select for eldenring.exe",
       "english_text": "Select game exe",
-      "text": ""
+      "text": "ゲームの実行ファイルを指定"
+    },
+    {
+      "name": "EldenForm_extraRandomGroup",
+      "explanation": "Label for options in Misc tab which allow randomization other than item and enemy randomization",
+      "english_text": "Additional randomization",
+      "text": "その他のランダム化"
     },
     {
       "name": "EldenForm_fileCopyOodleError",
       "explanation": "Error message when a dll in the game directory cannot be found and the user must locate it themselves. This dll is needed to unpack game files, and randomizer needs it, but for copyright reasons it's not distributed inside the randomizer zip",
       "english_text": "Error: Oodle not found\nCopy oo2core_6_win64.dll from your game directory into the randomizer directory",
-      "text": ""
+      "text": "エラー: Oodle が見つかりません\nゲームディレクトリから randomizer のディレクトリに oo2core_6_win64.dll をコピーしてください"
     },
     {
       "name": "EldenForm_fileExeEmptyError",
       "explanation": "Validation error when the exe textbox is empty",
       "english_text": "Error: Game exe not provided",
-      "text": ""
+      "text": "エラー: ゲームの実行ファイルが未指定です"
     },
     {
       "name": "EldenForm_fileExeMissingError",
       "explanation": "Validation error when the exe textbox is not empty but the file referenced does not actually exist",
       "english_text": "Error: Game exe does not exist",
-      "text": ""
+      "text": "エラー: ゲームの実行ファイルが見つかりません"
     },
     {
       "name": "EldenForm_fileMissingRegulationError",
       "explanation": "Validation error when the exe textbox directory does not contain a required game file, regulation.bin",
       "english_text": "Error: Invalid game exe (cannot find regulation.bin in game directory)",
-      "text": ""
+      "text": "エラー: ゲームが不正に実行されています（ゲームディレクトリに regulation.bin がありません）"
     },
     {
       "name": "EldenForm_fileOodleMissingError",
       "explanation": "Validation error when the exe textbox directory does not contain a required game file, oo2core_6_win64.dll (see also fileCopyOodleError)",
       "english_text": "Error: Invalid game exe (cannot find oo2core_6_win64.dll in game directory)",
-      "text": ""
+      "text": "エラー: ゲームが不正に実行されています（ゲームディレクトリに oo2core_6_win64.dll がありません）"
     },
     {
       "name": "EldenForm_fileUnpackError",
       "explanation": "Error usually encountered when the randomizer exe is run from 7zip etc, without unpacking it. (In the future, this message may be copied inside the program itself, because messages are themselves in metadata files)",
       "english_text": "Error: Can't find required metadata files.\nFor the randomizer to work, you must unpack it to disk and keep all of the files together",
-      "text": ""
+      "text": "エラー: 必要なメタデータファイルが見つかりません。\nrandomizer を動作させるには必ずディスク上にファイルを展開し、同じディレクトリにまとめてください。"
     },
     {
       "name": "EldenForm_fileUxmPatchWarning",
       "explanation": "Validation warning for game exe textbox. A file that usually indicates the user did UXM Patch does not exist",
       "english_text": "Warning: UXM output is selected, but the game may not be patched (_backup\\eldenring.exe not found)",
-      "text": ""
+      "text": "警告: UXM 用の出力が選択されていますが、ゲームにパッチが適用されていない可能性があります（_backup\\eldenring.exe が見つかりません）"
     },
     {
       "name": "EldenForm_fileUxmUnpackError",
       "explanation": "Validation error for the game exe textbox. When the user does UXM Unpack, it adds directories with game data which must exist",
       "english_text": "Error: UXM output is selected, but the game is not unpacked (event subdirectory not found)",
-      "text": ""
+      "text": "エラー: UXM 用に出力するよう選択されていますが、ゲームが未展開です（event ディレクトリが見つかりません）"
     },
     {
       "name": "EldenForm_fixedseedL",
       "explanation": "Label for seed number textbox. 'Overall' means it's for both item and enemy randomizer, in the future",
       "english_text": "Overall seed:",
-      "text": ""
+      "text": "全体シード:"
     },
     {
       "name": "EldenForm_healthGroup",
       "explanation": "Label asking how to randomize Golden Seeds/Sacred Tears",
       "english_text": "Flask upgrades randomized?",
-      "text": ""
+      "text": "聖杯瓶（種子と雫）のランダム化"
     },
     {
       "name": "EldenForm_hintGroup",
       "explanation": "Label for options which show hints and item locations inside the game",
       "english_text": "Hints",
-      "text": ""
+      "text": "ヒント"
+    },
+    {
+      "name": "EldenForm_impolite",
+      "explanation": "Checkbox to change enemy AI behavior, so that enemies gang up on the player in larger groups, instead of staying back. Added for Enemy Onslaught mode, but can work in all modes",
+      "english_text": "Impolite enemies",
+      "text": "敵グループのタコ殴り"
+    },
+    {
+      "name": "EldenForm_impoliteL",
+      "explanation": "Explanation label for 'Impolite enemies'",
+      "english_text": "Make enemies less passive in groups",
+      "text": "集団の敵がより積極的に襲いかかってきます"
+    },
+    {
+      "name": "EldenForm_invertoutfits",
+      "explanation": "Option to change clothes of NPC human models, such as Gideon and Fia, to a random armor set",
+      "english_text": "Randomize NPC outfits",
+      "text": "NPCの服装をランダムにする"
+    },
+    {
+      "name": "EldenForm_invertstarting",
+      "explanation": "Option to change starting class armor and weapons, followed by additional options on allowed weapons",
+      "english_text": "Randomize starting class loadouts",
+      "text": "素性の初期装備をランダムにする"
+    },
+    {
+      "name": "EldenForm_itemPage",
+      "explanation": "Main checkbox and tab for Enemy Randomizer",
+      "english_text": "Item Randomizer",
+      "text": "Item Randomizer"
     },
     {
       "name": "EldenForm_keyGroup",
       "explanation": "Label asking how to randomize key items",
       "english_text": "Key items randomized?",
-      "text": ""
+      "text": "キーアイテムのランダム化"
     },
     {
       "name": "EldenForm_keyitem0",
       "explanation": "Explanation for key item placement for 0 bias%, unweighted randomization",
       "english_text": "Key items may be in locations that don't require completing much of the game.",
-      "text": ""
+      "text": "キーアイテムは場合により、本編クリアとあまり関係のない場所に置かれます。"
     },
     {
       "name": "EldenForm_keyitem1",
       "explanation": "Explanation for key item placement for low bias%. Multiple key items are less likely to be placed in the same area, and more likely to be placed in an area unlocked by a different key item.",
       "english_text": "Key items will usually be in different areas and depend on each other.",
-      "text": ""
+      "text": "キーアイテムは通常、隣接する別のエリアに置かれます。"
     },
     {
       "name": "EldenForm_keyitem2",
       "explanation": "Explanation for key item placement for medium bias%, low but moreso",
       "english_text": "Key items will usually be in different areas and form interesting chains.",
-      "text": ""
+      "text": "キーアイテムは通常、面白さを感じることができる繋がり方で別のエリアに置かれます。"
     },
     {
       "name": "EldenForm_keyitem3",
       "explanation": "Explanation for key item placement for high bias%, medium but moreso",
       "english_text": "Key items will usually form long chains across different areas.",
-      "text": ""
+      "text": "キーアイテムは通常、遠く離れたエリアに置かれます。"
     },
     {
       "name": "EldenForm_languageL",
       "explanation": "Label for dropdown box to select randomizer UI language",
       "english_text": "Language:",
-      "text": ""
+      "text": "言語"
+    },
+    {
+      "name": "EldenForm_launchButton",
+      "explanation": "Button in randomizer to try to start the game Elden Ring when it's installed on Steam and Mod Engine can be used",
+      "english_text": "Launch Elden Ring",
+      "text": "ELDEN RING を起動"
+    },
+    {
+      "name": "EldenForm_launchFailed",
+      "explanation": "Long errorm essage debugging 'Launch Elden Ring' failing. It suggests basic prerequisites for using Mod Engine, and otherwise, suggests using the two other installation options, manual Mod Engine or UXM.",
+      "english_text": "Automatic Mod Engine launcher appeared to fail.\n\nMake sure Steam is running. If the game is currently running, close it and wait until it is fully shut down.\n\nCheck Troubleshooting on https://www.nexusmods.com/eldenring/mods/428/ to see when Mod Engine might fail. You may need to try using a manual Mod Engine launcher or UXM installation.",
+      "text": "Mod Engineの自動起動に失敗しました。\n\nSteamは起動されていますか？ゲームが起動中の場合、まずは終了し、完全に落ちるまで待ってみてください。\n\nそれでも失敗するなら、https://www.nexusmods.com/eldenring/mods/428/ に記載されている Mod Engine のトラブルシューティングを確認しましょう。場合によっては Mod Engine を直接起動したり、UXM をインストールする必要があります。"
+    },
+    {
+      "name": "EldenForm_launchFailedTitle",
+      "explanation": "Title of the dialog box with launchFailed",
+      "english_text": "Launch failed",
+      "text": "起動失敗"
+    },
+    {
+      "name": "EldenForm_launchMismatch",
+      "explanation": "Dialog box shown to confirm 'Launch Elden Ring' when the launch files are different from the currently selected options.",
+      "english_text": "Randomizer options appear to be changed from the last time randomizer was run. Launch anyway?",
+      "text": "Randomizer のオプションが前回実行したときから変更されているようです。起動してよろしいですか？"
+    },
+    {
+      "name": "EldenForm_launchRunning",
+      "explanation": "dialog box shown to confirm 'Launch Elden Ring' when it's alrady running. As part of automatic Mod Engine launcher usage, it can't launch the game if it's already running according to Steam",
+      "english_text": "Elden Ring appears to be already running, so launching with Mod Engine will have no effect. Try anyway?",
+      "text": "Elden Ring が実行中のため、Mod Engine から起動しても何も起こりません。無視して起動しますか？"
+    },
+    {
+      "name": "EldenForm_loadOptionsFileToolStripMenuItem",
+      "explanation": "Action in the Options menu for selecting an options file to set all randomizer options",
+      "english_text": "Load options file...",
+      "text": "オプション登録ファイルの読み込み..."
     },
     {
       "name": "EldenForm_locationGroup",
       "explanation": "Label for a bunch of options to enable or disable various game locations having important items in them",
       "english_text": "Important locations",
-      "text": ""
+      "text": "重要な場所"
+    },
+    {
+      "name": "EldenForm_locationGroup",
+      "explanation": "Label for a bunch of options to enable or disable various game locations having important items in them",
+      "english_text": "Which locations are important locations?",
+      "text": "重要な場所"
+    },
+    {
+      "name": "EldenForm_locationOverviewL",
+      "explanation": "Some additional text to display next to the 'Important locations' section to explain what the checkboxes do",
+      "english_text": "Important locations are places you may need to check to find items required to beat the game.",
+      "text": "重要な場所にはクリアするために見つける必要のあるアイテムが配置されます。"
     },
     {
       "name": "EldenForm_markareas",
       "explanation": "Checkbox to modify Kalé's menu to spend runes to mark overall areas with required items (like Limgrave, Altus Tunnel, Leyndell) on the map",
       "english_text": "Purchase markers for required areas from Kalé",
-      "text": ""
+      "text": "カーレから必要アイテムの配置エリアのマーカーを購入可"
     },
     {
       "name": "EldenForm_markareasL",
       "explanation": "Explanation for when you can buy hint markers in-game from Kalé",
       "english_text": "Markers are unavailable before reaching Altus Plateau",
-      "text": ""
+      "text": "アルター高原に到達するまで利用できません"
     },
     {
       "name": "EldenForm_markitems",
       "explanation": "Extension to markareas which also allows you to spend runes to mark the exact location of an item (the corpse to loot, or the boss that drops it)",
       "english_text": "Purchase markers for exact item locations from Kalé",
-      "text": ""
+      "text": "カーレから正確な場所のマーカーを購入可"
     },
     {
       "name": "EldenForm_mats",
       "explanation": "Checkbox to move around items with 'Acquire materials' pickup prompt",
       "english_text": "Randomize collectible materials like Rowa Fruit",
-      "text": ""
+      "text": "収集素材（ロアの実など）のランダム化"
     },
     {
       "name": "EldenForm_matsL",
       "explanation": "Explanation for 'mats' checkbox. Currently this randomization doesn't happen across the entire game, only within maps.",
       "english_text": "Move materials nearby their original location",
-      "text": ""
+      "text": "素材を元の場所の近くに移動"
+    },
+    {
+      "name": "EldenForm_mergeButton",
+      "explanation": "Button to open a file select dialog for an alternate file-based mod to merge",
+      "english_text": "Select other mod",
+      "text": "他の Mod を指定"
     },
     {
       "name": "EldenForm_mergemods",
-      "explanation": "Checkbox to incorporate existing modifications to regulation.bin (game params) into the randomizer's output",
-      "english_text": "Merge existing param mods",
-      "text": ""
+      "explanation": "Checkbox to incorporate existing modifications to game files into the randomizer's output. Previously only merged param (regulation.bin) mods",
+      "english_text": "Merge \"mod\" directory",
+      "text": "\"mod\" ディレクトリを統合"
     },
     {
       "name": "EldenForm_miscGroup",
       "explanation": "Label for miscellaneous options with no other grouping. These usually add non-randomizer-related conveniences",
       "english_text": "Misc",
-      "text": ""
+      "text": "その他"
+    },
+    {
+      "name": "EldenForm_miscGroupEnemy",
+      "explanation": "Label for set of options with miscellaneous enemy randomizer options",
+      "english_text": "Misc",
+      "text": "その他"
+    },
+    {
+      "name": "EldenForm_miscPage",
+      "explanation": "Tab page title for miscellaneous options which apply outside of item/enemy randomization",
+      "english_text": "Misc Options",
+      "text": "その他のオプション"
+    },
+    {
+      "name": "EldenForm_multcolor",
+      "explanation": "Checkbox to change the color of a boss when it is duplicated, to keep track of which is which. Like if there are 2 Margits at once, one is blue and the other is red.",
+      "english_text": "Color-code bosses in Enemy Onslaught",
+      "text": "敵倍化モードにおけるボスの色分け"
+    },
+    {
+      "name": "EldenForm_multhp",
+      "explanation": "Checkbox to reduce HP for bosses when they are multiplied using Enemy Onslaught mode",
+      "english_text": "Reduce HP for bosses in Enemy Onslaught",
+      "text": "敵倍化モードにおけるボスの HP を減少"
+    },
+    {
+      "name": "EldenForm_multhp",
+      "explanation": "Checkbox to reduce HP for bosses when they are multiplied using Enemy Onslaught mode (like 2x becomes around 70% health each, 3x becomes around 57% health each)",
+      "english_text": "Reduce HP for bosses in Enemy Onslaught slightly",
+      "text": "敵倍化モードにおけるボスの HP をわずかに減少"
     },
     {
       "name": "EldenForm_nerfmalenia",
       "explanation": "Checkbox to disable Malenia healing when she hits you",
       "english_text": "Disable heal-on-hit by a late-game boss",
-      "text": ""
+      "text": "とある後半ボスのヒット時回復を無効"
     },
     {
       "name": "EldenForm_night",
       "explanation": "When checked, bosses which only spawn at night (Night's Calvalry, Bell Bearing Hunters, etc.) can have important items. Only if raceloc_altboss is enabled",
       "english_text": "Include night-only bosses",
-      "text": ""
+      "text": "夜限定ボスを含める"
     },
     {
       "name": "EldenForm_nightL",
       "explanation": "Label for 'night' checkbox. {0} is a number like 10, and is 'additional' with the 'all bosses' label",
       "english_text": "Approx {0} additional checks",
-      "text": ""
+      "text": "約 {0} を追加チェック"
     },
     {
       "name": "EldenForm_nocaves",
       "explanation": "When checked, location in mini-dungeons *cannot* have important items",
       "english_text": "Exclude caves, graves, catacombs, and tunnels",
-      "text": ""
+      "text": "洞窟、英雄墓、地下墓、坑道を除外する"
     },
     {
       "name": "EldenForm_nocavesL",
       "explanation": "Explanation for nocaves. This option overrides other options and causes the UI to update accordingly.",
       "english_text": "Exclude mini-dungeons from all of the above locations",
-      "text": ""
+      "text": "上記すべての場所からミニダンジョンを除外"
+    },
+    {
+      "name": "EldenForm_nohand",
+      "explanation": "Radio button for starting class randomization: if chosen, all starting class stat requirements are completely ignored, and the player may start with a weapon or spell they do not have the stats to use",
+      "english_text": "Allow unwieldable weapon and spells",
+      "text": "使用できない武器・呪文を含める"
     },
     {
       "name": "EldenForm_norandom",
       "explanation": "Response to keyGroup (Key items randomized?) which does not randomize key items",
       "english_text": "No",
-      "text": ""
+      "text": "無効"
     },
     {
       "name": "EldenForm_norandom_health",
       "explanation": "Response to healthGroup (Flask upgrades randomized?) which does not randomize Golden Seeds/Sacred Tears",
       "english_text": "No",
-      "text": ""
+      "text": "無効"
     },
     {
       "name": "EldenForm_norandom_upgrades",
       "explanation": "Response to healthGroup (Upgrade Bell Bearings randomized?) which does not randomize them",
       "english_text": "No",
-      "text": ""
+      "text": "無効"
     },
     {
       "name": "EldenForm_onehand",
       "explanation": "When *unchecked*, character creation weapons can require two-handing with starting stats. When checked, weapons are more restricted.",
       "english_text": "Disallow starting weapons requiring two-handing",
-      "text": ""
+      "text": "両手持ちを要する初期武器を除外"
+    },
+    {
+      "name": "EldenForm_onehand",
+      "explanation": "Radio button in starting class randomization, which restricts weapons to the starting strength requirement stats, as opposed to requiring two-handing.",
+      "english_text": "Allow only one-handable weapons",
+      "text": "片手武器のみ含める"
     },
     {
       "name": "EldenForm_optionwindow",
       "explanation": "Button to open dialog box to set all options (checkboxes, seed, etc.) from a text string",
       "english_text": "Set options from string...",
-      "text": ""
+      "text": "文字列でオプションを設定..."
     },
     {
       "name": "EldenForm_overviewL",
       "explanation": "Long explanation with an overview of the mod. Mainly this points people to the mod page (or README.txt file), plus the spoiler_logs directory",
       "english_text": "Check the mod page or README for a full list of all key items, important locations, and other details. Find hints and spoilers for item locations in the spoiler_logs directory.",
-      "text": ""
+      "text": "キーアイテム、重要な場所のリスト、その他の情報については Mod の公開ページまたは README を参照してください。spoiler_logs ディレクトリにはアイテムがどこに配置されたかのヒント・答えが出力されます。"
+    },
+    {
+      "name": "EldenForm_phasehp",
+      "explanation": "Checkbox to scale the health of multi-phase bosses which are normally part of one healthbar. Fire Giant p1 becoming Margit would be scaled up slightly (around 140%), but Margit becoming Fire Giant p1 would be scaled down slightly (around 70%)",
+      "english_text": "Scale up/down multi-phase bosses slightly",
+      "text": "複数形態ボスのステータスをわずかに可変させる"
     },
     {
       "name": "EldenForm_preset",
       "explanation": "Button to select custom randomization, especially with enemy randomizer. This feature is not yet implemented",
       "english_text": "Select challenge run or preset...",
-      "text": ""
+      "text": "チャレンジラン / プリセットを選択..."
+    },
+    {
+      "name": "EldenForm_presetButton",
+      "explanation": "Label for a button to open EditPresetForm for enemy customization (replaces EldenForm_preset)",
+      "english_text": "Edit custom enemy placement...",
+      "text": "敵のカスタム配置を編集..."
+    },
+    {
+      "name": "EldenForm_presetFileError",
+      "explanation": "Error message that the user tried to edit enemy placement but a necessary file did not exist or had an invalid format",
+      "english_text": "Error: failed to load file required for customization",
+      "text": "エラー: カスタム化に必要となるファイルの読み込みに失敗"
     },
     {
       "name": "EldenForm_progressGroup",
       "explanation": "Label for checkboxes with broad randomization options, like what to randomize and which routing to allow",
       "english_text": "Game progression",
-      "text": ""
+      "text": "ゲーム進行"
+    },
+    {
+      "name": "EldenForm_progressGroupEnemy",
+      "explanation": "Label for set of options related to tuning game difficulty in enemy randomizer",
+      "english_text": "Game progression",
+      "text": "ゲーム進行"
     },
     {
       "name": "EldenForm_raceloc_altboss",
       "explanation": "When checked, enemies with a boss healthbar can important items, not just achievement bosses",
       "english_text": "All bosses",
-      "text": ""
+      "text": "すべてのボス"
     },
     {
       "name": "EldenForm_raceloc_altbossL",
       "explanation": "Further explanation for raceloc_altboss. {0} is a number like 100 and it depends on the nocaves option",
       "english_text": "Approx {0} checks. Includes fights with boss healthbars (except Patches)",
-      "text": ""
+      "text": "約 {0} をチェック - ボスの HP ゲージが出る敵（NPC のパッチは除外）"
     },
     {
       "name": "EldenForm_raceloc_health",
       "explanation": "When checked, trees which normally have Golden Seeds and churches which normally have Sacred Tears can have important items",
       "english_text": "Golden Seed trees and Sacred Tear Churches",
-      "text": ""
+      "text": "黄金樹の種子の木 / 聖杯の雫の教会"
     },
     {
       "name": "EldenForm_raceloc_healthL",
       "explanation": "Further explanation for raceloc_health. {0} is a number like 30",
       "english_text": "Approx {0} checks",
-      "text": ""
+      "text": "約 {0} をチェック"
     },
     {
       "name": "EldenForm_raceloc_shops",
       "explanation": "When checked, shops can have important items",
       "english_text": "Merchant shops",
-      "text": ""
+      "text": "商人の店"
     },
     {
       "name": "EldenForm_raceloc_shopsL",
       "explanation": "Further explanation for raceloc_shops. {0} is a nubmer like 30. This option does not include shops which only sell sorceries or incantations",
       "english_text": "{0} checks. Does not include spell shops",
-      "text": ""
+      "text": "{0} をチェック - 術屋は除外"
     },
     {
       "name": "EldenForm_raceloc_talisman",
       "explanation": "When checked, certain treasures/chests can have important items. These are all of the places which originally had talismans in the unmodified (vanilla) game, which are usually hidden in interesting places.",
       "english_text": "Vanilla locations of talisman treasures",
-      "text": ""
+      "text": "タリスマンが手に入るバニラの場所"
     },
     {
       "name": "EldenForm_raceloc_talismanL",
       "explanation": "Further explanation for raceloc_talisman. {0} is a number like 30. This value depends on the nocaves option. Again this is only from corpses/chests/etc, not bosses or other enemies.",
       "english_text": "Approx {0} checks. Excludes talismans dropped by enemies",
-      "text": ""
+      "text": "約 {0} をチェック - 敵が落とすタリスマンは除外"
     },
     {
       "name": "EldenForm_racemode",
       "explanation": "When checked, important items can be found in all of the places key items can normally be found in the unmodified (vanilla) game. This option cannot be disabled",
       "english_text": "Vanilla locations of key items",
-      "text": ""
+      "text": "キーアイテムが手に入るバニラの場所"
     },
     {
       "name": "EldenForm_racemode_health",
       "explanation": "Response to healthGroup (Upgrade Bell Bearings randomized?) which only places them in important locations",
       "english_text": "To important locations",
-      "text": ""
+      "text": "重要な場所"
     },
     {
       "name": "EldenForm_racemode_upgrades",
       "explanation": "Response to healthGroup (Flask upgrades randomized?) which only places Golden Seeds/Sacred Tears in important locations",
       "english_text": "To important locations",
-      "text": ""
+      "text": "重要な場所"
     },
     {
       "name": "EldenForm_racemodeL",
       "explanation": "Further explanation for 'Vanilla locations for key items', {0} is a number like 15",
       "english_text": "Approx {0} checks",
-      "text": ""
+      "text": "約 {0} をチェック"
     },
     {
       "name": "EldenForm_randomize",
-      "explanation": "Same as randomizeNew",
+      "explanation": "Placeholder for randomize button when none of the more specific options below are selected",
       "english_text": "Randomize new run!",
-      "text": ""
+      "text": "ランダム化を行う！"
     },
     {
-      "name": "EldenForm_randomizedFixed",
-      "explanation": "Randomize button when a seed number is provided and 'Reroll seed' is unchecked",
-      "english_text": "Run with fixed seed",
-      "text": ""
+      "name": "EldenForm_randomizeBoth",
+      "explanation": "Randomize button when itemPage and enemyPage are both checked",
+      "english_text": "Randomize items and enemies",
+      "text": "アイテム・敵のランダム化を行う"
+    },
+    {
+      "name": "EldenForm_randomizeEnemy",
+      "explanation": "Randomize button when only enemyPage is checked",
+      "english_text": "Randomize enemies",
+      "text": "敵のランダム化を行う"
     },
     {
       "name": "EldenForm_randomizeEnemyOnly",
       "explanation": "Randomize button when 'Reroll seed' is unchecked and 'Reroll enemy seed' is checked",
       "english_text": "Reroll enemies (same items)",
-      "text": ""
+      "text": "敵の再割り当てを行う（アイテムは同一）"
+    },
+    {
+      "name": "EldenForm_randomizeItem",
+      "explanation": "Randomize button when only itemPage is checked",
+      "english_text": "Randomize items",
+      "text": "アイテムのランダム化を行う"
     },
     {
       "name": "EldenForm_randomizeItemOnly",
       "explanation": "Randomize button when 'Reroll seed' is checked and 'Reroll enemy seed' is unchecked",
       "english_text": "Reroll items (same enemies)",
-      "text": ""
+      "text": "アイテムの再割り当てを行う（敵は同一）"
     },
     {
-      "name": "EldenForm_randomizeNew",
-      "explanation": "Randomize button when 'Reroll seed' is checked (generates a new seed with new placements etc.)",
-      "english_text": "Randomize new run!",
-      "text": ""
+      "name": "EldenForm_randomizeNothing",
+      "explanation": "Randomize button when neither itemPage nor enemyPage are checked. Just shows ??? since there's nothing to randomize.",
+      "english_text": "???",
+      "text": "???"
+    },
+    {
+      "name": "EldenForm_regularhp",
+      "explanation": "Checkbox, the opposite of bosshp. When normal enemies walking around the world turn into bosses, their HP is reduced by a constant factor.",
+      "english_text": "Reduce HP for bosses as regular enemies",
+      "text": "雑魚敵として現れたボスの HP を減少"
+    },
+    {
+      "name": "EldenForm_resetOptions",
+      "explanation": "Prompt to confirm resetting all options",
+      "english_text": "Reset options to default?",
+      "text": "オプションをすべて初期値に戻しますか？"
+    },
+    {
+      "name": "EldenForm_resetOptionsToolStripMenuItem",
+      "explanation": "Action in Options menu to reset randomizer options",
+      "english_text": "Reset all options",
+      "text": "オプションをすべて初期化"
     },
     {
       "name": "EldenForm_restoreAlertTitle",
       "explanation": "Title of window that pops up to restore files",
       "english_text": "Restore files",
-      "text": ""
+      "text": "ファイルの復元"
     },
     {
       "name": "EldenForm_restoreButton",
       "explanation": "Button in the randomizer you can click to restore backup files",
       "english_text": "Restore backups...",
-      "text": ""
+      "text": "バックアップから復元..."
     },
     {
       "name": "EldenForm_restoreConfirmTitle",
       "explanation": "Title of window that pops up to prompt you to restore backup files. Followed by a list of .randobak files to restore",
       "english_text": "Restore from these files?",
-      "text": ""
+      "text": "これらのファイルを復元しますか？"
     },
     {
       "name": "EldenForm_restoreErrorBadExe",
       "explanation": "Validation error in 'Restore backups' flow where the game exe does not exist and the game directory cannot be found",
       "english_text": "Game exe not found",
-      "text": ""
+      "text": "ゲームの実行ファイルが見つかりません"
     },
     {
       "name": "EldenForm_restoreFileFailure",
       "explanation": "Restore error for a specific .randobak file, {0} is its path",
       "english_text": "Failed to restore from {0}!",
-      "text": ""
+      "text": "{0} から復元できませんでした！"
     },
     {
       "name": "EldenForm_restoreFileSuccess",
       "explanation": "Successful restore for a specific .randobak file, {0} is its path",
       "english_text": "Restored from {0}",
-      "text": ""
+      "text": "{0} から復元しました"
     },
     {
       "name": "EldenForm_restoreNothingToDo",
       "explanation": "Alert in 'Restore backups' flow when you click the button and it doesn't find anything to restore",
       "english_text": "No .randobak files found in {0}",
-      "text": ""
+      "text": ".randobak ファイルが {0} にありません。"
+    },
+    {
+      "name": "EldenForm_restoreUXMFileBackupsToolStripMenuItem",
+      "explanation": "Action in File menu to open 'restore backups' dialog box",
+      "english_text": "Restore UXM file backups...",
+      "text": "UXMファイルのバックアップを復元"
     },
     {
       "name": "EldenForm_runereq",
       "explanation": "When checked, shows the message 'You require more Great Runes' when you try to access Radagon",
       "english_text": "Require all 7 Great Runes to access the final boss",
-      "text": ""
+      "text": "ラスボスとの対決に七つすべての大ルーンを要求"
     },
     {
       "name": "EldenForm_runereqL",
       "explanation": "Further explanation for runereq. You must find the rune items, but you don't need to go to Divine Towers to make them equippable",
       "english_text": "Activating the Great Runes is not required",
-      "text": ""
+      "text": "大ルーンの力を取り戻す必要はありません"
     },
     {
       "name": "EldenForm_runError",
       "explanation": "Generic randomizer error, {0} is the detailed error message. Also points the user to the spoiler_logs directory",
       "english_text": "Error encountered: {0}\nIt may work to try again with a different seed. See most recent file in spoiler_logs directory for the full error.",
-      "text": ""
+      "text": "エラー発生: {0}\nこのままでは動作しない恐れがあります。シードを変更してみてください。エラーの詳細については spoiler_logs ディレクトリの最新ファイルから確認できます。"
     },
     {
       "name": "EldenForm_runErrorGeneric",
       "explanation": "Shown in the status bar when miscalleneous pre-randomization errors occur",
       "english_text": "Error encountered",
-      "text": ""
+      "text": "エラー発生"
     },
     {
       "name": "EldenForm_runErrorStatus",
       "explanation": "Shown in the status bar when randomizer files for any reason. {0} is a file name in the spoiler_logs directory",
       "english_text": "Error! Partial log in spoiler_logs directory as {0}",
-      "text": ""
+      "text": "エラー発生！spoiler_logs ディレクトリの {0} に部分的なログを記録"
     },
     {
       "name": "EldenForm_running",
       "explanation": "Text that replaces the 'Randomize' button when randomization is running",
       "english_text": "Running...",
-      "text": ""
+      "text": "実行中..."
     },
     {
       "name": "EldenForm_runSuccess",
       "explanation": "Shown in the status bar when randomization finishes. {0} is a file name in the spoiler_logs directory",
       "english_text": "Done! Hints and spoilers in spoiler_logs directory as {0} - Restart your game!!",
-      "text": ""
+      "text": "完了しました！spoiler_logs ディレクトリの {0} からヒントとネタバレを確認できます。ゲームを再起動しましょう！"
+    },
+    {
+      "name": "EldenForm_saveOptionsFileToolStripMenuItem",
+      "explanation": "Action in Options menu to select a filename to store current randomizer options. These can be shared with other people.",
+      "english_text": "Save options file...",
+      "text": "オプション登録ファイルの保存..."
+    },
+    {
+      "name": "EldenForm_scale",
+      "explanation": "When checked, increases or decreases enemy stats (HP/health they have, and how much damage they deal) using scaling",
+      "english_text": "Scale up/down enemy health/damage",
+      "text": "敵の体力/ダメージを可変させる"
     },
     {
       "name": "EldenForm_seedError",
       "explanation": "Error shown in the status bar when trying to randomize with an invalid seed (not a number, too many digits, etc.)",
       "english_text": "Invalid fixed seed",
-      "text": ""
+      "text": "無効な固定シード"
+    },
+    {
+      "name": "EldenForm_setOptionsStringToolStripMenuItem",
+      "explanation": "Action in Options menu to open OptionsForm to copy-paste a simple string with most options in the form (but not other things like presets)",
+      "english_text": "Set form options from string...",
+      "text": "文字列からオプションを設定"
     },
     {
       "name": "EldenForm_spellshops",
       "explanation": "When checked, shops which normally have sorceries/incantations get random sorceries/incantations",
       "english_text": "Spell shops still sell spells",
-      "text": ""
+      "text": "術屋には術を売らせる"
     },
     {
       "name": "EldenForm_spellshopsL",
       "explanation": "Further explanation of spellshops: sorcery shops only get sorceries, and incantation shops only get incantations",
       "english_text": "Place sorceries/incantations in shops of that type",
-      "text": ""
+      "text": "魔術・祈祷を扱っている NPC にそれらを販売させます"
     },
     {
       "name": "EldenForm_status",
       "explanation": "Default status bar text. {0} is replaced with credits sentence, and {1} is replaced by a number called the config hash. This is a 5-digit number which depends on the exact set of options the user has enabled.",
       "english_text": "{0} Current config hash: {1}",
-      "text": ""
+      "text": "{0} 現在の設定ハッシュ: {1}"
     },
     {
       "name": "EldenForm_status_credits",
       "explanation": "Mod creation credits, {0} is the developer username",
       "english_text": "Created by {0}.",
-      "text": ""
+      "text": "作成者 - {0}"
     },
     {
       "name": "EldenForm_status_creditsWithTranslators",
       "explanation": "Mod creation credits including translators, {0} is the developer username and {1} comes from the 'translators' field",
       "english_text": "Created by {0}, translated by {1}.",
-      "text": ""
+      "text": "作成者 - {0}, 翻訳者 - {1},"
+    },
+    {
+      "name": "EldenForm_swapboss",
+      "explanation": "When checked, randomized multi-boss fights can have different types of bosses. For instance, instead of two Crystalians, you might get a Crystalian and a Watchdog.",
+      "english_text": "Swap bosses between multi-boss fights",
+      "text": "複数ボス戦で敵を別々のタイプにする"
+    },
+    {
+      "name": "EldenForm_swapbossL",
+      "explanation": "Clarification to swapboss option that it only works for mini-dungeon (caves, catacombs, etc.) bosses",
+      "english_text": "For mini-dungeon bosses only",
+      "text": "(ミニダンジョンのボス限定)"
+    },
+    {
+      "name": "EldenForm_updateButton",
+      "explanation": "Button which opens the randomizer files page, to allow easy checks for newer versions of the randomizer",
+      "english_text": "Check for updates",
+      "text": "更新をチェック"
     },
     {
       "name": "EldenForm_upgradeExplainL",
       "explanation": "Long explanation for how randomizing upgrade material Bell Bearings work (for Smithing Stones, Somber Smithing Stones, Grave Glovewort, and Ghost Glovewort). See mod page for more details",
       "english_text": "If randomized, Smithing Stone and Glovewort Bell Bearings are placed in the same overall area as their vanilla location. Their contents are not randomized.",
-      "text": ""
+      "text": "ランダム化した場合でも、鍛石・すずらんの鈴玉は元と同じエリア内に配置されます。売り物はランダム化されません。"
     },
     {
       "name": "EldenForm_upgradeGroup",
       "explanation": "Label asking how to randomize Bell Bearings with upgrade materials, like Smithing-Stone Miner's Bell Bearing [1]",
       "english_text": "Upgrade Bell Bearings randomized?",
-      "text": ""
+      "text": "鈴玉のランダム化"
     },
     {
       "name": "EldenForm_uxm",
       "explanation": "Checkbox to write randomized files to UXM. If unchecked, it assumes Mod Engine installation",
       "english_text": "Output files for UXM",
-      "text": ""
+      "text": "ファイルを UXM 用に出力"
+    },
+    {
+      "name": "EldenForm_versionMismatch",
+      "explanation": "Yes/no confirmation prompt when loading an options file. {0} and {1} are the randomizer version names, like v0.1. The different output refers to how the same set of randomizer options, at different versions of the randomizer, may result in different item/enemy placements.",
+      "english_text": "Mismatched options versions! File has version {0}, but current randomizer version is {1}. This may result in different output. Try to continue anyway?",
+      "text": "各オプションのバージョンが一致していません！ファイル側のバージョンは {0} ですが、Randomizerのバージョンは {1} です。よって異なる結果になる可能性があります。無視して続行しますか？"
+    },
+    {
+      "name": "EldenForm_weaponprogression",
+      "explanation": "Checkbox to make Smithing Stones more likely to be available in early/late areas depending on their type. This affects the placement and distribution of Smithing Stones, so that you can upgrade your weapon like in the unmodified game. You will be able to reliably find tiers 1 to 3 in Limgrave and Liurnia. Otherwise, finding upgrade materials may be much more difficult.",
+      "english_text": "Smithing Stone availability similar to base game",
+      "text": "鍛石の入手先を元の攻略エリアに合わせる"
+    },
+    {
+      "name": "EnemyClass_AdjustSourceDoc",
+      "explanation": "Explanation for how to configure Frequency Adjustments, which appears in the enemy customization form. Reducing passive enemy types is an example of this. If crabs start with a 5% chance to show up, and their frequency adjustment is 50%, they will end up with a 2.5% chance.",
+      "english_text": "Special configuration to adjust the frequency of enemies relative to others of the same type",
+      "text": "敵の出現頻度を調整できます。たとえば元が 5% の敵なら、50% に調整すると 2.5% の割合で出現します"
+    },
+    {
+      "name": "EnemyClass_Basic",
+      "explanation": "Enemy category for most of the normal non-boss enemies encountered in the game",
+      "english_text": "Regular Enemies",
+      "text": "雑魚敵"
+    },
+    {
+      "name": "EnemyClass_BasicDesc",
+      "explanation": "Explanation for Regular Enemies when customizing enemies",
+      "english_text": "Enemies not covered by other categories",
+      "text": "他のカテゴリで扱われていない敵"
+    },
+    {
+      "name": "EnemyClass_Boss",
+      "explanation": "Enemy category for the most important bosses in the game",
+      "english_text": "Major Bosses",
+      "text": "大ボス"
+    },
+    {
+      "name": "EnemyClass_BossDesc",
+      "explanation": "Explanation for Major Bosses",
+      "english_text": "Unescapable boss encounters with achievements or story importance",
+      "text": "実績付き / ストーリー上で重要な逃亡不可ボス"
+    },
+    {
+      "name": "EnemyClass_DragonMiniboss",
+      "explanation": "Enemy category for dragons with boss healthbars in the world",
+      "english_text": "Dragon Minibosses",
+      "text": "ドラゴン中ボス"
+    },
+    {
+      "name": "EnemyClass_Evergaol",
+      "explanation": "Enemy category for enemies fought in Evergaols, like the Crucible Knight in Stormhill",
+      "english_text": "Evergaol Minibosses",
+      "text": "封牢中ボス"
+    },
+    {
+      "name": "EnemyClass_HostileNPC",
+      "explanation": "Enemy category for NPCs which fight you, including those who invade you or that you can invade",
+      "english_text": "Hostile Humans",
+      "text": "敵対人物"
+    },
+    {
+      "name": "EnemyClass_HostileNPCDesc",
+      "explanation": "Explanation for Hostile Humans. Notably it includes NPCs like Millicent and Sellen, because they appear multiple times in different locations, and it would be confusing to randomize them.",
+      "english_text": "Invaders and hostile NPCs without extensive quests",
+      "text": "侵入者または長めのクエストがない敵対 NPC"
+    },
+    {
+      "name": "EnemyClass_Miniboss",
+      "explanation": "Enemy category for enemies with boss healthbars wandering the game world, not covered by other miniboss categories",
+      "english_text": "World Minibosses",
+      "text": "フィールド中ボス"
+    },
+    {
+      "name": "EnemyClass_MinibossDesc",
+      "explanation": "Explanation for World Minibosses",
+      "english_text": "Enemies with boss healthbars in the open world",
+      "text": "フィールドでボス用の HP ゲージが表示される敵"
+    },
+    {
+      "name": "EnemyClass_MinorBoss",
+      "explanation": "Enemy category for boss encounters, usually with fog gates, including those in side dungeons (mini-dungeons)",
+      "english_text": "Minor Bosses",
+      "text": "中ボス"
+    },
+    {
+      "name": "EnemyClass_MinorBossDesc",
+      "explanation": "Explanation for Minor Bosses. Compare with the explanation for Major Bosses",
+      "english_text": "Other unescapable boss encounters, including side dungeon bosses",
+      "text": "その他の逃亡不可ボス（ミニダンジョンのボスなど）"
+    },
+    {
+      "name": "EnemyClass_NightMiniboss",
+      "explanation": "Enemy category for minibosses which roam the world at night",
+      "english_text": "Night Minibosses",
+      "text": "夜の中ボス"
+    },
+    {
+      "name": "EnemyClass_NightMinibossDesc",
+      "explanation": "Explanation for Night Minibosses",
+      "english_text": "Minibosses which only spawn at night",
+      "text": "夜にだけ出現する中ボス"
+    },
+    {
+      "name": "EnemyClass_Scarab",
+      "explanation": "Enemy category for scarabs (crystal lizard-like enemies)",
+      "english_text": "Scarabs",
+      "text": "スカラベ"
+    },
+    {
+      "name": "EnemyClass_Spectator",
+      "explanation": "Special enemy category which overlaps with other categories: enemies nearby bosses who are watching/spectating, and shouldn't be too powerful or else it will easily turn into a multi-boss fight.",
+      "english_text": "Spectators",
+      "text": "取り巻き"
+    },
+    {
+      "name": "EnemyClass_SpectatorDesc",
+      "explanation": "Explanation for configuring Spectators",
+      "english_text": "Special configuration for regular enemies who are nearby minibosses. This is meant to prevent unreasonably difficult open world fights.",
+      "text": "中ボスの周りにいる雑魚敵の設定で、フィールドで戦闘が理不尽に難しくならないようにするためのものです"
+    },
+    {
+      "name": "EnemyClass_Wildlife",
+      "explanation": "Enemy category for Wildlife who generally don't attack the player, like sheep and birds",
+      "english_text": "Passive Wildlife",
+      "text": "おとなしい野生動物"
+    },
+    {
+      "name": "EnemyClassGroup_AllBosses",
+      "explanation": "Meta-category which includes all other specific boss types, simply called Bosses",
+      "english_text": "All Bosses",
+      "text": "すべてのボス"
+    },
+    {
+      "name": "EnemyClassGroup_AllDragons",
+      "explanation": "Meta-category which includes all dragons, both minibosses and regular enemies",
+      "english_text": "Dragons",
+      "text": "ドラゴン"
+    },
+    {
+      "name": "EnemyClassGroup_AllEnemies",
+      "explanation": "Meta-category which includes literally all randomizable enemies",
+      "english_text": "All Enemies and Bosses",
+      "text": "すべての敵とボス"
+    },
+    {
+      "name": "GameMenu_hintLabelArea",
+      "explanation": "Label placed in the map for non-exact hints. For instance, 'Somewhere in Volcano Manor' is marked on the map to refer to any item location there. The location names are in the native language for each game language",
+      "english_text": "Somewhere in {0}",
+      "text": "{0}のとある場所"
     },
     {
       "name": "GameMenu_hintMarkArea",
       "explanation": "Dialog option which appears in-game when the player purchases a hint, to mark the overall area (like Limgrave) of a required item on the map",
       "english_text": "Mark a required item's area",
-      "text": ""
+      "text": "必要アイテムのエリアをマーク"
+    },
+    {
+      "name": "GameMenu_hintMarkArea",
+      "explanation": "Dialog option which appears in-game when the player purchases a hint, to mark the overall area (like Limgrave) of a required item on the map",
+      "english_text": "Mark a required item's overall area",
+      "text": "必要アイテムの広域エリアをマーク"
     },
     {
       "name": "GameMenu_hintMarkItem",
       "explanation": "Dialog option which appears in-game when the player purchases a hint, to mark the exact location (like the corpse or boss to defeat) of a required item on the map",
       "english_text": "Mark a required item's exact location (more expensive)",
-      "text": ""
+      "text": "必要アイテムの具体的な場所をマーク（高価）"
     },
     {
       "name": "GameMenu_hintNoItems",
       "explanation": "Dialog message which appears in-game when the user tries to purchase a hint, but all items seem to be acquired",
       "english_text": "No key items left!",
-      "text": ""
+      "text": "キーアイテムは残っていない"
     },
     {
       "name": "GameMenu_hintPurchase",
       "explanation": "Option in Kalé's NPC menu to purchase a map marker for a required item hint, added below the existing 'Purchase' option",
       "english_text": "Purchase a required item marker",
-      "text": ""
+      "text": "必要アイテムのマーカーを購入"
     },
     {
       "name": "GameMenu_hintRequirementFailed",
       "explanation": "Dialog message which appears in-game when the user tries to purchase a hint, but hint functionality is not available yet (they need to rest at an Altus Plateau Site of Grace first)",
       "english_text": "Get to the Altus Plateau first!",
-      "text": ""
+      "text": "まずはアルター高原に辿り着こう！"
+    },
+    {
+      "name": "GameMenu_hintRequirementFailedBoss",
+      "explanation": "Message shown in game when trying to select hintMarkItem, but the area boss was not defeated. This is a precaution to prevent people repeatedly getting hints without actually getting strong or fighting enemies. They can still get a non-exact hint in this case (hintMarkArea)",
+      "english_text": "Exact location hints in an area are only\navailable after defeating the area's main boss.",
+      "text": "具体的な場所の手がかりを得るには\nそのエリアの主たるボスを打ち破らなければならない"
+    },
+    {
+      "name": "GameMenu_hintRequirementFailedOption",
+      "explanation": "Message shown in game when trying to select hintMarkItem, but the option for exact location hints was unchecked",
+      "english_text": "The randomizer option for exact location hints was not enabled.",
+      "text": "Randomizerで無効にされているため、具体的な場所のヒントは得られない"
+    },
+    {
+      "name": "GameMenu_receiveBellBearing",
+      "explanation": "Option added to merchants in-game, alongside Purchase/Sell menus, which gives the player their Bell Bearing without killing them",
+      "english_text": "Receive Bell Bearing",
+      "text": "鈴玉を受け取る"
+    },
+    {
+      "name": "GameMenu_restart",
+      "explanation": "Error message shown in-game when the randomizer can load all required files. It normally happens if someone re-runs randomizer without restarting the game, but it can also happen after game updates if the regulation.bin becomes invalid and no longer loads.",
+      "english_text": "Error: Mismatch between regulation.bin and other randomizer files.\nRestart the game and make sure the game and randomizer versions are compatible.",
+      "text": "エラー: regulation.bin と randomizer のその他のファイルで不整合が起きています。\nゲームを再起動し、ゲームと randomizerの が対応しているかどうかを確認してください。"
+    },
+    {
+      "name": "GameMenu_restart",
+      "explanation": "Error message shown in-game when the randomizer can load all required files. The \n corresponds to a line change. This normally happens if someone re-runs randomizer without restarting the game, but it can also happen after game updates if the regulation.bin becomes invalid and no longer loads. Finally, it can happen if the randomizer is incorrectly installed, and some critical files are detected as missing.",
+      "english_text": "Error: Mismatch between regulation.bin and other randomizer files.\nMake sure all randomizer files are present, the game has been restarted\nafter randomization, and the game and regulation.bin versions are compatible.",
+      "text": "エラー: regulation.binおよびrandomizerの各ファイルが不一致です。\nrandomizerのファイルが欠落していないことを確かめた上でランダム化を実行し、ゲームを再起動して\n現在のバージョンとregulation.binの互換性があるかを確認してください。"
     },
     {
       "name": "OptionsForm_errorInternal",
       "explanation": "Internal error for 'Set options from string', when it somehow starts out with invalid options",
       "english_text": "Invalid options: internal error",
-      "text": ""
+      "text": "無効なオプション: 内部エラー"
     },
     {
       "name": "OptionsForm_errorNoOptions",
       "explanation": "Validation error for 'Set options from string' when no actual option names are provided, only a number",
       "english_text": "Invalid options: must contain options",
-      "text": ""
+      "text": "無効なオプション: オプションを含めてください"
     },
     {
       "name": "OptionsForm_errorNoVersion",
       "explanation": "Validation error for 'Set options from string', when the given value doesn't contain an option named v1 v2 etc.",
       "english_text": "Invalid options: must contain a version number",
-      "text": ""
+      "text": "無効なオプション: バージョン番号を含めてください"
     },
     {
       "name": "OptionsForm_OptionsForm",
       "explanation": "Title for 'Set options from string' dialog box",
       "english_text": "Set options string",
-      "text": ""
+      "text": "オプション文字列設定"
     },
     {
       "name": "OptionsForm_select",
       "explanation": "Button in 'Set options from string' dialog box which sets options based on the textbox contents",
       "english_text": "Select",
-      "text": ""
+      "text": "決定"
     },
     {
       "name": "OptionsForm_strL",
       "explanation": "Long explanation for using 'Set options from string' dialog box. The text box shows the user's current 'option string' (all of their selected options and seed)",
       "english_text": "This text box allows you to give your options and seed to someone else (after running randomization) and to copy someone else's options.\nThis string can also be found on the first line of hint/spoiler logs in the spoiler_logs directory.\nAlso, you can set it to blank to restore all default options.",
-      "text": ""
+      "text": "オプション / シードのテキスト入力欄です。ランダム化後に自動入力されたシードを共有したり、コピーした他の人のオプション設定を登録することができます。\nこの文字列は spoiler_logs ディレクトリのヒント・ネタバレログの一行目にも残されます。\n空にすれば各オプションをデフォルトに戻すことも可能です。"
+    },
+    {
+      "name": "Preset_adjustSource",
+      "explanation": "Summary of a Frequency Adjustment. {0} is a percent number (so 'Adjusted to 50%' means cut in half) and {1} is a list of enemies affected",
+      "english_text": "Adjusted to {0}%: {1}",
+      "text": "{0}% に調整: {1}"
+    },
+    {
+      "name": "Preset_dontRandomize",
+      "explanation": "Summary of not-randomized enemies. {0} is a list of enemies who are not randomized",
+      "english_text": "Not randomized: {0}",
+      "text": "ランダム化しない: {0}"
+    },
+    {
+      "name": "Preset_enemyMultiplier",
+      "explanation": "Enemy multiplier mode, a type of run where {0} is a number like 2 or 3. It is based on a DS3 mod where every enemy is doubled or tripled. To be implemented",
+      "english_text": "Enemy Onslaught {0}x",
+      "text": "敵の量 {0} 倍"
+    },
+    {
+      "name": "Preset_enemyMultiplierDesc",
+      "explanation": "Enemy category description with an multiplier added, used when Enemy Onslaught is enabled and has an override for a specific category. {0} is a number like 2 or 3, {1} is a class like Major Bosses. All together, this would result in something like '2x Major Bosses'",
+      "english_text": "{0}x {1}",
+      "text": "{0}x {1}"
+    },
+    {
+      "name": "Preset_oopsAll",
+      "explanation": "Oops All mode, where all enemies are replaced with the enemy named in {0}. The phrase is based on an American cereal https://knowyourmeme.com/memes/oops-all-berries-box-parodies, and in this case, DS1 enemy randomizer runs by streamer LobosJr where he was constantly running into enemies who turned into Gwyn.",
+      "english_text": "Oops All {0}",
+      "text": "中までぎっしり {0}"
+    },
+    {
+      "name": "Preset_poolDefault",
+      "explanation": "When listing customized enemies getting replaced, refers to enemies in the same category. 'Replacing Major Bosses: Themselves' means that major bosses will replace other major bosses",
+      "english_text": "Themselves",
+      "text": "同一の敵"
+    },
+    {
+      "name": "Preset_poolDelimitEntry",
+      "explanation": "Separation text between different enemies in a list (like 'Rat; Dog'). This shouldn't be a comma, since enemy names can contain commas",
+      "english_text": "; ",
+      "text": "; "
+    },
+    {
+      "name": "Preset_poolDelimitType",
+      "explanation": "Separation text between different enemy categories in a list (like 'Major Bosses, Minor Bosses')",
+      "english_text": ", ",
+      "text": ", "
+    },
+    {
+      "name": "Preset_poolDesc",
+      "explanation": "Summary of customization for an enemy category, shown in {0}, where the description is on the next line.",
+      "english_text": "Replacing {0}:",
+      "text": "[{0}] の置換先 - "
+    },
+    {
+      "name": "Preset_poolDescInherit",
+      "explanation": "Summary of customization for an enemy category, shown in {0}, where it uses the same logic as a different enemy category in {1}. This is not currently shown, since it's duplicated instead.",
+      "english_text": "Replacing {0}: Same as {1}",
+      "text": "[{0}] の置換先 - \"{1}\" と同一"
+    },
+    {
+      "name": "Preset_poolDescOneLine",
+      "explanation": "Summary of customization for an enemy category all on one line. You might have 'Replacing Major Bosses: Rat; Dog', which means that every major boss will turn into either a rat or a dog",
+      "english_text": "Replacing {0}: {1}",
+      "text": "[{0}] の置換先 - \"{1}\""
+    },
+    {
+      "name": "Preset_poolEntries",
+      "explanation": "Part of multiline summary for enemy category customization. The - is a bullet point, then it might say '50% Dog'. All the different lines add up to 100%.",
+      "english_text": "- {0}% {1}",
+      "text": "- {0}% {1}"
+    },
+    {
+      "name": "Preset_poolExclude",
+      "explanation": "Part of multiline summary for enemy category customization. The - is a bullet point, and {0} is a list of enemy types which are not allowed to appear in this category. (excluding Dragons) means that dragons may not appear in this category, though it may appear in other categories",
+      "english_text": "- (excluding {0})",
+      "text": "- ({0} を除外)"
+    },
+    {
+      "name": "Preset_poolNorandom",
+      "explanation": "Description for an enemy category which is not randomized. Appears like 'Replacing Scarabs: Not randomized'",
+      "english_text": "Not randomized",
+      "text": "ランダム化しない"
+    },
+    {
+      "name": "Preset_presetName",
+      "explanation": "The name of the customization preset, 'Custom' by default. This corresponds to the preset's filename",
+      "english_text": "Preset: {0}",
+      "text": "プリセット: {0}"
+    },
+    {
+      "name": "Preset_removeSource",
+      "explanation": "{0} is a list of enemies which are not allowed to appear anywhere in the game",
+      "english_text": "Excluded: {0}",
+      "text": "除外: {0}"
+    },
+    {
+      "name": "PresetEditForm_adjustSource",
+      "explanation": "Special enemy category for adjusting enemy frequency, in the customization form. See EnemyClass_AdjustSourceDoc",
+      "english_text": "Frequency Adjustments",
+      "text": "頻度調整"
+    },
+    {
+      "name": "PresetEditForm_applyButton",
+      "explanation": "Button which saves changes but does not close the form",
+      "english_text": "Apply",
+      "text": "適用"
+    },
+    {
+      "name": "PresetEditForm_classCustom",
+      "explanation": "Option for an enemy category to get replaced with custom configuration",
+      "english_text": "Custom",
+      "text": "カスタム"
+    },
+    {
+      "name": "PresetEditForm_classInherit",
+      "explanation": "Option for an enemy category to use the same replacement logic as its parent category",
+      "english_text": "Same as parent",
+      "text": "親と同じ"
+    },
+    {
+      "name": "PresetEditForm_classInheritName",
+      "explanation": "Same as classInherit, but includes the name of the parent category, given in {0}",
+      "english_text": "Same as parent ({0})",
+      "text": "親（{0}）と同じ"
+    },
+    {
+      "name": "PresetEditForm_classInheritName",
+      "explanation": "Version of classInherit which includes the name of the parent category, given in {0}",
+      "english_text": "Copy config from {0}",
+      "text": "{0}の設定をコピー"
+    },
+    {
+      "name": "PresetEditForm_classMerge",
+      "explanation": "Option for an enemy category to get merged into its parent class. For instance, if Minor Bosses is merged into its parent (Major Bosses), all of the bosses will be randomized with each other, instead of in separate categories",
+      "english_text": "Merge with parent",
+      "text": "親と統合する"
+    },
+    {
+      "name": "PresetEditForm_classMergeName",
+      "explanation": "Version of classMerge which includes the name of the parent category",
+      "english_text": "Merge with {0}",
+      "text": "{0}と統合する"
+    },
+    {
+      "name": "PresetEditForm_classNorandom",
+      "explanation": "Option for an enemy category to not get randomized",
+      "english_text": "Not randomized",
+      "text": "ランダム化しない"
+    },
+    {
+      "name": "PresetEditForm_classRandom",
+      "explanation": "Option for an enemy category to get randomized. This is mainly for when customization is not available, only basic shuffling",
+      "english_text": "Randomized",
+      "text": "ランダム化"
+    },
+    {
+      "name": "PresetEditForm_classRemoveSource",
+      "explanation": "Label for a list of enemies to exclude from the current enemy category",
+      "english_text": "Excluded:",
+      "text": "除外:"
+    },
+    {
+      "name": "PresetEditForm_confirmLeave",
+      "explanation": "Dialog text when closing the preset form or switching to a different preset without saving. Shows Yes/No/Cancel",
+      "english_text": "Save changes before exiting?",
+      "text": "保存してから閉じますか？"
+    },
+    {
+      "name": "PresetEditForm_confirmMultiplyRandom",
+      "explanation": "Yes/no prompt which is shown when switching from normal randomization to enemy onslaught (multiplied enemies). When Yes is chosen, enemy randomization is temporarily disabled, meaning that the original enemy will just be copied instead of copied *and* randomized",
+      "english_text": "Disable enemy randomization with Enemy Onslaught?",
+      "text": "ランダム化を無効にしてから敵を倍加しますか？"
+    },
+    {
+      "name": "PresetEditForm_confirmOverwrite",
+      "explanation": "Dialog text for 'Save as' or 'Create new' when the preset filename already exists",
+      "english_text": "Overwrite existing file?",
+      "text": "既存のファイルを上書きしますか？"
+    },
+    {
+      "name": "PresetEditForm_confirmReset",
+      "explanation": "Dialog text for Reset button in preset form, which confirms that the existing preset should be reverted to default",
+      "english_text": "Reset this preset to default?",
+      "text": "このプリセットを初期化しますか？"
+    },
+    {
+      "name": "PresetEditForm_confirmTitle",
+      "explanation": "Generic title for confirm dialog box",
+      "english_text": "Confirm",
+      "text": "確認"
+    },
+    {
+      "name": "PresetEditForm_createNew",
+      "explanation": "In the 'Preset:' dropdown, a special option which prompts the name of a new preset to create",
+      "english_text": "Create new...",
+      "text": "新規作成..."
+    },
+    {
+      "name": "PresetEditForm_descriptionL",
+      "explanation": "Label for a textbox where a preset description can be typed, mainly as an explanation when giving the preset file to other people to use",
+      "english_text": "Description:",
+      "text": "説明:"
+    },
+    {
+      "name": "PresetEditForm_directoryButton",
+      "explanation": "Button in the preset dialog box which just opens the directory named 'presets', creating it if it doesn't exist",
+      "english_text": "Open presets directory",
+      "text": "プリセットのディレクトリを開く"
+    },
+    {
+      "name": "PresetEditForm_dontRandomize",
+      "explanation": "Label for enemies which are not randomized at all, and do not turn into anything else",
+      "english_text": "Not randomized:",
+      "text": "ランダム化しない:"
+    },
+    {
+      "name": "PresetEditForm_enterName",
+      "explanation": "After 'Save as' or 'Create new' is selected, the prompt for a textbox to enter a simple short name. This will be used as the filename.",
+      "english_text": "Enter new preset name",
+      "text": "新しいプリセット名を入力"
+    },
+    {
+      "name": "PresetEditForm_errorTitle",
+      "explanation": "Generic title for dialog box reporting a user error",
+      "english_text": "Error",
+      "text": "エラー"
+    },
+    {
+      "name": "PresetEditForm_invalidName",
+      "explanation": "Error shown when the user entered an invalid preset name. {0} is the name they entered",
+      "english_text": "Invalid preset name: {0}",
+      "text": "無効なプリセット名: {0}"
+    },
+    {
+      "name": "PresetEditForm_loadFailure",
+      "explanation": "Error shown when selecting a preset, but it can't be parsed or doesn't exist. {0} is the preset name, and {1} on the next line is the full error message",
+      "english_text": "Failed to load preset {0}\n{1}",
+      "text": "プリセット {0} の読み込みに失敗\n{1}"
+    },
+    {
+      "name": "PresetEditForm_modeCustom",
+      "explanation": "Normal mode for customization which is not one of the special modes",
+      "english_text": "Custom",
+      "text": "カスタム"
+    },
+    {
+      "name": "PresetEditForm_modeMultiply",
+      "explanation": "Dropdown label for special mode (not yet implemented) which duplicates all enemies. See Preset_enemyMultiplier",
+      "english_text": "Enemy Onslaught",
+      "text": "敵の倍化"
+    },
+    {
+      "name": "PresetEditForm_modeOopsall",
+      "explanation": "Dropdown label for special mode which turns all enemies into the same type. See Preset_oopsAll",
+      "english_text": "Oops All",
+      "text": "中までぎっしり"
+    },
+    {
+      "name": "PresetEditForm_multiplyOption",
+      "explanation": "Textbox for Enemy Onslaught mode where {0} is a number like 2 or 3, indicating double or triple enemies.",
+      "english_text": "{0}x",
+      "text": "{0} 倍"
+    },
+    {
+      "name": "PresetEditForm_okButton",
+      "explanation": "Button which saves changes and closes the form",
+      "english_text": "OK",
+      "text": "OK"
+    },
+    {
+      "name": "PresetEditForm_poolDefault",
+      "explanation": "Type of enemy replacement within the same category, so for Major Bosses, this means other Major Bosses. This is same thing as 'Themselves' in Preset_poolDefault, but it's in an enemy list editor and not in a summary",
+      "english_text": "Self",
+      "text": "自分"
+    },
+    {
+      "name": "PresetEditForm_poolEnemies",
+      "explanation": "Percent sign which appears after a textbox with a number from 0 to 100",
+      "english_text": "%",
+      "text": "%"
+    },
+    {
+      "name": "PresetEditForm_PresetEditForm",
+      "explanation": "Title of the customization form",
+      "english_text": "Customize enemy placement",
+      "text": "敵のカスタム配置"
+    },
+    {
+      "name": "PresetEditForm_presetL",
+      "explanation": "Label for dropdown with different existing presets, including the 'Create new' option",
+      "english_text": "Preset:",
+      "text": "プリセット"
+    },
+    {
+      "name": "PresetEditForm_quickL",
+      "explanation": "Label for several links which do some customization configuration automatically. These links edit the preset and are meant to be quick/convenient for the user.",
+      "english_text": "Quick edits:",
+      "text": "クイック編集:"
+    },
+    {
+      "name": "PresetEditForm_quickMergeAll",
+      "explanation": "Quick edit which changes all enemy categories to merge with parent, making everything randomized with each other",
+      "english_text": "Merge all enemy categories",
+      "text": "すべての敵カテゴリを統合"
+    },
+    {
+      "name": "PresetEditForm_quickMergeAll",
+      "explanation": "Quick edit which changes all enemy categories to merge with parent, making everything randomized with each other",
+      "english_text": "Merge all bosses and enemies",
+      "text": "すべてのボスと敵を統合"
+    },
+    {
+      "name": "PresetEditForm_quickMergeBoss",
+      "explanation": "Quick edit which changes all boss enemy categories to merge with parent, making bosses randomized with each other",
+      "english_text": "Merge all boss categories",
+      "text": "すべてのボスカテゴリを統合"
+    },
+    {
+      "name": "PresetEditForm_quickMergeBoss",
+      "explanation": "Quick edit which changes all boss enemy categories to merge with parent, making bosses randomized with each other",
+      "english_text": "Merge all bosses",
+      "text": "すべてのボスを統合"
+    },
+    {
+      "name": "PresetEditForm_quickMergeMinor",
+      "explanation": "Quick edit which changes boss categories other than Major Bosses to merge with each other. This makes it so that Major Bosses are still challenging, but other bosses have more variety",
+      "english_text": "Merge non-major bosses",
+      "text": "すべての中ボスを統合"
+    },
+    {
+      "name": "PresetEditForm_quickMergeOverworld",
+      "explanation": "Quick edit which changes overworld boss categories (world minibosses, night minibosses, etc.) to merge with parent, making them randomized with each other",
+      "english_text": "Merge overworld boss categories",
+      "text": "すべてのフィールドボスカテゴリを統合"
+    },
+    {
+      "name": "PresetEditForm_quickReducePassive",
+      "explanation": "Quick edit which makes harmless enemies less common, so that more interesting and aggressive enemies can take their place",
+      "english_text": "Reduce passive enemy frequency",
+      "text": "おとなしい敵の出現頻度を下げる"
+    },
+    {
+      "name": "PresetEditForm_quickReplace10",
+      "explanation": "Quick edit which adds 10% boss replacement to the regular enemy category, if it's not there already",
+      "english_text": "Replace 10% of regular enemies with bosses",
+      "text": "雑魚敵の 10% をボスにする"
+    },
+    {
+      "name": "PresetEditForm_quickReplaceWildlife",
+      "explanation": "Quick edit which changes the wildlife category to be 100% regular enemies, instead of the default of other wildlife",
+      "english_text": "Replace wildlife with regular enemies",
+      "text": "野生動物を通常雑魚に置き換える"
+    },
+    {
+      "name": "PresetEditForm_quickSeparate",
+      "explanation": "Quick edit which is the opposite of quickMerge options. It changes all categories to not merge with parent.",
+      "english_text": "Split up enemy categories (default)",
+      "text": "敵カテゴリを分割（デフォルト）"
+    },
+    {
+      "name": "PresetEditForm_removeSource",
+      "explanation": "Label for a list of enemies which are not added anywhere in the game",
+      "english_text": "Excluded everywhere:",
+      "text": "すべての場所で除外:"
+    },
+    {
+      "name": "PresetEditForm_resetButton",
+      "explanation": "Button shown in preset form which can revert the custom enemy placement back to the default (that is, everything randomized in separate categories)",
+      "english_text": "Reset...",
+      "text": "初期化..."
+    },
+    {
+      "name": "PresetEditForm_saveAsButton",
+      "explanation": "Button which prompts a new preset name and saves the current enemy customization under that file",
+      "english_text": "Save as...",
+      "text": "別名で保存..."
+    },
+    {
+      "name": "PresetEditForm_saveFailure",
+      "explanation": "Enemy customization preset save failure. {0} is the name of the preset and {1} is the full error message on the next line",
+      "english_text": "Failed to save preset {0}\n{1}",
+      "text": "プリセット {0} の保存に失敗\n{1}"
+    },
+    {
+      "name": "Randomizer_createFileError",
+      "explanation": "Long explanation of why file creation might fail. First it gives the same advice as EldenForm_fileUnpackError, then mentions that Antivirus can stop the randomizer from writing files, then explains that the randomizer is 'safe' (does not modify files unless it needs to).",
+      "english_text": "Error: Failed to create file. Make sure the randomizer is unpacked to disk with all of the files kept together, and make sure no Antivirus programs are interfering. The randomizer will only modify files in its own directory or in the game directory.\n{0}",
+      "text": "エラー: ファイルの作成に失敗しました。randomizer の各ファイルがディスク上の同じ場所に展開されているか、アンチウイルスプログラムが干渉していないかを確認してください。randomizer が変更を加えるファイルは EldenRingRandomizer.exe 以下のファイルか、ゲームディレクトリ内のファイルのみとなります。"
     },
     {
       "name": "Randomizer_editPhase",
       "explanation": "Shown in the status bar while the randomizer is modifying game parameters etc. to randomize them",
       "english_text": "Editing game files",
-      "text": ""
+      "text": "ゲームファイルを編集中..."
     },
     {
       "name": "Randomizer_enemyPhase",
       "explanation": "Shown in the status bar while the randomizer is doing enemy randomization",
       "english_text": "Randomizing enemies",
-      "text": ""
+      "text": "敵をランダム化中..."
     },
     {
       "name": "Randomizer_itemPhase",
       "explanation": "Shown in the status bar while the randomizer is doing item randomization",
       "english_text": "Randomizing items",
-      "text": ""
+      "text": "アイテムをランダム化中..."
     },
     {
       "name": "Randomizer_keyItemError",
       "explanation": "Error message from the randomizer which indicates an internal logic error, when has to put a key item in an area and can't find any applicable locations. This happens like 5% or 10% of the time depending on how difficult the randomization is to calculate.",
       "english_text": "Could not place all key items... giving up now. This can happen on some seeds or with some options.",
-      "text": ""
+      "text": "キーアイテムをすべて配置できなかったため中断します。特定のシードまたはオプション下において発生する現象です。"
     },
     {
       "name": "Randomizer_loadPhase",
       "explanation": "Shown in the status bar at the start of randomization, when reading and parsing game files",
       "english_text": "Loading game data",
-      "text": ""
+      "text": "ゲームデータを読み込み中..."
+    },
+    {
+      "name": "Randomizer_mergeMissingError",
+      "explanation": "Error shown when 'Merge mod directory' is selected but the directory named {0} does not exist",
+      "english_text": "Error merging mods: directory {0} not found",
+      "text": "Mod の統合エラー: ディレクトリ {0} が見つかりません"
+    },
+    {
+      "name": "Randomizer_mergeWrongDirError",
+      "explanation": "Error shown when 'Merge mod directory' is selected but the randomizer is already inside of the mod directory {0}, so it would use its own output as input, which would break it",
+      "english_text": "Error merging mods: already running from {0} directory",
+      "text": "Mod の統合エラー: すでに {0} ディレクトリから実行されています"
+    },
+    {
+      "name": "Randomizer_saveMapPhase",
+      "explanation": "Progress from 0% to 100% in writing game map files (.msb.dcx format), at the end of savePhase",
+      "english_text": "Writing map data: {0}%",
+      "text": "マップデータの書き込み中: {0}%"
     },
     {
       "name": "Randomizer_savePhase",
       "explanation": "Shown in the status bar at the end of randomization, when all randomized files are written out to disk",
       "english_text": "Writing game files",
-      "text": ""
+      "text": "ゲームファイルの書き込み中..."
     }
   ]
 }

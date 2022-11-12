@@ -562,7 +562,45 @@ namespace RandomizerCommon
             }
         }
 
-        public void AddEnemyLocations(EnemyLocations enemies)
+        public void AddMaterialItems(bool matsRandomized)
+        {
+            bool debug = false;
+            foreach (PlacementRestrictionAnnotation restrict in ItemRestrict.Values)
+            {
+                if (restrict.BaseLocationBuffer <= 0 || restrict.Unique == null) continue;
+                ItemLocations itemLocs = data.Data[restrict.Key];
+                int baseCount = itemLocs.Locations.Count(l => l.Key.Type == ScopeType.EVENT);
+                if (debug) Console.WriteLine($"Locations for {restrict.Name}: {baseCount} base, {restrict.MatsAmount} mats");
+                int addAmount = restrict.Unique.Sum(slot => slot.Amount);
+                if (restrict.MatsAmount > 0 && !matsRandomized)
+                {
+                    // Reduce requirements if materials are reliably present
+                    // previously: mats / 2
+                    int cutMats = restrict.MatsAmount;
+                    float cutRate = (float)cutMats / addAmount;
+                    foreach (PlacementSlotAnnotation slot in restrict.Unique)
+                    {
+                        if (slot.Amount <= 0) continue;
+                        int reduced = slot.Amount - (int)(slot.Amount * cutRate);
+                        reduced = Math.Max(5, reduced);
+                        if (debug) Console.WriteLine($"  Cutting {restrict.Name} slot from {slot.Amount} to {reduced}");
+                        slot.Amount = reduced;
+                    }
+                }
+                int bufferAmount = restrict.Unique.Sum(slot => slot.Amount) + restrict.BaseLocationBuffer;
+                int toAdd = bufferAmount - baseCount;
+                if (debug) Console.WriteLine($"  Adding {toAdd} to reach {bufferAmount}");
+                if (toAdd > 0)
+                {
+                    for (int i = 0; i < toAdd; i++)
+                    {
+                        data.AddLocationlessItem(restrict.Key);
+                    }
+                }
+            }
+        }
+
+        public void ProcessRestrictions(EnemyLocations enemies)
         {
             // Currently, enemy location processing is required for skill/prosthetics progression, to add requirements for enemies
             bool debug = false;
@@ -591,9 +629,39 @@ namespace RandomizerCommon
             string processLocations(string locs)
             {
                 if (locs == null) return null;
-                if (!locs.Contains("_location")) return locs;
+                if (!locs.Contains("_location") && !locs.Contains("_minidungeons") && !locs.Contains("*")) return locs;
                 string[] reqs = locs.Split(' ');
-                string newLocs = string.Join(" ", reqs.SelectMany(r => r.EndsWith("_location") ? getLocations(r.Substring(0, r.Length - 9)) : new List<string> { r }));
+                List<string> newReqs = new List<string>();
+                foreach (string r in reqs)
+                {
+                    if (r.EndsWith("_location"))
+                    {
+                        string prefix = r.Substring(0, r.LastIndexOf("_location"));
+                        newReqs.AddRange(getLocations(prefix));
+                    }
+                    else if (r.EndsWith("_minidungeons"))
+                    {
+                        // In this case, the prefix is like limgrave_
+                        string prefix = r.Substring(0, r.LastIndexOf("minidungeons"));
+                        newReqs.AddRange(Areas
+                            .Where(a => a.Key.StartsWith(prefix))
+                            .Where(a => a.Value.Tags != null && a.Value.Tags.Contains("minidungeon"))
+                            .Select(a => a.Key));
+                    }
+                    else if (r.EndsWith("*"))
+                    {
+                        // Not full wildcard or god forbid regex, just prefix here
+                        string prefix = r.Replace("*", "");
+                        newReqs.AddRange(Areas
+                            .Where(a => a.Key.StartsWith(prefix))
+                            .Select(a => a.Key));
+                    }
+                    else
+                    {
+                        newReqs.Add(r);
+                    }
+                }
+                string newLocs = string.Join(" ", newReqs);
                 if (debug) Console.WriteLine($"Replacing '{locs}' -> '{newLocs}'");
                 return newLocs.Length == 0 ? null : newLocs;
             }
@@ -606,14 +674,19 @@ namespace RandomizerCommon
                     slot.UpTo = processLocations(slot.UpTo);
                     slot.UpToAny = processLocations(slot.UpToAny);
                     slot.After = processLocations(slot.After);
-                    return slot.Before == null && slot.UpTo == null && slot.UpToAny != null && slot.After == null;
+                    slot.Inside = processLocations(slot.Inside);
+                    return slot.Before == null && slot.UpTo == null && slot.UpToAny == null && slot.After == null && slot.Inside == null;
                 });
             }
             foreach (PlacementRestrictionAnnotation restrict in ItemRestrict.Values)
             {
+                if (restrict.KeyAreas != null)
+                {
+                    restrict.KeyAreas = processLocations(restrict.KeyAreas);
+                }
                 processLocationList(restrict.Unique);
                 // TODO: How does this affect DS3?
-                if (restrict.Unique.Count == 0) restrict.Unique = null;
+                if (restrict.Unique != null && restrict.Unique.Count == 0) restrict.Unique = null;
                 processLocationList(restrict.Drop);
                 processLocationList(restrict.Shop);
             }
@@ -694,8 +767,28 @@ namespace RandomizerCommon
             };
             if (game.EldenRing)
             {
-                // By default, unspecified slots are missable. And just to be safe, assets never randomizable
-                slot.Tags = scope.Type == ScopeType.ASSET ? "norandom" : "missable";
+                if (true)
+                {
+                    slot.Tags = "norandom";
+                }
+                else
+                {
+                    // Alternate logic: unknown tags are missable
+                    // These probably don't do anything, though - the real conditions are in Permutation
+                    string defaultTag = "missable";
+                    if (scope.Type == ScopeType.ASSET)
+                    {
+                        // Just to be safe, assets never randomizable
+                        defaultTag = "norandom";
+                    }
+                    else if (scope.OnlyShops)
+                    {
+                        // Unknown shop slots are not randomized, since they are explicitly listed normally
+                        // Trying to make ERR work
+                        defaultTag = "norandom";
+                    }
+                    slot.Tags = defaultTag;
+                }
             }
             slot.SetTags(scope.OnlyShops, null);
             return slot;
@@ -796,6 +889,10 @@ namespace RandomizerCommon
                         .ToList();
                     if (mapEntities.Count == 1 && mapEntities[0].Position is Vector3 pos)
                     {
+                        if (mapEntities[0].Type.Contains("enemy") && mapEntities[0].EntityID > 0)
+                        {
+                            auto += $" (#{mapEntities[0].EntityID})";
+                        }
                         auto = $"{auto}. Near {coord.ClosestLandmark(mapEntities[0].MapName, pos)}";
                     }
                 }
@@ -948,6 +1045,10 @@ namespace RandomizerCommon
             public string Includes { get; set; }
             public string Switch { get; set; }
             public string KeyAreas { get; set; }
+            // Indication to add new synthetic item locations, until locations >= sum of slot amounts + buffer 
+            public int BaseLocationBuffer { get; set; }
+            // Number of materials found in reliable places in the world, used to offset the slot amounts
+            public int MatsAmount { get; set; }
             public List<PlacementSlotAnnotation> Unique { get; set; }
             public List<PlacementSlotAnnotation> Shop { get; set; }
             public List<PlacementSlotAnnotation> Drop { get; set; }
@@ -964,6 +1065,7 @@ namespace RandomizerCommon
             public string UpTo { get; set; }
             public string UpToAny { get; set; }
             public string After { get; set; }
+            public string Inside { get; set; }
             public bool UseGroups { get; set; }
             public PlacementSlotAnnotation()
             {
@@ -971,8 +1073,15 @@ namespace RandomizerCommon
             }
             public HashSet<string> AllowedAreas(Dictionary<string, HashSet<string>> includedAreas, Dictionary<string, HashSet<string>> areaGroups, bool debug=false)
             {
-                debug = false; // UpTo == "haligtree_elphael";
+                // debug = Before == "moonlight" || Before == "ainsel";
+                debug = false;
                 List<HashSet<string>> requirements = new List<HashSet<string>>();
+                IEnumerable<string> expandGroups(string a)
+                {
+                    return areaGroups != null && areaGroups.TryGetValue(a, out HashSet<string> group)
+                        ? group
+                        : new HashSet<string> { a };
+                }
                 IEnumerable<string> getAreasUpTo(string loc)
                 {
                     if (!includedAreas.ContainsKey(loc)) throw new Exception($"Unknown area {loc} in {this}");
@@ -986,9 +1095,9 @@ namespace RandomizerCommon
                     {
                         ret = includedAreas[loc];
                     }
-                    if (UseGroups && areaGroups != null)
+                    if (UseGroups)
                     {
-                        return ret.SelectMany(a => areaGroups.TryGetValue(a, out HashSet<string> group) ? group : new HashSet<string> { a }).Distinct();
+                        return ret.SelectMany(expandGroups).Distinct();
                     }
                     return ret;
                 };
@@ -1022,6 +1131,21 @@ namespace RandomizerCommon
                     }
                     requirements.Add(upto);
                 }
+                if (Inside != null)
+                {
+                    HashSet<string> inside = new HashSet<string>();
+                    foreach (string loc in Inside.Split(' '))
+                    {
+                        HashSet<string> locs = new HashSet<string> { loc };
+                        if (UseGroups)
+                        {
+                            inside.UnionWith(expandGroups(loc));
+                        }
+                        if (debug) Console.WriteLine($"Inside: {loc} -> {string.Join(",", locs)}");
+                        inside.UnionWith(locs);
+                    }
+                    requirements.Add(inside);
+                }
                 if (After != null)
                 {
                     HashSet<string> after = new HashSet<string>();
@@ -1040,10 +1164,18 @@ namespace RandomizerCommon
                 {
                     allLocs.IntersectWith(requirements[i]);
                 }
-                if (debug) Console.WriteLine($"** Final: {this}: {string.Join(",", allLocs)}");
+                if (debug) Console.WriteLine($"** Final: {this}: {string.Join(",", allLocs)}\n");
                 return allLocs;
             }
-            public override string ToString() => $"{(UseGroups ? "Group " : "")}Slot[{Amount}] Before [{Before}] UpTo [{UpTo}] UpToAny [{UpToAny}] After [{After}]";
+            public override string ToString()
+            {
+                string f(string type, string field)
+                {
+                    return string.IsNullOrEmpty(field) ? "" : $" {type} [{field}]";
+                }
+                return $"{(UseGroups ? "Group " : "")}Slot[{Amount}]"
+                    + $"{f("Before", Before)}{f("UpTo", UpTo)}{f("UpToAny", UpToAny)}{f("After", After)}{f("Inside", Inside)}";
+            }
         }
 
         public class ConfigItemAnnotation
@@ -1431,7 +1563,7 @@ namespace RandomizerCommon
             }
         }
 
-        public void Save(bool initial=false, bool filter = false, EldenCoordinator coord = null)
+        public void Save(bool initial = false, bool filter = false, EldenCoordinator coord = null)
         {
             Annotations ann = new Annotations();
             bool interestingEldenItem(ItemKey item)
@@ -1445,11 +1577,12 @@ namespace RandomizerCommon
                     || (id >= 1000 && id < 1100) // Flasks
                     || id == 2080 // Blasphemous Claw
                     || id == 2090 // Deathroot
+                    || (id >= 11000 && id < 11050) // Tears
                     || (item.ID >= 2130 && item.ID <= 2250) // Celestial Dew to Prattling Pates
                     // Exclude Stonesword Key 8000 for now
                     || (item.ID >= 8010 && item.ID <= 8650) // Most key items and map fragments
                     || (item.ID >= 8850 && item.ID < 9000) // Scrolls, bell bearings, whetblades, misc keys
-                    // 9300 to 9500 excl, various cookbooks
+                    || (item.ID >= 9300 && item.ID <= 9510) // Cookbooks to perfume bottles, hopefully isn't too much
                     || (item.ID >= 9990 && item.ID <= 9999) // Custom items
                     || (item.ID >= 10010 && item.ID <= 10060) // Important upgrades (flask, memory, talisman)
                     || item.ID == 10080 // Rennala GR
@@ -1605,10 +1738,7 @@ namespace RandomizerCommon
                 ann.Slots.Add(slot);
             }
             ann.Slots.Sort((a, b) => a.Key.CompareTo(b.Key));
-            ISerializer serializer = new SerializerBuilder()
-                .DisableAliases()
-                .Build();
-            Console.WriteLine(serializer.Serialize(ann));
+            Console.WriteLine(GameData.Serializer.Serialize(ann));
         }
     }
 }

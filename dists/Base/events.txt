@@ -14575,7 +14575,7 @@ EnemyEvents:
       After: Increment Event Value
   - Type: chrarg
     Comment: The other progress flags don't matter, as they are never set?
-    ProgressFlag: 12505828
+    ProgressFlag: 12505828-12505832
     Add:
     - Cmd: Set Event Flag (12505899, 1)
       After: Increment Event Value

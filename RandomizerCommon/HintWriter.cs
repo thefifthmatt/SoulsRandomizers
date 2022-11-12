@@ -77,10 +77,9 @@ namespace RandomizerCommon
                 {
                     createHint(id, null, eventText[id]);
                 }
-                ISerializer serializer = new SerializerBuilder().DisableAliases().Build();
                 using (var writer = File.CreateText("hints.txt"))
                 {
-                    serializer.Serialize(writer, write);
+                    GameData.Serializer.Serialize(writer, write);
                 }
                 return;
             }

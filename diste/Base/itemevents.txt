@@ -4,32 +4,33 @@ ItemTalks:
   ItemTemplate:
   - Type: loc
     EventFlag: 400001
-    Machine: x29
+    Machine: x28
   - Type: loc
     EventFlag: 400001
-    Machine: x31
+    Machine: x30
   - Type: loc
     EventFlag: 400001
-    Machine: x44
+    Machine: x43
   - Type: loc
     EventFlag: 400001
-    Machine: x51
+    Machine: x50
   - Type: item
     EventFlag: 400394
-    Machine: x53
+    Machine: x52
   - Type: loc
     EventFlag: 400001
-    Machine: x58
+    Machine: x57
+  - Type: loc
+    EventFlag: 400001
+    Machine: x60
   - Type: loc
     EventFlag: 400001
     Machine: x61
   - Type: loc
     EventFlag: 400001
-    Machine: x62
-  - Type: loc
-    EventFlag: 400001
-    Machine: x68
+    Machine: x67
   DebugInfo:
+  - This info is out of date
   - t000001000_x29 - f15(400001) == 0 - Rold Medallion (400001)
   - t000001000_x31 - f15(11009260) == 1 && f15(400001) == 0 - Rold Medallion (400001)
   - t000001000_x44 - f15(11009260) == 1 && f15(400001) == 0 - Rold Medallion (400001)
@@ -184,6 +185,12 @@ ItemTalks:
   - t324001110_x43 - SetREG0(f15(11109687)) == 0 && f15(400001) == 1 && GetREG0() == 0 - Rold Medallion (400001)
   - t324001110_x47 - SetREG0(f15(400130)) == 1 && SetREG1(f15(1051587800)) == 0 - Haligtree Secret Medallion (Right) (400130)
   - t324001110_x47 - SetREG0(f15(400130)) == 1 && SetREG1(f15(1051587800)) == 0 - Haligtree Secret Medallion (Left) (1051587800)
+- ID: 331006000
+  Comment: Blackguard. If have not done something in the shop (10364392​10), and have shop flag set OR Rya's Necklace (quantity == 1), count it as having made the purchase and skip initial dialog. If this were an item template type, it would amount to an item check only. Probably preserve location-based behavior here, since all items are through the shop anyway, so it does not hurt to access it earlier. The release flag 1036439209 is set either way upon entering the main menu.
+  ItemTemplate:
+  - Type: loc
+    EventFlag: 400300
+    Machine: x40
 - ID: 607001900
   Comment: Ending choice
   ItemTemplate:
@@ -257,6 +264,7 @@ ItemEvents:
   ItemTemplate:
   - Type: singleton
   - Type: locarg
+    Comment: This can run into issues when the flag was already set, and other drops won't be rewarded. For instance, Radahn Remembrance (510300) getting replaced by Godrick's Great Rune (171), but the GR has already been acquired somehow. Maybe remove the event flag check? This should not affect normal playthroughs.
     EventFlag: 197 60440 60510 60520 510010 510030 510040 510060 510070 510080 510090 510100 510110 510120 510140 510150 510160 510190 510200 510210 510220 510230 510250 510260 510280 510290 510300 510310 510320 510330 510340 510350 510730 510740 510800 510810 510820 510830 510840
     EventFlagArg: X12
   DebugInfo:
@@ -635,6 +643,7 @@ ItemEvents:
 - ID: 3119
   Comment: Tanith quest flags
   ItemTemplate:
+  - Type: volcanoreq
   - Type: item
     EventFlag: 400073
   DebugInfo:
@@ -698,6 +707,10 @@ ItemEvents:
   DebugInfo:
   - common - IfEventFlag(400174) - Shard of Alexander, Alexander's Innards
   - common - IfEventFlag(400175) - Warrior Jar Shard
+- ID: 6800
+  Comment: Give Crystal Tear if acquired flag on. These items have fixed flags. Probably harmless.
+  ItemTemplate:
+  - Type: fixeditem
 - ID: 6901
   Comment: Lots of item update things, running only once (per NG?)
   ItemTemplate:
@@ -1035,6 +1048,7 @@ ItemEvents:
   ItemTemplate:
   - Type: item
     EventFlag: 114
+    ItemCond: 5
   DebugInfo:
   - m12_04_00_00 (Ainsel River - Boss) - GotoIfEventFlag(114) - Dark Moon Ring
   - m12_04_00_00 (Ainsel River - Boss) - IfEventFlag(114) - Dark Moon Ring
@@ -1093,7 +1107,7 @@ ItemEvents:
   DebugInfo:
   - m16_00_00_00 (Volcano Manor) - SkipIfEventFlag(16007710) - Serpent's Amnion
 - ID: 16003702
-  Comment: Upon receiving, sets 3118 unless 3105, for Tanith quest. This re-loops the common event (3119)
+  Comment: Upon receiving, sets 3118 if in initial state (3105), for Tanith quest. This re-loops the common event (3119)
   ItemTemplate:
   - Type: itemarg
     Comment: Same as 3119
@@ -1201,11 +1215,13 @@ ItemEvents:
   DebugInfo:
   - m39_20_00_00 (Ruin-Strewn Precipice) - EndIfEventFlag(400180) - Letter to Patches
 - ID: 90005110
-  Comment: Exchanging Great Runes. These aren't randomized at present
+  Comment: Exchanging Great Runes. These aren't randomized at present, but dependence on boss flag should be removed
   ItemTemplate:
   - Type: locarg
     EventFlag: 191 192 193 194 195 196
     EventFlagArg: X0
+  - Type: runearg
+    EventFlagArg: X0 X4
   DebugInfo:
   - m34_10_00_00 (Divine Tower of Limgrave) - EndIfEventFlag(X0_4 = 191) - Godrick's Great Rune
   - m34_10_00_00 (Divine Tower of Limgrave) - SetEventFlag(X0_4 = 191) - Godrick's Great Rune
@@ -1416,8 +1432,8 @@ ItemEvents:
 - ID: 1035452500
   Comment: Picking up the map, it says "You found a simple map. Check in inventory."
   ItemTemplate:
-  - Type: loc
-    Comment: Could be item but it's only in this map
+  - Type: remove
+    Comment: Could be item but it's only in this map. It's annoying to clear so remove it
     EventFlag: 1035457100
   DebugInfo:
   - m60_35_45_00 (Liurnia of the Lakes - South Raya Lucaria Gate) - EndIfEventFlag(1035457100) - Meeting Place Map
@@ -1501,7 +1517,8 @@ ItemEvents:
 - ID: 1039532610
   Comment: Notification for "You found a simple map" but also location-specific
   ItemTemplate:
-  - Type: loc
+  - Type: remove
+    Comment: Also just remove
     EventFlag: 1039537080
   DebugInfo:
   - m60_39_53_00 (Altus Plateau - Mirage Rise; Mt. Gelmir - Bridge of Iniquity) - EndIfEventFlag(1039537080) - Mirage Riddle

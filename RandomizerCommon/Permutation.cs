@@ -17,17 +17,18 @@ namespace RandomizerCommon
         private Messages messages;
 
         private bool explain;
+        // Just a whole lot of data used for writing the permutation and auxiliary randomization
         public readonly Dictionary<RandomSilo, SiloPermutation> Silos = new Dictionary<RandomSilo, SiloPermutation>();
         public readonly Dictionary<ItemKey, double> ItemLateness = new Dictionary<ItemKey, double>();
         public readonly HashSet<ItemKey> KeyItems = new HashSet<ItemKey>();
         public readonly Dictionary<ItemKey, ItemKey> SkillAssignment = new Dictionary<ItemKey, ItemKey>();
         public readonly Dictionary<SlotKey, string> LogOrder = new Dictionary<SlotKey, string>();
-        // public readonly SortedDictionary<HintCategory, Dictionary<SlotKey, SlotKey>> Hints = new SortedDictionary<HintCategory, Dictionary<SlotKey, SlotKey>>();\
         public readonly Dictionary<string, Dictionary<SlotKey, SlotKey>> Hints = new Dictionary<string, Dictionary<SlotKey, SlotKey>>();
+        // Only in logic runs
         public Dictionary<string, HashSet<string>> IncludedAreas => assign.IncludedAreas;
         public Dictionary<string, HashSet<string>> IncludedItems => assign.IncludedItems;
+        public Dictionary<string, HashSet<string>> CombinedWeights => assign.CombinedWeights;
         public HashSet<ItemKey> NotRequiredKeyItems => assign.NotRequiredKeyItems;
-        // Only in logic runs
         private KeyItemsPermutation.Assignment assign;
         private readonly Dictionary<ItemKey, SlotKey> specialAssign = new Dictionary<ItemKey, SlotKey>();
 
@@ -49,7 +50,9 @@ namespace RandomizerCommon
             }
             HashSet<ItemKey> remove = new HashSet<ItemKey>(ann.ItemGroups["remove"]);
             ann.ItemGroups.TryGetValue("norandomshop", out List<ItemKey> norandomShop);
-
+            ann.ItemGroups.TryGetValue("norandomdrop", out List<ItemKey> norandomDrop);
+            norandomDrop = norandomDrop?.ToList();
+            
             foreach (KeyValuePair<LocationScope, List<SlotKey>> entry in data.Locations)
             {
                 LocationScope locScope = entry.Key;
@@ -72,6 +75,37 @@ namespace RandomizerCommon
                     {
                         // Just remove NG+ in Sekiro.
                         removeSlot = slotAnn.TagList.Contains("ng+");
+                    }
+                }
+                else if (game.EldenRing)
+                {
+                    if (true)
+                    {
+                        // Alternate logic: merging is too complicated in Elden Ring, don't random any unknown slots anymore
+                        // MODEL (INFINITE, INFINITE_GEAR, INFINITE_CERTAIN) are excluded from annotation config
+                        if (locScope.Type == ScopeType.EVENT || locScope.Type == ScopeType.SHOP_INFINITE)
+                        {
+                            norandoms.Add(null);
+                        }
+                        else if (locScope.Type == ScopeType.MODEL && norandomDrop != null)
+                        {
+                            // For infinite enemy-associated things, maintain a list of items which other mods "abuse"
+                            // for convenience features
+                            norandoms = norandomDrop;
+                        }
+                    }
+                    else
+                    {
+                        // Default norandom for Elden Ring, for now
+                        // Also matches AnnotationData.Slot - does that do anything?
+                        if (locScope.Type == ScopeType.ASSET)
+                        {
+                            norandoms.Add(null);
+                        }
+                        else if (locScope.OnlyShops)
+                        {
+                            norandoms.Add(null);
+                        }
                     }
                 }
                 // Add items
@@ -529,11 +563,18 @@ namespace RandomizerCommon
                     int beadCount = 0;
                     raceItems.RemoveAll(item =>
                     {
-                        // 20 out of 40 beads in Sekiro, or 20 out of 33 golden seeds in Elden Ring (12 flasks). 10 flasks would be around 12 seeds.
-                        if ((game.Sekiro && item.ID == 4000) || (game.EldenRing && item.ID == 10010))
+                        // 20 out of 40 beads in Sekiro
+                        if (game.Sekiro && item.ID == 4000)
                         {
                             beadCount++;
                             if (beadCount > 20) return true;
+                        }
+                        // 16 out of 33 golden seeds in Elden Ring (11 flasks)
+                        // 10 flasks would be 12 seeds, 11 is 16, 12 is 20, 13 is 25, 14 is 30
+                        else if (game.EldenRing && item.ID == 10010)
+                        {
+                            beadCount++;
+                            if (beadCount > 16) return true;
                         }
                         return false;
                     });
@@ -1035,7 +1076,7 @@ namespace RandomizerCommon
                     {
                         return false;
                     }
-                    else if (game.EldenRing && prem.TagList.Contains("transpose") && !data.Data[item].Unique)
+                    else if (game.EldenRing && !data.Data[item].Unique)
                     {
                         return false;
                     }
@@ -1209,6 +1250,7 @@ namespace RandomizerCommon
             otherItems.AddRange(queue.Queue);
             if (partialLocations && otherItems.Count > 0)
             {
+                if (explain) Console.WriteLine($"Unplaced: {string.Join(", ", otherItems)}");
                 throw new Exception(messages.Get(keyItemError));
             }
             if (explain) Console.WriteLine($"Attempting to satisfy {pushedLocations.Count} remaining locations with {otherItems.Count} items");

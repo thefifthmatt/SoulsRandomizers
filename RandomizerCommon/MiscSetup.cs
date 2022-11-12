@@ -93,6 +93,11 @@ namespace RandomizerCommon
         }
 
         [Localize]
+        public static readonly Text CreateFileError = new Text(
+            "Error: Failed to create file. Make sure the randomizer is unpacked to disk with all of the files kept together, and make sure no Antivirus programs are interfering. The randomizer will only modify files in its own directory or in the game directory.\n{0}",
+            "Randomizer_createFileError");
+
+        [Localize]
         private static readonly Text fileUnpackError = new Text(
             "Error: Can't find required metadata files.\nFor the randomizer to work, you must unpack it to disk and keep all of the files together",
             "EldenForm_fileUnpackError");
@@ -319,13 +324,19 @@ namespace RandomizerCommon
         }
 
         private static readonly MD5 MD5 = MD5.Create();
-        private static string GetMD5Hash(string path)
+        public static string GetMD5Hash(string path)
         {
             using (FileStream stream = File.OpenRead(path))
             {
                 byte[] hash = MD5.ComputeHash(stream);
                 return string.Join("", hash.Select(x => $"{x:x2}"));
             }
+        }
+
+        public static string GetMD5TextHash(string text)
+        {
+            byte[] hash = MD5.ComputeHash(new MemoryStream(Encoding.UTF8.GetBytes(text)));
+            return string.Join("", hash.Select(x => $"{x:x2}"));
         }
 
         public static void CombineAI(List<string> maps, string outDir, bool mergeInfo)
@@ -486,8 +497,9 @@ namespace RandomizerCommon
                 // Small convenience: Shorten the Firelink Shrine fog gate wait times significantly
                 foreach (EMEVD.Instruction i in fogEvent.Instructions)
                 {
+                    // TODO: This depends on paramAwareMode being off
                     Instr instr = events.Parse(i);
-                    if (instr.Name == "IfElapsedSeconds" && instr.Args[1] is float wait)
+                    if (instr.Name == "IfElapsedSeconds" && instr[1] is float wait)
                     {
                         instr[1] = Math.Min(wait, 2f);
                         instr.Save();
@@ -591,8 +603,15 @@ namespace RandomizerCommon
             }
         }
 
-        public static void EldenCommonPass(GameData game, RandomizerOptions opt)
+        public static void EldenCommonPass(GameData game, RandomizerOptions opt, PermutationWriter.Result result = null)
         {
+            // Resident speffects
+            PARAM.Row baseSp = game.Params["SpEffectParam"][5020];
+            for (int i = 0; i < 20; i++)
+            {
+                GameEditor.CopyRow(baseSp, game.AddRow("SpEffectParam", 6950 + i));
+            }
+
             HashSet<(int, int)> deleteCommands = new HashSet<(int, int)>
             {
                 (2003, 28),  // Achievement
@@ -617,17 +636,56 @@ namespace RandomizerCommon
                     }
                 }
             }
+            if (opt["sombermode"])
+            {
+                foreach (PARAM.Row row in game.Params["EquipMtrlSetParam"].Rows)
+                {
+                    int id = (int)row["materialId01"].Value;
+                    int cat = (byte)row["materialCate01"].Value;
+                    int num = (sbyte)row["itemNum01"].Value;
+                    if (cat == 4 && id >= 10100 && id < 10110 && num > 1)
+                    {
+                        row["itemNum01"].Value = (byte)1;
+                    }
+                }
+            }
             // 71801 is graveyard flag, 102 is "definitely in limgrave"?
             // This one should be opening the graveyard exit but it seems to activate straight away
             int mapUnlockFlag = 18000021;
             if (opt["allmaps"])
             {
+                FMG npcNames = game.ItemFMGs["NpcName"];
+                HashSet<int> merchantNames = new HashSet<int>(
+                    npcNames.Entries.Where(e => e.Text != null && e.Text.Contains("Merchant")).Select(e => e.ID));
+                void rewriteMerchantIcons(PARAM.Row row)
+                {
+                    for (int i = 1; i <= 8; i++)
+                    {
+                        // Ignore npc vs place name, as the ids are distinct probably
+                        int name = (int)row[$"textId{i}"].Value;
+                        if (merchantNames.Contains(name))
+                        {
+                            row[$"textEnableFlagId{i}"].Value = (uint)mapUnlockFlag;
+                            int giftFlag = 0;
+                            // Exclusion for Kale
+                            if (result != null && result.MerchantGiftFlags.TryGetValue(name, out giftFlag) && giftFlag != 400049)
+                            {
+                                row[$"textDisableFlagId{i}"].Value = (uint)giftFlag;
+                            }
+                        }
+                    }
+                }
                 foreach (PARAM.Row row in game.Params["WorldMapPointParam"].Rows)
                 {
                     if ((int)row["textId1"].Value > 0)
                     {
                         row["eventFlagId"].Value = (uint)mapUnlockFlag;
                     }
+                    rewriteMerchantIcons(row);
+                }
+                foreach (PARAM.Row row in game.Params["BonfireWarpParam"].Rows)
+                {
+                    rewriteMerchantIcons(row);
                 }
             }
             EMEVD.Instruction debugLot(int i)
@@ -641,11 +699,8 @@ namespace RandomizerCommon
                 EMEVD emevd = entry.Value;
                 void addNewEvent(int id, IEnumerable<EMEVD.Instruction> instrs, EMEVD.Event.RestBehaviorType rest = EMEVD.Event.RestBehaviorType.Default)
                 {
-                    EMEVD.Event ev = new EMEVD.Event(id, rest);
-                    // ev.Instructions.AddRange(instrs.Select(t => events.ParseAdd(t)));
-                    ev.Instructions.AddRange(instrs);
-                    emevd.Events.Add(ev);
-                    emevd.Events[0].Instructions.Add(new EMEVD.Instruction(2000, 0, new List<object> { 0, (uint)id, (uint)0 }));
+                    if (emevd.Events.Any(e => e.ID == id)) return;
+                    AddSimpleEvent(emevd, id, instrs, rest);
                 }
                 foreach (EMEVD.Event e in entry.Value.Events)
                 {
@@ -672,6 +727,20 @@ namespace RandomizerCommon
                             game.WriteEmevds.Add(entry.Key);
                         }
                     }
+#if DEBUG
+                    if (entry.Key == "m12_02_00_00" && opt["cheat_shortcut"])
+                    {
+                        if (e.ID == 12022609 || e.ID == 12022629)
+                        {
+                            int gotoIndex = e.Instructions.FindIndex(ins => ins.Bank == 1003 && ins.ID == 101);
+                            if (gotoIndex >= 0)
+                            {
+                                e.Instructions.Insert(gotoIndex, new EMEVD.Instruction(1000, 3, new List<object> { (byte)1 }));
+                            }
+                        }
+                    }
+#endif
+
                 }
                 if (entry.Key == "common")
                 {
@@ -691,12 +760,18 @@ namespace RandomizerCommon
                         // new EMEVD.Instruction(1000, 1, new List<object>{ (byte)1, (byte)0, (byte)5 }), debugLot(0),
                     });
                     List<string> gifts = new List<string>();
+                    // gifts.Add("Rotten Breath");
                     // gifts.Add("Mimic Tear Ashes +10");
+                    // gifts.AddRange(new[] { "Godskin Stitcher", "Latenna the Albinauric +1" });
+                    // gifts.AddRange(new[] { "Gargoyle's Greatsword", "Redmane Knight Helm", "Redmane Surcoat" });
+                    // gifts.AddRange(new[] { "Rivers of Blood", "Grafted Blade Greatsword" });
                     // gifts.AddRange(new List<string> { "Mushroom Crown", "Mushroom Head", "Mushroom Body", "Mushroom Arms", "Mushroom Legs" });
                     // Black raptor set also pretty cool. And fingerprint set
                     Dictionary<ItemKey, int> giftAmounts = gifts.ToDictionary(g => game.ItemForName(g), g => 1);
                     // giftAmounts[new ItemKey(ItemType.GOOD, 8136)] = 1;
                     // game.Params["ItemLotParam_map"][34110080]["lotItemId01"].Value = 8151;
+                    // giftAmounts[new ItemKey(ItemType.GOOD, 20760)] = 10; // Mushroom
+                    // giftAmounts[new ItemKey(ItemType.GOOD, 20651)] = 10; // Trina Lily
                     if (opt["cheatgift"] && giftAmounts.Count > 0)
                     {
                         int lotId = 12020840;
@@ -716,7 +791,7 @@ namespace RandomizerCommon
                             ItemKey item = giftEntry.Key;
                             row["lotItemId01"].Value = item.ID;
                             row["lotItemCategory01"].Value = (int)game.LotValues[item.Type];
-                            row["lotItemNum01"].Value = (int)game.LotValues[item.Type];
+                            row["lotItemNum01"].Value = giftEntry.Value;
                             if (checkItem == null) checkItem = item;
                         }
                         game.Params["ItemLotParam_map"].Rows.Sort((a, b) => (a.ID.CompareTo(b.ID)));
@@ -733,6 +808,25 @@ namespace RandomizerCommon
                             new EMEVD.Instruction(2003, 66, new List<object> { (byte)0, 12027840, (byte)0 }),
                             // Item lot
                             new EMEVD.Instruction(2003, 4, new List<object> { 12020840 }),
+                        });
+                    }
+                    if (opt["cheathp"])
+                    {
+                        addNewEvent(19003107, new List<EMEVD.Instruction>
+                        {
+                            // 10000: self. 35000: only helpers.
+                            // SetSpEffect(35000, 110)
+                            new EMEVD.Instruction(2004, 8, new List<object> { 20000, 110 }),
+                            new EMEVD.Instruction(2004, 8, new List<object> { 35000, 110 }),
+                            // Disable damage
+                            new EMEVD.Instruction(2004, 39, new List<object> { 10000, 0 }),
+                            // Scale damage
+                            new EMEVD.Instruction(2004, 8, new List<object> { 20000, 7200 }),
+                            new EMEVD.Instruction(2004, 8, new List<object> { 35000, 7200 }),
+                            // WaitFixedTimeSeconds
+                            new EMEVD.Instruction(1001, 0, new List<object> { (float)2 }),
+                            // EndUnconditionally(EventEndType.Restart)
+                            new EMEVD.Instruction(1000, 4, new List<object> { (byte)1 }),
                         });
                     }
 #endif
@@ -778,37 +872,22 @@ namespace RandomizerCommon
                             [8617] = 62064,  // Map: Deeproot Depths
                             [8618] = 62052,  // Map: Consecrated Snowfield
                         };
-                        if (true)
+                        // Simpler event, just wait for entry into Limgrave
+                        List<EMEVD.Instruction> instrs = new List<EMEVD.Instruction>();
+                        // IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, 102)
+                        instrs.Add(new EMEVD.Instruction(3, 0, new List<object> { (sbyte)0, (byte)1, (byte)0, mapUnlockFlag }));
+                        foreach (KeyValuePair<int, int> mapFlag in mapFlags)
                         {
-                            // Simpler event, just wait for entry into Limgrave
-                            List<EMEVD.Instruction> instrs = new List<EMEVD.Instruction>();
-                            // IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, 102)
-                            instrs.Add(new EMEVD.Instruction(3, 0, new List<object> { (sbyte)0, (byte)1, (byte)0, mapUnlockFlag }));
-                            foreach (KeyValuePair<int, int> mapFlag in mapFlags)
-                            {
-                                int flag = mapFlag.Value; // + 1000: just used for notification evidently
-                                // SetEventFlag(TargetEventFlagType.EventFlag, flag, ON)
-                                instrs.Add(new EMEVD.Instruction(2003, 66, new List<object> { (byte)0, flag, (byte)1 }));
-                            }
-                            addNewEvent(19003111, instrs);
+                            int flag = mapFlag.Value; // + 1000: just used for notification evidently
+                            // SetEventFlag(TargetEventFlagType.EventFlag, flag, ON)
+                            instrs.Add(new EMEVD.Instruction(2003, 66, new List<object> { (byte)0, flag, (byte)1 }));
                         }
-                        else
+                        addNewEvent(19003111, instrs);
+                        EMEVD.Event grantEvent = emevd.Events.Find(e => e.ID == 1600);
+                        if (grantEvent != null)
                         {
-                            EMEVD.Event disc = emevd.Events.Find(ev => ev.ID == 1600);
-                            if (disc == null) throw new Exception($"Couldn't locate event to enable all maps");
-                            int bannerIndex = disc.Instructions.FindIndex(ins => ins.Bank == 2007 && ins.ID == 2);
-                            if (bannerIndex == -1) throw new Exception($"Couldn't locate index to enable all maps");
-
-                            OldParams pre = OldParams.Preprocess(disc);
-                            List<EMEVD.Instruction> instrs = new List<EMEVD.Instruction>();
-                            foreach (KeyValuePair<int, int> mapFlag in mapFlags)
-                            {
-                                int flag = mapFlag.Value; // + 1000: just used for notification evidently
-                                // SetEventFlag(TargetEventFlagType.EventFlag, flag, ON)
-                                instrs.Add(new EMEVD.Instruction(2003, 66, new List<object> { (byte)0, flag, (byte)1 }));
-                                // We could give items, but we'd run out of condition groups for checking if they have it, so meh
-                            }
-                            disc.Instructions.InsertRange(bannerIndex + 1, instrs);
+                            OldParams pre = OldParams.Preprocess(grantEvent);
+                            grantEvent.Instructions.RemoveAll(ins => ins.Bank == 2003 && ins.ID == 66);
                             pre.Postprocess();
                         }
                     }
@@ -934,18 +1013,67 @@ namespace RandomizerCommon
 
         public static void UpdateEldenRing(GameData game, RandomizerOptions opt)
         {
+            string gameDir = @"C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game";
             if (opt["undcx"])
             {
-                game.UnDcx(GameSpec.ForGame(GameSpec.FromGame.ER).GameDir + @"\map\mapstudio");
+                Console.WriteLine("Map");
+                game.UnDcx(gameDir + @"\map\mapstudio");
+                if (opt["unasset"])
+                {
+                    HashSet<string> badAssets = new HashSet<string> { "AEG099_660", "AEG099_720", "AEG099_721", "AEG099_723" };
+                    foreach (string path in Directory.GetFiles(gameDir + @"\map\mapstudio", "*.msb.dcx"))
+                    {
+                        MSBE msb = MSBE.Read(path);
+                        msb.Parts.Assets.RemoveAll(a => badAssets.Contains(a.ModelName));
+                        msb.Parts.DummyAssets.RemoveAll(a => badAssets.Contains(a.ModelName));
+                        string otherPath = gameDir + @"\vanilla\map\mapstudio\" + Path.GetFileName(path);
+                        msb.Write(otherPath);
+                    }
+                }
+                Console.WriteLine("Msg");
                 foreach (string lang in Langs.Keys)
                 {
-                    game.DumpMessages(GameSpec.ForGame(GameSpec.FromGame.ER).GameDir + $@"\msg\{lang}");
+                    game.DumpMessages(gameDir + $@"\msg\{lang}");
                 }
                 return;
             }
-            List<string> flatFiles = new List<string> { @"regulation.bin", @"event", @"script\talk", @"map\mapstudio" };
+            if (opt["itemname"])
+            {
+                void printNames(string paramName, FMG fmg)
+                {
+                    PARAM param = game.Params[paramName];
+                    int match = 0;
+                    Dictionary<int, string> names = fmg.Entries
+                        .Where(e => !string.IsNullOrWhiteSpace(e.Text))
+                        .ToDictionary(e => e.ID, e => e.Text);
+                    List<string> lines = new List<string>();
+                    foreach (PARAM.Row row in param.Rows)
+                    {
+                        string name = fmg[row.ID];
+                        if (!string.IsNullOrWhiteSpace(name))
+                        {
+                            lines.Add($"{row.ID} {name}");
+                            match++;
+                        }
+                    }
+                    if (paramName == "EquipParamGoods")
+                    {
+                        // Hack for sword key, in EldenLocationDataScraper/PermutationWriter
+                        lines.Add("9990 Imbued Sword Key 2");
+                        lines.Add("9991 Imbued Sword Key 3");
+                    }
+                    Console.WriteLine($"{paramName}: {match} match, out of {param.Rows.Count} rows and {names.Count} names");
+                    File.WriteAllText($"diste/Names/{paramName}.txt", string.Join("", lines.Select(l => $"{l}\r\n")));
+                }
+                printNames("EquipParamGoods", game.ItemFMGs["GoodsName"]);
+                printNames("EquipParamAccessory", game.ItemFMGs["AccessoryName"]);
+                printNames("EquipParamGem", game.ItemFMGs["GemName"]);
+                printNames("EquipParamWeapon", game.ItemFMGs["WeaponName"]);
+                printNames("EquipParamProtector", game.ItemFMGs["ProtectorName"]);
+                return;
+            }
+            List<string> flatFiles = new List<string> { @"regulation.bin", @"event", @"sfx", @"script\talk", @"map\mapstudio" };
             List<string> nestedFiles = new List<string> { @"msg" };
-            string gameDir = @"C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game";
             string outDir = @"diste\Vanilla";
             List<string> unusedGameFiles = new List<string>();
             List<string> unusedVanillaFiles = Directory.GetFiles(outDir).Select(Path.GetFileName).ToList();

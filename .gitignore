@@ -10,7 +10,10 @@
 /*.pdb
 /*.txt
 /*.zip
+/*.json
+*.netbak
 scratch/
+presets/
 
 # User-specific files
 *.rsuser

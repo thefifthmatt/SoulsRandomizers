@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using RandomizerCommon.Properties;
+using YamlDotNet.Serialization;
 using static RandomizerCommon.Messages;
 using static SoulsIds.GameSpec;
 
@@ -16,17 +20,16 @@ namespace RandomizerCommon
     public partial class EldenForm : Form
     {
         // There is a lot of Enemy Randomizer placeholder here because we'll need it eventually.
-        // TODO: Localization, especially of this string constant
         [Localize]
         private static readonly Text enemyseedPlaceholderText = new Text(
             "(same as overall seed)", "EldenForm_enemyseedPlaceholder");
         private static string defaultPath = @"C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game\eldenring.exe";
+        private static string unseenTabs = "enemy,misc";
 
         private Messages messages;
 
         private RandomizerOptions options = new RandomizerOptions(FromGame.ER);
         private string defaultOpts = null;
-        private HashSet<string> previousOpts = new HashSet<string>();
         private Dictionary<string, string> originalLabels = new Dictionary<string, string>();
         private bool enemyseedPlaceholder;
         private bool simultaneousUpdate;
@@ -36,24 +39,39 @@ namespace RandomizerCommon
         public EldenForm(bool dumpMessages = false, bool loadEmpty = false)
         {
             InitializeComponent();
+            Text = $"Elden Ring Item and Enemy Randomizer {Randomizer.EldenVersion}";
+            // Set up tabs real quick
+            tabControl.TabDrawer = new GrayIris.Utilities.UI.Controls.XlTabDrawer();
+            tabControl.SelectedIndex = 0;
+            if (Settings.Default.ViewedTabs != unseenTabs)
+            {
+                enemyPage.Blink = true;
+                miscPage.Blink = true;
+                tabControl.Blink = true;
+                tabControl.BlinkColor = Color.FromArgb(255, 220, 230);
+            }
 
             messages = new Messages("diste", loadEmpty);
             if (dumpMessages)
             {
                 OptionsForm optionsForm = new OptionsForm(messages, "");
+                if (!LoadEnemyAnnotations(out string annErr)) throw new Exception(annErr);
+                Preset defaultPreset = Preset.MakeClassBasedDefault(enemyAnn);
+                PresetEditForm presetForm = new PresetEditForm(enemyAnn, messages, defaultPreset);
                 DumpEnglishMessages(
-                    new List<Form> { this, optionsForm },
+                    new List<Form> { this, optionsForm, presetForm },
                     new List<Type> {
-                            typeof(EldenForm), typeof(OptionsForm), typeof(HintMarker),
-                            typeof(MiscSetup), typeof(Permutation), typeof(Randomizer),
+                            typeof(EldenForm), typeof(OptionsForm), typeof(PresetEditForm),
+                            typeof(MiscSetup), typeof(Preset), typeof(EnemyAnnotations),
+                            typeof(Randomizer), typeof(HintMarker), typeof(Permutation), typeof(PermutationWriter),
                     });
             }
-            presetL.Text = "";
             enemyseed.GotFocus += enemyseed_TextChanged;
             enemyseed.LostFocus += enemyseed_TextChanged;
 
             RandomizerOptions initialOpts = new RandomizerOptions(FromGame.ER);
             SetControlFlags(this, initialOpts);
+            initialOpts.Difficulty = 20;
             defaultOpts = initialOpts.FullString();
 
             string existingOpts = Settings.Default.Options;
@@ -84,7 +102,12 @@ namespace RandomizerCommon
             {
                 exe.Text = defaultPath;
             }
-            // defaultRerollEnemy.Checked = defaultReroll.Checked && options.Seed2 != 0;
+            string defaultMod = Settings.Default.Mod;
+            if (!string.IsNullOrWhiteSpace(defaultMod))
+            {
+                mergemod.Text = defaultMod;
+            }
+            defaultRerollEnemy.Checked = default_reroll.Checked && options.Seed2 != 0;
 
             // Now, update everything in the UI in-place
             SetStatus(null);
@@ -94,6 +117,7 @@ namespace RandomizerCommon
             }
             UpdateEnabled();
             UpdateLabels();
+            UpdateRandomizeButtonText();
 
             if (messages.InitErrors.Count > 0)
             {
@@ -101,6 +125,14 @@ namespace RandomizerCommon
                     string.Join(Environment.NewLine, messages.InitErrors),
                     "Invalid messages", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            presetL.VisibleChanged += (sender, e) =>
+            {
+                // For some horrific godforsaken reason, the \r is stripped from TextBox
+                // when initialized while it's not visible, probably?
+                // ?????????????????????????????????????????????????????????????????????????
+                presetL.Text = Regex.Replace(presetL.Text, "\r?\n", "\r\n");
+            };
         }
 
         private void SetOptionsString(string defaultOpts)
@@ -113,17 +145,33 @@ namespace RandomizerCommon
                 if (uint.TryParse(s, out _)) return true;
                 return false;
             }
-            previousOpts = new HashSet<string>(defaultOpts.Split(' '));
+            List<string> previousOpts = defaultOpts.Split(' ').ToList();
             options = RandomizerOptions.Parse(previousOpts, FromGame.ER, isValidOption);
 
             // New defaults
-            if (previousOpts.Contains("v1") || previousOpts.Contains("v2"))
+            // Please oh god make a new system for this
+            bool preItem1 = previousOpts.Contains("v1") || previousOpts.Contains("v2");
+            bool preEnemy1 = preItem1 || previousOpts.Contains("v3");
+            bool preEnemy2 = preEnemy1 || previousOpts.Contains("v4") || previousOpts.Contains("v5") || previousOpts.Contains("v6");
+            if (preItem1)
             {
+                options["weaponprogression"] = true;
+            }
+            if (preEnemy1)
+            {
+                options["enemy"] = true;
+                options["scale"] = true;
+                options["editnames"] = true;
+                options["regularhp"] = true;
+                options["bosshp"] = true;
+            }
+            if (preEnemy2)
+            {
+                options["phasehp"] = true;
             }
             // Misc required options
-            options["item"] = true;
-            options["enemy"] = false;
             options["racemode"] = true;
+            // options["mergemods"] = false;
 
             simultaneousUpdate = true;
             InsertControlFlags(this);
@@ -132,24 +180,37 @@ namespace RandomizerCommon
 
             fixedseed.Text = options.Seed == 0 ? "" : $"{options.Seed}";
             enemyseed.Text = options.Seed2 == 0 || options.Seed == options.Seed2 ? "" : $"{options.Seed2}";
+            if (options.Seed2 != 0)
+            {
+                defaultRerollEnemy.Checked = false;
+            }
 
             if (options.Preset == null)
             {
-                SetPreset(null);
+                SetPreset(null, false);
             }
             else
             {
                 try
                 {
-                    Preset preset = Preset.LoadPreset(options.Preset, extractOopsAll: true);
-                    SetPreset(preset);
+                    Preset preset = Preset.LoadPreset(options.Preset, extractOopsAll: false);
+                    SetPreset(preset, false);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    SetPreset(null);
+                    SetPreset(null, false);
                 }
             }
+        }
+
+        private void UpdateAllOptions()
+        {
+            if (options.Seed != 0) default_reroll.Checked = false;
+            SetStatus(null);
+            UpdateEnabled();
+            UpdateLabels();
+            SaveOptions();
         }
 
         private void SetWarning()
@@ -167,7 +228,7 @@ namespace RandomizerCommon
             // fatal = false;
 #endif
             // Previousy this was a one-way transition to error, but this is affected by options now (uxm output)
-            randomize.Enabled = !fatal;
+            if (fatal) randomize.Enabled = false;
             error = fatal;
         }
 
@@ -204,6 +265,8 @@ namespace RandomizerCommon
         }
 
         private Dictionary<string, string> originalText;
+        private Dictionary<Control, (int, int)> originalHeightY = new Dictionary<Control, (int, int)>();
+        private HashSet<Control> noResize;
         private CultureInfo defaultCulture;
         private string translators;
 
@@ -244,7 +307,117 @@ namespace RandomizerCommon
             List<LanguageMessages> localLangs = messages.GetAllLanguageMessages(culture);
             translators = localLangs.Count > 0 ? localLangs[0].Translators : null;
             originalLabels.Clear();
+
+            // Restore original text positions and save original autosizes
+            HashSet<Control> noAuto = new HashSet<Control>();
+            void preprocessForm(Control control)
+            {
+                if (originalHeightY.TryGetValue(control, out var original))
+                {
+                    (int height, int y) = original;
+                    control.Height = height;
+                    control.Location = new Point(control.Location.X, y);
+                }
+                if (noResize == null && !control.AutoSize)
+                {
+                    noAuto.Add(control);
+                }
+                foreach (Control sub in control.Controls.Cast<Control>().OrderBy(c => c.Location.Y))
+                {
+                    preprocessForm(sub);
+                }
+            }
+            preprocessForm(this);
+            noResize = noResize ?? noAuto;
+            // Update text
             messages.SetFormText(this, originalText);
+            // Also update our fake placeholder text
+            if (enemyseedPlaceholder && enemyseed.ForeColor == SystemColors.GrayText)
+            {
+                enemyseed.Text = messages.Get(enemyseedPlaceholderText);
+            }
+            UpdateRandomizeButtonText();
+            if (enemyAnn != null && selectedPreset != null)
+            {
+                presetL.Text = selectedPreset.FullDescription(messages, enemyAnn);
+            }
+
+            // With text/font updated, fiddle with position of tab pages
+            string prefix = "    ";
+            void repositionCheckbox(Control checkbox, int index)
+            {
+                Control tabPage = tabControl.Controls[index];
+                tabPage.Text = prefix + tabPage.Text.Trim();
+                Point pos = tabControl.Location;
+                Rectangle tabRect = tabControl.GetTabRect(index);
+                // Point is a struct, so it's fine to modify (but why no immutable method?!)
+                pos.Offset(tabRect.Location);
+                pos.Offset(10, tabRect.Height / 2 - 6);
+                checkbox.Location = pos;
+            }
+            repositionCheckbox(item, 0);
+            repositionCheckbox(enemy, 1);
+
+            // See if any text doesn't fit, fairly hacky system
+            void storeOriginal(Control control)
+            {
+                if (!originalHeightY.ContainsKey(control))
+                {
+                    originalHeightY[control] = (control.Height, control.Location.Y);
+                }
+            }
+            Dictionary<Control, int> groupOffsets = new Dictionary<Control, int>();
+            void expandForm(Control control, Control group = null)
+            {
+                // TODO: There's no vertical space here, try to add some in the future
+                if (control == locationGroup) return;
+                if (group != null)
+                {
+                    if (groupOffsets.TryGetValue(group, out int offset))
+                    {
+                        storeOriginal(control);
+                        control.Location = new Point(control.Location.X, control.Location.Y + offset);
+                    }
+                    if (!noResize.Contains(control) && !string.IsNullOrWhiteSpace(control.Text))
+                    {
+                        Size size = TextRenderer.MeasureText(control.Text, control.Font);
+                        // Horizontal offset of text after checkboxes
+                        int available = group.Width - 22;
+                        if (size.Width > available)
+                        {
+                            // Console.WriteLine($"{size.Width},{size.Height} > {available}: {control.Name}");
+                            storeOriginal(control);
+                            control.AutoSize = false;
+                            if (control is CheckBox check)
+                            {
+                                check.CheckAlign = ContentAlignment.TopLeft;
+                                check.TextAlign = ContentAlignment.TopLeft;
+                            }
+                            else if (control is Label label)
+                            {
+                                label.TextAlign = ContentAlignment.TopLeft;
+                            }
+                            control.Width = available;
+                            int extraHeight = size.Height + 2;
+                            control.Height += extraHeight;
+                            groupOffsets[group] = offset + extraHeight;
+                        }
+                    }
+                }
+                foreach (Control sub in control.Controls.Cast<Control>().OrderBy(c => c.Location.Y))
+                {
+                    expandForm(sub, control is GroupBox ? control : group);
+                }
+                if (groupOffsets.TryGetValue(control, out int groupOffset))
+                {
+                    storeOriginal(control);
+                    control.Height += groupOffset;
+                }
+            }
+            // Finally, top-level options text
+            string tabPrefix = "    ";
+
+            expandForm(this);
         }
 
         private void language_SelectedIndexChanged(object sender, EventArgs e)
@@ -256,6 +429,20 @@ namespace RandomizerCommon
             SetStatus(null);
             SetWarning();
             UpdateLabels();
+        }
+
+        private void tabControl_TabChanged(object sender, EventArgs e)
+        {
+            tabControl.SelectedTab.Blink = false;
+            if (tabControl.Blink && !enemyPage.Blink && !miscPage.Blink)
+            {
+                tabControl.Blink = false;
+                if (Settings.Default.ViewedTabs != unseenTabs)
+                {
+                    Settings.Default.ViewedTabs = unseenTabs;
+                    Settings.Default.Save();
+                }
+            }
         }
 
         private void SaveOptions()
@@ -281,6 +468,7 @@ namespace RandomizerCommon
             SetControlFlags(this);
             UpdateEnabled();
             UpdateLabels();
+            UpdateRandomizeButtonText();
             SaveOptions();
             SetStatus(null);
             SetWarning();
@@ -315,7 +503,7 @@ namespace RandomizerCommon
 
         private void InsertControlFlags(Control control)
         {
-            if (control.Name.StartsWith("default")) return;
+            if (control.Name.StartsWith("default") || control.Name.EndsWith("_copy")) return;
             if (control is RadioButton radio)
             {
                 radio.Checked = options[control.Name];
@@ -335,10 +523,18 @@ namespace RandomizerCommon
 
         private void GetAllControlNames(Control control, HashSet<string> names)
         {
-            if (control.Name.StartsWith("default")) return;
+            if (control.Name.StartsWith("default") || control.Name.EndsWith("_copy")) return;
             if (control is RadioButton || control is CheckBox)
             {
-                names.Add(control.Name);
+                if (control.Name.StartsWith("invert"))
+                {
+                    // Same logic as in RandomizerOptions
+                    names.Add("no" + control.Name.Substring(6));
+                }
+                else
+                {
+                    names.Add(control.Name);
+                }
             }
             else
             {
@@ -375,13 +571,17 @@ namespace RandomizerCommon
             MassEnable(toEnable, this, "enemy", "enemyPage");
             // Individual updates
             // TODO: Move this to a shared file at some point!
-            void setCheck(Control control, bool enabled, bool? maybeDefaultState, bool disabledState, string overrideDisable)
+            void setSimpleEnable(Control control, bool enabled, string overrideDisable)
             {
-                bool prevEnabled = control.Enabled;
                 if (overrideDisable == null || options[overrideDisable])
                 {
                     toEnable[control] = enabled;
                 }
+            }
+            void setCheck(Control control, bool enabled, bool? maybeDefaultState, bool disabledState, string overrideDisable)
+            {
+                bool prevEnabled = control.Enabled;
+                setSimpleEnable(control, enabled, overrideDisable);
                 // Generalizing across control types, was it worth it :')
                 CheckBox check = control as CheckBox;
                 RadioButton radio = control as RadioButton;
@@ -409,10 +609,36 @@ namespace RandomizerCommon
             setCheck(racemode_upgrades, upgrades, null, false, "item");
             setCheck(night, options["raceloc_altboss"], false, false, "item");
             setCheck(markitems, options["markareas"], false, false, "item");
+            // Customization options. Depend on scaling.
+            // May not want to depend on customization, since that can take some time to load.
+            setCheck(regularhp, options["scale"], true, false, "enemy");
+            setCheck(bosshp, options["scale"], true, false, "enemy");
+            setCheck(multhp, options["scale"], false, false, "enemy");
+            setCheck(phasehp, options["scale"], true, false, "enemy");
+            setSimpleEnable(presetButton, selectedPreset != null, "enemy");
+            // Misc
+            setCheck(default_twohand, !options["nostarting"], true, true, null);
+            setCheck(onehand, !options["nostarting"], false, false, null);
+            setCheck(nohand, !options["nostarting"], false, false, null);
+            // Universal options not in the misc tab
+            toEnable[language] = true;
+            toEnable[languageL] = true;
+            toEnable[runereq] = true;
+
             // Make sure a single radio button of any group is checked
             if (!racemode_upgrades.Checked && !norandom_upgrades.Checked && !default_upgrades.Checked)
             {
                 default_upgrades.Checked = true;
+                changes = true;
+            }
+            if (!default_key.Checked && !norandom.Checked)
+            {
+                default_key.Checked = true;
+                changes = true;
+            }
+            if (!default_twohand.Checked && !onehand.Checked && !nohand.Checked)
+            {
+                default_twohand.Checked = true;
                 changes = true;
             }
             foreach (KeyValuePair<Control, bool> enable in toEnable)
@@ -422,12 +648,22 @@ namespace RandomizerCommon
             enemyseed_TextChanged(null, null);
             randomize.Enabled = (options["enemy"] || options["item"]) && !error;
             if (changes) SetControlFlags(this);
+            UpdateLaunchGame();
             simultaneousUpdate = false;
+        }
+
+        string modengineConfig = "config_eldenringrandomizer.toml";
+        string modengineLauncher = @"diste\ModEngine\modengine2_launcher.exe";
+
+        private void UpdateLaunchGame()
+        {
+            launchButton.Enabled =
+                File.Exists(modengineConfig) && File.Exists(modengineLauncher) && !options["uxm"];
         }
 
         private static readonly Dictionary<string, (int, int)> checkLabels = new Dictionary<string, (int, int)>
         {
-            ["racemodeL"] = (12, 0),
+            ["racemodeL"] = (15, 0),
             ["default_bossL"] = (30, 0),
             ["raceloc_healthL"] = (40, 0),
             ["raceloc_shopsL"] = (22, 21),
@@ -601,18 +837,37 @@ namespace RandomizerCommon
                 enemyseed.Text = rand.Seed2.ToString();
                 enemyseed.ForeColor = SystemColors.WindowText;
             }
+            if (File.Exists(modengineConfig)) File.Delete(modengineConfig);
 
             Randomizer randomizer = new Randomizer();
             await Task.Factory.StartNew(() => {
-                Directory.CreateDirectory("spoiler_logs");
                 string seed2 = rand.Seed2 == 0 || rand.Seed2 == rand.Seed ? "" : $"_{rand.Seed2}";
                 string runId = $"{DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss")}_log_{rand.Seed}{seed2}_{rand.ConfigHash()}.txt";
-                TextWriter log = File.CreateText($@"spoiler_logs\{runId}");
+                TextWriter log;
+                try
+                {
+                    Directory.CreateDirectory("spoiler_logs");
+                    log = File.CreateText($@"spoiler_logs\{runId}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    SetError(messages.Get(MiscSetup.CreateFileError, ex.Message));
+                    SetStatus(messages.Get(runErrorGeneric), true);
+                    return;
+                }
                 TextWriter stdout = Console.Out;
                 Console.SetOut(log);
                 try
                 {
-                    randomizer.Randomize(rand, FromGame.ER, status => { statusL.Text = status; }, messages: messages, preset: selectedPreset, gameExe: exe.Text);
+                    randomizer.Randomize(
+                        rand, FromGame.ER, status => { statusL.Text = status; },
+                        messages: messages, preset: selectedPreset,
+                        gameExe: exe.Text, modDir: mergemod.Text);
+                    if (!rand["uxm"])
+                    {
+                        CreateLaunchFile();
+                    }
                     SetStatus(messages.Get(runSuccessStatus, runId), success: true);
                 }
                 catch (Exception ex)
@@ -629,59 +884,138 @@ namespace RandomizerCommon
             });
             randomize.Text = buttonText;
             randomize.BackColor = SystemColors.Control;
+            UpdateLaunchGame();
             working = false;
         }
 
-        private void optionwindow_Click(object sender, EventArgs e)
+        private EnemyAnnotations enemyAnn;
+        private bool LoadEnemyAnnotations(out string error)
         {
-            using (OptionsForm form = new OptionsForm(messages, options.FullString()))
+            error = null;
+            if (enemyAnn != null) return true;
+            try
             {
-                form.Icon = Icon;
-                DialogResult result = form.ShowDialog(this);
-                if (result == DialogResult.OK)
+                IDeserializer deserializer = new DeserializerBuilder().Build();
+                string enemyConfigPath = $"diste/Base/enemy.txt";
+                using (var reader = File.OpenText(enemyConfigPath))
                 {
-                    string text = form.OptionString;
-                    if (string.IsNullOrEmpty(text))
-                    {
-                        text = defaultOpts;
-                    }
-                    if (form.HasOptionsError(text, out string msg))
-                    {
-                        SetStatus(msg, error: true);
-                        return;
-                    }
-                    SetOptionsString(text);
-                    if (options.Seed != 0) default_reroll.Checked = false;
-
-                    SetStatus(null);
-                    UpdateEnabled();
-                    UpdateLabels();
-                    SaveOptions();
+                    enemyAnn = deserializer.Deserialize<EnemyAnnotations>(reader);
                 }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                error = ex.ToString();
+                return false;
             }
         }
 
         private Preset selectedPreset;
+        private string lastPreset;
+        private void custom_CheckChanged(object sender, EventArgs e)
+        {
+            if (simultaneousUpdate) return;
+            // Assume that this is a manual click.
+            if (default_custom.Checked)
+            {
+                SetPreset(selectedPreset, true);
+                if (selectedPreset != null)
+                {
+                    presetButton.Enabled = true;
+                }
+                else
+                {
+                    presetButton.Enabled = false;
+                    simultaneousUpdate = true;
+                    default_custom.Checked = false;
+                    simultaneousUpdate = false;
+                }
+            }
+            else
+            {
+                SetPreset(null, false);
+                presetButton.Enabled = false;
+            }
+        }
+
         private void preset_Click(object sender, EventArgs e)
         {
-            using (PresetForm presetForm = new PresetForm("diste"))
+            // At this point, a preset must already exist, and also be valid
+            if (selectedPreset == null) return;
+            using (PresetEditForm presetForm = new PresetEditForm(enemyAnn, messages, selectedPreset))
             {
                 presetForm.Icon = Icon;
-                DialogResult result = presetForm.ShowDialog(this);
-                if (result == DialogResult.OK)
+                // Fine to ignore DialogResult if preset was saved in the form
+                presetForm.ShowDialog(this);
+                if (presetForm.SavedPreset != null)
                 {
-                    bool prevNull = selectedPreset == null;
-                    SetPreset(presetForm.Preset);
+                    SetPreset(presetForm.SavedPreset, false);
                 }
             }
         }
 
-        private void SetPreset(Preset preset = null)
+        [Localize]
+        private static readonly Text presetFileError = new Text(
+            "Error: failed to load file required for customization",
+            "EldenForm_presetFileError");
+
+        private void SetPreset(Preset preset, bool createIfAbsent)
         {
-            // TODO: Make this functional and localize it
+            // Nothing to do here, probably?
+            if (preset == null && selectedPreset == null && !createIfAbsent) return;
+            if (preset != null || createIfAbsent)
+            {
+                if (!LoadEnemyAnnotations(out string err))
+                {
+                    MessageBox.Show(err, messages.Get(presetFileError), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            if (preset == null && createIfAbsent)
+            {
+                try
+                {
+                    preset = Preset.LoadPreset(lastPreset ?? Preset.DefaultName);
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    // May not exist, that's fine
+                    Console.WriteLine(ex);
+#endif
+                }
+                if (preset == null)
+                {
+                    Preset defaultPreset = Preset.MakeClassBasedDefault(enemyAnn);
+                    try
+                    {
+                        defaultPreset.SavePreset();
+                        preset = defaultPreset;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(
+                            messages.Get(MiscSetup.CreateFileError, ex.Message), messages.Get(presetFileError),
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
             selectedPreset = preset;
-            presetL.Text = selectedPreset == null ? "" : "Preset: " + selectedPreset.DisplayName;
-            options.Preset = selectedPreset?.DisplayName;
+            if (selectedPreset == null)
+            {
+                presetL.Text = "";
+            }
+            else
+            {
+                presetL.Text = selectedPreset.FullDescription(messages, enemyAnn);
+                // In case this happened at initialization, update enable states etc.
+                simultaneousUpdate = true;
+                default_custom.Checked = true;
+                presetButton.Enabled = true;
+                simultaneousUpdate = false;
+                lastPreset = preset.Name;                
+            }
+            options.Preset = preset?.Name;
             SaveOptions();
             SetStatus(null);
         }
@@ -694,6 +1028,7 @@ namespace RandomizerCommon
             {
                 default_reroll.Checked = true;
             }
+            UpdateRandomizeButtonText();
         }
 
         // Copy this from Sekiro
@@ -702,21 +1037,23 @@ namespace RandomizerCommon
             // Manage placeholder text, because winforms is bad
             if (enemyseed.Focused && enemyseed.Enabled && enemyseedPlaceholder)
             {
-                enemyseed.Text = "";
-                enemyseed.ForeColor = SystemColors.WindowText;
                 enemyseedPlaceholder = false;
+                enemyseed.ForeColor = SystemColors.WindowText;
+                enemyseed.Text = "";
             }
             if (!enemyseed.Focused && string.IsNullOrWhiteSpace(enemyseed.Text))
             {
-                enemyseed.Text = messages.Get(enemyseedPlaceholderText);
-                enemyseed.ForeColor = SystemColors.GrayText;
                 enemyseedPlaceholder = true;
+                enemyseed.ForeColor = SystemColors.GrayText;
+                // Note this will cause a self-update, but the checking boolean has already been set
+                enemyseed.Text = messages.Get(enemyseedPlaceholderText);
             }
             // Manage checkbox
             if (enemyseedPlaceholder || enemyseed.Text == "")
             {
                 // I guess let it be separate from enemy seed
                 defaultRerollEnemy.Enabled = enemyseed.Enabled;
+                UpdateRandomizeButtonText();
                 return;
             }
             string text = enemyseed.Text.Trim();
@@ -729,17 +1066,25 @@ namespace RandomizerCommon
                     defaultRerollEnemy.Checked = true;
                 }
             }
-            reroll_CheckedChanged(null, null);
+            UpdateRandomizeButtonText();
         }
 
         [Localize]
-        private static readonly Text randomizeNew = new Text(
-            "Randomize new run!",
-            "EldenForm_randomizeNew");
+        private static readonly Text randomizeNothing = new Text(
+            "???",
+            "EldenForm_randomizeNothing");
         [Localize]
-        private static readonly Text randomizeFixed = new Text(
-            "Run with fixed seed",
-            "EldenForm_randomizedFixed");
+        private static readonly Text randomizeBoth = new Text(
+            "Randomize items and enemies",
+            "EldenForm_randomizeBoth");
+        [Localize]
+        private static readonly Text randomizeItem = new Text(
+            "Randomize items",
+            "EldenForm_randomizeItem");
+        [Localize]
+        private static readonly Text randomizeEnemy = new Text(
+            "Randomize enemies",
+            "EldenForm_randomizeEnemy");
         [Localize]
         private static readonly Text randomizeItemOnly = new Text(
             "Reroll items (same enemies)",
@@ -751,28 +1096,42 @@ namespace RandomizerCommon
 
         private void reroll_CheckedChanged(object sender, EventArgs e)
         {
+            UpdateRandomizeButtonText();
+        }
+
+        private void UpdateRandomizeButtonText()
+        {
+            if (working) return;
             Text text;
-            if (default_reroll.Checked)
+            if (enemy.Checked && item.Checked)
             {
-                if (enemy.Checked && !defaultRerollEnemy.Checked && uint.TryParse(enemyseed.Text.Trim(), out _))
+                text = randomizeBoth;
+                if (default_reroll.Checked)
                 {
-                    text = randomizeItemOnly;
+                    if (!defaultRerollEnemy.Checked && uint.TryParse(enemyseed.Text.Trim(), out _))
+                    {
+                        text = randomizeItemOnly;
+                    }
                 }
                 else
                 {
-                    text = randomizeNew;
+                    if (defaultRerollEnemy.Checked)
+                    {
+                        text = randomizeEnemyOnly;
+                    }
                 }
+            }
+            else if (enemy.Checked)
+            {
+                text = randomizeEnemy;
+            }
+            else if (item.Checked)
+            {
+                text = randomizeItem;
             }
             else
             {
-                if (enemy.Checked && defaultRerollEnemy.Checked)
-                {
-                    text = randomizeEnemyOnly;
-                }
-                else
-                {
-                    text = randomizeFixed;
-                }
+                text = randomizeNothing;
             }
             randomize.Text = messages.Get(text);
         }
@@ -802,35 +1161,85 @@ namespace RandomizerCommon
             {
                 Settings.Default.Exe = exe.Text;
                 Settings.Default.Save();
+                // Somewhat hacky, turn back on to revalidate in SetWarning
+                randomize.Enabled = true;
             }
             SetWarning();
         }
 
-        private void exeButton_Click(object sender, EventArgs e)
+        private void mergemod_TextChanged(object sender, EventArgs e)
         {
-            OpenFileDialog exeDialog = new OpenFileDialog();
-            exeDialog.Title = "Select Elden Ring install location";
-            exeDialog.Filter = "Elden Ring exe|eldenring.exe";
-            exeDialog.RestoreDirectory = true;
             try
             {
-                if (Directory.Exists(exe.Text))
+                string mod = mergemod.Text.Trim();
+                if (mod == "" || File.Exists(mod) || Directory.Exists(mod))
                 {
-                    exeDialog.InitialDirectory = exe.Text;
-                }
-                else
-                {
-                    string gamePath = Path.GetDirectoryName(exe.Text);
-                    if (Directory.Exists(gamePath))
-                    {
-                        exeDialog.InitialDirectory = gamePath;
-                    }
+                    Settings.Default.Mod = mod;
+                    Settings.Default.Save();
                 }
             }
             catch (ArgumentException) { }
-            if (exeDialog.ShowDialog() == DialogResult.OK)
+        }
+
+        private void exeButton_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog exeDialog = new OpenFileDialog())
             {
-                exe.Text = exeDialog.FileName;
+                exeDialog.Title = "Select Elden Ring install location";
+                exeDialog.Filter = "Elden Ring exe|eldenring.exe";
+                exeDialog.RestoreDirectory = true;
+                try
+                {
+                    if (Directory.Exists(exe.Text))
+                    {
+                        exeDialog.InitialDirectory = exe.Text;
+                    }
+                    else
+                    {
+                        string gamePath = Path.GetDirectoryName(exe.Text);
+                        if (Directory.Exists(gamePath))
+                        {
+                            exeDialog.InitialDirectory = gamePath;
+                        }
+                    }
+                }
+                catch (ArgumentException) { }
+                if (exeDialog.ShowDialog() == DialogResult.OK)
+                {
+                    exe.Text = exeDialog.FileName;
+                }
+            }
+        }
+
+        private void mergeButton_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog modDialog = new OpenFileDialog())
+            {
+                modDialog.Title = "Select other mod";
+                modDialog.Filter = "Regulation file|regulation.bin";
+                modDialog.RestoreDirectory = true;
+                try
+                {
+                    // TODO: See if this can be combined with other routine.
+                    // InitialDirectory is poorly documented in its interaction with RestoreDirectory.
+                    if (Directory.Exists(mergemod.Text))
+                    {
+                        modDialog.InitialDirectory = mergemod.Text;
+                    }
+                    else
+                    {
+                        string gamePath = Path.GetDirectoryName(mergemod.Text);
+                        if (Directory.Exists(gamePath))
+                        {
+                            modDialog.InitialDirectory = gamePath;
+                        }
+                    }
+                }
+                catch (ArgumentException) { }
+                if (modDialog.ShowDialog() == DialogResult.OK)
+                {
+                    mergemod.Text = Path.GetDirectoryName(modDialog.FileName);
+                }
             }
         }
 
@@ -859,7 +1268,7 @@ namespace RandomizerCommon
             "Failed to restore from {0}!",
             "EldenForm_restoreFileFailure");
 
-        private void restoreButton_Click(object sender, EventArgs e)
+        private void restoreUXMFileBackupsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string title = messages.Get(restoreTitle);
             if (!File.Exists(exe.Text))
@@ -903,6 +1312,309 @@ namespace RandomizerCommon
                 form.Icon = Icon;
                 form.ShowDialog(this);
             }
+        }
+
+        private void saveOptionsFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog dialog = new SaveFileDialog())
+            {
+                dialog.FileName = $"{options.ConfigHash()}.randomizeopt";
+                dialog.Filter = "Randomizer options files (*.randomizeopt)|*.randomizeopt|All files (*.*)|*.*";
+                dialog.RestoreDirectory = true;
+                dialog.OverwritePrompt = true;
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    // It appears as though Windows automatically adds an extension if none is provided, thanks Windows
+                    string path = dialog.FileName;
+                    using (var writer = File.CreateText(path))
+                    {
+                        MakeOptionsFile().Save(writer);
+                    }
+                }
+            }
+        }
+
+        private RandomizerOptionsFile MakeOptionsFile()
+        {
+            RandomizerOptions opt = options.Copy();
+            // TODO: What was the reason for delaying this until button click time again?
+            if (uint.TryParse(fixedseed.Text.Trim(), out uint seed))
+            {
+                opt.Seed = seed;
+            }
+            if (uint.TryParse(enemyseed.Text.Trim(), out uint seed2))
+            {
+                opt.Seed2 = seed2;
+            }
+            return RandomizerOptionsFile.Create(Randomizer.EldenVersion, opt, selectedPreset);
+        }
+
+        [Localize]
+        private static readonly Text versionMismatch = new Text(
+            "Mismatched options versions! File has version {0}, but current randomizer version is {1}. This may result in different output. Try to continue anyway?",
+            "EldenForm_versionMismatch");
+        [Localize]
+        private static readonly Text confirmOverwritePreset = new Text(
+            "Overwrite preset file?\n{0}", "EldenForm_confirmOverwritePreset");
+        [Localize]
+        private static readonly Text confirmCreatePreset = new Text(
+            "Create preset file?\n{0}", "EldenForm_confirmCreatePreset");
+
+        private void loadOptionsFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Filter = "Randomizer options files (*.randomizeopt)|*.randomizeopt|All files (*.*)|*.*";
+                dialog.RestoreDirectory = true;
+                if (dialog.ShowDialog() != DialogResult.OK) return;
+                RandomizerOptionsFile newOpts = RandomizerOptionsFile.Load(dialog.FileName);
+                if (newOpts.Version != Randomizer.EldenVersion)
+                {
+                    DialogResult result = MessageBox.Show(
+                        messages.Get(versionMismatch, newOpts.Version, Randomizer.EldenVersion),
+                        messages.Get(PresetEditForm.confirmTitleText),
+                        MessageBoxButtons.OKCancel);
+                    if (result != DialogResult.OK)
+                    {
+                        return;
+                    }
+                }
+                Preset enemyPreset = newOpts.PresetValue;
+                if (enemyPreset != null)
+                {
+                    DirectoryInfo dirInfo = new DirectoryInfo("presets");
+                    string presetPath = enemyPreset.FileName;
+                    FileInfo fileInfo = new FileInfo(presetPath);
+                    if (fileInfo.DirectoryName != dirInfo.FullName)
+                    {
+                        // Basic attempt at security check
+                        throw new Exception($"Invalid preset name {enemyPreset}");
+                    }
+                    Text confirm = File.Exists(presetPath) ? confirmOverwritePreset : confirmCreatePreset;
+                    DialogResult result = MessageBox.Show(
+                        messages.Get(confirmOverwritePreset, presetPath),
+                        messages.Get(PresetEditForm.confirmTitleText),
+                        MessageBoxButtons.OKCancel);
+                    if (result != DialogResult.OK)
+                    {
+                        return;
+                    }
+                    try
+                    {
+                        enemyPreset.SavePreset();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(
+                            messages.Get(MiscSetup.CreateFileError, ex.Message), messages.Get(presetFileError),
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+                SetOptionsString(newOpts.OptionsValue.ToString());
+                UpdateAllOptions();
+            }
+        }
+
+        private void setOptionsStringToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (OptionsForm form = new OptionsForm(messages, options.FullString()))
+            {
+                form.Icon = Icon;
+                DialogResult result = form.ShowDialog(this);
+                if (result == DialogResult.OK)
+                {
+                    string text = form.OptionString;
+                    if (string.IsNullOrEmpty(text))
+                    {
+                        text = defaultOpts;
+                    }
+                    if (form.HasOptionsError(text, out string msg))
+                    {
+                        SetStatus(msg, error: true);
+                        return;
+                    }
+                    SetOptionsString(text);
+                    UpdateAllOptions();
+                }
+            }
+        }
+
+        [Localize]
+        private static readonly Text resetOptionsText = new Text("Reset options to default?", "EldenForm_resetOptions");
+
+        private void resetOptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+                messages.Get(resetOptionsText), messages.Get(PresetEditForm.confirmTitleText), MessageBoxButtons.OKCancel);
+            if (result == DialogResult.OK)
+            {
+                SetOptionsString(defaultOpts);
+                // I guess also reset this? It's outside of normal options.
+                mergemod.Text = "";
+                UpdateAllOptions();
+            }
+        }
+
+        private void CreateLaunchFile()
+        {
+            StringWriter writer = new StringWriter();
+            RandomizerOptionsFile.Create(Randomizer.EldenVersion, options, selectedPreset).Save(writer);
+            string hash = MiscSetup.GetMD5TextHash(writer.ToString());
+            string formatLine(string name, string path)
+            {
+                return $"    {{ enabled = true, name = \"{name}\", path = {JsonConvert.ToString(path)} }},";
+            }
+            List<string> modLines = new List<string>();
+            modLines.Add(formatLine("randomizer", Directory.GetCurrentDirectory()));
+            if (!string.IsNullOrWhiteSpace(mergemod.Text))
+            {
+                DirectoryInfo modDir = new DirectoryInfo(mergemod.Text);
+                if (modDir.Exists)
+                {
+                    modLines.Add(formatLine("mod", modDir.FullName));
+                }
+            }
+            string file = $@"# DO NOT MODIFY THIS FILE!
+# AUTO-GENERATED
+# CONTENTS WILL BE AUTOMATICALLY OVERWRITTEN
+
+# Produced by Elden Ring Randomizer {Randomizer.EldenVersion}
+# <hash>{hash}</hash>
+
+[modengine]
+debug = false
+[extension.mod_loader]
+enabled = true
+loose_params = false
+mods = [
+{string.Join(Environment.NewLine, modLines)}
+]
+";
+            File.WriteAllText(modengineConfig, file);
+        }
+
+        [Localize]
+        private static readonly Text launchMismatch = new Text(
+            "Randomizer options appear to be changed from the last time randomizer was run. Launch anyway?", "EldenForm_launchMismatch");
+        [Localize]
+        private static readonly Text launchRunning = new Text(
+            "Elden Ring appears to be already running, so launching with Mod Engine will have no effect. Try anyway?", "EldenForm_launchRunning");
+        [Localize]
+        private static readonly Text launchFailedTitle = new Text(
+            "Launch failed", "EldenForm_launchFailedTitle");
+        [Localize]
+        private static readonly Text launchFailed = new Text(
+            "Automatic Mod Engine launcher appeared to fail.\n\nMake sure Steam is running. If the game is currently running, close it and wait until it is fully shut down.\n\nCheck Troubleshooting on https://www.nexusmods.com/eldenring/mods/428/ to see when Mod Engine might fail. You may need to try using a manual Mod Engine launcher or UXM installation.", "EldenForm_launchFailed");
+
+        private Process currentProcess = null;
+        private async void launchButton_Click(object sender, EventArgs e)
+        {
+            if (currentProcess != null) return;
+            UpdateLaunchGame();
+            if (!launchButton.Enabled) return;
+
+            StringWriter writer = new StringWriter();
+            RandomizerOptionsFile.Create(Randomizer.EldenVersion, options, selectedPreset).Save(writer);
+            string hash = MiscSetup.GetMD5TextHash(writer.ToString());
+
+            string fileHash = null;
+            Regex hashRe = new Regex(@"<hash>([0-9A-Za-z]+)</hash>");
+            string contents = File.ReadAllText(modengineConfig);
+            Match match = hashRe.Match(contents);
+            if (match.Success)
+            {
+                fileHash = match.Groups[1].Value;
+            }
+
+            if (hash != fileHash)
+            {
+                DialogResult result = MessageBox.Show(
+                    messages.Get(launchMismatch),
+                    messages.Get(PresetEditForm.confirmTitleText),
+                    MessageBoxButtons.OKCancel);
+                if (result != DialogResult.OK) return;
+            }
+            bool? checkRunning()
+            {
+                try
+                {
+                    return Process.GetProcessesByName("eldenring").Length > 0;
+                }
+                catch (Exception) { }
+                return null;
+            }
+            if (checkRunning() ?? false)
+            {
+                DialogResult result = MessageBox.Show(
+                    messages.Get(launchRunning),
+                    messages.Get(PresetEditForm.confirmTitleText),
+                    MessageBoxButtons.OKCancel);
+                if (result != DialogResult.OK) return;
+            }
+
+            using (Process process = new Process())
+            {
+                process.StartInfo.FileName = modengineLauncher;
+                process.StartInfo.Arguments = $@"-t er -c ..\..\{modengineConfig}";
+                process.StartInfo.WorkingDirectory = Path.GetDirectoryName(modengineLauncher);
+                process.StartInfo.UseShellExecute = false;
+                process.EnableRaisingEvents = true;
+
+                // Start
+                currentProcess = process;
+                DateTime startTime = DateTime.Now;
+                launchButton.BackColor = Color.LightYellow;
+
+                process.Start();
+                await WaitForExitAsync(process);
+
+                int timePassed = (int)(DateTime.Now - startTime).TotalMilliseconds;
+                // Originally this was a way of "if exited early, warn about broken",
+                // but Mod Engine in non-debug mode exits early anyway, so check it regardless.
+                if (timePassed < 5000)
+                {
+                    int waitRest = Math.Max(0, Math.Min(5000 - timePassed, 5000));
+                    await Task.Delay(waitRest);
+                }
+                bool running = checkRunning() ?? true;
+                if (!running)
+                {
+                    using (ScrollDialog form = new ScrollDialog(
+                        messages.Get(launchFailedTitle),
+                        messages.Get(launchFailed)))
+                    {
+                        form.Icon = Icon;
+                        form.ShowDialog(this);
+                    }
+                }
+
+                launchButton.BackColor = SystemColors.Control;
+                currentProcess = null;
+            }
+        }
+
+        // https://stackoverflow.com/questions/470256/process-waitforexit-asynchronously
+        private static Task WaitForExitAsync(
+            Process process,
+            CancellationToken cancellationToken = default)
+        {
+            if (process.HasExited) return Task.CompletedTask;
+
+            var tcs = new TaskCompletionSource<object>();
+            process.EnableRaisingEvents = true;
+            process.Exited += (sender, args) => tcs.TrySetResult(null);
+            if (cancellationToken != default)
+            {
+                cancellationToken.Register(() => tcs.SetCanceled());
+            }
+            return process.HasExited ? Task.CompletedTask : tcs.Task;
+        }
+
+        private void updateButton_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://www.nexusmods.com/eldenring/mods/428?tab=files");
         }
     }
 }

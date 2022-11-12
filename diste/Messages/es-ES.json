@@ -1,7 +1,7 @@
 {
   "language": "Español (España)",
   "comment": "By default, this uses text from es.json. Make sure to copy translator names from there for credits",
-  "translators": "Your name here",
+  "translators": "proteh",
   "messages": [
     {
       "name": "EldenForm_allitem0",
@@ -40,6 +40,36 @@
       "text": ""
     },
     {
+      "name": "EldenForm_bosshp",
+      "explanation": "When checked, non-boss enemies can have their HP increased when they become boss enemies (e.g. Crab the Fell Omen)",
+      "english_text": "Increase HP for regular enemies as bosses",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_confirmCreatePreset",
+      "explanation": "Confirm prompt to write a preset file from an options file. {0} is the file name. \n means to insert a newline - do not put spaces around it.",
+      "english_text": "Create preset file?\n{0}",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_confirmOverwritePreset",
+      "explanation": "Same as confirmCreatePreset, but when the file already exists",
+      "english_text": "Overwrite preset file?\n{0}",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_convenienceGroup",
+      "explanation": "Label for options in the Misc tab which allow changes to the game to make playthroughs more convenient and straightforward, unrelated to randomization",
+      "english_text": "Convenience",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_customGroup",
+      "explanation": "Label for enemy randomizer options for custom enemy distribution",
+      "english_text": "Customization",
+      "text": ""
+    },
+    {
       "name": "EldenForm_default_boss",
       "explanation": "When checked, bosses with achievements can have important items. Currently this cannot be disabled",
       "english_text": "Major bosses",
@@ -49,6 +79,12 @@
       "name": "EldenForm_default_bossL",
       "explanation": "Explanation for default_boss. {0} is a number like 40. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
       "english_text": "Approx {0} checks. Includes all bosses which have achievements",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_default_custom",
+      "explanation": "When checked, enables customizing enemy placement through PresetEditForm",
+      "english_text": "Custom enemy placement",
       "text": ""
     },
     {
@@ -67,6 +103,12 @@
       "name": "EldenForm_default_reroll",
       "explanation": "Checkbox under seed number which generates a new seed every time 'Randomize' is clicked, instead of using the existing seed",
       "english_text": "Reroll seed",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_default_twohand",
+      "explanation": "Radio button under starting class randomization which allows starting with weapons which require two-handing to use (slightly under real strength requirements)",
+      "english_text": "Allow weapons requiring two-handing",
       "text": ""
     },
     {
@@ -94,6 +136,18 @@
       "text": ""
     },
     {
+      "name": "EldenForm_editnames",
+      "explanation": "When checked",
+      "english_text": "Edit boss names",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_enemyPage",
+      "explanation": "Main checkbox and tab for Enemy Randomizer",
+      "english_text": "Enemy Randomizer",
+      "text": ""
+    },
+    {
       "name": "EldenForm_enemyPreviewL",
       "explanation": "Text explaining that enemy randomizer is not available yet",
       "english_text": "Implementation in progress!\n\nCheck the mod page for updates. Join the\nFromSoft Randomizer Dev discord server for\nfeedback and early testing.",
@@ -118,9 +172,21 @@
       "text": ""
     },
     {
+      "name": "EldenForm_enemyWarningL",
+      "explanation": "Note in enemy tab about stability of the randomizer. This advice may change over time. Quitting to main menu does usually make sounds load in better.",
+      "english_text": "Warning: Placing too many bosses in the game may result in crashes and frame rate drops. Also, if enemies stop making sounds, you can usually save+quit to remedy this.",
+      "text": ""
+    },
+    {
       "name": "EldenForm_exeButton",
       "explanation": "Label for button to open file select for eldenring.exe",
       "english_text": "Select game exe",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_extraRandomGroup",
+      "explanation": "Label for options in Misc tab which allow randomization other than item and enemy randomization",
+      "english_text": "Additional randomization",
       "text": ""
     },
     {
@@ -190,6 +256,36 @@
       "text": ""
     },
     {
+      "name": "EldenForm_impolite",
+      "explanation": "Checkbox to change enemy AI behavior, so that enemies gang up on the player in larger groups, instead of staying back. Added for Enemy Onslaught mode, but can work in all modes",
+      "english_text": "Impolite enemies",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_impoliteL",
+      "explanation": "Explanation label for 'Impolite enemies'",
+      "english_text": "Make enemies less passive in groups",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_invertoutfits",
+      "explanation": "Option to change clothes of NPC human models, such as Gideon and Fia, to a random armor set",
+      "english_text": "Randomize NPC outfits",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_invertstarting",
+      "explanation": "Option to change starting class armor and weapons, followed by additional options on allowed weapons",
+      "english_text": "Randomize starting class loadouts",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_itemPage",
+      "explanation": "Main checkbox and tab for Enemy Randomizer",
+      "english_text": "Item Randomizer",
+      "text": ""
+    },
+    {
       "name": "EldenForm_keyGroup",
       "explanation": "Label asking how to randomize key items",
       "english_text": "Key items randomized?",
@@ -226,9 +322,51 @@
       "text": ""
     },
     {
+      "name": "EldenForm_launchButton",
+      "explanation": "Button in randomizer to try to start the game Elden Ring when it's installed on Steam and Mod Engine can be used",
+      "english_text": "Launch Elden Ring",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_launchFailed",
+      "explanation": "Long error essage for debugging 'Launch Elden Ring' failing. It suggests basic prerequisites for using Mod Engine, and otherwise, suggests using the two other installation options, manual Mod Engine or UXM.",
+      "english_text": "Automatic Mod Engine launcher appeared to fail.\n\nMake sure Steam is running. If the game is currently running, close it and wait until it is fully shut down.\n\nCheck Troubleshooting on https://www.nexusmods.com/eldenring/mods/428/ to see when Mod Engine might fail. You may need to try using a manual Mod Engine launcher or UXM installation.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_launchFailedTitle",
+      "explanation": "Title of the dialog box with launchFailed",
+      "english_text": "Launch failed",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_launchMismatch",
+      "explanation": "Dialog box shown to confirm 'Launch Elden Ring' when the launch files are different from the currently selected options.",
+      "english_text": "Randomizer options appear to be changed from the last time randomizer was run. Launch anyway?",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_launchRunning",
+      "explanation": "dialog box shown to confirm 'Launch Elden Ring' when it's alrady running. As part of automatic Mod Engine launcher usage, it can't launch the game if it's already running according to Steam",
+      "english_text": "Elden Ring appears to be already running, so launching with Mod Engine will have no effect. Try anyway?",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_loadOptionsFileToolStripMenuItem",
+      "explanation": "Action in the Options menu for selecting an options file to set all randomizer options",
+      "english_text": "Load options file...",
+      "text": ""
+    },
+    {
       "name": "EldenForm_locationGroup",
       "explanation": "Label for a bunch of options to enable or disable various game locations having important items in them",
-      "english_text": "Important locations",
+      "english_text": "Which locations are important locations?",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_locationOverviewL",
+      "explanation": "Some additional text to display next to the 'Important locations' section to explain what the checkboxes do",
+      "english_text": "Important locations are places you may need to check to find items required to beat the game.",
       "text": ""
     },
     {
@@ -262,15 +400,45 @@
       "text": ""
     },
     {
+      "name": "EldenForm_mergeButton",
+      "explanation": "Button to open a file select dialog for an alternate file-based mod to merge",
+      "english_text": "Select other mod",
+      "text": ""
+    },
+    {
       "name": "EldenForm_mergemods",
-      "explanation": "Checkbox to incorporate existing modifications to regulation.bin (game params) into the randomizer's output",
-      "english_text": "Merge existing param mods",
+      "explanation": "Checkbox to incorporate existing modifications to game files into the randomizer's output. Previously only merged param (regulation.bin) mods",
+      "english_text": "Merge \"mod\" directory",
       "text": ""
     },
     {
       "name": "EldenForm_miscGroup",
       "explanation": "Label for miscellaneous options with no other grouping. These usually add non-randomizer-related conveniences",
       "english_text": "Misc",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_miscGroupEnemy",
+      "explanation": "Label for set of options with miscellaneous enemy randomizer options",
+      "english_text": "Misc",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_miscPage",
+      "explanation": "Tab page title for miscellaneous options which apply outside of item/enemy randomization",
+      "english_text": "Misc Options",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_multcolor",
+      "explanation": "Checkbox to change the color of a boss when it is duplicated, to keep track of which is which. Like if there are 2 Margits at once, one is blue and the other is red.",
+      "english_text": "Color-code bosses in Enemy Onslaught",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_multhp",
+      "explanation": "Checkbox to reduce HP for bosses when they are multiplied using Enemy Onslaught mode (like 2x becomes around 70% health each, 3x becomes around 57% health each)",
+      "english_text": "Reduce HP for bosses in Enemy Onslaught slightly",
       "text": ""
     },
     {
@@ -304,6 +472,12 @@
       "text": ""
     },
     {
+      "name": "EldenForm_nohand",
+      "explanation": "Radio button for starting class randomization: if chosen, all starting class stat requirements are completely ignored, and the player may start with a weapon or spell they do not have the stats to use",
+      "english_text": "Allow unwieldable weapon and spells",
+      "text": ""
+    },
+    {
       "name": "EldenForm_norandom",
       "explanation": "Response to keyGroup (Key items randomized?) which does not randomize key items",
       "english_text": "No",
@@ -323,8 +497,8 @@
     },
     {
       "name": "EldenForm_onehand",
-      "explanation": "When *unchecked*, character creation weapons can require two-handing with starting stats. When checked, weapons are more restricted.",
-      "english_text": "Disallow starting weapons requiring two-handing",
+      "explanation": "Radio button in starting class randomization, which restricts weapons to the starting strength requirement stats, as opposed to requiring two-handing.",
+      "english_text": "Allow only one-handable weapons",
       "text": ""
     },
     {
@@ -340,14 +514,38 @@
       "text": ""
     },
     {
+      "name": "EldenForm_phasehp",
+      "explanation": "Checkbox to scale the health of multi-phase bosses which are normally part of one healthbar. Fire Giant p1 becoming Margit would be scaled up slightly (around 140%), but Margit becoming Fire Giant p1 would be scaled down slightly (around 70%)",
+      "english_text": "Scale up/down multi-phase bosses slightly",
+      "text": ""
+    },
+    {
       "name": "EldenForm_preset",
       "explanation": "Button to select custom randomization, especially with enemy randomizer. This feature is not yet implemented",
       "english_text": "Select challenge run or preset...",
       "text": ""
     },
     {
+      "name": "EldenForm_presetButton",
+      "explanation": "Label for a button to open EditPresetForm for enemy customization (replaces EldenForm_preset)",
+      "english_text": "Edit custom enemy placement...",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_presetFileError",
+      "explanation": "Error message that the user tried to edit enemy placement but a necessary file did not exist or had an invalid format",
+      "english_text": "Error: failed to load file required for customization",
+      "text": ""
+    },
+    {
       "name": "EldenForm_progressGroup",
       "explanation": "Label for checkboxes with broad randomization options, like what to randomize and which routing to allow",
+      "english_text": "Game progression",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_progressGroupEnemy",
+      "explanation": "Label for set of options related to tuning game difficulty in enemy randomizer",
       "english_text": "Game progression",
       "text": ""
     },
@@ -425,14 +623,20 @@
     },
     {
       "name": "EldenForm_randomize",
-      "explanation": "Same as randomizeNew",
+      "explanation": "Placeholder for randomize button when none of the more specific options below are selected",
       "english_text": "Randomize new run!",
       "text": ""
     },
     {
-      "name": "EldenForm_randomizedFixed",
-      "explanation": "Randomize button when a seed number is provided and 'Reroll seed' is unchecked",
-      "english_text": "Run with fixed seed",
+      "name": "EldenForm_randomizeBoth",
+      "explanation": "Randomize button when itemPage and enemyPage are both checked",
+      "english_text": "Randomize items and enemies",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_randomizeEnemy",
+      "explanation": "Randomize button when only enemyPage is checked",
+      "english_text": "Randomize enemies",
       "text": ""
     },
     {
@@ -442,15 +646,39 @@
       "text": ""
     },
     {
+      "name": "EldenForm_randomizeItem",
+      "explanation": "Randomize button when only itemPage is checked",
+      "english_text": "Randomize items",
+      "text": ""
+    },
+    {
       "name": "EldenForm_randomizeItemOnly",
       "explanation": "Randomize button when 'Reroll seed' is checked and 'Reroll enemy seed' is unchecked",
       "english_text": "Reroll items (same enemies)",
       "text": ""
     },
     {
-      "name": "EldenForm_randomizeNew",
-      "explanation": "Randomize button when 'Reroll seed' is checked (generates a new seed with new placements etc.)",
-      "english_text": "Randomize new run!",
+      "name": "EldenForm_randomizeNothing",
+      "explanation": "Randomize button when neither itemPage nor enemyPage are checked. Just shows ??? since there's nothing to randomize.",
+      "english_text": "???",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_regularhp",
+      "explanation": "Checkbox, the opposite of bosshp. When normal enemies walking around the world turn into bosses, their HP is reduced by a constant factor.",
+      "english_text": "Reduce HP for bosses as regular enemies",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_resetOptions",
+      "explanation": "Prompt to confirm resetting all options",
+      "english_text": "Reset options to default?",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_resetOptionsToolStripMenuItem",
+      "explanation": "Action in Options menu to reset randomizer options",
+      "english_text": "Reset all options",
       "text": ""
     },
     {
@@ -496,6 +724,12 @@
       "text": ""
     },
     {
+      "name": "EldenForm_restoreUXMFileBackupsToolStripMenuItem",
+      "explanation": "Action in File menu to open 'restore backups' dialog box",
+      "english_text": "Restore UXM file backups...",
+      "text": ""
+    },
+    {
       "name": "EldenForm_runereq",
       "explanation": "When checked, shows the message 'You require more Great Runes' when you try to access Radagon",
       "english_text": "Require all 7 Great Runes to access the final boss",
@@ -538,9 +772,27 @@
       "text": ""
     },
     {
+      "name": "EldenForm_saveOptionsFileToolStripMenuItem",
+      "explanation": "Action in Options menu to select a filename to store current randomizer options. These can be shared with other people.",
+      "english_text": "Save options file...",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_scale",
+      "explanation": "When checked, increases or decreases enemy stats (HP/health they have, and how much damage they deal) using scaling",
+      "english_text": "Scale up/down enemy health/damage",
+      "text": ""
+    },
+    {
       "name": "EldenForm_seedError",
       "explanation": "Error shown in the status bar when trying to randomize with an invalid seed (not a number, too many digits, etc.)",
       "english_text": "Invalid fixed seed",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_setOptionsStringToolStripMenuItem",
+      "explanation": "Action in Options menu to open OptionsForm to copy-paste a simple string with most options in the form (but not other things like presets)",
+      "english_text": "Set form options from string...",
       "text": ""
     },
     {
@@ -574,6 +826,24 @@
       "text": ""
     },
     {
+      "name": "EldenForm_swapboss",
+      "explanation": "When checked, randomized multi-boss fights can have different types of bosses. For instance, instead of two Crystalians, you might get a Crystalian and a Watchdog.",
+      "english_text": "Swap bosses between multi-boss fights",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_swapbossL",
+      "explanation": "Clarification to swapboss option that it only works for mini-dungeon (caves, catacombs, etc.) bosses",
+      "english_text": "For mini-dungeon bosses only",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_updateButton",
+      "explanation": "Button which opens the randomizer files page, to allow easy checks for newer versions of the randomizer",
+      "english_text": "Check for updates",
+      "text": ""
+    },
+    {
       "name": "EldenForm_upgradeExplainL",
       "explanation": "Long explanation for how randomizing upgrade material Bell Bearings work (for Smithing Stones, Somber Smithing Stones, Grave Glovewort, and Ghost Glovewort). See mod page for more details",
       "english_text": "If randomized, Smithing Stone and Glovewort Bell Bearings are placed in the same overall area as their vanilla location. Their contents are not randomized.",
@@ -592,9 +862,159 @@
       "text": ""
     },
     {
+      "name": "EldenForm_versionMismatch",
+      "explanation": "Yes/no confirmation prompt when loading an options file. {0} and {1} are the randomizer version names, like v0.1. The different output refers to how the same set of randomizer options, at different versions of the randomizer, may result in different item/enemy placements.",
+      "english_text": "Mismatched options versions! File has version {0}, but current randomizer version is {1}. This may result in different output. Try to continue anyway?",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_weaponprogression",
+      "explanation": "Checkbox to make Smithing Stones more likely to be available in early/late areas depending on their type. This affects the placement and distribution of Smithing Stones, so that you can upgrade your weapon like in the unmodified game. You will be able to reliably find tiers 1 to 3 in Limgrave and Liurnia. Otherwise, finding upgrade materials may be much more difficult.",
+      "english_text": "Smithing Stone availability similar to base game",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_AdjustSourceDoc",
+      "explanation": "Explanation for how to configure Frequency Adjustments, which appears in the enemy customization form. Reducing passive enemy types is an example of this. If crabs start with a 5% chance to show up, and their frequency adjustment is 50%, they will end up with a 2.5% chance.",
+      "english_text": "Special configuration to adjust the frequency of enemies relative to others of the same type",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_Basic",
+      "explanation": "Enemy category for most of the normal non-boss enemies encountered in the game",
+      "english_text": "Regular Enemies",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_BasicDesc",
+      "explanation": "Explanation for Regular Enemies when customizing enemies",
+      "english_text": "Enemies not covered by other categories",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_Boss",
+      "explanation": "Enemy category for the most important bosses in the game",
+      "english_text": "Major Bosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_BossDesc",
+      "explanation": "Explanation for Major Bosses",
+      "english_text": "Unescapable boss encounters with achievements or story importance",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_DragonMiniboss",
+      "explanation": "Enemy category for dragons with boss healthbars in the world",
+      "english_text": "Dragon Minibosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_Evergaol",
+      "explanation": "Enemy category for enemies fought in Evergaols, like the Crucible Knight in Stormhill",
+      "english_text": "Evergaol Minibosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_HostileNPC",
+      "explanation": "Enemy category for NPCs which fight you, including those who invade you or that you can invade",
+      "english_text": "Hostile Humans",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_HostileNPCDesc",
+      "explanation": "Explanation for Hostile Humans. Notably it includes NPCs like Millicent and Sellen, because they appear multiple times in different locations, and it would be confusing to randomize them.",
+      "english_text": "Invaders and hostile NPCs without extensive quests",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_Miniboss",
+      "explanation": "Enemy category for enemies with boss healthbars wandering the game world, not covered by other miniboss categories",
+      "english_text": "World Minibosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_MinibossDesc",
+      "explanation": "Explanation for World Minibosses",
+      "english_text": "Enemies with boss healthbars in the open world",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_MinorBoss",
+      "explanation": "Enemy category for boss encounters, usually with fog gates, including those in side dungeons (mini-dungeons)",
+      "english_text": "Minor Bosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_MinorBossDesc",
+      "explanation": "Explanation for Minor Bosses. Compare with the explanation for Major Bosses",
+      "english_text": "Other unescapable boss encounters, including side dungeon bosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_NightMiniboss",
+      "explanation": "Enemy category for minibosses which roam the world at night",
+      "english_text": "Night Minibosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_NightMinibossDesc",
+      "explanation": "Explanation for Night Minibosses",
+      "english_text": "Minibosses which only spawn at night",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_Scarab",
+      "explanation": "Enemy category for scarabs (crystal lizard-like enemies)",
+      "english_text": "Scarabs",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_Spectator",
+      "explanation": "Special enemy category which overlaps with other categories: enemies nearby bosses who are watching/spectating, and shouldn't be too powerful or else it will easily turn into a multi-boss fight.",
+      "english_text": "Spectators",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_SpectatorDesc",
+      "explanation": "Explanation for configuring Spectators",
+      "english_text": "Special configuration for regular enemies who are nearby minibosses. This is meant to prevent unreasonably difficult open world fights.",
+      "text": ""
+    },
+    {
+      "name": "EnemyClass_Wildlife",
+      "explanation": "Enemy category for Wildlife who generally don't attack the player, like sheep and birds",
+      "english_text": "Passive Wildlife",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_AllBosses",
+      "explanation": "Meta-category which includes all other specific boss types, simply called Bosses",
+      "english_text": "All Bosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_AllDragons",
+      "explanation": "Meta-category which includes all dragons, both minibosses and regular enemies",
+      "english_text": "Dragons",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_AllEnemies",
+      "explanation": "Meta-category which includes literally all randomizable enemies",
+      "english_text": "All Enemies and Bosses",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_hintLabelArea",
+      "explanation": "Label placed in the map for non-exact hints. For instance, 'Somewhere in Volcano Manor' is marked on the map to refer to any item location there. The location names are in the native language for each game language",
+      "english_text": "Somewhere in {0}",
+      "text": ""
+    },
+    {
       "name": "GameMenu_hintMarkArea",
       "explanation": "Dialog option which appears in-game when the player purchases a hint, to mark the overall area (like Limgrave) of a required item on the map",
-      "english_text": "Mark a required item's area",
+      "english_text": "Mark a required item's overall area",
       "text": ""
     },
     {
@@ -619,6 +1039,30 @@
       "name": "GameMenu_hintRequirementFailed",
       "explanation": "Dialog message which appears in-game when the user tries to purchase a hint, but hint functionality is not available yet (they need to rest at an Altus Plateau Site of Grace first)",
       "english_text": "Get to the Altus Plateau first!",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_hintRequirementFailedBoss",
+      "explanation": "Message shown in game when trying to select hintMarkItem, but the area boss was not defeated. This is a precaution to prevent people repeatedly getting hints without actually getting strong or fighting enemies. They can still get a non-exact hint in this case (hintMarkArea)",
+      "english_text": "Exact location hints in an area are only\navailable after defeating the area's main boss.",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_hintRequirementFailedOption",
+      "explanation": "Message shown in game when trying to select hintMarkItem, but the option for exact location hints was unchecked",
+      "english_text": "The randomizer option for exact location hints was not enabled.",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_receiveBellBearing",
+      "explanation": "Option added to merchants in-game, alongside Purchase/Sell menus, which gives the player their Bell Bearing without killing them",
+      "english_text": "Receive Bell Bearing",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_restart",
+      "explanation": "Error message shown in-game when the randomizer can load all required files. The \n corresponds to a line change. This normally happens if someone re-runs randomizer without restarting the game, but it can also happen after game updates if the regulation.bin becomes invalid and no longer loads. Finally, it can happen if the randomizer is incorrectly installed, and some critical files are detected as missing.",
+      "english_text": "Error: Mismatch between regulation.bin and other randomizer files.\nMake sure all randomizer files are present, the game has been restarted\nafter randomization, and the game and regulation.bin versions are compatible.",
       "text": ""
     },
     {
@@ -658,6 +1102,378 @@
       "text": ""
     },
     {
+      "name": "Preset_adjustSource",
+      "explanation": "Summary of a Frequency Adjustment. {0} is a percent number (so 'Adjusted to 50%' means cut in half) and {1} is a list of enemies affected",
+      "english_text": "Adjusted to {0}%: {1}",
+      "text": ""
+    },
+    {
+      "name": "Preset_dontRandomize",
+      "explanation": "Summary of not-randomized enemies. {0} is a list of enemies who are not randomized",
+      "english_text": "Not randomized: {0}",
+      "text": ""
+    },
+    {
+      "name": "Preset_enemyMultiplier",
+      "explanation": "Enemy multiplier mode, a type of run where {0} is a number like 2 or 3. It is based on a DS3 mod where every enemy is doubled or tripled",
+      "english_text": "Enemy Onslaught {0}x",
+      "text": ""
+    },
+    {
+      "name": "Preset_enemyMultiplierDesc",
+      "explanation": "Enemy category description with an multiplier added, used when Enemy Onslaught is enabled and has an override for a specific category. {0} is a number like 2 or 3, {1} is a class like Major Bosses. All together, this would result in something like '2x Major Bosses'",
+      "english_text": "{0}x {1}",
+      "text": ""
+    },
+    {
+      "name": "Preset_oopsAll",
+      "explanation": "Oops All mode, where all enemies are replaced with the enemy named in {0}. The phrase is based on an American cereal https://knowyourmeme.com/memes/oops-all-berries-box-parodies, and in this case, DS1 enemy randomizer runs by streamer LobosJr where he was constantly running into enemies who turned into Gwyn.",
+      "english_text": "Oops All {0}",
+      "text": ""
+    },
+    {
+      "name": "Preset_poolDefault",
+      "explanation": "When listing customized enemies getting replaced, refers to enemies in the same category. 'Replacing Major Bosses: Themselves' means that major bosses will replace other major bosses",
+      "english_text": "Themselves",
+      "text": ""
+    },
+    {
+      "name": "Preset_poolDelimitEntry",
+      "explanation": "Separation text between different enemies in a list (like 'Rat; Dog'). This shouldn't be a comma, since enemy names can contain commas",
+      "english_text": "; ",
+      "text": ""
+    },
+    {
+      "name": "Preset_poolDelimitType",
+      "explanation": "Separation text between different enemy categories in a list (like 'Major Bosses, Minor Bosses')",
+      "english_text": ", ",
+      "text": ""
+    },
+    {
+      "name": "Preset_poolDesc",
+      "explanation": "Summary of customization for an enemy category, shown in {0}, where the description is on the next line.",
+      "english_text": "Replacing {0}:",
+      "text": ""
+    },
+    {
+      "name": "Preset_poolDescInherit",
+      "explanation": "Summary of customization for an enemy category, shown in {0}, where it uses the same logic as a different enemy category in {1}. This is not currently shown, since it's duplicated instead.",
+      "english_text": "Replacing {0}: Same as {1}",
+      "text": ""
+    },
+    {
+      "name": "Preset_poolDescOneLine",
+      "explanation": "Summary of customization for an enemy category all on one line. You might have 'Replacing Major Bosses: Rat; Dog', which means that every major boss will turn into either a rat or a dog",
+      "english_text": "Replacing {0}: {1}",
+      "text": ""
+    },
+    {
+      "name": "Preset_poolEntries",
+      "explanation": "Part of multiline summary for enemy category customization. The - is a bullet point, then it might say '50% Dog'. All the different lines add up to 100%.",
+      "english_text": "- {0}% {1}",
+      "text": ""
+    },
+    {
+      "name": "Preset_poolExclude",
+      "explanation": "Part of multiline summary for enemy category customization. The - is a bullet point, and {0} is a list of enemy types which are not allowed to appear in this category. (excluding Dragons) means that dragons may not appear in this category, though it may appear in other categories",
+      "english_text": "- (excluding {0})",
+      "text": ""
+    },
+    {
+      "name": "Preset_poolNorandom",
+      "explanation": "Description for an enemy category which is not randomized. Appears like 'Replacing Scarabs: Not randomized'",
+      "english_text": "Not randomized",
+      "text": ""
+    },
+    {
+      "name": "Preset_presetName",
+      "explanation": "The name of the customization preset, 'Custom' by default. This corresponds to the preset's filename",
+      "english_text": "Preset: {0}",
+      "text": ""
+    },
+    {
+      "name": "Preset_removeSource",
+      "explanation": "{0} is a list of enemies which are not allowed to appear anywhere in the game",
+      "english_text": "Excluded: {0}",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_adjustSource",
+      "explanation": "Special enemy category for adjusting enemy frequency, in the customization form. See EnemyClass_AdjustSourceDoc",
+      "english_text": "Frequency Adjustments",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_applyButton",
+      "explanation": "Button which saves changes but does not close the form",
+      "english_text": "Apply",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_classCustom",
+      "explanation": "Option for an enemy category to get replaced with custom configuration",
+      "english_text": "Custom",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_classInherit",
+      "explanation": "Option for an enemy category to use the same replacement logic as its parent category",
+      "english_text": "Same as parent",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_classInheritName",
+      "explanation": "Version of classInherit which includes the name of the parent category, given in {0}",
+      "english_text": "Copy config from {0}",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_classMerge",
+      "explanation": "Option for an enemy category to get merged into its parent class. For instance, if Minor Bosses is merged into its parent (Major Bosses), all of the bosses will be randomized with each other, instead of in separate categories",
+      "english_text": "Merge with parent",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_classMergeName",
+      "explanation": "Version of classMerge which includes the name of the parent category",
+      "english_text": "Merge with {0}",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_classNorandom",
+      "explanation": "Option for an enemy category to not get randomized",
+      "english_text": "Not randomized",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_classRandom",
+      "explanation": "Option for an enemy category to get randomized. This is mainly for when customization is not available, only basic shuffling",
+      "english_text": "Randomized",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_classRemoveSource",
+      "explanation": "Label for a list of enemies to exclude from the current enemy category",
+      "english_text": "Excluded:",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_confirmLeave",
+      "explanation": "Dialog text when closing the preset form or switching to a different preset without saving. Shows Yes/No/Cancel",
+      "english_text": "Save changes before exiting?",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_confirmMultiplyRandom",
+      "explanation": "Yes/no prompt which is shown when switching from normal randomization to enemy onslaught (multiplied enemies). When Yes is chosen, enemy randomization is temporarily disabled, meaning that the original enemy will just be copied instead of copied *and* randomized",
+      "english_text": "Disable enemy randomization with Enemy Onslaught?",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_confirmOverwrite",
+      "explanation": "Dialog text for 'Save as' or 'Create new' when the preset filename already exists",
+      "english_text": "Overwrite existing file?",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_confirmReset",
+      "explanation": "Dialog text for Reset button in preset form, which confirms that the existing preset should be reverted to default",
+      "english_text": "Reset this preset to default?",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_confirmTitle",
+      "explanation": "Generic title for confirm dialog box",
+      "english_text": "Confirm",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_createNew",
+      "explanation": "In the 'Preset:' dropdown, a special option which prompts the name of a new preset to create",
+      "english_text": "Create new...",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_descriptionL",
+      "explanation": "Label for a textbox where a preset description can be typed, mainly as an explanation when giving the preset file to other people to use",
+      "english_text": "Description:",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_directoryButton",
+      "explanation": "Button in the preset dialog box which just opens the directory named 'presets', creating it if it doesn't exist",
+      "english_text": "Open presets directory",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_dontRandomize",
+      "explanation": "Label for enemies which are not randomized at all, and do not turn into anything else",
+      "english_text": "Not randomized:",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_enterName",
+      "explanation": "After 'Save as' or 'Create new' is selected, the prompt for a textbox to enter a simple short name. This will be used as the filename.",
+      "english_text": "Enter new preset name",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_errorTitle",
+      "explanation": "Generic title for dialog box reporting a user error",
+      "english_text": "Error",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_invalidName",
+      "explanation": "Error shown when the user entered an invalid preset name. {0} is the name they entered",
+      "english_text": "Invalid preset name: {0}",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_loadFailure",
+      "explanation": "Error shown when selecting a preset, but it can't be parsed or doesn't exist. {0} is the preset name, and {1} on the next line is the full error message",
+      "english_text": "Failed to load preset {0}\n{1}",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_modeCustom",
+      "explanation": "Normal mode for customization which is not one of the special modes",
+      "english_text": "Custom",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_modeMultiply",
+      "explanation": "Dropdown label for special mode (not yet implemented) which duplicates all enemies. See Preset_enemyMultiplier",
+      "english_text": "Enemy Onslaught",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_modeOopsall",
+      "explanation": "Dropdown label for special mode which turns all enemies into the same type. See Preset_oopsAll",
+      "english_text": "Oops All",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_multiplyOption",
+      "explanation": "Textbox for Enemy Onslaught mode where {0} is a number like 2 or 3, indicating double or triple enemies.",
+      "english_text": "{0}x",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_okButton",
+      "explanation": "Button which saves changes and closes the form",
+      "english_text": "OK",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_poolDefault",
+      "explanation": "Type of enemy replacement within the same category, so for Major Bosses, this means other Major Bosses. This is same thing as 'Themselves' in Preset_poolDefault, but it's in an enemy list editor and not in a summary",
+      "english_text": "Self",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_poolEnemies",
+      "explanation": "Percent sign which appears after a textbox with a number from 0 to 100",
+      "english_text": "%",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_PresetEditForm",
+      "explanation": "Title of the customization form",
+      "english_text": "Customize enemy placement",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_presetL",
+      "explanation": "Label for dropdown with different existing presets, including the 'Create new' option",
+      "english_text": "Preset:",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_quickL",
+      "explanation": "Label for several links which do some customization configuration automatically. These links edit the preset and are meant to be quick/convenient for the user.",
+      "english_text": "Quick edits:",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_quickMergeAll",
+      "explanation": "Quick edit which changes all enemy categories to merge with parent, making everything randomized with each other",
+      "english_text": "Merge all bosses and enemies",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_quickMergeBoss",
+      "explanation": "Quick edit which changes all boss enemy categories to merge with parent, making bosses randomized with each other",
+      "english_text": "Merge all bosses",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_quickMergeMinor",
+      "explanation": "Quick edit which changes boss categories other than Major Bosses to merge with each other. This makes it so that Major Bosses are still challenging, but other bosses have more variety",
+      "english_text": "Merge non-major bosses",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_quickMergeOverworld",
+      "explanation": "Quick edit which changes overworld boss categories (world minibosses, night minibosses, etc.) to merge with parent, making them randomized with each other",
+      "english_text": "Merge overworld boss categories",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_quickReducePassive",
+      "explanation": "Quick edit which makes harmless enemies less common, so that more interesting and aggressive enemies can take their place",
+      "english_text": "Reduce passive enemy frequency",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_quickReplace10",
+      "explanation": "Quick edit which adds 10% boss replacement to the regular enemy category, if it's not there already",
+      "english_text": "Replace 10% of regular enemies with bosses",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_quickReplaceWildlife",
+      "explanation": "Quick edit which changes the wildlife category to be 100% regular enemies, instead of the default of other wildlife",
+      "english_text": "Replace wildlife with regular enemies",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_quickSeparate",
+      "explanation": "Quick edit which is the opposite of quickMerge options. It changes all categories to not merge with parent.",
+      "english_text": "Split up enemy categories (default)",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_removeSource",
+      "explanation": "Label for a list of enemies which are not added anywhere in the game",
+      "english_text": "Excluded everywhere:",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_resetButton",
+      "explanation": "Button shown in preset form which can revert the custom enemy placement back to the default (that is, everything randomized in separate categories)",
+      "english_text": "Reset...",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_saveAsButton",
+      "explanation": "Button which prompts a new preset name and saves the current enemy customization under that file",
+      "english_text": "Save as...",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_saveFailure",
+      "explanation": "Enemy customization preset save failure. {0} is the name of the preset and {1} is the full error message on the next line",
+      "english_text": "Failed to save preset {0}\n{1}",
+      "text": ""
+    },
+    {
+      "name": "Randomizer_createFileError",
+      "explanation": "Long explanation of why file creation might fail. First it gives the same advice as EldenForm_fileUnpackError, then mentions that Antivirus can stop the randomizer from writing files, then explains that the randomizer is 'safe' (does not modify files unless it needs to).",
+      "english_text": "Error: Failed to create file. Make sure the randomizer is unpacked to disk with all of the files kept together, and make sure no Antivirus programs are interfering. The randomizer will only modify files in its own directory or in the game directory.\n{0}",
+      "text": ""
+    },
+    {
       "name": "Randomizer_editPhase",
       "explanation": "Shown in the status bar while the randomizer is modifying game parameters etc. to randomize them",
       "english_text": "Editing game files",
@@ -685,6 +1501,24 @@
       "name": "Randomizer_loadPhase",
       "explanation": "Shown in the status bar at the start of randomization, when reading and parsing game files",
       "english_text": "Loading game data",
+      "text": ""
+    },
+    {
+      "name": "Randomizer_mergeMissingError",
+      "explanation": "Error shown when 'Merge mod directory' is selected but the directory named {0} does not exist",
+      "english_text": "Error merging mods: directory {0} not found",
+      "text": ""
+    },
+    {
+      "name": "Randomizer_mergeWrongDirError",
+      "explanation": "Error shown when 'Merge mod directory' is selected but the randomizer is already inside of the mod directory {0}, so it would use its own output as input, which would break it",
+      "english_text": "Error merging mods: already running from {0} directory",
+      "text": ""
+    },
+    {
+      "name": "Randomizer_saveMapPhase",
+      "explanation": "Progress from 0% to 100% in writing game map files (.msb.dcx format), at the end of savePhase",
+      "english_text": "Writing map data: {0}%",
       "text": ""
     },
     {

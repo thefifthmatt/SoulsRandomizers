@@ -91,6 +91,11 @@ ConfigItems:
   - Name: Fan Daggers
   # For Alexander's Quest. Figure this out if/when cookbook contents are randomized
   - Name: Nomadic Warrior's Cookbook [17]
+- GroupName: norandomdrop
+  NoConfigNames: true
+  Items:
+  - Name: Golden Seed
+  - Name: Sacred Tear
 - GroupName: bosssouls
   NoConfigNames: true
   Items:
@@ -120,6 +125,7 @@ ConfigItems:
   - ID: 3:8970
     EndID: 3:8974
   - Name: Talisman Pouch
+  - Name: Memory Stone
   - Name: Tailoring Tools
   - Name: Golden Tailoring Tools
 - GroupName: healthhints
@@ -148,7 +154,7 @@ ConfigItems:
   - Name: Godskin Prayerbook
   - Name: Two Fingers' Prayerbook
   - Name: Assassin's Prayerbook
-  - Name: Erdtree Prayerbook
+  # Unused: Erdtree Prayerbook
   # Unused: Erdtree Codex
   - Name: Golden Order Principia
   # Unused: Golden Order Principles
@@ -183,6 +189,7 @@ ConfigItems:
   - Name: Letter to Patches
   - Name: Dancer's Castanets
   - Name: Sellian Sealbreaker
+  - Name: Chrysalids' Memento
   - Name: Black Knifeprint
   - Name: Academy Glintstone Key (Thops)
     ID: 3:8174
@@ -223,8 +230,10 @@ ConfigItems:
   - ID: 3:6000
     EndID: 3:7903
 - GroupName: add
-  Items:
-  - Name: Deathbed Smalls
+  Items: []
+  # These are both [ERROR]'d for the time being
+  #- Name: Deathbed Smalls
+  #- Name: Miranda's Prayer
 
 Events:
 - Name: meteor
@@ -407,7 +416,7 @@ Areas:
   Req: liurnia
   Maps: m12_01_00_00
 - Name: liurnia_studyhall
-  Text: Divine Tower of Liurnia
+  Text: Carian Study Hall
   Req: liurnia
   Maps: m34_11_00_00
 - Name: caelid
@@ -572,8 +581,8 @@ Areas:
   Req: lakeofrot
   Maps: m12_04_00_00
 - Name: moonlight
-  # TODO: Have more precise areas later
-  Text: Liurnia
+  # TODO: Make sure all locations here are correct (no bad hints). Meanwhile, just explicitly marked ones should be
+  Text: Moonlight Altar
   Req: ainsel_boss AND astel AND darkmoonring
   Maps: m60_33_40_00 m60_33_41_00 m60_33_42_00 m60_34_41_00 m60_34_42_00 m60_35_41_00 m60_35_42_00 m60_36_41_00 m60_36_42_00
   MainMaps: m60_33_40_00 m60_33_41_00 m60_33_42_00 m60_34_41_00 m60_34_42_00 m60_35_41_00 m60_35_42_00 m60_36_41_00 m60_36_42_00
@@ -902,23 +911,23 @@ Areas:
 PlacementRestrictions:
 - Name: Rusty Key
   Switch: earlylegacy
-  KeyAreas: limgrave stormveil_start limgrave_coastalcave limgrave_dragonchurch limgrave_stormfootcatacombs limgrave_murkwatercatacombs limgrave_murkwatercave limgrave_grovesidecave limgrave_highroadcave limgrave_tunnels
+  KeyAreas: limgrave limgrave_minidungeons limgrave_dragonchurch stormveil_start
 - Item:
     Name: Academy Glintstone Key
     ID: 3:8109
   Switch: earlylegacy
-  KeyAreas: liurnia liurnia_studyhall liurnia_postmanor liurnia_roadsendcatacombs liurnia_blackknifecatacombs liurnia_cliffbottomcatacombs liurnia_stillwatercave liurnia_lakesidecave liurnia_academycave liurnia_tunnel
+  KeyAreas: liurnia liurnia_studyhall liurnia_postmanor liurnia_minidungeons
 - Name: Golden Seed
   Unique:
-  # 7 in Limgrave
-  - Amount: 4
-    UpToAny: limgrave stormveil_start limgrave_coastalcave limgrave_dragonchurch limgrave_stormfootcatacombs limgrave_murkwatercatacombs limgrave_murkwatercave limgrave_grovesidecave limgrave_highroadcave limgrave_tunnels
-  # 2 in Caelid, 5 in Liurnia, 1 in Peninsula, 1 in Siofra. 16 total
-  - Amount: 10
+  # 7 in Limgrave -> 4
+  - Amount: 3
+    UpToAny: limgrave limgrave_minidungeons limgrave_dragonchurch stormveil_start
+  # 2 in Caelid, 5 in Liurnia, 1 in Peninsula, 1 in Siofra. 16 total -> 10
+  - Amount: 7
     Before: altus
     UseGroups: true
-  # 8 in Altus. 24 total
-  - Amount: 14
+  # 8 in Altus. 24 total -> 14
+  - Amount: 12
     Before: leyndell
     UseGroups: true
   # 1 in Leyndell, 3 in Mountaintops, 1 in Mohgwyn, 1 in Azula. 30 total
@@ -937,18 +946,28 @@ PlacementRestrictions:
   # Margit, 1 Great Rune, Godfrey
   Unique:
   - Amount: 1
-    UpToAny: limgrave stormveil_start limgrave_coastalcave limgrave_dragonchurch limgrave_stormfootcatacombs limgrave_murkwatercatacombs limgrave_murkwatercave limgrave_grovesidecave limgrave_highroadcave limgrave_tunnels
+    UpToAny: limgrave limgrave_minidungeons limgrave_dragonchurch stormveil_start
   - Amount: 2
-    # or Before: altus/volcano_abduction/precipice
     UpTo: limgrave
     UseGroups: true
   - Amount: 3
     UpTo: leyndell
     UseGroups: true
   - After: graveyard
+- Name: Memory Stone
+  Unique:
+  # 1 from shop, 1 in Peninsula, 4 in Liurnia, 1 in Caelid
+  - Amount: 4
+    UpTo: limgrave
+    UseGroups: true
+  # 1 in Gelmir. (8 total)
+  - Amount: 6
+    UpTo: leyndell
+    UseGroups: true
+  - After: graveyard
 - Name: Tailoring Tools
   Unique:
-  - UpToAny: limgrave stormveil_start limgrave_coastalcave limgrave_dragonchurch limgrave_stormfootcatacombs limgrave_murkwatercatacombs limgrave_murkwatercave limgrave_grovesidecave limgrave_highroadcave limgrave_tunnels
+  - UpToAny: limgrave limgrave_minidungeons limgrave_dragonchurch stormveil_start
 - Name: Golden Tailoring Tools
   Unique:
   - UpTo: limgrave
@@ -1101,8 +1120,364 @@ PlacementRestrictions:
 - Name: Lord's Rune
   Unique:
   - After: leyndell mohgwyn
+# Weapon balancing
+- Name: Smithing Stone [1]
+  Switch: weaponprogression
+  # 24 locations, 49 total, 17 mats
+  BaseLocationBuffer: 10
+  MatsAmount: 17
+  Unique:
+  - Amount: 25
+    Inside: limgrave* stormveil* peninsula*
+  - Amount: 15
+    Inside: liurnia* academy*
+  - Amount: 10
+    Inside: caelid* dragonbarrow*
+- Name: Smithing Stone [2]
+  Switch: weaponprogression
+  # 32 locations, 60 total, 5 mats
+  BaseLocationBuffer: 10
+  MatsAmount: 5
+  Unique:
+  - Amount: 15
+    Inside: limgrave* stormveil* peninsula*
+  - Amount: 15
+    Inside: liurnia* academy*
+  - Amount: 15
+    Inside: caelid* dragonbarrow*
+- Name: Smithing Stone [3]
+  Switch: weaponprogression
+  # 27 locations, 42 total, 9 mats
+  BaseLocationBuffer: 10
+  MatsAmount: 9
+  # Liurnia can have a bit more focus here
+  Unique:
+  - Amount: 5
+    Inside: limgrave* stormveil* peninsula*
+  - Amount: 15
+    Inside: liurnia* academy*
+  - Amount: 15
+    Inside: caelid* dragonbarrow*
+  - Amount: 10
+    Inside: altus precipice siofra ainsel_start
+- Name: Smithing Stone [4]
+  Switch: weaponprogression
+  # 32 locations, 34 total, 20 mats
+  BaseLocationBuffer: 10
+  MatsAmount: 20
+  Unique:
+  - Amount: 10
+    Inside: liurnia* academy*
+  - Amount: 10
+    Inside: caelid* dragonbarrow*
+  - Amount: 15
+    Inside: altus precipice siofra* ainsel* lakeofrot deeproot*
+  - After: liurnia caelid
+- Name: Smithing Stone [5]
+  Switch: weaponprogression
+  # 39 locations, 41 total, 27 mats
+  BaseLocationBuffer: 10
+  MatsAmount: 27
+  Unique:
+  - Amount: 20
+    Inside: altus* gelmir* outskirts*
+  - Amount: 20
+    Inside: leyndell* sewer*
+  # TODO: Do more stuff underground once all locations are classified. There is not overall much loot to collect there.
+  - Amount: 5  # 15?
+    Inside: siofra_nokron deeproot* # ainsel
+  - After: altus
+- Name: Smithing Stone [6]
+  Switch: weaponprogression
+  # 42 locations, 51 total, 0 mats
+  BaseLocationBuffer: 10
+  MatsAmount: 0
+  Unique:
+  - Amount: 15
+    Inside: leyndell* sewer*
+  - Amount: 15
+    After: mountaintops mohgwyn snowfield
+  - Amount: 5
+    Inside: siofra_nokron deeproot* # ainsel
+  - After: leyndell
+- Name: Smithing Stone [7]
+  Switch: weaponprogression
+  # 31 locations, 48 total, 0 mats
+  BaseLocationBuffer: 10
+  MatsAmount: 0
+  Unique:
+  - Amount: 10
+    Inside: sewer*
+  - Amount: 20
+    After: mountaintops mohgwyn snowfield
+  - After: mountaintops mohgwyn snowfield
+- Name: Smithing Stone [8]
+  Switch: weaponprogression
+  # 25 locations, 33 total, 8 mats
+  BaseLocationBuffer: 10
+  MatsAmount: 8
+  Unique:
+  - Amount: 40
+    After: mountaintops mohgwyn snowfield moonlight
+  - After: mountaintops
+- Name: Ancient Dragon Smithing Stone
+  Switch: weaponprogression
+  # 5 in the game
+  Unique:
+  - Amount: 3
+    After: mountaintops mohgwyn snowfield
+# For Somber Stones, don't currently try to add more, but make vague area guidelines
+- Name: Somber Smithing Stone [1]
+  Switch: weaponprogression
+  # 3 locations, 4 total, 6 mats
+  BaseLocationBuffer: 10
+  MatsAmount: 6
+  Unique:
+  - UpTo: limgrave
+    UseGroups: true
+- Name: Somber Smithing Stone [2]
+  Switch: weaponprogression
+  # 8 locations, 9 total, 1 mat
+  BaseLocationBuffer: 3
+  Unique:
+  - UpTo: limgrave
+    UseGroups: true
+- Name: Somber Smithing Stone [3]
+  Switch: weaponprogression
+  # 8 locations, 9 total, 2 mats
+  BaseLocationBuffer: 3
+  Unique:
+  - UpTo: limgrave
+    After: caelid liurnia
+    UseGroups: true
+- Name: Somber Smithing Stone [4]
+  Switch: weaponprogression
+  # 9 locations, 9 total, 5 mats
+  Unique:
+  - UpTo: limgrave
+    After: caelid liurnia
+    UseGroups: true
+- Name: Somber Smithing Stone [5]
+  Switch: weaponprogression
+  # 10 locations, 12 total, 3 mats
+  Unique:
+  - UpTo: leyndell
+    After: altus caelid
+    UseGroups: true
+- Name: Somber Smithing Stone [6]
+  Switch: weaponprogression
+  # 10 locations, 10 total, 2 mats
+  Unique:
+  - UpTo: leyndell
+    After: altus deeproot
+    UseGroups: true
+- Name: Somber Smithing Stone [7]
+  Switch: weaponprogression
+  # 17 locations, 17 total, 2 mats
+  Unique:
+  - After: altus
+    Amount: 4
+  - After: mountaintops # deeproot ainsel
+- Name: Somber Smithing Stone [8]
+  Switch: weaponprogression
+  # 11 locations, 11 total, 0 mats
+  Unique:
+  - After: altus
+    Amount: 3
+  - After: mountaintops # ainsel
+- Name: Somber Smithing Stone [9]
+  Switch: weaponprogression
+  # 13 locations, 13 total, 0 mats
+  Unique:
+  - After: altus
+    Amount: 2
+  - After: mountaintops
+- Name: Somber Ancient Dragon Smithing Stone
+  Switch: weaponprogression
+  # 6 total
+  Unique:
+  - Amount: 3
+    After: snowfield farumazula mohgwyn
 
-# Also add time-sensitive quest items here
+# Ignore Gloveworts unless the materials themselves are randomized.
+# In that case, include heuristics for placement, and add a handful into the world.
+# TODO: Add underground areas here?
+- Name: Grave Glovewort [1]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    Inside: limgrave* stormveil* peninsula*
+- Name: Grave Glovewort [2]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    Inside: stormveil* peninsula* liurnia* bellum*
+- Name: Grave Glovewort [3]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    After: liurnia caelid
+    UpTo: altus
+    UseGroups: true
+- Name: Grave Glovewort [4]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    After: altus caelid
+    UpTo: altus
+    UseGroups: true
+- Name: Grave Glovewort [5]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    After: altus caelid
+    UpTo: altus
+    UseGroups: true
+- Name: Grave Glovewort [6]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    After: altus
+    UpTo: altus
+    UseGroups: true
+- Name: Grave Glovewort [7]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    After: altus
+    UpTo: mountaintops
+    UseGroups: true
+- Name: Grave Glovewort [8]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    Inside: mountaintops* flamepeak* snowfield*
+- Name: Grave Glovewort [9]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    Inside: mountaintops* flamepeak* snowfield*
+- Name: Ghost Glovewort [1]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    Inside: ainsel* lakeofrot siofra* limgrave*
+- Name: Ghost Glovewort [2]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    Inside: ainsel* lakeofrot siofra* peninsula* liurnia*
+- Name: Ghost Glovewort [3]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    Inside: ainsel* lakeofrot siofra* liurnia* caelid*
+- Name: Ghost Glovewort [4]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    Inside: ainsel* lakeofrot siofra* deeproot* caelid* altus*
+- Name: Ghost Glovewort [5]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    Inside: ainsel* lakeofrot siofra* deeproot* altus* outskirts*
+- Name: Ghost Glovewort [6]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    Inside: ainsel* lakeofrot deeproot* outskirts* gelmir*
+- Name: Ghost Glovewort [7]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    Inside: ainsel* lakeofrot deeproot* gelmir* mountaintops* haligtree*
+- Name: Ghost Glovewort [8]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    Inside: ainsel* lakeofrot mohgwyn* sewers* haligtree*
+- Name: Ghost Glovewort [9]
+  Switch: mats
+  BaseLocationBuffer: 1
+  Unique:
+  - Amount: 1
+    Inside: ainsel* lakeofrot mohgwyn* mountaintops* snowfield*
+
+# Time-sensitive quest items, roughly shuffle them to a better location
+- Name: Fingerprint Grape
+  Unique:
+  - After: graveyard
+    UpTo: flamepeak
+    UseGroups: true
+- Name: Shabriri Grape
+  Unique:
+  - After: graveyard
+    UpTo: flamepeak
+    UseGroups: true
+- Item:
+    Name: Rya's Necklace
+    ID: 3:8136
+  Unique:
+  - UpTo: limgrave
+    UseGroups: true
+- Name: Seluvis's Introduction
+  Unique:
+  - UpTo: limgrave
+    UseGroups: true
+- Name: Sellen's Primal Glintstone
+  Unique:
+  - UpTo: limgrave
+    UseGroups: true
+- Item:
+    Name: Miniature Ranni
+    ID: 3:8146
+  Unique:
+  - Before: moonlight farumazula
+    UseGroups: true
+- Name: Fingerslayer Blade
+  Unique:
+  - Before: ainsel mountaintops
+    UseGroups: true
+- Name: The Stormhawk King
+  Unique:
+  - UpTo: limgrave
+    UseGroups: true
+- Name: Weathered Dagger
+  Unique:
+  - UpTo: leyndell
+    UseGroups: true
+- Name: Chrysalids' Memento
+  Unique:
+  - Inside: limgrave* stormveil*
+
+# Boss helper items
+# Make them available before late game, but it may still be possible to get locked out of them
+- Name: Purifying Crystal Tear
+  Unique:
+  - UpTo: leyndell
+    UseGroups: true
+- Name: Sentry's Torch
+  Unique:
+  - UpTo: leyndell
+    UseGroups: true
 
 SpecialModes:
 - NorandomSwitch: norandom
@@ -1111,6 +1486,8 @@ SpecialModes:
 - NorandomSwitch: norandom
   Includes: upgrades
   RaceSwitch: always  # racemode
+- NorandomSwitch: norandom
+  Includes: questitems
 - RaceSwitch: racemode_health
   NorandomSwitch: norandom_health
   Names:
@@ -1141,6 +1518,7 @@ ItemPriority:
   - Mimic Tear Ashes
   - Radagon's Soreseal  # +5
   - Erdtree's Favor +2
+  - Purifying Crystal Tear
 - ExcludeTags: missable nokey shop
   Includes: ashes upgradeashes
 - ExcludeTags: exclusive norandom crow missable
@@ -1163,11 +1541,14 @@ ItemPriority:
   - Gold Scarab
   - Silver Scarab
   # Good for specific builds
+  - Blue Dancer Charm
   - Graven-Mass Talisman
   - Flock's Canvas Talisman
   - Shard of Alexander
   - Rotten Winged Sword Insignia
   - Radagon Icon
+  # Assassin item (TODO optionally remove invisible speffect?)
+  - Sentry's Torch
   Items:
   # Cracked tears
   - ID: 3:11000
@@ -1188,3 +1569,13 @@ ItemPriority:
   # Golden Runes etc
   - ID: 3:2900
     EndID: 3:2919
+- NoPriority: true
+  ExcludeTags: boss altboss missable
+  # Important items for some bosses
+  Names:
+  - Purifying Crystal Tear
+  - Sentry's Torch
+  - Margit's Shackle
+  - Mohg's Shackle
+  # Mainly to exclude from Godrick
+  - Chrysalids' Memento

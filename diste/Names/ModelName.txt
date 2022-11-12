@@ -8,7 +8,7 @@ c2010 Blaidd
 c2030 Rennala 1
 c2031 Rennala 2
 c2040 Rennala Student
-c2041 Bug Rennala Student
+c2041 Kindred of Rot Larva
 c2050 Ranni
 c2060 The Two Fingers
 c2070 The Three Fingers
@@ -28,10 +28,10 @@ c2270 Large Crab
 c2271 Small Crab
 c2272 Large Crab 2
 c2273 Small Crab 2
-c2274 Small Crab 3
-c2275 Small Crab 4
-c2276 Small Crab 5
-c2277 Small Crab 6
+c2274 Large Crab 3
+c2275 Small Crab 3
+c2276 Large Crab 4
+c2277 Small Crab 4
 c2500 Crucible Knight
 c3000 Castle Guard
 c3010 Banished Knight
@@ -42,21 +42,21 @@ c3061 Undead Azula Beastman
 c3070 Dominula Celebrant
 c3080 Imp
 c3100 Bell Bearing Hunter
-c3150 Night's Calvary
-c3160 Night's Calvary Horse
+c3150 Night's Cavalry
+c3160 Night's Cavalry Horse
 c3170 Albinauric Archer
 c3171 Apostate Albinauric Archer
 c3180 Big Wolf
 c3181 Red Wolf
 c3200 Merchant
-c3201 Subterranean Merchant
+c3201 Frenzied Nomad
 c3210 Nomad Mule
 c3250 Draconic Tree Sentinel
 c3251 Tree Sentinel
-c3252 Fallen Tree Sentinel
-c3300 Nox Swordstress
+c3252 Loretta
+c3300 Nox Fighter
 c3320 Silver Tear
-c3330 Silver Tear Orb
+c3330 Giant Ball
 c3350 Crystalian
 c3360 Ancestral Follower
 c3370 Ancestral Follower Shaman
@@ -86,11 +86,11 @@ c3670 Albinauric Lookout
 c3700 Depraved Perfumer
 c3701 Depraved Perfumer 2
 c3702 Raya Lucaria Scholar
-c3703 Noble's Page
-c3704 Battle Mage Hughes
-c3710 Crystallized Battlemage
-c3720 Orbhead Sorcerer
-c3730 Arcane Sphere of Faces
+c3703 Page
+c3704 Battle Mage
+c3710 Azur
+c3720 Lusat
+c3730 Graven School
 c3750 Clayman
 c3800 Cleanrot Knight
 c3810 Kindred of Rot
@@ -101,9 +101,9 @@ c3901 Godskin Monk
 c3910 Fire Prelate
 c3950 Man-Serpent
 c3970 Beastman of Farum Azula
-c4000 Royal Rider
-c4020 Royal Revenant
-c4040 Sewer Slug
+c4000 Revenant Follower
+c4020 Revenant
+c4040 Slug
 c4050 Kaiden Sellsword
 c4060 Kaiden Sellsword Horse
 c4070 Wolf
@@ -115,7 +115,7 @@ c4101 Large Demi-Human
 c4110 Demi-Human Shaman
 c4120 Demi-Human Beastman
 c4130 Demi-Human Queen
-c4140 Spiritcaller Snail
+c4140 Snail
 c4150 Basilisk
 c4160 Dog
 c4161 Smaller Dog
@@ -131,14 +131,14 @@ c4180 Spirit Jellyfish
 c4190 Large Scarab
 c4191 Scarab
 c4192 Extra Large Scarab
-c4200 Giant Bat
-c4201 Chanting Winged Dame
+c4200 Bat
+c4201 Old Woman Bat
 c4210 Bladed Talon Eagle
 c4220 Giant Octopus
 c4230 Octopus
 c4240 Fingercreeper
-c4241 Fingercreeper 2
-c4250 Lesser Fignercreeper
+c4241 Massive Fingercreeper
+c4250 Lesser Fingercreeper
 c4260 Erdtree Burial Watchdog
 c4270 Lion Guardian
 c4280 Giant Ant
@@ -178,7 +178,7 @@ c4375 Mausoleum Foot Soldier
 c4376 Haligtree Foot Soldier
 c4377 Highwayman
 c4380 Starcaller
-c4381 Bloodthorn Exile
+c4381 Thorn Sorcerer
 c4382 Tunnel Miner
 c4383 Glintstone Miner
 c4384 Big Glintstone Miner
@@ -217,7 +217,7 @@ c4601 Liurnia Troll
 c4602 Snow Troll
 c4603 Mine Troll
 c4604 Iji
-c4620 Astel, Naturalborn of the Void
+c4620 Malformed Star
 c4630 Runebear
 c4640 Ulcerated Tree Spirit
 c4650 Dragonkin Soldier
@@ -231,15 +231,15 @@ c4720 Godfrey
 c4721 Hoarah Loux
 c4730 Starscourge Radahn
 c4750 Godrick the Grafted
-c4751 Godrick the Grafted 2
+c4751 Defeated Godrick
 c4760 Fire Giant
 c4770 Gargoyle
 c4800 Mohg
 c4810 Erdtree Avatar
-c4811 Rot Erdtree Avatar
+c4811 Putrid Avatar
 c4820 Omenkiller
 c4910 Magma Wyrm
-c4911 Consecrated Snowfield Magma Wyrm
+c4911 Great Wyrm Theodorix
 c4950 Tibia Mariner
 c4960 Giant Skeleton Torso
 c4980 Death Rite Bird
@@ -254,7 +254,7 @@ c6080 Giant Dragonfly
 c6081 Giant Dragonfly 2
 c6082 Aeonia Giant Dragonfly
 c6090 Turtle
-c6091 Miriel Pastor of Vows
+c6091 Giant Turtle
 c6100 Springhare
 c7000 Fallen Hawks Soldier
 c7100 Ancient Hero of Zamor

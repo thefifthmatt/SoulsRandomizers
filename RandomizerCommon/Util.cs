@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,7 +17,8 @@ namespace RandomizerCommon
 #endif
         }
 
-        public static void AddMulti<K, V, T>(IDictionary<K, T> dict, K key, V value) where T : ICollection<V>, new()
+        public static void AddMulti<K, V, T>(IDictionary<K, T> dict, K key, V value)
+            where T : ICollection<V>, new()
         {
             if (!dict.TryGetValue(key, out T col))
             {
@@ -25,7 +27,8 @@ namespace RandomizerCommon
             col.Add(value);
         }
 
-        public static void AddMulti<K, V, T>(IDictionary<K, T> dict, K key, IEnumerable<V> values) where T : ICollection<V>, new()
+        public static void AddMulti<K, V, T>(IDictionary<K, T> dict, K key, IEnumerable<V> values)
+            where T : ICollection<V>, new()
         {
             if (!dict.TryGetValue(key, out T col))
             {
@@ -48,10 +51,57 @@ namespace RandomizerCommon
             }
         }
 
-        public static void AddMulti<K, V, U, T>(IDictionary<K, T> dict, K key, V value, U value2) where T : IDictionary<V, U>, new()
+        public static void AddMulti<K, V, V2, T>(IDictionary<K, T> dict, K key, V value, V2 value2)
+            where T : IDictionary<V, V2>, new()
         {
             if (!dict.ContainsKey(key)) dict[key] = new T();
             dict[key][value] = value2;
+        }
+
+        public static void AddMultiNest<K, V, V2, T>(IDictionary<K, T> dict, K key, V value, V2 value2)
+            where T : IDictionary<V, List<V2>>, new()
+        {
+            // List<V2> cannot be generic because C# can't this level of inference
+            if (!dict.ContainsKey(key)) dict[key] = new T();
+            AddMulti(dict[key], value, value2);
+        }
+
+        public class ReadIndexDictionary<K, V> : IReadOnlyDictionary<K, V>
+        {
+            public int Index { get; set; }
+            public IDictionary<K, List<V>> Inner { get; set; }
+
+            public V this[K key] => Inner[key][Index];
+
+            public IEnumerable<K> Keys => Inner.Keys;
+
+            public IEnumerable<V> Values => Inner.Values.Select(v => v[Index]);
+
+            public int Count => Inner.Count;
+
+            public bool ContainsKey(K key) => Inner.ContainsKey(key);
+
+            public bool TryGetValue(K key, out V value)
+            {
+                value = default;
+                if (!Inner.TryGetValue(key, out List<V> vs))
+                {
+                    value = vs[Index];
+                    return true;
+                }
+                return false;
+            }
+
+            // Implement this if needed
+            public IEnumerator<KeyValuePair<K, V>> GetEnumerator()
+            {
+                throw new NotImplementedException();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public static void Shuffle<T>(Random random, IList<T> list)

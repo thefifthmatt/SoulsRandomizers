@@ -1,3 +1,38 @@
+1000 [ERROR]
+1100 [ERROR]
+1200 [ERROR]
+1210 [ERROR]
+1220 [ERROR]
+1230 [ERROR]
+1240 [ERROR]
+1250 [ERROR]
+1260 [ERROR]
+1400 [ERROR]
+1410 [ERROR]
+1420 [ERROR]
+1430 [ERROR]
+1500 [ERROR]
+1600 [ERROR]
+1700 [ERROR]
+1800 [ERROR]
+1900 [ERROR]
+2000 [ERROR]
+2100 [ERROR]
+2200 [ERROR]
+11000 [ERROR]
+12000 [ERROR]
+13000 [ERROR]
+100000 [ERROR]
+100100 [ERROR]
+100200 [ERROR]
+100300 [ERROR]
+100400 [ERROR]
+100500 [ERROR]
+100600 [ERROR]
+100700 [ERROR]
+100800 [ERROR]
+100900 [ERROR]
+101000 [ERROR]
 110000 Unarmed
 1000000 Dagger
 1000100 Heavy Dagger
@@ -111,6 +146,8 @@
 1151100 Blood Erdsteel Dagger
 1151200 Occult Erdsteel Dagger
 1160000 Blade of Calling
+1190000 [ERROR]
+1910000 [ERROR]
 2000000 Longsword
 2000100 Heavy Longsword
 2000200 Keen Longsword
@@ -356,6 +393,8 @@
 3191200 Gargoyle's Occult Greatsword
 3200000 Death's Poker
 3210000 Gargoyle's Blackblade
+3220000 [ERROR]
+3900000 [ERROR]
 4000000 Greatsword
 4000100 Heavy Greatsword
 4000200 Keen Greatsword
@@ -415,6 +454,8 @@
 4080000 Ruins Greatsword
 4100000 Grafted Blade Greatsword
 4110000 Troll Knight's Sword
+4900000 [ERROR]
+4910000 [ERROR]
 5000000 Estoc
 5000100 Heavy Estoc
 5000200 Keen Estoc
@@ -522,6 +563,7 @@
 6021100 Blood Great Épée
 6021200 Occult Great Épée
 6040000 Dragon King's Cragblade
+6900000 [ERROR]
 7000000 Falchion
 7000100 Heavy Falchion
 7000200 Keen Falchion
@@ -725,6 +767,7 @@
 8081100 Beastman's Blood Cleaver
 8081200 Beastman's Occult Cleaver
 8100000 Morgott's Cursed Sword
+8900000 [ERROR]
 9000000 Uchigatana
 9000100 Heavy Uchigatana
 9000200 Keen Uchigatana
@@ -757,18 +800,23 @@
 9060000 Moonveil
 9070000 Dragonscale Blade
 9080000 Serpentbone Blade
-9080100 Heavy Serpentbone Blade
-9080200 Keen Serpentbone Blade
-9080300 Quality Serpentbone Blade
-9080400 Fire Serpentbone Blade
-9080500 Flame Art Serpentbone Blade
-9080600 Lightning Serpentbone Blade
-9080700 Sacred Serpentbone Blade
-9080800 Magic Serpentbone Blade
-9080900 Cold Serpentbone Blade
-9081000 Poison Serpentbone Blade
-9081100 Blood Serpentbone Blade
-9081200 Occult Serpentbone Blade
+9080100 [ERROR]Heavy Serpentbone Blade
+9080200 [ERROR]Keen Serpentbone Blade
+9080300 [ERROR]Quality Serpentbone Blade
+9080400 [ERROR]Fire Serpentbone Blade
+9080500 [ERROR]Flame Art Serpentbone Blade
+9080600 [ERROR]Lightning Serpentbone Blade
+9080700 [ERROR]Sacred Serpentbone Blade
+9080800 [ERROR]Magic Serpentbone Blade
+9080900 [ERROR]Cold Serpentbone Blade
+9081000 [ERROR]Poison Serpentbone Blade
+9081100 [ERROR]Blood Serpentbone Blade
+9081200 [ERROR]Occult Serpentbone Blade
+9900000 [ERROR]
+9910000 [ERROR]
+9911000 [ERROR]
+9920000 [ERROR]
+9930000 [ERROR]
 10000000 Twinblade
 10000100 Heavy Twinblade
 10000200 Keen Twinblade
@@ -946,6 +994,7 @@
 11141100 Blood Stone Club
 11141200 Occult Stone Club
 11150000 Marika's Hammer
+11170000 [ERROR]
 12000000 Large Club
 12000100 Heavy Large Club
 12000200 Keen Large Club
@@ -1080,6 +1129,8 @@
 12211000 Poison Rotten Battle Hammer
 12211100 Blood Rotten Battle Hammer
 12211200 Occult Rotten Battle Hammer
+12900000 [ERROR]
+12910000 [ERROR]
 13000000 Nightrider Flail
 13000100 Heavy Nightrider Flail
 13000200 Keen Nightrider Flail
@@ -1192,7 +1243,7 @@
 14060200 Celebrant's Keen Cleaver
 14060300 Celebrant's Quality Cleaver
 14060400 Celebrant's Fire Cleaver
-14060500 Celebrant's Flame Art Cleaver Blades
+14060500 Celebrant's Flame Art Cleaver
 14060600 Celebrant's Lightning Cleaver
 14060700 Celebrant's Sacred Cleaver
 14060800 Celebrant's Magic Cleaver
@@ -1349,6 +1400,7 @@
 15131100 Gargoyle's Blood Great Axe
 15131200 Gargoyle's Occult Great Axe
 15140000 Gargoyle's Black Axe
+15900000 [ERROR]
 16000000 Short Spear
 16000100 Heavy Short Spear
 16000200 Keen Short Spear
@@ -1491,18 +1543,20 @@
 17061100 Bloody Lance
 17061200 Occult Lance
 17070000 Treespear
-17070100 Heavy Treespear
-17070200 Keen Treespear
-17070300 Quality Treespear
-17070400 Fire Treespear
-17070500 Flame Art Treespear
-17070600 Lightning Treespear
-17070700 Sacred Treespear
-17070800 Magic Treespear
-17070900 Cold Treespear
-17071000 Poison Treespear
-17071100 Blood Treespear
-17071200 Occult Treespear
+17070100 [ERROR]Heavy Treespear
+17070200 [ERROR]Keen Treespear
+17070300 [ERROR]Quality Treespear
+17070400 [ERROR]Fire Treespear
+17070500 [ERROR]Flame Art Treespear
+17070600 [ERROR]Lightning Treespear
+17070700 [ERROR]Sacred Treespear
+17070800 [ERROR]Magic Treespear
+17070900 [ERROR]Cold Treespear
+17071000 [ERROR]Poison Treespear
+17071100 [ERROR]Blood Treespear
+17071200 [ERROR]Occult Treespear
+17900000 [ERROR]
+17910000 [ERROR]
 18000000 Halberd
 18000100 Heavy Halberd
 18000200 Keen Halberd
@@ -1857,18 +1911,18 @@
 23001200 Prelate's Occult Inferno Crozier
 23010000 Watchdog's Staff
 23020000 Great Club
-23020100 Heavy Great Club
-23020200 Keen Great Club
-23020300 Quality Great Club
-23020400 Fire Great Club
-23020500 Flame Art Great Club
-23020600 Lightning Great Club
-23020700 Sacred Great Club
-23020800 Magic Great Club
-23020900 Cold Great Club
-23021000 Poison Great Club
-23021100 Blood Great Club
-23021200 Occult Great Club
+23020100 [ERROR]Heavy Great Club
+23020200 [ERROR]Keen Great Club
+23020300 [ERROR]Quality Great Club
+23020400 [ERROR]Fire Great Club
+23020500 [ERROR]Flame Art Great Club
+23020600 [ERROR]Lightning Great Club
+23020700 [ERROR]Sacred Great Club
+23020800 [ERROR]Magic Great Club
+23020900 [ERROR]Cold Great Club
+23021000 [ERROR]Poison Great Club
+23021100 [ERROR]Blood Great Club
+23021200 [ERROR]Occult Great Club
 23030000 Envoy's Greathorn
 23040000 Duelist Greataxe
 23040100 Heavy Duelist Greataxe
@@ -1915,18 +1969,18 @@
 23121100 Golem's Blood Halberd
 23121200 Golem's Occult Halberd
 23130000 Troll's Hammer
-23130100 Troll's Heavy Hammer
-23130200 Troll's Keen Hammer
-23130300 Troll's Quality Hammer
-23130400 Troll's Fire Hammer
-23130500 Troll's Flame Art Hammer
-23130600 Troll's Lightning Hammer
-23130700 Troll's Sacred Hammer
-23130800 Troll's Magic Hammer
-23130900 Troll's Cold Hammer
-23131000 Troll's Poison Hammer
-23131100 Troll's Blood Hammer
-23131200 Troll's Occult Hammer
+23130100 [ERROR]Troll's Heavy Hammer
+23130200 [ERROR]Troll's Keen Hammer
+23130300 [ERROR]Troll's Quality Hammer
+23130400 [ERROR]Troll's Fire Hammer
+23130500 [ERROR]Troll's Flame Art Hammer
+23130600 [ERROR]Troll's Lightning Hammer
+23130700 [ERROR]Troll's Sacred Hammer
+23130800 [ERROR]Troll's Magic Hammer
+23130900 [ERROR]Troll's Cold Hammer
+23131000 [ERROR]Troll's Poison Hammer
+23131100 [ERROR]Troll's Blood Hammer
+23131200 [ERROR]Troll's Occult Hammer
 23140000 Rotten Staff
 23150000 Rotten Greataxe
 23150100 Heavy Rotten Greataxe
@@ -1941,6 +1995,10 @@
 23151000 Poison Rotten Greataxe
 23151100 Blood Rotten Greataxe
 23151200 Occult Rotten Greataxe
+23900000 [ERROR]
+23910000 [ERROR]
+23920000 [ERROR]
+23930000 [ERROR]
 24000000 Torch
 24020000 Steel-Wire Torch
 24040000 St. Trina's Torch
@@ -1974,18 +2032,18 @@
 30011100 Perfumer's Blood Shield
 30011200 Perfumer's Occult Shield
 30020000 Man-Serpent's Shield
-30020100 Man-serpent's Heavy Shield
-30020200 Man-serpent's Keen Shield
-30020300 Man-serpent's Quality Shield
-30020400 Man-serpent's Fire Shield
-30020500 Man-serpent's Flame Art Shield
-30020600 Man-serpent's Lightning Shield
-30020700 Man-serpent's Sacred Shield
-30020800 Man-serpent's Magic Shield
-30020900 Man-serpent's Cold Shield
-30021000 Man-serpent's Poison Shield
-30021100 Man-serpent's Blood Shield
-30021200 Man-serpent's Occult Shield
+30020100 Man-Serpent's Heavy Shield
+30020200 Man-Serpent's Keen Shield
+30020300 Man-Serpent's Quality Shield
+30020400 Man-Serpent's Fire Shield
+30020500 Man-Serpent's Flame Art Shield
+30020600 Man-Serpent's Lightning Shield
+30020700 Man-Serpent's Sacred Shield
+30020800 Man-Serpent's Magic Shield
+30020900 Man-Serpent's Cold Shield
+30021000 Man-Serpent's Poison Shield
+30021100 Man-Serpent's Blood Shield
+30021200 Man-Serpent's Occult Shield
 30030000 Rickety Shield
 30030100 Heavy Rickety Shield
 30030200 Keen Rickety Shield
@@ -2712,6 +2770,9 @@
 32301000 Poison Lordsworn's Shield
 32301100 Blood Lordsworn's Shield
 32301200 Occult Lordsworn's Shield
+32900000 [ERROR]
+32910000 [ERROR]
+32920000 [ERROR]
 33000000 Glintstone Staff
 33040000 Crystal Staff
 33050000 Gelmir Glintstone Staff
@@ -2730,6 +2791,15 @@
 33260000 Staff of the Guilty
 33270000 Rotten Crystal Staff
 33280000 Staff of Loss
+33900000 [ERROR]
+33910000 [ERROR]
+33920000 [ERROR]
+33930000 [ERROR]
+33940000 [ERROR]
+33950000 [ERROR]
+33960000 [ERROR]
+33970000 [ERROR]
+33980000 [ERROR]
 34000000 Finger Seal
 34010000 Godslayer's Seal
 34020000 Giant's Seal
@@ -2739,6 +2809,16 @@
 34070000 Erdtree Seal
 34080000 Dragon Communion Seal
 34090000 Frenzied Flame Seal
+34900000 [ERROR]
+34910000 [ERROR]
+34920000 [ERROR]
+34930000 [ERROR]
+34940000 [ERROR]
+34950000 [ERROR]
+34960000 [ERROR]
+34970000 [ERROR]
+34980000 [ERROR]
+34990000 [ERROR]
 40000000 Shortbow
 40010000 Misbegotten Shortbow
 40020000 Red Branch Shortbow
@@ -2762,6 +2842,7 @@
 43060000 Full Moon Crossbow
 43080000 Arbalest
 43110000 Crepus's Black-Key Crossbow
+43900000 [ERROR]
 44000000 Hand Ballista
 44010000 Jar Cannon
 50000000 Arrow
@@ -2823,6 +2904,8 @@
 52170000 Rotbone Bolt
 52180000 Sleepbone Bolt
 52190000 Flaming Bolt
+52900000 [ERROR]
+52910000 [ERROR]
 53000000 Ballista Bolt
 53010000 Lightning Greatbolt
 53020000 Explosive Greatbolt

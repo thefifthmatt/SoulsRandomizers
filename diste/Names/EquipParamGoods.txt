@@ -1,3 +1,55 @@
+10 [ERROR]
+11 [ERROR]
+12 [ERROR]
+13 [ERROR]
+14 [ERROR]
+15 [ERROR]
+16 [ERROR]
+20 [ERROR]
+21 [ERROR]
+22 [ERROR]
+23 [ERROR]
+24 [ERROR]
+25 [ERROR]
+26 [ERROR]
+27 [ERROR]
+28 [ERROR]
+29 [ERROR]
+30 [ERROR]
+31 [ERROR]
+35 [ERROR]
+40 [ERROR]
+41 [ERROR]
+42 [ERROR]
+43 [ERROR]
+44 [ERROR]
+60 [ERROR]
+61 [ERROR]
+62 [ERROR]
+63 [ERROR]
+64 [ERROR]
+65 [ERROR]
+66 [ERROR]
+67 [ERROR]
+68 [ERROR]
+69 [ERROR]
+70 [ERROR]
+71 [ERROR]
+72 [ERROR]
+73 [ERROR]
+74 [ERROR]
+75 [ERROR]
+76 [ERROR]
+77 [ERROR]
+78 [ERROR]
+79 [ERROR]
+90 [ERROR]
+91 [ERROR]
+92 [ERROR]
+93 [ERROR]
+94 [ERROR]
+98 [ERROR]
+99 [ERROR]
 100 Tarnished's Furled Finger
 101 Duelist's Furled Finger
 102 Bloody Finger
@@ -59,7 +111,7 @@
 450 Roped Oil Pot
 460 Roped Magic Pot
 470 Roped Fly Pot
-480 Roped Freezing Pot
+480 [ERROR]Roped Freezing Pot
 490 Roped Volcano Pot
 510 Roped Holy Water Pot
 600 Volcano Pot
@@ -146,7 +198,7 @@
 1190 Silver-Pickled Fowl Foot
 1200 Gold-Pickled Fowl Foot
 1210 Exalted Flesh
-1220 Deathsbane Jerky
+1220 [ERROR]Deathsbane Jerky
 1235 Raw Meat Dumpling
 1240 Shabriri Grape
 1290 Starlight Shards
@@ -154,7 +206,7 @@
 1320 Invigorating White Cured Meat
 1330 Clarifying White Cured Meat
 1340 Dappled White Cured Meat
-1350 Deathsbane White Jerky
+1350 [ERROR]Deathsbane White Jerky
 1400 Fire Grease
 1410 Lightning Grease
 1420 Magic Grease
@@ -172,7 +224,7 @@
 1540 Drawstring Blood Grease
 1550 Drawstring Soporific Grease
 1560 Drawstring Poison Grease
-1570 Drawstring Freezing Grease
+1570 [ERROR]Drawstring Freezing Grease
 1590 Drawstring Rot Grease
 1690 Shield Grease
 1700 Throwing Dagger
@@ -247,7 +299,7 @@
 3000 Ancestral Infant's Head
 3010 Omen Bairn
 3011 Regal Omen Bairn
-3020 Miranda's Prayer
+3020 [ERROR]Miranda's Prayer
 3030 Cuckoo Glintstone
 3040 Mimic's Veil
 3050 Glintstone Scrap
@@ -255,7 +307,7 @@
 3060 Gravity Stone Fan
 3070 Gravity Stone Chunk
 3080 Wraith Calling Bell
-3300 Holy Water Grease
+3300 [ERROR]Holy Water Grease
 3310 Warming Stone
 3311 Frenzyflame Stone
 3320 Scriptstone
@@ -441,7 +493,7 @@
 7903 Golden Lightning Fortification
 8000 Stonesword Key
 8010 Rusty Key
-8102 Lucent Baldachin's Blessing
+8102 [ERROR]Lucent Baldachin's Blessing
 8105 Dectus Medallion (Left)
 8106 Dectus Medallion (Right)
 8107 Rold Medallion
@@ -452,7 +504,7 @@
 8127 Letter from Volcano Manor
 8128 Tonic of Forgetfulness
 8129 Serpent's Amnion
-8130 Rya's Necklace
+8130 [ERROR]Rya's Necklace
 8131 Irina's Letter
 8132 Letter from Volcano Manor
 8133 Red Letter
@@ -463,7 +515,7 @@
 8143 Seluvis's Introduction
 8144 Sellen's Primal Glintstone
 8146 Miniature Ranni
-8147 Asimi, Silver Tear
+8147 [ERROR]Asimi, Silver Tear
 8148 Godrick's Great Rune
 8149 Radahn's Great Rune
 8150 Morgott's Great Rune
@@ -472,13 +524,14 @@
 8153 Malenia's Great Rune
 8154 Lord of Blood's Favor
 8155 Lord of Blood's Favor
-8156 Burial Crow's Letter
+8156 [ERROR]Burial Crow's Letter
 8158 Spirit Calling Bell
 8159 Fingerslayer Blade
 8161 Sewing Needle
 8162 Gold Sewing Needle
 8163 Tailoring Tools
 8164 Seluvis's Potion
+8165 [ERROR]
 8166 Amber Draught
 8167 Letter to Patches
 8168 Dancer's Castanets
@@ -489,7 +542,7 @@
 8174 Academy Glintstone Key
 8175 Haligtree Secret Medallion (Left)
 8176 Haligtree Secret Medallion (Right)
-8181 Burial Crow's Letter
+8181 [ERROR]Burial Crow's Letter
 8182 Mending Rune of Perfect Order
 8183 Mending Rune of the Death-Prince
 8184 Mending Rune of the Fell Curse
@@ -497,13 +550,13 @@
 8186 Imbued Sword Key
 8187 Miniature Ranni
 8188 Golden Tailoring Tools
-8189 Iji's Confession
+8189 [ERROR]Iji's Confession
 8190 Knifeprint Clue
 8191 Cursemark of Death
-8192 Asimi's Husk
+8192 [ERROR]Asimi's Husk
 8193 Seedbed Curse
 8194 The Stormhawk King
-8195 Asimi, Silver Chrysalid
+8195 [ERROR]Asimi, Silver Chrysalid
 8196 Unalloyed Gold Needle
 8197 Sewer-Gaol Key
 8198 Meeting Place Map
@@ -548,9 +601,9 @@
 8701 Note: Imp Shades
 8702 Note: Flask of Wondrous Physick
 8703 Note: Stonedigger Trolls
-8704 Note: Walking Mausoleum
+8704 Note: Wandering Mausoleum
 8705 Note: Unseen Assassins
-8706 Note: Great Coffins
+8706 [ERROR]Note: Great Coffins
 8707 Note: Flame Chariots
 8708 Note: Demi-human Mobs
 8709 Note: Land Squirts
@@ -566,9 +619,9 @@
 8751 Note: Imp Shades
 8752 Note: Flask of Wondrous Physick
 8753 Note: Stonedigger Trolls
-8754 Note: Walking Mausoleum
+8754 Note: Wandering Mausoleum
 8755 Note: Unseen Assassins
-8756 Note: Great Coffins
+8756 [ERROR]Note: Great Coffins
 8757 Note: Flame Chariots
 8758 Note: Demi-human Mobs
 8759 Note: Land Squirts
@@ -580,15 +633,18 @@
 8767 Note: Below the Capital
 8850 Conspectus Scroll
 8851 Royal House Scroll
+8852 [ERROR]
+8853 [ERROR]
+8854 [ERROR]
 8855 Fire Monks' Prayerbook
 8856 Giant's Prayerbook
 8857 Godskin Prayerbook
 8858 Two Fingers' Prayerbook
 8859 Assassin's Prayerbook
-8860 Erdtree Prayerbook
-8861 Erdtree Codex
+8860 [ERROR]Erdtree Prayerbook
+8861 [ERROR]Erdtree Codex
 8862 Golden Order Principia
-8863 Golden Order Principles
+8863 [ERROR]Golden Order Principles
 8864 Dragon Cult Prayerbook
 8865 Ancient Dragon Prayerbook
 8866 Academy Scroll
@@ -596,6 +652,7 @@
 8911 Seluvis's Bell Bearing
 8912 Patches' Bell Bearing
 8913 Sellen's Bell Bearing
+8914 [ERROR]
 8915 D's Bell Bearing
 8916 Bernahl's Bell Bearing
 8917 Miriel's Bell Bearing
@@ -615,7 +672,7 @@
 8931 Nomadic Merchant's Bell Bearing [8]
 8932 Nomadic Merchant's Bell Bearing [9]
 8933 Nomadic Merchant's Bell Bearing [10]
-8934 Nomadic Merchant's Bell Bearing [11]
+8934 [ERROR]Nomadic Merchant's Bell Bearing [11]
 8935 Isolated Merchant's Bell Bearing [3]
 8936 Hermit Merchant's Bell Bearing [2]
 8937 Abandoned Merchant's Bell Bearing
@@ -630,6 +687,8 @@
 8946 Meat Peddler's Bell Bearing
 8947 Medicine Peddler's Bell Bearing
 8948 Gravity Stone Peddler's Bell Bearing
+8949 [ERROR]
+8950 [ERROR]
 8951 Smithing-Stone Miner's Bell Bearing [1]
 8952 Smithing-Stone Miner's Bell Bearing [2]
 8953 Smithing-Stone Miner's Bell Bearing [3]
@@ -743,12 +802,13 @@
 9138 About Dodging
 9140 About Wielding Armaments
 9141 About Great Runes
-9195 About Multiplayer
+9142 About the Cave of Knowledge
+9195 [ERROR]About Multiplayer
 9300 Nomadic Warrior's Cookbook [1]
 9301 Nomadic Warrior's Cookbook [3]
 9302 Nomadic Warrior's Cookbook [6]
 9303 Nomadic Warrior's Cookbook [10]
-9304 Fugitive Warrior's Recipe [5]
+9304 [ERROR]Fugitive Warrior's Recipe [5]
 9305 Nomadic Warrior's Cookbook [7]
 9306 Nomadic Warrior's Cookbook [12]
 9307 Nomadic Warrior's Cookbook [19]
@@ -758,11 +818,17 @@
 9311 Nomadic Warrior's Cookbook [2]
 9312 Nomadic Warrior's Cookbook [21]
 9313 Missionary's Cookbook [6]
+9314 [ERROR]
+9315 [ERROR]
+9316 [ERROR]
+9317 [ERROR]
+9318 [ERROR]
+9319 [ERROR]
 9320 Armorer's Cookbook [1]
 9321 Armorer's Cookbook [2]
 9322 Nomadic Warrior's Cookbook [11]
 9323 Nomadic Warrior's Cookbook [20]
-9324 Armorer's Cookbook (5)
+9324 [ERROR]Armorer's Cookbook (5)
 9325 Armorer's Cookbook [7]
 9326 Armorer's Cookbook [4]
 9327 Nomadic Warrior's Cookbook [18]
@@ -770,6 +836,14 @@
 9329 Nomadic Warrior's Cookbook [16]
 9330 Armorer's Cookbook [6]
 9331 Armorer's Cookbook [5]
+9332 [ERROR]
+9333 [ERROR]
+9334 [ERROR]
+9335 [ERROR]
+9336 [ERROR]
+9337 [ERROR]
+9338 [ERROR]
+9339 [ERROR]
 9340 Glintstone Craftsman's Cookbook [4]
 9341 Glintstone Craftsman's Cookbook [1]
 9342 Glintstone Craftsman's Cookbook [5]
@@ -779,15 +853,31 @@
 9346 Glintstone Craftsman's Cookbook [6]
 9347 Glintstone Craftsman's Cookbook [7]
 9348 Glintstone Craftsman's Cookbook [3]
+9349 [ERROR]
+9350 [ERROR]
+9351 [ERROR]
+9352 [ERROR]
+9353 [ERROR]
+9354 [ERROR]
+9355 [ERROR]
+9356 [ERROR]
+9357 [ERROR]
+9358 [ERROR]
+9359 [ERROR]
 9360 Missionary's Cookbook [2]
 9361 Missionary's Cookbook [1]
-9362 Missionary's Cookbook (3)
+9362 [ERROR]Missionary's Cookbook (3)
 9363 Missionary's Cookbook [5]
 9364 Missionary's Cookbook [4]
 9365 Missionary's Cookbook [3]
+9366 [ERROR]
+9367 [ERROR]
+9368 [ERROR]
+9369 [ERROR]
+9370 [ERROR]
 9380 Nomadic Warrior's Cookbook [4]
-9381 Perfumer's Cookbook (1)
-9382 Perfumer's Cookbook (2)
+9381 [ERROR]Perfumer's Cookbook (1)
+9382 [ERROR]Perfumer's Cookbook (2)
 9383 Nomadic Warrior's Cookbook [5]
 9384 Perfumer's Cookbook [1]
 9385 Perfumer's Cookbook [2]
@@ -798,17 +888,46 @@
 9390 Nomadic Warrior's Cookbook [15]
 9391 Nomadic Warrior's Cookbook [24]
 9392 Perfumer's Cookbook [4]
-9393 Perfumer's Cookbook (13)
+9393 [ERROR]Perfumer's Cookbook (13)
+9394 [ERROR]
+9395 [ERROR]
+9396 [ERROR]
+9397 [ERROR]
+9398 [ERROR]
+9399 [ERROR]
 9400 Ancient Dragon Apostle's Cookbook [1]
 9401 Ancient Dragon Apostle's Cookbook [2]
 9402 Ancient Dragon Apostle's Cookbook [4]
 9403 Ancient Dragon Apostle's Cookbook [3]
+9404 [ERROR]
+9405 [ERROR]
+9406 [ERROR]
+9407 [ERROR]
+9408 [ERROR]
+9409 [ERROR]
+9410 [ERROR]
 9420 Fevor's Cookbook [1]
 9421 Fevor's Cookbook [3]
 9422 Fevor's Cookbook [2]
 9423 Missionary's Cookbook [7]
+9424 [ERROR]
+9425 [ERROR]
+9426 [ERROR]
+9427 [ERROR]
+9428 [ERROR]
+9429 [ERROR]
+9430 [ERROR]
 9440 Frenzied's Cookbook [1]
 9441 Frenzied's Cookbook [2]
+9442 [ERROR]
+9443 [ERROR]
+9444 [ERROR]
+9445 [ERROR]
+9446 [ERROR]
+9447 [ERROR]
+9448 [ERROR]
+9449 [ERROR]
+9450 [ERROR]
 9500 Cracked Pot
 9501 Ritual Pot
 9510 Perfume Bottle
@@ -958,6 +1077,7 @@
 20850 Volcanic Stone
 20852 Formic Rock
 20855 Gravel Stone
+51760 [ERROR]
 200000 Black Knife Tiche
 200001 Black Knife Tiche +1
 200002 Black Knife Tiche +2

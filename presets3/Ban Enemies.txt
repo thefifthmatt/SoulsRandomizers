@@ -1,5 +1,0 @@
-Description: "Prevent select enemy types from appearing anywhere. Edit this preset file to change the list. Currently it's dragon and wyvern bosses."
-
-# Find a list of all usable enemy names in README.txt
-# RemoveSource can be added to any other preset as well.
-RemoveSource: Ancient Wyvern; Ancient Wyvern Mob; Bridge Darkeater Midir; Darkeater Midir; King of the Storm

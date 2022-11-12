@@ -30,6 +30,7 @@ namespace RandomizerCommon
         public RandomizerOptions(FromGame game)
         {
             Game = game;
+            // TODO: Less manual
             if (game == FromGame.SDT)
             {
                 opt["v1"] = false;
@@ -46,7 +47,12 @@ namespace RandomizerCommon
             else if (game == FromGame.ER)
             {
                 opt["v1"] = false;
-                opt["v2"] = true;
+                opt["v2"] = false;
+                opt["v3"] = false;
+                opt["v4"] = false;
+                opt["v5"] = false;
+                opt["v6"] = false;
+                opt["v7"] = true;
             }
         }
 
@@ -124,11 +130,21 @@ namespace RandomizerCommon
         {
             get
             {
+                if (name.StartsWith("invert"))
+                {
+                    name = "no" + name.Substring(6);
+                    return !(opt.ContainsKey(name) ? opt[name] : false);
+                }
                 return opt.ContainsKey(name) ? opt[name] : false;
             }
             set
             {
-                if (!name.StartsWith("default"))
+                if (name.StartsWith("invert"))
+                {
+                    name = "no" + name.Substring(6);
+                    opt[name] = !value;
+                }
+                else if (!name.StartsWith("default"))
                 {
                     opt[name] = value;
                 }
@@ -146,7 +162,7 @@ namespace RandomizerCommon
                     // So far, unfair is not used in ER
                     num["unfairweight"] = FromRange(40, 80);
                     num["veryunfairweight"] = FromRange(70, 100);
-                    num["keyitemdifficulty"] = FromRange(40, 100);
+                    num["keyitemdifficulty"] = FromRange(30, 100);
                     num["allitemdifficulty"] = FromRange(0, 100);
                 }
                 else
@@ -177,6 +193,8 @@ namespace RandomizerCommon
         public uint Seed { get; set; }
         public uint Seed2 { get; set; }
         public string Preset { get; set; }
+
+        public string GameNameForFile => Game.ToString();
 
         public float GetNum(string name)
         {

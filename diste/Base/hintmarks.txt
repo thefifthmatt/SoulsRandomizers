@@ -753,8 +753,11 @@ Items:
 - Name: runegodrick runerennala
   UnexploredCheck: leyndell
   DisplayName: 2 Great Runes
-  Comment: Any two will do, but hint these if that condition is not yet met
+  Comment: Any two will do for the first pass, though be more comprehensive after
   Reqs:
-  - CheckFlag: 182
+  - PassCondition: first
+    CheckFlag: 182
+  - PassCondition: second
+    CheckItem: self
 - Name: runemalenia runemohg runemorgott runeradahn runerykard
   Comment: Only needed if all runes are required, accounted for in requiredItem logic

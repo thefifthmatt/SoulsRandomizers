@@ -1,3 +1,9 @@
+This is a list of all possible important locations: places you may need to check to finish an item randomizer run, depending on options.
+
+You may configure which categories apply to a run by checking or unchecking important location categories in the randomizer program.
+
+To see the actual locations of items in a run, check the latest file in the spoiler_logs directory.
+
 --- Stranded Graveyard
 Minor minidungeon boss in Limgrave - Fringefolk Hero's Grave: Dropped by Ulcerated Tree Spirit. Replaces Golden Seed.
 Minidungeon talisman in Limgrave - Fringefolk Hero's Grave: Guarded by a Grafted Scion. Replaces Erdtree's Favor.
@@ -80,10 +86,8 @@ Shop in Liurnia: Sold by Iji
 Shop in Liurnia: Sold by Pidia. He can be found by dropping back down into Caria Manor off a cliffedge from the Three Sisters
 Shop in Liurnia: Sold by the Nomadic Merchant by the Liurnia Lake Shore Site of Grace
 Minor boss in Liurnia: Dropped by Adan, Thief of Fire in the Malefactor's Evergaol. Replaces Flame of the Fell God.
-Minor boss in Liurnia: Dropped by Alecto, Black Knife Ringleader in Ringleader's Evergaol. Replaces Black Knife Tiche.
 Minor boss in Liurnia: Dropped by Bols, Carian Knight in Cuckoo's Evergaol. Replaces Greatblade Phalanx.
 Minor boss in Liurnia: Dropped by Erdtree Avatar at the Minor Erdtree north of Converted Tower in West Liurnia. Replaces Cerulean Crystal Tear, Ruptured Crystal Tear.
-Minor boss in Liurnia: Dropped by Glintstone Dragon Adula. Replaces Dragon Heart 3x.
 Minor boss in Liurnia: Dropped by Glintstone Dragon Smarag. Replaces Dragon Heart.
 Minor boss in Liurnia: Dropped by Omenkiller in Village of the Albinaurics, across the stone bridge from the Site of Grace. Replaces Crucible Knot Talisman.
 Minor boss in Liurnia: Dropped by the Onyx Lord in the Royal Grave Evergaol. Replaces Meteorite.
@@ -101,7 +105,6 @@ Minor night boss in Liurnia: Dropped by the Death Rite Bird south of Gate Town N
 Minor night boss in Liurnia: Dropped by the Deathbird north of the Scenic Isle Site of Grace. They only spawn at night. Replaces Red-Feathered Branchsword.
 Minor night boss in Liurnia: Dropped by the Night's Calvary east of the Gate Town Bridge Site of Grace. They only spawn at night. Replaces Ash of War: Ice Spear.
 Minidungeon talisman in Liurnia - Lakeside Crystal Cave: In a chest guarded by a Demi-Human Chief. Replaces Spear Talisman.
-Talisman in Liurnia: In a chest in Lunar Estate Ruins, behind an Imp Statue barrier. Replaces Cerulean Amber Medallion +2.
 
 --- Bellum Highway
 Flask upgrade in Bellum Highway: At the statue in Church of Inhibition. Replaces Sacred Tear.
@@ -166,10 +169,10 @@ Minor minidungeon boss in Caelid - War-Dead Catacombs: Dropped by Putrid Tree Sp
 Minor minidungeon boss in Caelid Catacombs: Dropped by Cemetery Shade. Replaces Kindred of Rot Ashes.
 Minor night boss in Caelid: Dropped by the Death Rite Bird southeast of Southern Aeonia Swamp Bank Site of Grace. They only spawn at night. Replaces Death's Poker.
 Minor night boss in Caelid: Dropped by the Night's Calvary west of Southern Aeonia Swamp Bank Site of Grace. They only spawn at night. Replaces Ash of War: Poison Moth Flight.
-Minidungeon talisman in Caelid - Sellia Crystal Tunnel: Guarded by several Kindred of Rot shortly before the area boss. Replaces Faithful's Canvas Talisman.
 Talisman in Caelid: In a chest at the top of Fort Gael. Replaces Starscourge Heirloom.
 Talisman in Caelid: In a chest at the top of the tower on the west side of Impassable Greatbridge. Replaces Arrow's Sting Talisman.
 Talisman in Caelid: In a chest hidden behind a magical barrier in Sellia, accessed by lighting flames around town. Replaces Spelldrake Talisman +1.
+Minidungeon talisman in Caelid - Sellia Crystal Tunnel: Guarded by several Kindred of Rot shortly before the area boss. Replaces Faithful's Canvas Talisman.
 
 --- Dragonbarrow
 Key item in Dragonbarrow: In a chest up the first ladder at Fort Faroth. Replaces Dectus Medallion (Right).
@@ -183,9 +186,9 @@ Minor minidungeon boss in Dragonbarrow - Sellia Hideaway: Dropped by Putrid Crys
 Minor minidungeon boss in Dragonbarrow Cave: Dropped by Beastman of Farum Azula. Replaces Flamedrake Talisman +2.
 Minor night boss in Dragonbarrow: Dropped by the Bell Bearing Hunter who invades at Isolated Merchant's Shack at night. Replaces Gravity Stone Peddler's Bell Bearing.
 Minor night boss in Dragonbarrow: Dropped by the Night's Calvary on the smaller bridge to the east of Farum Greatbridge. They only spawn at night. Replaces Ash of War: Bloodhound's Step.
-Minidungeon talisman in Dragonbarrow Cave: Surrounded by wildlife, down a tunnel guarded by a Runebear. Replaces Bull-Goat's Talisman.
 Talisman in Dragonbarrow: On a corpse found after doing a long series of dropdowns behind Bestial Sanctum. Replaces Dragoncrest Shield Talisman.
 Talisman in Dragonbarrow: On the ground floor of Fort Faroth. Requires ascending to the upper level, descending a ladder to some wooden scaffolding, jumping a gap, and dropping down after a giant rat. Replaces Radagon's Soreseal.
+Minidungeon talisman in Dragonbarrow Cave: Surrounded by wildlife, down a tunnel guarded by a Runebear. Replaces Bull-Goat's Talisman.
 
 --- Ruin-Strewn Precipice
 Major boss in Ruin-Strewn Precipice: Dropped by Magma Wyrm Makar. Replaces Magma Wyrm's Scalesword.
@@ -219,13 +222,13 @@ Minor minidungeon boss in Capital Outskirts - Sealed Tunnel: Dropped by Onyx Lor
 Minor minidungeon boss in Old Altus Tunnel: Dropped by Stonedigger Troll. Replaces Great Club.
 Minor night boss in Altus Plateau: Dropped by the Deathbird straight east of the Hermit Merchant's Shack. They only spawn at night. Replaces Twinbird Kite Shield.
 Minor night boss in Altus Plateau: Dropped by the Night's Calvary on the road from the Grand Lift of Dectus to Altus Highway Junction. They only spawn at night. Replaces Ash of War: Shared Order.
+Talisman in Altus Plateau: In a chest after defeating Demi-Human Queen Gilika, down some stairs in Lux Ruins, North of the Altus Plateau Site of Grace. Replaces Ritual Sword Talisman.
+Talisman in Altus Plateau: In a chest down some stairs past an Imp Statue barrier in Wyndham Ruins. Replaces Pearldrake Talisman +1.
+Talisman in Altus Plateau: In a chest under Perfumer's Ruins, found by breaking wooden boards on the ground beside a Giant Miranda Flower. Replaces Perfumer's Talisman.
 Minidungeon talisman in Altus Plateau - Sainted Hero's Grave: Past an Imp Statue barrier beside the Site of Grace. Replaces Crimson Seed Talisman.
 Minidungeon talisman in Altus Plateau - Sainted Hero's Grave: Past an Imp Statue barrier deep in the Catacombs, riding a giant slicing blade to an upper level. Replaces Dragoncrest Shield Talisman +1.
 Minidungeon talisman in Altus Tunnel: From a sidepath deep in the tunnel, on top of a wooden structure which requires dropping down to a branch to access. The rock-slinging Malformed Star from Perfumer's Grotto will attack you here as well. Replaces Arsenal Charm +1.
 Minidungeon talisman in Old Altus Tunnel: In a shack up a ladder from the main mining shaft. Replaces Boltdrake Talisman +1.
-Talisman in Altus Plateau: In a chest after defeating Demi-Human Queen Gilika, down some stairs in Lux Ruins, North of the Altus Plateau Site of Grace. Replaces Ritual Sword Talisman.
-Talisman in Altus Plateau: In a chest down some stairs past an Imp Statue barrier in Wyndham Ruins. Replaces Pearldrake Talisman +1.
-Talisman in Altus Plateau: In a chest under Perfumer's Ruins, found by breaking wooden boards on the ground beside a Giant Miranda Flower. Replaces Perfumer's Talisman.
 
 --- Capital Outskirts
 Shop in Capital Outskirts: Sold by the Hermit Merchant at the Hermit's Merchant Shack
@@ -252,9 +255,9 @@ Talisman in Divine Tower of East Altus: At the top of the stairs leading to the 
 --- Subterranean Shunning-Grounds
 Major boss in Subterranean Shunning-Grounds: Dropped by Mohg the Omen. Replaces Bloodflame Talons.
 Minor minidungeon boss in Leyndell Catacombs: Dropped by Esgar, Priest of Blood. Replaces Lord of Blood's Exultation.
+Talisman in Subterranean Shunning-Grounds: In a chest after defeating Mohg the Omen. Replaces Erdtree's Favor +1.
 Minidungeon talisman in Leyndell Catacombs: Behind two illusory walls beside a soldier-summoning Spiritcaller Snail, in the shortcut path up an elevator from Leyndell Catacombs Site of Grace. Replaces Haligdrake Talisman +1.
 Minidungeon talisman in Leyndell Catacombs: Guarded by an Omen. Replaces Crucible Scale Talisman.
-Talisman in Subterranean Shunning-Grounds: In a chest after defeating Mohg the Omen. Replaces Erdtree's Favor +1.
 
 --- Deeproot Depths
 Minor boss in Deeproot Depths: Dropped by Crucible Knight Siluria. Replaces Siluria's Tree.
@@ -282,8 +285,8 @@ Minor minidungeon boss in Mt. Gelmir - Gelmir Hero's Grave: Dropped by Red Wolf 
 Minor minidungeon boss in Mt. Gelmir - Seethewater Cave: Dropped by Kindred of Rot. Replaces Kindred of Rot's Exultation.
 Minor minidungeon boss in Mt. Gelmir - Volcano Cave: Dropped by Demi-Human Queen Margot. Replaces Jar Cannon.
 Minor minidungeon boss in Mt. Gelmir - Wyndham Catacombs: Dropped by Erdtree Burial Watchdog. Replaces Glovewort Picker's Bell Bearing [1].
-Minidungeon talisman in Mt. Gelmir - Wyndham Catacombs: Past an Imp Statue barrier deep in the Catacombs, found up a ladder. Replaces Lightning Scorpion Charm.
 Talisman in Mt. Gelmir: Found at the top of Fort Laiedd. Requires jumping on top of the wall and doing parkour to find the guy saying "They'll never find me". Replaces Fire Scorpion Charm.
+Minidungeon talisman in Mt. Gelmir - Wyndham Catacombs: Past an Imp Statue barrier deep in the Catacombs, found up a ladder. Replaces Lightning Scorpion Charm.
 
 --- Volcano Manor
 Key item in Volcano Manor: Given by Tanith upon joining Volcano Manor. Replaces Drawing-Room Key.
@@ -296,6 +299,11 @@ Talisman in Volcano Manor: In a tower sealed by an Imp Statue all the way down t
 --- Lake of Rot
 Minor boss in Lake of Rot: Dropped by Dragonkin Soldier. Replaces Dragonscale Blade.
 Talisman in Lake of Rot: Dropped by the lost Ancestral Follower near the start of the lake. Replaces Immunizing Horn Charm +1.
+
+--- Moonlight Altar
+Minor boss in Moonlight Altar: Dropped by Alecto, Black Knife Ringleader in Ringleader's Evergaol. Replaces Black Knife Tiche.
+Minor boss in Moonlight Altar: Dropped by Glintstone Dragon Adula. Replaces Dragon Heart 3x.
+Talisman in Moonlight Altar: In a chest in Lunar Estate Ruins, behind an Imp Statue barrier. Replaces Cerulean Amber Medallion +2.
 
 --- Forbidden Lands
 Flask upgrade in Forbidden Lands: Under a Golden Seed tree in Forbidden Lands before the stairs to the Grand Lift of Rold. Replaces Golden Seed.
@@ -351,8 +359,8 @@ Minor minidungeon boss in Consecrated Snowfield Catacombs: Dropped by Putrid Gra
 Minor minidungeon boss in Hidden Path to the Haligtree: Dropped by Stray Mimic Tear. Replaces Blackflame Monk Amon.
 Minor night boss in Consecrated Snowfield: Dropped by a Death Rite Bird at the north end of the frozen-over river, between Ordina and Apostate Derelict. They only spawn at night. Replaces Explosive Ghostflame.
 Minor night boss in Consecrated Snowfield: Dropped by the Night's Calvary Duo tagging alongside the Caravan southwest of Inner Consecrated Snowfield Site of Grace. They only spawn at night. Replaces Ancient Dragon Smithing Stone, Night's Cavalry Helm.
-Minidungeon talisman in Hidden Path to the Haligtree: From the doors to Stray Mimic Tear, head right and up the elevator looping back to the start of the area. Replaces Spelldrake Talisman +2.
 Talisman in Consecrated Snowfield: Guarded by Ancestral Followers to the east of Yelough Anix Ruins. Replaces Stalwart Horn Charm +1.
+Minidungeon talisman in Hidden Path to the Haligtree: From the doors to Stray Mimic Tear, head right and up the elevator looping back to the start of the area. Replaces Spelldrake Talisman +2.
 
 --- Haligtree
 Major boss in Haligtree: Dropped by Loretta, Knight of the Haligtree. Replaces Loretta's Mastery.
@@ -376,4 +384,3 @@ Talisman in Ashen Leyndell: Hanging on a beam accessible by dropping down from L
 
 --- Stone Platform
 Major boss in Stone Platform: Dropped by Elden Beast. Replaces Elden Remembrance.
-

@@ -6,8 +6,10 @@ using System.Text.RegularExpressions;
 using YamlDotNet.Serialization;
 using static RandomizerCommon.AnnotationData;
 using static RandomizerCommon.LocationData;
+using static RandomizerCommon.Messages;
 using static RandomizerCommon.EnemyAnnotations;
 using static RandomizerCommon.Util;
+using System.Text;
 
 namespace RandomizerCommon
 {
@@ -17,7 +19,12 @@ namespace RandomizerCommon
         // Taken from file name
         [YamlIgnore]
         public string Name { get; set; }
-        public string DisplayName => Name == "Oops All" ? $"{Name} {OopsAll}" : Name;
+        // If true, should not be edited
+        public bool Builtin { get; set; }
+        [YamlIgnore]
+        public string DisplayName => Name == "Oops All" ? $"Oops All {OopsAll}" : Name;
+        [YamlIgnore]
+        public string FileName => $@"presets\{Name}.txt";
         // To show in UI
         public string Description { get; set; }
         // Whether to change default options
@@ -35,8 +42,15 @@ namespace RandomizerCommon
         public List<PoolAssignment> Basic { get; set; }
         public List<PoolAssignment> Add { get; set; }
         public List<PoolAssignment> FoldingMonkey { get; set; }
-        // Whether to increase health and deathblow count of enemies as bosses. Default is true.
-        public bool BuffBasicEnemiesAsBosses = true;
+        // General pool system
+        public Dictionary<EnemyClass, ClassAssignment> Classes = new Dictionary<EnemyClass, ClassAssignment>();
+        // Reduction of enemy types, presently
+        public List<SourceAdjustment> AdjustSource { get; set; }
+        [YamlIgnore]
+        public Dictionary<int, float> AdjustSourceIDs = new Dictionary<int, float>();
+        // Whether to increase health and deathblow count of enemies as bosses.
+        // TODO: Handle this in DS3/Sekiro. This is probably not worth having as an option, ignored for now.
+        public bool BuffBasicEnemiesAsBosses = false;
         // Enemies to not randomize
         public string DontRandomize { get; set; }
         [YamlIgnore]
@@ -54,6 +68,41 @@ namespace RandomizerCommon
         // Mapping of item locations. Currently only supports key items and overall logical areas/events.
         public Dictionary<string, string> Items { get; set; }
 
+        public static readonly Regex PhraseRe = new Regex(@"\s*;\s*");
+
+        public class ClassAssignment
+        {
+            // Not randomized. If true, all below configuration is ignored.
+            public bool NoRandom { get; set; }
+            // Whether to merge into enemy config parent. If true, all below configuration is ignored.
+            public bool MergeParent { get; set; }
+            // Whether to copy the parent's pools and sources. If true, all below configuration is copied from the parent.
+            public bool InheritParent { get; set; }
+            // Other parent if not default. Must be part of ClassConfig
+            public EnemyClass ManualParent { get; set; }
+            // Custom multiplier. Requires overall EnemyMultiplier to be >0, and inherits its value if this is 0.
+            public int EnemyMultiplier { get; set; }
+            // Generic pool system
+            public List<PoolAssignment> Pools { get; set; }
+            // Sources to remove
+            public string RemoveSource { get; set; }
+            [YamlIgnore]
+            public HashSet<int> RemoveSourceIDs = new HashSet<int>();
+            [YamlIgnore]
+            public EnemyClass RootParent { get; set; }
+        }
+
+        public class SourceAdjustment
+        {
+            public string Source { get; set; }
+            public int Keep { get; set; }
+            public int Total { get; set; }
+            [YamlIgnore]
+            public HashSet<int> SourceIDs = new HashSet<int>();
+            [YamlIgnore]
+            public float Multiplier = 1f;
+        }
+
         public class PoolAssignment
         {
             // Points to use for this pool category, out of other pool categories
@@ -65,9 +114,9 @@ namespace RandomizerCommon
             // Enemies per pool, filtered by other constraints as well
             [YamlIgnore]
             public List<List<int>> PoolGroups = new List<List<int>>();
-            // The total enemy count, for random selection purposes. Is this needed?
+            // Whether to also add default as its own PoolGroup
             [YamlIgnore]
-            public int Count { get; set; }
+            public int DefaultCount { get; set; }
 
             public PoolAssignment Copy()
             {
@@ -88,6 +137,331 @@ namespace RandomizerCommon
                 ret.Sort();
             }
             return ret;
+        }
+
+        public static readonly string DefaultName = "Custom";
+        public static Preset MakeClassBasedDefault(EnemyAnnotations ann)
+        {
+            // Name, Description, OopsAll, EnemyMultiplier, Classes, AdjustSource, DontRandomize, RemoveSource
+            // Most things can be null, but Classes should be initialized, w special Spectator treatment
+            // TODO: Also individual enemy list
+            Preset preset = new Preset
+            {
+                Name = DefaultName,
+            };
+            foreach (ClassConfig conf in ann.Classes)
+            {
+                ClassAssignment assign = new ClassAssignment
+                {
+                    Pools = new List<PoolAssignment>
+                    {
+                        new PoolAssignment
+                        {
+                            Pool = "default",
+                            Weight = 1000,
+                            RandomByType = false,
+                        },
+                    },
+                };
+                if (conf.DefaultInherit)
+                {
+                    assign.InheritParent = true;
+                }
+                if ((conf.NoSelfRandom || conf.NoMerge) && conf.Class != EnemyClass.Spectator)
+                {
+                    assign.Pools = null;
+                }
+                preset.Classes[conf.Class] = assign;
+            }
+            return preset;
+        }
+
+        public string ToYamlString()
+        {
+            StringWriter s = new StringWriter();
+            GameData.Serializer.Serialize(s, this);
+            return s.ToString();
+        }
+
+        public Preset CloneConfiguration()
+        {
+            string s = ToYamlString();
+            IDeserializer deserializer = new DeserializerBuilder().Build();
+            Preset other = deserializer.Deserialize<Preset>(s);
+            other.Name = Name;
+            return other;
+        }
+
+        public void SavePreset()
+        {
+            Directory.CreateDirectory("presets");
+            using (var writer = File.CreateText(FileName))
+            {
+                GameData.Serializer.Serialize(writer, this);
+            }
+        }
+
+        [Localize]
+        private static readonly Text presetNameText = new Text("Preset: {0}", "Preset_presetName");
+        [Localize]
+        private static readonly Text oopsAllText = new Text("Oops All {0}", "Preset_oopsAll");
+        [Localize]
+        private static readonly Text enemyMultiplierText = new Text("Enemy Onslaught {0}x", "Preset_enemyMultiplier");
+        [Localize]
+        private static readonly Text enemyMultiplierDescText = new Text("{0}x {1}", "Preset_enemyMultiplierDesc");
+        [Localize]
+        private static readonly Text dontRandomizeText = new Text("Not randomized: {0}", "Preset_dontRandomize");
+        [Localize]
+        private static readonly Text removeSourceText = new Text("Excluded: {0}", "Preset_removeSource");
+        [Localize]
+        private static readonly Text poolDescText = new Text("Replacing {0}:", "Preset_poolDesc");
+        [Localize]
+        private static readonly Text poolDescOneLineText = new Text("Replacing {0}: {1}", "Preset_poolDescOneLine");
+        [Localize]
+        private static readonly Text poolDescInheritText = new Text("Replacing {0}: Same as {1}", "Preset_poolDescInherit");
+        [Localize]
+        private static readonly Text poolEntriesText = new Text("- {0}% {1}", "Preset_poolEntries");
+        [Localize]
+        private static readonly Text poolExcludeText = new Text("- (excluding {0})", "Preset_poolExclude");
+        [Localize]
+        private static readonly Text poolDefaultText = new Text("Themselves", "Preset_poolDefault");
+        [Localize]
+        private static readonly Text poolNorandomText = new Text("Not randomized", "Preset_poolNorandom");
+        [Localize]
+        private static readonly Text poolDelimitTypeText = new Text(", ", "Preset_poolDelimitType");
+        // Should not be a comma
+        [Localize]
+        private static readonly Text poolDelimitEntryText = new Text("; ", "Preset_poolDelimitEntry");
+        [Localize]
+        private static readonly Text adjustSourceText = new Text("Adjusted to {0}%: {1}", "Preset_adjustSource");
+
+        public static string FormatPercent(double val)
+        {
+            return $"{val:0.##}";
+        }
+
+        public string FullDescription(Messages messages, EnemyAnnotations ann = null)
+        {
+            Dictionary<string, EnemyClass> classNames =
+                ((EnemyClass[])Enum.GetValues(typeof(EnemyClass))).ToDictionary(e => e.ToString(), e => e);
+            Dictionary<string, EnemyClassGroup> classGroupNames =
+                ((EnemyClassGroup[])Enum.GetValues(typeof(EnemyClassGroup))).ToDictionary(e => e.ToString(), e => e);
+            string sep = messages.Get(poolDelimitEntryText);
+            string classText(EnemyClass cl)
+            {
+                return ClassNames.TryGetValue(cl, out Text t) ? messages.Get(t) : cl.ToString();
+            }
+            string desc(string text, string defaultText = null)
+            {
+                text = text ?? "default";
+                // For now, don't localize this much outside of overall categories
+                List<string> parts = new List<string>();
+                foreach (string part in PhraseRe.Split(text))
+                {
+                    if (classNames.TryGetValue(part, out EnemyClass cl) && ClassNames.TryGetValue(cl, out Text t))
+                    {
+                        parts.Add(messages.Get(t));
+                    }
+                    else if (classGroupNames.TryGetValue(part, out EnemyClassGroup g)
+                        && ClassGroupNames.TryGetValue(g, out Text t2))
+                    {
+                        parts.Add(messages.Get(t2));
+                    }
+                    else if (part == "default")
+                    {
+                        parts.Add(defaultText ?? messages.Get(poolDefaultText));
+                    }
+                    else
+                    {
+                        parts.Add(part);
+                    }
+                }
+                return string.Join(sep, parts);
+            }
+            bool exists(string pool)
+            {
+                return pool != null && pool.ToLowerInvariant() != "none";
+            }
+
+            // Name, Description, OopsAll, EnemyMultiplier, Classes, AdjustSource, DontRandomize, RemoveSource
+            StringBuilder ret = new StringBuilder();
+            // Ideally, this could be bolded
+            if (Name != null) ret.AppendLine(messages.Get(presetNameText, Name));
+            if (!string.IsNullOrWhiteSpace(Description)) ret.AppendLine(Description);
+            if (exists(OopsAll)) ret.AppendLine(messages.Get(oopsAllText, desc(OopsAll)));
+            if (EnemyMultiplier > 0) ret.AppendLine(messages.Get(enemyMultiplierText, EnemyMultiplier));
+            string sepClass = messages.Get(poolDelimitTypeText);
+            void appendPool(
+                List<EnemyClass> poolClasses,
+                List<PoolAssignment> pools,
+                ClassAssignment assign = null,
+                bool selfRandom = true)
+            {
+                string classes = string.Join(sepClass, poolClasses.Select(classText));
+                string replacing = classes;
+                if (EnemyMultiplier > 0 && assign != null && assign.EnemyMultiplier > 0 && assign.EnemyMultiplier != EnemyMultiplier)
+                {
+                    replacing = messages.Get(enemyMultiplierDescText, assign.EnemyMultiplier, replacing);
+                }
+                if (assign != null && assign.NoRandom)
+                {
+                    ret.AppendLine(messages.Get(poolDescOneLineText, replacing, messages.Get(poolNorandomText)));
+                    return;
+                }
+                string defaultText = classes;
+                if (pools == null || pools.Count == 0
+                    || pools.All(p => p.Pool == null || p.Pool.ToLowerInvariant() == "default" || p.Weight <= 0))
+                {
+                    if (selfRandom)
+                    {
+                        ret.AppendLine(messages.Get(poolDescOneLineText, replacing, defaultText));
+                    }
+                    else
+                    {
+                        ret.AppendLine(messages.Get(poolDescOneLineText, replacing, messages.Get(poolNorandomText)));
+                    }
+                }
+                else if (pools.Count == 1)
+                {
+                    ret.AppendLine(messages.Get(poolDescOneLineText, replacing, desc(pools[0].Pool, defaultText)));
+                }
+                else
+                {
+                    ret.AppendLine(messages.Get(poolDescText, replacing));
+                    int total = 0;
+                    foreach (PoolAssignment p in pools)
+                    {
+                        if (p.Weight <= 0) continue;
+                        total += p.Weight;
+                    }
+                    foreach (PoolAssignment p in pools)
+                    {
+                        if (p.Weight <= 0) continue;
+                        string percent = FormatPercent(p.Weight * 100f / total);
+                        string pool = p.Pool ?? "default";
+                        ret.AppendLine(messages.Get(poolEntriesText, percent, desc(pool, defaultText)));
+                    }
+                }
+                if (exists(assign?.RemoveSource))
+                {
+                    ret.AppendLine(messages.Get(poolExcludeText, desc(assign?.RemoveSource)));
+                }
+            }
+            void appendClass(
+                ClassConfig conf,
+                ClassAssignment assign,
+                List<EnemyClass> children)
+            {
+                List<EnemyClass> poolClasses = new List<EnemyClass> { conf.Class };
+                poolClasses.AddRange(children);
+                appendPool(poolClasses, assign?.Pools, assign, !conf.NoSelfRandom);
+            }
+            void appendSimple(EnemyClass cl, List<PoolAssignment> pools)
+            {
+                appendPool(new List<EnemyClass> { cl }, pools);
+            }
+            // Oops All ignores other randomization, Enemy Onslaught does not
+            if (OopsAll == null)
+            {
+                if (ann?.Classes == null)
+                {
+                    appendSimple(EnemyClass.Basic, Basic);
+                    appendSimple(EnemyClass.Boss, Boss);
+                    appendSimple(EnemyClass.Miniboss, Miniboss);
+                    if (FoldingMonkey != null) appendSimple(EnemyClass.FoldingMonkey, FoldingMonkey);
+                    appendSimple(EnemyClass.Spectator, Add);
+                }
+                else
+                {
+                    Dictionary<EnemyClass, EnemyClass> mergeParents = new Dictionary<EnemyClass, EnemyClass>();
+                    foreach (ClassConfig conf in ann.Classes)
+                    {
+                        EnemyClass parent = GetParent(conf.Class, ann, checkMerge: true);
+                        if (parent != conf.Class)
+                        {
+                            mergeParents[conf.Class] = parent;
+                        }
+                    }
+                    foreach (ClassConfig conf in ann.Classes)
+                    {
+                        if (mergeParents.ContainsKey(conf.Class)) continue;
+                        EnemyClass inheritParent = GetParent(conf.Class, ann, checkMerge: false);
+                        EnemyClass showClass = conf.Class;
+                        if (inheritParent != conf.Class)
+                        {
+                            // A bit too confusing, just write out the full thing, even if it's super verbose
+                            // ret.AppendLine(messages.Get(poolDescInheritText, classText(conf.Class), classText(inheritParent)));
+                            showClass = inheritParent;
+                        }
+                        Classes.TryGetValue(showClass, out ClassAssignment assign);
+                        appendClass(
+                            conf, assign,
+                            mergeParents.Where(e => e.Value == conf.Class).Select(e => e.Key).ToList());
+                    }
+                }
+            }
+            if (exists(DontRandomize)) ret.AppendLine(messages.Get(dontRandomizeText, desc(DontRandomize)));
+            if (exists(RemoveSource)) ret.AppendLine(messages.Get(removeSourceText, desc(RemoveSource)));
+            if (AdjustSource != null)
+            {
+                foreach (SourceAdjustment adjust in AdjustSource)
+                {
+                    if (exists(adjust.Source) && adjust.Total != 0)
+                    {
+                        float mult = Math.Max(0, Math.Min(1, (float)adjust.Keep / adjust.Total));
+                        string percent = FormatPercent(mult * 100);
+                        ret.AppendLine(messages.Get(adjustSourceText, percent, desc(adjust.Source)));
+                    }
+                }
+            }
+            return ret.ToString();
+        }
+
+        private EnemyClass GetParent(EnemyClass cl, EnemyAnnotations ann, bool checkMerge)
+        {
+            Classes.TryGetValue(cl, out ClassAssignment assign);
+            ClassConfig conf = ann.Classes.Find(c => c.Class == cl);
+            EnemyClass targetClass = cl;
+            int iters = 0;
+            // This assumes that InheritParent and MergeParent are not set together.
+            // Merge will always take precedent in the randomizer itself.
+            while (iters++ < 10 && conf != null)
+            {
+                EnemyClass parent = EnemyClass.Default;
+                if (checkMerge)
+                {
+                    if (!conf.NoMerge && assign != null && assign.MergeParent)
+                    {
+                        parent = conf.Parent;
+                        if (conf.AltParent != null && conf.AltParent.Contains(assign.ManualParent))
+                        {
+                            parent = assign.ManualParent;
+                        }
+                    }
+                }
+                else
+                {
+                    if (assign == null ? conf.DefaultInherit : assign.InheritParent)
+                    {
+                        parent = conf.Parent;
+                    }
+                }
+                if (parent == EnemyClass.Default) break;
+                conf = ann.Classes.Find(c => c.Class == parent);
+                if (conf == null) break;
+                Classes.TryGetValue(parent, out assign);
+                targetClass = parent;
+            }
+            if (iters >= 10) throw new Exception($"Internal error: loop in parent hierarchy for {conf.Class}");
+            return targetClass;
+        }
+
+        public static Preset ParsePreset(string name, string text)
+        {
+            IDeserializer deserializer = new DeserializerBuilder().Build();
+            Preset preset = deserializer.Deserialize<Preset>(text);
+            preset.Name = name;
+            return preset;
         }
 
         // Just load it at the start, but don't do any validation yet.
@@ -115,11 +489,61 @@ namespace RandomizerCommon
             return preset;
         }
 
-        public void ProcessEnemyPreset(GameData game, Dictionary<int, EnemyInfo> infos, List<EnemyCategory> cats, Dictionary<int, EnemyData> defaultData)
+        public void ProcessParents(EnemyAnnotations ann)
         {
+            // Before having any game-specific data, calculate root parents and explicitly add classes with default behaviors
+            ClassAssignment processClass(ClassConfig conf, ClassAssignment assign)
+            {
+                if (assign == null)
+                {
+                    if (!conf.NoMerge && conf.DefaultInherit)
+                    {
+                        // Add new class if default inherit.
+                        // This should not be dependent on class order.
+                        assign = new ClassAssignment
+                        {
+                            InheritParent = true,
+                        };
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                if (assign.MergeParent)
+                {
+                    assign.RootParent = GetParent(conf.Class, ann, checkMerge: true);
+                }
+                else
+                {
+                    assign.RootParent = GetParent(conf.Class, ann, checkMerge: false);
+                    // Inherit EnemyMultiplier here, since it's needed in first pass, and doesn't require pool/enemy info
+                    Classes.TryGetValue(assign.RootParent, out ClassAssignment baseAssign);
+                    assign.EnemyMultiplier = baseAssign?.EnemyMultiplier ?? 0;
+                }
+                return assign;
+            }
+            if (ann.Classes != null)
+            {
+                foreach (ClassConfig conf in ann.Classes)
+                {
+                    Classes.TryGetValue(conf.Class, out ClassAssignment assign);
+                    Classes[conf.Class] = processClass(conf, assign);
+                }
+            }
+        }
+
+        public void ProcessEnemyPreset(
+            GameData game,
+            Dictionary<int, EnemyInfo> infos,
+            EnemyAnnotations ann,
+            Dictionary<int, EnemyData> defaultData)
+        {
+            List<EnemyCategory> cats = ann.Categories;
             // Process enemy names
             HashSet<string> eligibleNames = new HashSet<string>();
             Dictionary<string, string> impliedNames = new Dictionary<string, string>();
+            Dictionary<EnemyClass, List<string>> impliedClasses = new Dictionary<EnemyClass, List<string>>();
             foreach (EnemyCategory cat in cats)
             {
                 eligibleNames.Add(cat.Name);
@@ -133,6 +557,23 @@ namespace RandomizerCommon
                     foreach (string subName in subNames)
                     {
                         impliedNames[subName] = cat.Name;
+                    }
+                }
+                if (cat.Classes != null)
+                {
+                    foreach (EnemyClass cl in cat.Classes)
+                    {
+                        AddMulti(impliedClasses, cl, cat.Name);
+                    }
+                }
+            }
+            if (ann.Classes != null)
+            {
+                foreach (ClassConfig conf in ann.Classes)
+                {
+                    if (!conf.NoMerge)
+                    {
+                        AddMulti(impliedClasses, conf.Class, conf.Class.ToString());
                     }
                 }
             }
@@ -162,7 +603,7 @@ namespace RandomizerCommon
                 }
             }
             Dictionary<int, string> primaryName = new Dictionary<int, string>();
-            Dictionary<string, List<int>> enemiesForName = new Dictionary<string, List<int>>();
+            Dictionary<string, SortedSet<int>> enemiesForName = new Dictionary<string, SortedSet<int>>();
             bool debugNames = false;
             // Guardian Ape is both a boss and a helper, so try to avoid the helper ape getting pulled into the category
             HashSet<string> bossNames = new HashSet<string>(infos.Values.Where(i => i.Class == EnemyClass.Boss && i.ExtraName != null).Select(i => i.ExtraName));
@@ -173,6 +614,9 @@ namespace RandomizerCommon
                 // Don't do helpers by default in DS3, as many are nonfunctional on their own. Tags could be used to override this.
                 // In Sekiro, bossNames handles some cases like this.
                 if (!game.Sekiro && info.Class == EnemyClass.Helper && !info.HasTag("standalone")) continue;
+                // Skip synthetic enemies from dupes, when creating pools
+                // This means they can't be used for the enemy mapping, but those ids are not stable anyway (need different config keying)
+                if (info.DupeFrom > 0) continue;
                 List<string> names = new List<string>();
                 // Add all names. The first name added will be the primary name.
                 if (info.ExtraName != null)
@@ -182,9 +626,13 @@ namespace RandomizerCommon
                 if (defaultData.TryGetValue(info.ID, out EnemyData data))
                 {
                     string model = game.ModelName(data.Model);
+                    if (game.EldenRing)
+                    {
+                        model = Regex.Replace(model, @"[0-9 ]*$", "");
+                    }
                     if (info.Class != EnemyClass.Boss && info.Category != null)
                     {
-                        foreach (string cat in Regex.Split(info.Category, @"\s*;\s*"))
+                        foreach (string cat in PhraseRe.Split(info.Category))
                         {
                             names.Add($"{cat} {model}");
                         }
@@ -220,15 +668,22 @@ namespace RandomizerCommon
                 }
                 names = names.SelectMany(n => new[] { n, $"{n} {info.ID}" }).ToList();
                 names.Add(info.ID.ToString());
-                if (info.Class == EnemyClass.Boss || info.Class == EnemyClass.Miniboss || info.Class == EnemyClass.Basic)
+                if (!game.EldenRing)
                 {
-                    names.Add($"{info.Class}");
+                    if (info.Class == EnemyClass.Boss || info.Class == EnemyClass.Miniboss || info.Class == EnemyClass.Basic)
+                    {
+                        names.Add($"{info.Class}");
+                    }
+                    if (info.Class != EnemyClass.Helper)
+                    {
+                        // This is mainly used for "Oops All Any" so it should not include unkillable helpers
+                        // like Immortal Centipede or Corrupted Monk Illusion.
+                        names.Add($"Any");
+                    }
                 }
-                if (info.Class != EnemyClass.Helper)
+                if (impliedClasses.TryGetValue(info.Class, out List<string> classNames))
                 {
-                    // This is mainly used for "Oops All Any" so it should not include unkillable helpers
-                    // like Immortal Centipede or Corrupted Monk Illusion.
-                    names.Add($"Any");
+                    names.AddRange(classNames);
                 }
                 if (debugNames) Console.WriteLine($"-- Names: {string.Join("; ", names)}");
                 foreach (string name in names)
@@ -253,7 +708,7 @@ namespace RandomizerCommon
                     string map = null;
                     (string, string, int) sortKey(EnemyInfo info)
                     {
-                        string enemyMap = defaultData[info.ID].Map;
+                        string enemyMap = defaultData[info.ID].MainMap;
                         return (enemyMap, info.ModelName, info.ID);
                     }
                     foreach (EnemyInfo info in infos.Values.OrderBy(sortKey))
@@ -261,7 +716,7 @@ namespace RandomizerCommon
                         if (!cs.Contains(info.Class)) continue;
                         if (primaryName.TryGetValue(info.ID, out string name))
                         {
-                            string enemyMap = game.LocationNames[game.Locations[defaultData[info.ID].Map]];
+                            string enemyMap = game.LocationNames[game.Locations[defaultData[info.ID].MainMap]];
                             if (map != enemyMap)
                             {
                                 map = enemyMap;
@@ -280,12 +735,12 @@ namespace RandomizerCommon
             foreach (EnemyCategory cat in cats)
             {
                 if (cat.Contains == null) continue;
-                List<int> combinedIds = new List<int>();
+                SortedSet<int> combinedIds = new SortedSet<int>();
                 foreach (string sub in cat.Contains)
                 {
-                    if (enemiesForName.TryGetValue(sub, out List<int> specialIds))
+                    if (enemiesForName.TryGetValue(sub, out SortedSet<int> specialIds))
                     {
-                        combinedIds.AddRange(specialIds);
+                        combinedIds.UnionWith(specialIds);
                     }
                 }
                 if (combinedIds.Count > 0)
@@ -299,7 +754,7 @@ namespace RandomizerCommon
 
             List<int> getIds(string name)
             {
-                if (!enemiesForName.TryGetValue(name, out List<int> ids))
+                if (!enemiesForName.TryGetValue(name, out SortedSet<int> ids))
                 {
                     string findId = "";
                     if (int.TryParse(name.Split(' ').Last(), out int id))
@@ -322,11 +777,32 @@ namespace RandomizerCommon
                 }
                 return ids.ToList();
             }
-            List<List<int>> getMultiIds(string name)
+            List<List<int>> getMultiIds(string name, bool allToAny = false)
             {
                 List<List<int>> ids = new List<List<int>>();
-                foreach (string n in Regex.Split(name, @"\s*;\s*").ToList())
+                foreach (string n in PhraseRe.Split(name))
                 {
+                    ids.Add(getIds(n));
+                    // Mega-hack for DontRandomize + enemy multiplier combination - use it as shorthand for ignoring
+                    // individual category randomization.
+                    if (allToAny && n == "AllEnemies" && game.EldenRing)
+                    {
+                        ids.Add(getIds("HostileNPC"));
+                    }
+                }
+                return ids;
+            }
+            List<List<int>> getPoolMultiIds(string name, out int defaultCount)
+            {
+                defaultCount = 0;
+                List<List<int>> ids = new List<List<int>>();
+                foreach (string n in PhraseRe.Split(name))
+                {
+                    if (n == "default")
+                    {
+                        defaultCount++;
+                        continue;
+                    }
                     ids.Add(getIds(n));
                 }
                 return ids;
@@ -335,11 +811,26 @@ namespace RandomizerCommon
             // Fill in non-randomized ids. The individual enemy config can also add to this.
             if (DontRandomize != null && DontRandomize.ToLowerInvariant() != "none")
             {
-                DontRandomizeIDs.UnionWith(getMultiIds(DontRandomize).SelectMany(i => i));
+                DontRandomizeIDs.UnionWith(getMultiIds(DontRandomize, true).SelectMany(i => i));
             }
             if (RemoveSource != null && RemoveSource.ToLowerInvariant() != "none")
             {
                 RemoveSourceIDs.UnionWith(getMultiIds(RemoveSource).SelectMany(i => i));
+            }
+            if (AdjustSource != null)
+            {
+                foreach (SourceAdjustment adjust in AdjustSource)
+                {
+                    adjust.SourceIDs.UnionWith(getMultiIds(adjust.Source).SelectMany(i => i));
+                    if (adjust.Total != 0)
+                    {
+                        adjust.Multiplier = Math.Max(0, Math.Min(1, (float)adjust.Keep / adjust.Total));
+                    }
+                    foreach (int id in adjust.SourceIDs)
+                    {
+                        AdjustSourceIDs[id] = adjust.Multiplier;
+                    }
+                }
             }
 
             // Process the specific enemy map config
@@ -372,15 +863,19 @@ namespace RandomizerCommon
                 }
             }
 
-            bool poolFilter(int id)
+            bool enemyFilter(int id)
             {
                 return !DontRandomizeIDs.Contains(id) && !RemoveSourceIDs.Contains(id);
+            }
+            bool poolFilter(int id, ClassAssignment assign = null)
+            {
+                return enemyFilter(id) && (assign == null || !assign.RemoveSourceIDs.Contains(id));
             }
 
             // If oops all mode, fill in oops all ids. And copy them to pools.
             if (OopsAll != null && OopsAll.ToLowerInvariant() != "none")
             {
-                OopsAllIDs.AddRange(getMultiIds(OopsAll).SelectMany(i => i).Where(poolFilter).Distinct());
+                OopsAllIDs.AddRange(getMultiIds(OopsAll).SelectMany(i => i).Where(enemyFilter).Distinct());
                 if (debug) Console.WriteLine($"Oops All: {string.Join("; ", OopsAllIDs.Select(i => primaryName.TryGetValue(i, out string n) ? n : i.ToString()))}");
             }
 
@@ -398,7 +893,7 @@ namespace RandomizerCommon
             }
 
             // For all enemy groups, fill in their ids
-            void processPool(PoolAssignment pool, string type)
+            void processPool(PoolAssignment pool, string type, ClassAssignment assign = null)
             {
                 if (pool.Weight < 0)
                 {
@@ -415,55 +910,115 @@ namespace RandomizerCommon
                 {
                     return;
                 }
-                pool.PoolGroups = getMultiIds(pool.Pool);
-                filterMulti(pool.PoolGroups, poolFilter);
+                pool.PoolGroups = getPoolMultiIds(pool.Pool, out int defaultCount);
+                pool.DefaultCount = defaultCount;
+                filterMulti(pool.PoolGroups, id => poolFilter(id, assign));
+                // Console.WriteLine($"Processed {type} pool groups to [{string.Join(", ", pool.PoolGroups.Select(p => p.Count))}]");
                 if (pool.PoolGroups.Count == 0) pool.Weight = 0;
             }
-            List<PoolAssignment> processPools(List<PoolAssignment> pools, string type)
+            List<PoolAssignment> processPools(
+                List<PoolAssignment> pools, string type, bool allowOops = true, ClassAssignment assign = null)
             {
-                if (pools == null || pools.Count == 1 && pools[0].Pool.ToLowerInvariant() == "default")
+                if (OopsAllIDs.Count > 0 && allowOops)
                 {
-                    if (OopsAllIDs.Count > 0)
+                    return new List<PoolAssignment>
                     {
-                        return new List<PoolAssignment>
+                        new PoolAssignment
                         {
-                            new PoolAssignment
-                            {
-                                Weight = 100,
-                                Pool = OopsAll,
-                                PoolGroups = new List<List<int>> { OopsAllIDs },
-                            },
-                        };
-                    }
-                    else
+                            Weight = 100,
+                            Pool = OopsAll,
+                            // For now, ignore removeIds, mainly to avoid weird case of partially removing everything.
+                            // Use global exclusion for that instead.
+                            PoolGroups = new List<List<int>> { OopsAllIDs },
+                        },
+                    };
+                }
+                else if (pools == null || (pools.Count == 1 && pools[0].Pool.ToLowerInvariant() == "default"))
+                {
+                    return null;
+                }
+                foreach (PoolAssignment pool in pools)
+                {
+                    processPool(pool, type, assign);
+                }
+                return pools;
+            }
+            ClassAssignment processClass(ClassConfig conf, ClassAssignment assign)
+            {
+                bool allowOops = !conf.NoMerge;
+                if (assign == null)
+                {
+                    List<PoolAssignment> autoPools = processPools(null, conf.Class.ToString(), allowOops);
+                    if (autoPools == null)
                     {
                         return null;
                     }
-                }
-                foreach (PoolAssignment pool in pools) processPool(pool, type);
-                return pools;
-            }
-            Boss = processPools(Boss, "Boss");
-            Miniboss = processPools(Miniboss, "Miniboss");
-            Basic = processPools(Basic, "Basic");
-            Add = processPools(Add, "Add");
-            FoldingMonkey = processPools(FoldingMonkey, "FoldingMonkey");
-            // Also copy 'basic' into 'add' if not specified, removing multi-phase enemies where possible
-            if (Add == null && Basic != null)
-            {
-                Add = Basic.Select(p => p.Copy()).ToList();
-                int removed = 0;
-                foreach (PoolAssignment pool in Add)
-                {
-                    if (pool.PoolGroups.Count != 0)
+                    else
                     {
-                        removed += filterMulti(pool.PoolGroups, i => (infos[i].Class != EnemyClass.Boss && infos[i].Class != EnemyClass.Miniboss) || infos[i].HasTag("reasonable"));
-                        if (pool.PoolGroups.Count == 0) pool.Weight = 0;
+                        // Default Oops All mode for this class. It can be its own parent
+                        return new ClassAssignment
+                        {
+                            RootParent = conf.Class,
+                            Pools = autoPools,
+                        };
                     }
                 }
-                if (removed == 0)
+                if (assign.MergeParent)
                 {
-                    Add = null;
+                    // RootParent is already set, nothing else to do
+                }
+                else
+                {
+                    Classes.TryGetValue(assign.RootParent, out ClassAssignment baseAssign);
+                    assign.NoRandom = baseAssign?.NoRandom ?? false;
+                    assign.Pools = baseAssign?.Pools;
+                    assign.RemoveSource = baseAssign?.RemoveSource;
+
+                    // Probably fine to ignore processing if NoRandom
+                    if (!assign.NoRandom)
+                    {
+                        if (assign.RemoveSource != null && assign.RemoveSource.ToLowerInvariant() != "none")
+                        {
+                            assign.RemoveSourceIDs.UnionWith(getMultiIds(assign.RemoveSource).SelectMany(i => i));
+                        }
+                        assign.Pools = processPools(assign.Pools, conf.Class.ToString(), allowOops, assign);
+                    }
+                }
+                return assign;
+            }
+            if (ann.Classes == null)
+            {
+                Boss = processPools(Boss, "Boss");
+                Miniboss = processPools(Miniboss, "Miniboss");
+                Basic = processPools(Basic, "Basic");
+                Add = processPools(Add, "Add");
+                FoldingMonkey = processPools(FoldingMonkey, "FoldingMonkey");
+                // Also copy 'basic' into 'add' if not specified, removing multi-phase enemies where possible
+                // This probably isn't necessary in ER? If it's always present in the dictionary
+                if (Add == null && Basic != null)
+                {
+                    Add = Basic.Select(p => p.Copy()).ToList();
+                    int removed = 0;
+                    foreach (PoolAssignment pool in Add)
+                    {
+                        if (pool.PoolGroups.Count != 0)
+                        {
+                            removed += filterMulti(pool.PoolGroups, i => (infos[i].Class != EnemyClass.Boss && infos[i].Class != EnemyClass.Miniboss) || infos[i].HasTag("reasonable"));
+                            if (pool.PoolGroups.Count == 0) pool.Weight = 0;
+                        }
+                    }
+                    if (removed == 0)
+                    {
+                        Add = null;
+                    }
+                }
+            }
+            else
+            {
+                foreach (ClassConfig conf in ann.Classes)
+                {
+                    Classes.TryGetValue(conf.Class, out ClassAssignment assign);
+                    Classes[conf.Class] = processClass(conf, assign);
                 }
             }
 

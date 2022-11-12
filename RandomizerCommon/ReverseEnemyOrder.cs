@@ -2236,5 +2236,232 @@ namespace RandomizerCommon
                 }
             }
         }
+
+        public void InvestigateEldenCols(MSBE mb, Dictionary<int, EnemyInfo> infos)
+        {
+            /*
+[1 Fountain stairs, 2 Fountain balcony] =
+    h005000 (Post-Wolf pots) h005100 (Fountain 1) h005200 (Fountain 2)
+    h005400 (1 Fountain stairs) h008400 (Above ball trap) h008500 (Ball trap)
+[1 Fountain stairs, 2 Fountain balcony, 3 Rooftop] = h002500 (Graveyard bridge) h008700 (Before elevator)
+[2 Fountain balcony, 3 Rooftop] = h002600 (Carian Knight set) h007400 (Cuckoo hallway to sphere)
+[2 Fountain balcony, 3 Rooftop, 4 Rooftop bridge] = h002000 (Graveyard start) h003000 (Elevator second level)
+    h006000 (3 Rooftop) h006100 (4 Rooftop bridge) h006200 (Rooftop ladder chest 3)
+    h006800 (Rooftop floor boards avionette) h007000 (Rooftop outside Cuckoo) h007200 (Rooftop upper Cuckoo)
+[3 Rooftop] = h001600 (Cuckoo Church grace)
+[3 Rooftop, 4 Rooftop bridge] =
+    h004300 (Pre-Wolf mid level) h004500 (Pre-Wolf balcony) h006700 (Rooftop post-bridge) h006900 (Rooftop mid floor boards)
+[4 Rooftop bridge] =
+    h004400 (Pre-Wolf upper level) h006300 (Rooftop ladder chest 2) h006400 (Rooftop ladder chest 1) h006600 (Rooftop steeple)
+
+[1 Fountain stairs, 2 Fountain balcony, 3 Rooftop, 4 Rooftop bridge] = h005500 (2 Fountain balcony) h005600 (Fountain back left)
+
+Reduce for 2: h002000, h002500, h003000
+Reduce for 3: h002000, h002500, h003000
+            */
+            Dictionary<string, string> cols = new Dictionary<string, string>
+            {
+                ["h005400"] = "1 Fountain stairs",
+                ["h005500"] = "2 Fountain balcony",
+                ["h006000"] = "3 Rooftop",
+                ["h006100"] = "4 Rooftop bridge",
+            };
+            Dictionary<string, string> extraCols = new Dictionary<string, string>
+            {
+                ["h001600"] = "Cuckoo Church grace",  // c1000_9002 14000952
+                ["h002000"] = "Graveyard start",  // c3661_9000 14000300
+                ["h002500"] = "Graveyard bridge",  // c3661_9027 14000327
+                ["h002600"] = "Carian Knight set",  // c3661_9060 14000360
+                ["h003000"] = "Elevator second level",  // c3661_9065 14000365
+                ["h004300"] = "Pre-Wolf mid level",  // c3702_9032 14000232
+                ["h004400"] = "Pre-Wolf upper level",  // c3702_9033 14000233
+                ["h004500"] = "Pre-Wolf balcony",  // c3702_9021 14000221
+                ["h005000"] = "Post-Wolf pots",  // c0100_9002 14000690
+                ["h005100"] = "Fountain 1",  // c2275_9005 2889265
+                ["h005200"] = "Fountain 2",  // c0100_9003 2889254
+                ["h005600"] = "Fountain back left",  // c2274_9001 14000636
+                ["h006200"] = "Rooftop ladder chest 3",  // c3850_9022 14000472
+                ["h006300"] = "Rooftop ladder chest 2",  // c3850_9024 14000474
+                ["h006400"] = "Rooftop ladder chest 1",  // c3850_9020 14000470
+                ["h006600"] = "Rooftop steeple",  // c3860_9000 14000490
+                ["h006700"] = "Rooftop post-bridge",  // c3850_9016 2889295
+                ["h006800"] = "Rooftop floor boards avionette",  // c3860_9001 14000491
+                ["h006900"] = "Rooftop mid floor boards",  // c2275_9031 14000637
+                ["h007000"] = "Rooftop outside Cuckoo",  // c3850_9035 2889297
+                ["h007200"] = "Rooftop upper Cuckoo",  // c2275_9026 14000633
+                ["h007400"] = "Cuckoo hallway to sphere",  // c3703_9000 14000675
+                ["h008400"] = "Above ball trap",  // c3702_9075 2889292
+                ["h008500"] = "Ball trap",  // c3702_9076 14000276
+                ["h008700"] = "Before elevator",  // c0000_9014 14000499
+            };
+            Dictionary<string, MSBE.Part.Collision> colParts = mb.Parts.Collisions
+                .Where(c => cols.ContainsKey(c.Name))
+                .ToDictionary(c => c.Name, c => c);
+            Dictionary<string, List<string>> visibleCols = new Dictionary<string, List<string>>();
+            HashSet<string> enemyCols = new HashSet<string>(mb.Parts.Enemies.Select(c => c.CollisionPartName));
+            // Disp groups are a collision's own bits. Draw groups are references to other collisions.
+            // In DS3, it is DrawGroups, DispGroups, BackreadGroups, uint[8] default -1
+            // TODO: CollisionMask no longer covers these bits, and the order is swapped.
+            List<uint> dispGroups(MSBE.Part.Collision c) => c.Unk1.CollisionMask.ToList().GetRange(0, 8);
+            List<uint> drawGroups(MSBE.Part.Collision c) => c.Unk1.CollisionMask.ToList().GetRange(8, 8);
+            foreach (MSBE.Part.Collision c in mb.Parts.Collisions)
+            {
+                if (!enemyCols.Contains(c.Name)) continue;
+                SortedSet<string> sees = new SortedSet<string>();
+                foreach (KeyValuePair<string, string> checkName in cols)
+                {
+                    MSBE.Part.Collision check = colParts[checkName.Key];
+                    List<uint> disp = dispGroups(check);
+                    List<uint> draw = drawGroups(c);
+                    if (draw.Where((g, i) => (g & disp[i]) != 0).Any())
+                    {
+                        sees.Add(checkName.Value);
+                    }
+                }
+                if (sees.Count > 0)
+                {
+                    AddMulti(visibleCols, string.Join(", ", sees), c.Name);
+                }
+            }
+            SortedSet<string> unnamedCols = new SortedSet<string>();
+            string formatCol(string s)
+            {
+                if (cols.TryGetValue(s, out string t)) return $"{s} ({t})";
+                if (extraCols.TryGetValue(s, out t) && !string.IsNullOrWhiteSpace(t)) return $"{s} ({t})";
+                unnamedCols.Add(s);
+                return s;
+            };
+            foreach (KeyValuePair<string, List<string>> seen in visibleCols)
+            {
+                Console.WriteLine($"[{seen.Key}] = {string.Join(" ", seen.Value.Select(formatCol))}");
+            }
+            Dictionary<string, string> examples = new Dictionary<string, string>();
+            foreach (string col in unnamedCols)
+            {
+                Console.WriteLine($"--- {col}");
+                List<MSBE.Part.Enemy> enemies = mb.Parts.Enemies.Where(c => c.CollisionPartName == col).ToList();
+                foreach (MSBE.Part.Enemy e in enemies)
+                {
+                    if (infos.TryGetValue((int)e.EntityID, out EnemyInfo info))
+                    {
+                        Console.WriteLine(info.DebugText);
+                        examples[col] = $"{e.Name} {e.EntityID}";
+                        break;
+                    }
+                }
+            }
+            foreach (string col in unnamedCols)
+            {
+                examples.TryGetValue(col, out string example);
+                example = example == null ? "" : $"  // {example}";
+                Console.WriteLine($"[\"{col}\"] = \"\",{example}");
+            }
+        }
+
+        public void InvestigateDS3Cols(MSB3 mb)
+        {
+            // DrawGroups just too expansive, crossing from big stairs down into the abyss swamp, or vice versa
+            Dictionary<string, string> cols = new Dictionary<string, string>
+            {
+                ["h004800"] = "Upper stairs",
+                ["h005000"] = "Lower stairs",
+                // DispGroups same as h006000 coming from lower stairs
+                ["h006001"] = "Abyss swamp",
+                ["h007000"] = "Outside bonfire",
+                ["h008000"] = "Up the swamp ladder",
+                ["h508200"] = "Ringed Knight upper level",
+                ["h005400"] = "Ringed Knight lower level",
+                ["h006104"] = "Further swamp",
+                ["h006300"] = "Ledo area",
+                // For humanity crash
+                // DispGroups same as h007501 going towards monument area
+                ["h007500"] = "*Up the humanity ladder",
+                ["h007600"] = "+Upper Purging monument",
+                ["h007900"] = "Lower Purging monument",
+            };
+            Dictionary<string, MSB3.Part.Collision> colParts = mb.Parts.Collisions
+                .Where(c => cols.ContainsKey(c.Name))
+                .ToDictionary(c => c.Name, c => c);
+            Dictionary<string, List<string>> visibleCols = new Dictionary<string, List<string>>();
+            HashSet<string> enemyCols = new HashSet<string>(mb.Parts.Enemies.Select(c => c.CollisionName));
+            foreach (MSB3.Part.Collision c in mb.Parts.Collisions)
+            {
+                if (!enemyCols.Contains(c.Name)) continue;
+                SortedSet<string> sees = new SortedSet<string>();
+                foreach (KeyValuePair<string, string> checkName in cols)
+                {
+                    MSB3.Part.Collision check = colParts[checkName.Key];
+                    if (c.DrawGroups.Where((g, i) => (g & check.DispGroups[i]) != 0).Any())
+                    {
+                        sees.Add(checkName.Value);
+                    }
+                }
+                if (sees.Count > 0)
+                {
+                    AddMulti(visibleCols, string.Join(", ", sees), c.Name);
+                }
+            }
+            foreach (KeyValuePair<string, List<string>> seen in visibleCols)
+            {
+                Console.WriteLine($"[{seen.Key}] = {string.Join(" ", seen.Value.Select(s => cols.TryGetValue(s, out string t) ? $"{s} ({t})" : s))}");
+            }
+        }
+
+        public void DumpSpEffects(GameData game)
+        {
+            Dictionary<string, List<string>> getFieldValues(string p)
+            {
+                Dictionary<string, List<string>> ret = new Dictionary<string, List<string>>();
+                foreach (PARAM.Row row in game.Params[p].Rows)
+                {
+                    foreach (PARAM.Cell cell in row.Cells)
+                    {
+                        string name = cell.Def.InternalName;
+                        AddMulti(ret, name, cell.Value.ToString());
+                    }
+                }
+                return ret;
+            }
+            Dictionary<string, List<string>> spFields = getFieldValues("SpEffectParam");
+            Dictionary<string, string> ignoreCells = new Dictionary<string, string>();
+            foreach (KeyValuePair<string, List<string>> entry in spFields)
+            {
+                (int valCount, string value) = entry.Value
+                    .OrderBy(x => x).GroupBy(x => x).Select(x => (x.Count(), x.Key)).OrderByDescending(x => x).FirstOrDefault();
+                // Console.WriteLine($"{entry.Key}: {value} ({valCount})");
+                if (entry.Key == "effectEndurance") value = null;
+                ignoreCells[entry.Key] = value;
+            }
+            Dictionary<int, string> descs = new Dictionary<int, string>();
+            SortedDictionary<string, List<int>> valueGroups = new SortedDictionary<string, List<int>>();
+            string groupBy = null;
+            foreach (PARAM.Row row in game.Params["SpEffectParam"].Rows)
+            {
+                string formatCell(PARAM.Cell cell)
+                {
+                    string key = cell.Def.InternalName;
+                    string value = cell.Value.ToString();
+                    if (ignoreCells[key] != null && ignoreCells[key] == value) return null;
+                    if (key.StartsWith("pad")) return null;
+                    object val = cell.Value;
+                    string disp = val.ToString();
+                    return $"{key}={disp}";
+                }
+                descs[row.ID] = string.Join(", ", row.Cells.Select(formatCell).Where(t => t != null));
+                if (groupBy != null)
+                {
+                    object by = row[groupBy].Value;
+                    // string byStr = $"{(short)by:d2}";
+                    string byStr = by.ToString();
+                    AddMulti(valueGroups, byStr, row.ID);
+                }
+                Console.WriteLine($"{row.ID}: {descs[row.ID]}");
+            }
+            foreach (KeyValuePair<string, List<int>> entry in valueGroups)
+            {
+                Console.WriteLine($"------- {groupBy} = {entry.Key}");
+                foreach (int val in entry.Value) Console.WriteLine($"> {val}: {descs[val]}");
+            }
+        }
     }
 }

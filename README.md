@@ -1,9 +1,16 @@
-See project readmes in DS3Randomizer and SekiroRandomizer
+See project readmes in DS3Randomizer, SekiroRandomizer, and EldenRingRandomizer
 
 Find the mod releases on Nexus:
 
 - DS3: https://www.nexusmods.com/darksouls3/mods/361
 - Sekiro: https://www.nexusmods.com/sekiro/mods/543
+- Elden Ring: https://www.nexusmods.com/eldenring/mods/428
+
+## Licensing and contributions
+
+These randomizers are source-available but due to past issues, they are currently **not freely licensed**.
+
+At least at the moment, contributions are not accepted. Do not distribute the randomizer, forks of the randomizer programs, or forks of config files. This section will be updated if that changes.
 
 ## Item randomizer algorithm
 

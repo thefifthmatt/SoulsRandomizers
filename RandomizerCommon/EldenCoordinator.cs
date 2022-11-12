@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using SoulsFormats;
 using SoulsIds;
-using YamlDotNet.Serialization;
-using static SoulsFormats.EMEVD.Instruction;
-using static RandomizerCommon.LocationData;
-using static RandomizerCommon.LocationData.LocationKey;
-using static RandomizerCommon.LocationData.ItemScope;
 using static RandomizerCommon.Util;
 
 namespace RandomizerCommon
@@ -332,6 +328,68 @@ namespace RandomizerCommon
             Red_Mark = 87,
         }
 
+        internal void DumpJS(GameData game)
+        {
+            Console.WriteLine($"// This file was automatically generated for EldenCoordinator by thefifthmatt.");
+            Console.WriteLine($"// Warning: This data is imprecise and available in cleaner formats elsewhere.");
+            Console.WriteLine("const offsets = {");
+            foreach (KeyValuePair<string, (int, int, Vector3)> entry in dungeonOffsets.OrderBy(e => e.Key))
+            {
+                (int tileX, int tileZ, Vector3 v) = entry.Value;
+                Console.WriteLine($"    '{entry.Key}': {{tileX: {tileX}, tileZ: {tileZ}, offset: Float64Array.from([{v.X}, {v.Y}, {v.Z}])}},");
+            }
+            Console.WriteLine("};");
+            Console.WriteLine();
+            GameSpec defaultSpec = GameSpec.ForGame(GameSpec.FromGame.ER);
+            Console.WriteLine("const maps = {");
+            SortedSet<string> includedMaps = new SortedSet<string>();
+            string msbDir = $@"{defaultSpec.GameDir}\{defaultSpec.MsbDir}";
+            foreach (string filename in Directory.GetFiles(msbDir, "*.msb.dcx"))
+            {
+                string id = GameEditor.BaseName(filename);
+                if (id.EndsWith("_99")) continue;
+                game.LocationNames.TryGetValue(id, out string name);
+                if (string.IsNullOrWhiteSpace(name)) name = null;
+                if (id.StartsWith("m60"))
+                {
+                    // Don't count duplicates
+                    if (id.EndsWith("_10") || id.EndsWith("_11") || id.EndsWith("_12")) continue;
+                }
+                else
+                {
+                    if (name == null) continue;
+                }
+                Console.WriteLine($"    '{id}': {(name == null ? "null" : $"\"{name}\"")},");
+                includedMaps.Add(id);
+            }
+            Console.WriteLine("};");
+            Console.WriteLine();
+            Console.WriteLine("const connects = {");
+            Dictionary<string, MSBE> maps = game.EldenMaps;
+            foreach (string id in includedMaps)
+            {
+                maps.TryGetValue(id, out MSBE msb);
+                if (msb == null)
+                {
+                    msb = MSBE.Read($@"{msbDir}\{id}.msb.dcx");
+                }
+                SortedSet<string> connects = new SortedSet<string>();
+                foreach (MSBE.Part.ConnectCollision col in msb.Parts.ConnectCollisions)
+                {
+                    string mapId = GameData.FormatMap(col.MapID.Select(i => i == 0xFF ? (byte)0 : i));
+                    if (includedMaps.Contains(mapId))
+                    {
+                        connects.Add(mapId);
+                    }
+                }
+                if (connects.Count > 0)
+                {
+                    Console.WriteLine($"    '{id}': [{string.Join(", ", connects.Select(c => $"'{c}'"))}],");
+                }
+            }
+            Console.WriteLine("};");
+        }
+
         internal void TestLegacyConv(GameData game)
         {
             foreach (PARAM.Row row in game.Params["WorldMapLegacyConvParam"].Rows)
@@ -356,10 +414,10 @@ namespace RandomizerCommon
                 game.Params["BonfireWarpParam"].Rows
                     .Select(row => (uint)row["bonfireEntityId"].Value)
                     .Where(o => o > 0));
-            foreach (KeyValuePair<string, MSBX> entry in game.EldenMaps)
+            foreach (KeyValuePair<string, MSBE> entry in game.EldenMaps)
             {
-                MSBX msb = entry.Value;
-                foreach (MSBX.Part part in msb.PartsX)
+                MSBE msb = entry.Value;
+                foreach (MSBE.Part.Asset part in msb.Parts.Assets)
                 {
                     if (!bonfireObjs.Contains(part.EntityID)) continue;
                     PARAM.Row row = game.Params["BonfireWarpParam"].Rows.Find(r => (int)r["LocationEventId"].Value == part.EntityID);

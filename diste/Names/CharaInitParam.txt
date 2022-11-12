@@ -1,4 +1,4 @@
-20000 Human
+20000 Unnamed Human
 23000 Tanith
 23010 White Mask Varre
 23040 Roundtable Knight Vyke
@@ -15,18 +15,21 @@
 23122 Witch-Hunter Jerren
 23130 Rya the Scout
 23140 Knight Diallos
-23150 Human
+# Diallos finding corpse?
+23150 Unnamed Human
 23160 Sorceress Sellen
 23162 Sorceress Sellen
 23163 Sorceress Sellen
 23180 Yura, Hunter of Bloody Fingers
 23182 Shabriri
 23183 Yura, Hunter of Bloody Fingers
+23184 Shabriri
 23190 D, Hunter of the Dead
 23191 D, Hunter of the Dead
 23192 D, Hunter of the Dead
 23193 D, Hunter of the Dead
 23194 D, Hunter of the Dead
+23195 D, Beholder of Death
 23200 Roderika
 # Roderika, Spirit Tuner
 23201 Roderika
@@ -51,7 +54,8 @@
 23262 Recusant Bernahl
 23271 Eleonora, Violet Bloody Finger
 23290 Lionel the Lionhearted
-23291 Human
+# Radahn helper, nameless
+23291 Lionel the Lionhearted
 23310 Blackguard
 23311 Blackguard
 23312 Blackguard
@@ -64,7 +68,7 @@
 23390 Ensha of the Royal Remains
 23400 Bloody Finger Ravenmount Assassin
 23420 Boc the Seamster
-23430 Sanguine Noble
+23430 Bloody Finger Nerijus
 23440 Great Horned Tragoth
 23441 Great Horned Tragoth
 23450 Old Knight Istvan
@@ -96,7 +100,7 @@
 23650 Jarwight
 23670 Inaba, Disciple of Okina
 23611 Fia's Champion
-23612 Human
+23612 Fia's Champion Helper
 23680 Silver Tear
 23681 Silver Tear
 23682 Silver Tear
@@ -120,10 +124,12 @@
 23880 Maureen, Second Sister
 23890 Amy, Third Sister
 23900 Polyanna, Youngest Sister
+23901 Polyanna, Adopted Daughter
+23910 Magnus the Beast Claw
 24010 Stray Mimic Tear
 24020 Mimic Tear
 27000 Stormhill Colosseum Silent Spirit
 27001 Caria Manor Silent Spirit
 27002 Dragonbarrow Silent Spirit
-27900 Human
-28500 Human
+27900 Unnamed Human
+28500 Unnamed Human

@@ -35,7 +35,7 @@ namespace EldenRingRandomizer
                 }
                 if (args.Contains("updatemessages"))
                 {
-                    Messages.CopyExplanations();
+                    Messages.CopyExplanations(args);
                     return;
                 }
                 RandomizerOptions options = RandomizerOptions.Parse(args, FromGame.ER);
@@ -43,10 +43,11 @@ namespace EldenRingRandomizer
                 {
                     options.Seed = (uint)new Random().Next();
                 }
+                Messages messages = new Messages("diste");
                 Preset preset = null;
                 if (options.Preset != null)
                 {
-                    preset = Preset.LoadPreset(options.Preset, extractOopsAll: true);
+                    preset = Preset.LoadPreset(options.Preset);
                 }
                 if (preset == null && File.Exists("DevER.txt"))
                 {
@@ -61,10 +62,10 @@ namespace EldenRingRandomizer
                 }
                 else
                 {
-                    outPath = @"C:\Users\matt\Downloads\Mods\ModEngine-2.0.0-preview3-win64\mod";
+                    outPath = @"C:\Users\matt\Downloads\Mods\ModEngine-2.0.0-preview3-win64\randomizer";
                 }
                 new Randomizer().Randomize(
-                    options, FromGame.ER, status => Console.WriteLine("## " + status), outPath: outPath, preset: preset, gameExe: gameExe);
+                    options, FromGame.ER, status => Console.WriteLine("## " + status), outPath: outPath, preset: preset, messages: messages, gameExe: gameExe);
                 Application.Exit();
             }
             else

@@ -36,13 +36,19 @@ namespace RandomizerCommon
             // Keeping track of model declarations
             public abstract ModelEditor GetModelEditor(TMap msb);
             // Move one enemy to another
-            public abstract TEnemy TransplantEnemy(TMap msb, EnemyData source, int target, int? npcParam = null);
+            public abstract TEnemy TransplantEnemy(TMap msb, EnemyData source, int target);
+            // Override NPC param in particular
+            // TODO: Should probably be separate
+            public abstract void SetNpcParam(TEnemy e, int? npcParam = null, int? npcThinkParam = null);
             // Clone one enemy to a new location
             public abstract TEnemy CloneEnemy(TMap msb, TEnemy sourcePart, EnemyData source, int newTarget, int newPartId);
+            public abstract void CopyAssociations(
+                TMap fromMsb, EnemyData ownerSource, EnemyData helperSource,
+                TMap toMsb, TEnemy ownerPart, TEnemy helperPart);
             // Set enemy collision, which usually becomes invalid across maps
             public abstract void SetEnemyCollision(TEnemy enemy, string colName);
             // Clear entity groups for an enemy
-            public abstract void ClearGroups(TEnemy e);
+            public abstract void ClearGroups(TEnemy e, ICollection<int> preserveGroups = null);
             // Copy group data from a source enemy into its transplant
             public abstract void CopyGroups(EnemyData source, Dictionary<int, int> groupMapping, TEnemy target, int removeTarget = 0);
             // Remove some enemies by entity id
@@ -54,9 +60,9 @@ namespace RandomizerCommon
             // Copy a generator from one location to a different one
             public abstract (List<TRegion>, int) MakeGeneratorCopy(
                 Dictionary<string, TMap> msbs, Func<int> newEntity, string map, string toMap, int id,
-                Dictionary<int, (TGenerator, List<int>)> generators, Dictionary<int, int> reloc);
+                Dictionary<int, (TGenerator, List<int>)> generators, Dictionary<EventValue, EventValue> reloc);
             // Copy a region from one location to a different one
-            public abstract (TRegion, TRegion, int) MakeRegionCopy(
+            public abstract (TRegion, List<TRegion>, int) MakeRegionCopy(
                 Dictionary<string, TMap> msbs, Func<int> newEntity, string map, string toMap, int id,
                 bool replace);
             // Add a standalone region based on arena data
@@ -74,7 +80,7 @@ namespace RandomizerCommon
             {
                 return new EnemyData
                 {
-                    Map = map,
+                    MainMap = map,
                     Name = e.Name,
                     ID = e.EntityID,
                     Group = e.EntityGroups.Where(g => g > 0).ToList(),
@@ -114,14 +120,20 @@ namespace RandomizerCommon
                 };
             }
 
-            public override MSB3.Part.Enemy TransplantEnemy(MSB3 msb, EnemyData source, int target, int? npcParam = null)
+            public override MSB3.Part.Enemy TransplantEnemy(MSB3 msb, EnemyData source, int target)
             {
                 MSB3.Part.Enemy e = msb.Parts.Enemies.Find(en => en.EntityID == target);
                 e.ModelName = source.Model;
-                e.NPCParamID = npcParam ?? source.NPC;
+                e.NPCParamID = source.NPC;
                 e.ThinkParamID = source.Think;
                 e.CharaInitID = source.Char;
                 return e;
+            }
+
+            public override void SetNpcParam(MSB3.Part.Enemy e, int? npcParam = null, int? npcThinkParam = null)
+            {
+                if (npcParam is int npc) e.NPCParamID = npc;
+                if (npcThinkParam is int think) e.ThinkParamID = think;
             }
 
             public override MSB3.Part.Enemy CloneEnemy(MSB3 msb, MSB3.Part.Enemy sourcePart, EnemyData source, int newTarget, int newPartId)
@@ -144,14 +156,14 @@ namespace RandomizerCommon
                 enemy.CollisionName = colName;
             }
 
-            public override void ClearGroups(MSB3.Part.Enemy e)
+            public override void ClearGroups(MSB3.Part.Enemy e, ICollection<int> preserveGroups = null)
             {
                 for (int i = 0; i < e.EntityGroups.Length; i++) e.EntityGroups[i] = -1;
             }
 
             public override void CopyGroups(EnemyData source, Dictionary<int, int> groupMapping, MSB3.Part.Enemy target, int removeTarget = 0)
             {
-                CopyGroupsInternal(source, groupMapping, target.EntityGroups, removeTarget);
+                CopyGroupsInternal(source, groupMapping, target.EntityGroups, removeTarget, -1);
             }
 
             public override void RemoveEnemies(MSB3 msb, Predicate<int> removePredicate)
@@ -197,7 +209,7 @@ namespace RandomizerCommon
                 return generators;
             }
 
-            public override (MSB3.Region, MSB3.Region, int) MakeRegionCopy(
+            public override (MSB3.Region, List<MSB3.Region>, int) MakeRegionCopy(
                 Dictionary<string, MSB3> msbs, Func<int> newEntity, string map, string toMap, int id, bool replace)
             {
                 MSB3.Region a = msbs[map].Regions.GetEntries().Find(r => r.EntityID == id);
@@ -217,12 +229,12 @@ namespace RandomizerCommon
                     b.EntityID = newEntity();
                 }
                 b.Name = $"Region {b.EntityID} from {id}";
-                return (a, b, b.EntityID);
+                return (a, new List<MSB3.Region> { b }, b.EntityID);
             }
 
             public override (List<MSB3.Region>, int) MakeGeneratorCopy(
                 Dictionary<string, MSB3> msbs, Func<int> newEntity, string map, string toMap, int id,
-                Dictionary<int, (MSB3.Event.Generator, List<int>)> generators, Dictionary<int, int> reloc)
+                Dictionary<int, (MSB3.Event.Generator, List<int>)> generators, Dictionary<EventValue, EventValue> reloc)
             {
                 MSB3 fromMsb = msbs[map];
                 MSB3 msb = msbs[toMap];
@@ -238,8 +250,12 @@ namespace RandomizerCommon
                 int enemyIndex = 0;
                 foreach (int fromEnemy in enemyIds)
                 {
-                    if (!reloc.TryGetValue(fromEnemy, out int target)) throw new Exception($"No target found for {fromEnemy} from generator {id}");
-                    MSB3.Part.Enemy enemy = msb.Parts.Enemies.Find(e => e.EntityID == target);
+                    if (!reloc.TryGetValue(EventValue.Enemy(fromEnemy), out EventValue target))
+                    {
+                        throw new Exception($"No target found for {fromEnemy} from generator {id}");
+                    }
+                    int targetId = target.IntID;
+                    MSB3.Part.Enemy enemy = msb.Parts.Enemies.Find(e => e.EntityID == targetId);
                     gen2.SpawnPartNames[enemyIndex++] = enemy.Name;
                 }
                 // When does this happen?
@@ -280,6 +296,10 @@ namespace RandomizerCommon
                 msb.Regions.Add(r);
                 return r;
             }
+
+            public override void CopyAssociations(MSB3 fromMsb, EnemyData ownerSource, EnemyData helperSource, MSB3 toMsb, MSB3.Part.Enemy ownerPart, MSB3.Part.Enemy helperPart)
+            {
+            }
         }
 
         public class SekiroEnemyEditor : EnemyEditor<MSBS, MSBS.Part.Enemy, MSBS.Region, MSBS.Event.Generator>
@@ -293,7 +313,7 @@ namespace RandomizerCommon
             {
                 return new EnemyData
                 {
-                    Map = map,
+                    MainMap = map,
                     Name = e.Name,
                     ID = e.EntityID,
                     Group = e.EntityGroupIDs.Where(g => g > 0).ToList(),
@@ -332,15 +352,20 @@ namespace RandomizerCommon
                 };
             }
 
-            public override MSBS.Part.Enemy TransplantEnemy(MSBS msb, EnemyData source, int target, int? npcParam = null)
+            public override MSBS.Part.Enemy TransplantEnemy(MSBS msb, EnemyData source, int target)
             {
                 MSBS.Part.Enemy e = msb.Parts.Enemies.Find(en => en.EntityID == target);
                 e.ModelName = source.Model;
-                e.NPCParamID = npcParam ?? source.NPC;
+                e.NPCParamID = source.NPC;
                 e.ThinkParamID = source.Think;
                 return e;
             }
 
+            public override void SetNpcParam(MSBS.Part.Enemy e, int? npcParam = null, int? npcThinkParam = null)
+            {
+                if (npcParam is int npc) e.NPCParamID = npc;
+                if (npcThinkParam is int think) e.ThinkParamID = think;
+            }
             public override MSBS.Part.Enemy CloneEnemy(MSBS msb, MSBS.Part.Enemy sourcePart, EnemyData source, int newTarget, int newPartId)
             {
                 MSBS.Part.Enemy e2 = (MSBS.Part.Enemy)sourcePart.DeepCopy();
@@ -360,14 +385,14 @@ namespace RandomizerCommon
                 enemy.CollisionPartName = colName;
             }
 
-            public override void ClearGroups(MSBS.Part.Enemy e)
+            public override void ClearGroups(MSBS.Part.Enemy e, ICollection<int> preserveGroups = null)
             {
                 for (int i = 0; i < e.EntityGroupIDs.Length; i++) e.EntityGroupIDs[i] = -1;
             }
 
             public override void CopyGroups(EnemyData source, Dictionary<int, int> groupMapping, MSBS.Part.Enemy target, int removeTarget = 0)
             {
-                CopyGroupsInternal(source, groupMapping, target.EntityGroupIDs, removeTarget);
+                CopyGroupsInternal(source, groupMapping, target.EntityGroupIDs, removeTarget, -1);
             }
 
             public override void RemoveEnemies(MSBS msb, Predicate<int> removePredicate)
@@ -408,7 +433,7 @@ namespace RandomizerCommon
                 return generators;
             }
 
-            public override (MSBS.Region, MSBS.Region, int) MakeRegionCopy(
+            public override (MSBS.Region, List<MSBS.Region>, int) MakeRegionCopy(
                 Dictionary<string, MSBS> msbs, Func<int> newEntity, string map, string toMap, int id, bool replace)
             {
                 MSBS.Region a = msbs[map].Regions.GetEntries().Find(r => r.EntityID == id);
@@ -440,12 +465,12 @@ namespace RandomizerCommon
                     b.EntityID = newEntity();
                 }
                 b.Name = $"Region {b.EntityID} from {id}";
-                return (a, b, b.EntityID);
+                return (a, new List<MSBS.Region> { b }, b.EntityID);
             }
 
             public override (List<MSBS.Region>, int) MakeGeneratorCopy(
                 Dictionary<string, MSBS> msbs, Func<int> newEntity, string map, string toMap, int id,
-                Dictionary<int, (MSBS.Event.Generator, List<int>)> generators, Dictionary<int, int> reloc)
+                Dictionary<int, (MSBS.Event.Generator, List<int>)> generators, Dictionary<EventValue, EventValue> reloc)
             {
                 MSBS fromMsb = msbs[map];
                 MSBS msb = msbs[toMap];
@@ -461,11 +486,12 @@ namespace RandomizerCommon
                 int enemyIndex = 0;
                 foreach (int fromEnemy in enemyIds)
                 {
-                    if (!reloc.TryGetValue(fromEnemy, out int target))
+                    if (!reloc.TryGetValue(EventValue.Enemy(fromEnemy), out EventValue target))
                     {
                         throw new Exception($"No target found for {fromEnemy} from generator {id}");
                     }
-                    MSBS.Part.Enemy enemy = msb.Parts.Enemies.Find(e => e.EntityID == target);
+                    int targetId = target.IntID;
+                    MSBS.Part.Enemy enemy = msb.Parts.Enemies.Find(e => e.EntityID == targetId);
                     gen2.SpawnPartNames[enemyIndex++] = enemy.Name;
                 }
                 // When does this happen?
@@ -506,6 +532,365 @@ namespace RandomizerCommon
                 msb.Regions.Add(r);
                 return r;
             }
+
+            public override void CopyAssociations(MSBS fromMsb, EnemyData ownerSource, EnemyData helperSource, MSBS toMsb, MSBS.Part.Enemy ownerPart, MSBS.Part.Enemy helperPart)
+            {
+            }
+        }
+
+        public class EldenEnemyEditor : EnemyEditor<MSBE, MSBE.Part.Enemy, MSBE.Region, MSBE.Event.Generator>
+        {
+            public override List<MSBE.Part.Enemy> GetEnemies(MSBE msb) => msb.Parts.Enemies;
+            public override void SetEntityID(MSBE.Part.Enemy e, int id) => e.EntityID = (uint)id;
+            // int == uint checks return true for the same value
+            public override MSBE.Part.Enemy GetEnemy(MSBE msb, int id) => msb.Parts.Enemies.Find(e => e.EntityID == id);
+            public override MSBE.Region GetRegion(MSBE msb, int id) => msb.Regions.GetEntries().Find(e => e.EntityID == id);
+
+            public override EnemyData GetEnemyData(MSBE.Part.Enemy e, string map)
+            {
+                return new EnemyData
+                {
+                    MainMap = map,
+                    Name = e.Name,
+                    ID = (int)e.EntityID,
+                    Group = e.EntityGroupIDs.Where(g => g > 0).Select(g => (int)g).ToList(),
+                    Model = e.ModelName,
+                    NPC = e.NPCParamID,
+                    Think = e.ThinkParamID,
+                    Char = e.CharaInitID,
+                    Col = e.CollisionPartName,
+                    Anim = e.BackupEventAnimID,
+                };
+            }
+
+            public override ModelEditor GetModelEditor(MSBE msb)
+            {
+                return new ModelEditor
+                {
+                    EnemyDecl = new HashSet<string>(msb.Models.Enemies.Select(model => model.Name)),
+                    EnemyUsed = new HashSet<string>(msb.Parts.GetEntries()
+                        .Where(e => e is MSBE.Part.DummyEnemy || e is MSBE.Part.Enemy || e is MSBE.Part.Player)
+                        .Select(e => e.ModelName)),
+                    ObjectDecl = new HashSet<string>(msb.Models.Assets.Select(model => model.Name)),
+                    RegisterEnemy = name =>
+                    {
+                        msb.Models.Enemies.Add(new MSBE.Model.Enemy
+                        {
+                            Name = name,
+                            SibPath = $@"N:\GR\data\Model\chr\{name}\sib\{name}.sib",
+                        });
+                    },
+                    RegisterObject = name =>
+                    {
+                        msb.Models.Assets.Add(new MSBE.Model.Asset
+                        {
+                            Name = name,
+                            SibPath = $@"N:\GR\data\Asset\Environment\geometry\{name.Substring(0, 6)}\{name}\sib\{name}.sib",
+                        });
+                    },
+                };
+            }
+
+            public override MSBE.Part.Enemy TransplantEnemy(MSBE msb, EnemyData source, int target)
+            {
+                MSBE.Part.Enemy e = msb.Parts.Enemies.Find(en => en.EntityID == target);
+                e.ModelName = source.Model;
+                e.NPCParamID = source.NPC;
+                e.ThinkParamID = source.Think;
+                e.CharaInitID = source.Char;
+                // This could be source.Anim, but unfortunately some enemies are underground.
+                // e.g. Small Oracle Envoy (#11000204) in Leyndell <- Grave Skeleton
+                // So filter this out beforehand if undesired
+                e.BackupEventAnimID = source.Anim;
+                // Used by Bell Bearing Hunters to hide themselves
+                e.UnkT15 = false;
+                // Enemies can have speffects (UnkT40 etc), which seems mostly fun to keep. (109000 on snail not cosmetic though)
+                // Exceptions handled in EnemyRandomizer
+                return e;
+            }
+
+            public override void SetNpcParam(MSBE.Part.Enemy e, int? npcParam = null, int? npcThinkParam = null)
+            {
+                if (npcParam is int npc) e.NPCParamID = npc;
+                if (npcThinkParam is int think) e.ThinkParamID = think;
+            }
+
+            public override MSBE.Part.Enemy CloneEnemy(MSBE msb, MSBE.Part.Enemy sourcePart, EnemyData source, int newTarget, int newPartId)
+            {
+                MSBE.Part.Enemy e2 = (MSBE.Part.Enemy)sourcePart.DeepCopy();
+                e2.ModelName = source.Model;
+                e2.NPCParamID = source.NPC;
+                e2.ThinkParamID = source.Think;
+                e2.CharaInitID = source.Char;
+                e2.EntityID = (uint)newTarget;
+                e2.Name = $"{e2.ModelName}_{newPartId:d4}";
+                // Needed to avoid sudden deaths, evidently. TODO see where this mismatches in vanilla
+                e2.Unk08 = newPartId;
+                // Transplanting talks seems to break most talk scripts
+                e2.TalkID = 0;
+                msb.Parts.Enemies.Add(e2);
+                // Hardcode some basic events here, for the sake of caravan duplication. There are caravan trolls
+                if (sourcePart.ModelName == "c4600" || sourcePart.ModelName == "c4602")
+                {
+                    foreach (MSBE.Event.PlatoonInfo info in msb.Events.PlatoonInfo.Where(p => p.GroupPartsNames.Contains(sourcePart.Name)))
+                    {
+                        int blankIndex = Array.IndexOf(info.GroupPartsNames, null);
+                        if (blankIndex >= 0)
+                        {
+                            info.GroupPartsNames[blankIndex] = e2.Name;
+                        }
+                    }
+                }
+                return e2;
+            }
+
+            public override void CopyAssociations(
+                MSBE fromMsb, EnemyData ownerSource, EnemyData helperSource,
+                MSBE toMsb, MSBE.Part.Enemy owner, MSBE.Part.Enemy helper)
+            {
+                // Only Elden Ring for now
+                MSBE.Event.Mount mount = fromMsb.Events.Mounts
+                    .Find(e => e.RiderPartName == ownerSource.Name && e.MountPartName == helperSource.Name);
+                if (mount != null)
+                {
+                    // Even if the two maps are the same, this event is called when the helper is removed
+                    toMsb.Events.Mounts.Add(new MSBE.Event.Mount
+                    {
+                        RiderPartName = owner.Name,
+                        MountPartName = helper.Name,
+                    });
+                }
+            }
+
+            public override void SetEnemyCollision(MSBE.Part.Enemy enemy, string colName)
+            {
+                enemy.CollisionPartName = colName;
+            }
+
+            public override void ClearGroups(MSBE.Part.Enemy e, ICollection<int> preserveGroups = null)
+            {
+                for (int i = 0; i < e.EntityGroupIDs.Length; i++)
+                {
+                    if (preserveGroups == null || !preserveGroups.Contains((int)e.EntityGroupIDs[i]))
+                    {
+                        e.EntityGroupIDs[i] = 0;
+                    }
+                }
+            }
+
+            public override void CopyGroups(EnemyData source, Dictionary<int, int> groupMapping, MSBE.Part.Enemy target, int removeTarget = 0)
+            {
+                // For now, make this a weird adapter
+                int[] groups = target.EntityGroupIDs.Select(g => (int)g).ToArray();
+                bool include = new uint[] { 16000801, 16000800, 4000030, 4000029 }.Contains(target.EntityID);
+                // if (include) Console.WriteLine($"{target.EntityID} group: {string.Join(",", groups)} vs {string.Join("", groupMapping)} rm {removeTarget}");
+                CopyGroupsInternal(source, groupMapping, groups, removeTarget, 0);
+                // if (include) Console.WriteLine($"{target.EntityID} group: {string.Join(",", groups)} after");
+                for (int i = 0; i < target.EntityGroupIDs.Length; i++)
+                {
+                    target.EntityGroupIDs[i] = (uint)groups[i];
+                }
+            }
+
+            public override void RemoveEnemies(MSBE msb, Predicate<int> removePredicate)
+            {
+                // This doesn't seem to work great with our current MSBE so do this instead
+                msb.Parts.Enemies = msb.Parts.Enemies.Where(p => !removePredicate((int)p.EntityID)).ToList();
+                return;
+                msb.Parts.Enemies.ForEach(p =>
+                {
+                    if (removePredicate((int)p.EntityID))
+                    {
+                        p.ModelName = "c1000";
+                        // p.Scale = new Vector3(66, 66, 66);
+                    }
+                });
+            }
+
+            public override void GarbageCollect(MSBE msb, HashSet<string> usedEnemies = null, HashSet<string> removedObjects = null)
+            {
+                // HashSet<string> dummiedEntities = usedEnemies;
+                // Don't do removal of events, as this probably breaks some things. Instead, dummy things out
+                HashSet<string> names = new HashSet<string>(msb.Parts.Enemies.Where(e => e.Scale.X != 66).Select(e => e.Name));
+                void dummyParts(string[] parts)
+                {
+                    for (int i = 0; i < parts.Length; i++)
+                    {
+                        if (parts[i] != null && !names.Contains(parts[i]))
+                        {
+                            parts[i] = null;
+                        }
+                    }
+                }
+                // msb.Events.PlatoonInfo = msb.Events.PlatoonInfo.Where(t => t.GroupPartNames.All(n => n == null || names.Contains(n))).ToList();
+                // msb.Events.Generators = msb.Events.Generators.Where(t => t.SpawnPartNames.All(n => n == null || names.Contains(n))).ToList();
+                // msb.Events.Mounts = msb.Events.Mounts.Where(t => names.Contains(t.MountPartName) && names.Contains(t.RiderPartName)).ToList();
+                foreach (MSBE.Event.PlatoonInfo t in msb.Events.PlatoonInfo)
+                {
+                    dummyParts(t.GroupPartsNames);
+                }
+                foreach (MSBE.Event.Generator t in msb.Events.Generators)
+                {
+                    dummyParts(t.SpawnPartNames);
+                }
+                foreach (MSBE.Event.Mount t in msb.Events.Mounts)
+                {
+                    if (names.Contains(t.MountPartName) && names.Contains(t.RiderPartName))
+                    {
+                        if (t.MountPartName.StartsWith("c8100")
+                            || t.MountPartName.StartsWith("c8101")
+                            || t.MountPartName.StartsWith("c8110"))
+                        {
+                            // TODO: Handle this better. Delete all of these cases for now
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    t.MountPartName = t.RiderPartName = null;
+                }
+                foreach (MSBE.Region.GroupDefeatReward t in msb.Regions.GroupDefeatRewards)
+                {
+                    dummyParts(t.PartNames);
+                }
+                if (removedObjects != null && removedObjects.Count > 0)
+                {
+                    msb.Events.Treasures.RemoveAll(t => removedObjects.Contains(t.TreasurePartName));
+                    msb.Events.ObjActs.RemoveAll(t => removedObjects.Contains(t.ObjActPartName));
+                }
+            }
+
+            public override Dictionary<int, (MSBE.Event.Generator, List<int>)> GetGeneratorData(Dictionary<string, MSBE> msbs)
+            {
+                Dictionary<int, (MSBE.Event.Generator, List<int>)> generators = new Dictionary<int, (MSBE.Event.Generator, List<int>)>();
+                foreach (KeyValuePair<string, MSBE> entry in msbs)
+                {
+                    MSBE msb = entry.Value;
+                    if (msb.Events.Generators.Count == 0) continue;
+                    Dictionary<string, int> mapEnemies = msb.Parts.Enemies.Where(e => e.EntityID > 0).ToDictionary(e => e.Name, e => (int)e.EntityID);
+                    foreach (MSBE.Event.Generator gen in msb.Events.Generators)
+                    {
+                        List<int> entities = gen.SpawnPartNames
+                            .Select(n => n != null && mapEnemies.TryGetValue(n, out int id) ? id : 0)
+                            .Where(id => id > 0)
+                            .ToList();
+                        generators[(int)gen.EntityID] = (gen, entities);
+                    }
+                }
+                return generators;
+            }
+
+            public override (MSBE.Region, List<MSBE.Region>, int) MakeRegionCopy(
+                Dictionary<string, MSBE> msbs, Func<int> newEntity, string map, string toMap, int id, bool replace)
+            {
+                List<MSBE.Region> regions = msbs[map].Regions.GetEntries();
+                MSBE.Region a = regions.Find(r => r.EntityID == id);
+                if (a == null) throw new Exception($"Internal error: can't find region {id} in {map}");
+                List<MSBE.Region> ret = new List<MSBE.Region>();
+                MSBE.Region b = a.DeepCopy();
+                MSBE msb = msbs[toMap];
+                msb.Regions.Add(b);
+                ret.Add(b);
+                // Hopefully this isn't used much
+                b.ActivationPartName = null;
+                if (replace)
+                {
+                    b.EntityID = a.EntityID;
+                    a.EntityID = 0;
+                }
+                else
+                {
+                    b.EntityID = (uint)newEntity();
+                }
+                b.Name = $"Region {b.EntityID} from {id}";
+                if (b.Shape is MSB.Shape.Composite comp)
+                {
+                    for (int i = 0; i < comp.Children.Length; i++)
+                    {
+                        string childName = comp.Children[i].RegionName;
+                        if (childName == null) continue;
+                        MSBE.Region c = regions.Find(r => r.Name == childName);
+                        if (c == null) throw new Exception($"Internal error: can't find {id} child region {childName} in {map}");
+                        MSBE.Region d = c.DeepCopy();
+                        msb.Regions.Add(d);
+                        ret.Add(d);
+                        d.ActivationPartName = null;
+                        d.EntityID = 0;
+                        d.Name = $"Region {b.EntityID} Child {i} from {id}";
+                        comp.Children[i].RegionName = d.Name;
+                    }
+                }
+                return (a, ret, (int)b.EntityID);
+            }
+
+            public override (List<MSBE.Region>, int) MakeGeneratorCopy(
+                Dictionary<string, MSBE> msbs, Func<int> newEntity, string map, string toMap, int id,
+                Dictionary<int, (MSBE.Event.Generator, List<int>)> generators, Dictionary<EventValue, EventValue> reloc)
+            {
+                MSBE fromMsb = msbs[map];
+                MSBE msb = msbs[toMap];
+                if (!generators.ContainsKey(id)) throw new Exception($"Did not find generator {id}");
+                (MSBE.Event.Generator gen, List<int> enemyIds) = generators[id];
+                if (enemyIds.Count == 0) throw new Exception($"Generator {id} has no enemies associated with it");
+
+                MSBE.Event.Generator gen2 = (MSBE.Event.Generator)gen.DeepCopy();
+                Array.Clear(gen2.SpawnPartNames, 0, gen2.SpawnPartNames.Length);
+                Array.Clear(gen2.SpawnRegionNames, 0, gen2.SpawnRegionNames.Length);
+                gen2.PartName = gen2.RegionName = null;
+
+                int enemyIndex = 0;
+                foreach (int fromEnemy in enemyIds)
+                {
+                    if (!reloc.TryGetValue(EventValue.Enemy(fromEnemy), out EventValue target))
+                    {
+                        // This is fine in some cases, like with mixed-count dupes.
+                        // This generally shouldn't happen with bosses, however.
+                        // throw new Exception($"No target found for {fromEnemy} from generator {id}");
+                        continue;
+                    }
+                    int targetId = target.IntID;
+                    MSBE.Part.Enemy enemy = msb.Parts.Enemies.Find(e => e.EntityID == targetId);
+                    gen2.SpawnPartNames[enemyIndex++] = enemy.Name;
+                }
+                // When does this happen?
+                if (enemyIndex == 0) return (null, 0);
+
+                int genId = newEntity();
+                gen2.EntityID = (uint)genId;
+                gen2.Name = $"Generator {genId} {id}";
+                msb.Events.Generators.Add(gen2);
+
+                List<MSBE.Region> regions = new List<MSBE.Region>();
+                for (int i = 0; i < gen.SpawnRegionNames.Length; i++)
+                {
+                    string regionName = gen.SpawnRegionNames[i];
+                    if (regionName == null) continue;
+                    MSBE.Region a = fromMsb.Regions.GetEntries().Find(r => r.Name == regionName);
+                    MSBE.Region b = a.DeepCopy();
+                    b.EntityID = 0;
+                    b.Name = $"Generator Point #{i} {genId} {id}";
+                    gen2.SpawnRegionNames[i] = b.Name;
+                    regions.Add(b);
+                    msb.Regions.Add(b);
+                }
+                return (regions, genId);
+            }
+
+            public override MSBE.Region MakeArenaRegion(MSBE msb, Arena arena, string name)
+            {
+                MSB.Shape.Box box = new MSB.Shape.Box();
+                box.Width = arena.Box.X;
+                box.Height = arena.Box.Y;
+                box.Depth = arena.Box.Z;
+                MSBE.Region.Other r = new MSBE.Region.Other();
+                r.Shape = box;
+                r.Position = arena.Pos;
+                r.Rotation = arena.Rot;
+                r.Name = name;
+                msb.Regions.Add(r);
+                return r;
+            }
         }
 
         public class ModelEditor
@@ -535,7 +920,7 @@ namespace RandomizerCommon
             }
         }
 
-        private static void CopyGroupsInternal(EnemyData source, Dictionary<int, int> groupMapping, int[] targetGroups, int removeTarget)
+        private static void CopyGroupsInternal(EnemyData source, Dictionary<int, int> groupMapping, int[] targetGroups, int removeTarget, int defaultValue)
         {
             if (groupMapping.Count == 0 && removeTarget == 0)
             {
@@ -546,12 +931,21 @@ namespace RandomizerCommon
                 int removeIndex = Array.IndexOf(targetGroups, removeTarget);
                 if (removeIndex >= 0)
                 {
-                    targetGroups[removeIndex] = -1;
+                    targetGroups[removeIndex] = defaultValue;
                 }
             }
-            foreach (int groupToAdd in source.Group.SelectMany(g => groupMapping.TryGetValue(g, out int g2) ? new int[] { g2 } : new int[] { }))
+            List<int> addGroups = new List<int>();
+            foreach (int sourceGroup in source.Group.Concat(new[] { -1 }))
             {
-                int groupIndex = Array.IndexOf(targetGroups, -1);
+                if (groupMapping.TryGetValue(sourceGroup, out int g2))
+                {
+                    addGroups.Add(g2);
+                }
+            }
+            foreach (int groupToAdd in addGroups)
+            {
+                if (targetGroups.Contains(groupToAdd)) continue;
+                int groupIndex = Array.IndexOf(targetGroups, defaultValue);
                 if (groupIndex == -1)
                 {
                     throw new Exception($"Ran out of group slots mapping {groupToAdd} from {source.ID} -> {targetGroups}");

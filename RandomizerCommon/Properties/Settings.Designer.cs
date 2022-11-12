@@ -46,5 +46,29 @@ namespace RandomizerCommon.Properties {
                 this["Exe"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Mod {
+            get {
+                return ((string)(this["Mod"]));
+            }
+            set {
+                this["Mod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ViewedTabs {
+            get {
+                return ((string)(this["ViewedTabs"]));
+            }
+            set {
+                this["ViewedTabs"] = value;
+            }
+        }
     }
 }

@@ -10,4 +10,30 @@
     <FallbackCulture>en-US</FallbackCulture>
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="EldenForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PresetEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PresetEnemyControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PresetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ScrollDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="SekiroForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>

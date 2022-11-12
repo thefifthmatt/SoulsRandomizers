@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 using SoulsFormats;
 using SoulsIds;
+using YamlDotNet.Serialization;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.Util;
 using static SoulsIds.GameSpec;
@@ -16,6 +19,11 @@ namespace RandomizerCommon
         {
             "EquipParamWeapon", "EquipParamProtector", "EquipParamAccessory", "EquipParamGoods", "EquipParamGem",
         };
+
+        public static readonly ISerializer Serializer = new SerializerBuilder()
+            .DisableAliases()
+            .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitDefaults)
+            .Build();
 
         public readonly GameEditor Editor;
         public FromGame Type => Editor.Spec.Game;
@@ -116,6 +124,25 @@ namespace RandomizerCommon
             [6] = ItemType.EQUIP,
         };
 
+        // echo $(ls | grep -E '_[1][0-2].msb') | sed -e 's/.msb[^ ]* /", "/g'
+        // TODO: why not m60_45_36_10 edits
+        private static readonly List<string> dupeMsbs = new List<string>
+        {
+            "m60_11_09_12", "m60_11_13_12",
+            "m60_22_18_11", "m60_22_19_11", "m60_22_26_11", "m60_22_27_11",
+            "m60_23_18_11", "m60_23_19_11", "m60_23_26_11", "m60_23_27_11",
+            "m60_44_36_10", "m60_44_37_10", "m60_44_38_10", "m60_44_39_10",
+            "m60_44_52_10", "m60_44_53_10", "m60_44_54_10", "m60_44_55_10",
+            "m60_45_36_10", "m60_45_37_10", "m60_45_38_10", "m60_45_39_10",
+            "m60_45_52_10", "m60_45_53_10", "m60_45_54_10", "m60_45_55_10",
+            "m60_46_36_10", "m60_46_37_10", "m60_46_38_10", "m60_46_39_10",
+            "m60_46_52_10", "m60_46_53_10", "m60_46_54_10", "m60_46_55_10",
+            "m60_47_36_10", "m60_47_37_10", "m60_47_38_10", "m60_47_39_10",
+            "m60_47_52_10", "m60_47_53_10", "m60_47_54_10", "m60_47_55_10",
+        };
+        private static readonly Regex MapRe = new Regex(@"m\d\d_\d\d_\d\d_\d\d");
+        private Dictionary<string, string> MapDupes { get; set; }
+
         public Dictionary<string, string> Locations;
         public Dictionary<string, string> RevLocations;
         public Dictionary<string, string> LocationNames;
@@ -138,10 +165,10 @@ namespace RandomizerCommon
         public ParamDictionary Params = new ParamDictionary();
         public Dictionary<string, IMsb> Maps = new Dictionary<string, IMsb>();
         public Dictionary<string, EMEVD> Emevds = new Dictionary<string, EMEVD>();
-        public Dictionary<string, FMG> ItemFMGs = new Dictionary<string, FMG>();
-        public Dictionary<string, FMG> MenuFMGs = new Dictionary<string, FMG>();
-        public Dictionary<string, Dictionary<string, FMG>> OtherItemFMGs = new Dictionary<string, Dictionary<string, FMG>>();
-        public Dictionary<string, Dictionary<string, FMG>> OtherMenuFMGs = new Dictionary<string, Dictionary<string, FMG>>();
+        public FMGDictionary ItemFMGs = new FMGDictionary();
+        public FMGDictionary MenuFMGs = new FMGDictionary();
+        public Dictionary<string, FMGDictionary> OtherItemFMGs = new Dictionary<string, FMGDictionary>();
+        public Dictionary<string, FMGDictionary> OtherMenuFMGs = new Dictionary<string, FMGDictionary>();
         public Dictionary<string, Dictionary<string, ESD>> Talk = new Dictionary<string, Dictionary<string, ESD>>();
 
         // Lazily applies paramdefs
@@ -158,7 +185,7 @@ namespace RandomizerCommon
                     if (!Inner.TryGetValue(key, out PARAM param)) throw new Exception($"Internal error: Param {key} not found");
                     if (param.AppliedParamdef == null)
                     {
-                        if (Defs != null && param.ApplyParamdefCarefully(Defs.Values))
+                        if (Defs != null && ApplyParamdefAggressively(param, Defs.Values))
                         {
                             // It worked
                         }
@@ -169,6 +196,60 @@ namespace RandomizerCommon
                         else throw new Exception($"Internal error: Param {key} has no def file");
                     }
                     return param;
+                }
+            }
+            public bool ContainsKey(string key) => Inner.ContainsKey(key);
+            public IEnumerable<string> Keys => Inner.Keys;
+        }
+
+        public static bool ApplyParamdefAggressively(PARAM param, IEnumerable<PARAMDEF> paramdefs)
+        {
+            foreach (PARAMDEF paramdef in paramdefs)
+            {
+                if (ApplyParamdefAggressively(param, paramdef))
+                    return true;
+            }
+            return false;
+        }
+
+        private static bool ApplyParamdefAggressively(PARAM param, PARAMDEF paramdef)
+        {
+            // ApplyParamdefCarefully does not include enough info to diagnose failed cases.
+            // For now, require that paramdef ParamType instances are unique, as there is no
+            // naming convention for supporting multiple versions.
+            if (param.ParamType == paramdef.ParamType)
+            {
+                if (param.ParamdefDataVersion == paramdef.DataVersion
+                    && (param.DetectedSize == -1 || param.DetectedSize == paramdef.GetRowSize()))
+                {
+                    param.ApplyParamdef(paramdef);
+                    return true;
+                }
+                else
+                {
+                    throw new Exception($"Error: {param.ParamType} cannot be applied (paramdef data version {paramdef.DataVersion} vs {param.ParamdefDataVersion}, paramdef size {paramdef.GetRowSize()} vs {param.DetectedSize})");
+                }
+            }
+            return false;
+        }
+
+        // Lazily read FMGs
+        // This could also be an IReadOnlyDictionary but it's ultimately still a randomizer-internal type
+        public class FMGDictionary
+        {
+            public Dictionary<string, FMG> FMGs = new Dictionary<string, FMG>();
+            public Dictionary<string, byte[]> Inner { get; set; }
+
+            public FMG this[string key]
+            {
+                get
+                {
+                    if (!Inner.TryGetValue(key, out byte[] data)) throw new Exception($"Internal error: FMG {key} not found");
+                    if (!FMGs.TryGetValue(key, out FMG fmg))
+                    {
+                        FMGs[key] = fmg = FMG.Read(data);
+                    }
+                    return fmg;
                 }
             }
             public bool ContainsKey(string key) => Inner.ContainsKey(key);
@@ -208,9 +289,10 @@ namespace RandomizerCommon
         // The IMsb interface is not usable directly, so in lieu of making GameData extremely generic, add these casts
         public Dictionary<string, MSB3> DS3Maps => Maps.ToDictionary(e => e.Key, e => e.Value as MSB3);
         public Dictionary<string, MSBS> SekiroMaps => Maps.ToDictionary(e => e.Key, e => e.Value as MSBS);
-        public Dictionary<string, MSBX> EldenMaps => Maps.ToDictionary(e => e.Key, e => e.Value as MSBX);
+        public Dictionary<string, MSBE> EldenMaps =>
+            Maps.Where(e => e.Value is MSBE).ToDictionary(e => e.Key, e => e.Value as MSBE);
 
-        public void Load(string modDir=null)
+        public void Load(string modDir = null)
         {
             ModDir = modDir;
             LoadNames();
@@ -402,7 +484,9 @@ namespace RandomizerCommon
 
         public string EntityName(EntityId entity, bool detail = false, bool mapName = false)
         {
-            string mapSuffix = mapName && !string.IsNullOrEmpty(entity.MapName) ? " in " + MapLocationName(entity.MapName) : "";
+            string mapSuffix = mapName && !string.IsNullOrEmpty(entity.MapName)
+                ? " in " + MapLocationName(entity.MapName, entity.OriginalMapName)
+                : "";
             if (!ExtractModelName(entity.EntityName, out string model))
             {
                 return entity.EntityName + mapSuffix;
@@ -448,9 +532,9 @@ namespace RandomizerCommon
                 + mapSuffix;
         }
 
-        public string MapLocationName(string mapId)
+        public string MapLocationName(string mapId, string lowLevelMapId = null)
         {
-            return $"{mapId}" + (LocationNames.TryGetValue(mapId, out string mapName) ? $" ({mapName})" : "");
+            return $"{lowLevelMapId ?? mapId}" + (LocationNames.TryGetValue(mapId, out string mapName) ? $" ({mapName})" : "");
         }
 
         // Map name utility functions
@@ -469,6 +553,29 @@ namespace RandomizerCommon
             List<byte> bytes = fields.Select(f => (byte)row[f].Value).ToList();
             while (bytes.Count < 4) bytes.Add(0);
             return bytes;
+        }
+
+        public HashSet<string> GetEldenFrameMaps()
+        {
+            // TODO: General system with FLVER reading, maybe
+            HashSet<string> eldenFrameMaps = new HashSet<string>
+            {
+                // Mainly academy and redmane have confirmed issues
+                "m10_00_00_00", "m12_05_00_00", "m14_00_00_00", "m15_00_00_00", "m16_00_00_00",
+                "m18_00_00_00", "m35_00_00_00",
+                "m60_39_54_00", // Shaded Castle
+                "m60_43_31_00", // Morne
+                "m60_51_36_00", // Redmane
+                "m60_51_57_00", // Sol
+                "m60_46_36_00", // Haight
+                "m60_51_39_00", // Faroth
+            };
+            // Plus all side-dungeons, m30 m31 m32 m34
+            // Octopus: 2.4. Lobster: 4.4. Crab: 1.9.
+            // If >2.5, allowframes
+            Regex tightRe = new Regex(@"^m3[0-4]");
+            eldenFrameMaps.UnionWith(Maps.Keys.Where(m => tightRe.IsMatch(m)));
+            return eldenFrameMaps;
         }
 
         public void SaveSekiro(string outPath)
@@ -504,11 +611,11 @@ namespace RandomizerCommon
             }
 
             WriteModDependentBnd(outPath, $@"{Dir}\Base\gameparam.parambnd.dcx", $@"param\gameparam\gameparam.parambnd.dcx", Params.Inner);
-            WriteModDependentBnd(outPath, $@"{Dir}\Base\item.msgbnd.dcx", $@"msg\engus\item.msgbnd.dcx", ItemFMGs);
-            WriteModDependentBnd(outPath, $@"{Dir}\Base\menu.msgbnd.dcx", $@"msg\engus\menu.msgbnd.dcx", MenuFMGs);
-            foreach (KeyValuePair<string, Dictionary<string, FMG>> entry in OtherItemFMGs)
+            WriteModDependentBnd(outPath, $@"{Dir}\Base\item.msgbnd.dcx", $@"msg\engus\item.msgbnd.dcx", ItemFMGs.FMGs);
+            WriteModDependentBnd(outPath, $@"{Dir}\Base\menu.msgbnd.dcx", $@"msg\engus\menu.msgbnd.dcx", MenuFMGs.FMGs);
+            foreach (KeyValuePair<string, FMGDictionary> entry in OtherItemFMGs)
             {
-                WriteModDependentBnd(outPath, $@"{Dir}\Base\msg\{entry.Key}\item.msgbnd.dcx", $@"msg\{entry.Key}\item.msgbnd.dcx", entry.Value);
+                WriteModDependentBnd(outPath, $@"{Dir}\Base\msg\{entry.Key}\item.msgbnd.dcx", $@"msg\{entry.Key}\item.msgbnd.dcx", entry.Value.FMGs);
             }
 
             MergeMods(outPath);
@@ -574,11 +681,15 @@ namespace RandomizerCommon
         public HashSet<string> WriteESDs = new HashSet<string>();
         public HashSet<string> WriteMSBs = new HashSet<string>();
         public bool WriteFMGs = false;
-        public void SaveEldenRing(string outPath, bool uxm)
+        public void SaveEldenRing(string outPath, bool uxm, string optionsStr, Action<double> notify = null)
         {
             Console.WriteLine("Writing to " + outPath);
+            RuntimeParamChecker checker = new RuntimeParamChecker();
+            checker.ScanMaps(Maps);
+            checker.CheckEntries(this);
             // Sorry TK, Oodle is 2slow
             DCX.Type overrideDcx = DCX.Type.DCX_DFLT_11000_44_9;
+            byte[] optionsByte = Encoding.ASCII.GetBytes(optionsStr);
             // overrideDcx = DCX.Type.DCX_KRAK;
             writtenFiles.Clear();
             {
@@ -586,22 +697,68 @@ namespace RandomizerCommon
                 string path = $@"{outPath}\regulation.bin";
                 if (ModDir != null)
                 {
-                    string modPath = $@"{ModDir}\regulation.bin.randobak";
-                    string modPath2 = $@"{ModDir}\regulation.bin";
+                    string modPath = $@"{ModDir}\regulation.bin";
                     if (File.Exists(modPath)) basePath = modPath;
-                    else if (File.Exists(modPath2)) basePath = modPath2;
                 }
                 AddModFile(path);
                 if (uxm) Backup(path);
+                // Hack to add options string to params
+                List<int> textIds = Enumerable.Range(777777771, 4).ToList();
+                Params["CutSceneTextureLoadParam"].Rows.RemoveAll(r => textIds.Contains(r.ID));
+                int offset = 0;
+                foreach (int textId in textIds)
+                {
+                    PARAM.Row row = AddRow("CutSceneTextureLoadParam", textId, 0);
+                    for (int i = 0; i < 16; i++)
+                    {
+                        int remaining = optionsByte.Length - offset;
+                        if (remaining <= 0) break;
+                        row[$"texName_{i:d2}"].Value = Encoding.ASCII.GetString(optionsByte, offset, Math.Min(remaining, 16));
+                        offset += 16;
+                    }
+                }
                 Editor.OverrideBndRel(basePath, path, Params.Inner, f => f.AppliedParamdef == null ? null : f.Write(), dcx: overrideDcx);
+            }
+
+            HashSet<string> dupedPaths = new HashSet<string>();
+            string getDupePath(ICollection<string> writeMaps, string map, string path)
+            {
+                MapDupes.TryGetValue(map, out string dupe);
+                // If map is written and dupe also is, write nothing
+                // If map is written and dupe is not, write dupe
+                // If map is not written and dupe is, do nothing
+                // If map is not written and dupe is not, delete/restore dupe
+                // tl;dr if dupe is written, do nothing
+                if (dupe == null || writeMaps.Contains(dupe)) return null;
+                string dupePath = path.Replace(map, dupe);
+                if (path == dupePath) throw new Exception($"Internal error: identical duplicate {path}");
+                dupedPaths.Add(dupePath);
+                return dupePath;
             }
 
             // Event scripts
             foreach (KeyValuePair<string, EMEVD> entry in Emevds)
             {
-                string path = $@"{outPath}\event\{entry.Key}.emevd.dcx";
-                if (!AddBackupOrRestoreFile(path, WriteEmevds.Contains(entry.Key), uxm)) continue;
+                string map = entry.Key;
+                string path = $@"{outPath}\event\{map}.emevd.dcx";
+                if (dupedPaths.Contains(path)) continue;
+                string dupePath = getDupePath(WriteEmevds, map, path);
+                bool write = WriteEmevds.Contains(map);
+                AddBackupOrRestoreFile(path, write, uxm);
+                if (dupePath != null)
+                {
+                    AddBackupOrRestoreFile(dupePath, write, uxm);
+                }
+                if (!write) continue;
+#if !DEBUG
+                checker.EditEvents(map, entry.Value);
+#endif
+                entry.Value.StringData = entry.Value.StringData.Concat(new byte[] { 0 }).Concat(optionsByte).ToArray();
                 entry.Value.Write(path, overrideDcx);
+                if (dupePath != null)
+                {
+                    File.Copy(path, dupePath, true);
+                }
 #if DEBUG
                 string scriptFile = path + ".js";
                 if (File.Exists(scriptFile))
@@ -611,43 +768,101 @@ namespace RandomizerCommon
                 }
 #endif
             }
+#if DEBUG
+            Console.WriteLine("Wrote event scripts");
+#endif
+
+            // Hoarah Loux standalone SFX
+            {
+                string path = $@"{outPath}\sfx\sfxbnd_c4721.ffxbnd.dcx";
+                string basePath = $@"{Dir}\Vanilla\sfxbnd_c4720.ffxbnd.dcx";
+                if (File.Exists(basePath))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                    File.Copy(basePath, path, true);
+                }
+            }
+
+            void updateFmg(string lang, string type, FMGDictionary fmgs)
+            {
+                string path = $@"{outPath}\msg\{lang}\{type}.msgbnd.dcx";
+                AddBackupOrRestoreFile(path, WriteFMGs, uxm);
+                if (WriteFMGs)
+                {
+                    string basePath = $@"{Dir}\Vanilla\msg\{lang}\{type}.msgbnd.dcx";
+                    if (ModDir != null)
+                    {
+                        string modPath = $@"{ModDir}\msg\{lang}\{type}.msgbnd.dcx";
+                        if (File.Exists(modPath)) basePath = modPath;
+                    }
+                    Editor.OverrideBndRel(basePath, path, fmgs.FMGs, f => f.Write(), dcx: overrideDcx);
+                }
+            }
+
+            // Text
+            // Early on (as modengine can't reload it), but after events
+            {
+                // Just menu for now, and no override for now. Also other languages
+                updateFmg("engus", "menu", MenuFMGs);
+                foreach (KeyValuePair<string, FMGDictionary> entry in OtherMenuFMGs)
+                {
+                    updateFmg(entry.Key, "menu", entry.Value);
+                }
+                updateFmg("engus", "item", ItemFMGs);
+                foreach (KeyValuePair<string, FMGDictionary> entry in OtherItemFMGs)
+                {
+                    updateFmg(entry.Key, "item", entry.Value);
+                }
+            }
 
             // ESDs
             foreach (KeyValuePair<string, Dictionary<string, ESD>> entry in Talk)
             {
                 string path = $@"{outPath}\script\talk\{entry.Key}.talkesdbnd.dcx";
-                if (!AddBackupOrRestoreFile(path, WriteESDs.Contains(entry.Key), uxm)) continue;
+                bool write = WriteESDs.Contains(entry.Key);
+                AddBackupOrRestoreFile(path, write, uxm);
+                if (!write) continue;
                 string basePath = $@"{Dir}\Vanilla\{entry.Key}.talkesdbnd.dcx";
+                if (ModDir != null)
+                {
+                    string modPath = $@"{ModDir}\script\talk\{entry.Key}.talkesdbnd.dcx";
+                    if (File.Exists(modPath)) basePath = modPath;
+                }
                 Editor.OverrideBndRel(basePath, path, entry.Value, f => f.Write(), dcx: overrideDcx);
             }
 
             // Maps
+            int count = 0;
             foreach (KeyValuePair<string, IMsb> entry in Maps)
             {
-                string path = $@"{outPath}\map\mapstudio\{entry.Key}.msb.dcx";
-                if (!AddBackupOrRestoreFile(path, WriteMSBs.Contains(entry.Key), uxm)) continue;
-                entry.Value.Write(path, overrideDcx);
-            }
-
-            // Text
-            {
-                // Just menu for now, and no override for now. Also other languages
-                string path = $@"{outPath}\msg\engus\menu.msgbnd.dcx";
-                if (AddBackupOrRestoreFile(path, WriteFMGs, uxm))
+                notify?.Invoke((double)count++ / Maps.Count);
+                string map = entry.Key;
+                string path = $@"{outPath}\map\mapstudio\{map}.msb.dcx";
+                if (dupedPaths.Contains(path)) continue;
+                string dupePath = getDupePath(WriteMSBs, map, path);
+                bool write = WriteMSBs.Contains(map);
+                AddBackupOrRestoreFile(path, write, uxm);
+                if (dupePath != null)
                 {
-                    string basePath = $@"{Dir}\Vanilla\msg\engus\menu.msgbnd.dcx";
-                    Editor.OverrideBndRel(basePath, path, MenuFMGs, f => f.Write(), dcx: overrideDcx);
+                    AddBackupOrRestoreFile(dupePath, write, uxm);
                 }
-                foreach (KeyValuePair<string, Dictionary<string, FMG>> entry in OtherMenuFMGs)
+                if (!write) continue;
+                if (entry.Value is MSBE msb)
                 {
-                    path = $@"{outPath}\msg\{entry.Key}\menu.msgbnd.dcx";
-                    if (AddBackupOrRestoreFile(path, WriteFMGs, uxm))
+                    msb.Events.Navmeshes.Add(new MSBE.Event.Navmesh
                     {
-                        string basePath = $@"{Dir}\Vanilla\msg\{entry.Key}\menu.msgbnd.dcx";
-                        Editor.OverrideBndRel(basePath, path, entry.Value, f => f.Write(), dcx: overrideDcx);
-                    }
+                        Name = optionsStr,
+                        NavmeshRegionName = null,
+                    });
+                }
+                entry.Value.Write(path, overrideDcx);
+                // entry.Value.Write(path.Replace(".dcx", ""), DCX.Type.None);
+                if (dupePath != null)
+                {
+                    File.Copy(path, dupePath, true);
                 }
             }
+            if (Maps.Count > 0) notify?.Invoke(1);
         }
 
         private static string Backup(string file)
@@ -660,13 +875,12 @@ namespace RandomizerCommon
             return bak;
         }
 
-        private bool AddBackupOrRestoreFile(string path, bool write, bool uxm)
+        private void AddBackupOrRestoreFile(string path, bool write, bool uxm)
         {
             if (write)
             {
                 AddModFile(path);
                 if (uxm) Backup(path);
-                return true;
             }
             else if (uxm)
             {
@@ -681,7 +895,6 @@ namespace RandomizerCommon
                 Console.WriteLine($"Deleting {path}");
                 File.Delete(path);
             }
-            return false;
         }
 
         public void SaveDS3(string outPath, bool encrypted)
@@ -715,10 +928,10 @@ namespace RandomizerCommon
             }
 
             // Messages
-            WriteModDependentBnd(outPath, $@"{Dir}\Base\msg\engus\item_dlc2.msgbnd.dcx", $@"msg\engus\item_dlc2.msgbnd.dcx", ItemFMGs);
-            foreach (KeyValuePair<string, Dictionary<string, FMG>> entry in OtherItemFMGs)
+            WriteModDependentBnd(outPath, $@"{Dir}\Base\msg\engus\item_dlc2.msgbnd.dcx", $@"msg\engus\item_dlc2.msgbnd.dcx", ItemFMGs.FMGs);
+            foreach (KeyValuePair<string, FMGDictionary> entry in OtherItemFMGs)
             {
-                WriteModDependentBnd(outPath, $@"{Dir}\Base\msg\{entry.Key}\item_dlc2.msgbnd.dcx", $@"msg\{entry.Key}\item_dlc2.msgbnd.dcx", entry.Value);
+                WriteModDependentBnd(outPath, $@"{Dir}\Base\msg\{entry.Key}\item_dlc2.msgbnd.dcx", $@"msg\{entry.Key}\item_dlc2.msgbnd.dcx", entry.Value.FMGs);
             }
 
             // Event scripts
@@ -749,9 +962,11 @@ namespace RandomizerCommon
         private void AddModFile(string path)
         {
             path = FullName(path);
-//#if !DEBUG
-            Console.WriteLine($"Writing {path}");
-//#endif
+            bool suppress = false;
+#if DEBUG
+            suppress = true;
+#endif
+            if (!suppress) Console.WriteLine($"Writing {path}");
             writtenFiles.Add(path);
         }
 
@@ -896,17 +1111,11 @@ namespace RandomizerCommon
             else if (EldenRing)
             {
                 path = $@"{Dir}\Vanilla\regulation.bin";
-                string modPath = $@"{ModDir}\regulation.bin.randobak";
-                string modPath2 = $@"{ModDir}\regulation.bin";
+                string modPath = $@"{ModDir}\regulation.bin";
                 if (ModDir != null && File.Exists(modPath))
                 {
                     Console.WriteLine($"Using modded file {modPath}");
                     path = modPath;
-                }
-                else if (ModDir != null && File.Exists(modPath2))
-                {
-                    Console.WriteLine($"Using modded file {modPath2}");
-                    path = modPath2;
                 }
                 if (!File.Exists(path))
                 {
@@ -945,7 +1154,18 @@ namespace RandomizerCommon
             }
             else
             {
-                Maps = Editor.Load("Vanilla", path => (IMsb)MSBX.Read(path), "*.msb.dcx");
+                Maps = Editor.Load("Vanilla", path => (IMsb)MSBE.Read(path), "*.msb.dcx");
+                MaybeOverrideFromModDir(Maps, name => $@"map\MapStudio\{name}.msb.dcx", path => MSBE.Read(path));
+
+                // Set up copying dupe maps which are not included in our vanilla files
+                Regex lastRe = new Regex(@"_1([0-2])$");
+                MapDupes = dupeMsbs
+                    .Where(m => !Maps.ContainsKey(m))
+                    .ToDictionary(m => lastRe.Replace(m, @"_0$1"), m => m);
+                if (MapDupes.Any(e => e.Key == e.Value))
+                {
+                    throw new Exception($"Invalid dupe map {string.Join(" ", MapDupes)}");
+                }
             }
         }
 
@@ -972,43 +1192,72 @@ namespace RandomizerCommon
                 List<string> missing = Locations.Keys.Concat(new[] { "common", "common_func" }).Except(Emevds.Keys).ToList();
                 if (missing.Count != 0) throw new Exception($@"Missing emevds in dist\Base: {string.Join(", ", missing)}");
             }
+            if (EldenRing && false)
+            {
+                EMEVD template = Emevds.Where(e => e.Key.StartsWith("m")).Select(e => e.Value).FirstOrDefault();
+                if (template == null) throw new Exception(@"Missing emevds in diste\Vanilla");
+                // TODO: For this to work, we'd need to modify the loadlist, unfortunately
+                foreach (string map in Maps.Keys)
+                {
+                    if (!Emevds.ContainsKey(map))
+                    {
+                        EMEVD emevd = new EMEVD
+                        {
+                            Format = template.Format,
+                            Compression = template.Compression,
+                            StringData = template.StringData,
+                        };
+                        Emevds[map] = emevd;
+                    }
+                }
+            }
         }
 
         private void LoadText()
         {
             // TODO: Surely we can merge these
+            FMGDictionary read(string path)
+            {
+                Dictionary<string, byte[]> fmgBytes = Editor.LoadBnd(path, (data, _) => data);
+                return new FMGDictionary { Inner = fmgBytes };
+            }
             if (Sekiro)
             {
-                ItemFMGs = Editor.LoadBnd($@"{Dir}\Base\item.msgbnd.dcx", (data, path) => FMG.Read(data));
-                ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
-                MenuFMGs = Editor.LoadBnd($@"{Dir}\Base\menu.msgbnd.dcx", (data, path) => FMG.Read(data));
-                MenuFMGs = MaybeOverrideFromModDir(MenuFMGs, @"msg\engus\menu.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
+                ItemFMGs = read($@"{Dir}\Base\item.msgbnd.dcx");
+                ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item.msgbnd.dcx", read);
+                MenuFMGs = read($@"{Dir}\Base\menu.msgbnd.dcx");
+                MenuFMGs = MaybeOverrideFromModDir(MenuFMGs, @"msg\engus\menu.msgbnd.dcx", read);
                 foreach (string lang in MiscSetup.Langs.Keys)
                 {
                     if (lang == "engus") continue;
-                    OtherItemFMGs[lang] = Editor.LoadBnd($@"{Dir}\Base\msg\{lang}\item.msgbnd.dcx", (data, path) => FMG.Read(data));
-                    OtherItemFMGs[lang] = MaybeOverrideFromModDir(OtherItemFMGs[lang], $@"msg\{lang}\item.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
+                    OtherItemFMGs[lang] = read($@"{Dir}\Base\msg\{lang}\item.msgbnd.dcx");
+                    OtherItemFMGs[lang] = MaybeOverrideFromModDir(OtherItemFMGs[lang], $@"msg\{lang}\item.msgbnd.dcx", read);
                 }
             }
             else if (DS3)
             {
-                ItemFMGs = Editor.LoadBnd($@"{Dir}\Base\msg\engus\item_dlc2.msgbnd.dcx", (data, path) => FMG.Read(data));
-                ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item_dlc2.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
+                ItemFMGs = read($@"{Dir}\Base\msg\engus\item_dlc2.msgbnd.dcx");
+                ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item_dlc2.msgbnd.dcx", read);
                 foreach (string lang in MiscSetup.Langs.Keys)
                 {
                     if (lang == "engus" || MiscSetup.NoDS3Langs.Contains(lang)) continue;
-                    OtherItemFMGs[lang] = Editor.LoadBnd($@"{Dir}\Base\msg\{lang}\item_dlc2.msgbnd.dcx", (data, path) => FMG.Read(data));
-                    OtherItemFMGs[lang] = MaybeOverrideFromModDir(OtherItemFMGs[lang], $@"msg\{lang}\item_dlc2.msgbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => FMG.Read(data)));
+                    OtherItemFMGs[lang] = read($@"{Dir}\Base\msg\{lang}\item_dlc2.msgbnd.dcx");
+                    OtherItemFMGs[lang] = MaybeOverrideFromModDir(OtherItemFMGs[lang], $@"msg\{lang}\item_dlc2.msgbnd.dcx", read);
                 }
             }
             else if (EldenRing)
             {
-                ItemFMGs = Editor.LoadBnd($@"{Dir}\Vanilla\msg\engus\item.msgbnd.dcx", (data, path) => FMG.Read(data));
-                MenuFMGs = Editor.LoadBnd($@"{Dir}\Vanilla\msg\engus\menu.msgbnd.dcx", (data, path) => FMG.Read(data));
+                ItemFMGs = read($@"{Dir}\Vanilla\msg\engus\item.msgbnd.dcx");
+                ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item.msgbnd.dcx", read);
+                MenuFMGs = read($@"{Dir}\Vanilla\msg\engus\menu.msgbnd.dcx");
+                MenuFMGs = MaybeOverrideFromModDir(MenuFMGs, @"msg\engus\menu.msgbnd.dcx", read);
                 foreach (string lang in MiscSetup.Langs.Keys)
                 {
                     if (lang == "engus") continue;
-                    OtherMenuFMGs[lang] = Editor.LoadBnd($@"{Dir}\Vanilla\msg\{lang}\menu.msgbnd.dcx", (data, path) => FMG.Read(data));
+                    OtherMenuFMGs[lang] = read($@"{Dir}\Vanilla\msg\{lang}\menu.msgbnd.dcx");
+                    OtherMenuFMGs[lang] = MaybeOverrideFromModDir(OtherMenuFMGs[lang], $@"msg\{lang}\menu.msgbnd.dcx", read);
+                    OtherItemFMGs[lang] = read($@"{Dir}\Vanilla\msg\{lang}\item.msgbnd.dcx");
+                    OtherItemFMGs[lang] = MaybeOverrideFromModDir(OtherItemFMGs[lang], $@"msg\{lang}\item.msgbnd.dcx", read);
                 }
             }
         }
@@ -1016,7 +1265,7 @@ namespace RandomizerCommon
         // TODO: Instead of doing this, make the paths themselves more editable?
         private T MaybeOverrideFromModDir<T>(T original, string path, Func<string, T> parser)
         {
-            if (ModDir == null || EldenRing) return original;
+            if (ModDir == null) return original;
             string modPath = $@"{ModDir}\{path}";
             if (File.Exists(modPath))
             {
@@ -1028,7 +1277,7 @@ namespace RandomizerCommon
 
         private void MaybeOverrideFromModDir<T>(Dictionary<string, T> files, Func<string, string> relpath, Func<string, T> parser)
         {
-            if (ModDir == null || EldenRing) return;
+            if (ModDir == null) return;
             foreach (string key in files.Keys.ToList())
             {
                 files[key] = MaybeOverrideFromModDir(files[key], relpath(key), parser);
