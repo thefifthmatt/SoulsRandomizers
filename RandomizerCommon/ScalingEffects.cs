@@ -176,6 +176,7 @@ namespace RandomizerCommon
             },
         };
 
+        // TODO: Scaling for all tiers. And separate enemy/boss scaling.
         public Dictionary<int, int> InitializeEldenScaling(Dictionary<int, EnemyData> defaultData, Dictionary<int, List<int>> dupeMap)
         {
             // First, calculate scaling multipliers

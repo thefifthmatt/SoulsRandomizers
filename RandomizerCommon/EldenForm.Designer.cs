@@ -94,6 +94,8 @@
             this.enemyWarningL = new System.Windows.Forms.Label();
             this.presetL = new System.Windows.Forms.TextBox();
             this.customGroup = new System.Windows.Forms.GroupBox();
+            this.impoliteL = new System.Windows.Forms.Label();
+            this.multcolor = new System.Windows.Forms.CheckBox();
             this.impolite = new System.Windows.Forms.CheckBox();
             this.multhp = new System.Windows.Forms.CheckBox();
             this.bosshp = new System.Windows.Forms.CheckBox();
@@ -104,6 +106,7 @@
             this.swapboss = new System.Windows.Forms.CheckBox();
             this.editnames = new System.Windows.Forms.CheckBox();
             this.progressGroupEnemy = new System.Windows.Forms.GroupBox();
+            this.phasehp = new System.Windows.Forms.CheckBox();
             this.scale = new System.Windows.Forms.CheckBox();
             this.defaultRerollEnemy = new System.Windows.Forms.CheckBox();
             this.enemyseedL = new System.Windows.Forms.Label();
@@ -135,9 +138,8 @@
             this.resetOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mergemod = new System.Windows.Forms.TextBox();
             this.mergeButton = new System.Windows.Forms.Button();
-            this.multcolor = new System.Windows.Forms.CheckBox();
-            this.phasehp = new System.Windows.Forms.CheckBox();
-            this.impoliteL = new System.Windows.Forms.Label();
+            this.sombermode = new System.Windows.Forms.CheckBox();
+            this.sombermodeL = new System.Windows.Forms.Label();
             this.progressGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.difficulty)).BeginInit();
             this.biasGroup.SuspendLayout();
@@ -187,6 +189,7 @@
             this.mats.TabIndex = 9;
             this.mats.Text = "Randomize collectible materials like Rowa Fruit";
             this.mats.UseVisualStyleBackColor = true;
+            this.mats.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
             // weaponprogression
             // 
@@ -196,7 +199,7 @@
             this.weaponprogression.Location = new System.Drawing.Point(6, 160);
             this.weaponprogression.Name = "weaponprogression";
             this.weaponprogression.Size = new System.Drawing.Size(310, 20);
-            this.weaponprogression.TabIndex = 8;
+            this.weaponprogression.TabIndex = 10;
             this.weaponprogression.Text = "Smithing Stone availability similar to base game";
             this.weaponprogression.UseVisualStyleBackColor = true;
             this.weaponprogression.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
@@ -204,7 +207,7 @@
             // spellshopsL
             // 
             this.spellshopsL.AutoSize = true;
-            this.spellshopsL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.spellshopsL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.spellshopsL.Location = new System.Drawing.Point(22, 124);
             this.spellshopsL.Name = "spellshopsL";
             this.spellshopsL.Size = new System.Drawing.Size(239, 13);
@@ -227,7 +230,7 @@
             // earlylegacyL
             // 
             this.earlylegacyL.AutoSize = true;
-            this.earlylegacyL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.earlylegacyL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.earlylegacyL.Location = new System.Drawing.Point(22, 83);
             this.earlylegacyL.Name = "earlylegacyL";
             this.earlylegacyL.Size = new System.Drawing.Size(276, 13);
@@ -237,7 +240,7 @@
             // runereqL
             // 
             this.runereqL.AutoSize = true;
-            this.runereqL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.runereqL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.runereqL.Location = new System.Drawing.Point(22, 44);
             this.runereqL.Name = "runereqL";
             this.runereqL.Size = new System.Drawing.Size(204, 13);
@@ -294,7 +297,7 @@
             // 
             this.difficultyAmtL.AutoSize = true;
             this.difficultyAmtL.BackColor = System.Drawing.Color.Transparent;
-            this.difficultyAmtL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.difficultyAmtL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.difficultyAmtL.Location = new System.Drawing.Point(1073, 49);
             this.difficultyAmtL.Name = "difficultyAmtL";
             this.difficultyAmtL.Size = new System.Drawing.Size(32, 20);
@@ -306,7 +309,7 @@
             // 
             this.difficultyL.AutoSize = true;
             this.difficultyL.BackColor = System.Drawing.Color.Transparent;
-            this.difficultyL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.difficultyL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.difficultyL.Location = new System.Drawing.Point(22, 53);
             this.difficultyL.Name = "difficultyL";
             this.difficultyL.Size = new System.Drawing.Size(291, 32);
@@ -331,7 +334,7 @@
             // 
             // fixedseed
             // 
-            this.fixedseed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fixedseed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.fixedseed.Location = new System.Drawing.Point(641, 635);
             this.fixedseed.Name = "fixedseed";
             this.fixedseed.Size = new System.Drawing.Size(192, 26);
@@ -340,7 +343,7 @@
             // 
             // randomize
             // 
-            this.randomize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.randomize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.randomize.Location = new System.Drawing.Point(839, 634);
             this.randomize.Name = "randomize";
             this.randomize.Size = new System.Drawing.Size(330, 29);
@@ -352,7 +355,7 @@
             // fixedseedL
             // 
             this.fixedseedL.BackColor = System.Drawing.Color.Transparent;
-            this.fixedseedL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fixedseedL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.fixedseedL.Location = new System.Drawing.Point(510, 638);
             this.fixedseedL.Name = "fixedseedL";
             this.fixedseedL.Size = new System.Drawing.Size(127, 20);
@@ -363,7 +366,7 @@
             // warningL
             // 
             this.warningL.BackColor = System.Drawing.Color.Transparent;
-            this.warningL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.warningL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.warningL.ForeColor = System.Drawing.Color.DarkRed;
             this.warningL.Location = new System.Drawing.Point(14, 634);
             this.warningL.Name = "warningL";
@@ -412,7 +415,7 @@
             // nocavesL
             // 
             this.nocavesL.AutoSize = true;
-            this.nocavesL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nocavesL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.nocavesL.Location = new System.Drawing.Point(22, 318);
             this.nocavesL.Name = "nocavesL";
             this.nocavesL.Size = new System.Drawing.Size(260, 13);
@@ -433,7 +436,7 @@
             // raceloc_talismanL
             // 
             this.raceloc_talismanL.AutoSize = true;
-            this.raceloc_talismanL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.raceloc_talismanL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.raceloc_talismanL.Location = new System.Drawing.Point(22, 272);
             this.raceloc_talismanL.Name = "raceloc_talismanL";
             this.raceloc_talismanL.Size = new System.Drawing.Size(288, 13);
@@ -443,7 +446,7 @@
             // nightL
             // 
             this.nightL.AutoSize = true;
-            this.nightL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nightL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.nightL.Location = new System.Drawing.Point(40, 234);
             this.nightL.Name = "nightL";
             this.nightL.Size = new System.Drawing.Size(143, 13);
@@ -453,7 +456,7 @@
             // raceloc_altbossL
             // 
             this.raceloc_altbossL.AutoSize = true;
-            this.raceloc_altbossL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.raceloc_altbossL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.raceloc_altbossL.Location = new System.Drawing.Point(22, 195);
             this.raceloc_altbossL.Name = "raceloc_altbossL";
             this.raceloc_altbossL.Size = new System.Drawing.Size(351, 13);
@@ -463,7 +466,7 @@
             // raceloc_shopsL
             // 
             this.raceloc_shopsL.AutoSize = true;
-            this.raceloc_shopsL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.raceloc_shopsL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.raceloc_shopsL.Location = new System.Drawing.Point(22, 157);
             this.raceloc_shopsL.Name = "raceloc_shopsL";
             this.raceloc_shopsL.Size = new System.Drawing.Size(200, 13);
@@ -473,7 +476,7 @@
             // raceloc_healthL
             // 
             this.raceloc_healthL.AutoSize = true;
-            this.raceloc_healthL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.raceloc_healthL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.raceloc_healthL.Location = new System.Drawing.Point(22, 118);
             this.raceloc_healthL.Name = "raceloc_healthL";
             this.raceloc_healthL.Size = new System.Drawing.Size(95, 13);
@@ -483,7 +486,7 @@
             // racemodeL
             // 
             this.racemodeL.AutoSize = true;
-            this.racemodeL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.racemodeL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.racemodeL.Location = new System.Drawing.Point(23, 44);
             this.racemodeL.Name = "racemodeL";
             this.racemodeL.Size = new System.Drawing.Size(95, 13);
@@ -493,7 +496,7 @@
             // default_bossL
             // 
             this.default_bossL.AutoSize = true;
-            this.default_bossL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.default_bossL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.default_bossL.Location = new System.Drawing.Point(22, 81);
             this.default_bossL.Name = "default_bossL";
             this.default_bossL.Size = new System.Drawing.Size(317, 13);
@@ -638,7 +641,7 @@
             // 
             // updateButton
             // 
-            this.updateButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.updateButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.updateButton.Location = new System.Drawing.Point(839, 700);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(330, 29);
@@ -650,7 +653,7 @@
             // overviewL
             // 
             this.overviewL.BackColor = System.Drawing.Color.Transparent;
-            this.overviewL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.overviewL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.overviewL.Location = new System.Drawing.Point(9, 456);
             this.overviewL.Name = "overviewL";
             this.overviewL.Size = new System.Drawing.Size(753, 46);
@@ -670,7 +673,7 @@
             this.tabControl.Controls.Add(this.itemPage);
             this.tabControl.Controls.Add(this.enemyPage);
             this.tabControl.Controls.Add(this.miscPage);
-            this.tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tabControl.HoverColor = System.Drawing.Color.Silver;
             this.tabControl.ImageIndex = -1;
             this.tabControl.ImageList = null;
@@ -685,7 +688,7 @@
             this.tabControl.Size = new System.Drawing.Size(1156, 537);
             this.tabControl.TabDock = System.Windows.Forms.DockStyle.Top;
             this.tabControl.TabDrawer = null;
-            this.tabControl.TabFont = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl.TabFont = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tabControl.TabIndex = 3;
             this.tabControl.TabChanged += new System.EventHandler(this.tabControl_TabChanged);
             // 
@@ -705,7 +708,7 @@
             this.itemPage.Controls.Add(this.locationGroup);
             this.itemPage.Controls.Add(this.keyGroup);
             this.itemPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.itemPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.itemPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.itemPage.ImageIndex = -1;
             this.itemPage.Location = new System.Drawing.Point(4, 40);
             this.itemPage.Name = "itemPage";
@@ -717,7 +720,7 @@
             // locationOverviewL
             // 
             this.locationOverviewL.BackColor = System.Drawing.Color.Transparent;
-            this.locationOverviewL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.locationOverviewL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.locationOverviewL.Location = new System.Drawing.Point(774, 116);
             this.locationOverviewL.Name = "locationOverviewL";
             this.locationOverviewL.Size = new System.Drawing.Size(364, 49);
@@ -750,7 +753,7 @@
             // markareasL
             // 
             this.markareasL.AutoSize = true;
-            this.markareasL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.markareasL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.markareasL.Location = new System.Drawing.Point(22, 40);
             this.markareasL.Name = "markareasL";
             this.markareasL.Size = new System.Drawing.Size(262, 13);
@@ -795,7 +798,7 @@
             // upgradeExplainL
             // 
             this.upgradeExplainL.BackColor = System.Drawing.Color.Transparent;
-            this.upgradeExplainL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.upgradeExplainL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.upgradeExplainL.Location = new System.Drawing.Point(6, 46);
             this.upgradeExplainL.Name = "upgradeExplainL";
             this.upgradeExplainL.Size = new System.Drawing.Size(363, 44);
@@ -909,7 +912,7 @@
             this.enemyPage.Controls.Add(this.enemyseed);
             this.enemyPage.Controls.Add(this.presetButton);
             this.enemyPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.enemyPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.enemyPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.enemyPage.ImageIndex = -1;
             this.enemyPage.Location = new System.Drawing.Point(4, 40);
             this.enemyPage.Name = "enemyPage";
@@ -921,7 +924,7 @@
             // enemyWarningL
             // 
             this.enemyWarningL.BackColor = System.Drawing.Color.Transparent;
-            this.enemyWarningL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.enemyWarningL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.enemyWarningL.Location = new System.Drawing.Point(6, 394);
             this.enemyWarningL.Name = "enemyWarningL";
             this.enemyWarningL.Size = new System.Drawing.Size(411, 88);
@@ -934,7 +937,7 @@
             // 
             this.presetL.BackColor = System.Drawing.SystemColors.Control;
             this.presetL.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.presetL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.presetL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.presetL.Location = new System.Drawing.Point(429, 16);
             this.presetL.Multiline = true;
             this.presetL.Name = "presetL";
@@ -958,6 +961,27 @@
             this.customGroup.TabIndex = 2;
             this.customGroup.TabStop = false;
             this.customGroup.Text = "Customization";
+            // 
+            // impoliteL
+            // 
+            this.impoliteL.AutoSize = true;
+            this.impoliteL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.impoliteL.Location = new System.Drawing.Point(24, 155);
+            this.impoliteL.Name = "impoliteL";
+            this.impoliteL.Size = new System.Drawing.Size(182, 13);
+            this.impoliteL.TabIndex = 14;
+            this.impoliteL.Text = "Make enemies less passive in groups";
+            // 
+            // multcolor
+            // 
+            this.multcolor.AutoSize = true;
+            this.multcolor.Location = new System.Drawing.Point(6, 113);
+            this.multcolor.Name = "multcolor";
+            this.multcolor.Size = new System.Drawing.Size(262, 20);
+            this.multcolor.TabIndex = 4;
+            this.multcolor.Text = "Color-code bosses in Enemy Onslaught";
+            this.multcolor.UseVisualStyleBackColor = true;
+            this.multcolor.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
             // impolite
             // 
@@ -1033,7 +1057,7 @@
             // swapbossL
             // 
             this.swapbossL.AutoSize = true;
-            this.swapbossL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.swapbossL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.swapbossL.Location = new System.Drawing.Point(24, 66);
             this.swapbossL.Name = "swapbossL";
             this.swapbossL.Size = new System.Drawing.Size(146, 13);
@@ -1076,6 +1100,19 @@
             this.progressGroupEnemy.TabStop = false;
             this.progressGroupEnemy.Text = "Game progression";
             // 
+            // phasehp
+            // 
+            this.phasehp.AutoSize = true;
+            this.phasehp.Checked = true;
+            this.phasehp.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.phasehp.Location = new System.Drawing.Point(6, 45);
+            this.phasehp.Name = "phasehp";
+            this.phasehp.Size = new System.Drawing.Size(279, 20);
+            this.phasehp.TabIndex = 1;
+            this.phasehp.Text = "Scale up/down multi-phase bosses slightly";
+            this.phasehp.UseVisualStyleBackColor = true;
+            this.phasehp.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
             // scale
             // 
             this.scale.AutoSize = true;
@@ -1103,7 +1140,7 @@
             // 
             // enemyseedL
             // 
-            this.enemyseedL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.enemyseedL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.enemyseedL.Location = new System.Drawing.Point(444, 439);
             this.enemyseedL.Name = "enemyseedL";
             this.enemyseedL.Size = new System.Drawing.Size(225, 20);
@@ -1113,7 +1150,7 @@
             // 
             // enemyseed
             // 
-            this.enemyseed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.enemyseed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.enemyseed.Location = new System.Drawing.Point(675, 436);
             this.enemyseed.Name = "enemyseed";
             this.enemyseed.Size = new System.Drawing.Size(247, 26);
@@ -1123,7 +1160,7 @@
             // presetButton
             // 
             this.presetButton.Enabled = false;
-            this.presetButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.presetButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.presetButton.Location = new System.Drawing.Point(3, 360);
             this.presetButton.Name = "presetButton";
             this.presetButton.Size = new System.Drawing.Size(411, 31);
@@ -1139,7 +1176,7 @@
             this.miscPage.Controls.Add(this.convenienceGroup);
             this.miscPage.Controls.Add(this.extraRandomGroup);
             this.miscPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.miscPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.miscPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.miscPage.ImageIndex = -1;
             this.miscPage.Location = new System.Drawing.Point(4, 40);
             this.miscPage.Name = "miscPage";
@@ -1150,11 +1187,13 @@
             // 
             // convenienceGroup
             // 
+            this.convenienceGroup.Controls.Add(this.sombermodeL);
+            this.convenienceGroup.Controls.Add(this.sombermode);
             this.convenienceGroup.Controls.Add(this.nerfmalenia);
             this.convenienceGroup.Controls.Add(this.allmaps);
             this.convenienceGroup.Location = new System.Drawing.Point(6, 164);
             this.convenienceGroup.Name = "convenienceGroup";
-            this.convenienceGroup.Size = new System.Drawing.Size(408, 73);
+            this.convenienceGroup.Size = new System.Drawing.Size(408, 112);
             this.convenienceGroup.TabIndex = 1;
             this.convenienceGroup.TabStop = false;
             this.convenienceGroup.Text = "Convenience";
@@ -1162,11 +1201,11 @@
             // nerfmalenia
             // 
             this.nerfmalenia.AutoSize = true;
-            this.nerfmalenia.Location = new System.Drawing.Point(6, 43);
+            this.nerfmalenia.Location = new System.Drawing.Point(6, 42);
             this.nerfmalenia.Name = "nerfmalenia";
-            this.nerfmalenia.Size = new System.Drawing.Size(264, 20);
+            this.nerfmalenia.Size = new System.Drawing.Size(199, 20);
             this.nerfmalenia.TabIndex = 1;
-            this.nerfmalenia.Text = "Disable heal-on-hit by a late-game boss";
+            this.nerfmalenia.Text = "Disable Malenia\'s heal-on-hit";
             this.nerfmalenia.UseVisualStyleBackColor = true;
             this.nerfmalenia.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
@@ -1261,7 +1300,7 @@
             this.enemy.AutoSize = true;
             this.enemy.Checked = true;
             this.enemy.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enemy.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.enemy.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.enemy.Location = new System.Drawing.Point(216, 41);
             this.enemy.Name = "enemy";
             this.enemy.Size = new System.Drawing.Size(15, 14);
@@ -1274,7 +1313,7 @@
             this.item.AutoSize = true;
             this.item.Checked = true;
             this.item.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.item.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.item.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.item.Location = new System.Drawing.Point(23, 40);
             this.item.Name = "item";
             this.item.Size = new System.Drawing.Size(15, 14);
@@ -1284,7 +1323,7 @@
             // 
             // exeButton
             // 
-            this.exeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.exeButton.Location = new System.Drawing.Point(839, 568);
             this.exeButton.Name = "exeButton";
             this.exeButton.Size = new System.Drawing.Size(330, 29);
@@ -1295,7 +1334,7 @@
             // 
             // exe
             // 
-            this.exe.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exe.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.exe.Location = new System.Drawing.Point(12, 570);
             this.exe.Name = "exe";
             this.exe.Size = new System.Drawing.Size(821, 26);
@@ -1304,7 +1343,7 @@
             // 
             // launchButton
             // 
-            this.launchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.launchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.launchButton.Location = new System.Drawing.Point(839, 667);
             this.launchButton.Name = "launchButton";
             this.launchButton.Size = new System.Drawing.Size(330, 29);
@@ -1390,7 +1429,7 @@
             // 
             // mergemod
             // 
-            this.mergemod.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mergemod.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mergemod.Location = new System.Drawing.Point(12, 603);
             this.mergemod.Name = "mergemod";
             this.mergemod.Size = new System.Drawing.Size(821, 26);
@@ -1399,7 +1438,7 @@
             // 
             // mergeButton
             // 
-            this.mergeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mergeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mergeButton.Location = new System.Drawing.Point(839, 601);
             this.mergeButton.Name = "mergeButton";
             this.mergeButton.Size = new System.Drawing.Size(330, 29);
@@ -1408,39 +1447,26 @@
             this.mergeButton.UseVisualStyleBackColor = true;
             this.mergeButton.Click += new System.EventHandler(this.mergeButton_Click);
             // 
-            // multcolor
+            // sombermode
             // 
-            this.multcolor.AutoSize = true;
-            this.multcolor.Location = new System.Drawing.Point(6, 113);
-            this.multcolor.Name = "multcolor";
-            this.multcolor.Size = new System.Drawing.Size(262, 20);
-            this.multcolor.TabIndex = 4;
-            this.multcolor.Text = "Color-code bosses in Enemy Onslaught";
-            this.multcolor.UseVisualStyleBackColor = true;
-            this.multcolor.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            this.sombermode.AutoSize = true;
+            this.sombermode.Location = new System.Drawing.Point(6, 64);
+            this.sombermode.Name = "sombermode";
+            this.sombermode.Size = new System.Drawing.Size(307, 20);
+            this.sombermode.TabIndex = 2;
+            this.sombermode.Text = "Reduce upgrade cost for non-somber weapons";
+            this.sombermode.UseVisualStyleBackColor = true;
+            this.sombermode.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
-            // phasehp
+            // sombermodeL
             // 
-            this.phasehp.AutoSize = true;
-            this.phasehp.Checked = true;
-            this.phasehp.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.phasehp.Location = new System.Drawing.Point(6, 45);
-            this.phasehp.Name = "phasehp";
-            this.phasehp.Size = new System.Drawing.Size(279, 20);
-            this.phasehp.TabIndex = 1;
-            this.phasehp.Text = "Scale up/down multi-phase bosses slightly";
-            this.phasehp.UseVisualStyleBackColor = true;
-            this.phasehp.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
-            // 
-            // impoliteL
-            // 
-            this.impoliteL.AutoSize = true;
-            this.impoliteL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.impoliteL.Location = new System.Drawing.Point(24, 155);
-            this.impoliteL.Name = "impoliteL";
-            this.impoliteL.Size = new System.Drawing.Size(182, 13);
-            this.impoliteL.TabIndex = 14;
-            this.impoliteL.Text = "Make enemies less passive in groups";
+            this.sombermodeL.AutoSize = true;
+            this.sombermodeL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.sombermodeL.Location = new System.Drawing.Point(26, 85);
+            this.sombermodeL.Name = "sombermodeL";
+            this.sombermodeL.Size = new System.Drawing.Size(245, 13);
+            this.sombermodeL.TabIndex = 3;
+            this.sombermodeL.Text = "Require only one Smithing Stone per weapon level";
             // 
             // EldenForm
             // 
@@ -1465,7 +1491,7 @@
             this.Controls.Add(this.uxm);
             this.Controls.Add(this.default_reroll);
             this.Controls.Add(this.fixedseedL);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
@@ -1621,6 +1647,8 @@
         private System.Windows.Forms.CheckBox multcolor;
         private System.Windows.Forms.CheckBox phasehp;
         private System.Windows.Forms.Label impoliteL;
+        private System.Windows.Forms.CheckBox sombermode;
+        private System.Windows.Forms.Label sombermodeL;
     }
 }
 

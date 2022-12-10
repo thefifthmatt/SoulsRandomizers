@@ -94,21 +94,21 @@ namespace RandomizerCommon
                         if (opt["dumpall"] || part.EntityID > 0 || part.EntityGroupIDs.Any(g => g > 100 && g != 34116150 && g != 34116160))
                         {
                             int charaId = part is MSBE.Part.EnemyBase e ? e.CharaInitID : 0;
-                            Console.WriteLine($"{part.EntityID}: {mapId} {part.Name}{mapSuffix} {part.GetType()} ({game.ModelCharacterName(getModelName(part.Name), charaId)}){partDetails(part, false)}");
+                            Console.WriteLine($"{part.EntityID}: {mapId} {part.Name}{mapSuffix} {part.GetType().Name} ({game.ModelCharacterName(getModelName(part.Name), charaId)}){partDetails(part, false)}");
                         }
                     }
                     foreach (MSBE.Region region in msb.Regions.GetEntries())
                     {
                         if (opt["dumpall"] || region.EntityID > 1000)
                         {
-                            Console.WriteLine($"{region.EntityID}: {entry.Key}{mapSuffix} {region.GetType()} {region.Name}");
+                            Console.WriteLine($"{region.EntityID}: {entry.Key}{mapSuffix} {region.GetType().Name} {region.Name}");
                         }
                     }
                     foreach (MSBE.Event ev in msb.Events.GetEntries())
                     {
                         if (opt["dumpall"] || ev.EntityID > 1000)
                         {
-                            Console.WriteLine($"{ev.EntityID}: {entry.Key}{mapSuffix} {ev.GetType()} {ev.Name}");
+                            Console.WriteLine($"{ev.EntityID}: {entry.Key}{mapSuffix} {ev.GetType().Name} {ev.Name}");
                         }
                     }
                 }

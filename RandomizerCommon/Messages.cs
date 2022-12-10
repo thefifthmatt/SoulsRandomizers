@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SoulsIds;
 using SoulsFormats;
 using Newtonsoft.Json;
-using static RandomizerCommon.GameData;
 using System.Drawing;
 using System.Drawing.Text;
 

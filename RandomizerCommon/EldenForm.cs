@@ -26,6 +26,20 @@ namespace RandomizerCommon
         private static string defaultPath = @"C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game\eldenring.exe";
         private static string unseenTabs = "enemy,misc";
 
+        // TODO: Implement in some form
+        private static readonly Text allcraft = new Text(
+            "Grant all craftable items in Crafting Kit",
+            "EldenForm_allcraft");
+        private static readonly Text runecraft = new Text(
+            "Crafting costs runes instead of ingredients",
+            "EldenForm_runecraft");
+        private static readonly Text runecraftL = new Text(
+            "Ingredients must be acquired once",
+            "EldenForm_runecraftL");
+        private static readonly Text runerold = new Text(
+            "Grant Rold Medallion after {0} Great Runes",
+            "EldenForm_runerold");
+
         private Messages messages;
 
         private RandomizerOptions options = new RandomizerOptions(FromGame.ER);

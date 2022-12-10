@@ -2505,11 +2505,22 @@ EnemyEvents:
     Entity: 14000801
     Segments:
     - Type: endphase
+      Regions:
+      - event chrgenstudent 14003810 14003811 14003812 14003813 14003814 14003815 14003816 14003817 14003818
       Commands:
       - c3_26(1)
       - IfCharacterDeadalive(1, 14000801, 1, 0, 1)
       - IfConditionGroup(0, 1, 1)
       - ForceCharacterDeath(14005810, 0)
+      - DeactivateGenerator(14003810, 0)
+      - DeactivateGenerator(14003811, 0)
+      - DeactivateGenerator(14003812, 0)
+      - DeactivateGenerator(14003813, 0)
+      - DeactivateGenerator(14003814, 0)
+      - DeactivateGenerator(14003815, 0)
+      - DeactivateGenerator(14003816, 0)
+      - DeactivateGenerator(14003817, 0)
+      - DeactivateGenerator(14003818, 0)
 - ID: 14002850
   Map: m14_00_00_00
   Template:
@@ -12095,6 +12106,21 @@ ValueTypes:
 - Bank: 3
   ID: 38
   Length: 4
+- Bank: 3
+  ID: 39
+  Length: 4
+- Bank: 3
+  ID: 40
+  Length: 4
+- Bank: 3
+  ID: 41
+  Length: 8
+- Bank: 3
+  ID: 42
+  Length: 4
+- Bank: 3
+  ID: 45
+  Length: 4
 - Bank: 4
   Length: 16
   Alias: IfCharacterDeadalive SByte UInt32 Byte Byte Single
@@ -12267,6 +12293,9 @@ ValueTypes:
 - Bank: 1001
   ID: 6
   Length: 4
+- Bank: 1001
+  ID: 8
+  Length: 4
 - Bank: 1003
   Length: 8
   Args:
@@ -12362,6 +12391,15 @@ ValueTypes:
 - Bank: 1003
   ID: 208
   Length: 8
+- Bank: 1003
+  ID: 212
+  Length: 4
+- Bank: 1003
+  ID: 213
+  Length: 4
+- Bank: 1003
+  ID: 214
+  Length: 4
 - Bank: 1004
   Length: 20
   Args:
@@ -12702,6 +12740,9 @@ ValueTypes:
   Length: 4
   Args:
     0: Enemy
+- Bank: 2003
+  ID: 83
+  Length: 4
 - Bank: 2004
   ID: 1
   Length: 8
@@ -13204,6 +13245,9 @@ ValueTypes:
   Length: 4
 - Bank: 2009
   ID: 11
+  Length: 4
+- Bank: 2009
+  ID: 12
   Length: 4
 - Bank: 2010
   ID: 2

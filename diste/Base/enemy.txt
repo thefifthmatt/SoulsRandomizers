@@ -1528,6 +1528,10 @@ Enemies:
   Map: m11_00_00_00
   Name: c1000_9013
   Class: None
+- ID: 11000770
+  Map: m11_00_00_00
+  Name: c1000_9014
+  Class: None
 - ID: 11000716
   Map: m11_00_00_00
   Name: c1000_9015
@@ -2638,6 +2642,10 @@ Enemies:
   Map: m11_05_00_00
   Name: c1000_9005
   Class: None
+- ID: 11050770
+  Map: m11_05_00_00
+  Name: c1000_9006
+  Class: None
 - ID: 11050100
   Map: m11_05_00_00
   Name: c1000_9010
@@ -2848,6 +2856,10 @@ Enemies:
 - ID: 11100775
   Map: m11_10_00_00
   Name: c1000_9006
+  Class: None
+- ID: 11100789
+  Map: m11_10_00_00
+  Name: c1000_9007
   Class: None
 - ID: 11100140
   Map: m11_10_00_00
@@ -22273,6 +22285,18 @@ Enemies:
   FullName: Magma Wyrm $1
   PartName: Makar
   NpcName: 904910000
+- ID: 45000100
+  Map: m45_00_00_00
+  Name: c1000_9000
+  Class: None
+- ID: 45010100
+  Map: m45_01_00_00
+  Name: c1000_9000
+  Class: None
+- ID: 45020100
+  Map: m45_02_00_00
+  Name: c1000_9000
+  Class: None
 - ID: 1033400610
   Map: m60_08_10_02
   Name: m60_33_40_00-c6091_9000
@@ -46941,6 +46965,10 @@ Enemies:
   Map: m60_42_40_00
   Name: c0000_9001
   Class: None
+- ID: 1042400705
+  Map: m60_42_40_00
+  Name: c1000_9000
+  Class: None
 - ID: 2812164
   Map: m60_42_40_00
   Name: c6070_9000
@@ -58479,6 +58507,10 @@ Enemies:
   Map: m60_47_41_00
   Name: c6070_9009
   Class: Wildlife
+- ID: 1047420700
+  Map: m60_47_42_00
+  Name: c1000_9001
+  Class: None
 - ID: 2820369
   Map: m60_47_51_00
   Name: c0100_9000

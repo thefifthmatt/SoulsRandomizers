@@ -459,6 +459,12 @@
       "text": "Wyłącz leczenie u bossów z końca gry"
     },
     {
+      "name": "EldenForm_nerfmalenia",
+      "explanation": "Checkbox to disable Malenia healing when she hits you",
+      "english_text": "Disable Malenia's heal-on-hit",
+      "text": ""
+    },
+    {
       "name": "EldenForm_night",
       "explanation": "When checked, bosses which only spawn at night (Night's Calvalry, Bell Bearing Hunters, etc.) can have important items. Only if raceloc_altboss is enabled",
       "english_text": "Include night-only bosses",
@@ -825,6 +831,18 @@
       "text": ""
     },
     {
+      "name": "EldenForm_sombermode",
+      "explanation": "Option which changes required amount of Smithing Stones to upgrade a weapon which uses regular Smithing Stones. Weapons which use Somber Smithing Stones are unchanged.",
+      "english_text": "Reduce upgrade cost for non-somber weapons",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_sombermodeL",
+      "explanation": "More details about sombermode. Instead of upgrades requiring 2-4-6 of any Smithing Stone, it is changed to 1-1-1 (from 97 in total, to 25 in total).",
+      "english_text": "Require only one Smithing Stone per weapon level",
+      "text": ""
+    },
+    {
       "name": "EldenForm_spellshops",
       "explanation": "When checked, shops which normally have sorceries/incantations get random sorceries/incantations",
       "english_text": "Spell shops still sell spells",
@@ -1035,6 +1053,18 @@
       "text": ""
     },
     {
+      "name": "GameMenu_hintItemLabel",
+      "explanation": "Label placed in the in-game map, which includes an item name {0} and area name {1} with its exact location. For example: Talisman Pouch in Altus Plateau",
+      "english_text": "{0} in {1}",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_hintItemLabelArea",
+      "explanation": "Label placed in the in-game map for non-exact hints, with the item name {0} and vague area name {1}. For example: Sacred Tear somewhere in Lake of Rot",
+      "english_text": "{0} somewhere in {1}",
+      "text": ""
+    },
+    {
       "name": "GameMenu_hintLabelArea",
       "explanation": "Label placed in the map for non-exact hints. For instance, 'Somewhere in Volcano Manor' is marked on the map to refer to any item location there. The location names are in the native language for each game language",
       "english_text": "Somewhere in {0}",
@@ -1065,10 +1095,22 @@
       "text": "Brak fabularnych przedmiotów do kupienia!"
     },
     {
+      "name": "GameMenu_hintNoUpgradeItems",
+      "explanation": "Dialog message which appears in-game when the user tries to purchase a hint for an upgrade item (not a key item, but something like a Bell Bearing), but all items have been required",
+      "english_text": "No upgrade items left!",
+      "text": ""
+    },
+    {
       "name": "GameMenu_hintPurchase",
       "explanation": "Option in Kalé's NPC menu to purchase a map marker for a required item hint, added below the existing 'Purchase' option",
       "english_text": "Purchase a required item marker",
       "text": "Kup znacznik przedmiotu"
+    },
+    {
+      "name": "GameMenu_hintRequiredItem",
+      "explanation": "Generic name for a required item, to be shown in the map for required item hints. This would be used as the {0} name in hintItemLabel, so the final label would be: Required item in Volcano Manor",
+      "english_text": "Required item",
+      "text": ""
     },
     {
       "name": "GameMenu_hintRequirementFailed",
@@ -1086,6 +1128,12 @@
       "name": "GameMenu_hintRequirementFailedOption",
       "explanation": "Message shown in game when trying to select hintMarkItem, but the option for exact location hints was unchecked",
       "english_text": "The randomizer option for exact location hints was not enabled.",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_hintUpgradePurchase",
+      "explanation": "Option given in Kalé's NPC menu to purchase a map marker for a specific ugprade item, which can be selected from a list. Examples of these items: Talisman Pouch, Sacred Tear, Smithing Stone Bell Bearing. These give hints for items from early game to late game, depending on which ones have already been acquired.",
+      "english_text": "Purchase an upgrade item marker",
       "text": ""
     },
     {

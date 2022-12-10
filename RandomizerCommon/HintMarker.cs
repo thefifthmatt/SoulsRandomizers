@@ -213,6 +213,25 @@ namespace RandomizerCommon
         private static readonly Text hintLabelArea =
             new Text("Somewhere in {0}", "GameMenu_hintLabelArea");
 
+        [Localize]
+        private static readonly Text hintRequiredItem =
+            new Text("Required item", "GameMenu_hintRequiredItem");
+
+        [Localize]
+        private static readonly Text hintUpgradePurchase =
+            new Text("Purchase an upgrade item marker", "GameMenu_hintUpgradePurchase");
+        [Localize]
+        private static readonly Text hintNoUpgradeItems =
+            new Text("No upgrade items left!", "GameMenu_hintNoUpgradeItems");
+
+        // TODO: Make hidden tear available before Mountaintops (maybe even Leyndell)
+        [Localize]
+        private static readonly Text hintItemLabel =
+            new Text("{0} in {1}", "GameMenu_hintItemLabel");
+        [Localize]
+        private static readonly Text hintItemLabelArea =
+            new Text("{0} somewhere in {1}", "GameMenu_hintItemLabelArea");
+
         public void Write(RandomizerOptions opt, Permutation perm, PermutationWriter.Result permResult)
         {
             // Get some bonfire names

@@ -344,6 +344,7 @@ namespace RandomizerCommon
                         }
                         if (keyArea == null) throw new Exception($"Internal error not randomizing {item}: unknown vanilla location");
                         forcemap[item] = keyArea;
+                        // Console.WriteLine($"- Name: {item}\n  ID: {(int)itemKey.Type}:{itemKey.ID}\n  Area: {keyArea}");
                     }
                 }
             }

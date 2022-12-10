@@ -542,7 +542,7 @@ namespace RandomizerCommon
 
         public static void SekiroCommonPass(GameData game, Events events, RandomizerOptions opt)
         {
-            GameData.ParamDictionary Params = game.Params;
+            ParamDictionary Params = game.Params;
 
             // Snap (for convenience, but can also softlock the player)
             if (opt["snap"]) Params["EquipParamGoods"][3980]["goodsUseAnim"].Value = (sbyte)84;

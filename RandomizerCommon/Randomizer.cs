@@ -34,7 +34,7 @@ namespace RandomizerCommon
         private static readonly Text mergeWrongDirError =
             new Text("Error merging mods: already running from {0} directory", "Randomizer_mergeWrongDirError");
 
-        public static readonly string EldenVersion = "v0.5.5";
+        public static readonly string EldenVersion = "v0.5.6";
 
         // TODO: There are way too many arguments here. Dependency injection or something?
         public void Randomize(
