@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\SoulsIds\SoulsIds\SoulsIds.csproj" />
     <ProjectReference Include="..\RandomizerCommon\RandomizerCommon.csproj" />
+    <ProjectReference Include="..\..\yet-another-tab-control\GrayIris.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

@@ -26,7 +26,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\SoulsFormats\SoulsFormats\SoulsFormats.csproj" />
     <ProjectReference Include="..\..\SoulsIds\SoulsIds\SoulsIds.csproj" />
-    <ProjectReference Include="..\..\yet-another-tab-control\GrayIris.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
