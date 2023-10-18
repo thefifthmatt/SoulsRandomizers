@@ -309,7 +309,7 @@ namespace RandomizerCommon
             foreach (string path in Directory.GetFiles(dir, "*.dcx"))
             {
                 string name = Path.GetFileNameWithoutExtension(path);
-                byte[] f = DCX.Decompress(path);
+                byte[] f = DCX.Decompress(path).ToArray();
                 File.WriteAllBytes($@"{dir}\dcx\{name}", f);
             }
         }
