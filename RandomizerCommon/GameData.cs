@@ -1091,7 +1091,7 @@ namespace RandomizerCommon
                 {
                     throw new Exception($"Missing param file: {path}");
                 }
-                dict = Editor.LoadParams(path, layouts: Layouts, allowError: true);
+                dict = Editor.LoadParams(path, layouts: lazy ? null : Layouts, allowError: true);
             }
             else if (Sekiro)
             {
