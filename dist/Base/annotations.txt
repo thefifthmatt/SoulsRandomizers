@@ -265,26 +265,32 @@ Areas:
   Text: Firelink Shrine
   Req: firelink_cemetery AND iudexgundyr
   BoringKeyItem: true
+  Archipelago: FS
 - Name: firelink_roof
   Text: Firelink Shrine Roof
   Req: firelink AND (treeskip OR towerkey)
   BoringKeyItem: true
+  Archipelago: FSBT
 - Name: firelink_belltower
   Text: Firelink Bell Tower
   Req: firelink AND towerkey
+  Archipelago: FSBT
 - Name: highwall
   Text: High Wall
   Req: firelink AND coiledsword
   WeightBase: firelink
+  Archipelago: HWL
 - Name: highwall_darkwraith
   Text: High Wall Lift Cell
   Req: highwall AND liftchamberkey
 - Name: highwall_greirat
   Text: Greirat's Cell
   Req: highwall AND cellkey
+  Archipelago: HWL
 - Name: settlement
   Text: Undead Settlement
   Req: highwall AND smalllothricbanner AND vordt
+  Archipelago: US
   Aliases:
   - settlement early
   - settlement mid
@@ -298,22 +304,27 @@ Areas:
 - Name: farronkeep_road
   Text: Road of Sacrifices
   Req: settlement
+  Archipelago: RS
 - Name: farronkeep
   Text: Farron Keep
   Req: farronkeep_road
+  Archipelago: FK
 - Name: cathedral
   Text: Cathedral of the Deep
   Req: farronkeep_road AND crystalsage
- ### To add: Smouldering Lake
+  Archipelago: CD
 - Name: catacombs
   Text: Catacombs of Carthus
   Req: farronkeep AND abysswatchers
+  Archipelago: CC
 - Name: catacombs_lake
   Text: Smouldering Lake
   Req: catacombs
+  Archipelago: SL
 - Name: irithyll
   Text: Irithyll
   Req: catacombs AND (smalldoll OR (vilhelmskip AND spook))
+  Archipelago: IBV
   Aliases:
   - irithyll early
   - irithyll mid, dungeon early
@@ -325,27 +336,34 @@ Areas:
 - Name: dungeon
   Text: Irithyll Dungeon
   Req: irithyll
+  Archipelago: ID
 - Name: dungeon_profaned
   Text: Profaned Capital
   Req: dungeon
+  Archipelago: PC
 - Name: dungeon_jailbreak
   Text: Irithyll Dungeon with Jailbreaker's Key
   Req: dungeon AND jailbreakerskey
+  Archipelago: ID
 - Name: dungeon_jailerscell
   Text: Irithyll Dungeon Jailer's Cells
   Req: dungeon AND jailerskeyring
   WeightBase: dungeon_jailbreak
+  Archipelago: ID
 - Name: dungeon_oldcell
   Text: Irithyll Dungeon Old Cell
   Req: dungeon_profaned AND oldcellkey
   WeightBase: dungeon_jailbreak
+  Archipelago: ID
 - Name: highwall_dancer
   Text: Lothric Castle
   Req: highwall AND basinofvows AND (earlylothric OR (middancer AND settlement) OR (regdancer AND irithyll))
   WeightBase: lothric
+  Archipelago: HWL
 - Name: lothric
   Text: Lothric Castle
-  Req: highwall_dancer AND dancer 
+  Req: highwall_dancer AND dancer
+  Archipelago: LC
   Aliases:
   - lothric early
   - lothric mid
@@ -356,9 +374,11 @@ Areas:
 - Name: highwall_garden
   Text: Consumed King's Gardens
   Req: lothric
+  Archipelago: CKG
 - Name: untended
   Text: Untended Graves
   Req: highwall_garden AND oceiros
+  Archipelago: UG
 - Name: untended_farron
   Text: Untended Graves
   # May want to split out post-gundyr into a different area, but this messes with early/late infos for now
@@ -367,29 +387,37 @@ Areas:
 - Name: lothric_gotthard
   Text: Lothric Castle after Yhorm and Aldrich
   Req: lothric AND yhorm AND aldrich AND pontiff
+  Archipelago: LC
 - Name: archives
   Text: Grand Archives
   Req: lothric AND grandarchiveskey AND dragonslayerarmour
+  Archipelago: GA
 - Name: archdragon
   Text: Archdragon Peak
   Req: dungeon AND pathofthedragon
+  Archipelago: AP
 - Name: lothric_archdragon
   Text: Lothric Castle
   Req: highwall_garden AND oceiros AND archdragon
   WeightBase: archdragon
+  Archipelago: CKG
 - Name: ariandel
   Text: pre-Contraption Ariandel
   Req: dlc1 AND cathedral AND (earlydlc OR irithyll)
+  Archipelago: PW
 - Name: ariandel_vilhelm
   Text: post-Contraption Ariandel
   Req: dlc1 AND ariandel AND (contraptionkey OR (vilhelmskip AND spook))
+  Archipelago: PW
 - Name: dregheap
   Text: Dreg Heap
   # Make sure that DLC2 coming from cinder at least includes all of main lothric, to avoid cutting off most of the game
   Req: dlc2 AND ((dlc2fromkiln AND irithyll AND lothric AND cinder1 AND cinder2 AND cinder3 AND cinder4) OR (dlc1 AND dlc2fromdlc1 AND ariandel_vilhelm AND friede))
+  Archipelago: DH
 - Name: ringedcity
   Text: Ringed City
   Req: dlc2 AND dregheap AND smallenvoybanner AND demonprince
+  Archipelago: RC
   Aliases:
   - ringedcity early
   - ringedcity mid
@@ -400,6 +428,7 @@ Areas:
 - Name: filianore
   Text: Filianore's Rest
   Req: dlc2 AND ringedcity AND halflight
+  Archipelago: RC
 - Name: kiln
   Text: Kiln of the First Flame
   Req: settlement AND cinder1 AND cinder2 AND cinder3 AND cinder4
@@ -1029,6 +1058,7 @@ Slots:
   Text: In the Firelink Shrine rafters, accessible from the roof
   Area: firelink_roof
   Tags: racemode
+  Archipelago: ["Estus Shard #11"]
 - Key: '00,0:54000190::'
   DebugText:
   - Fire Keeper Soul - 4000190[Fire Keeper Set Corpse [o407211_1000] @ firelink]
@@ -1110,6 +1140,7 @@ Slots:
   Text: On a cliffside to the right of the main path leading up to dark Firelink Shrine, after Abyss Watchers is defeated.
   Area: untended_farron
   Tags: ring
+  Archipelago: ["UG: Hornet Ring"]
 - Key: '00,0:54000340::'
   DebugText:
   - Coiled Sword Fragment - 4000340[Invisible [o000499_0022] @ firelink]
@@ -1217,6 +1248,7 @@ Slots:
   Text: From the middle level of the first Consumed King's Gardens elevator, out the balcony and to the right
   Area: highwall_garden
   Tags: racemode
+  Archipelago: ["Estus Shard #10"]
 - Key: '01,0:53000010::'
   DebugText:
   - Green Blossom - 3000010[Corpse [o000250_0001] @ highwall] (2)
@@ -1520,6 +1552,7 @@ Slots:
   Text: In the basement of the building with the Pus of Man on the roof, on the blacksmith anvil
   Area: highwall
   Tags: late racemode
+  Archipelago: ["Estus Shard #1"]
 - Key: '01,0:53000700::'
   DebugText:
   - Fleshbite Ring+1 - 3000700[Corpse [o000250_0070] @ highwall]
@@ -1562,6 +1595,7 @@ Slots:
   Text: In the building with the Pus of Man on the roof, past the Lothric Knight down a hallway obscured by a wooden wheel, dropping down past the edge
   Area: highwall
   Tags: hidden mid chest
+  Archipelago: ["HWL: Astora's Straight Sword"]
 - Key: '01,0:53000840::'
   DebugText:
   - Titanite Scale - 3000840[Chest [o000200_0004] @ highwall]
@@ -1613,7 +1647,7 @@ Slots:
   DebugText:
   - Magic Stoneplate Ring - 11901120[Cathedral Knight [c1190_0000] @ highwall]
   Text: Dropped by the Cathedral Knight closest to the Oceiros fog gate
-  Area: lothric
+  Area: highwall_garden
   Tags: enemy
 - Key: '01,0:53010980::'
   DebugText:
@@ -1757,6 +1791,7 @@ Slots:
   Text: In the area past the Dilapidated Bridge bonfire, where the Giant is shooting arrows, jumping to the floating platform on the right
   Area: settlement
   Tags: outoftheway racemode
+  Archipelago: ["Undead Bone Shard #1"]
 - Key: '02,0:53100020::'
   DebugText:
   - Alluring Skull - 3100020[Corpse [o000250_0002] @ settlement] (2)
@@ -2020,6 +2055,7 @@ Slots:
   Text: In front of the burning tree guarded by the Cathedral Evangelist
   Area: settlement
   Tags: outoftheway racemode
+  Archipelago: ["Estus Shard #2"]
 - Key: '02,0:53100460::'
   DebugText:
   - Firebomb - 3100460[Corpse [o000250_0046] @ settlement] (6)
@@ -2128,6 +2164,7 @@ Slots:
   Text: On a hanging corpse in the ravine accessible with the Grave Key or dropping down near Eygon, to the entrance of Irina's prison. Must be shot down with an arrow or projective.
   Area: settlement
   Tags: unfair
+  Archipelago: ["US: Blessed Red and White Shield+1"]
 - Key: '02,0:53100750::'
   DebugText:
   - Small Leather Shield - 3100750[Hanging Settlement Corpse [o319180_1020] @ settlement]
@@ -2243,6 +2280,9 @@ Slots:
   Area: farronkeep
   Tags: boss late
   Event: abysswatchers
+  Archipelago:
+  - "FK: Soul of the Blood of the Wolf"
+  - "FK: Cinders of a Lord - Abyss Watcher"
 - Key: '03,0:50006030::'
   DebugText:
   - Anri's Straight Sword - 51900[Anri of Astora (female) [c0000_0025] @ farronkeep, Anri of Astora (male) [c0000_0026] @ farronkeep, Anri of Astora (female) [c0000_0008] @ firelink, Anri of Astora (male) [c0000_0009] @ firelink, Anri of Astora (female) [c0000_0016] @ catacombs, Anri of Astora (male) [c0000_0020] @ catacombs], 51910[Anri of Astora (female) [c0000_0017] @ catacombs, Anri of Astora (male) [c0000_0021] @ catacombs, Anri of Astora (female) [c0000_0018] @ catacombs, Anri of Astora (male) [c0000_0022] @ catacombs, Anri of Astora (female) [c0000_0019] @ catacombs, Anri of Astora (male) [c0000_0023] @ catacombs, Anri of Astora (female) [c0000_0012] @ irithyll, Anri of Astora (male) [c0000_0021] @ irithyll, Anri of Astora (female) [c0000_0013] @ irithyll, Anri of Astora (male) [c0000_0022] @ irithyll, Anri of Astora (female) [c0000_0017] @ cathedral, Anri of Astora (male) [c0000_0018] @ cathedral], 60300[?EVENT?]
@@ -2328,6 +2368,7 @@ Slots:
   Text: Behind the building leading to Crystal Sage, approached from Crucifixion Woods bonfire. Can drop down on left side of go under bridge on right side
   Area: farronkeep_road
   Tags: racemode outoftheway
+  Archipelago: ["Estus Shard #3"]
 - Key: '03,0:53300040::'
   DebugText:
   - Ring of Sacrifice - 3300040[Corpse [o000250_0004] @ farronkeep]
@@ -2451,6 +2492,7 @@ Slots:
   Text: In a standalone pavillion down the ramp from Keep Ruins bonfire and to the right
   Area: farronkeep
   Tags: ambush racemode late
+  Archipelago: ["Undead Bone Shard #2"]
 - Key: '03,0:53300280::'
   DebugText:
   - Atonement - 3300280[Corpse [o000250_0028] @ farronkeep]
@@ -2606,6 +2648,7 @@ Slots:
   Text: Straight ahead from the Farron Keep bonfire to the ritual fire stairs, guarded by a slug
   Area: farronkeep
   Tags: racemode
+  Archipelago: ["Estus Shard #4"]
 - Key: '03,0:53300535::'
   DebugText:
   - Homeward Bone - 3300535[Corpse [o000250_0092] @ farronkeep] (2)
@@ -2728,6 +2771,11 @@ Slots:
   - Herald Trousers - 3300743[Corpse [o000250_0074] @ farronkeep]
   Text: Guarded by the Cathedral Evangelist after the Crystal Sage fight
   Area: cathedral
+  Archipelago:
+  - "RS: Herald Helm"
+  - "RS: Herald Armor"
+  - "RS: Herald Gloves"
+  - "RS: Herald Trousers"
 - Key: '03,0:53300750::'
   DebugText:
   - Brigand Axe - 3300750[Corpse [o000250_0075] @ farronkeep]
@@ -2777,6 +2825,7 @@ Slots:
   Text: Guarded by Stray Demon, up from the Old Wolf of Farron bonfire
   Area: farronkeep
   Tags: late outoftheway
+  Archipelago: ["FK: Great Axe"]
 - Key: '03,0:53300820::'
   DebugText:
   - Ember - 3300820[Corpse [o000250_0082] @ farronkeep]
@@ -3048,6 +3097,7 @@ Slots:
   Text: In the graveyard with the Infested Corpses, on a coffin partly hanging off of the ledge
   Area: cathedral
   Tags: outoftheway racemode
+  Archipelago: ["Undead Bone Shard #3"]
 - Key: '04,0:53500050::'
   DebugText:
   - Curse Ward Greatshield - 3500050[Corpse [o000250_0005] @ cathedral]
@@ -3126,6 +3176,7 @@ Slots:
   Text: Right outside of the Cleansing Chapel. Requires killing praying hollows.
   Area: cathedral
   Tags: racemode
+  Archipelago: ["Estus Shard #5"]
 - Key: '04,0:53500210::'
   DebugText:
   - Maiden Hood - 3500210[Corpse [o000250_0021] @ cathedral]
@@ -3445,6 +3496,7 @@ Slots:
   Text: Dropped by Knight Slayer Tsorig after invading in the Catacombs
   Area: catacombs
   Tags: missable
+  Archipelago: ["SL: Knight Slayer's Ring"]
 - Key: '05,0:50006845::'
   DebugText:
   - Fume Ultra Greatsword - 58411[Knight Slayer Tsorig [c0000_0015] @ catacombs]
@@ -3702,6 +3754,7 @@ Slots:
   Text: In the close end of the Demon Ruins main hall, right below a Smouldering Writhing Flesh
   Area: catacombs_lake
   Tags: ambush racemode
+  Archipelago: ["Undead Bone Shard #4"]
 - Key: '05,0:53800460::'
   DebugText:
   - Titanite Scale - 3800460[Corpse [o000250_0046] @ catacombs]
@@ -3761,6 +3814,7 @@ Slots:
   Text: Behind an illusory wall and Smouldering Writhing Flesh-filled corridor from Antechamber bonfire
   Area: catacombs_lake
   Tags: hidden racemode
+  Archipelago: ["Estus Shard #6"]
 - Key: '05,0:53800600::'
   DebugText:
   - Ring of Steel Protection+2 - 3800600[Corpse [o000250_0060] @ catacombs]
@@ -3797,6 +3851,7 @@ Slots:
   Text: Dropped by first Skeleton Ball after killing its sorcerer skeleton
   Area: catacombs
   Tags: racemode  # Seems fine in enemy rando
+  Archipelago: ["Undead Bone Shard #5"]
 - Key: '05,0:53800910::'
   DebugText:
   - Dark Gem - 3800910[Invisible [o000499_0023] @ catacombs]
@@ -3816,6 +3871,9 @@ Slots:
   Text: Dropped by the giant Carthus Sandworm
   Area: catacombs_lake
   Tags: miniboss racemode
+  Archipelago:
+  - "Undead Bone Shard #6"
+  - "SL: Lightning Stake"
 - Key: '05,0:53800945::'
   DebugText:
   - Symbol of Avarice - 21202000[Mimic Chest [c2120_0000] @ catacombs] (5%)
@@ -3873,6 +3931,9 @@ Slots:
   Area: irithyll
   Tags: boss late
   Event: aldrich
+  Archipelago:
+  - "AL: Soul of Aldrich"
+  - "AL: Cinders of a Lord - Aldrich"
 - Key: '06,0:50006060::'
   DebugText:
   - Yorshka's Chime - 50610[Invisible [o000499_0006] @ irithyll]
@@ -3970,6 +4031,7 @@ Slots:
   Text: In a chest on the floor of the Anor Londo cathedral
   Area: irithyll
   Tags: late ambush racemode chest
+  Archipelago: ["Estus Shard #7"]
 - Key: '06,0:53700100::'
   DebugText:
   - Budding Green Blossom - 3700100[Corpse [o000250_0010] @ irithyll]
@@ -4058,6 +4120,7 @@ Slots:
   Text: In the graveyard down the stairs from the Church of Yorshka, behind the grave with the Corvian
   Area: irithyll
   Tags: mid hidden racemode
+  Archipelago: ["Undead Bone Shard #7"]
 - Key: '06,0:53700250::'
   DebugText:
   - Kukri - 3700250[Corpse [o000250_0025] @ irithyll] (8)
@@ -4338,6 +4401,7 @@ Slots:
   Text: On the Giant Blacksmith's corpse in Anor Londo
   Area: irithyll
   Tags: late racemode
+  Archipelago: ["AL: Giant's Coal"]
 - Key: '06,0:53700810::'
   DebugText:
   - Chloranthy Ring+1 - 3700810[Corpse [o000250_0081] @ irithyll]
@@ -4362,6 +4426,7 @@ Slots:
   Text: In the Anor Londo cathedral after defeating Aldrich, up the elevators in Gwynevere's Chamber
   Area: irithyll
   Tags: late outoftheway ring
+  Archipelago: ["AL: Sun Princess Ring"]
 - Key: '06,0:53700850::'
   DebugText:
   - Covetous Gold Serpent Ring+1 - 3700850[Corpse [o000250_0085] @ irithyll]
@@ -4453,6 +4518,7 @@ Slots:
   Text: Dropped by killing Sulyvahn's Beast on the bridge to Irithyll or in the lake below
   Area: catacombs
   Tags: late miniboss
+  Archipelago: ["IBV: Pontiff's Right Eye"]
 - Key: '06,0:6750::'
   DebugText:
   - Blade of the Darkmoon - 4250[?EVENT?], 50600[Invisible [o000499_0006] @ irithyll], 60600[?EVENT?]
@@ -4502,6 +4568,7 @@ Slots:
   Text: Dropped by the Deep Accursed who drops down when you open the Anor Londo Cathedral shortcut
   Area: irithyll
   Tags: late enemy missable
+  Archipelago: ["AL: Aldrich's Ruby"]
 # Random drops with an event for some reason. Just keep them non random, at least until we have a "junk item" category.
 - Key: '06,1:3700366::'
   DebugText:
@@ -4542,6 +4609,9 @@ Slots:
   Area: dungeon_profaned
   Tags: boss
   Event: yhorm
+  Archipelago:
+  - "PC: Soul of Yhorm the Giant"
+  - "PC: Cinders of a Lord - Yhorm the Giant"
 - Key: '07,0:50006150::'
   DebugText:
   - Unique location from [Karla] in [firelink, dungeon]
@@ -4872,6 +4942,7 @@ Slots:
   Text: Past the Profaned Capital Court Sorcerer, in the corridor overlooking the Irithyll Dungeon Giant Slave area
   Area: dungeon_profaned
   Tags: ambush racemode
+  Archipelago: ["ID: Jailer's Key Ring"]
 - Key: '07,0:53900590::'
   DebugText:
   - Ember - 3900590[Chest [o000200_0009] @ dungeon]
@@ -4933,6 +5004,7 @@ Slots:
   Text: On the corpse of Laddersmith Gilligan next to the Profaned Capital bonfire
   Area: dungeon_profaned
   Tags: racemode
+  Archipelago: ["Undead Bone Shard #8"]
 - Key: '07,0:53900910::'
   DebugText:
   - Eleonora - 20400020[Monstrosity of Sin [c2040_0003] @ dungeon]
@@ -5023,6 +5095,7 @@ Slots:
   Text: Dropped by the mimic in the room after the outside area of Irithyll Dungeon overlooking Profaned Capital
   Area: dungeon
   Tags: mid miniboss racemode
+  Archipelago: ["Estus Shard #8"]
 - Key: '07,0:53900996::'
   DebugText:
   - Symbol of Avarice - 21203050[Mimic Chest [c2120_0006] @ dungeon] (5%)
@@ -5138,6 +5211,7 @@ Slots:
   Text: Dropping down from the bridge where the Pus of Man wyverns breathe fire on the far side from the bonfire
   Area: lothric
   Tags: mid racemode
+  Archipelago: ["Undead Bone Shard #9"]
 - Key: '08,0:53010110::'
   DebugText:
   - Lightning Urn - 3010110[Corpse [o000250_0011] @ lothric] (3)
@@ -5446,6 +5520,9 @@ Slots:
   Area: archives
   Tags: boss
   Event: twinprinces
+  Archipelago:
+  - "GA: Soul of the Twin Princes"
+  - "GA: Cinders of a Lord - Lothric Prince"
 - Key: '09,0:50006700::'
   DebugText:
   - Gotthard Twinswords - 57001[Invisible [o000499_0000] @ archives]
@@ -5524,6 +5601,7 @@ Slots:
   Text: On the Archives roof near the three Winged Knights, in a side area overlooking the ocean.
   Area: archives
   Tags: late outoftheway racemode
+  Archipelago: ["Estus Shard #9"]
 - Key: '09,0:53410110::'
   DebugText:
   - Homeward Bone - 3410110[Corpse [o000250_0011] @ archives] (3)
@@ -5722,6 +5800,7 @@ Slots:
   Text: On the corpse of a sitting Archives Scholar on a balcony high in the Archives overlooking the area with the Grand Archives Scholars with a shortcut ladder, near the final wax pool
   Area: archives
   Tags: late racemode
+  Archipelago: ["Undead Bone Shard #10"]
 - Key: '09,0:53410900::'
   DebugText:
   - Titanite Slab - 12902200[Winged Knight [c1290_0000] @ archives]
@@ -8435,7 +8514,7 @@ Slots:
   DebugText:
   - Rosaria's Fingers - 4260[?EVENT?]
   Text: Given by Rosaria.
-  Area: irithyll
+  Area: cathedral
   Tags: missable
 - Key: '99,0:6761::'
   DebugText:
@@ -8915,3 +8994,25 @@ Slots:
   - Titanite Scale - 111656[Shrine Handmaid after giving Captain's Ashes, before giving Dragon Chaser's Ashes (1)], 110452[Shrine Handmaid after giving Dragon Chaser's Ashes]
   Text: Limited item from Captain's Ashes, unlimited from Dragon Chaser's Ashes
   Area: firelink
+
+# Items for which Archipelago's name differs from the name in the game files or is ambiguous with
+# respect to the item ID.
+ArchipelagoItems:
+- Archipelago: Cinders of a Lord - Abyss Watcher
+  ID: 3:2123
+- Archipelago: Cinders of a Lord - Aldrich
+  ID: 3:2124
+- Archipelago: Cinders of a Lord - Yhorm the Giant
+  ID: 3:2125
+- Archipelago: Cinders of a Lord - Lothric Prince
+  ID: 3:2126
+- Archipelago: Great Axe
+  ID: 0:7050000
+- Archipelago: Blessed Red and White Shield+1
+  ID: 0:20201401
+- Archipelago: Astora's Straight Sword
+  ID: 0:2200000
+- # There doesn't seem to be any LocationData for this particular item, so replace it with a soul of
+  # equivalent value.
+  Archipelago: Soul of an Intrepid Hero
+  ID: 3:405

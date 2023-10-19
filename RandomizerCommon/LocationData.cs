@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using static RandomizerCommon.Util;
 
 namespace RandomizerCommon
 {
@@ -123,11 +124,43 @@ namespace RandomizerCommon
         {
             public readonly ItemType Type;
             public readonly int ID;
+
+            public ItemKey(String serialized)
+            {
+                var parts = serialized.Split(':');
+                if (parts.Length != 2)
+                {
+                    throw new ArgumentException($"ItemKey must be two colon-separated numbers, was \"{serialized}\".");
+                }
+
+                this.Type = (ItemType)int.Parse(parts[0]);
+                this.ID = int.Parse(parts[1]);
+            }
+
             public ItemKey(ItemType Type, int ID)
             {
                 this.Type = Type;
                 this.ID = ID;
             }
+
+            /// <summary>
+            ///  Returns the combined type and ID that's occasionally used internally by games to
+            ///  track items.
+            /// </summary>
+            public int FullID
+            {
+                get
+                {
+                    switch (Type)
+                    {
+                        case ItemType.WEAPON: return ID;
+                        case ItemType.ARMOR: return 0x10000000 + ID;
+                        case ItemType.RING: return 0x20000000 + ID;
+                        default: return 0x40000000 + ID;
+                    }
+                }
+            }
+
             public override string ToString()
             {
                 return $"{Type}:{ID}";

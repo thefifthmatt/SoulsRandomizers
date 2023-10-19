@@ -66,6 +66,18 @@ namespace RandomizerCommon
             AddMulti(dict[key], value, value2);
         }
 
+        /// <summary>
+        /// Returns the indefinite article appropriate for the given noun, followed by the noun
+        /// itself.
+        /// </summary>
+        public static string IndefiniteArticle(string noun)
+        {
+            var lowerCase = noun.ToLowerInvariant();
+            return noun.StartsWith("a") || noun.StartsWith("e") || noun.StartsWith("i") || noun.StartsWith("o") || noun.StartsWith("u")
+                ? $"An {noun}"
+                : $"A {noun}";
+        }
+
         public class ReadIndexDictionary<K, V> : IReadOnlyDictionary<K, V>
         {
             public int Index { get; set; }

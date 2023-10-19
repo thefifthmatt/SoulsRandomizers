@@ -15,6 +15,7 @@ using static RandomizerCommon.Messages;
 using static RandomizerCommon.Permutation;
 using static RandomizerCommon.Util;
 using static SoulsFormats.EMEVD.Instruction;
+using System.Diagnostics;
 
 namespace RandomizerCommon
 {
@@ -81,32 +82,35 @@ namespace RandomizerCommon
         public Result Write(Random random, Permutation permutation, RandomizerOptions opt)
         {
             bool writeSwitch = true;
-            foreach (string hintType in ann.HintCategories)
+            if (permutation.Hints.Count > 0)
             {
-                Console.WriteLine($"-- Hints for {hintType}:");
-                bool hasHint = false;
-                foreach (KeyValuePair<SlotKey, SlotKey> assign in permutation.Hints[hintType].OrderBy(e => (game.DisplayName(e.Key.Item), permutation.GetLogOrder(e.Value))))
+                foreach (string hintType in ann.HintCategories)
                 {
-                    LocationScope scope = data.Location(assign.Value).LocScope;
-                    Console.WriteLine($"{game.DisplayName(assign.Key.Item)}: {ann.GetLocationHint(assign.Value, permutation.SpecialLocation(scope))}");
-                    hasHint = true;
-                    if (opt["fullhint"])
+                    Console.WriteLine($"-- Hints for {hintType}:");
+                    bool hasHint = false;
+                    foreach (KeyValuePair<SlotKey, SlotKey> assign in permutation.Hints[hintType].OrderBy(e => (game.DisplayName(e.Key.Item), permutation.GetLogOrder(e.Value))))
                     {
-                        Console.WriteLine($"- {ann.GetLocationDescription(assign.Value)}");
+                        LocationScope scope = data.Location(assign.Value).LocScope;
+                        Console.WriteLine($"{game.DisplayName(assign.Key.Item)}: {ann.GetLocationHint(assign.Value, permutation.SpecialLocation(scope))}");
+                        hasHint = true;
+                        if (opt["fullhint"])
+                        {
+                            Console.WriteLine($"- {ann.GetLocationDescription(assign.Value)}");
+                        }
+                    }
+                    if (!hasHint)
+                    {
+                        Console.WriteLine("(not randomized)");
+                    }
+                    Console.WriteLine();
+                    if (opt["silent"])
+                    {
+                        writeSwitch = false;
+                        break;
                     }
                 }
-                if (!hasHint)
-                {
-                    Console.WriteLine("(not randomized)");
-                }
-                Console.WriteLine();
-                if (opt["silent"])
-                {
-                    writeSwitch = false;
-                    break;
-                }
+                Console.WriteLine("-- End of hints");
             }
-            Console.WriteLine("-- End of hints");
 #if !DEBUG
             for (int i = 0; i < 30; i++) Console.WriteLine();
 #endif
@@ -285,7 +289,7 @@ namespace RandomizerCommon
                     .Where(r => (uint)r["getItemFlagId"].Value > 0)
                     .Select(r => ((int)r.ID, (int)(uint)r["getItemFlagId"].Value)).OrderBy(r => r.Item1).ToList();
                 shopFlags = game.Params["ShopLineupParam"].Rows
-                    .Where(r => r.ID < 600000 &&(uint)r["eventFlag_forStock"].Value > 0)
+                    .Where(r => r.ID < 600000 && (uint)r["eventFlag_forStock"].Value > 0)
                     .Select(r => ((int)r.ID, (int)(uint)r["eventFlag_forStock"].Value)).OrderBy(r => r.Item1).ToList();
             }
             HashSet<int> allEventFlags = new HashSet<int>(data.Data.Values.SelectMany(locs => locs.Locations.Values.Select(l => l.Scope.EventID).Where(l => l > 0)));
@@ -1213,11 +1217,6 @@ namespace RandomizerCommon
             else if (game.DS3)
             {
                 // DS3 edits
-                if (dragonFlag <= 0 && !opt["norandom"])
-                {
-                    throw new Exception("Internal error: Path of the dragon not assigned to any location, but key items are randomized");
-                }
-
                 // Disable Firelink Shrine bonfire without Coiled Sword, with special event flag
                 game.Params["ActionButtonParam"][9351]["grayoutFlag"].Value = 14005108;
 
@@ -1924,6 +1923,58 @@ namespace RandomizerCommon
             }
 
             return new Result { ItemEventFlags = itemEventFlags, MerchantGiftFlags = merchantGiftFlags };
+        }
+
+        /// <summary>
+        /// Creates a totally new item and inserts it into the game data.
+        /// </summary>
+        /// <param name="name">The item's name, as seen by the player.</param>
+        /// <param name="shortDescription">A brief description of the item, seen on the normal
+        /// inventory screen.</param>
+        /// <param name="longDescription">An additional, longer description of the item, seen when
+        /// the player looks at the detail screen. The short description is always included at the
+        /// beginning of the long description.</param>
+        /// <param name="archipelagoLocationId">The ID of the location the item is found in
+        /// according to Archipelago, for Archipelago runs.</param>
+        /// <param name="replaceWithInArchipelago">The item the Archipelago mod should replace this with when
+        /// it's picked up. Used so that Archipelago can notify the server that a specific location
+        /// has been checked even if it contains a non-unique item.</param>
+        /// <param name="replaceWithQuantity">If replaceWith is set, this is the number of items it
+        /// should be replaced with.</param>
+        /// <returns>The SlotKey to use for the new item.</returns>
+        public SlotKey AddSyntheticItem(String name, String shortDescription,
+            String longDescription = null, long? archipelagoLocationId  = null,
+            ItemKey? replaceWithInArchipelago = null, uint replaceWithQuantity = 1)
+        {
+            var goods = game.Params["EquipParamGoods"];
+            var newRow = new PARAM.Row(goods[2005]); // Copy the basic structure from the Small Doll.
+            newRow.ID = goods.Rows.Count + 3780000; // 3780000 is the highest row in the actual game.
+            newRow["iconId"].Value = 42; // Prism Stone icon
+            newRow["sortId"].Value = 999999; // Sort external items last of all
+
+            // An Archipelago ID can be up to 53 bits, so we have to store each one in two different
+            // 32-bit parameter fields that aren't relevant to key items.
+            if (archipelagoLocationId != null)
+            {
+                newRow["VagrantItemLotId"].Value = (int)((ulong)archipelagoLocationId & 0xffffffffUL);
+                newRow["VagrantBonusEneDropItemLotId"].Value = (int)((ulong)archipelagoLocationId >> 32);
+            }
+            if (replaceWithInArchipelago != null)
+            {
+                newRow["fragmentNum"].Value = replaceWithInArchipelago.FullID;
+                newRow["sellValue"].Value = replaceWithQuantity;
+            }
+
+            goods.Rows.Add(newRow);
+
+            game.ItemFMGs["アイテム名"][newRow.ID] = name;
+            game.ItemFMGs["アイテム説明"][newRow.ID] = shortDescription;
+            game.ItemFMGs["アイテムうんちく"][newRow.ID] = shortDescription + (longDescription == null ? "" : $"\n\n{longDescription}");
+
+            var key = new ItemKey(ItemType.GOOD, newRow.ID);
+            data.AddLocationlessItem(key);
+
+            return new SlotKey(key, new ItemScope(ScopeType.SPECIAL, -1));
         }
 
         private static readonly Regex phraseRe = new Regex(@"\s*;\s*");

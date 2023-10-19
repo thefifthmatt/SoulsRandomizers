@@ -594,5 +594,14 @@ namespace RandomizerCommon
                 }
             }
         }
+
+        private void archipelagoButton_Click(object sender, EventArgs e)
+        {
+            var dialog = new ArchipelagoForm();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                SetStatus("Archipelago config loaded into game!");
+            }
+        }
     }
 }
