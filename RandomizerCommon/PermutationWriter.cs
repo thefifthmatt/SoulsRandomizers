@@ -470,10 +470,12 @@ namespace RandomizerCommon
             {
                 game.Params[paramType].Rows.RemoveAll(row => deleteRows[paramType].Contains(row.ID));
             }
-            List<ItemKey> syntheticUniqueItems = new List<ItemKey>
-            {
-                game.ItemForName("Imbued Sword Key"), game.ItemForName("Imbued Sword Key 2"), game.ItemForName("Imbued Sword Key 3"),
-            };
+            List<ItemKey> syntheticUniqueItems = game.EldenRing
+                ? new List<ItemKey>
+                    {
+                        game.ItemForName("Imbued Sword Key"), game.ItemForName("Imbued Sword Key 2"), game.ItemForName("Imbued Sword Key 3"),
+                    }
+                : new List<ItemKey>();
 
             // Tuple of (area, tag type, description)
             List<(string, string, string)> raceModeInfo = new List<(string, string, string)>();
