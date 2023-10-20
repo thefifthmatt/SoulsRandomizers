@@ -17,6 +17,7 @@ namespace RandomizerCommon
     public class AnnotationData
     {
         private static readonly Dictionary<string, int> LocationIndices = new Dictionary<string, int> { { "early", 0 }, { "mid", 1 }, { "late", 2 }, { "deadend", 2 } };
+        private static readonly Regex LeadingZerosRe = new Regex(@":0+");
 
         private GameData game;
         private LocationData data;
@@ -465,14 +466,13 @@ namespace RandomizerCommon
                 {
                     continue;
                 }
-                string key = entry.Key.ToString();
+                string key = LeadingZerosRe.Replace(entry.Key.ToString().Replace(":0000000000:", ":-1:"), ":");
                 if (!strSlots.ContainsKey(key))
                 {
                     // Warn
                     // TODO: Fill these in
                     if (game.EldenRing) continue;
-                    Console.WriteLine($"Warning: No annotation for slot {key}, with slots {string.Join(", ", entry.Value.Select(s => $"{s} at {string.Join(", ", data.Location(s).Keys)}"))}");
-                    continue;
+                    throw new Exception($"Warning: No annotation for slot {key}, with slots {string.Join(", ", entry.Value.Select(s => $"{s} at {string.Join(", ", data.Location(s).Keys)}"))}");
                 }
                 SlotAnnotation slot = strSlots[key];
                 Slots[entry.Key] = slot;
