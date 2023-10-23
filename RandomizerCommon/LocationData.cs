@@ -144,6 +144,22 @@ namespace RandomizerCommon
             }
 
             /// <summary>
+            /// Parses an ItemKey from the fully resolved ID with category included.
+            /// </summary>
+            public ItemKey(int FullID)
+            {
+                this.ID = FullID & 0xfffffff;
+                this.Type = (FullID & 0xf0000000) switch
+                {
+                    0 => ItemType.WEAPON,
+                    0x10000000 => ItemType.ARMOR,
+                    0x20000000 => ItemType.RING,
+                    _ when ID >= 1000 && ID < 1250 => ItemType.GEM,
+                    _ => ItemType.GOOD
+                };
+            }
+
+            /// <summary>
             ///  Returns the combined type and ID that's occasionally used internally by games to
             ///  track items.
             /// </summary>

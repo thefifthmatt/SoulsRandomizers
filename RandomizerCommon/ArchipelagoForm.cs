@@ -2,6 +2,7 @@
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Packets;
 using Microsoft.VisualBasic.ApplicationServices;
+using Newtonsoft.Json.Linq;
 using SoulsIds;
 using System;
 using System.Collections.Generic;
@@ -84,6 +85,16 @@ namespace RandomizerCommon
 
             status.Text = "Downloading item data...";
             var locations = session.Locations.ScoutLocationsAsync(session.Locations.AllLocations.ToArray()).Result;
+            var slotData = session.DataStorage.GetSlotData();
+            var apIds = ((JArray)slotData["itemsId"]).ToObject<List<long>>();
+            var itemIds = ((JArray)slotData["itemsAddress"]).ToObject<List<int>>();
+
+            // We can't use ToDictionary() because there are some duplicate entries.
+            var apIdsToItemIds = new Dictionary<long, int>();
+            foreach (var (apId, itemId) in apIds.Zip(itemIds))
+            {
+                apIdsToItemIds[apId] = itemId;
+            }
 
             status.Text = "Loading game data...";
 
@@ -148,17 +159,17 @@ namespace RandomizerCommon
                 {
                     // TODO: Give Archipelago a way to inject multiple copies of the same item to a
                     // given location. Maybe support an itemName like "Firebomb x3" and parse it
-                    // here or in GetArchipelagoItem.
-                    var slotKey = ann.GetArchipelagoItem(itemName);
+                    // here or on the server? Maybe have the server know how to create ranges of
+                    // different items?
+
                     // TODO: Once Archipelago supports items in shops, we shouldn't remove those
                     // because they'll be directly added to the player's inventory without a chance
                     // for replacement.
-                    itemsToRemove[slotKey] = targetSlotKey;
                     AddMulti(items, targetSlotKey, writer.AddSyntheticItem(
                         $"[Placeholder] {itemName}",
                         "If you can see this your Archipelago mod isn't working.",
                         archipelagoLocationId: info.Location,
-                        replaceWithInArchipelago: slotKey.Item));
+                        replaceWithInArchipelago: new ItemKey(apIdsToItemIds[info.Item])));
                 }
             }
 
