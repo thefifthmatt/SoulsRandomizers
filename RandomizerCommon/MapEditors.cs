@@ -625,7 +625,7 @@ namespace RandomizerCommon
                 e2.EntityID = (uint)newTarget;
                 e2.Name = $"{e2.ModelName}_{newPartId:d4}";
                 // Needed to avoid sudden deaths, evidently. TODO see where this mismatches in vanilla
-                e2.Unk08 = newPartId;
+                e2.Unk8.Unk00 = newPartId;
                 // Transplanting talks seems to break most talk scripts
                 e2.TalkID = 0;
                 msb.Parts.Enemies.Add(e2);

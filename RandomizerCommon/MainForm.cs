@@ -424,23 +424,22 @@ namespace RandomizerCommon
             }
 
             Randomizer randomizer = new Randomizer();
+            string seed2 = rand.Seed2 == 0 || rand.Seed2 == rand.Seed ? "" : $"_{rand.Seed2}";
+            string runId = $"{DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss")}_log_{rand.Seed}{seed2}_{rand.ConfigHash()}.txt";
+            Exception ex = null;
             await Task.Factory.StartNew(() => {
                 Directory.CreateDirectory("spoiler_logs");
-                string seed2 = rand.Seed2 == 0 || rand.Seed2 == rand.Seed ? "" : $"_{rand.Seed2}";
-                string runId = $"{DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss")}_log_{rand.Seed}{seed2}_{rand.ConfigHash()}.txt";
                 TextWriter log = File.CreateText($@"spoiler_logs\{runId}");
                 TextWriter stdout = Console.Out;
                 Console.SetOut(log);
                 try
                 {
                     randomizer.Randomize(rand, SoulsIds.GameSpec.FromGame.DS3, status => { statusL.Text = status; }, preset: selectedPreset, encrypted: encrypted);
-                    SetStatus($"Done! Hints and spoilers in spoiler_logs directory as {runId} - Restart your game!!", success: true);
                 }
-                catch (Exception ex)
+                catch (Exception ex_)
                 {
+                    ex = ex_;
                     Console.WriteLine(ex);
-                    SetError($"Error encountered: {ex.Message}\r\nIt may work to try again with a different seed. See most recent file in spoiler_logs directory for the full error.");
-                    SetStatus($"Error! Partial log in spoiler_logs directory as {runId}", true);
                 }
                 finally
                 {
@@ -448,6 +447,19 @@ namespace RandomizerCommon
                     Console.SetOut(stdout);
                 }
             });
+
+            // The actual randomization logic is done in a Task, but the main UI's components can't
+            // be modified from a Task so we have to update them outside it.
+            if (ex != null)
+            {
+                SetError($"Error encountered: {ex.Message}\r\nIt may work to try again with a different seed. See most recent file in spoiler_logs directory for the full error.");
+                SetStatus($"Error! Partial log in spoiler_logs directory as {runId}", true);
+            }
+            else
+            {
+                SetStatus($"Done! Hints and spoilers in spoiler_logs directory as {runId} - Restart your game!!", success: true);
+            }
+
             randomize.Text = buttonText;
             randomize.BackColor = SystemColors.Control;
             working = false;
@@ -580,6 +592,15 @@ namespace RandomizerCommon
                 {
                     randomize.Text = "Run with fixed seed";
                 }
+            }
+        }
+
+        private void archipelagoButton_Click(object sender, EventArgs e)
+        {
+            var dialog = new ArchipelagoForm();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                SetStatus("Archipelago config loaded into game!");
             }
         }
     }

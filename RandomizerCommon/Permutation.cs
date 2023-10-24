@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using static RandomizerCommon.AnnotationData;
 using static RandomizerCommon.LocationData;
@@ -726,6 +727,40 @@ namespace RandomizerCommon
                 List<SlotKey> targets = silo.Targets.SelectMany(loc => data.Location(loc)).ToList();
                 Shuffle(random, targets);
                 AssignItemsToLocations(random, silo, silo.Sources, targets, new Dictionary<ItemKey, PendingItem>(), new Dictionary<LocationScope, string>());
+            }
+        }
+
+
+        /// <summary>
+        /// Creates a permutation that exclusively permutes items as specified.
+        /// </summary>
+        /// <param name="items">A dictionary whose keys are slots where items can appear and whose
+        /// values are the items that should appear in those slots.</param>
+        /// <param name="remove">A dictionary whose keys are slots where items can appear and whose
+        /// values are items that would normally appear in those slots but should instead be
+        /// removed from the game entirely.</param>
+        public void Forced(Dictionary<SlotKey, List<SlotKey>> items, Dictionary<SlotKey, List<SlotKey>> remove = null)
+        {
+            foreach (var (targetKey, sourceKeys) in remove)
+            {
+                AddMulti(Silos[RandomSilo.REMOVE].Mapping, targetKey, sourceKeys);
+            }
+
+            foreach (var (siloType, silo) in Silos)
+            {
+                if (siloType == RandomSilo.SELF)
+                {
+                    continue;
+                }
+
+                silo.ExcludeTargets.UnionWith(remove.Values.SelectMany(keys => keys));
+                foreach (SlotKey targetKey in silo.Targets.SelectMany(loc => data.Location(loc)))
+                {
+                    if (items.TryGetValue(targetKey, out var sourceKeys))
+                    {
+                        AddMulti(silo.Mapping, targetKey, sourceKeys);
+                    }
+                }
             }
         }
 
