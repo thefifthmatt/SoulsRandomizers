@@ -12,7 +12,8 @@ namespace RandomizerCommon
     public class RuntimeParamChecker
     {
         public static readonly int RestartMessageId = 666400;
-        private static readonly int AlertFlag = 19002929;
+        public static readonly int FogMessageId = 666401;
+        private static readonly int AlertFlag = GameData.EldenRingBase + 2001;
 
         private Dictionary<string, List<uint>> mapEntities = new Dictionary<string, List<uint>>();
         private List<int> requiredSpEffects = new List<int>();
@@ -58,6 +59,7 @@ namespace RandomizerCommon
             {
                 "CharaInitParam", "ItemLotParam_map", "NpcParam", "NpcThinkParam",
                 "ShopLineupParam", "ShopLineupParam_Recipe", "WorldMapPointParam",
+                "Bullet",
             };
             List<string> dynamicFmgs = new List<string> { "NpcName", "PlaceName" };
             MD5 md5 = MD5.Create();

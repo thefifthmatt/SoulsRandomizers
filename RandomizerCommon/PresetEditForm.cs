@@ -69,6 +69,7 @@ namespace RandomizerCommon
         [Localize]
         private static readonly Text classMergeText = new Text("Merge with {0}", "PresetEditForm_classMergeName");
         private string classMergeLabel;
+        // TODO: Parameterize
         [Localize]
         private static readonly Text poolDefaultText = new Text("Self", "PresetEditForm_poolDefault");
         [Localize]
@@ -116,6 +117,7 @@ namespace RandomizerCommon
                 string text = cl.ToString();
                 if (ClassNames.TryGetValue(cl, out Text t)) text = messages.Get(t);
                 mapClass(cl, text);
+                // TODO: Map defaults one-way
             }
             foreach (EnemyClassGroup clg in (EnemyClassGroup[])Enum.GetValues(typeof(EnemyClassGroup)))
             {
@@ -146,6 +148,7 @@ namespace RandomizerCommon
             }
             enemyPoolOptions = enemyOptions.ToList();
             // Same thing but with Self
+            // TODO: Do this dynamically when classes are switched
             enemyPoolOptions.Insert(1, defaultText);
 
             oopsAllBox.GotFocus += (sender, e) =>
@@ -155,12 +158,24 @@ namespace RandomizerCommon
                     oopsAllBox.DataSource = oopsAllOptions;
                 }
             };
-            oopsAllBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            oopsAllBox.AutoCompleteMode = AutoCompleteMode.Suggest;
             oopsAllBox.AutoCompleteSource = AutoCompleteSource.ListItems;
             oopsAllBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
             multiplyBox.DataSource = multipliers.Select(n => messages.Get(multiplyOptionText, n)).ToList();
             classMultiplyBox.DataSource = multipliers.Select(n => messages.Get(multiplyOptionText, n)).ToList();
+
+            // TODO: Prevent these from getting localized separately
+            // Their check state is checked in LoadPreset
+            foreach (KeyValuePair<string, Text> entry in OptionsText)
+            {
+                CheckBox check = new CheckBox();
+                check.Name = "custom_" + entry.Key;
+                check.Text = messages.Get(entry.Value);
+                check.AutoSize = true;
+                check.CheckedChanged += customOpt_Changed;
+                globalPanel.Controls.Add(check);
+            }
 
             InitializeClasses();
 
@@ -223,6 +238,21 @@ namespace RandomizerCommon
                 multiplyBox.SelectedIndex = 1;
             }
             description.Text = preset.Description ?? "";
+
+            foreach (string opt in OptionsText.Keys)
+            {
+                if (globalPanel.Controls[$"custom_{opt}"] is not CheckBox check) continue;
+                // Options. null means unset, "none" means no options enabled
+                if (preset.Options == null)
+                {
+                    check.Checked = DefaultOptions.Contains(opt);
+                }
+                else
+                {
+                    check.Checked = preset[opt];
+                }
+            }
+
             simultaneousUpdate = false;
 
             // Overall, clear everything, then initialize everything
@@ -270,7 +300,7 @@ namespace RandomizerCommon
             {
                 dir.Create();
             }
-            Process.Start(dir.FullName);
+            Process.Start(new ProcessStartInfo(dir.FullName) { UseShellExecute = true });
         }
 
         [Localize]
@@ -573,6 +603,11 @@ namespace RandomizerCommon
             Preset.RemoveSource = GetEnemyLabelString(removeSource);
             Preset.DontRandomize = GetEnemyLabelString(dontRandomize);
             Preset.Description = string.IsNullOrWhiteSpace(description.Text) ? null : description.Text;
+            foreach (string opt in OptionsText.Keys)
+            {
+                if (globalPanel.Controls[$"custom_{opt}"] is not CheckBox check) continue;
+                Preset[opt] = check.Checked;
+            }
         }
 
         private void InitializeClass(EnemyClass? maybeCl)
@@ -1165,6 +1200,12 @@ namespace RandomizerCommon
         }
 
         private void opt_Changed(object sender, EventArgs e)
+        {
+            if (simultaneousUpdate) return;
+            Modified = true;
+        }
+
+        private void customOpt_Changed(object sender, EventArgs e)
         {
             if (simultaneousUpdate) return;
             Modified = true;

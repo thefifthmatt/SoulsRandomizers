@@ -13,6 +13,7 @@ using SoulsFormats;
 using Newtonsoft.Json;
 using System.Drawing;
 using System.Drawing.Text;
+using System.Text.RegularExpressions;
 
 namespace RandomizerCommon
 {
@@ -200,18 +201,22 @@ namespace RandomizerCommon
         }
 
         // Automatic form stuff
-        private static readonly HashSet<string> ignoreNames = new HashSet<string>
+        private static readonly Regex ignoreRegex;
+        static Messages()
         {
-            "EldenForm_EldenForm",
-            "EldenForm_warningL", "EldenForm_difficultyL", "EldenForm_difficultyAmtL",
-            "EldenForm_presetL", "EldenForm_enemyBetaL",
-            "PresetEditForm_multiplyBox", "PresetEditForm_classMultiplyBox", "PresetEditForm_newPoolButton",
-            "PresetEditForm_poolDesc", "PresetEditForm_poolTitle",
-            "PresetEditForm_classMerge2",
-        };
-        private static readonly HashSet<string> ignoreReplace = new HashSet<string>
-        {
-        };
+            List<string> ignoreNames = new List<string>
+            {
+                "EldenForm_EldenForm",
+                "EldenForm_warningL", "EldenForm_difficultyL", "EldenForm_difficultyAmtL",
+                "EldenForm_presetL", "EldenForm_enemyBetaL",
+                "PresetEditForm_multiplyBox", "PresetEditForm_classMultiplyBox", "PresetEditForm_newPoolButton",
+                "PresetEditForm_poolDesc", "PresetEditForm_poolTitle",
+                "PresetEditForm_classMerge2",
+            };
+            List<string> ignoreRegexes = new List<string> { @"^PresetEditForm_custom_" };
+            ignoreRegex = new Regex(string.Join("|", ignoreRegexes.Concat(ignoreNames.Select(n => $"^{n}$"))));
+        }
+
         private static readonly HashSet<string> autoTrim = new HashSet<string>
         {
             "EldenForm_itemPage", "EldenForm_enemyPage",
@@ -256,7 +261,7 @@ namespace RandomizerCommon
                 if (original.TryGetValue(controlName, out string originalText))
                 {
                     string locName = $"{form.Name}_{controlName}";
-                    if (!ignoreReplace.Contains(locName))
+                    if (!ignoreRegex.IsMatch(locName))
                     {
                         replace = Get(culture, new Text(originalText, locName));
                         return true;
@@ -349,50 +354,66 @@ namespace RandomizerCommon
         }
 
         // Automatic FMG stuff
+        // The reference to GameData makes it inapplicable outside randomizer.
+        // An all-languages FMGDictionary dictionary would simplify things here.
         public void SetFMGEntry(
-            FMGDictionary fmgs,
-            Dictionary<string, FMGDictionary> langsFmgs,
+            GameData game,
+            FMGCategory category,
             string fmgName, int id,
             Text text, params object[] args)
         {
             // TODO: Can extend this outside of SetFMGEntry for e.g. spoiler logs
             // This requires having access to FMGs in general, and crossing over between item/menu.
             // However, it should not go into Format, as it still needs the FMG language name key
-            object formatArg(object arg, FMGDictionary langFmgs)
+            object formatArg(object arg, FMGDictionary itemFmgs, FMGDictionary menuFmgs)
             {
                 if (arg is FMGArg fmgArg)
                 {
-                    return fmgArg.Format(langFmgs);
+                    return fmgArg.Format(itemFmgs, menuFmgs);
                 }
                 return arg;
             }
-            object[] langArgs = args.Select(a => formatArg(a, fmgs)).ToArray();
+            FMGDictionary fmgs = category == FMGCategory.Item ? game.ItemFMGs : game.MenuFMGs;
+            object[] langArgs = args.Select(a => formatArg(a, game.ItemFMGs, game.MenuFMGs)).ToArray();
             string str = Format(CultureInfo.InvariantCulture, text.Str, langArgs);
             fmgs[fmgName][id] = str;
-            foreach (KeyValuePair<string, FMGDictionary> langFmgs in langsFmgs)
+            foreach (KeyValuePair<string, FMGDictionary> langFmgs in category == FMGCategory.Item ? game.AllItemFMGs : game.AllMenuFMGs)
             {
-                langArgs = args.Select(a => formatArg(a, langFmgs.Value)).ToArray();
-                str = Get(langFmgs.Key, text, langArgs);
+                string lang = langFmgs.Key;
+                // TODO: Could all languages be treated uniformly?
+                if (lang == "engus") continue;
+                game.AllItemFMGs.TryGetValue(lang, out FMGDictionary itemFmgs);
+                game.AllMenuFMGs.TryGetValue(lang, out FMGDictionary menuFmgs);
+                langArgs = args.Select(a => formatArg(a, itemFmgs, menuFmgs)).ToArray();
+                str = Get(lang, text, langArgs);
                 langFmgs.Value[fmgName][id] = str;
                 // Console.WriteLine($"{langFmgs.Key}[{fmgName}][{id}] = {str}");
             }
         }
 
+        public enum FMGCategory
+        {
+            Item, Menu
+        }
+
         public class FMGArg
         {
-            public string FMGName { get; set; }
+            public FMGCategory Category { get; set; }
+            public string Name { get; set; }
             public int ID { get; set; }
             public string BaseText { get; set; }
-            public string Format(FMGDictionary fmgs)
+
+            public string Format(FMGDictionary itemFmgs, FMGDictionary menuFmgs)
             {
-                if (!fmgs.ContainsKey(FMGName)) throw new Exception($"Error: FMG archive is missing {FMGName}");
-                FMG fmg = fmgs[FMGName];
+                FMGDictionary fmgs = Category == FMGCategory.Item ? itemFmgs : menuFmgs;
+                if (fmgs == null || !fmgs.ContainsKey(Name)) throw new Exception($"Error: {Category} FMG archive is missing {Name}");
+                FMG fmg = fmgs[Name];
                 string text = fmg[ID];
                 if (string.IsNullOrWhiteSpace(text))
                 {
                     text = BaseText;
 #if DEBUG
-                    throw new Exception($"Error: {FMGName}[{ID}] is missing or blank (English: {BaseText})");
+                    throw new Exception($"Error: {Category}.{Name}[{ID}] is missing or blank (English: {BaseText})");
 #endif
                 }
                 return text;
@@ -441,7 +462,7 @@ namespace RandomizerCommon
                     };
                     msgs.Messages.Add(copyMsg);
                 }
-                msgs.Messages = msgs.Messages.Where(x => !ignoreNames.Contains(x.Name)).OrderBy(x => x.Name).ToList();
+                msgs.Messages = msgs.Messages.Where(x => !ignoreRegex.IsMatch(x.Name)).OrderBy(x => x.Name).ToList();
                 return msgs;
             }
             SortedDictionary<string, string> output = new SortedDictionary<string, string>(StringComparer.Ordinal);
@@ -517,21 +538,19 @@ namespace RandomizerCommon
                     if (!string.IsNullOrWhiteSpace(text))
                     {
                         string name = $"{form.Name}_{controlName}";
-                        if (!ignoreNames.Contains(name))
+                        if (!ignoreRegex.IsMatch(name))
                         {
                             text = text.Replace("\r\n", "\n");
-                            // For now, ignoreReplace happens to match options needing trimming
-                            if (ignoreReplace.Contains(name))
-                            {
-                                text = text.Trim();
-                            }
                             addMessage(name, text);
                         }
                     }
                 }
                 void recurseForm(Control control)
                 {
-                    setText(control.Name, control.Text);
+                    if (control is not ComboBox)
+                    {
+                        setText(control.Name, control.Text);
+                    }
                     foreach (Control sub in control.Controls)
                     {
                         recurseForm(sub);
@@ -597,7 +616,7 @@ namespace RandomizerCommon
                 }
             }
             ret.Messages.AddRange(existing.Values);
-            ret.Messages = ret.Messages.Where(x => !ignoreNames.Contains(x.Name)).OrderBy(x => x.Name).ToList();
+            ret.Messages = ret.Messages.Where(x => !ignoreRegex.IsMatch(x.Name)).OrderBy(x => x.Name).ToList();
             Console.WriteLine(JsonConvert.SerializeObject(ret, Formatting.Indented));
         }
     }

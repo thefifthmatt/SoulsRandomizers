@@ -62,6 +62,7 @@ Flask upgrade in Weeping Peninsula: At the statue in Callu Baptismal Church, sou
 Flask upgrade in Weeping Peninsula: At the statue in the Fourth Church of Marika, near the peninsula's west coast. Replaces Sacred Tear.
 Flask upgrade in Weeping Peninsula: Under the Golden Seed tree straight north of Castle Morne, leaning right when approaching from Castle Morne Rampart. Replaces Golden Seed.
 Shop in Weeping Peninsula: Sold by the Isolated Merchant at the Isolated Merchant Shack near the southwest shore
+Shop in Weeping Peninsula: Sold by the Nomadic Merchant at Castle Morne Rampart
 Minor boss in Weeping Peninsula: Dropped by Ancient Hero of Zamor in the Weeping Evergaol, northwest of the Fourth Church of Marika near the west coast. Replaces Radagon's Scarseal.
 Minor boss in Weeping Peninsula: Dropped by the Erdtree Avatar at the Weeping Peninsula Minor Erdtree. Replaces Opaline Bubbletear, Crimsonburst Crystal Tear.
 Minor minidungeon boss in Weeping Peninsula - Earthbore Cave: Dropped by Runebear. Replaces Spelldrake Talisman.
@@ -116,7 +117,7 @@ Talisman in Bellum Highway: In front of a house in Frenzied Flame Village with m
 
 --- Academy of Raya Lucaria
 Key item in Academy of Raya Lucaria: In a chest unlocked by Discarded Palace Key in the Raya Lucaria Grand Library. Replaces Dark Moon Ring.
-Key item in Academy of Raya Lucaria: On a robed corpse in a rooftop side path, accessed by looping around from Debate Parlor by dropping down past the rubble-strewn stairs. Replaces Imbued Sword Key.
+Key item in Academy of Raya Lucaria: On a robed corpse in the Raya Lucaria rooftop path, accessed by looping around from Debate Parlor by dropping down past the rubble-strewn stairs. Replaces Imbued Sword Key.
 Major boss in Academy of Raya Lucaria: Dropped by Red Wolf of Radagon. Replaces Memory Stone.
 Major boss in Academy of Raya Lucaria: Dropped by Rennala. Replaces Great Rune of the Unborn, Remembrance of the Full Moon Queen.
 Flask upgrade in Academy of Raya Lucaria: Under a Golden Seed tree in the courtyard after Debate Parlor, along a cliffside in the back right. Replaces Golden Seed.
@@ -141,11 +142,10 @@ Major boss in Ainsel River: Dropped by Dragonkin Soldier of Nokstella. Replaces 
 Flask upgrade in Ainsel River: Under a Golden Seed tree on a cliffside overlooking the elevator down to Nokstella Waterfall Basin. Replaces Golden Seed.
 Shop in Ainsel River: Sold by the Hermit Merchant in the alcove past the rock-slinging Malformed Star
 Talisman in Ainsel River: Guarded by several giant ants shortly after Ainsel River Downstream. Replaces Immunizing Horn Charm.
-Talisman in Ainsel River: In a lidded chest at the very top of the long series of stairs from Nokstella, Eternal City. Replaces Moon of Nokstella.
+Talisman in Ainsel River: In a lidded chest in the cathedral at the very top of several flights of stairs from the Nokstella Site of Grace. Replaces Moon of Nokstella.
 
---- Divine Tower of Liurnia
-Key item in Divine Tower of Liurnia: At the top of the Divine Tower of Liurnia, accessed after traversing Carian Study Hall. Replaces Cursemark of Death.
-Talisman in Divine Tower of Liurnia: On the second level of rafters in Carian Study Hall. Replaces Cerulean Seed Talisman.
+--- Carian Study Hall
+Talisman in Carian Study Hall: On the second level of rafters in Carian Study Hall. Replaces Cerulean Seed Talisman.
 
 --- Caelid
 Key item in Caelid: In a chest hidden behind a magical barrier in Sellia, accessed by lighting flames around town. Replaces Imbued Sword Key 3.
@@ -202,7 +202,6 @@ Flask upgrade in Altus Plateau: Under a Golden Seed tree found up the stairs fro
 Flask upgrade in Altus Plateau: Under a Golden Seed tree next to the Erdtree-Gazing Hill Site of Grace. Replaces Golden Seed.
 Flask upgrade in Altus Plateau: Under a Golden Seed tree, found north of the Altus Highway Junction Site of Grace. Replaces Golden Seed.
 Flask upgrade in Altus Plateau: Under a Golden Seed tree, found north of the Altus Plateau Minor Erdtree. Replaces Golden Seed.
-Flask upgrade in Altus Plateau: Under the Golden Seed tree at Outer Wall Phantom Tree. Replaces Golden Seed.
 Shop in Altus Plateau: Sold by the Nomadic Merchant at the southern end of the Forest-Spanning Greatbridge
 Minor boss in Altus Plateau: Dropped by Ancient Dragon Lansseax up the hill from Abandoned Coffin. Replaces Lansseax's Glaive.
 Minor boss in Altus Plateau: Dropped by Fallingstar Beast to the south of Tree Sentinel Duo, veering right on the path from Altus Highway Junction to Outer Wall Phantom Tree. Replaces Somber Smithing Stone [5].
@@ -231,6 +230,7 @@ Minidungeon talisman in Altus Tunnel: From a sidepath deep in the tunnel, on top
 Minidungeon talisman in Old Altus Tunnel: In a shack up a ladder from the main mining shaft. Replaces Boltdrake Talisman +1.
 
 --- Capital Outskirts
+Flask upgrade in Capital Outskirts: Under the Golden Seed tree at Outer Wall Phantom Tree. Replaces Golden Seed.
 Shop in Capital Outskirts: Sold by the Hermit Merchant at the Hermit's Merchant Shack
 Minor boss in Capital Outskirts: Dropped by Draconic Tree Sentinel before Capital Rampart. Replaces Dragon Greatclaw.
 Minor minidungeon boss in Capital Outskirts - Auriza Hero's Grave: Dropped by Crucible Knight Duo. Replaces Ordovis's Greatsword.
@@ -273,6 +273,9 @@ Major boss in Nokron, Eternal City: Dropped by Valiant Gargoyles after Siofra Aq
 Talisman in Nokron, Eternal City: In the room before dropping down to the statue and then lake where Dragonkin Soldier is located. Replaces Clarifying Horn Charm +1.
 Talisman in Nokron, Eternal City: On top of stone beams overlooking the Horned Remains, accessed from a path to the left of Hallowhorn Grounds. Replaces Mottled Necklace +1.
 
+--- Divine Tower of Liurnia
+Key item in Divine Tower of Liurnia: At the top of the Divine Tower of Liurnia, accessed after traversing Carian Study Hall. Replaces Cursemark of Death.
+
 --- Mt. Gelmir
 Flask upgrade in Mt. Gelmir: Under a Golden Seed tree before the Road of Iniquity Site of Grace. Replaces Golden Seed.
 Flask upgrade in Mt. Gelmir: Under a Golden Tree found following Seethwater River north. Replaces Golden Seed.
@@ -289,7 +292,7 @@ Talisman in Mt. Gelmir: Found at the top of Fort Laiedd. Requires jumping on top
 Minidungeon talisman in Mt. Gelmir - Wyndham Catacombs: Past an Imp Statue barrier deep in the Catacombs, found up a ladder. Replaces Lightning Scorpion Charm.
 
 --- Volcano Manor
-Key item in Volcano Manor: Given by Tanith upon joining Volcano Manor. Replaces Drawing-Room Key.
+Key item in Volcano Manor: Given by Tanith upon joining Volcano Manor, or in her chair after defeating Rykard. Replaces Drawing-Room Key.
 Major boss in Volcano Manor: Dropped by Godskin Noble. Replaces Godskin Stitcher.
 Major boss in Volcano Manor: Dropped by Rykard. Replaces Rykard's Great Rune, Remembrance of the Blasphemous.
 Minor boss in Volcano Manor: Dropped by Abductor Virgins. Replaces Inquisitor's Girandole.
@@ -298,7 +301,6 @@ Talisman in Volcano Manor: In a tower sealed by an Imp Statue all the way down t
 
 --- Lake of Rot
 Minor boss in Lake of Rot: Dropped by Dragonkin Soldier. Replaces Dragonscale Blade.
-Talisman in Lake of Rot: Dropped by the lost Ancestral Follower near the start of the lake. Replaces Immunizing Horn Charm +1.
 
 --- Moonlight Altar
 Minor boss in Moonlight Altar: Dropped by Alecto, Black Knife Ringleader in Ringleader's Evergaol. Replaces Black Knife Tiche.
@@ -384,3 +386,4 @@ Talisman in Ashen Leyndell: Hanging on a beam accessible by dropping down from L
 
 --- Stone Platform
 Major boss in Stone Platform: Dropped by Elden Beast. Replaces Elden Remembrance.
+

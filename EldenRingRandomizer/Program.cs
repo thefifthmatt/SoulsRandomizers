@@ -22,6 +22,14 @@ namespace EldenRingRandomizer
         [STAThread]
         static void Main(string[] args)
         {
+            if (args.Contains("ac6"))
+            {
+                RandomizerOptions options = RandomizerOptions.Parse(args, FromGame.AC6);
+                string outPath = outPath = @"C:\Users\matt\Downloads\Mods\ModEngine-2.0.0-preview3-win64\ac6";
+                new Randomizer().Randomize(
+                    options, FromGame.AC6, status => Console.WriteLine("## " + status), outPath: outPath, preset: null, messages: null, gameExe: null);
+                return;
+            }
             if (args.Length > 0 && !args.Contains("/gui"))
             {
                 // If given command line args, go into command line mode.
@@ -66,7 +74,7 @@ namespace EldenRingRandomizer
                 }
                 new Randomizer().Randomize(
                     options, FromGame.ER, status => Console.WriteLine("## " + status), outPath: outPath, preset: preset, messages: messages, gameExe: gameExe);
-                Application.Exit();
+                return;
             }
             else
             {

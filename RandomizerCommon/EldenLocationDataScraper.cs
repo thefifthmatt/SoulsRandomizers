@@ -72,6 +72,7 @@ namespace RandomizerCommon
             foreach (string lotType in new List<string> { "map", "enemy" })
             {
                 string paramName = $"ItemLotParam_{lotType}";
+                string paramPrint = opt["machine"] ? paramName + " " : "";
                 PARAM itemLots = game.Params[paramName];
                 if (opt["html"]) writeHtmlSection(paramName, lotType == "map" ? "#FFF" : "#F8FFFF");
                 LocationKey prevLocation = null;
@@ -173,7 +174,7 @@ namespace RandomizerCommon
                                 }
                                 if (quantity <= 0)
                                 {
-                                    Console.WriteLine($"XX There is 0! of {itemText}");
+                                    Console.WriteLine($"Warning: Item lot has 0 quantity: {itemText}");
                                 }
                                 ItemScope scope;
                                 if (eventFlag > 0)
@@ -271,10 +272,10 @@ namespace RandomizerCommon
                                 }
                                 text2 = $"{string.Join(", ", models)}";
                             }
-                            if (!isBase && opt["dumplot"]) text2 = "^";
+                            if (!isBase && opt["dumplot"] && !opt["machine"]) text2 = "^";
                             if (eventFlag > 0) lotOutput += $" - flag {eventFlag}";
                             // string inter = $"[x{row["Unk94"].Value} y{row["Unk95"].Value}]";
-                            dump($"{itemLot} [{text2}] {lotOutput}");
+                            dump($"{paramPrint}{itemLot} [{text2}] {lotOutput}");
                         }
 
                         itemLot++;
@@ -312,6 +313,7 @@ namespace RandomizerCommon
             {
                 string suffix = shopType == null ? "" : $"_{shopType}";
                 string paramName = "ShopLineupParam" + suffix;
+                string paramPrint = opt["machine"] ? paramName + " " : "";
                 if (opt["html"]) writeHtmlSection(paramName, shopType == null ? "#FFF" : "#F8FFFF");
                 foreach (PARAM.Row row in game.Params[paramName].Rows)
                 {
@@ -403,7 +405,7 @@ namespace RandomizerCommon
                     }
                     if (opt["dumpshop"] && source != lastSource)
                     {
-                        Console.WriteLine($"--- {source}");
+                        dump($"--- {source}");
                         lastSource = source;
                     }
                     string quantityStr = quantity > 0 ? $" {quantity}x" : "";
@@ -413,7 +415,7 @@ namespace RandomizerCommon
 
                     if (opt["dumpshop"])
                     {
-                        dump($"{shopID}: {ItemName(game, item)}{shopSuffix}");
+                        dump($"{paramPrint}{shopID}: {ItemName(game, item)}{shopSuffix}");
                     }
                     if (opt["dumpspells"])
                     {
@@ -512,7 +514,10 @@ namespace RandomizerCommon
                     loc.LocScope = locationScope;
                     // if (flags.Count >= 2) Console.WriteLine($"{loc}");
                 }
-                entry.Value.Unique = entry.Key.Type != ItemType.ARMOR && unique > 0;
+                string name = game.Name(entry.Key);
+                // This also includes ashes, talismans, weapons, spells, quest items, ashes of war
+                entry.Value.Unique = unique > 0 && unique < 10 && entry.Key.Type != ItemType.ARMOR && !name.Contains("Note: ");
+                // if (entry.Value.Unique) Console.WriteLine(name);
             }
 
 #if DEV
@@ -536,6 +541,7 @@ namespace RandomizerCommon
         private string ItemName(GameData game, ItemKey item)
         {
             // Ick. Move this to main stuff
+            // This also doesn't work for custom weapons currently
             game.ItemNames.TryGetValue(item, out string name);
             if (name == null || name == "")
             {

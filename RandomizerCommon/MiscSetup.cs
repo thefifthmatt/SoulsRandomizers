@@ -603,7 +603,12 @@ namespace RandomizerCommon
             }
         }
 
-        public static void EldenCommonPass(GameData game, RandomizerOptions opt, PermutationWriter.Result result = null)
+        [Localize]
+        private static readonly Text fogRunningError = new Text(
+            "Error: Unrestricted item placement was enabled in Item Randomizer,\nbut Fog Gate Randomizer was not detected",
+            "GameMenu_fogRunningError");
+
+        public static void EldenCommonPass(GameData game, RandomizerOptions opt, Messages messages, PermutationWriter.Result result = null)
         {
             // Resident speffects
             PARAM.Row baseSp = game.Params["SpEffectParam"][5020];
@@ -615,7 +620,7 @@ namespace RandomizerCommon
             HashSet<(int, int)> deleteCommands = new HashSet<(int, int)>
             {
                 (2003, 28),  // Achievement
-                (2007, 15),  // Tutorial popup
+                // (2007, 15),  // Tutorial popup
             };
             List<int> debugLots = new List<int>
             {
@@ -636,6 +641,18 @@ namespace RandomizerCommon
                     }
                 }
             }
+            int gargSpread = 20003;
+            int gargId = 477020003;
+            PARAM.Row gargNerf = game.AddRow("SpEffectParam", gargId, 20003);
+            gargNerf["changeHpRate"].Value = 0f;
+            gargNerf["changeHpPoint"].Value = 0;
+            if (opt["nerfgargoyles"])
+            {
+                foreach (PARAM.Row row in game.Params["AtkParam_Npc"].Rows.Where(r => r.ID == 4770860 || r.ID == 4770451))
+                {
+                    row["atkMag"].Value = (ushort)0;
+                }
+            }
             if (opt["sombermode"])
             {
                 foreach (PARAM.Row row in game.Params["EquipMtrlSetParam"].Rows)
@@ -649,8 +666,40 @@ namespace RandomizerCommon
                     }
                 }
             }
+            if (opt["nerfsh"])
+            {
+                PARAM.Row row = game.Params["EquipParamWeapon"][17030000];
+                // Change Serpent-Hunter to match Meteorite Staff
+                row["reinforceTypeId"].Value = (short)3000;
+                row["materialSetId"].Value = 0;
+                row["isCustom"].Value = (byte)0;
+                for (int i = 1; i < 25; i++)
+                {
+                    row[$"originEquipWep{i}"].Value = -1;
+                }
+            }
+            if (opt["weaponreqs"])
+            {
+                // Same fields used in CharacterWriter requirements gathering
+                List<string> weaponFields = new List<string> { "properStrength", "properAgility", "properMagic", "properFaith", "properLuck" };
+                foreach (PARAM.Row row in game.Params["EquipParamWeapon"].Rows)
+                {
+                    foreach (string field in weaponFields)
+                    {
+                        row[field].Value = (byte)0;
+                    }
+                }
+                List<string> magicFields = new List<string> { "requirementIntellect", "requirementFaith", "requirementLuck" };
+                foreach (PARAM.Row row in game.Params["Magic"].Rows)
+                {
+                    foreach (string field in magicFields)
+                    {
+                        row[field].Value = (byte)0;
+                    }
+                }
+            }
             // 71801 is graveyard flag, 102 is "definitely in limgrave"?
-            // This one should be opening the graveyard exit but it seems to activate straight away
+            // This one should be opening the graveyard exit but it seems to activate straight away (because endif tutorial?)
             int mapUnlockFlag = 18000021;
             if (opt["allmaps"])
             {
@@ -688,6 +737,10 @@ namespace RandomizerCommon
                     rewriteMerchantIcons(row);
                 }
             }
+
+            messages.SetFMGEntry(
+                game, FMGCategory.Menu, "EventTextForMap",
+                RuntimeParamChecker.FogMessageId, fogRunningError);
             EMEVD.Instruction debugLot(int i)
             {
                 return new EMEVD.Instruction(2003, 4, new List<object> { debugLots[i] });
@@ -819,7 +872,7 @@ namespace RandomizerCommon
                             new EMEVD.Instruction(2004, 8, new List<object> { 20000, 110 }),
                             new EMEVD.Instruction(2004, 8, new List<object> { 35000, 110 }),
                             // Disable damage
-                            new EMEVD.Instruction(2004, 39, new List<object> { 10000, 0 }),
+                            // new EMEVD.Instruction(2004, 39, new List<object> { 10000, 0 }),
                             // Scale damage
                             new EMEVD.Instruction(2004, 8, new List<object> { 20000, 7200 }),
                             new EMEVD.Instruction(2004, 8, new List<object> { 35000, 7200 }),
@@ -828,6 +881,19 @@ namespace RandomizerCommon
                             // EndUnconditionally(EventEndType.Restart)
                             new EMEVD.Instruction(1000, 4, new List<object> { (byte)1 }),
                         });
+                    }
+                    if (opt["bonfire"])
+                    {
+                        List<EMEVD.Instruction> instrs = new List<EMEVD.Instruction>();
+                        foreach (PARAM.Row row in game.Params["BonfireWarpParam"].Rows)
+                        {
+                            uint flag = (uint)row["eventflagId"].Value;
+                            if (flag / 10000 == 7)
+                            {
+                                instrs.Add(new EMEVD.Instruction(2003, 66, new List<object> { (byte)0, flag, (byte)1 }));
+                            }
+                        }
+                        addNewEvent(19003108, instrs);
                     }
 #endif
                     // Event for Varre
@@ -882,6 +948,8 @@ namespace RandomizerCommon
                             // SetEventFlag(TargetEventFlagType.EventFlag, flag, ON)
                             instrs.Add(new EMEVD.Instruction(2003, 66, new List<object> { (byte)0, flag, (byte)1 }));
                         }
+                        // Underground maps visible
+                        instrs.Add(new EMEVD.Instruction(2003, 66, new List<object> { (byte)0, 82001, (byte)1 }));
                         addNewEvent(19003111, instrs);
                         EMEVD.Event grantEvent = emevd.Events.Find(e => e.ID == 1600);
                         if (grantEvent != null)
@@ -891,10 +959,33 @@ namespace RandomizerCommon
                             pre.Postprocess();
                         }
                     }
+
+                    if (opt["fog"])
+                    {
+                        addNewEvent(19003112, new List<EMEVD.Instruction>
+                        {
+                            // DisplayGenericDialog(msg, PromptType.OKCANCEL, NumberofOptions.NoButtons, 0, 5);
+                            new EMEVD.Instruction(2007, 1, new List<object> { RuntimeParamChecker.FogMessageId, (short)1, (short)6, 0, 5f }),
+                            // WaitFixedTimeSeconds
+                            new EMEVD.Instruction(1001, 0, new List<object> { (float)30 }),
+                            // EndUnconditionally(EventEndType.Restart)
+                            new EMEVD.Instruction(1000, 4, new List<object> { (byte)1 })
+                        });
+                    }
                     game.WriteEmevds.Add(entry.Key);
                 }
-                if (entry.Key == "m19_00_00_00" && opt["runereq"])
+                int endRunes = 0;
+                if (opt["runereq"])
                 {
+                    endRunes = 7;
+                }
+                else if (opt.GetInt("runes_end", 1, 7, out int runeOpt))
+                {
+                    endRunes = runeOpt;
+                }
+                if (entry.Key == "m19_00_00_00" && endRunes > 0)
+                {
+                    int runeFlag = 180 + endRunes;
                     EMEVD.Event fog = emevd.Events.Find(ev => ev.ID == 19002500);
                     if (fog == null) throw new Exception($"Couldn't locate event in {entry.Key} to make final boss require all Great Runes");
                     OldParams pre = OldParams.Preprocess(fog);
@@ -907,16 +998,16 @@ namespace RandomizerCommon
                     fog.Instructions.InsertRange(sfxIndex, new List<EMEVD.Instruction>
                     {
                         // SkipIfEventFlag(<lines>, ON, TargetEventFlagType.EventFlag, 187)
-                        new EMEVD.Instruction(1003, 1, new List<object> { (byte)6, (byte)1, (byte)0, 187 }),
+                        new EMEVD.Instruction(1003, 1, new List<object> { (byte)6, (byte)1, (byte)0, runeFlag }),
                         // 9320 = Examine
                         // IfActionButton(OR05, 9320, 19001500)
                         new EMEVD.Instruction(3, 24, new List<object> { (sbyte)-5, 9320, 19001500 }),
                         // IfEventFlag(OR05, ON, TargetEventFlagType.EventFlag, 187)
-                        new EMEVD.Instruction(3, 0, new List<object> { (sbyte)-5, (byte)1, (byte)0, 187 }),
+                        new EMEVD.Instruction(3, 0, new List<object> { (sbyte)-5, (byte)1, (byte)0, runeFlag }),
                         // IfConditionGroup(MAIN, ON, OR05)
                         new EMEVD.Instruction(0, 0, new List<object> { (sbyte)0, (byte)1, (sbyte)-5 }),
                         // EndIfEventFlag(EventEndType.Restart, ON, TargetEventFlagType.EventFlag, 187)
-                        new EMEVD.Instruction(1003, 2, new List<object> { (byte)1, (byte)1, (byte)0, 187 }),
+                        new EMEVD.Instruction(1003, 2, new List<object> { (byte)1, (byte)1, (byte)0, runeFlag }),
                         // WaitFixedTimeSeconds(0.5)
                         // new EMEVD.Instruction(1001, 0, new List<object> { (float)0.5 }),
                         // 20003 = You cannot proceed without more Great Runes

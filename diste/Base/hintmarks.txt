@@ -397,8 +397,9 @@ Areas:
 - Includes: altus
   MainBonfire: Altus Plateau
   Bonfires: Altus Plateau
-  Boss: 1042550800
-  BossFlag: 1042550800
+  Boss: 1039540800
+  BossFlag: 1039540800
+  Comment: Previously Apostle 1042550800, now Elemer
 - Includes: outskirts
   MainBonfire: Outer Wall Phantom Tree
   Bonfires: Capital Outskirts
@@ -761,3 +762,29 @@ Items:
     CheckItem: self
 - Name: runemalenia runemohg runemorgott runeradahn runerykard
   Comment: Only needed if all runes are required, accounted for in requiredItem logic
+UpgradeItems:
+- Names:
+  - Smithing-Stone Miner's Bell Bearing [1]
+  - Smithing-Stone Miner's Bell Bearing [2]
+  - Smithing-Stone Miner's Bell Bearing [3]
+  - Smithing-Stone Miner's Bell Bearing [4]
+- Names:
+  - Somberstone Miner's Bell Bearing [1]
+  - Somberstone Miner's Bell Bearing [2]
+  - Somberstone Miner's Bell Bearing [3]
+  - Somberstone Miner's Bell Bearing [4]
+  - Somberstone Miner's Bell Bearing [5]
+- Names:
+  - Glovewort Picker's Bell Bearing [1]
+  - Glovewort Picker's Bell Bearing [2]
+  - Glovewort Picker's Bell Bearing [3]
+- Names:
+  - Ghost-Glovewort Picker's Bell Bearing [1]
+  - Ghost-Glovewort Picker's Bell Bearing [2]
+  - Ghost-Glovewort Picker's Bell Bearing [3]
+- Name: Talisman Pouch
+- Name: Sacred Tear
+- Name: Memory Stone
+- Name: Purifying Crystal Tear
+- Name: Cerulean Hidden Tear
+- Name: Sentry's Torch

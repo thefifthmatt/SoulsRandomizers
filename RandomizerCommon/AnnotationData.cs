@@ -21,6 +21,7 @@ namespace RandomizerCommon
         private GameData game;
         private LocationData data;
         private List<ConfigAnnotation> configVars = new List<ConfigAnnotation>();
+        private bool tagslot;
 
         // This is a lot of data okay
         // All annotated item slots
@@ -50,7 +51,7 @@ namespace RandomizerCommon
         // Exclude tags for key items specifically. Used for counting purposes and ash placement.
         public readonly HashSet<string> NoKeyTags = new HashSet<string>();
         // Exclude tags for quest items specifically. Used for counting purposes.
-        private readonly HashSet<string> NoQuestTags = new HashSet<string>();
+        public readonly HashSet<string> NoQuestTags = new HashSet<string>();
         // Exclude tags for race mode items. Used for exclude tags
         private readonly HashSet<string> NoRaceModeTags = new HashSet<string>();
         // Eligible tags for race mode locations
@@ -111,6 +112,7 @@ namespace RandomizerCommon
                 }
                 ann.Slots = slotAnn.Slots;
             }
+            tagslot = options["tagslot"];
 
             // Config vars
             foreach (ConfigAnnotation config in ann.Config)
@@ -194,6 +196,15 @@ namespace RandomizerCommon
                     HintGroups[configItems.GroupName] = configItems.HintName;
                     hints.Add(configItems.HintName);
                 }
+            }
+            if (options.GetInt("runes_rold", 0, 7, out _))
+            {
+                // Manual group addition based on replacement. These are expected to exist in the config.
+                ItemGroups["remove"].AddRange(ItemGroups["removerold"]);
+            }
+            if (options["allcraft"])
+            {
+                ItemGroups["remove"].AddRange(ItemGroups["removecraft"]);
             }
             HintCategories.AddRange(hints.Distinct().ToList());
             foreach (ItemPriorityAnnotation group in ann.ItemPriority)
@@ -347,6 +358,17 @@ namespace RandomizerCommon
                 if (options["nocaves"])
                 {
                     NoRaceModeTags.Add("minidungeon");
+                }
+                if (options["fog"] && options["crawl"])
+                {
+                    NoRaceModeTags.Add("nocrawl");
+                }
+                // TODO: Before full customization, find a way to add items to norandom slots.
+                // Until then, we may need to add some extra slots to fit all racemode items.
+                if (options["racemode_upgrades"] && options["norandom"]
+                    && !options["raceloc_health"] && !options["raceloc_altboss"] && !options["raceloc_talisman"])
+                {
+                    RaceModeTags.Add("upgradeshop");
                 }
             }
             if (ItemGroups.ContainsKey("norandom"))
@@ -567,17 +589,22 @@ namespace RandomizerCommon
             bool debug = false;
             foreach (PlacementRestrictionAnnotation restrict in ItemRestrict.Values)
             {
-                if (restrict.BaseLocationBuffer <= 0 || restrict.Unique == null) continue;
+                if (restrict.Unique == null) continue;
+                bool fillInPercents = restrict.Unique.Any(slot => slot.Percent > 0);
+                if (restrict.MinAvailable <= 0 && !fillInPercents) continue;
                 ItemLocations itemLocs = data.Data[restrict.Key];
                 int baseCount = itemLocs.Locations.Count(l => l.Key.Type == ScopeType.EVENT);
+                int guaranteeAmount = restrict.MinAvailable;
                 if (debug) Console.WriteLine($"Locations for {restrict.Name}: {baseCount} base, {restrict.MatsAmount} mats");
-                int addAmount = restrict.Unique.Sum(slot => slot.Amount);
+                // Whittle down requirements based on non-randomized materials
                 if (restrict.MatsAmount > 0 && !matsRandomized)
                 {
+                    guaranteeAmount -= restrict.MatsAmount;
                     // Reduce requirements if materials are reliably present
+                    int totalSlotAmount = restrict.Unique.Sum(slot => slot.Amount);
                     // previously: mats / 2
                     int cutMats = restrict.MatsAmount;
-                    float cutRate = (float)cutMats / addAmount;
+                    float cutRate = (float)cutMats / totalSlotAmount;
                     foreach (PlacementSlotAnnotation slot in restrict.Unique)
                     {
                         if (slot.Amount <= 0) continue;
@@ -587,20 +614,56 @@ namespace RandomizerCommon
                         slot.Amount = reduced;
                     }
                 }
-                int bufferAmount = restrict.Unique.Sum(slot => slot.Amount) + restrict.BaseLocationBuffer;
-                int toAdd = bufferAmount - baseCount;
-                if (debug) Console.WriteLine($"  Adding {toAdd} to reach {bufferAmount}");
-                if (toAdd > 0)
+                // Fill in amounts from percentages
+                if (fillInPercents)
                 {
-                    for (int i = 0; i < toAdd; i++)
+                    int totalAmount = guaranteeAmount > 0 ? Math.Max(guaranteeAmount, baseCount) : baseCount;
+                    int cumPercent = 0;
+                    int cumAmount = 0;
+                    foreach (PlacementSlotAnnotation slot in restrict.Unique)
                     {
-                        data.AddLocationlessItem(restrict.Key);
+                        if (slot.Percent <= 0 || slot.Amount > 0) continue;
+                        double amount = totalAmount * slot.Percent / 100.0;
+                        // Nudge with rounding to try to get a final total as close as possible
+                        slot.Amount = Math.Max(1, (int)Math.Round(amount));
+                        cumPercent += slot.Percent;
+                        cumAmount += slot.Amount;
+                    }
+                    // A pass to try to make it add up to the ideal total. Doing this optimally is tricky, just nudge up or down.
+                    double idealTotal = totalAmount * cumPercent / 100.0;
+                    int amtToAdd = (int)Math.Round(idealTotal - cumAmount);
+                    foreach (PlacementSlotAnnotation slot in restrict.Unique.OrderByDescending(slot => slot.Percent))
+                    {
+                        if (slot.Percent <= 0) continue;
+                        if (amtToAdd > 0)
+                        {
+                            slot.Amount++;
+                            amtToAdd--;
+                        }
+                        else if (amtToAdd < 0 && slot.Amount > 1)
+                        {
+                            slot.Amount--;
+                            amtToAdd++;
+                        }
+                        if (debug) Console.WriteLine($"  Percent {slot.Percent} out of {totalAmount} is {slot.Amount}");
+                    }
+                }
+                if (guaranteeAmount > 0)
+                {
+                    int toAdd = guaranteeAmount - baseCount;
+                    if (debug) Console.WriteLine($"  Adding {toAdd} to reach {guaranteeAmount}");
+                    if (toAdd > 0)
+                    {
+                        for (int i = 0; i < toAdd; i++)
+                        {
+                            data.AddLocationlessItem(restrict.Key);
+                        }
                     }
                 }
             }
         }
 
-        public void ProcessRestrictions(EnemyLocations enemies)
+        public void ProcessRestrictions(RandomizerOptions opt, EnemyLocations enemies)
         {
             // Currently, enemy location processing is required for skill/prosthetics progression, to add requirements for enemies
             bool debug = false;
@@ -665,7 +728,7 @@ namespace RandomizerCommon
                 if (debug) Console.WriteLine($"Replacing '{locs}' -> '{newLocs}'");
                 return newLocs.Length == 0 ? null : newLocs;
             }
-            void processLocationList(List<PlacementSlotAnnotation> slots)
+            void processLocationList(List<PlacementSlotAnnotation> slots, bool allowAny)
             {
                 if (slots == null) return;
                 slots.RemoveAll(slot =>
@@ -675,6 +738,11 @@ namespace RandomizerCommon
                     slot.UpToAny = processLocations(slot.UpToAny);
                     slot.After = processLocations(slot.After);
                     slot.Inside = processLocations(slot.Inside);
+                    // In unrestricted mode, all of the above are overridden. This doesn't affect key item options, which use KeyAreas instead.
+                    if (allowAny)
+                    {
+                        slot.AllowAny = true;
+                    }
                     return slot.Before == null && slot.UpTo == null && slot.UpToAny == null && slot.After == null && slot.Inside == null;
                 });
             }
@@ -684,11 +752,13 @@ namespace RandomizerCommon
                 {
                     restrict.KeyAreas = processLocations(restrict.KeyAreas);
                 }
-                processLocationList(restrict.Unique);
+                // For now, keep Bell Bearings roughly where they are, even in fog mode.
+                bool allowAny = opt["fog"] && (restrict.Name == null || !restrict.Name.Contains("Bell Bearing"));
+                processLocationList(restrict.Unique, allowAny);
                 // TODO: How does this affect DS3?
                 if (restrict.Unique != null && restrict.Unique.Count == 0) restrict.Unique = null;
-                processLocationList(restrict.Drop);
-                processLocationList(restrict.Shop);
+                processLocationList(restrict.Drop, allowAny);
+                processLocationList(restrict.Shop, allowAny);
             }
         }
 
@@ -790,7 +860,7 @@ namespace RandomizerCommon
                     slot.Tags = defaultTag;
                 }
             }
-            slot.SetTags(scope.OnlyShops, null);
+            slot.SetTags(scope.OnlyShops);
             return slot;
         }
 
@@ -819,7 +889,7 @@ namespace RandomizerCommon
             return Areas[area].Text ?? area;
         }
 
-        public string GetLocationHint(SlotKey key, SortedSet<string> specialLocation=null)
+        public string GetLocationHint(SlotKey key, SortedSet<string> specialLocation = null)
         {
             Func<string, string> capitalize = s => $"{s[0]}".ToUpperInvariant() + s.Substring(1);
             ItemLocation loc = data.Location(key);
@@ -934,7 +1004,12 @@ namespace RandomizerCommon
             {
                 original = original.Take(5).Concat(new[] { "etc" }).ToList();
             }
-            return $"{text}. {(original.Count == 1 ? "Replaces" : "In the spot of")} {string.Join(", ", original)}.";
+            string extraInfo = "";
+            if (tagslot)
+            {
+                extraInfo = $" {key}";
+            }
+            return $"{text}. {(original.Count == 1 ? "Replaces" : "In the spot of")} {string.Join(", ", original)}.{extraInfo}";
         }
 
         // Counting for key item assignment
@@ -1045,8 +1120,9 @@ namespace RandomizerCommon
             public string Includes { get; set; }
             public string Switch { get; set; }
             public string KeyAreas { get; set; }
-            // Indication to add new synthetic item locations, until locations >= sum of slot amounts + buffer 
-            public int BaseLocationBuffer { get; set; }
+            // Number of total locations to guarantee. If materials are randomized, MatsAmount is subtracted from this,
+            // and if Amounts are defined, they are reduced by this portion.
+            public int MinAvailable { get; set; }
             // Number of materials found in reliable places in the world, used to offset the slot amounts
             public int MatsAmount { get; set; }
             public List<PlacementSlotAnnotation> Unique { get; set; }
@@ -1060,19 +1136,29 @@ namespace RandomizerCommon
 
         public class PlacementSlotAnnotation
         {
-            public int Amount { get; set; }
+            public int Amount { get; set; } = -1;
+            // Transformed to Amount based on existing slots, to enroll more items in area restriction logic.
+            public int Percent { get; set; }
             public string Before { get; set; }
             public string UpTo { get; set; }
             public string UpToAny { get; set; }
             public string After { get; set; }
             public string Inside { get; set; }
             public bool UseGroups { get; set; }
-            public PlacementSlotAnnotation()
+            [YamlIgnore]
+            public bool AllowAny { get; set; }
+
+            public HashSet<string> AllowedAreas(
+                Dictionary<string, HashSet<string>> includedAreas,
+                Dictionary<string, HashSet<string>> areaGroups,
+                bool debug = false)
             {
-                this.Amount = -1;
-            }
-            public HashSet<string> AllowedAreas(Dictionary<string, HashSet<string>> includedAreas, Dictionary<string, HashSet<string>> areaGroups, bool debug=false)
-            {
+                if (AllowAny)
+                {
+                    // Allow everything. But exclude final boss, manually for now
+                    // This doesn't seem to actually work, or maybe it's random placement.
+                    return new HashSet<string>(includedAreas.Keys.Except(new[] { "erdtree", "radagon" }));
+                }
                 // debug = Before == "moonlight" || Before == "ainsel";
                 debug = false;
                 List<HashSet<string>> requirements = new List<HashSet<string>>();
@@ -1212,11 +1298,12 @@ namespace RandomizerCommon
             public HashSet<string> TagList { get; set; }
             [YamlIgnore]
             public Dictionary<string, List<ItemKey>> TagItems { get; set; }
+            // Inherited from area
             [YamlIgnore]
             public string AreaUntil { get; set; }
             // TODO: Replace uses with TagList directly.
             public HashSet<string> GetTags() => TagList;
-            public void SetTags(bool shopOnly, RandomizerOptions opt, string areaTags = null)
+            internal void SetTags(bool shopOnly, RandomizerOptions opt = null, string areaTags = null)
             {
                 string tagsStr = Tags;
                 if (tagsStr != null && tagsStr.Contains("aaaaa"))
@@ -1240,11 +1327,18 @@ namespace RandomizerCommon
                 {
                     TagList.Add(shopOnly ? "shop" : "noshop");
                 }
+                if (TagList.Contains("upgradeshop"))
+                {
+                    // Do this do allow highly constrained runs to use upgrade shops (as above) without requiring key item checks there
+                    // This shouldn't be done if there is an option to explicitly allow bearings to have key items
+                    TagList.Add("nokey");
+                }
                 if (Until != null || AreaUntil != null)
                 {
-                    if (Until == "always")
+                    if (Until == "always" || (opt["fog"] && !TagList.Contains("foguntil")))
                     {
-                        // Until always allows key item logic
+                        // 'Until always' allows key item logic
+                        // Fog gate randomizer is expected to make these permanently available as well, unless marked otherwise.
                     }
                     else
                     {
@@ -1579,16 +1673,17 @@ namespace RandomizerCommon
                     || id == 2090 // Deathroot
                     || (id >= 11000 && id < 11050) // Tears
                     || (item.ID >= 2130 && item.ID <= 2250) // Celestial Dew to Prattling Pates
-                    // Exclude Stonesword Key 8000 for now
+                                                            // Exclude Stonesword Key 8000 for now
                     || (item.ID >= 8010 && item.ID <= 8650) // Most key items and map fragments
                     || (item.ID >= 8850 && item.ID < 9000) // Scrolls, bell bearings, whetblades, misc keys
                     || (item.ID >= 9300 && item.ID <= 9510) // Cookbooks to perfume bottles, hopefully isn't too much
                     || (item.ID >= 9990 && item.ID <= 9999) // Custom items
                     || (item.ID >= 10010 && item.ID <= 10060) // Important upgrades (flask, memory, talisman)
                     || item.ID == 10080 // Rennala GR
-                    // 10100 to 10919: Upgrade materials
+                                        // 10100 to 10919: Upgrade materials
                     );
             }
+            ReverseEnemyOrder.EldenAreaClassifier classifier = coord == null ? null : new ReverseEnemyOrder.EldenAreaClassifier(game, coord);
             foreach (KeyValuePair<LocationScope, List<SlotKey>> entry in data.Locations)
             {
                 LocationScope scope = entry.Key;
@@ -1655,6 +1750,8 @@ namespace RandomizerCommon
 
                 int locId;
                 List<string> itemAreas;  // A map in the case of Elden Ring, regular location otherwise
+                string heuristicArea = null;
+                bool overworld = false;
                 if (game.EldenRing)
                 {
                     if (locationSet.Count == 0)
@@ -1669,7 +1766,9 @@ namespace RandomizerCommon
                         if (mapId.StartsWith("m60"))
                         {
                             // e.g. m60_51_36_00
+                            // This does overlap with some of the earlier dungeons.
                             locId = int.Parse(mapId.Substring(4, 2) + mapId.Substring(7, 2));
+                            overworld = true;
                         }
                         else
                         {
@@ -1680,6 +1779,10 @@ namespace RandomizerCommon
                     }
                     // locationSet.FirstOrDefault()
                     // Console.WriteLine(string.Join(", ", locationSet));
+
+                    // Some sorting heuristics for vastly different scaling areas
+                    heuristicArea = classifier.Classify(itemAreas, mapEntities);
+                    // if (heuristicArea != null) Console.WriteLine(">" + heuristicArea);
                 }
                 else
                 {
@@ -1708,7 +1811,7 @@ namespace RandomizerCommon
                     }
                 }
                 // if (entry.Key.ToString() == "0:10007440::") Console.WriteLine(string.Join(" / ", models));
-                string area = itemAreas.FirstOrDefault() ?? "";
+                string area = heuristicArea ?? itemAreas.FirstOrDefault() ?? "";
                 SlotAnnotation slot = new SlotAnnotation
                 {
                     Key = $"{locId.ToString(game.EldenRing ? "0000" : "00")},{entry.Key}",
@@ -1719,8 +1822,23 @@ namespace RandomizerCommon
                 };
                 if (existing != null)
                 {
-                    if (existing.Area != null) slot.Area = existing.Area;
+                    if (existing.Tags == null) throw new Exception(slot.Key);
+                    // There are a bunch of correct stormveil_start classifications but they haven't been tagged yet
+                    if (existing.Area != null &&
+                        (!existing.Tags.Contains("aaaaa") || existing.Area == "unknown" || existing.Area == "stormveil_start"))
+                    {
+                        slot.Area = existing.Area;
+                    }
                     if (existing.Tags != null) slot.Tags = existing.Tags;
+                    // Edit for dungeon crawl - racemode/altboss/talisman have default nocrawl in m60, unless crawl/fortress.
+                    string[] tagList = slot.Tags.Split(' ');
+                    if (tagList.Contains("racemode") || tagList.Contains("altboss") || tagList.Contains("talisman"))
+                    {
+                        if (overworld && !tagList.Contains("nocrawl") && !tagList.Contains("crawl") && !tagList.Contains("fortress"))
+                        {
+                            slot.Tags = $"{slot.Tags} nocrawl";
+                        }
+                    }
                     if (existing.Text != null) slot.Text = existing.Text;
                     if (existing.Event != null) slot.Event = existing.Event;
                     if (existing.Until != null) slot.Until = existing.Until;

@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,39 +15,27 @@ using RandomizerCommon.Properties;
 using YamlDotNet.Serialization;
 using static RandomizerCommon.Messages;
 using static SoulsIds.GameSpec;
+using SoulsIds;
+using Ookii.Dialogs.WinForms;
 
 namespace RandomizerCommon
 {
     public partial class EldenForm : Form
     {
-        // There is a lot of Enemy Randomizer placeholder here because we'll need it eventually.
         [Localize]
         private static readonly Text enemyseedPlaceholderText = new Text(
             "(same as overall seed)", "EldenForm_enemyseedPlaceholder");
         private static string defaultPath = @"C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game\eldenring.exe";
-        private static string unseenTabs = "enemy,misc";
-
-        // TODO: Implement in some form
-        private static readonly Text allcraft = new Text(
-            "Grant all craftable items in Crafting Kit",
-            "EldenForm_allcraft");
-        private static readonly Text runecraft = new Text(
-            "Crafting costs runes instead of ingredients",
-            "EldenForm_runecraft");
-        private static readonly Text runecraftL = new Text(
-            "Ingredients must be acquired once",
-            "EldenForm_runecraftL");
-        private static readonly Text runerold = new Text(
-            "Grant Rold Medallion after {0} Great Runes",
-            "EldenForm_runerold");
+        private static string unseenTabs = "enemy,misc2";
 
         private Messages messages;
+        private ModRunner Runner;
 
         private RandomizerOptions options = new RandomizerOptions(FromGame.ER);
         private string defaultOpts = null;
         private Dictionary<string, string> originalLabels = new Dictionary<string, string>();
-        private bool enemyseedPlaceholder;
         private bool simultaneousUpdate;
+        private bool enemyseedPlaceholder;
         private bool working;
         private bool error;
 
@@ -54,6 +43,7 @@ namespace RandomizerCommon
         {
             InitializeComponent();
             Text = $"Elden Ring Item and Enemy Randomizer {Randomizer.EldenVersion}";
+            Runner = new ModRunner("config_eldenringrandomizer.toml", @"diste\ModEngine\modengine2_launcher.exe");
             // Set up tabs real quick
             tabControl.TabDrawer = new GrayIris.Utilities.UI.Controls.XlTabDrawer();
             tabControl.SelectedIndex = 0;
@@ -64,6 +54,13 @@ namespace RandomizerCommon
                 tabControl.Blink = true;
                 tabControl.BlinkColor = Color.FromArgb(255, 220, 230);
             }
+            // And static dropdowns. Temporarily disable options tracking while doing so
+            simultaneousUpdate = true;
+            runes_end.DataSource = Enumerable.Range(0, 8).Select(i => $" {i}").ToList();
+            runes_leyndell.DataSource = Enumerable.Range(0, 8).Select(i => $" {i}").ToList();
+            runes_leyndell.SelectedIndex = 2;
+            runes_rold.DataSource = new[] { " --" }.Concat(Enumerable.Range(0, 8).Select(i => $" {i}")).ToList();
+            simultaneousUpdate = false;
 
             messages = new Messages("diste", loadEmpty);
             if (dumpMessages)
@@ -72,8 +69,9 @@ namespace RandomizerCommon
                 if (!LoadEnemyAnnotations(out string annErr)) throw new Exception(annErr);
                 Preset defaultPreset = Preset.MakeClassBasedDefault(enemyAnn);
                 PresetEditForm presetForm = new PresetEditForm(enemyAnn, messages, defaultPreset);
+                MergeModForm mergeForm = new MergeModForm(null);
                 DumpEnglishMessages(
-                    new List<Form> { this, optionsForm, presetForm },
+                    new List<Form> { this, optionsForm, presetForm, mergeForm },
                     new List<Type> {
                             typeof(EldenForm), typeof(OptionsForm), typeof(PresetEditForm),
                             typeof(MiscSetup), typeof(Preset), typeof(EnemyAnnotations),
@@ -147,6 +145,58 @@ namespace RandomizerCommon
                 // ?????????????????????????????????????????????????????????????????????????
                 presetL.Text = Regex.Replace(presetL.Text, "\r?\n", "\r\n");
             };
+
+            Runner.StartRunning += (sender, e) =>
+            {
+                launchButton.BackColor = Color.LightYellow;
+            };
+            Runner.FailedToStart += (sender, e) =>
+            {
+                ScrollDialog.Show(this, messages.Get(launchFailed), messages.Get(launchFailedTitle));
+            };
+            Runner.DoneRunning += (sender, e) =>
+            {
+                launchButton.BackColor = SystemColors.Control;
+                launchButton.UseVisualStyleBackColor = true;
+            };
+        }
+
+        private static readonly Dictionary<string, int?> defaultDropdownValues = new Dictionary<string, int?>
+        {
+            ["runes_end"] = 0,
+            ["runes_leyndell"] = 2,
+            ["runes_rold"] = null,
+        };
+
+        private bool SetDropdownValue(ComboBox box, int? value)
+        {
+            if (box.Items.Count == 0) return false;
+            if (value == null && defaultDropdownValues.TryGetValue(box.Name, out int? defaultValue))
+            {
+                value = defaultValue;
+            }
+            int index = ((List<string>)box.DataSource).FindIndex(s => int.TryParse(s.Trim(), out int val) ? val == value : value == null);
+            // If it didn't work for some reason (like invalid range), try set default value
+            if (index == -1 && defaultDropdownValues.TryGetValue(box.Name, out defaultValue))
+            {
+                value = defaultValue;
+                index = ((List<string>)box.DataSource).FindIndex(s => int.TryParse(s.Trim(), out int val) ? val == value : value == null);
+                box.SelectedIndex = index == -1 ? 0 : index;
+                return false;
+            }
+            box.SelectedIndex = index;
+            return true;
+        }
+
+        private int? GetDropdownValue(ComboBox box)
+        {
+            // Returns dropdown value, and null if default or non-integer value
+            defaultDropdownValues.TryGetValue(box.Name, out int? defaultValue);
+            if (int.TryParse(box.SelectedValue?.ToString(), out int val) && val != defaultValue)
+            {
+                return val;
+            }
+            return null;
         }
 
         private void SetOptionsString(string defaultOpts)
@@ -163,15 +213,16 @@ namespace RandomizerCommon
             options = RandomizerOptions.Parse(previousOpts, FromGame.ER, isValidOption);
 
             // New defaults
-            // Please oh god make a new system for this
-            bool preItem1 = previousOpts.Contains("v1") || previousOpts.Contains("v2");
-            bool preEnemy1 = preItem1 || previousOpts.Contains("v3");
-            bool preEnemy2 = preEnemy1 || previousOpts.Contains("v4") || previousOpts.Contains("v5") || previousOpts.Contains("v6");
-            if (preItem1)
+            int prevVersion = 0;
+            for (int i = 1; i <= 9; i++)
+            {
+                if (previousOpts.Contains($"v{i}")) prevVersion = i;
+            }
+            if (prevVersion < 3)
             {
                 options["weaponprogression"] = true;
             }
-            if (preEnemy1)
+            if (prevVersion < 4)
             {
                 options["enemy"] = true;
                 options["scale"] = true;
@@ -179,13 +230,17 @@ namespace RandomizerCommon
                 options["regularhp"] = true;
                 options["bosshp"] = true;
             }
-            if (preEnemy2)
+            if (prevVersion < 7)
             {
                 options["phasehp"] = true;
             }
+            if (prevVersion < 9)
+            {
+                options["swaprewards"] = true;
+                options["bossbgm"] = true;
+            }
             // Misc required options
             options["racemode"] = true;
-            // options["mergemods"] = false;
 
             simultaneousUpdate = true;
             InsertControlFlags(this);
@@ -193,7 +248,7 @@ namespace RandomizerCommon
             simultaneousUpdate = false;
 
             fixedseed.Text = options.Seed == 0 ? "" : $"{options.Seed}";
-            enemyseed.Text = options.Seed2 == 0 || options.Seed == options.Seed2 ? "" : $"{options.Seed2}";
+            ManualSetEnemySeed(options.Seed2);
             if (options.Seed2 != 0)
             {
                 defaultRerollEnemy.Checked = false;
@@ -234,10 +289,16 @@ namespace RandomizerCommon
             SetError(err, fatal);
         }
 
-        private void SetError(string text, bool fatal = false)
+        [Localize]
+        private static readonly Text overviewText = new Text(
+            "Check the mod page or README for a full list of all key items, important locations, and other details. Find hints and spoilers for item locations in the spoiler_logs directory.",
+            "EldenForm_overviewL");
+
+        private void SetError(string text = null, bool fatal = false)
         {
-            warningL.Text = text ?? "";
+            warningL.Text = text ?? messages.Get(overviewText);
             warningL.Visible = true;
+            warningL.ForeColor = text == null ? SystemColors.ControlText : Color.DarkRed;
 #if DEBUG
             // fatal = false;
 #endif
@@ -293,7 +354,21 @@ namespace RandomizerCommon
             }
             if (defaultCulture == null)
             {
-                defaultCulture = Thread.CurrentThread.CurrentCulture;
+                string existingCulture = Settings.Default.Locale;
+                if (!string.IsNullOrWhiteSpace(existingCulture))
+                {
+                    try
+                    {
+                        defaultCulture = CultureInfo.GetCultureInfo(existingCulture, true);
+                    }
+                    catch
+                    {
+                    }
+                }
+                if (defaultCulture == null)
+                {
+                    defaultCulture = Thread.CurrentThread.CurrentCulture;
+                }
             }
             if (language.DataSource == null)
             {
@@ -318,12 +393,21 @@ namespace RandomizerCommon
             }
             // Swap out the entire UI. UpdateLabels/SetStatus also sets strings and should be called afterwards
             Thread.CurrentThread.CurrentCulture = culture;
+            string code = culture.TwoLetterISOLanguageName;
             List<LanguageMessages> localLangs = messages.GetAllLanguageMessages(culture);
             translators = localLangs.Count > 0 ? localLangs[0].Translators : null;
             originalLabels.Clear();
 
+            Settings.Default.Locale = culture.ToString();
+            Settings.Default.Save();
+
             // Restore original text positions and save original autosizes
             HashSet<Control> noAuto = new HashSet<Control>();
+            Dictionary<Control, Control> manualAboveGroups = new Dictionary<Control, Control>
+            {
+                [presetButton] = customGroup,
+                [enemyWarningL] = customGroup,
+            };
             void preprocessForm(Control control)
             {
                 if (originalHeightY.TryGetValue(control, out var original))
@@ -385,6 +469,10 @@ namespace RandomizerCommon
             {
                 // TODO: There's no vertical space here, try to add some in the future
                 if (control == locationGroup) return;
+                if (manualAboveGroups.TryGetValue(control, out Control aboveGroup))
+                {
+                    group = aboveGroup;
+                }
                 if (group != null)
                 {
                     if (groupOffsets.TryGetValue(group, out int offset))
@@ -412,7 +500,7 @@ namespace RandomizerCommon
                                 label.TextAlign = ContentAlignment.TopLeft;
                             }
                             control.Width = available;
-                            int extraHeight = size.Height + 2;
+                            int extraHeight = size.Height + (code == "ru" ? 0 : 2);
                             control.Height += extraHeight;
                             groupOffsets[group] = offset + extraHeight;
                         }
@@ -506,6 +594,10 @@ namespace RandomizerCommon
             {
                 getOpt[control.Name] = check.Checked;
             }
+            else if (control is ComboBox box)
+            {
+                getOpt.SetInt(control.Name, GetDropdownValue(box));
+            }
             else
             {
                 foreach (Control sub in control.Controls)
@@ -520,11 +612,24 @@ namespace RandomizerCommon
             if (control.Name.StartsWith("default") || control.Name.EndsWith("_copy")) return;
             if (control is RadioButton radio)
             {
+                // InsertControlFlags should be followed by calling UpdateEnabled.
+                // This state change is required to avoid detecting an off->on transition.
+                control.Enabled = true;
                 radio.Checked = options[control.Name];
             }
             else if (control is CheckBox check)
             {
+                control.Enabled = true;
                 check.Checked = options[control.Name];
+            }
+            else if (control is ComboBox box)
+            {
+                control.Enabled = true;
+                int? value = options.GetInt(control.Name, out int val) ? val : null;
+                if (!SetDropdownValue(box, value))
+                {
+                    options.SetInt(control.Name, null);
+                }
             }
             else
             {
@@ -592,6 +697,19 @@ namespace RandomizerCommon
                     toEnable[control] = enabled;
                 }
             }
+            void setComboBox(ComboBox control, bool enabled, string disabledState, string overrideDisable)
+            {
+                bool prevEnabled = control.Enabled;
+                setSimpleEnable(control, enabled, overrideDisable);
+                if (!enabled && prevEnabled)
+                {
+                    int index = ((List<string>)control.DataSource).FindIndex(s => s.Trim() == disabledState);
+                    if (index != -1)
+                    {
+                        control.SelectedIndex = index;
+                    }
+                }
+            }
             void setCheck(Control control, bool enabled, bool? maybeDefaultState, bool disabledState, string overrideDisable)
             {
                 bool prevEnabled = control.Enabled;
@@ -614,35 +732,37 @@ namespace RandomizerCommon
                 }
             };
 
-            // raceloc_health includes all racemode_health locations
-            setCheck(raceloc_health, !options["norandom_health"], true, false, "item");
-            // After some testing: racemode_upgrades seems to require altboss/health/talisman
-            // (shops are not enough, likely due to farumazula)
-            // Flask upgrades are less restricted so they're fine
-            bool upgrades = options["raceloc_health"] || options["raceloc_altboss"] || options["raceloc_talisman"];
-            setCheck(racemode_upgrades, upgrades, null, false, "item");
+            // As of 0.6, more combination of options should work, with some racemode location heuristics in AnnotationData.
             setCheck(night, options["raceloc_altboss"], false, false, "item");
             setCheck(markitems, options["markareas"], false, false, "item");
-            // Customization options. Depend on scaling.
-            // May not want to depend on customization, since that can take some time to load.
-            setCheck(regularhp, options["scale"], true, false, "enemy");
-            setCheck(bosshp, options["scale"], true, false, "enemy");
-            setCheck(multhp, options["scale"], false, false, "enemy");
+            // No key item options when key items are not randomized
+            setCheck(earlylegacy, !options["norandom"], true, true, "item");
+            setComboBox(runes_leyndell, !options["norandom"], "2", "item");
+            setComboBox(runes_rold, !options["norandom"], "--", "item");
+            // Scaling options
+            // No longer includes customization options
             setCheck(phasehp, options["scale"], true, false, "enemy");
             setSimpleEnable(presetButton, selectedPreset != null, "enemy");
             // Misc
             setCheck(default_twohand, !options["nostarting"], true, true, null);
             setCheck(onehand, !options["nostarting"], false, false, null);
             setCheck(nohand, !options["nostarting"], false, false, null);
+            setCheck(crawl, options["fog"], false, false, null);
             // Universal options not in the misc tab
             toEnable[language] = true;
             toEnable[languageL] = true;
-            toEnable[runereq] = true;
+            toEnable[runes_end] = true;
+            toEnable[runes_endL] = true;
 
             // Make sure a single radio button of any group is checked
             if (!racemode_upgrades.Checked && !norandom_upgrades.Checked && !default_upgrades.Checked)
             {
-                default_upgrades.Checked = true;
+                racemode_upgrades.Checked = true;
+                changes = true;
+            }
+            if (!racemode_health.Checked && !norandom_health.Checked && !default_health.Checked)
+            {
+                racemode_health.Checked = true;
                 changes = true;
             }
             if (!default_key.Checked && !norandom.Checked)
@@ -666,13 +786,9 @@ namespace RandomizerCommon
             simultaneousUpdate = false;
         }
 
-        string modengineConfig = "config_eldenringrandomizer.toml";
-        string modengineLauncher = @"diste\ModEngine\modengine2_launcher.exe";
-
         private void UpdateLaunchGame()
         {
-            launchButton.Enabled =
-                File.Exists(modengineConfig) && File.Exists(modengineLauncher) && !options["uxm"];
+            launchButton.Enabled = Runner.IsValid() && !options["uxm"];
         }
 
         private static readonly Dictionary<string, (int, int)> checkLabels = new Dictionary<string, (int, int)>
@@ -848,10 +964,9 @@ namespace RandomizerCommon
             fixedseed.Text = $"{rand.Seed}";
             if (newEnemySeed)
             {
-                enemyseed.Text = rand.Seed2.ToString();
-                enemyseed.ForeColor = SystemColors.WindowText;
+                ManualSetEnemySeed(rand.Seed2);
             }
-            if (File.Exists(modengineConfig)) File.Delete(modengineConfig);
+            Runner.DeleteLaunchFile();
 
             Randomizer randomizer = new Randomizer();
             await Task.Factory.StartNew(() => {
@@ -874,10 +989,11 @@ namespace RandomizerCommon
                 Console.SetOut(log);
                 try
                 {
+                    MergedMods mods = MergedMods.FromPath(mergemod.Text);
                     randomizer.Randomize(
                         rand, FromGame.ER, status => { statusL.Text = status; },
                         messages: messages, preset: selectedPreset,
-                        gameExe: exe.Text, modDir: mergemod.Text);
+                        gameExe: exe.Text, modDirs: mods);
                     if (!rand["uxm"])
                     {
                         CreateLaunchFile();
@@ -898,6 +1014,7 @@ namespace RandomizerCommon
             });
             randomize.Text = buttonText;
             randomize.BackColor = SystemColors.Control;
+            randomize.UseVisualStyleBackColor = true;
             UpdateLaunchGame();
             working = false;
         }
@@ -1037,12 +1154,43 @@ namespace RandomizerCommon
         private void fixedseed_TextChanged(object sender, EventArgs e)
         {
             string text = fixedseed.Text.Trim();
-            default_reroll.Enabled = uint.TryParse(text, out uint val) && val != 0;
-            if (!default_reroll.Enabled)
+            bool validNum = uint.TryParse(text, out uint val) && val != 0;
+            default_reroll.Enabled = validNum;
+            if (!validNum)
             {
                 default_reroll.Checked = true;
             }
+            else if (!simultaneousUpdate)
+            {
+                // Avoid doing this here when loading things in, but do it when manually typing/pasting
+                default_reroll.Checked = false;
+            }
             UpdateRandomizeButtonText();
+        }
+
+        private void ManualSetEnemySeed(uint seed)
+        {
+            if (seed != 0)
+            {
+                enemyseedPlaceholder = false;
+                enemyseed.ForeColor = SystemColors.WindowText;
+                enemyseed.Text = seed.ToString();
+            }
+            else
+            {
+                if (enemyseed.Focused)
+                {
+                    enemyseedPlaceholder = false;
+                    enemyseed.ForeColor = SystemColors.WindowText;
+                    enemyseed.Text = "";
+                }
+                else
+                {
+                    enemyseedPlaceholder = true;
+                    enemyseed.ForeColor = SystemColors.GrayText;
+                    enemyseed.Text = messages.Get(enemyseedPlaceholderText);
+                }
+            }
         }
 
         // Copy this from Sekiro
@@ -1197,62 +1345,32 @@ namespace RandomizerCommon
 
         private void exeButton_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog exeDialog = new OpenFileDialog())
+            using (OpenFileDialog dialog = new OpenFileDialog())
             {
-                exeDialog.Title = "Select Elden Ring install location";
-                exeDialog.Filter = "Elden Ring exe|eldenring.exe";
-                exeDialog.RestoreDirectory = true;
-                try
+                dialog.Title = "Select Elden Ring install location";
+                dialog.Filter = "Elden Ring exe|eldenring.exe";
+                dialog.RestoreDirectory = true;
+                if (ModRunner.TryGetDirectory(exe.Text, out string dir))
                 {
-                    if (Directory.Exists(exe.Text))
-                    {
-                        exeDialog.InitialDirectory = exe.Text;
-                    }
-                    else
-                    {
-                        string gamePath = Path.GetDirectoryName(exe.Text);
-                        if (Directory.Exists(gamePath))
-                        {
-                            exeDialog.InitialDirectory = gamePath;
-                        }
-                    }
+                    dialog.InitialDirectory = dir;
                 }
-                catch (ArgumentException) { }
-                if (exeDialog.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    exe.Text = exeDialog.FileName;
+                    exe.Text = dialog.FileName;
                 }
             }
         }
 
         private void mergeButton_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog modDialog = new OpenFileDialog())
+            // Allow selecting 3 types of things: directory, regulation.bin, toml file (merge multiple mods)
+            using (MergeModForm dialog = new MergeModForm(mergemod.Text))
             {
-                modDialog.Title = "Select other mod";
-                modDialog.Filter = "Regulation file|regulation.bin";
-                modDialog.RestoreDirectory = true;
-                try
+                dialog.Icon = Icon;
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    // TODO: See if this can be combined with other routine.
-                    // InitialDirectory is poorly documented in its interaction with RestoreDirectory.
-                    if (Directory.Exists(mergemod.Text))
-                    {
-                        modDialog.InitialDirectory = mergemod.Text;
-                    }
-                    else
-                    {
-                        string gamePath = Path.GetDirectoryName(mergemod.Text);
-                        if (Directory.Exists(gamePath))
-                        {
-                            modDialog.InitialDirectory = gamePath;
-                        }
-                    }
-                }
-                catch (ArgumentException) { }
-                if (modDialog.ShowDialog() == DialogResult.OK)
-                {
-                    mergemod.Text = Path.GetDirectoryName(modDialog.FileName);
+                    // This may be null
+                    mergemod.Text = dialog.FileName;
                 }
             }
         }
@@ -1297,14 +1415,10 @@ namespace RandomizerCommon
                 MessageBox.Show(messages.Get(restoreNothingToDo, gamePath), title, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            using (ScrollDialog form = new ScrollDialog(messages.Get(restoreConfirmTitle), string.Join(Environment.NewLine, restoreFiles)))
+            DialogResult result = ScrollDialog.Show(this, string.Join(Environment.NewLine, restoreFiles), messages.Get(restoreConfirmTitle));
+            if (result != DialogResult.OK)
             {
-                form.Icon = Icon;
-                DialogResult result = form.ShowDialog(this);
-                if (result != DialogResult.OK)
-                {
-                    return;
-                }
+                return;
             }
             List<string> restoreLog = new List<string>();
             foreach (string restoreFile in restoreFiles)
@@ -1321,11 +1435,7 @@ namespace RandomizerCommon
                     restoreLog.Add(ex.ToString());
                 }
             }
-            using (ScrollDialog form = new ScrollDialog(title, string.Join(Environment.NewLine, restoreLog)))
-            {
-                form.Icon = Icon;
-                form.ShowDialog(this);
-            }
+            ScrollDialog.Show(this, string.Join(Environment.NewLine, restoreLog), title);
         }
 
         private void saveOptionsFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1473,40 +1583,25 @@ namespace RandomizerCommon
 
         private void CreateLaunchFile()
         {
+            // TODO: Use ModRunUtil
             StringWriter writer = new StringWriter();
             RandomizerOptionsFile.Create(Randomizer.EldenVersion, options, selectedPreset).Save(writer);
             string hash = MiscSetup.GetMD5TextHash(writer.ToString());
-            string formatLine(string name, string path)
+            List<string> comments = new List<string>
             {
-                return $"    {{ enabled = true, name = \"{name}\", path = {JsonConvert.ToString(path)} }},";
-            }
-            List<string> modLines = new List<string>();
-            modLines.Add(formatLine("randomizer", Directory.GetCurrentDirectory()));
+                $"Produced by Elden Ring Randomizer {Randomizer.EldenVersion}",
+                $"<hash>{hash}</hash>",
+            };
+            List<string> modDirs = new List<string>();
             if (!string.IsNullOrWhiteSpace(mergemod.Text))
             {
                 DirectoryInfo modDir = new DirectoryInfo(mergemod.Text);
                 if (modDir.Exists)
                 {
-                    modLines.Add(formatLine("mod", modDir.FullName));
+                    modDirs.Add(modDir.FullName);
                 }
             }
-            string file = $@"# DO NOT MODIFY THIS FILE!
-# AUTO-GENERATED
-# CONTENTS WILL BE AUTOMATICALLY OVERWRITTEN
-
-# Produced by Elden Ring Randomizer {Randomizer.EldenVersion}
-# <hash>{hash}</hash>
-
-[modengine]
-debug = false
-[extension.mod_loader]
-enabled = true
-loose_params = false
-mods = [
-{string.Join(Environment.NewLine, modLines)}
-]
-";
-            File.WriteAllText(modengineConfig, file);
+            Runner.CreateLaunchFile(comments, modDirs);
         }
 
         [Localize]
@@ -1519,15 +1614,24 @@ mods = [
         private static readonly Text launchFailedTitle = new Text(
             "Launch failed", "EldenForm_launchFailedTitle");
         [Localize]
+        private static readonly Text launchFog = new Text(
+            "If you're using Fog Gate Randomizer (under Misc Options), launch the game from FogMod.exe, not from here", "EldenForm_launchFog");
+        [Localize]
         private static readonly Text launchFailed = new Text(
             "Automatic Mod Engine launcher appeared to fail.\n\nMake sure Steam is running. If the game is currently running, close it and wait until it is fully shut down.\n\nCheck Troubleshooting on https://www.nexusmods.com/eldenring/mods/428/ to see when Mod Engine might fail. You may need to try using a manual Mod Engine launcher or UXM installation.", "EldenForm_launchFailed");
 
-        private Process currentProcess = null;
         private async void launchButton_Click(object sender, EventArgs e)
         {
-            if (currentProcess != null) return;
             UpdateLaunchGame();
-            if (!launchButton.Enabled) return;
+            if (!launchButton.Enabled || Runner.IsLaunching()) return;
+
+            if (options["fog"])
+            {
+                MessageBox.Show(
+                    messages.Get(launchFog), messages.Get(launchFailedTitle),
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             StringWriter writer = new StringWriter();
             RandomizerOptionsFile.Create(Randomizer.EldenVersion, options, selectedPreset).Save(writer);
@@ -1535,13 +1639,12 @@ mods = [
 
             string fileHash = null;
             Regex hashRe = new Regex(@"<hash>([0-9A-Za-z]+)</hash>");
-            string contents = File.ReadAllText(modengineConfig);
+            string contents = Runner.ReadLaunchFileText();
             Match match = hashRe.Match(contents);
             if (match.Success)
             {
                 fileHash = match.Groups[1].Value;
             }
-
             if (hash != fileHash)
             {
                 DialogResult result = MessageBox.Show(
@@ -1550,16 +1653,8 @@ mods = [
                     MessageBoxButtons.OKCancel);
                 if (result != DialogResult.OK) return;
             }
-            bool? checkRunning()
-            {
-                try
-                {
-                    return Process.GetProcessesByName("eldenring").Length > 0;
-                }
-                catch (Exception) { }
-                return null;
-            }
-            if (checkRunning() ?? false)
+
+            if (Runner.IsEldenRingRunning())
             {
                 DialogResult result = MessageBox.Show(
                     messages.Get(launchRunning),
@@ -1567,46 +1662,7 @@ mods = [
                     MessageBoxButtons.OKCancel);
                 if (result != DialogResult.OK) return;
             }
-
-            using (Process process = new Process())
-            {
-                process.StartInfo.FileName = modengineLauncher;
-                process.StartInfo.Arguments = $@"-t er -c ..\..\{modengineConfig}";
-                process.StartInfo.WorkingDirectory = Path.GetDirectoryName(modengineLauncher);
-                process.StartInfo.UseShellExecute = false;
-                process.EnableRaisingEvents = true;
-
-                // Start
-                currentProcess = process;
-                DateTime startTime = DateTime.Now;
-                launchButton.BackColor = Color.LightYellow;
-
-                process.Start();
-                await WaitForExitAsync(process);
-
-                int timePassed = (int)(DateTime.Now - startTime).TotalMilliseconds;
-                // Originally this was a way of "if exited early, warn about broken",
-                // but Mod Engine in non-debug mode exits early anyway, so check it regardless.
-                if (timePassed < 5000)
-                {
-                    int waitRest = Math.Max(0, Math.Min(5000 - timePassed, 5000));
-                    await Task.Delay(waitRest);
-                }
-                bool running = checkRunning() ?? true;
-                if (!running)
-                {
-                    using (ScrollDialog form = new ScrollDialog(
-                        messages.Get(launchFailedTitle),
-                        messages.Get(launchFailed)))
-                    {
-                        form.Icon = Icon;
-                        form.ShowDialog(this);
-                    }
-                }
-
-                launchButton.BackColor = SystemColors.Control;
-                currentProcess = null;
-            }
+            await Runner.LaunchEldenRing();
         }
 
         // https://stackoverflow.com/questions/470256/process-waitforexit-asynchronously
@@ -1628,7 +1684,7 @@ mods = [
 
         private void updateButton_Click(object sender, EventArgs e)
         {
-            Process.Start("https://www.nexusmods.com/eldenring/mods/428?tab=files");
+            Process.Start(new ProcessStartInfo("https://www.nexusmods.com/eldenring/mods/428?tab=files") { UseShellExecute = true });
         }
     }
 }

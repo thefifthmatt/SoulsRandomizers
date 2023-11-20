@@ -30,14 +30,19 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EldenForm));
             this.progressGroup = new System.Windows.Forms.GroupBox();
+            this.runes_roldL = new System.Windows.Forms.Label();
+            this.runes_rold = new System.Windows.Forms.ComboBox();
+            this.runes_leyndellL = new System.Windows.Forms.Label();
+            this.runes_leyndell = new System.Windows.Forms.ComboBox();
+            this.runes_endL = new System.Windows.Forms.Label();
+            this.runes_end = new System.Windows.Forms.ComboBox();
+            this.runes_roldL2 = new System.Windows.Forms.Label();
             this.mats = new System.Windows.Forms.CheckBox();
             this.weaponprogression = new System.Windows.Forms.CheckBox();
             this.spellshopsL = new System.Windows.Forms.Label();
             this.spellshops = new System.Windows.Forms.CheckBox();
             this.earlylegacyL = new System.Windows.Forms.Label();
-            this.runereqL = new System.Windows.Forms.Label();
             this.earlylegacy = new System.Windows.Forms.CheckBox();
-            this.runereq = new System.Windows.Forms.CheckBox();
             this.difficulty = new System.Windows.Forms.TrackBar();
             this.biasGroup = new System.Windows.Forms.GroupBox();
             this.difficultyAmtL = new System.Windows.Forms.Label();
@@ -71,17 +76,16 @@
             this.norandom = new System.Windows.Forms.RadioButton();
             this.default_reroll = new System.Windows.Forms.CheckBox();
             this.updateButton = new System.Windows.Forms.Button();
-            this.overviewL = new System.Windows.Forms.Label();
             this.tabControl = new GrayIris.Utilities.UI.Controls.YaTabControl();
             this.itemPage = new GrayIris.Utilities.UI.Controls.YaTabPage();
+            this.placementGroup = new System.Windows.Forms.GroupBox();
+            this.allcraft = new System.Windows.Forms.CheckBox();
             this.locationOverviewL = new System.Windows.Forms.Label();
             this.languageL = new System.Windows.Forms.Label();
             this.hintGroup = new System.Windows.Forms.GroupBox();
-            this.markareasL = new System.Windows.Forms.Label();
             this.markitems = new System.Windows.Forms.CheckBox();
             this.markareas = new System.Windows.Forms.CheckBox();
             this.upgradeGroup = new System.Windows.Forms.GroupBox();
-            this.upgradeExplainL = new System.Windows.Forms.Label();
             this.racemode_upgrades = new System.Windows.Forms.RadioButton();
             this.norandom_upgrades = new System.Windows.Forms.RadioButton();
             this.default_upgrades = new System.Windows.Forms.RadioButton();
@@ -95,13 +99,11 @@
             this.presetL = new System.Windows.Forms.TextBox();
             this.customGroup = new System.Windows.Forms.GroupBox();
             this.impoliteL = new System.Windows.Forms.Label();
-            this.multcolor = new System.Windows.Forms.CheckBox();
             this.impolite = new System.Windows.Forms.CheckBox();
-            this.multhp = new System.Windows.Forms.CheckBox();
-            this.bosshp = new System.Windows.Forms.CheckBox();
-            this.regularhp = new System.Windows.Forms.CheckBox();
             this.default_custom = new System.Windows.Forms.CheckBox();
             this.miscGroupEnemy = new System.Windows.Forms.GroupBox();
+            this.swaprewards = new System.Windows.Forms.CheckBox();
+            this.bossbgm = new System.Windows.Forms.CheckBox();
             this.swapbossL = new System.Windows.Forms.Label();
             this.swapboss = new System.Windows.Forms.CheckBox();
             this.editnames = new System.Windows.Forms.CheckBox();
@@ -113,7 +115,16 @@
             this.enemyseed = new System.Windows.Forms.TextBox();
             this.presetButton = new System.Windows.Forms.Button();
             this.miscPage = new GrayIris.Utilities.UI.Controls.YaTabPage();
+            this.specialGroup = new System.Windows.Forms.GroupBox();
+            this.nerfsh = new System.Windows.Forms.CheckBox();
+            this.crawl = new System.Windows.Forms.CheckBox();
+            this.fogL = new System.Windows.Forms.Label();
+            this.fog = new System.Windows.Forms.CheckBox();
             this.convenienceGroup = new System.Windows.Forms.GroupBox();
+            this.weaponreqs = new System.Windows.Forms.CheckBox();
+            this.nerfgargoyles = new System.Windows.Forms.CheckBox();
+            this.sombermodeL = new System.Windows.Forms.Label();
+            this.sombermode = new System.Windows.Forms.CheckBox();
             this.nerfmalenia = new System.Windows.Forms.CheckBox();
             this.allmaps = new System.Windows.Forms.CheckBox();
             this.extraRandomGroup = new System.Windows.Forms.GroupBox();
@@ -138,8 +149,6 @@
             this.resetOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mergemod = new System.Windows.Forms.TextBox();
             this.mergeButton = new System.Windows.Forms.Button();
-            this.sombermode = new System.Windows.Forms.CheckBox();
-            this.sombermodeL = new System.Windows.Forms.Label();
             this.progressGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.difficulty)).BeginInit();
             this.biasGroup.SuspendLayout();
@@ -148,6 +157,7 @@
             this.keyGroup.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.itemPage.SuspendLayout();
+            this.placementGroup.SuspendLayout();
             this.hintGroup.SuspendLayout();
             this.upgradeGroup.SuspendLayout();
             this.healthGroup.SuspendLayout();
@@ -156,6 +166,7 @@
             this.miscGroupEnemy.SuspendLayout();
             this.progressGroupEnemy.SuspendLayout();
             this.miscPage.SuspendLayout();
+            this.specialGroup.SuspendLayout();
             this.convenienceGroup.SuspendLayout();
             this.extraRandomGroup.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -163,27 +174,100 @@
             // 
             // progressGroup
             // 
-            this.progressGroup.Controls.Add(this.mats);
-            this.progressGroup.Controls.Add(this.weaponprogression);
-            this.progressGroup.Controls.Add(this.spellshopsL);
-            this.progressGroup.Controls.Add(this.spellshops);
-            this.progressGroup.Controls.Add(this.earlylegacyL);
-            this.progressGroup.Controls.Add(this.runereqL);
-            this.progressGroup.Controls.Add(this.earlylegacy);
-            this.progressGroup.Controls.Add(this.runereq);
+            this.progressGroup.Controls.Add(this.runes_roldL);
+            this.progressGroup.Controls.Add(this.runes_rold);
+            this.progressGroup.Controls.Add(this.runes_leyndellL);
+            this.progressGroup.Controls.Add(this.runes_leyndell);
+            this.progressGroup.Controls.Add(this.runes_endL);
+            this.progressGroup.Controls.Add(this.runes_end);
+            this.progressGroup.Controls.Add(this.runes_roldL2);
             this.progressGroup.Location = new System.Drawing.Point(7, 113);
             this.progressGroup.Name = "progressGroup";
-            this.progressGroup.Size = new System.Drawing.Size(351, 193);
+            this.progressGroup.Size = new System.Drawing.Size(359, 134);
             this.progressGroup.TabIndex = 1;
             this.progressGroup.TabStop = false;
             this.progressGroup.Text = "Game progression";
+            // 
+            // runes_roldL
+            // 
+            this.runes_roldL.AutoSize = true;
+            this.runes_roldL.BackColor = System.Drawing.Color.Transparent;
+            this.runes_roldL.Location = new System.Drawing.Point(55, 85);
+            this.runes_roldL.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.runes_roldL.Name = "runes_roldL";
+            this.runes_roldL.Size = new System.Drawing.Size(212, 16);
+            this.runes_roldL.TabIndex = 5;
+            this.runes_roldL.Text = "Great Runes to enter Mountaintops";
+            // 
+            // runes_rold
+            // 
+            this.runes_rold.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.runes_rold.FormattingEnabled = true;
+            this.runes_rold.Location = new System.Drawing.Point(6, 81);
+            this.runes_rold.Name = "runes_rold";
+            this.runes_rold.Size = new System.Drawing.Size(45, 24);
+            this.runes_rold.TabIndex = 4;
+            this.runes_rold.SelectedIndexChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
+            // runes_leyndellL
+            // 
+            this.runes_leyndellL.AutoSize = true;
+            this.runes_leyndellL.BackColor = System.Drawing.Color.Transparent;
+            this.runes_leyndellL.Location = new System.Drawing.Point(55, 55);
+            this.runes_leyndellL.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.runes_leyndellL.Name = "runes_leyndellL";
+            this.runes_leyndellL.Size = new System.Drawing.Size(183, 16);
+            this.runes_leyndellL.TabIndex = 3;
+            this.runes_leyndellL.Text = "Great Runes to enter Leyndell";
+            // 
+            // runes_leyndell
+            // 
+            this.runes_leyndell.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.runes_leyndell.FormattingEnabled = true;
+            this.runes_leyndell.Location = new System.Drawing.Point(6, 51);
+            this.runes_leyndell.Name = "runes_leyndell";
+            this.runes_leyndell.Size = new System.Drawing.Size(45, 24);
+            this.runes_leyndell.TabIndex = 2;
+            this.runes_leyndell.SelectedIndexChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
+            // runes_endL
+            // 
+            this.runes_endL.AutoSize = true;
+            this.runes_endL.BackColor = System.Drawing.Color.Transparent;
+            this.runes_endL.Location = new System.Drawing.Point(55, 25);
+            this.runes_endL.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.runes_endL.Name = "runes_endL";
+            this.runes_endL.Size = new System.Drawing.Size(224, 16);
+            this.runes_endL.TabIndex = 1;
+            this.runes_endL.Text = "Great Runes to access the final boss";
+            // 
+            // runes_end
+            // 
+            this.runes_end.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.runes_end.FormattingEnabled = true;
+            this.runes_end.Location = new System.Drawing.Point(6, 21);
+            this.runes_end.Name = "runes_end";
+            this.runes_end.Size = new System.Drawing.Size(45, 24);
+            this.runes_end.TabIndex = 0;
+            this.runes_end.SelectedIndexChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
+            // runes_roldL2
+            // 
+            this.runes_roldL2.AutoSize = true;
+            this.runes_roldL2.BackColor = System.Drawing.Color.Transparent;
+            this.runes_roldL2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.runes_roldL2.Location = new System.Drawing.Point(6, 113);
+            this.runes_roldL2.Name = "runes_roldL2";
+            this.runes_roldL2.Size = new System.Drawing.Size(289, 13);
+            this.runes_roldL2.TabIndex = 6;
+            this.runes_roldL2.Text = "If selected, Rold Medallion is not required, only Great Runes";
             // 
             // mats
             // 
             this.mats.AutoSize = true;
             this.mats.Checked = true;
             this.mats.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.mats.Location = new System.Drawing.Point(6, 140);
+            this.mats.Location = new System.Drawing.Point(7, 94);
             this.mats.Name = "mats";
             this.mats.Size = new System.Drawing.Size(307, 20);
             this.mats.TabIndex = 9;
@@ -196,7 +280,7 @@
             this.weaponprogression.AutoSize = true;
             this.weaponprogression.Checked = true;
             this.weaponprogression.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.weaponprogression.Location = new System.Drawing.Point(6, 160);
+            this.weaponprogression.Location = new System.Drawing.Point(7, 114);
             this.weaponprogression.Name = "weaponprogression";
             this.weaponprogression.Size = new System.Drawing.Size(310, 20);
             this.weaponprogression.TabIndex = 10;
@@ -208,7 +292,7 @@
             // 
             this.spellshopsL.AutoSize = true;
             this.spellshopsL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.spellshopsL.Location = new System.Drawing.Point(22, 124);
+            this.spellshopsL.Location = new System.Drawing.Point(23, 77);
             this.spellshopsL.Name = "spellshopsL";
             this.spellshopsL.Size = new System.Drawing.Size(239, 13);
             this.spellshopsL.TabIndex = 5;
@@ -219,7 +303,7 @@
             this.spellshops.AutoSize = true;
             this.spellshops.Checked = true;
             this.spellshops.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.spellshops.Location = new System.Drawing.Point(6, 101);
+            this.spellshops.Location = new System.Drawing.Point(7, 57);
             this.spellshops.Name = "spellshops";
             this.spellshops.Size = new System.Drawing.Size(182, 20);
             this.spellshops.TabIndex = 4;
@@ -231,45 +315,24 @@
             // 
             this.earlylegacyL.AutoSize = true;
             this.earlylegacyL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.earlylegacyL.Location = new System.Drawing.Point(22, 83);
+            this.earlylegacyL.Location = new System.Drawing.Point(23, 40);
             this.earlylegacyL.Name = "earlylegacyL";
             this.earlylegacyL.Size = new System.Drawing.Size(276, 13);
             this.earlylegacyL.TabIndex = 3;
             this.earlylegacyL.Text = "Place Rusty Key in Limgrave and Academy Key in Liurnia";
-            // 
-            // runereqL
-            // 
-            this.runereqL.AutoSize = true;
-            this.runereqL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.runereqL.Location = new System.Drawing.Point(22, 44);
-            this.runereqL.Name = "runereqL";
-            this.runereqL.Size = new System.Drawing.Size(204, 13);
-            this.runereqL.TabIndex = 1;
-            this.runereqL.Text = "Activating the Great Runes is not required";
             // 
             // earlylegacy
             // 
             this.earlylegacy.AutoSize = true;
             this.earlylegacy.Checked = true;
             this.earlylegacy.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.earlylegacy.Location = new System.Drawing.Point(6, 60);
+            this.earlylegacy.Location = new System.Drawing.Point(7, 21);
             this.earlylegacy.Name = "earlylegacy";
             this.earlylegacy.Size = new System.Drawing.Size(279, 20);
             this.earlylegacy.TabIndex = 2;
             this.earlylegacy.Text = "Early legacy dungeons are available early";
             this.earlylegacy.UseVisualStyleBackColor = true;
             this.earlylegacy.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
-            // 
-            // runereq
-            // 
-            this.runereq.AutoSize = true;
-            this.runereq.Location = new System.Drawing.Point(6, 22);
-            this.runereq.Name = "runereq";
-            this.runereq.Size = new System.Drawing.Size(321, 20);
-            this.runereq.TabIndex = 0;
-            this.runereq.Text = "Require all 7 Great Runes to access the final boss";
-            this.runereq.UseVisualStyleBackColor = true;
-            this.runereq.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
             // difficulty
             // 
@@ -319,6 +382,7 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusL});
             this.statusStrip1.Location = new System.Drawing.Point(0, 734);
@@ -373,8 +437,8 @@
             this.warningL.Size = new System.Drawing.Size(503, 100);
             this.warningL.TabIndex = 15;
             this.warningL.Text = "Error Error Error Error Error Error Error Error Error Error Error Error Error Err" +
-    "or \r\nError Error Error Error Error Error Error Error Error Error Error Error Err" +
-    "or Error";
+    "or\r\nError Error Error Error Error Error Error Error Error Error Error Error Erro" +
+    "r Error";
             this.warningL.Visible = false;
             // 
             // locationGroup
@@ -396,10 +460,10 @@
             this.locationGroup.Controls.Add(this.raceloc_health);
             this.locationGroup.Controls.Add(this.racemode);
             this.locationGroup.Controls.Add(this.default_boss);
-            this.locationGroup.Location = new System.Drawing.Point(373, 113);
+            this.locationGroup.Location = new System.Drawing.Point(748, 113);
             this.locationGroup.Name = "locationGroup";
-            this.locationGroup.Size = new System.Drawing.Size(389, 340);
-            this.locationGroup.TabIndex = 3;
+            this.locationGroup.Size = new System.Drawing.Size(389, 342);
+            this.locationGroup.TabIndex = 8;
             this.locationGroup.TabStop = false;
             this.locationGroup.Text = "Which locations are important locations?";
             // 
@@ -594,7 +658,7 @@
             // 
             this.keyGroup.Controls.Add(this.default_key);
             this.keyGroup.Controls.Add(this.norandom);
-            this.keyGroup.Location = new System.Drawing.Point(773, 173);
+            this.keyGroup.Location = new System.Drawing.Point(372, 165);
             this.keyGroup.Name = "keyGroup";
             this.keyGroup.Size = new System.Drawing.Size(369, 53);
             this.keyGroup.TabIndex = 4;
@@ -650,18 +714,6 @@
             this.updateButton.UseVisualStyleBackColor = true;
             this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
             // 
-            // overviewL
-            // 
-            this.overviewL.BackColor = System.Drawing.Color.Transparent;
-            this.overviewL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.overviewL.Location = new System.Drawing.Point(9, 456);
-            this.overviewL.Name = "overviewL";
-            this.overviewL.Size = new System.Drawing.Size(753, 46);
-            this.overviewL.TabIndex = 10;
-            this.overviewL.Text = "Check the mod page or README for a full list of all key items, important location" +
-    "s, and other details. Find hints and spoilers for item locations in the spoiler_" +
-    "logs directory.";
-            // 
             // tabControl
             // 
             this.tabControl.ActiveColor = System.Drawing.SystemColors.Window;
@@ -678,7 +730,7 @@
             this.tabControl.ImageIndex = -1;
             this.tabControl.ImageList = null;
             this.tabControl.InactiveColor = System.Drawing.SystemColors.Control;
-            this.tabControl.Location = new System.Drawing.Point(13, 27);
+            this.tabControl.Location = new System.Drawing.Point(12, 27);
             this.tabControl.Name = "tabControl";
             this.tabControl.NewTabButton = false;
             this.tabControl.OverIndex = -1;
@@ -696,8 +748,8 @@
             // 
             this.itemPage.BackColor = System.Drawing.SystemColors.Control;
             this.itemPage.Blink = false;
+            this.itemPage.Controls.Add(this.placementGroup);
             this.itemPage.Controls.Add(this.locationOverviewL);
-            this.itemPage.Controls.Add(this.overviewL);
             this.itemPage.Controls.Add(this.languageL);
             this.itemPage.Controls.Add(this.hintGroup);
             this.itemPage.Controls.Add(this.upgradeGroup);
@@ -717,14 +769,41 @@
             this.itemPage.TabIndex = 1;
             this.itemPage.Text = "    Item Randomizer";
             // 
+            // placementGroup
+            // 
+            this.placementGroup.Controls.Add(this.allcraft);
+            this.placementGroup.Controls.Add(this.earlylegacy);
+            this.placementGroup.Controls.Add(this.earlylegacyL);
+            this.placementGroup.Controls.Add(this.spellshops);
+            this.placementGroup.Controls.Add(this.spellshopsL);
+            this.placementGroup.Controls.Add(this.weaponprogression);
+            this.placementGroup.Controls.Add(this.mats);
+            this.placementGroup.Location = new System.Drawing.Point(7, 253);
+            this.placementGroup.Name = "placementGroup";
+            this.placementGroup.Size = new System.Drawing.Size(359, 161);
+            this.placementGroup.TabIndex = 2;
+            this.placementGroup.TabStop = false;
+            this.placementGroup.Text = "Item placement";
+            // 
+            // allcraft
+            // 
+            this.allcraft.AutoSize = true;
+            this.allcraft.Location = new System.Drawing.Point(7, 134);
+            this.allcraft.Name = "allcraft";
+            this.allcraft.Size = new System.Drawing.Size(331, 20);
+            this.allcraft.TabIndex = 11;
+            this.allcraft.Text = "Unlock all craftable items in Crafting Kit from the start";
+            this.allcraft.UseVisualStyleBackColor = true;
+            this.allcraft.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
             // locationOverviewL
             // 
             this.locationOverviewL.BackColor = System.Drawing.Color.Transparent;
             this.locationOverviewL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.locationOverviewL.Location = new System.Drawing.Point(774, 116);
+            this.locationOverviewL.Location = new System.Drawing.Point(370, 113);
             this.locationOverviewL.Name = "locationOverviewL";
             this.locationOverviewL.Size = new System.Drawing.Size(364, 49);
-            this.locationOverviewL.TabIndex = 11;
+            this.locationOverviewL.TabIndex = 3;
             this.locationOverviewL.Text = "Important locations are places you may need to check to find items required to be" +
     "at the game.";
             // 
@@ -734,36 +813,25 @@
             this.languageL.Location = new System.Drawing.Point(771, 464);
             this.languageL.Name = "languageL";
             this.languageL.Size = new System.Drawing.Size(105, 22);
-            this.languageL.TabIndex = 8;
+            this.languageL.TabIndex = 9;
             this.languageL.Text = "Language:";
             this.languageL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // hintGroup
             // 
-            this.hintGroup.Controls.Add(this.markareasL);
             this.hintGroup.Controls.Add(this.markitems);
             this.hintGroup.Controls.Add(this.markareas);
-            this.hintGroup.Location = new System.Drawing.Point(7, 324);
+            this.hintGroup.Location = new System.Drawing.Point(372, 341);
             this.hintGroup.Name = "hintGroup";
-            this.hintGroup.Size = new System.Drawing.Size(351, 90);
-            this.hintGroup.TabIndex = 2;
+            this.hintGroup.Size = new System.Drawing.Size(369, 70);
+            this.hintGroup.TabIndex = 7;
             this.hintGroup.TabStop = false;
             this.hintGroup.Text = "Hints";
-            // 
-            // markareasL
-            // 
-            this.markareasL.AutoSize = true;
-            this.markareasL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.markareasL.Location = new System.Drawing.Point(22, 40);
-            this.markareasL.Name = "markareasL";
-            this.markareasL.Size = new System.Drawing.Size(262, 13);
-            this.markareasL.TabIndex = 1;
-            this.markareasL.Text = "Markers are unavailable before reaching Altus Plateau";
             // 
             // markitems
             // 
             this.markitems.AutoSize = true;
-            this.markitems.Location = new System.Drawing.Point(6, 56);
+            this.markitems.Location = new System.Drawing.Point(6, 40);
             this.markitems.Name = "markitems";
             this.markitems.Size = new System.Drawing.Size(332, 20);
             this.markitems.TabIndex = 2;
@@ -774,7 +842,7 @@
             // markareas
             // 
             this.markareas.AutoSize = true;
-            this.markareas.Location = new System.Drawing.Point(6, 21);
+            this.markareas.Location = new System.Drawing.Point(6, 20);
             this.markareas.Name = "markareas";
             this.markareas.Size = new System.Drawing.Size(303, 20);
             this.markareas.TabIndex = 0;
@@ -784,27 +852,15 @@
             // 
             // upgradeGroup
             // 
-            this.upgradeGroup.Controls.Add(this.upgradeExplainL);
             this.upgradeGroup.Controls.Add(this.racemode_upgrades);
             this.upgradeGroup.Controls.Add(this.norandom_upgrades);
             this.upgradeGroup.Controls.Add(this.default_upgrades);
-            this.upgradeGroup.Location = new System.Drawing.Point(773, 288);
+            this.upgradeGroup.Location = new System.Drawing.Point(372, 278);
             this.upgradeGroup.Name = "upgradeGroup";
-            this.upgradeGroup.Size = new System.Drawing.Size(369, 93);
+            this.upgradeGroup.Size = new System.Drawing.Size(369, 57);
             this.upgradeGroup.TabIndex = 6;
             this.upgradeGroup.TabStop = false;
             this.upgradeGroup.Text = "Upgrade Bell Bearings randomized?";
-            // 
-            // upgradeExplainL
-            // 
-            this.upgradeExplainL.BackColor = System.Drawing.Color.Transparent;
-            this.upgradeExplainL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.upgradeExplainL.Location = new System.Drawing.Point(6, 46);
-            this.upgradeExplainL.Name = "upgradeExplainL";
-            this.upgradeExplainL.Size = new System.Drawing.Size(363, 44);
-            this.upgradeExplainL.TabIndex = 3;
-            this.upgradeExplainL.Text = "If randomized, Smithing Stone and Glovewort Bell Bearings are placed in the same " +
-    "overall area as their vanilla location. Their contents are not randomized.";
             // 
             // racemode_upgrades
             // 
@@ -848,7 +904,7 @@
             this.language.Location = new System.Drawing.Point(882, 464);
             this.language.Name = "language";
             this.language.Size = new System.Drawing.Size(255, 24);
-            this.language.TabIndex = 9;
+            this.language.TabIndex = 10;
             this.language.SelectedIndexChanged += new System.EventHandler(this.language_SelectedIndexChanged);
             // 
             // healthGroup
@@ -856,7 +912,7 @@
             this.healthGroup.Controls.Add(this.racemode_health);
             this.healthGroup.Controls.Add(this.norandom_health);
             this.healthGroup.Controls.Add(this.default_health);
-            this.healthGroup.Location = new System.Drawing.Point(773, 232);
+            this.healthGroup.Location = new System.Drawing.Point(372, 219);
             this.healthGroup.Name = "healthGroup";
             this.healthGroup.Size = new System.Drawing.Size(369, 53);
             this.healthGroup.TabIndex = 5;
@@ -925,9 +981,9 @@
             // 
             this.enemyWarningL.BackColor = System.Drawing.Color.Transparent;
             this.enemyWarningL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.enemyWarningL.Location = new System.Drawing.Point(6, 394);
+            this.enemyWarningL.Location = new System.Drawing.Point(4, 343);
             this.enemyWarningL.Name = "enemyWarningL";
-            this.enemyWarningL.Size = new System.Drawing.Size(411, 88);
+            this.enemyWarningL.Size = new System.Drawing.Size(411, 71);
             this.enemyWarningL.TabIndex = 5;
             this.enemyWarningL.Text = "Warning: Placing too many bosses in the game may result in crashes and frame rate" +
     " drops. Also, if enemies stop making sounds, you can usually save+quit to remedy" +
@@ -949,15 +1005,11 @@
             // customGroup
             // 
             this.customGroup.Controls.Add(this.impoliteL);
-            this.customGroup.Controls.Add(this.multcolor);
             this.customGroup.Controls.Add(this.impolite);
-            this.customGroup.Controls.Add(this.multhp);
-            this.customGroup.Controls.Add(this.bosshp);
-            this.customGroup.Controls.Add(this.regularhp);
             this.customGroup.Controls.Add(this.default_custom);
-            this.customGroup.Location = new System.Drawing.Point(6, 177);
+            this.customGroup.Location = new System.Drawing.Point(7, 219);
             this.customGroup.Name = "customGroup";
-            this.customGroup.Size = new System.Drawing.Size(408, 177);
+            this.customGroup.Size = new System.Drawing.Size(408, 82);
             this.customGroup.TabIndex = 2;
             this.customGroup.TabStop = false;
             this.customGroup.Text = "Customization";
@@ -966,27 +1018,16 @@
             // 
             this.impoliteL.AutoSize = true;
             this.impoliteL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.impoliteL.Location = new System.Drawing.Point(24, 155);
+            this.impoliteL.Location = new System.Drawing.Point(23, 61);
             this.impoliteL.Name = "impoliteL";
             this.impoliteL.Size = new System.Drawing.Size(182, 13);
             this.impoliteL.TabIndex = 14;
             this.impoliteL.Text = "Make enemies less passive in groups";
             // 
-            // multcolor
-            // 
-            this.multcolor.AutoSize = true;
-            this.multcolor.Location = new System.Drawing.Point(6, 113);
-            this.multcolor.Name = "multcolor";
-            this.multcolor.Size = new System.Drawing.Size(262, 20);
-            this.multcolor.TabIndex = 4;
-            this.multcolor.Text = "Color-code bosses in Enemy Onslaught";
-            this.multcolor.UseVisualStyleBackColor = true;
-            this.multcolor.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
-            // 
             // impolite
             // 
             this.impolite.AutoSize = true;
-            this.impolite.Location = new System.Drawing.Point(6, 135);
+            this.impolite.Location = new System.Drawing.Point(6, 41);
             this.impolite.Name = "impolite";
             this.impolite.Size = new System.Drawing.Size(128, 20);
             this.impolite.TabIndex = 5;
@@ -994,47 +1035,10 @@
             this.impolite.UseVisualStyleBackColor = true;
             this.impolite.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
-            // multhp
-            // 
-            this.multhp.AutoSize = true;
-            this.multhp.Location = new System.Drawing.Point(6, 90);
-            this.multhp.Name = "multhp";
-            this.multhp.Size = new System.Drawing.Size(327, 20);
-            this.multhp.TabIndex = 3;
-            this.multhp.Text = "Reduce HP for bosses in Enemy Onslaught slightly";
-            this.multhp.UseVisualStyleBackColor = true;
-            this.multhp.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
-            // 
-            // bosshp
-            // 
-            this.bosshp.AutoSize = true;
-            this.bosshp.Checked = true;
-            this.bosshp.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.bosshp.Location = new System.Drawing.Point(6, 44);
-            this.bosshp.Name = "bosshp";
-            this.bosshp.Size = new System.Drawing.Size(284, 20);
-            this.bosshp.TabIndex = 1;
-            this.bosshp.Text = "Increase HP for regular enemies as bosses";
-            this.bosshp.UseVisualStyleBackColor = true;
-            this.bosshp.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
-            // 
-            // regularhp
-            // 
-            this.regularhp.AutoSize = true;
-            this.regularhp.Checked = true;
-            this.regularhp.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.regularhp.Location = new System.Drawing.Point(6, 67);
-            this.regularhp.Name = "regularhp";
-            this.regularhp.Size = new System.Drawing.Size(280, 20);
-            this.regularhp.TabIndex = 2;
-            this.regularhp.Text = "Reduce HP for bosses as regular enemies";
-            this.regularhp.UseVisualStyleBackColor = true;
-            this.regularhp.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
-            // 
             // default_custom
             // 
             this.default_custom.AutoSize = true;
-            this.default_custom.Location = new System.Drawing.Point(6, 22);
+            this.default_custom.Location = new System.Drawing.Point(6, 21);
             this.default_custom.Name = "default_custom";
             this.default_custom.Size = new System.Drawing.Size(181, 20);
             this.default_custom.TabIndex = 0;
@@ -1044,34 +1048,63 @@
             // 
             // miscGroupEnemy
             // 
+            this.miscGroupEnemy.Controls.Add(this.swaprewards);
+            this.miscGroupEnemy.Controls.Add(this.bossbgm);
             this.miscGroupEnemy.Controls.Add(this.swapbossL);
             this.miscGroupEnemy.Controls.Add(this.swapboss);
             this.miscGroupEnemy.Controls.Add(this.editnames);
-            this.miscGroupEnemy.Location = new System.Drawing.Point(6, 84);
+            this.miscGroupEnemy.Location = new System.Drawing.Point(7, 83);
             this.miscGroupEnemy.Name = "miscGroupEnemy";
-            this.miscGroupEnemy.Size = new System.Drawing.Size(408, 87);
+            this.miscGroupEnemy.Size = new System.Drawing.Size(408, 130);
             this.miscGroupEnemy.TabIndex = 1;
             this.miscGroupEnemy.TabStop = false;
             this.miscGroupEnemy.Text = "Misc";
+            // 
+            // swaprewards
+            // 
+            this.swaprewards.AutoSize = true;
+            this.swaprewards.Checked = true;
+            this.swaprewards.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.swaprewards.Enabled = false;
+            this.swaprewards.Location = new System.Drawing.Point(6, 42);
+            this.swaprewards.Name = "swaprewards";
+            this.swaprewards.Size = new System.Drawing.Size(343, 20);
+            this.swaprewards.TabIndex = 1;
+            this.swaprewards.Text = "Change boss runes to correspond to the original boss";
+            this.swaprewards.UseVisualStyleBackColor = true;
+            this.swaprewards.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
+            // bossbgm
+            // 
+            this.bossbgm.AutoSize = true;
+            this.bossbgm.Checked = true;
+            this.bossbgm.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.bossbgm.Location = new System.Drawing.Point(6, 62);
+            this.bossbgm.Name = "bossbgm";
+            this.bossbgm.Size = new System.Drawing.Size(241, 20);
+            this.bossbgm.TabIndex = 2;
+            this.bossbgm.Text = "Randomize boss background music";
+            this.bossbgm.UseVisualStyleBackColor = true;
+            this.bossbgm.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
             // swapbossL
             // 
             this.swapbossL.AutoSize = true;
             this.swapbossL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.swapbossL.Location = new System.Drawing.Point(24, 66);
+            this.swapbossL.Location = new System.Drawing.Point(24, 103);
             this.swapbossL.Name = "swapbossL";
             this.swapbossL.Size = new System.Drawing.Size(146, 13);
-            this.swapbossL.TabIndex = 13;
+            this.swapbossL.TabIndex = 4;
             this.swapbossL.Text = "For mini-dungeon bosses only";
             // 
             // swapboss
             // 
             this.swapboss.AutoSize = true;
             this.swapboss.Enabled = false;
-            this.swapboss.Location = new System.Drawing.Point(6, 45);
+            this.swapboss.Location = new System.Drawing.Point(6, 82);
             this.swapboss.Name = "swapboss";
             this.swapboss.Size = new System.Drawing.Size(260, 20);
-            this.swapboss.TabIndex = 1;
+            this.swapboss.TabIndex = 3;
             this.swapboss.Text = "Swap bosses between multi-boss fights";
             this.swapboss.UseVisualStyleBackColor = true;
             this.swapboss.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
@@ -1095,7 +1128,7 @@
             this.progressGroupEnemy.Controls.Add(this.scale);
             this.progressGroupEnemy.Location = new System.Drawing.Point(6, 6);
             this.progressGroupEnemy.Name = "progressGroupEnemy";
-            this.progressGroupEnemy.Size = new System.Drawing.Size(408, 72);
+            this.progressGroupEnemy.Size = new System.Drawing.Size(408, 71);
             this.progressGroupEnemy.TabIndex = 0;
             this.progressGroupEnemy.TabStop = false;
             this.progressGroupEnemy.Text = "Game progression";
@@ -1105,7 +1138,7 @@
             this.phasehp.AutoSize = true;
             this.phasehp.Checked = true;
             this.phasehp.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.phasehp.Location = new System.Drawing.Point(6, 45);
+            this.phasehp.Location = new System.Drawing.Point(6, 42);
             this.phasehp.Name = "phasehp";
             this.phasehp.Size = new System.Drawing.Size(279, 20);
             this.phasehp.TabIndex = 1;
@@ -1161,7 +1194,7 @@
             // 
             this.presetButton.Enabled = false;
             this.presetButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.presetButton.Location = new System.Drawing.Point(3, 360);
+            this.presetButton.Location = new System.Drawing.Point(4, 307);
             this.presetButton.Name = "presetButton";
             this.presetButton.Size = new System.Drawing.Size(411, 31);
             this.presetButton.TabIndex = 3;
@@ -1173,6 +1206,7 @@
             // 
             this.miscPage.BackColor = System.Drawing.SystemColors.Control;
             this.miscPage.Blink = false;
+            this.miscPage.Controls.Add(this.specialGroup);
             this.miscPage.Controls.Add(this.convenienceGroup);
             this.miscPage.Controls.Add(this.extraRandomGroup);
             this.miscPage.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1185,23 +1219,124 @@
             this.miscPage.TabIndex = 2;
             this.miscPage.Text = "Misc Options";
             // 
+            // specialGroup
+            // 
+            this.specialGroup.Controls.Add(this.nerfsh);
+            this.specialGroup.Controls.Add(this.crawl);
+            this.specialGroup.Controls.Add(this.fogL);
+            this.specialGroup.Controls.Add(this.fog);
+            this.specialGroup.Location = new System.Drawing.Point(6, 296);
+            this.specialGroup.Name = "specialGroup";
+            this.specialGroup.Size = new System.Drawing.Size(428, 101);
+            this.specialGroup.TabIndex = 6;
+            this.specialGroup.TabStop = false;
+            this.specialGroup.Text = "Special modes";
+            // 
+            // nerfsh
+            // 
+            this.nerfsh.AutoSize = true;
+            this.nerfsh.Location = new System.Drawing.Point(6, 75);
+            this.nerfsh.Name = "nerfsh";
+            this.nerfsh.Size = new System.Drawing.Size(230, 20);
+            this.nerfsh.TabIndex = 8;
+            this.nerfsh.Text = "Disable upgrading Serpent-Hunter";
+            this.nerfsh.UseVisualStyleBackColor = true;
+            this.nerfsh.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
+            // crawl
+            // 
+            this.crawl.AutoSize = true;
+            this.crawl.Location = new System.Drawing.Point(6, 55);
+            this.crawl.Name = "crawl";
+            this.crawl.Size = new System.Drawing.Size(303, 20);
+            this.crawl.TabIndex = 7;
+            this.crawl.Text = "Dungeon Crawl mode in Fog Gate Randomizer";
+            this.crawl.UseVisualStyleBackColor = true;
+            this.crawl.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
+            // fogL
+            // 
+            this.fogL.AutoSize = true;
+            this.fogL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.fogL.Location = new System.Drawing.Point(23, 39);
+            this.fogL.Name = "fogL";
+            this.fogL.Size = new System.Drawing.Size(279, 13);
+            this.fogL.TabIndex = 6;
+            this.fogL.Text = "Only use this if you\'re installing Fog Gate Randomizer after";
+            // 
+            // fog
+            // 
+            this.fog.AutoSize = true;
+            this.fog.Location = new System.Drawing.Point(6, 20);
+            this.fog.Name = "fog";
+            this.fog.Size = new System.Drawing.Size(345, 20);
+            this.fog.TabIndex = 0;
+            this.fog.Text = "Unrestricted item placement for Fog Gate Randomizer";
+            this.fog.UseVisualStyleBackColor = true;
+            this.fog.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
             // convenienceGroup
             // 
+            this.convenienceGroup.Controls.Add(this.weaponreqs);
+            this.convenienceGroup.Controls.Add(this.nerfgargoyles);
             this.convenienceGroup.Controls.Add(this.sombermodeL);
             this.convenienceGroup.Controls.Add(this.sombermode);
             this.convenienceGroup.Controls.Add(this.nerfmalenia);
             this.convenienceGroup.Controls.Add(this.allmaps);
-            this.convenienceGroup.Location = new System.Drawing.Point(6, 164);
+            this.convenienceGroup.Location = new System.Drawing.Point(6, 144);
             this.convenienceGroup.Name = "convenienceGroup";
-            this.convenienceGroup.Size = new System.Drawing.Size(408, 112);
+            this.convenienceGroup.Size = new System.Drawing.Size(428, 146);
             this.convenienceGroup.TabIndex = 1;
             this.convenienceGroup.TabStop = false;
             this.convenienceGroup.Text = "Convenience";
             // 
+            // weaponreqs
+            // 
+            this.weaponreqs.AutoSize = true;
+            this.weaponreqs.Location = new System.Drawing.Point(6, 80);
+            this.weaponreqs.Name = "weaponreqs";
+            this.weaponreqs.Size = new System.Drawing.Size(285, 20);
+            this.weaponreqs.TabIndex = 3;
+            this.weaponreqs.Text = "Remove all weapon and spell requirements";
+            this.weaponreqs.UseVisualStyleBackColor = true;
+            this.weaponreqs.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
+            // nerfgargoyles
+            // 
+            this.nerfgargoyles.AutoSize = true;
+            this.nerfgargoyles.Location = new System.Drawing.Point(6, 60);
+            this.nerfgargoyles.Name = "nerfgargoyles";
+            this.nerfgargoyles.Size = new System.Drawing.Size(356, 20);
+            this.nerfgargoyles.TabIndex = 2;
+            this.nerfgargoyles.Text = "Disable damage tick in Valiant Gargoyles\' poison cloud";
+            this.nerfgargoyles.UseVisualStyleBackColor = true;
+            this.nerfgargoyles.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
+            // sombermodeL
+            // 
+            this.sombermodeL.AutoSize = true;
+            this.sombermodeL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.sombermodeL.Location = new System.Drawing.Point(23, 121);
+            this.sombermodeL.Name = "sombermodeL";
+            this.sombermodeL.Size = new System.Drawing.Size(245, 13);
+            this.sombermodeL.TabIndex = 5;
+            this.sombermodeL.Text = "Require only one Smithing Stone per weapon level";
+            // 
+            // sombermode
+            // 
+            this.sombermode.AutoSize = true;
+            this.sombermode.Location = new System.Drawing.Point(6, 100);
+            this.sombermode.Name = "sombermode";
+            this.sombermode.Size = new System.Drawing.Size(307, 20);
+            this.sombermode.TabIndex = 4;
+            this.sombermode.Text = "Reduce upgrade cost for non-somber weapons";
+            this.sombermode.UseVisualStyleBackColor = true;
+            this.sombermode.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
             // nerfmalenia
             // 
             this.nerfmalenia.AutoSize = true;
-            this.nerfmalenia.Location = new System.Drawing.Point(6, 42);
+            this.nerfmalenia.Location = new System.Drawing.Point(6, 40);
             this.nerfmalenia.Name = "nerfmalenia";
             this.nerfmalenia.Size = new System.Drawing.Size(199, 20);
             this.nerfmalenia.TabIndex = 1;
@@ -1229,7 +1364,7 @@
             this.extraRandomGroup.Controls.Add(this.invertstarting);
             this.extraRandomGroup.Location = new System.Drawing.Point(6, 6);
             this.extraRandomGroup.Name = "extraRandomGroup";
-            this.extraRandomGroup.Size = new System.Drawing.Size(408, 137);
+            this.extraRandomGroup.Size = new System.Drawing.Size(428, 132);
             this.extraRandomGroup.TabIndex = 0;
             this.extraRandomGroup.TabStop = false;
             this.extraRandomGroup.Text = "Additional randomization";
@@ -1237,7 +1372,7 @@
             // onehand
             // 
             this.onehand.AutoSize = true;
-            this.onehand.Location = new System.Drawing.Point(28, 63);
+            this.onehand.Location = new System.Drawing.Point(28, 61);
             this.onehand.Name = "onehand";
             this.onehand.Size = new System.Drawing.Size(230, 20);
             this.onehand.TabIndex = 2;
@@ -1261,7 +1396,7 @@
             // nohand
             // 
             this.nohand.AutoSize = true;
-            this.nohand.Location = new System.Drawing.Point(28, 86);
+            this.nohand.Location = new System.Drawing.Point(28, 81);
             this.nohand.Name = "nohand";
             this.nohand.Size = new System.Drawing.Size(248, 20);
             this.nohand.TabIndex = 3;
@@ -1274,7 +1409,7 @@
             this.invertoutfits.AutoSize = true;
             this.invertoutfits.Checked = true;
             this.invertoutfits.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.invertoutfits.Location = new System.Drawing.Point(6, 110);
+            this.invertoutfits.Location = new System.Drawing.Point(6, 101);
             this.invertoutfits.Name = "invertoutfits";
             this.invertoutfits.Size = new System.Drawing.Size(163, 20);
             this.invertoutfits.TabIndex = 4;
@@ -1335,7 +1470,7 @@
             // exe
             // 
             this.exe.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.exe.Location = new System.Drawing.Point(12, 570);
+            this.exe.Location = new System.Drawing.Point(12, 571);
             this.exe.Name = "exe";
             this.exe.Size = new System.Drawing.Size(821, 26);
             this.exe.TabIndex = 4;
@@ -1403,14 +1538,14 @@
             // 
             this.saveOptionsFileToolStripMenuItem.Name = "saveOptionsFileToolStripMenuItem";
             this.saveOptionsFileToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.saveOptionsFileToolStripMenuItem.Text = "Save options file...";
+            this.saveOptionsFileToolStripMenuItem.Text = "Export options file...";
             this.saveOptionsFileToolStripMenuItem.Click += new System.EventHandler(this.saveOptionsFileToolStripMenuItem_Click);
             // 
             // loadOptionsFileToolStripMenuItem
             // 
             this.loadOptionsFileToolStripMenuItem.Name = "loadOptionsFileToolStripMenuItem";
             this.loadOptionsFileToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.loadOptionsFileToolStripMenuItem.Text = "Load options file...";
+            this.loadOptionsFileToolStripMenuItem.Text = "Import options file...";
             this.loadOptionsFileToolStripMenuItem.Click += new System.EventHandler(this.loadOptionsFileToolStripMenuItem_Click);
             // 
             // setOptionsStringToolStripMenuItem
@@ -1443,30 +1578,9 @@
             this.mergeButton.Name = "mergeButton";
             this.mergeButton.Size = new System.Drawing.Size(330, 29);
             this.mergeButton.TabIndex = 7;
-            this.mergeButton.Text = "Select other mod";
+            this.mergeButton.Text = "Merge other mod";
             this.mergeButton.UseVisualStyleBackColor = true;
             this.mergeButton.Click += new System.EventHandler(this.mergeButton_Click);
-            // 
-            // sombermode
-            // 
-            this.sombermode.AutoSize = true;
-            this.sombermode.Location = new System.Drawing.Point(6, 64);
-            this.sombermode.Name = "sombermode";
-            this.sombermode.Size = new System.Drawing.Size(307, 20);
-            this.sombermode.TabIndex = 2;
-            this.sombermode.Text = "Reduce upgrade cost for non-somber weapons";
-            this.sombermode.UseVisualStyleBackColor = true;
-            this.sombermode.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
-            // 
-            // sombermodeL
-            // 
-            this.sombermodeL.AutoSize = true;
-            this.sombermodeL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.sombermodeL.Location = new System.Drawing.Point(26, 85);
-            this.sombermodeL.Name = "sombermodeL";
-            this.sombermodeL.Size = new System.Drawing.Size(245, 13);
-            this.sombermodeL.TabIndex = 3;
-            this.sombermodeL.Text = "Require only one Smithing Stone per weapon level";
             // 
             // EldenForm
             // 
@@ -1510,6 +1624,8 @@
             this.keyGroup.PerformLayout();
             this.tabControl.ResumeLayout(false);
             this.itemPage.ResumeLayout(false);
+            this.placementGroup.ResumeLayout(false);
+            this.placementGroup.PerformLayout();
             this.hintGroup.ResumeLayout(false);
             this.hintGroup.PerformLayout();
             this.upgradeGroup.ResumeLayout(false);
@@ -1525,6 +1641,8 @@
             this.progressGroupEnemy.ResumeLayout(false);
             this.progressGroupEnemy.PerformLayout();
             this.miscPage.ResumeLayout(false);
+            this.specialGroup.ResumeLayout(false);
+            this.specialGroup.PerformLayout();
             this.convenienceGroup.ResumeLayout(false);
             this.convenienceGroup.PerformLayout();
             this.extraRandomGroup.ResumeLayout(false);
@@ -1539,8 +1657,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox progressGroup;
-        private System.Windows.Forms.CheckBox runereq;
-        private System.Windows.Forms.Label runereqL;
         private System.Windows.Forms.CheckBox earlylegacy;
         private System.Windows.Forms.Label earlylegacyL;
         private System.Windows.Forms.TrackBar difficulty;
@@ -1573,7 +1689,6 @@
         private System.Windows.Forms.RadioButton norandom;
         private System.Windows.Forms.CheckBox default_reroll;
         private System.Windows.Forms.Button updateButton;
-        private System.Windows.Forms.Label overviewL;
         private GrayIris.Utilities.UI.Controls.YaTabControl tabControl;
         private GrayIris.Utilities.UI.Controls.YaTabPage itemPage;
         private GrayIris.Utilities.UI.Controls.YaTabPage enemyPage;
@@ -1596,7 +1711,6 @@
         private System.Windows.Forms.RadioButton racemode_upgrades;
         private System.Windows.Forms.RadioButton norandom_upgrades;
         private System.Windows.Forms.RadioButton default_upgrades;
-        private System.Windows.Forms.Label upgradeExplainL;
         private System.Windows.Forms.Label line;
         private System.Windows.Forms.Button exeButton;
         private System.Windows.Forms.TextBox exe;
@@ -1607,16 +1721,13 @@
         private System.Windows.Forms.GroupBox hintGroup;
         private System.Windows.Forms.CheckBox markitems;
         private System.Windows.Forms.CheckBox markareas;
-        private System.Windows.Forms.Label markareasL;
         private System.Windows.Forms.CheckBox weaponprogression;
         private System.Windows.Forms.GroupBox progressGroupEnemy;
         private System.Windows.Forms.CheckBox scale;
         private System.Windows.Forms.GroupBox miscGroupEnemy;
         private System.Windows.Forms.CheckBox editnames;
         private System.Windows.Forms.GroupBox customGroup;
-        private System.Windows.Forms.CheckBox regularhp;
         private System.Windows.Forms.CheckBox default_custom;
-        private System.Windows.Forms.CheckBox bosshp;
         private System.Windows.Forms.TextBox presetL;
         private System.Windows.Forms.CheckBox swapboss;
         private System.Windows.Forms.Label enemyWarningL;
@@ -1642,13 +1753,29 @@
         private System.Windows.Forms.RadioButton default_twohand;
         private System.Windows.Forms.Label locationOverviewL;
         private System.Windows.Forms.CheckBox mats;
-        private System.Windows.Forms.CheckBox multhp;
         private System.Windows.Forms.CheckBox impolite;
-        private System.Windows.Forms.CheckBox multcolor;
         private System.Windows.Forms.CheckBox phasehp;
         private System.Windows.Forms.Label impoliteL;
         private System.Windows.Forms.CheckBox sombermode;
         private System.Windows.Forms.Label sombermodeL;
+        private System.Windows.Forms.Label runes_endL;
+        private System.Windows.Forms.ComboBox runes_end;
+        private System.Windows.Forms.Label runes_leyndellL;
+        private System.Windows.Forms.ComboBox runes_leyndell;
+        private System.Windows.Forms.Label runes_roldL;
+        private System.Windows.Forms.ComboBox runes_rold;
+        private System.Windows.Forms.Label runes_roldL2;
+        private System.Windows.Forms.GroupBox placementGroup;
+        private System.Windows.Forms.CheckBox nerfgargoyles;
+        private System.Windows.Forms.CheckBox weaponreqs;
+        private System.Windows.Forms.CheckBox allcraft;
+        private System.Windows.Forms.CheckBox bossbgm;
+        private System.Windows.Forms.CheckBox swaprewards;
+        private System.Windows.Forms.GroupBox specialGroup;
+        private System.Windows.Forms.CheckBox fog;
+        private System.Windows.Forms.Label fogL;
+        private System.Windows.Forms.CheckBox crawl;
+        private System.Windows.Forms.CheckBox nerfsh;
     }
 }
 

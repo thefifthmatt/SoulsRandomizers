@@ -17,22 +17,25 @@ namespace RandomizerCommon
     {
         private static readonly List<string> itemParams = new List<string>()
         {
-            "EquipParamWeapon", "EquipParamProtector", "EquipParamAccessory", "EquipParamGoods", "EquipParamGem",
+            "EquipParamWeapon", "EquipParamProtector", "EquipParamAccessory", "EquipParamGoods", "EquipParamGem", null, "EquipParamCustomWeapon",
         };
 
         public static readonly ISerializer Serializer = new SerializerBuilder()
             .DisableAliases()
             .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitDefaults)
             .Build();
+        public static readonly int EldenRingBase = 1032500000;
 
         public readonly GameEditor Editor;
         public FromGame Type => Editor.Spec.Game;
         public bool Sekiro => Type == FromGame.SDT;
         public bool DS3 => Type == FromGame.DS3;
         public bool EldenRing => Type == FromGame.ER;
+        public bool AC6 => Type == FromGame.AC6;
+        public bool HasMods => Mods != null && Mods.Count > 0;
 
         public readonly string Dir;
-        private string ModDir;
+        private MergedMods Mods { get; set; }
 
         // Informational data
         // TODO: Perhaps have this data in configs
@@ -121,7 +124,7 @@ namespace RandomizerCommon
             [3] = ItemType.ARMOR,
             [4] = ItemType.RING,
             [5] = ItemType.GEM,
-            [6] = ItemType.EQUIP,
+            [6] = ItemType.CUSTOM,
         };
 
         // echo $(ls | grep -E '_[1][0-2].msb') | sed -e 's/.msb[^ ]* /", "/g'
@@ -140,7 +143,6 @@ namespace RandomizerCommon
             "m60_47_36_10", "m60_47_37_10", "m60_47_38_10", "m60_47_39_10",
             "m60_47_52_10", "m60_47_53_10", "m60_47_54_10", "m60_47_55_10",
         };
-        private static readonly Regex MapRe = new Regex(@"m\d\d_\d\d_\d\d_\d\d");
         private Dictionary<string, string> MapDupes { get; set; }
 
         public Dictionary<string, string> Locations;
@@ -165,10 +167,10 @@ namespace RandomizerCommon
         public ParamDictionary Params = new ParamDictionary();
         public Dictionary<string, IMsb> Maps = new Dictionary<string, IMsb>();
         public Dictionary<string, EMEVD> Emevds = new Dictionary<string, EMEVD>();
-        public FMGDictionary ItemFMGs = new FMGDictionary();
-        public FMGDictionary MenuFMGs = new FMGDictionary();
-        public Dictionary<string, FMGDictionary> OtherItemFMGs = new Dictionary<string, FMGDictionary>();
-        public Dictionary<string, FMGDictionary> OtherMenuFMGs = new Dictionary<string, FMGDictionary>();
+        public FMGDictionary ItemFMGs => AllItemFMGs["engus"];
+        public FMGDictionary MenuFMGs => AllMenuFMGs["engus"];
+        public Dictionary<string, FMGDictionary> AllItemFMGs = new Dictionary<string, FMGDictionary>();
+        public Dictionary<string, FMGDictionary> AllMenuFMGs = new Dictionary<string, FMGDictionary>();
         public Dictionary<string, Dictionary<string, ESD>> Talk = new Dictionary<string, Dictionary<string, ESD>>();
 
         // Names
@@ -188,7 +190,7 @@ namespace RandomizerCommon
             Editor = new GameEditor(game);
             Editor.Spec.GameDir = $@"{dir}";
             Editor.Spec.NameDir = $@"{dir}\Names";
-            if (EldenRing)
+            if (EldenRing || AC6)
             {
                 Editor.Spec.DefDir = $@"{dir}\Defs";
                 // Editor.Spec.DefDir = $@"..\ParamdexNew\ER\Defs";
@@ -206,10 +208,17 @@ namespace RandomizerCommon
         public Dictionary<string, MSBS> SekiroMaps => Maps.ToDictionary(e => e.Key, e => e.Value as MSBS);
         public Dictionary<string, MSBE> EldenMaps =>
             Maps.Where(e => e.Value is MSBE).ToDictionary(e => e.Key, e => e.Value as MSBE);
+#if DEV
+        public Dictionary<string, MSBAC6> AC6Maps => Maps.ToDictionary(e => e.Key, e => e.Value as MSBAC6);
+#endif
 
-        public void Load(string modDir = null)
+        public void Load(MergedMods mods)
         {
-            ModDir = modDir;
+            foreach (string dir in mods.Dirs)
+            {
+                Console.WriteLine($"Checking other mod directory {dir}");
+            }
+            Mods = mods;
             LoadNames();
             LoadParams();
             LoadMapData();
@@ -246,20 +255,24 @@ namespace RandomizerCommon
         public PARAM.Row Item(ItemKey key)
         {
             if (!Sekiro) key = NormalizeWeapon(key);
-            if (key.Type == ItemType.EQUIP) return null;
-            return Params[itemParams[(int) key.Type]][key.ID];
+            return Params[itemParams[(int)key.Type]][key.ID];
         }
 
         public PARAM.Row AddRow(string name, int id, int oldId = -1)
         {
             PARAM param = Params[name];
-            if (param[id] != null)
+            PARAM.Row row = param[id];
+            if (row == null)
             {
-                // This can get quadratic? But eh good to check
+                row = new PARAM.Row(id, "", param.AppliedParamdef);
+                param.Rows.Add(row);
+            }
+            else if (oldId < 0)
+            {
+                // This can get quadratic, but good to check
+                // If the contents are getting overwritten anyway, probably fine not to throw on this.
                 throw new Exception($"Trying to add id {id} in {name} but already exists");
             }
-            PARAM.Row row = new PARAM.Row(id, "", param.AppliedParamdef);
-            param.Rows.Add(row);
             if (oldId >= 0)
             {
                 GameEditor.CopyRow(param[oldId], row);
@@ -267,7 +280,7 @@ namespace RandomizerCommon
             return row;
         }
 
-        private static ItemKey NormalizeWeapon(ItemKey key)
+        public ItemKey NormalizeWeapon(ItemKey key)
         {
             // Maybe can put this logic in ItemKey itself
             if (key.Type == ItemType.WEAPON && key.ID % 100 != 0)
@@ -277,9 +290,26 @@ namespace RandomizerCommon
             return key;
         }
 
+        public ItemKey FromCustomWeapon(ItemKey key)
+        {
+            if (key.Type == ItemType.CUSTOM)
+            {
+                PARAM.Row wepRow = Item(key);
+                if (wepRow != null)
+                {
+                    return new ItemKey(ItemType.WEAPON, (int)wepRow["baseWepId"].Value + (byte)wepRow["reinforceLv"].Value);
+                }
+            }
+            return key;
+        }
+
         public string Name(ItemKey key)
         {
             string suffix = "";
+            if (key.Type == ItemType.CUSTOM)
+            {
+                key = FromCustomWeapon(key);
+            }
             if (key.Type == ItemType.WEAPON && key.ID % 100 != 0)
             {
                 suffix = $" +{key.ID % 100}";
@@ -316,10 +346,6 @@ namespace RandomizerCommon
             {
                 return name;
             }
-            if (key.Type == ItemType.EQUIP)
-            {
-                return "NPC Equipment";
-            }
             string quantityStr = quantity <= 1 ? "" : $" {quantity}x";
             return Name(key) + quantityStr;
         }
@@ -348,7 +374,7 @@ namespace RandomizerCommon
 
         public string CharacterName(int id)
         {
-            if (EldenRing)
+            if (EldenRing || AC6)
             {
                 return characterSplits.TryGetValue(id, out string n) ? n : null;
             }
@@ -397,6 +423,18 @@ namespace RandomizerCommon
             return true;
         }
 
+        public string AC6NpcName(int accountId)
+        {
+            // Skip AccountParam and assume the name for the time being
+            FMG fmg = ItemFMGs["NPC名"];
+            string type = fmg[accountId];
+            string name = fmg[accountId + 1];
+            if (name == "<?null?>") name = null;
+            if (string.IsNullOrEmpty(name)) return type;
+            if (string.IsNullOrEmpty(type)) return name;
+            return $"{type} / {name}";
+        }
+
         public string EntityName(EntityId entity, bool detail = false, bool mapName = false)
         {
             string mapSuffix = mapName && !string.IsNullOrEmpty(entity.MapName)
@@ -435,10 +473,10 @@ namespace RandomizerCommon
             }
             if (entity.NameID > 0)
             {
-                string fmgName = ItemFMGs["NpcName"][entity.NameID];
+                string fmgName = AC6 ? AC6NpcName(entity.NameID) : ItemFMGs[EldenRing ? "NpcName" : "NPC名"][entity.NameID];
                 if (!string.IsNullOrEmpty(fmgName))
                 {
-                    details.Add($"<{fmgName}>");
+                    details.Add($"[{fmgName}]");
                 }
             }
             return (entity.Type == null ? "" : $"{entity.Type} ")
@@ -477,7 +515,7 @@ namespace RandomizerCommon
             {
                 // Mainly academy and redmane have confirmed issues
                 "m10_00_00_00", "m12_05_00_00", "m14_00_00_00", "m15_00_00_00", "m16_00_00_00",
-                "m18_00_00_00", "m35_00_00_00",
+                "m18_00_00_00", "m35_00_00_00", "m39_20_00_00",
                 "m60_39_54_00", // Shaded Castle
                 "m60_43_31_00", // Morne
                 "m60_51_36_00", // Redmane
@@ -528,8 +566,9 @@ namespace RandomizerCommon
             WriteModDependentBnd(outPath, $@"{Dir}\Base\gameparam.parambnd.dcx", $@"param\gameparam\gameparam.parambnd.dcx", Params.Inner);
             WriteModDependentBnd(outPath, $@"{Dir}\Base\item.msgbnd.dcx", $@"msg\engus\item.msgbnd.dcx", ItemFMGs.FMGs);
             WriteModDependentBnd(outPath, $@"{Dir}\Base\menu.msgbnd.dcx", $@"msg\engus\menu.msgbnd.dcx", MenuFMGs.FMGs);
-            foreach (KeyValuePair<string, FMGDictionary> entry in OtherItemFMGs)
+            foreach (KeyValuePair<string, FMGDictionary> entry in AllItemFMGs)
             {
+                if (entry.Key == "engus") continue;
                 WriteModDependentBnd(outPath, $@"{Dir}\Base\msg\{entry.Key}\item.msgbnd.dcx", $@"msg\{entry.Key}\item.msgbnd.dcx", entry.Value.FMGs);
             }
 
@@ -610,10 +649,9 @@ namespace RandomizerCommon
             {
                 string basePath = $@"{Dir}\Vanilla\regulation.bin";
                 string path = $@"{outPath}\regulation.bin";
-                if (ModDir != null)
+                if (Mods.Resolve("regulation.bin", out string modPath))
                 {
-                    string modPath = $@"{ModDir}\regulation.bin";
-                    if (File.Exists(modPath)) basePath = modPath;
+                    basePath = modPath;
                 }
                 AddModFile(path);
                 if (uxm) Backup(path);
@@ -705,10 +743,9 @@ namespace RandomizerCommon
                 if (WriteFMGs)
                 {
                     string basePath = $@"{Dir}\Vanilla\msg\{lang}\{type}.msgbnd.dcx";
-                    if (ModDir != null)
+                    if (Mods.Resolve($@"msg\{lang}\{type}.msgbnd.dcx", out string modPath))
                     {
-                        string modPath = $@"{ModDir}\msg\{lang}\{type}.msgbnd.dcx";
-                        if (File.Exists(modPath)) basePath = modPath;
+                        basePath = modPath;
                     }
                     Editor.OverrideBndRel(basePath, path, fmgs.FMGs, f => f.Write(), dcx: overrideDcx);
                 }
@@ -717,14 +754,11 @@ namespace RandomizerCommon
             // Text
             // Early on (as modengine can't reload it), but after events
             {
-                // Just menu for now, and no override for now. Also other languages
-                updateFmg("engus", "menu", MenuFMGs);
-                foreach (KeyValuePair<string, FMGDictionary> entry in OtherMenuFMGs)
+                foreach (KeyValuePair<string, FMGDictionary> entry in AllMenuFMGs)
                 {
                     updateFmg(entry.Key, "menu", entry.Value);
                 }
-                updateFmg("engus", "item", ItemFMGs);
-                foreach (KeyValuePair<string, FMGDictionary> entry in OtherItemFMGs)
+                foreach (KeyValuePair<string, FMGDictionary> entry in AllItemFMGs)
                 {
                     updateFmg(entry.Key, "item", entry.Value);
                 }
@@ -738,10 +772,9 @@ namespace RandomizerCommon
                 AddBackupOrRestoreFile(path, write, uxm);
                 if (!write) continue;
                 string basePath = $@"{Dir}\Vanilla\{entry.Key}.talkesdbnd.dcx";
-                if (ModDir != null)
+                if (Mods.Resolve($@"script\talk\{entry.Key}.talkesdbnd.dcx", out string modPath))
                 {
-                    string modPath = $@"{ModDir}\script\talk\{entry.Key}.talkesdbnd.dcx";
-                    if (File.Exists(modPath)) basePath = modPath;
+                    basePath = modPath;
                 }
                 Editor.OverrideBndRel(basePath, path, entry.Value, f => f.Write(), dcx: overrideDcx);
             }
@@ -830,12 +863,13 @@ namespace RandomizerCommon
             // This is complicated enough (and probably also a bit wrong) such that WriteModDependentBnd is too simple.
             {
                 string basePath = $@"{Dir}\Base\Data0.bdt";
-                if (ModDir != null)
+                if (Mods.Resolve($@"param\gameparam\gameparam.parambnd.dcx", out string modPath))
                 {
-                    string modPath1 = $@"{ModDir}\param\gameparam\gameparam.parambnd.dcx";
-                    string modPath2 = $@"{ModDir}\Data0.bdt";
-                    if (File.Exists(modPath1)) basePath = modPath1;
-                    else if (File.Exists(modPath2)) basePath = modPath2;
+                    basePath = modPath;
+                }
+                else if (Mods.Resolve($@"Data0.bdt", out modPath))
+                {
+                    basePath = modPath;
                 }
                 string path = encrypted ? $@"{outPath}\Data0.bdt" : $@"{outPath}\param\gameparam\gameparam.parambnd.dcx";
                 AddModFile(path);
@@ -843,8 +877,7 @@ namespace RandomizerCommon
             }
 
             // Messages
-            WriteModDependentBnd(outPath, $@"{Dir}\Base\msg\engus\item_dlc2.msgbnd.dcx", $@"msg\engus\item_dlc2.msgbnd.dcx", ItemFMGs.FMGs);
-            foreach (KeyValuePair<string, FMGDictionary> entry in OtherItemFMGs)
+            foreach (KeyValuePair<string, FMGDictionary> entry in AllItemFMGs)
             {
                 WriteModDependentBnd(outPath, $@"{Dir}\Base\msg\{entry.Key}\item_dlc2.msgbnd.dcx", $@"msg\{entry.Key}\item_dlc2.msgbnd.dcx", entry.Value.FMGs);
             }
@@ -888,10 +921,9 @@ namespace RandomizerCommon
         void WriteModDependentBnd<T>(string outPath, string basePath, string relOutputPath, Dictionary<string, T> diffData)
             where T : SoulsFile<T>, new()
         {
-            if (ModDir != null)
+            if (Mods.Resolve(relOutputPath, out string modPath))
             {
-                string modPath = $@"{ModDir}\{relOutputPath}";
-                if (File.Exists(modPath)) basePath = modPath;
+                basePath = modPath;
             }
             string path = $@"{outPath}\{relOutputPath}";
             AddModFile(path);
@@ -902,11 +934,13 @@ namespace RandomizerCommon
         {
             Console.WriteLine("Processing extra mod files...");
             bool work = false;
-            if (ModDir != null)
+            // If using this feature, assume a single mod dir for now
+            string modDir = Mods.Dirs.FirstOrDefault();
+            if (modDir != null)
             {
-                foreach (string gameFile in MiscSetup.GetGameFiles(ModDir, Sekiro))
+                foreach (string gameFile in MiscSetup.GetGameFiles(modDir, Sekiro))
                 {
-                    string source = FullName($@"{ModDir}\{gameFile}");
+                    string source = FullName($@"{modDir}\{gameFile}");
                     string target = FullName($@"{outPath}\{gameFile}");
                     if (writtenFiles.Contains(target)) continue;
                     Console.WriteLine($"Copying {source}");
@@ -945,7 +979,7 @@ namespace RandomizerCommon
             {
                 characterSplits[0] = "UNUSED";
             }
-            if (EldenRing)
+            if (EldenRing || AC6)
             {
                 LocationNames = Editor.LoadNames("MapName", n => n, false);
                 // For now, don't have special location names, but we can maybe do this for legacy dungeons or have prefixes
@@ -979,7 +1013,7 @@ namespace RandomizerCommon
 
         private void LoadParams()
         {
-            bool lazy = true;
+            bool lazy = !DS3;
             Dictionary<string, PARAM> dict;
             string path;
             if (!lazy)
@@ -990,17 +1024,15 @@ namespace RandomizerCommon
             if (DS3)
             {
                 path = $@"{Dir}\Base\Data0.bdt";
-                string modPath1 = $@"{ModDir}\param\gameparam\gameparam.parambnd.dcx";
-                string modPath2 = $@"{ModDir}\Data0.bdt";
-                if (ModDir != null && File.Exists(modPath1))
+                if (Mods.Resolve(@"param\gameparam\gameparam.parambnd.dcx", out string modPath))
                 {
-                    Console.WriteLine($"Using modded file {modPath1}");
-                    path = modPath1;
+                    Console.WriteLine($"Using modded file {modPath}");
+                    path = modPath;
                 }
-                else if (ModDir != null && File.Exists(modPath2))
+                else if (Mods.Resolve("Data0.bdt", out modPath))
                 {
-                    Console.WriteLine($"Using modded file {modPath2}");
-                    path = modPath2;
+                    Console.WriteLine($"Using modded file {modPath}");
+                    path = modPath;
                 }
                 if (!File.Exists(path))
                 {
@@ -1011,8 +1043,7 @@ namespace RandomizerCommon
             else if (Sekiro)
             {
                 path = $@"{Dir}\Base\gameparam.parambnd.dcx";
-                string modPath = $@"{ModDir}\param\gameparam\gameparam.parambnd.dcx";
-                if (ModDir != null && File.Exists(modPath))
+                if (Mods.Resolve(@"param\gameparam\gameparam.parambnd.dcx", out string modPath))
                 {
                     Console.WriteLine($"Using modded file {modPath}");
                     path = modPath;
@@ -1023,18 +1054,17 @@ namespace RandomizerCommon
                 }
                 dict = Editor.LoadParams(path, layouts: Layouts, allowError: false);
             }
-            else if (EldenRing)
+            else if (EldenRing || AC6)
             {
                 path = $@"{Dir}\Vanilla\regulation.bin";
-                string modPath = $@"{ModDir}\regulation.bin";
-                if (ModDir != null && File.Exists(modPath))
+                if (Mods.Resolve(@"regulation.bin", out string modPath))
                 {
                     Console.WriteLine($"Using modded file {modPath}");
                     path = modPath;
                 }
                 if (!File.Exists(path))
                 {
-                    throw new Exception($"Missing param file: {path}");
+                    throw new Exception($"Missing param file {path} - make sure to completely extract *all* files from the randomizer zip");
                 }
                 dict = Editor.LoadParams(path, defs: Defs);
             }
@@ -1067,6 +1097,12 @@ namespace RandomizerCommon
                 List<string> missing = Locations.Keys.Except(Maps.Keys).ToList();
                 if (missing.Count != 0) throw new Exception($@"Missing msbs in dist\Base: {string.Join(", ", missing)}");
             }
+            else if (AC6)
+            {
+#if DEV
+                Maps = Editor.Load("Vanilla", path => (IMsb)MSBAC6.Read(path), "*.msb.dcx");
+#endif
+            }
             else
             {
                 Maps = Editor.Load("Vanilla", path => (IMsb)MSBE.Read(path), "*.msb.dcx");
@@ -1084,11 +1120,13 @@ namespace RandomizerCommon
             }
         }
 
+        private bool UseVanilla => EldenRing || AC6;
+
         private void LoadTalk()
         {
-            if (!DS3)
+            if (!DS3 && !AC6)
             {
-                Talk = Editor.LoadBnds(EldenRing ? "Vanilla" : "Base", (data, path) => ESD.Read(data), "*.talkesdbnd.dcx");
+                Talk = Editor.LoadBnds(UseVanilla ? "Vanilla" : "Base", (data, path) => ESD.Read(data), "*.talkesdbnd.dcx");
                 MaybeOverrideFromModDir(Talk, name => $@"script\talk\{name}.talkesdbnd.dcx", path => Editor.LoadBnd(path, (data, path2) => ESD.Read(data)));
                 if (Sekiro)
                 {
@@ -1100,9 +1138,9 @@ namespace RandomizerCommon
 
         private void LoadScripts()
         {
-            Emevds = Editor.Load(EldenRing ? "Vanilla" : "Base", path => EMEVD.Read(path), "*.emevd.dcx");
+            Emevds = Editor.Load(UseVanilla ? "Vanilla" : "Base", path => EMEVD.Read(path), "*.emevd.dcx");
             MaybeOverrideFromModDir(Emevds, name => $@"event\{name}.emevd.dcx", path => EMEVD.Read(path));
-            if (!EldenRing)
+            if (!EldenRing && !AC6)
             {
                 List<string> missing = Locations.Keys.Concat(new[] { "common", "common_func" }).Except(Emevds.Keys).ToList();
                 if (missing.Count != 0) throw new Exception($@"Missing emevds in dist\Base: {string.Join(", ", missing)}");
@@ -1138,41 +1176,39 @@ namespace RandomizerCommon
             }
             if (Sekiro)
             {
-                ItemFMGs = read($@"{Dir}\Base\item.msgbnd.dcx");
-                ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item.msgbnd.dcx", read);
-                MenuFMGs = read($@"{Dir}\Base\menu.msgbnd.dcx");
-                MenuFMGs = MaybeOverrideFromModDir(MenuFMGs, @"msg\engus\menu.msgbnd.dcx", read);
+                // Sekiro has a different location for English fmgs
+                FMGDictionary itemFmgs = read($@"{Dir}\Base\item.msgbnd.dcx");
+                itemFmgs = MaybeOverrideFromModDir(itemFmgs, @"msg\engus\item.msgbnd.dcx", read);
+                AllItemFMGs["engus"] = itemFmgs;
+                FMGDictionary menuFmgs = read($@"{Dir}\Base\menu.msgbnd.dcx");
+                menuFmgs = MaybeOverrideFromModDir(menuFmgs, @"msg\engus\menu.msgbnd.dcx", read);
+                AllMenuFMGs["engus"] = menuFmgs;
                 foreach (string lang in MiscSetup.Langs.Keys)
                 {
                     if (lang == "engus") continue;
-                    OtherItemFMGs[lang] = read($@"{Dir}\Base\msg\{lang}\item.msgbnd.dcx");
-                    OtherItemFMGs[lang] = MaybeOverrideFromModDir(OtherItemFMGs[lang], $@"msg\{lang}\item.msgbnd.dcx", read);
+                    AllItemFMGs[lang] = read($@"{Dir}\Base\msg\{lang}\item.msgbnd.dcx");
+                    AllItemFMGs[lang] = MaybeOverrideFromModDir(AllItemFMGs[lang], $@"msg\{lang}\item.msgbnd.dcx", read);
                 }
             }
             else if (DS3)
             {
-                ItemFMGs = read($@"{Dir}\Base\msg\engus\item_dlc2.msgbnd.dcx");
-                ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item_dlc2.msgbnd.dcx", read);
                 foreach (string lang in MiscSetup.Langs.Keys)
                 {
-                    if (lang == "engus" || MiscSetup.NoDS3Langs.Contains(lang)) continue;
-                    OtherItemFMGs[lang] = read($@"{Dir}\Base\msg\{lang}\item_dlc2.msgbnd.dcx");
-                    OtherItemFMGs[lang] = MaybeOverrideFromModDir(OtherItemFMGs[lang], $@"msg\{lang}\item_dlc2.msgbnd.dcx", read);
+                    if (MiscSetup.NoDS3Langs.Contains(lang)) continue;
+                    AllItemFMGs[lang] = read($@"{Dir}\Base\msg\{lang}\item_dlc2.msgbnd.dcx");
+                    AllItemFMGs[lang] = MaybeOverrideFromModDir(AllItemFMGs[lang], $@"msg\{lang}\item_dlc2.msgbnd.dcx", read);
                 }
             }
-            else if (EldenRing)
+            else if (EldenRing || AC6)
             {
-                ItemFMGs = read($@"{Dir}\Vanilla\msg\engus\item.msgbnd.dcx");
-                ItemFMGs = MaybeOverrideFromModDir(ItemFMGs, @"msg\engus\item.msgbnd.dcx", read);
-                MenuFMGs = read($@"{Dir}\Vanilla\msg\engus\menu.msgbnd.dcx");
-                MenuFMGs = MaybeOverrideFromModDir(MenuFMGs, @"msg\engus\menu.msgbnd.dcx", read);
                 foreach (string lang in MiscSetup.Langs.Keys)
                 {
-                    if (lang == "engus") continue;
-                    OtherMenuFMGs[lang] = read($@"{Dir}\Vanilla\msg\{lang}\menu.msgbnd.dcx");
-                    OtherMenuFMGs[lang] = MaybeOverrideFromModDir(OtherMenuFMGs[lang], $@"msg\{lang}\menu.msgbnd.dcx", read);
-                    OtherItemFMGs[lang] = read($@"{Dir}\Vanilla\msg\{lang}\item.msgbnd.dcx");
-                    OtherItemFMGs[lang] = MaybeOverrideFromModDir(OtherItemFMGs[lang], $@"msg\{lang}\item.msgbnd.dcx", read);
+                    // TODO: Multilang if needed
+                    if (AC6 && lang != "engus") continue;
+                    AllMenuFMGs[lang] = read($@"{Dir}\Vanilla\msg\{lang}\menu.msgbnd.dcx");
+                    AllMenuFMGs[lang] = MaybeOverrideFromModDir(AllMenuFMGs[lang], $@"msg\{lang}\menu.msgbnd.dcx", read);
+                    AllItemFMGs[lang] = read($@"{Dir}\Vanilla\msg\{lang}\item.msgbnd.dcx");
+                    AllItemFMGs[lang] = MaybeOverrideFromModDir(AllItemFMGs[lang], $@"msg\{lang}\item.msgbnd.dcx", read);
                 }
             }
         }
@@ -1180,9 +1216,7 @@ namespace RandomizerCommon
         // TODO: Instead of doing this, make the paths themselves more editable?
         private T MaybeOverrideFromModDir<T>(T original, string path, Func<string, T> parser)
         {
-            if (ModDir == null) return original;
-            string modPath = $@"{ModDir}\{path}";
-            if (File.Exists(modPath))
+            if (Mods.Resolve(path, out string modPath))
             {
                 Console.WriteLine($"Using modded file {modPath}");
                 return parser(modPath);
@@ -1192,7 +1226,7 @@ namespace RandomizerCommon
 
         private void MaybeOverrideFromModDir<T>(Dictionary<string, T> files, Func<string, string> relpath, Func<string, T> parser)
         {
-            if (ModDir == null) return;
+            if (Mods.Count == 0) return;
             foreach (string key in files.Keys.ToList())
             {
                 files[key] = MaybeOverrideFromModDir(files[key], relpath(key), parser);

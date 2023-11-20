@@ -1,7 +1,10 @@
 ﻿using SoulsFormats;
+using SoulsIds;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.Util;
 
@@ -9,15 +12,6 @@ namespace RandomizerCommon
 {
     public class CharacterWriter
     {
-        private GameData game;
-        private LocationData data;
-
-        public CharacterWriter(GameData game, LocationData data)
-        {
-            this.game = game;
-            this.data = data;
-        }
-
         private class GameCharacters
         {
             public int StartId { get; set; }
@@ -30,7 +24,6 @@ namespace RandomizerCommon
             public List<string> ArmorTypes { get; set; }
             public List<string> ArmorSlots { get; set; }
             public List<EquipCategory> MagicTypes { get; set; }
-
         }
 
         public enum EquipCategory
@@ -43,10 +36,22 @@ namespace RandomizerCommon
             HEAD, BODY, ARM, LEG
         }
 
+        private static readonly List<EquipCategory> DescriptionPriority = new List<EquipCategory>
+        {
+            // Increasing order
+            EquipCategory.ARROW, EquipCategory.BOLT,
+            EquipCategory.SHIELD,
+            EquipCategory.BOW,
+            EquipCategory.CATALYST, EquipCategory.TALISMAN, EquipCategory.FLAME,
+            EquipCategory.SORCERY, EquipCategory.MIRACLE, EquipCategory.PYROMANCY,
+            EquipCategory.WEAPON,
+        };
+
         public class CharacterClass
         {
             public string Name { get; set; }
             public Dictionary<string, EquipCategory> Start { get; set; }
+            public int Desc { get; set; }
         }
 
         private class ArmorSet
@@ -188,6 +193,7 @@ namespace RandomizerCommon
                     { "equip_Subwep_Right", EquipCategory.WEAPON },
                     { "equip_Wep_Left", EquipCategory.SHIELD },
                 },
+                Desc = 297130,
             },
             new CharacterClass
             {
@@ -197,6 +203,7 @@ namespace RandomizerCommon
                     { "equip_Wep_Right", EquipCategory.DOUBLE_WEAPON },
                     { "equip_Subwep_Left", EquipCategory.SHIELD },
                 },
+                Desc = 297131,
             },
             new CharacterClass
             {
@@ -206,6 +213,7 @@ namespace RandomizerCommon
                     { "equip_Wep_Right", EquipCategory.WEAPON },
                     { "equip_Wep_Left", EquipCategory.SHIELD },
                 },
+                Desc = 297132,
             },
             new CharacterClass
             {
@@ -217,6 +225,7 @@ namespace RandomizerCommon
                     { "equip_Subwep_Left", EquipCategory.BOW },
                     { "equip_Arrow", EquipCategory.ARROW },
                 },
+                Desc = 297133,
             },
             new CharacterClass
             {
@@ -229,6 +238,7 @@ namespace RandomizerCommon
                     { "equip_Spell_01", EquipCategory.SORCERY },
                     { "equip_Spell_02", EquipCategory.SORCERY },
                 },
+                Desc = 297134,
             },
             new CharacterClass
             {
@@ -241,6 +251,7 @@ namespace RandomizerCommon
                     { "equip_Spell_01", EquipCategory.MIRACLE },
                     { "equip_Spell_02", EquipCategory.MIRACLE },
                 },
+                Desc = 297135,
             },
             new CharacterClass
             {
@@ -253,6 +264,7 @@ namespace RandomizerCommon
                     { "equip_Spell_01", EquipCategory.MIRACLE },
                     { "equip_Spell_02", EquipCategory.MIRACLE },
                 },
+                Desc = 297138,
             },
             new CharacterClass
             {
@@ -265,6 +277,7 @@ namespace RandomizerCommon
                     { "equip_Arrow", EquipCategory.ARROW },
                     { "equip_SubArrow", EquipCategory.ARROW },
                 },
+                Desc = 297136,
             },
             new CharacterClass
             {
@@ -276,6 +289,7 @@ namespace RandomizerCommon
                     { "equip_Subwep_Left", EquipCategory.SHIELD },
                     { "equip_Spell_01", EquipCategory.SORCERY },
                 },
+                Desc = 297137,
             },
             new CharacterClass
             {
@@ -284,18 +298,23 @@ namespace RandomizerCommon
                 {
                     { "equip_Wep_Right", EquipCategory.WEAPON },
                 },
+                Desc = 297139,
             },
         };
 
         private readonly List<EquipCategory> ArmorCats = new List<EquipCategory> { EquipCategory.HEAD, EquipCategory.BODY, EquipCategory.ARM, EquipCategory.LEG };
 
-        public void Write(Random random, RandomizerOptions opt)
+        private GameData game;
+        private LocationData data;
+        private GameCharacters g;
+
+        public CharacterWriter(GameData game, LocationData data)
         {
-            if (opt["nooutfits"] && opt["nostarting"])
-            {
-                return;
-            }
-            GameCharacters g = new GameCharacters
+            this.game = game;
+            this.data = data;
+
+            // Fixed initialization
+            g = new GameCharacters
             {
                 StartId = 3000,
                 WeaponSlots = new List<string> { "equip_Wep_Right", "equip_Subwep_Right", "equip_Wep_Left", "equip_Subwep_Left" },
@@ -333,6 +352,14 @@ namespace RandomizerCommon
                 };
                 g.MagicTypes = new List<EquipCategory> { EquipCategory.SORCERY, EquipCategory.MIRACLE };
             }
+        }
+
+        public void Write(Random random, RandomizerOptions opt)
+        {
+            if (opt["nooutfits"] && opt["nostarting"])
+            {
+                return;
+            }
 
             Dictionary<EquipCategory, List<ItemKey>> items = new Dictionary<EquipCategory, List<ItemKey>>();
             Dictionary<ItemKey, float> weights = new Dictionary<ItemKey, float>();
@@ -341,8 +368,11 @@ namespace RandomizerCommon
             PARAM magics = game.Param("Magic");
             bool twoHand = !opt["onehand"];
             SortedDictionary<int, List<ItemKey>> cats = new SortedDictionary<int, List<ItemKey>>();
-            foreach (ItemKey key in data.Data.Keys)
+            foreach (ItemKey dataKey in data.Data.Keys)
             {
+                ItemKey key = game.NormalizeWeapon(game.FromCustomWeapon(dataKey));
+                string name = game.Name(key);
+                if (opt["nerfsh"] && name == "Serpent-Hunter") continue;
                 if (key.Type == ItemType.WEAPON)
                 {
                     PARAM.Row row = game.Item(key);
@@ -416,7 +446,18 @@ namespace RandomizerCommon
                     {
                         if ((byte)row[g.ArmorTypes[i]].Value == 1)
                         {
-                            AddMulti(items, ArmorCats[i], key);
+                            EquipCategory cat = ArmorCats[i];
+                            // These are marked as headEquip for some reason??
+                            if (name == "Deathbed Dress" || name == "Fia's Robe")
+                            {
+                                cat = EquipCategory.BODY;
+                            }
+                            else if (name == "Rotten Duelist Greaves")
+                            {
+                                cat = EquipCategory.LEG;
+                            }
+                            // if (key.ID % 1000 != i * 100) Console.WriteLine($"Mismatched armor {game.Name(key)} has {g.ArmorTypes[i]}=1");
+                            AddMulti(items, cat, key);
                             weights[key] = (float)row["weight"].Value;
                             break;
                         }
@@ -426,7 +467,8 @@ namespace RandomizerCommon
                 {
                     PARAM.Row magic = magics[key.ID];
                     // Exclude Spook and Tears of Denial as they can be a key item, useful though they are
-                    if (magic != null && key.ID != 1354000 && key.ID != 3520000)
+                    // Also, no Stonesword Key (Briars of Sin)
+                    if (magic != null && key.ID != 1354000 && key.ID != 3520000 && key.ID != 8000)
                     {
                         int magicCat = (byte)magic["ezStateBehaviorType"].Value;
                         AddMulti(items, g.MagicTypes[magicCat], key);
@@ -443,7 +485,8 @@ namespace RandomizerCommon
                 }
             }
             // foreach (var v in cats) Console.WriteLine($"{v.Key}: {string.Join(", ", v.Value.Select(k => game.Name(k)))}");
-            // Generate some armor sets. One downside of this approach is that each piece is represented only once - but it is just one shuffle per category, and tends to result in a similar distribution to normal.
+            // Generate some armor sets. One downside of this approach is that each piece is represented only once -
+            // but it is just one shuffle per category, and tends to result in a similar distribution to normal.
             List<List<ItemKey>> weightedArmors = new List<List<ItemKey>>();
             for (int i = 0; i < 4; i++)
             {
@@ -469,7 +512,7 @@ namespace RandomizerCommon
             bool printChars = true;
 #if DEBUG
             allowCheat = true;
-            printChars = false;
+            printChars = opt["printchars"];
 #endif
             bool cheat = allowCheat && opt["cheat"];
 
@@ -547,17 +590,13 @@ namespace RandomizerCommon
                     Arc = getStat("baseLuc"),
                     Att = attAmt,
                 };
-                if (opt["nohand"])
-                {
-                    // To ignore requirements: simulate being at very high stats
-                    chReqs.Str = chReqs.Dex = chReqs.Int = chReqs.Fai = chReqs.Arc = 90;
-                }
                 StatReq dynamicReqs = chReqs;
                 double fudgeFactor = 1.5;
                 float weaponWeight = 0f;
                 int attSlots = 0;
                 bool crossbowSelected = false;
                 if (printChars) Console.WriteLine($"Randomizing starting equipment for {chClass.Name}");
+                Dictionary<ItemKey, (EquipCategory, int)> selectedItems = new Dictionary<ItemKey, (EquipCategory, int)>();
                 foreach (KeyValuePair<string, EquipCategory> entry in g.BaseStart.Concat(chClass.Start))
                 {
                     EquipCategory originalCat = entry.Value;
@@ -570,11 +609,12 @@ namespace RandomizerCommon
                     // This crossbow/bow logic relies on iteration order - try to make the order fixed...
                     if ((cat == EquipCategory.ARROW && crossbowSelected) || (cat == EquipCategory.BOLT && !crossbowSelected)) continue;
                     // Console.WriteLine(originalCat);
-                    Dictionary<ItemKey, int> statDiffs = items[cat].ToDictionary(item => item, item => requirements[item].Eligible(dynamicReqs));
+                    // Instead of using Distinct, could also make it a SortedSet. It's necessary because of normalization.
+                    Dictionary<ItemKey, int> statDiffs = items[cat].Distinct().ToDictionary(item => item, item => requirements[item].Eligible(dynamicReqs));
                     List<ItemKey> candidates = items[cat];
                     if (cat == EquipCategory.SHIELD || chClass.Name == "Deprived" || chClass.Name == "Wretch")
                     {
-                        candidates = candidates.Where(item => statDiffs[item] >= 0).ToList();
+                        candidates = candidates.Where(item => opt["nohand"] || statDiffs[item] >= 0).ToList();
                     }
                     if (cat == EquipCategory.SORCERY || cat == EquipCategory.MIRACLE || cat == EquipCategory.PYROMANCY)
                     {
@@ -588,8 +628,10 @@ namespace RandomizerCommon
                         candidates = candidates.Where(item => attSlots + requirements[item].Att <= chReqs.Att).ToList();
                     }
                     // Select weapon and adjust stats if necessary
+                    // I forgot what this does
                     List<ItemKey> weightKeys = WeightedShuffle(random, candidates, item =>
                     {
+                        if (opt["nohand"]) return 1;
                         int diff = statDiffs[item];
                         if (diff >= 4) return (float)Math.Pow(2, -4 * (Math.Min(diff, 20) / 20.0));
                         if (diff >= 0) return 2;
@@ -597,7 +639,7 @@ namespace RandomizerCommon
                     });
                     ItemKey selected = weightKeys[0];
                     items[cat].Remove(selected);
-                    if (statDiffs[selected] < 0)
+                    if (statDiffs[selected] < 0 && !opt["nohand"])
                     {
                         dynamicReqs.Adjust(requirements[selected]);
                         fudgeFactor *= -statDiffs[selected];
@@ -615,8 +657,9 @@ namespace RandomizerCommon
                     }
                     attSlots += requirements[selected].Att;
                     if (printChars) Console.WriteLine($"  {entry.Key} is now {game.Name(selected)}, meets requirements by {statDiffs[selected]}");
+                    selectedItems[selected] = (cat, opt["nohand"] ? statDiffs[selected] : 0);
                 }
-                // In Elden Ring, also change display characters
+                // In Elden Ring, also change display characters, and add text descriptions
                 if (game.EldenRing)
                 {
                     for (int j = 0; j < 2; j++)
@@ -627,6 +670,39 @@ namespace RandomizerCommon
                             .Concat(g.Stats.Select(s => $"base{s}")))
                         {
                             row2[field].Value = row[field].Value;
+                        }
+                    }
+                    List<(ItemKey, int)> showItems = selectedItems
+                        .OrderByDescending(e => DescriptionPriority.IndexOf(e.Value.Item1))
+                        .Select(e => (e.Key, e.Value.Item2))
+                        .ToList();
+                    foreach ((string lang, FMGDictionary itemFmgs) in game.AllItemFMGs)
+                    {
+                        bool useSpaces = !lang.StartsWith("jpn") && !lang.StartsWith("zho");
+                        FMGDictionary menuFmgs = game.AllMenuFMGs[lang];
+                        List<string> itemStrs = new List<string>();
+                        foreach ((ItemKey item, int diff) in showItems)
+                        {
+                            // Currently, the only two starting weapon types
+                            string fmgName = item.Type == ItemType.WEAPON ? "WeaponName" : "GoodsName";
+                            string itemName = itemFmgs[fmgName][item.ID];
+                            if (!string.IsNullOrWhiteSpace(itemName))
+                            {
+                                if (diff < 0)
+                                {
+                                    itemName = useSpaces ? $"{itemName} ({diff})" : $"{itemName}（{diff}）";
+                                }
+                                itemStrs.Add(itemName);
+                            }
+                        }
+                        if (chClass.Desc > 0)
+                        {
+                            string split = SplitCharacterText(useSpaces, itemStrs);
+                            if (!string.IsNullOrWhiteSpace(split))
+                            {
+                                menuFmgs["GR_LineHelp"][chClass.Desc] = split;
+                                // if (lang == "engus") Console.WriteLine($"{chClass.Name}: {split.Replace("\n", "\\n")}");
+                            }
                         }
                     }
                 }
@@ -737,6 +813,154 @@ namespace RandomizerCommon
                     }
                 }
             }
+        }
+
+        public void SetSpecialOutfits(RandomizerOptions opt, EnemyLocations enemyLocs)
+        {
+            if (!game.EldenRing || enemyLocs.Outfit == null) return;
+            if (opt["testoutfit"])
+            {
+                List<string> outfits = enemyLocs.Outfit.Split('|').Skip(20).ToList();
+                for (int id = 0; id < Math.Min(10, outfits.Count); id++)
+                {
+                    string outfit = outfits[id];
+                    List<ItemKey> items = ParseOutfit(outfit);
+                    PARAM.Row row = game.Params["CharaInitParam"][3000 + id];
+                    for (int i = 0; i < 4; i++)
+                    {
+                        ItemKey item = items[i];
+                        row[g.ArmorSlots[i]].Value = item == null ? -1 : item.ID;
+                    }
+                }
+                return;
+            }
+            try
+            {
+                List<ItemKey> items = ParseOutfit(enemyLocs.Outfit);
+                for (int chrId = 23241; chrId <= 23248; chrId++)
+                {
+                    PARAM.Row row = game.Params["CharaInitParam"][chrId];
+                    for (int i = 0; i < 4; i++)
+                    {
+                        ItemKey item = items[i];
+                        row[g.ArmorSlots[i]].Value = item == null ? -1 : item.ID;
+                        if (item?.ID == 1090000) break;
+                    }
+                }
+            }
+#if !DEBUG
+            catch (Exception e)
+            {
+                // It's really not that important
+                return;
+            }
+#endif
+            finally { }
+        }
+
+        internal List<ItemKey> ParseOutfit(string outfit)
+        {
+            string[] parts = outfit.Split(';');
+            if (parts.Length != 4) throw new ArgumentException($"Invalid outfit specification: {outfit}");
+            List<ItemKey> ret = new List<ItemKey>();
+            for (int i = 0; i < 4; i++)
+            {
+                string name = parts[i].Trim();
+                if (name == "None")
+                {
+                    ret.Add(null);
+                    continue;
+                }
+                ItemKey armor = game.ItemForName(name);
+                if (armor.Type != ItemType.ARMOR) throw new ArgumentException($"Invalid outfit specification contains non-armor: {outfit} index {i}");
+                PARAM.Row item = game.Item(armor);
+                if (item == null) throw new ArgumentException($"Armor {armor} ({name}) missing from params");
+                if ((byte)item[g.ArmorTypes[i]].Value != 1 && armor.ID % 1000 != i * 100)
+                {
+                    throw new ArgumentException($"Armor {armor} ({name}) is an invalid {g.ArmorTypes[i]}");
+                }
+                ret.Add(armor);
+            }
+            return ret;
+        }
+
+        private static string SplitCharacterText(bool useSpaces, List<string> items)
+        {
+            int lineCount = 3;
+            int sizeLimit = 250;
+            // Pick some generic serif font to approximate Garamond
+            Font f = new Font("Times New Roman", 12);
+            // Hardcode this for the time being
+            string delimeter = useSpaces ? ", " : "，";
+            List<string> committed = new List<string>();
+            foreach (string item in items)
+            {
+                List<string> cand = committed.ToList();
+                if (cand.Count == 0)
+                {
+                    cand.Add("");
+                }
+                else
+                {
+                    // This adds a space, trim it later if it matters
+                    cand[cand.Count - 1] += delimeter;
+                }
+                // Japanese, Chinese, and Thai lack ascii spaces
+                // Otherwise, add one word at a time, also measuring the space before.
+                foreach (string token in item.Split(' ').Select((s, i) => (i == 0 ? "" : " ") + s))
+                {
+                    string lastLine = cand[cand.Count - 1];
+                    string addedLine = (lastLine + token).Trim(' ');
+                    if (TextRenderer.MeasureText(addedLine, f).Width < sizeLimit)
+                    {
+                        cand[cand.Count - 1] = addedLine;
+                    }
+                    else
+                    {
+                        cand.Add(token.Trim(' '));
+                    }
+                }
+                if (cand.Count > lineCount)
+                {
+                    break;
+                }
+                committed = cand;
+            }
+            if (committed.Count == 0)
+            {
+                // Make each item a line, hope it goes well
+                committed = items.Take(lineCount).ToList();
+            }
+            return string.Join("\n", committed.Select(t => t.Trim(' ')));
+        }
+
+        internal void MeasureText()
+        {
+            List<int> lineLens = new List<int>();
+            List<int> lineSizes = new List<int>();
+            Font f = new Font("Times New Roman", 12);
+            Console.WriteLine(f.Name + " " + f.FontFamily);
+            foreach (CharacterClass c in g.Classes)
+            {
+                string[] lines = game.MenuFMGs["GR_LineHelp"][c.Desc].Split('\n');
+                foreach (string line in lines)
+                {
+                    // Can use character count as a backup, but the measuring methods don't seem to throw exceptions
+                    lineLens.Add(line.Length);
+                    // https://stackoverflow.com/questions/6704923/textrenderer-measuretext-and-graphics-measurestring-mismatch-in-size
+                    // We're using winforms anyway, this just needs to be approximately correct
+                    int size = TextRenderer.MeasureText(line, f).Width;
+                    lineSizes.Add(size);
+                }
+            }
+            foreach (string line in new[] { "", " ", "some text", " some text" })
+            {
+                int size = TextRenderer.MeasureText(line, f).Width;
+                Console.WriteLine($"[{line}] = {size}");
+            }
+            Console.WriteLine($"Test: {SplitCharacterText(true, Enumerable.Repeat("Some Kind of Item Text", 20).ToList())}");
+            Console.WriteLine($"Lens: {string.Join(",", lineLens.OrderBy(x => x))}");
+            Console.WriteLine($"Size: {string.Join(",", lineSizes.OrderBy(x => x))}");
         }
     }
 }

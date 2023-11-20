@@ -27,9 +27,32 @@ namespace RandomizerCommon
         public string FileName => $@"presets\{Name}.txt";
         // To show in UI
         public string Description { get; set; }
-        // Whether to change default options
+        // Whether to change default options, in DS3/Sekiro
         public bool RecommendFullRandomization { get; set; }
         public bool RecommendNoEnemyProgression { get; set; }
+        // Options string, and underlying set (accessed by index method)
+        private static readonly string optVersion = "v1";
+        [YamlIgnore]
+        private string options_;
+        [YamlIgnore]
+        private SortedSet<string> OptionsSet = new SortedSet<string> { optVersion };
+        public string Options
+        {
+            get => options_;
+            set
+            {
+                // This is mainly meant for setting from yaml parse.
+                // TODO: Find a cleaner way to process this, doing it in property setters is awkward.
+                options_ = value;
+                OptionsSet.Clear();
+                OptionsSet.Add(optVersion);
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    OptionsSet.UnionWith(value.Split(' '));
+                    // OptionsSet.IntersectWith(new[] { "v1" }.Concat(OptionsText.Keys));
+                }
+            }
+        }
         // An enemy or enemy type to use for all possible enemies
         public string OopsAll { get; set; }
         [YamlIgnore]
@@ -67,6 +90,33 @@ namespace RandomizerCommon
         public Dictionary<int, List<int>> EnemyIDs = new Dictionary<int, List<int>>();
         // Mapping of item locations. Currently only supports key items and overall logical areas/events.
         public Dictionary<string, string> Items { get; set; }
+        // Temporary option
+        public bool RandomScaling = false;
+
+        public bool this[string opt]
+        {
+            get => OptionsSet.Contains(opt);
+            set
+            {
+                if (value)
+                {
+                    OptionsSet.Add(opt);
+                }
+                else
+                {
+                    OptionsSet.Remove(opt);
+                }
+                if (OptionsSet.Count == 0)
+                {
+                    // This shouldn't be the case because of version, but it is different from other cases
+                    options_ = "none";
+                }
+                else
+                {
+                    options_ = string.Join(" ", OptionsSet);
+                }
+            }
+        }
 
         public static readonly Regex PhraseRe = new Regex(@"\s*;\s*");
 
@@ -201,6 +251,104 @@ namespace RandomizerCommon
             }
         }
 
+        public string ToStableString()
+        {
+            // For basic cross-person comparison, even when order of things is different.
+            // Default preset should return an empty string here, despite not having the EnemyAnnotations available here.
+            // Main fields: OopsAll, EnemyMultiplier, Classes, AdjustSource.Source, DontRandomize, RemoveSource
+            // In Classes: NoRandom, MergeParent, InheritParent.
+            // If not merge/inherit and main one >0 and different: EnemyMultiplier. If none: Pools.Pool (when not default), RemoveSource
+            // But... the same logic is replicated several times over :NotLikeThis:
+            string sortUniq(IEnumerable<string> phrases) => string.Join("; ", phrases.Where(s => s != null).SelectMany(s => PhraseRe.Split(s.ToLowerInvariant())).Distinct().OrderBy(x => x, StringComparer.InvariantCulture));
+            SortedDictionary<string, string> data = new SortedDictionary<string, string>();
+            bool exists(string pool)
+            {
+                return pool != null && pool.ToLowerInvariant() != "none";
+            }
+            if (exists(OopsAll))
+            {
+                data["OopsAll"] = sortUniq(new[] { OopsAll });
+            }
+            if (exists(RemoveSource))
+            {
+                data["RemoveSource"] = sortUniq(new[] { RemoveSource });
+            }
+            if (exists(DontRandomize))
+            {
+                data["DontRandomize"] = sortUniq(new[] { DontRandomize });
+            }
+            if (AdjustSource != null)
+            {
+                data["AdjustSource"] = sortUniq(AdjustSource.Select(a => a.Source));
+            }
+            if (EnemyMultiplier > 0)
+            {
+                data["EnemyMultiplier"] = EnemyMultiplier.ToString();
+            }
+            if (Classes != null)
+            {
+                foreach ((EnemyClass cl, ClassAssignment assign) in Classes)
+                {
+                    // Hardcoded, NoRandom is inconsistent here
+                    if (cl == EnemyClass.Scarab || assign == null) continue;
+                    SortedDictionary<string, string> classData = new SortedDictionary<string, string>();
+                    if (assign.MergeParent)
+                    {
+                        classData["MergeParent"] = "true";
+                    }
+                    else if (assign.InheritParent)
+                    {
+                        // This is potentially ambiguous, since there are default inherits too,
+                        // but it's more important to say that default preset is default.
+                        // classData["InheritParent"] = "true";
+                    }
+                    else if (assign.NoRandom)
+                    {
+                        classData["NoRandom"] = "true";
+                    }
+                    if (!assign.InheritParent && !assign.MergeParent)
+                    {
+                        if (EnemyMultiplier > 0 && assign.EnemyMultiplier > 0 && assign.EnemyMultiplier != EnemyMultiplier)
+                        {
+
+                            classData["EnemyMultiplier"] = assign.EnemyMultiplier.ToString();
+                        }
+                        if (!assign.NoRandom)
+                        {
+                            if (assign.Pools != null)
+                            {
+                                string pool = sortUniq(assign.Pools.Select(s => s.Pool));
+                                if (pool.ToLowerInvariant() != "default")
+                                {
+                                    classData["Pools"] = pool;
+                                }
+                            }
+                            if (exists(assign.RemoveSource))
+                            {
+                                classData["RemoveSource"] = sortUniq(new[] { assign.RemoveSource });
+                            }
+                        }
+                    }
+                    data[cl.ToString()] = string.Join("|", classData.Where(e => !string.IsNullOrWhiteSpace(e.Value)).Select(e => $"{e.Key}={e.Value}"));
+                }
+            }
+            return string.Join("||", data.Where(e => !string.IsNullOrWhiteSpace(e.Value)).Select(e => $"{e.Key}={e.Value}"));
+        }
+
+        // Misc options. Some of these were originally part of the main form in Elden Ring (bosshp, multcolor, multhp, regularhp)
+        // TODO: Add a way to rename texts
+        [Localize]
+        public static readonly Dictionary<string, Text> OptionsText = new Dictionary<string, Text>
+        {
+            ["bosshp"] = new Text("Increase HP for regular enemies as bosses", "EldenForm_bosshp"),
+            ["regularhp"] = new Text("Reduce HP for bosses as regular enemies", "EldenForm_regularhp"),
+            ["multhp"] = new Text("Reduce HP for bosses in Enemy Onslaught slightly", "EldenForm_multhp"),
+            ["multcolor"] = new Text("Color-code bosses in Enemy Onslaught", "EldenForm_multcolor"),
+            ["scalerandom"] = new Text("Randomly scale enemies", "EldenForm_scalerandom"),
+            ["scaleup"] = new Text("Only scale enemies up", "EldenForm_scaleup"),
+        };
+        public static readonly HashSet<string> DefaultOptions = new HashSet<string> { "bosshp", "regularhp", "v1" };
+
         [Localize]
         private static readonly Text presetNameText = new Text("Preset: {0}", "Preset_presetName");
         [Localize]
@@ -213,6 +361,8 @@ namespace RandomizerCommon
         private static readonly Text dontRandomizeText = new Text("Not randomized: {0}", "Preset_dontRandomize");
         [Localize]
         private static readonly Text removeSourceText = new Text("Excluded: {0}", "Preset_removeSource");
+        [Localize]
+        private static readonly Text optionsText = new Text("Options: {0}", "Preset_options");
         [Localize]
         private static readonly Text poolDescText = new Text("Replacing {0}:", "Preset_poolDesc");
         [Localize]
@@ -402,6 +552,20 @@ namespace RandomizerCommon
             }
             if (exists(DontRandomize)) ret.AppendLine(messages.Get(dontRandomizeText, desc(DontRandomize)));
             if (exists(RemoveSource)) ret.AppendLine(messages.Get(removeSourceText, desc(RemoveSource)));
+            // This treatment of defaults is a bit ambiguous. Hopefully version string will address default changes.
+            if (exists(Options) && !DefaultOptions.SetEquals(OptionsSet))
+            {
+                List<string> parts = new List<string>();
+                foreach (KeyValuePair<string, Text> entry in OptionsText)
+                {
+                    if (OptionsSet.Contains(entry.Key))
+                    {
+                        // I guess do one-per-line for now
+                        ret.AppendLine(messages.Get(entry.Value));
+                    }
+                }
+                if (parts.Count > 0) ret.AppendLine(messages.Get(optionsText, string.Join(sep, parts)));
+            }
             if (AdjustSource != null)
             {
                 foreach (SourceAdjustment adjust in AdjustSource)
@@ -539,6 +703,7 @@ namespace RandomizerCommon
             EnemyAnnotations ann,
             Dictionary<int, EnemyData> defaultData)
         {
+            // Go through full enemy config
             List<EnemyCategory> cats = ann.Categories;
             // Process enemy names
             HashSet<string> eligibleNames = new HashSet<string>();
@@ -837,8 +1002,21 @@ namespace RandomizerCommon
             bool debug = false;
             if (Enemies != null)
             {
+                bool otherNorandom = false;
                 foreach (KeyValuePair<string, string> entry in Enemies)
                 {
+                    if (entry.Key == "Other" && game.EldenRing)
+                    {
+                        if (entry.Value.ToLowerInvariant() == "norandom")
+                        {
+                            otherNorandom = true;
+                        }
+                        else
+                        {
+                            errors.Add($"The only supported value for enemy assignment \"Other\" is \"norandom\"");
+                        }
+                        continue;
+                    }
                     // For now, validate the config before checking if we can continue. This could be relaxed in the future, or in release builds.
                     List<int> targets = getIds(entry.Key);
                     if (targets.Count > 1 && debug) Console.WriteLine($"Note: Enemy assigment {entry.Key}: {entry.Value} produced {targets.Count} targets");
@@ -860,6 +1038,11 @@ namespace RandomizerCommon
                             AddMulti(EnemyIDs, target, sources);
                         }
                     }
+                }
+                if (otherNorandom)
+                {
+                    // TODO: Where is Any? Bring it back?
+                    DontRandomizeIDs.UnionWith(getMultiIds("AllEnemies", true).SelectMany(x => x).Except(EnemyIDs.Keys));
                 }
             }
 

@@ -17,6 +17,9 @@
     <Compile Update="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="MergeModForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>

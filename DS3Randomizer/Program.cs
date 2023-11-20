@@ -34,7 +34,7 @@ namespace DS3Randomizer
                 {
                     preset = Preset.LoadPreset(options.Preset, extractOopsAll: true, checkDir: "presets3");
                 }
-                if (preset == null && File.Exists("Dev3.txt"))
+                if (false && preset == null && File.Exists("Dev3.txt"))
                 {
                     options.Preset = "Dev3";
                     preset = Preset.LoadPreset("Dev3", checkDir: ".");

@@ -19,6 +19,16 @@ namespace RandomizerCommon
             textbox.Text = text;
         }
 
+        public static DialogResult Show(Form parent, string text, string title = "")
+        {
+            using (ScrollDialog form = new ScrollDialog(title, text))
+            {
+                form.Icon = parent.Icon;
+                form.StartPosition = FormStartPosition.CenterParent;
+                return form.ShowDialog(parent);
+            }
+        }
+
         private void act_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;

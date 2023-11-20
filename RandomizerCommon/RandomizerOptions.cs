@@ -46,13 +46,12 @@ namespace RandomizerCommon
             }
             else if (game == FromGame.ER)
             {
-                opt["v1"] = false;
-                opt["v2"] = false;
-                opt["v3"] = false;
-                opt["v4"] = false;
-                opt["v5"] = false;
-                opt["v6"] = false;
-                opt["v7"] = true;
+                int version = 9;
+                for (int i = 1; i < version; i++)
+                {
+                    opt[$"v{i}"] = false;
+                }
+                opt[$"v{version}"] = true;
             }
         }
 
@@ -113,14 +112,17 @@ namespace RandomizerCommon
             if (options.str.TryGetValue("bias", out string valStr) && int.TryParse(valStr, out int val))
             {
                 options.Difficulty = val;
+                options.str.Remove("bias");
             }
             if (options.str.TryGetValue("seed", out valStr) && uint.TryParse(valStr, out uint uval))
             {
                 options.Seed = uval;
+                options.str.Remove("seed");
             }
             if (options.str.TryGetValue("seed2", out valStr) && uint.TryParse(valStr, out uval))
             {
                 options.Seed2 = uval;
+                options.str.Remove("seed2");
             }
             if (preset.Count > 0) options.Preset = string.Join(" ", preset);
             return options;
@@ -148,6 +150,30 @@ namespace RandomizerCommon
                 {
                     opt[name] = value;
                 }
+            }
+        }
+
+        public bool GetInt(string name, out int val)
+        {
+            val = 0;
+            return str.TryGetValue(name, out string s) && int.TryParse(s, out val);
+        }
+
+        public bool GetInt(string name, int min, int max, out int val)
+        {
+            val = 0;
+            return str.TryGetValue(name, out string s) && int.TryParse(s, out val) && val >= min && val <= max;
+        }
+
+        public void SetInt(string name, int? maybeVal)
+        {
+            if (maybeVal is int val)
+            {
+                str[name] = val.ToString();
+            }
+            else
+            {
+                str.Remove(name);
             }
         }
 
@@ -201,8 +227,10 @@ namespace RandomizerCommon
             return num[name];
         }
 
-        private static HashSet<string> logiclessOptions = new HashSet<string> { "mergemods", "uxm" };
+        // Options which are purely aesthetic or related to installation
+        private static HashSet<string> logiclessOptions = new HashSet<string> { "mergemods", "uxm", "bossbgm" };
 
+        // Boolean options which apply (not mapped options)
         public SortedSet<string> GetLogicOptions()
         {
             return new SortedSet<string>(opt.Where(e => e.Value && !logiclessOptions.Contains(e.Key)).Select(e => e.Key));
@@ -215,7 +243,9 @@ namespace RandomizerCommon
 
         public string ConfigString(bool includeSeed = false, bool includePreset = false, bool onlyLogic = true)
         {
-            string result = string.Join(" ", onlyLogic ? GetLogicOptions() : GetOptions());
+            SortedSet<string> words = onlyLogic ? GetLogicOptions() : GetOptions();
+            words.UnionWith(str.Select(e => $"{e.Key}:{e.Value}"));
+            string result = string.Join(" ", words);
             // Colon syntax should be safe to use for other games, but test it out first.
             // At some point, we could switch to using the str dictionary directly.
             result += Game == FromGame.ER ? $" bias:{Difficulty}" : $" {Difficulty}";
@@ -235,20 +265,8 @@ namespace RandomizerCommon
         }
 
         public string FullString() => ConfigString(includeSeed: true, includePreset: true, onlyLogic: false);
+        public string LogicString() => ConfigString(includeSeed: true, includePreset: false, onlyLogic: true);
         public override string ToString() => ConfigString(includeSeed: true, includePreset: true, onlyLogic: false);
-        public string ConfigHash() => (JavaStringHash(ConfigString(includeSeed: false, includePreset: true, onlyLogic: true)) % 99999).ToString().PadLeft(5, '0');
-
-        private static uint JavaStringHash(string s)
-        {
-            unchecked
-            {
-                uint hash = 0;
-                foreach (char c in s)
-                {
-                    hash = hash * 31 + c;
-                }
-                return hash;
-            }
-        }
+        public string ConfigHash() => (Util.JavaStringHash(ConfigString(includeSeed: false, includePreset: true, onlyLogic: true)) % 99999).ToString().PadLeft(5, '0');
     }
 }

@@ -3,10 +3,16 @@
   "translators": "Kuroko",
   "messages": [
     {
+      "name": "EldenForm_allcraft",
+      "explanation": "When checked, all craftable item recipes are unlocked without requiring cookbooks",
+      "english_text": "Unlock all craftable items in Crafting Kit from the start",
+      "text": "すべての製作アイテムを最初からツール鞄で作れるようにする"
+    },
+    {
       "name": "EldenForm_allitem0",
       "explanation": "Explanation for regular item placement for 0 bias%, unweighted randomization",
       "english_text": "All eligible locations for items are equally likely.",
-      "text": "アイテムの配置先はすべて均等になります。"
+      "text": "アイテムの配置先は完全に均等になります。"
     },
     {
       "name": "EldenForm_allitem1",
@@ -39,6 +45,12 @@
       "text": "バイアス"
     },
     {
+      "name": "EldenForm_bossbgm",
+      "explanation": "When checked, background music for bosses will be randomly swapped with background music from other bosses. (to be implemented)",
+      "english_text": "Randomize boss background music",
+      "text": "ボス戦の BGM をランダム化"
+    },
+    {
       "name": "EldenForm_bosshp",
       "explanation": "When checked, non-boss enemies can have their HP increased when they become boss enemies (e.g. Crab the Fell Omen)",
       "english_text": "Increase HP for regular enemies as bosses",
@@ -60,7 +72,13 @@
       "name": "EldenForm_convenienceGroup",
       "explanation": "Label for options in the Misc tab which allow changes to the game to make playthroughs more convenient and straightforward, unrelated to randomization",
       "english_text": "Convenience",
-      "text": "便利系"
+      "text": "利便性"
+    },
+    {
+      "name": "EldenForm_crawl",
+      "explanation": "Secondary option after EldenForm_fog, which allows item/enemy randomizer to be used with the 'Fog Gate Randomizer' mod, particularly its 'Dungeon Crawl' mode which restricts items to not-open-world locations. So far Fog Gate Randomizer doesn't have localization.",
+      "english_text": "Dungeon Crawl mode in Fog Gate Randomizer",
+      "text": "Fog Gate Randomizer の Dungeon Crawl モードに対応"
     },
     {
       "name": "EldenForm_customGroup",
@@ -102,7 +120,7 @@
       "name": "EldenForm_default_reroll",
       "explanation": "Checkbox under seed number which generates a new seed every time 'Randomize' is clicked, instead of using the existing seed",
       "english_text": "Reroll seed",
-      "text": "シードを再生成させる"
+      "text": "シードを再生成する"
     },
     {
       "name": "EldenForm_default_twohand",
@@ -120,7 +138,7 @@
       "name": "EldenForm_defaultRerollEnemy",
       "explanation": "Checkbox under enemy-specific seed number which behaves like default_reroll for the enemy randomizer seed",
       "english_text": "Reroll enemy seed seperately",
-      "text": "敵シードを別個に再生成させる"
+      "text": "敵シードだけを再生成する"
     },
     {
       "name": "EldenForm_earlylegacy",
@@ -162,7 +180,7 @@
       "name": "EldenForm_enemyseedL",
       "explanation": "Label for enemy randomizer seed textbox",
       "english_text": "Separate enemy seed:",
-      "text": "敵シード（別個）:"
+      "text": "敵シード (独立):"
     },
     {
       "name": "EldenForm_enemyseedPlaceholder",
@@ -243,6 +261,18 @@
       "text": "全体シード:"
     },
     {
+      "name": "EldenForm_fog",
+      "explanation": "Misc option which allows item/enemy randomizer to be used with the 'Fog Gate Randomizer' mod by placing any item in any area, regardless of the normal game order. So far Fog Gate Randomizer doesn't have localization.",
+      "english_text": "Unrestricted item placement for Fog Gate Randomizer",
+      "text": "Fog Gate Randomizer でアイテム配置を制限しない"
+    },
+    {
+      "name": "EldenForm_fogL",
+      "explanation": "Additional note for Fog Gate Randomizer option. If the mode is enabled, item/enemy randomizer can't be used on its own, but should be merged into Fog Gate Randomizer after",
+      "english_text": "Only use this if you're installing Fog Gate Randomizer after",
+      "text": "Fog Gate Randomizer を後からインストールする場合のみチェックしてください"
+    },
+    {
       "name": "EldenForm_healthGroup",
       "explanation": "Label asking how to randomize Golden Seeds/Sacred Tears",
       "english_text": "Flask upgrades randomized?",
@@ -264,13 +294,13 @@
       "name": "EldenForm_impoliteL",
       "explanation": "Explanation label for 'Impolite enemies'",
       "english_text": "Make enemies less passive in groups",
-      "text": "集団の敵がより積極的に襲いかかってきます"
+      "text": "敵があまり後ろに下がらなくなり、より積極的に襲いかかってきます"
     },
     {
       "name": "EldenForm_invertoutfits",
       "explanation": "Option to change clothes of NPC human models, such as Gideon and Fia, to a random armor set",
       "english_text": "Randomize NPC outfits",
-      "text": "NPCの服装をランダムにする"
+      "text": "NPC の服装をランダムにする"
     },
     {
       "name": "EldenForm_invertstarting",
@@ -294,25 +324,25 @@
       "name": "EldenForm_keyitem0",
       "explanation": "Explanation for key item placement for 0 bias%, unweighted randomization",
       "english_text": "Key items may be in locations that don't require completing much of the game.",
-      "text": "キーアイテムは場合により、本編クリアとあまり関係のない場所に置かれます。"
+      "text": "キーアイテムは場合により、ゲームをあまり進行させなくても到達できる場所に置かれたり、同じエリアに置かれることがあります。"
     },
     {
       "name": "EldenForm_keyitem1",
       "explanation": "Explanation for key item placement for low bias%. Multiple key items are less likely to be placed in the same area, and more likely to be placed in an area unlocked by a different key item.",
       "english_text": "Key items will usually be in different areas and depend on each other.",
-      "text": "キーアイテムは通常、隣接する別のエリアに置かれます。"
+      "text": "キーアイテムは大抵の場合、別々のエリアにばらけて配置されます。"
     },
     {
       "name": "EldenForm_keyitem2",
       "explanation": "Explanation for key item placement for medium bias%, low but moreso",
       "english_text": "Key items will usually be in different areas and form interesting chains.",
-      "text": "キーアイテムは通常、面白さを感じることができる繋がり方で別のエリアに置かれます。"
+      "text": "キーアイテムは大抵の場合、面白さを感じられるような流れで配置されます。"
     },
     {
       "name": "EldenForm_keyitem3",
       "explanation": "Explanation for key item placement for high bias%, medium but moreso",
       "english_text": "Key items will usually form long chains across different areas.",
-      "text": "キーアイテムは通常、遠く離れたエリアに置かれます。"
+      "text": "キーアイテムは大抵の場合、長い流れとなるように配置されます。"
     },
     {
       "name": "EldenForm_languageL",
@@ -330,13 +360,19 @@
       "name": "EldenForm_launchFailed",
       "explanation": "Long errorm essage debugging 'Launch Elden Ring' failing. It suggests basic prerequisites for using Mod Engine, and otherwise, suggests using the two other installation options, manual Mod Engine or UXM.",
       "english_text": "Automatic Mod Engine launcher appeared to fail.\n\nMake sure Steam is running. If the game is currently running, close it and wait until it is fully shut down.\n\nCheck Troubleshooting on https://www.nexusmods.com/eldenring/mods/428/ to see when Mod Engine might fail. You may need to try using a manual Mod Engine launcher or UXM installation.",
-      "text": "Mod Engineの自動起動に失敗しました。\n\nSteamは起動されていますか？ゲームが起動中の場合、まずは終了し、完全に落ちるまで待ってみてください。\n\nそれでも失敗するなら、https://www.nexusmods.com/eldenring/mods/428/ に記載されている Mod Engine のトラブルシューティングを確認しましょう。場合によっては Mod Engine を直接起動したり、UXM をインストールする必要があります。"
+      "text": "Mod Engineの自動起動に失敗しました。\n\nSteamは起動されていますか？ゲームが起動中の場合、まずは終了し、完全に落ちるまで待ってみてください。\n\nそれでも失敗するなら、https://www.nexusmods.com/eldenring/mods/428/ に記載されている Mod Engine のトラブルシューティングを確認しましょう。場合によっては Mod Engine のランチャーから起動するか、UXM をインストールする必要があります。"
     },
     {
       "name": "EldenForm_launchFailedTitle",
       "explanation": "Title of the dialog box with launchFailed",
       "english_text": "Launch failed",
       "text": "起動失敗"
+    },
+    {
+      "name": "EldenForm_launchFog",
+      "explanation": "Dialog box shown when clicking launchButton when Fog Gate Randomizer option is checked. This option requires merging item/enemy randomizer into a different mod, rather than launching it on its own.",
+      "english_text": "If you're using Fog Gate Randomizer (under Misc Options), launch the game from FogMod.exe, not from here",
+      "text": "Fog Gate Randomizer（その他のオプション）を使用する場合、ゲームを FogMod.exe から起動するようにしてください。"
     },
     {
       "name": "EldenForm_launchMismatch",
@@ -348,13 +384,13 @@
       "name": "EldenForm_launchRunning",
       "explanation": "dialog box shown to confirm 'Launch Elden Ring' when it's alrady running. As part of automatic Mod Engine launcher usage, it can't launch the game if it's already running according to Steam",
       "english_text": "Elden Ring appears to be already running, so launching with Mod Engine will have no effect. Try anyway?",
-      "text": "Elden Ring が実行中のため、Mod Engine から起動しても何も起こりません。無視して起動しますか？"
+      "text": "Elden Ring が実行中のため、Mod Engine から起動しても何も起こりません。無視して起動させますか？"
     },
     {
       "name": "EldenForm_loadOptionsFileToolStripMenuItem",
       "explanation": "Action in the Options menu for selecting an options file to set all randomizer options",
-      "english_text": "Load options file...",
-      "text": "オプション登録ファイルの読み込み..."
+      "english_text": "Import options file...",
+      "text": "オプション登録ファイルのインポート..."
     },
     {
       "name": "EldenForm_locationGroup",
@@ -411,6 +447,12 @@
       "text": "他の Mod を指定"
     },
     {
+      "name": "EldenForm_mergeButton",
+      "explanation": "Button to open a file select dialog for an alternate file-based mod to merge. Previously 'Select other mod'",
+      "english_text": "Merge other mod",
+      "text": "他の Mod を統合"
+    },
+    {
       "name": "EldenForm_mergemods",
       "explanation": "Checkbox to incorporate existing modifications to game files into the randomizer's output. Previously only merged param (regulation.bin) mods",
       "english_text": "Merge \"mod\" directory",
@@ -453,6 +495,12 @@
       "text": "敵倍化モードにおけるボスの HP をわずかに減少"
     },
     {
+      "name": "EldenForm_nerfgargoyles",
+      "explanation": "Checkbox to disable poison-over-time damage while in Valiant Gargoyle's poison cloud, but it can still poison you",
+      "english_text": "Disable damage tick in Valiant Gargoyles' poison cloud",
+      "text": "英雄のガーゴイルの毒霧からダメージのみ除去"
+    },
+    {
       "name": "EldenForm_nerfmalenia",
       "explanation": "Checkbox to disable Malenia healing when she hits you",
       "english_text": "Disable heal-on-hit by a late-game boss",
@@ -462,7 +510,13 @@
       "name": "EldenForm_nerfmalenia",
       "explanation": "Checkbox to disable Malenia healing when she hits you",
       "english_text": "Disable Malenia's heal-on-hit",
-      "text": ""
+      "text": "マレニアのヒット時回復を無効"
+    },
+    {
+      "name": "EldenForm_nerfsh",
+      "explanation": "Misc option which doesn't allow Serpent-Hunter (weapon to defeat Rykard) to be upgraded, leaving it stuck at +0. This is for balancing in races, since it's a very powerful weapon.",
+      "english_text": "Disable upgrading Serpent-Hunter",
+      "text": "大蛇狩りを強化禁止にする（+0 で固定）"
     },
     {
       "name": "EldenForm_night",
@@ -543,6 +597,12 @@
       "text": "複数形態ボスのステータスをわずかに可変させる"
     },
     {
+      "name": "EldenForm_placementGroup",
+      "explanation": "Label for checkboxes with broad randomization options, like what to randomize and which routing to allow",
+      "english_text": "Item placement",
+      "text": "アイテム配置"
+    },
+    {
       "name": "EldenForm_preset",
       "explanation": "Button to select custom randomization, especially with enemy randomizer. This feature is not yet implemented",
       "english_text": "Select challenge run or preset...",
@@ -612,7 +672,7 @@
       "name": "EldenForm_raceloc_talisman",
       "explanation": "When checked, certain treasures/chests can have important items. These are all of the places which originally had talismans in the unmodified (vanilla) game, which are usually hidden in interesting places.",
       "english_text": "Vanilla locations of talisman treasures",
-      "text": "タリスマンが手に入るバニラの場所"
+      "text": "バニラの環境でタリスマンが手に入る場所"
     },
     {
       "name": "EldenForm_raceloc_talismanL",
@@ -624,7 +684,7 @@
       "name": "EldenForm_racemode",
       "explanation": "When checked, important items can be found in all of the places key items can normally be found in the unmodified (vanilla) game. This option cannot be disabled",
       "english_text": "Vanilla locations of key items",
-      "text": "キーアイテムが手に入るバニラの場所"
+      "text": "バニラの環境でキーアイテムが手に入る場所"
     },
     {
       "name": "EldenForm_racemode_health",
@@ -783,6 +843,30 @@
       "text": "エラー発生！spoiler_logs ディレクトリの {0} に部分的なログを記録"
     },
     {
+      "name": "EldenForm_runes_endL",
+      "explanation": "Label which appears after a dropdown with values from 0-7. It describes the count of how many Great Runes are required to enter the Erdtrefe, previously the runereq option",
+      "english_text": "Great Runes to access the final boss",
+      "text": "最終ボスと戦うための必要大ルーン数"
+    },
+    {
+      "name": "EldenForm_runes_leyndellL",
+      "explanation": "Label which appears after a dropdown with values from 0-7. It describes the count of how many Great Runes are required to remove the golden seal before Leyndell, which is normally 2.",
+      "english_text": "Great Runes to enter Leyndell",
+      "text": "ローデイルに入るための必要大ルーン数"
+    },
+    {
+      "name": "EldenForm_runes_roldL",
+      "explanation": "Label which appears after a dropdown with values form 0-7, and a blank value. When not blank, it requires the given number of Great Runes to use Rold Medallion to reach Mountaintops of the Giants and beat the game.",
+      "english_text": "Great Runes to enter Mountaintops",
+      "text": "山嶺に入るための必要大ルーン数"
+    },
+    {
+      "name": "EldenForm_runes_roldL2",
+      "explanation": "Further label for the runes_rold dropdown, which indicates that Rold Medallion is no longer required to use Grand Lift of Rold and that the player should not try to search for it if they are using this feature. If there's not enough space, the 'only Great Runes' part is not as important",
+      "english_text": "If selected, Rold Medallion is not required, only Great Runes",
+      "text": "ロルドの割符が不要となり、大ルーンが求められます"
+    },
+    {
       "name": "EldenForm_running",
       "explanation": "Text that replaces the 'Randomize' button when randomization is running",
       "english_text": "Running...",
@@ -797,14 +881,26 @@
     {
       "name": "EldenForm_saveOptionsFileToolStripMenuItem",
       "explanation": "Action in Options menu to select a filename to store current randomizer options. These can be shared with other people.",
-      "english_text": "Save options file...",
-      "text": "オプション登録ファイルの保存..."
+      "english_text": "Export options file...",
+      "text": "オプション登録ファイルのエクスポート..."
     },
     {
       "name": "EldenForm_scale",
       "explanation": "When checked, increases or decreases enemy stats (HP/health they have, and how much damage they deal) using scaling",
       "english_text": "Scale up/down enemy health/damage",
       "text": "敵の体力/ダメージを可変させる"
+    },
+    {
+      "name": "EldenForm_scalerandom",
+      "explanation": "Custom preset option which scales enemies to a random tier, rather than based on where they're placed",
+      "english_text": "Randomly scale enemies",
+      "text": "敵のステータスをランダムに可変させる"
+    },
+    {
+      "name": "EldenForm_scaleup",
+      "explanation": "Custom preset option which never scales enemies down. They either remain at their current level or are scaled up based on their destination.",
+      "english_text": "Only scale enemies up",
+      "text": "敵のステータスを元より弱体化させない"
     },
     {
       "name": "EldenForm_seedError",
@@ -822,13 +918,19 @@
       "name": "EldenForm_sombermode",
       "explanation": "Option which changes required amount of Smithing Stones to upgrade a weapon which uses regular Smithing Stones. Weapons which use Somber Smithing Stones are unchanged.",
       "english_text": "Reduce upgrade cost for non-somber weapons",
-      "text": ""
+      "text": "鍛石による強化コストを減少"
     },
     {
       "name": "EldenForm_sombermodeL",
       "explanation": "More details about sombermode. Instead of upgrades requiring 2-4-6 of any Smithing Stone, it is changed to 1-1-1 (from 97 in total, to 25 in total).",
       "english_text": "Require only one Smithing Stone per weapon level",
-      "text": ""
+      "text": "通常武器を 1 つの鍛石で強化可能にします"
+    },
+    {
+      "name": "EldenForm_specialGroup",
+      "explanation": "Label for Misc Options options group, to select options which change randomizer behavior for special reasons",
+      "english_text": "Special modes",
+      "text": "特別なモード"
     },
     {
       "name": "EldenForm_spellshops",
@@ -873,6 +975,12 @@
       "text": "(ミニダンジョンのボス限定)"
     },
     {
+      "name": "EldenForm_swaprewards",
+      "explanation": "When bosses are randomized, changes their rune drop amounts. For instance, if Malenia is in Margit's arena, her runes will be based on her original amount but scaled down from Malenia's level to Margit's level",
+      "english_text": "Change boss runes to correspond to the original boss",
+      "text": "ボスから獲得できるルーンの量を元の配置ボスに合わせる"
+    },
+    {
       "name": "EldenForm_updateButton",
       "explanation": "Button which opens the randomizer files page, to allow easy checks for newer versions of the randomizer",
       "english_text": "Check for updates",
@@ -900,19 +1008,25 @@
       "name": "EldenForm_versionMismatch",
       "explanation": "Yes/no confirmation prompt when loading an options file. {0} and {1} are the randomizer version names, like v0.1. The different output refers to how the same set of randomizer options, at different versions of the randomizer, may result in different item/enemy placements.",
       "english_text": "Mismatched options versions! File has version {0}, but current randomizer version is {1}. This may result in different output. Try to continue anyway?",
-      "text": "各オプションのバージョンが一致していません！ファイル側のバージョンは {0} ですが、Randomizerのバージョンは {1} です。よって異なる結果になる可能性があります。無視して続行しますか？"
+      "text": "各オプションのバージョンが一致していません！ファイル側のバージョンは {0} ですが、Randomizer のバージョンは {1} です。よって異なる結果になる可能性があります。無視して続行しますか？"
     },
     {
       "name": "EldenForm_weaponprogression",
       "explanation": "Checkbox to make Smithing Stones more likely to be available in early/late areas depending on their type. This affects the placement and distribution of Smithing Stones, so that you can upgrade your weapon like in the unmodified game. You will be able to reliably find tiers 1 to 3 in Limgrave and Liurnia. Otherwise, finding upgrade materials may be much more difficult.",
       "english_text": "Smithing Stone availability similar to base game",
-      "text": "鍛石の入手先を元の攻略エリアに合わせる"
+      "text": "鍛石の入手場所を元に寄せる"
+    },
+    {
+      "name": "EldenForm_weaponreqs",
+      "explanation": "Checkbox to make all weapons in the game wieldable regardless of stats",
+      "english_text": "Remove all weapon and spell requirements",
+      "text": "すべての武器・術の必要能力値を無効"
     },
     {
       "name": "EnemyClass_AdjustSourceDoc",
       "explanation": "Explanation for how to configure Frequency Adjustments, which appears in the enemy customization form. Reducing passive enemy types is an example of this. If crabs start with a 5% chance to show up, and their frequency adjustment is 50%, they will end up with a 2.5% chance.",
       "english_text": "Special configuration to adjust the frequency of enemies relative to others of the same type",
-      "text": "敵の出現頻度を調整できます。たとえば元が 5% の敵なら、50% に調整すると 2.5% の割合で出現します"
+      "text": "敵の出現頻度を調整できます。たとえば元が 5% の敵なら、50% に調整すると 2.5% の確率で出現するようになります"
     },
     {
       "name": "EnemyClass_Basic",
@@ -1041,22 +1155,28 @@
       "text": "すべての敵とボス"
     },
     {
+      "name": "GameMenu_fogRunningError",
+      "explanation": "Dialog message which appears in-game when Fog Gate Randomizer option is enabled, but the user attempted to launch Item/Enemy Randomizer without actually running Fog Gate Randomizer. The \n is a line break. When Fog Gate Randomizer runs, it removes this error message.",
+      "english_text": "Error: Unrestricted item placement was enabled in Item Randomizer,\nbut Fog Gate Randomizer was not detected",
+      "text": "エラー: Item Randomizerでアイテム配置を制限しないオプションが\n選択されていますが、Fog Gate Randomizerが見つかりません"
+    },
+    {
       "name": "GameMenu_hintItemLabel",
       "explanation": "Label placed in the in-game map, which includes an item name {0} and area name {1} with its exact location. For example: Talisman Pouch in Altus Plateau",
       "english_text": "{0} in {1}",
-      "text": ""
+      "text": "{0} : {1}"
     },
     {
       "name": "GameMenu_hintItemLabelArea",
       "explanation": "Label placed in the in-game map for non-exact hints, with the item name {0} and vague area name {1}. For example: Sacred Tear somewhere in Lake of Rot",
       "english_text": "{0} somewhere in {1}",
-      "text": ""
+      "text": "{0} : {1}の某所"
     },
     {
       "name": "GameMenu_hintLabelArea",
       "explanation": "Label placed in the map for non-exact hints. For instance, 'Somewhere in Volcano Manor' is marked on the map to refer to any item location there. The location names are in the native language for each game language",
       "english_text": "Somewhere in {0}",
-      "text": "{0}のとある場所"
+      "text": "{0}の某所"
     },
     {
       "name": "GameMenu_hintMarkArea",
@@ -1086,7 +1206,7 @@
       "name": "GameMenu_hintNoUpgradeItems",
       "explanation": "Dialog message which appears in-game when the user tries to purchase a hint for an upgrade item (not a key item, but something like a Bell Bearing), but all items have been required",
       "english_text": "No upgrade items left!",
-      "text": ""
+      "text": "強化アイテムは残っていない"
     },
     {
       "name": "GameMenu_hintPurchase",
@@ -1098,7 +1218,7 @@
       "name": "GameMenu_hintRequiredItem",
       "explanation": "Generic name for a required item, to be shown in the map for required item hints. This would be used as the {0} name in hintItemLabel, so the final label would be: Required item in Volcano Manor",
       "english_text": "Required item",
-      "text": ""
+      "text": "必要アイテム"
     },
     {
       "name": "GameMenu_hintRequirementFailed",
@@ -1122,7 +1242,7 @@
       "name": "GameMenu_hintUpgradePurchase",
       "explanation": "Option given in Kalé's NPC menu to purchase a map marker for a specific ugprade item, which can be selected from a list. Examples of these items: Talisman Pouch, Sacred Tear, Smithing Stone Bell Bearing. These give hints for items from early game to late game, depending on which ones have already been acquired.",
       "english_text": "Purchase an upgrade item marker",
-      "text": ""
+      "text": "強化アイテムのマーカーを購入"
     },
     {
       "name": "GameMenu_receiveBellBearing",
@@ -1134,13 +1254,43 @@
       "name": "GameMenu_restart",
       "explanation": "Error message shown in-game when the randomizer can load all required files. It normally happens if someone re-runs randomizer without restarting the game, but it can also happen after game updates if the regulation.bin becomes invalid and no longer loads.",
       "english_text": "Error: Mismatch between regulation.bin and other randomizer files.\nRestart the game and make sure the game and randomizer versions are compatible.",
-      "text": "エラー: regulation.bin と randomizer のその他のファイルで不整合が起きています。\nゲームを再起動し、ゲームと randomizerの が対応しているかどうかを確認してください。"
+      "text": "エラー: regulation.binおよびrandomizerの各ファイルが不一致です\nゲームを再起動し、randomizerが現在のバージョンに\n対応しているかどうかを確認してください"
     },
     {
       "name": "GameMenu_restart",
       "explanation": "Error message shown in-game when the randomizer can load all required files. The \n corresponds to a line change. This normally happens if someone re-runs randomizer without restarting the game, but it can also happen after game updates if the regulation.bin becomes invalid and no longer loads. Finally, it can happen if the randomizer is incorrectly installed, and some critical files are detected as missing.",
       "english_text": "Error: Mismatch between regulation.bin and other randomizer files.\nMake sure all randomizer files are present, the game has been restarted\nafter randomization, and the game and regulation.bin versions are compatible.",
-      "text": "エラー: regulation.binおよびrandomizerの各ファイルが不一致です。\nrandomizerのファイルが欠落していないことを確かめた上でランダム化を実行し、ゲームを再起動して\n現在のバージョンとregulation.binの互換性があるかを確認してください。"
+      "text": "エラー: regulation.binおよびrandomizerの各ファイルが不一致です\nrandomizerのファイルが欠落していないことを確かめた上でランダム化を実行\nし、ゲームを再起動してregulation.binに互換性があるか確認してください"
+    },
+    {
+      "name": "MergeModForm_clear",
+      "explanation": "Button in 'Merge other mod' which clears the merged mod textbox",
+      "english_text": "Clear merged mod",
+      "text": "統合する Mod をクリア"
+    },
+    {
+      "name": "MergeModForm_dir",
+      "explanation": "Button in 'Merge other mod' which prompts selecting a mod directory",
+      "english_text": "Select mod directory to merge",
+      "text": "統合する Mod のディレクトリを選択"
+    },
+    {
+      "name": "MergeModForm_MergeModForm",
+      "explanation": "Title of 'Merge other mod' dialog box",
+      "english_text": "Select mod to merge",
+      "text": "統合する Mod の選択"
+    },
+    {
+      "name": "MergeModForm_reg",
+      "explanation": "Button in 'Merge other mod' which prompts selecting a regulation.bin file",
+      "english_text": "Select regulation.bin to merge",
+      "text": "統合する regulation.bin を選択"
+    },
+    {
+      "name": "MergeModForm_toml",
+      "explanation": "Button in 'Merge other mod' which prompts selecting a toml file, such as Mod Engine's config_eldenring.toml file, which contains a list of mods to launch. This allows merging multiple mods into randomizer.",
+      "english_text": "Select toml file (merge multiple mods)",
+      "text": "toml ファイルを選択（複数の Mod を統合する）"
     },
     {
       "name": "OptionsForm_errorInternal",
@@ -1207,6 +1357,12 @@
       "explanation": "Oops All mode, where all enemies are replaced with the enemy named in {0}. The phrase is based on an American cereal https://knowyourmeme.com/memes/oops-all-berries-box-parodies, and in this case, DS1 enemy randomizer runs by streamer LobosJr where he was constantly running into enemies who turned into Gwyn.",
       "english_text": "Oops All {0}",
       "text": "中までぎっしり {0}"
+    },
+    {
+      "name": "Preset_options",
+      "explanation": "Summary of custom options enabled for the preset, where {0} is a comma-separated list of preset options. This is currently not used, since the options are just listed one-by-one",
+      "english_text": "Options: {0}",
+      "text": "オプション: {0}"
     },
     {
       "name": "Preset_poolDefault",

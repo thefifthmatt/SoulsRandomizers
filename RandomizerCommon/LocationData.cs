@@ -116,7 +116,7 @@ namespace RandomizerCommon
             RING = 2,
             GOOD = 3,
             GEM = 4,
-            EQUIP = 6,
+            CUSTOM = 6,
         }
 
         public class ItemKey : IComparable<ItemKey>
@@ -313,10 +313,8 @@ namespace RandomizerCommon
                 this.Item = Item;
                 this.Scope = Scope;
             }
-            public override string ToString()
-            {
-                return $"({Item},{Scope})";
-            }
+            public override string ToString() => $"({Item},{Scope})";
+
             public override bool Equals(object obj) => obj is SlotKey o && Equals(o);
             public bool Equals(SlotKey o) => Item == o.Item && Scope == o.Scope;
             public override int GetHashCode() => Item.GetHashCode() ^ Scope.GetHashCode();

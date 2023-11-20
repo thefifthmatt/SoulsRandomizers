@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SoulsFormats;
 using SoulsIds;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static RandomizerCommon.EnemyAnnotations;
 using static RandomizerCommon.Util;
 
@@ -22,15 +23,18 @@ namespace RandomizerCommon
         {
             public int ScalingBase { get; set; }
             public int NewScalingBase { get; set; }
+            public int MaxTier { get; set; }
             public List<(int, int)> SectionPairs { get; set; }
             public Dictionary<string, List<string>> ScalingFields { get; set; }
             public Dictionary<string, List<double>> ScalingMatrix { get; set; }
+            public Dictionary<string, List<double>> UniqueScalingMatrix { get; set; }
         }
 
         private readonly ScalingData sekiroScaling = new ScalingData
         {
             ScalingBase = 7000,
             NewScalingBase = 7200,
+            MaxTier = 5,
             SectionPairs = new List<(int, int)>
             {
                 (1, 2),
@@ -84,6 +88,7 @@ namespace RandomizerCommon
             ScalingBase = 7000,
             // Fog gate randomizer starts at 7900
             NewScalingBase = 7600,
+            MaxTier = 5,
             SectionPairs = new List<(int, int)>
             {
                 (1, 2),
@@ -153,16 +158,11 @@ namespace RandomizerCommon
         {
             ScalingBase = 7000,
             // 7910 only allows for 90, we need ~150
-            NewScalingBase = 77700,
-            SectionPairs = new List<(int, int)>
-            {
-                (1, 2),
-                (1, 3), (2, 3),
-                (1, 4), (2, 4), (3, 4),
-                (1, 5), (2, 5), (3, 5), (4, 5),
-                (1, 6), (2, 6), (3, 6), (4, 6), (5, 6),
-            },
+            // Previously 77700
+            NewScalingBase = 78000,
+            MaxTier = 20,
             // This is filled in dynamically
+            SectionPairs = null,
             ScalingMatrix = null,
             ScalingFields = new Dictionary<string, List<string>>
             {
@@ -182,73 +182,89 @@ namespace RandomizerCommon
             // First, calculate scaling multipliers
             Dictionary<int, int> speffectTiers = new Dictionary<int, int>();
             Dictionary<string, List<double>> scalingMult = new Dictionary<string, List<double>>();
-            for (int i = 0; i < eldenScalingTiers.Count; i++)
+            for (int i = 1; i <= 20; i++)
             {
-                (int start, int end) = eldenScalingTiers[i];
-                Dictionary<string, List<double>> tierValues = new Dictionary<string, List<double>>();
-                for (int spId = start; spId <= end; spId += 10)
+                int spId = 7000 + 10 * i;
+                speffectTiers[spId] = i;
+                // Human speffect
+                speffectTiers[19350 + i] = i;
+                PARAM.Row spRow = game.Params["SpEffectParam"][spId];
+                foreach (KeyValuePair<string, List<string>> fields in eldenScaling.ScalingFields)
                 {
-                    speffectTiers[spId] = i + 1;
-                    PARAM.Row spRow = game.Params["SpEffectParam"][spId];
-                    foreach (KeyValuePair<string, List<string>> fields in eldenScaling.ScalingFields)
-                    {
-                        AddMulti(tierValues, fields.Key, (double)(float)spRow[fields.Value[0]].Value);
-                    }
-                }
-                foreach (KeyValuePair<string, List<double>> vals in tierValues)
-                {
-                    // Alternatively: average
-                    double tierValue = vals.Value.Min();
-                    AddMulti(scalingMult, vals.Key, tierValue);
+                    AddMulti(scalingMult, fields.Key, (double)(float)spRow[fields.Value[0]].Value);
                 }
             }
+            // Also merge in no-scaling into first tier. This is only Cave of Knowledge, and 20 is a cleaner total.
+            speffectTiers[7000] = 1;
+
+            eldenScaling.SectionPairs = new List<(int, int)>();
+            for (int i = 2; i <= eldenScaling.MaxTier; i++)
+            {
+                for (int j = 1; j < i; j++)
+                {
+                    eldenScaling.SectionPairs.Add((j, i));
+                }
+            }
+            // Console.WriteLine($"{string.Join(" ", eldenScaling.SectionPairs)}");
+
             // Some attempt to reduce the effect of scaling up/down, due to how later
             // game bosses are often manually tuned differently.
             // 1.1 ends up being a factor of 1.61 after 5 iterations, 1.05 is 1.276, 1.06 is 1.33
-            double dampen = 1.05f;
-            List<string> dampenTypes = new List<string> { "damage", "health" };
-            // Concurrent modification of scalingMult
-            foreach (KeyValuePair<string, List<double>> mult in scalingMult.Where(m => dampenTypes.Contains(m.Key)).ToList())
+            // With 20 tiers, there are 19 iterations, but damage has 4 identical tiers.
+            double target = 1.275;
+            Dictionary<string, double> dampenTypes = new Dictionary<string, double>
             {
-                // Console.WriteLine($"{mult.Key} scaling: {string.Join(", ", mult.Value)}");
+                ["damage"] = Math.Pow(target, 1.0 / 19),
+                ["health"] = Math.Pow(target, 1.0 / 15),
+            };
+
+            Dictionary<string, List<double>> altScalingMult = new Dictionary<string, List<double>>(scalingMult);
+            foreach (KeyValuePair<string, List<double>> mult in scalingMult.Where(m => dampenTypes.ContainsKey(m.Key)))
+            {
                 double factor = 1;
+                double dampen = dampenTypes[mult.Key];
                 List<double> vals = mult.Value.ToList();
                 for (int i = 0; i < vals.Count; i++)
                 {
                     vals[i] /= factor;
                     if (i > 0 && vals[i] <= vals[i - 1])
                     {
-                        Console.WriteLine($"Warning: Can't dampen {mult.Key} scaling because of merged mod. {i-1}={mult.Value[i-1]}, {i}={mult.Value[i]}. Enemy scaling may be incorrect as a result.");
-                        vals = null;
-                        break;
+                        continue;
                     }
                     factor *= dampen;
                 }
+                // Console.WriteLine($"{mult.Key} scaling: {string.Join(", ", mult.Value)}\n-> {string.Join(", ", vals)}");
                 if (vals != null)
                 {
-                    scalingMult[mult.Key] = vals;
+                    altScalingMult[mult.Key] = vals;
                 }
             }
 
             // Manually construct the XP list.
-            // TODO we could do this automatically based on NpcParam list, plus GameAreaParam... see how this does.
             scalingMult["xp"] = EldenSoulScaling;
             // Build matrix from that
-            eldenScaling.ScalingMatrix = new Dictionary<string, List<double>>();
-            foreach (KeyValuePair<string, List<double>> mult in scalingMult)
+            Dictionary<string, List<double>> makeScalingMatrix(Dictionary<string, List<double>> scalingMult)
             {
-                List<double> vals = mult.Value;
-                List<double> pairs = new List<double>();
-                foreach ((int i, int j) in eldenScaling.SectionPairs)
+                Dictionary<string, List<double>> scalingMatrix = new Dictionary<string, List<double>>();
+                foreach (KeyValuePair<string, List<double>> mult in scalingMult)
                 {
-                    pairs.Add(vals[j - 1] / vals[i - 1]);
+                    List<double> vals = mult.Value;
+                    List<double> pairs = new List<double>();
+                    foreach ((int i, int j) in eldenScaling.SectionPairs)
+                    {
+                        pairs.Add(vals[j - 1] / vals[i - 1]);
+                    }
+                    scalingMatrix[mult.Key] = pairs;
+                    // Console.WriteLine($"{mult.Key}: {string.Join(", ", eldenScaling.SectionPairs.Select((p, k) => $"{p.Item1}->{p.Item2}={pairs[k]}"))}");
                 }
-                eldenScaling.ScalingMatrix[mult.Key] = pairs;
-                // Console.WriteLine($"{mult.Key}: {string.Join(", ", eldenScaling.SectionPairs.Select((p, k) => $"{p.Item1}->{p.Item2}={pairs[k]}"))}");
+                return scalingMatrix;
             }
+            eldenScaling.ScalingMatrix = makeScalingMatrix(scalingMult);
+            eldenScaling.UniqueScalingMatrix = makeScalingMatrix(altScalingMult);
+
             // Finally do classifications, from entity id to scaling tier
             Dictionary<int, int> ret = new Dictionary<int, int>();
-            // Exiting NPC speffects
+            // Existing NPC speffects
             Dictionary<int, int> npcEffects = game.Params["NpcParam"].Rows
                 .ToDictionary(r => r.ID, r => (int)r["spEffectID3"].Value);
             // Record effects used in maps to fill in blanks. map name -> speffect id -> count
@@ -285,7 +301,7 @@ namespace RandomizerCommon
             Dictionary<string, int> mapEffects = mapCounts.ToDictionary(
                 e => e.Key, e => e.Value.OrderByDescending(s => s.Value).First().Key);
             // Roundtable Hold has no non-human enemies
-            mapEffects["m11_10_00_00"] = 7030;
+            // mapEffects["m11_10_00_00"] = 7030;
             // Second pass, try to infer
             foreach (KeyValuePair<int, EnemyData> entry in defaultData)
             {
@@ -318,64 +334,60 @@ namespace RandomizerCommon
 
         private static readonly Dictionary<int, int> manualEntityTiers = new Dictionary<int, int>
         {
-            // Ekzykes is normally 3, but its base HP (5753) and damage is higher than
-            // Greyll (tier 6, 1639) and Agheel (tier 2, 1639)
-            [1048370800] = 5,
+            // Ekzykes is normally 11, but its base HP (5753) and damage is higher than
+            // Greyll (tier 17, 1639) and Agheel (tier 5, 1639)
+            [1048370800] = 15,
+            // Removed after revamp, which deals with boundaries better
             // Nerf Rykard from 4 to 3, to match Godskin Noble
-            [16000800] = 3,
-            [16000801] = 3,
+            // [16000800] = 3,
+            // [16000801] = 3,
             // Bump Godrick up a tier?
-            [10000800] = 2,
+            // [10000800] = 2,
         };
 
         // Hand-crafted attempt at finding the soul scaling curve.
         // This is used for turning bosses into regular enemies with an appropriate soul drop amount
-        public readonly static List<double> EldenSoulScaling = new List<double> { 1, 2.9, 4.785, 10, 20, 30 };
-
-        // Set u8 magParamChange = 1, u8 miracleParamChange = 1
-        // This isn't as necessary because we're copying from row 7000 which should have it already
-        // private readonly static List<string> eldenBooleans = new List<string> { "magParamChange", "miracleParamChange" };
-        private readonly static List<(int, int)> eldenScalingTiers = new List<(int, int)>
+        // Before revamp
+        // public readonly static List<double> EldenSoulScaling = new List<double> { 1, 2.9, 4.785, 10, 20, 30 };
+        // These are selected to fit various cross-tier constraints. Making them additive is easier to reason about.
+        private static readonly List<double> eldenExps = new List<double>
         {
-            (7000, 7040),
-            (7050, 7080),
-            (7090, 7110),
-            (7120, 7130),
-            (7140, 7160),
-            (7170, 7200),
+            0, 23, 43, 188, 233, 285, 487, 743, 769, 925,
+            970, 1091, 1107, 1192, 1277, 1430, 1438, 1458, 1478, 1478
         };
-        // There are also NPC speffects 13941 to 19397, but these don't do scaling.
-        // In those cases, pick the maximum scaling speffect from the same map.
+        public readonly static List<double> EldenSoulScaling = eldenExps.Select(exp => Math.Pow(10, exp / 1000)).ToList();
+
+        // Scaling tiers
+        // There are also NPC speffects 13941 to 19397, but only 193[56]0 range correspond to real scaling.
         // 0: do not scale
-        // -- HP rates 0 to 1.813 - bats 42000014, 83 souls, rats 145. 1
+        // -- HP rates 0 to 1.813
         // 7000: Stranded Graveyard
         // 7010: Limgrave, Stormhill
         // 7020: Weeping Peninsula
         // 7030 7040: Stormveil, Peninsula Minibosses
-        // -- HP rates 1.953 to 2.688 - bats 42000141, 260 souls, rats 392. 2.9
+        // -- HP rates 1.953 to 2.688
         // 7050: Early Ainsel
-        // 7060: Anticipation, Liurnia, Bellum, Siofra, Academy, Fringefolk Grave
+        // 7060: Anticipation, Liurnia, Bellum, Siofra, Academy, Fringefolk Grave - 19356
         // 7070: Rennala, Caelid, Precipice
         // 7080: Caria Manor, Abductor Virgins, Altus, Redmane Castle
-        // -- HP rates 3.25 to 4.125 - bats 42000038, 434 souls, rats 416 avg 862 = 639. ulcerated 18000. 1.65 mult = 4.785
-        // 7090: Nokron, Mt. Gelmir
-        // 7100: Radahn, Capital Outskirts, Leyndell, Liurnia Tower
-        // 7110: Leyndell, Capital Outskirts, Ainsel (incl Astel), Deeproot, Volcano Manor
-        // -- HP rates 4.844 to 5.484 - bats 42000050, 575 souls, rats 862. ulcerated 48000. 2 mult = 10
+        // -- HP rates 3.25 to 4.125
+        // 7090: Nokron, Mt. Gelmir - 19359
+        // 7100: Radahn, Capital Outskirts, Leyndell, Liurnia Tower - 19360
+        // 7110: Leyndell, Capital Outskirts, Ainsel (incl Astel), Deeproot, Volcano Manor - 19361 (19360 for ghiza)
+        // -- HP rates 4.844 to 5.484
         // 7120: Rykard, Mountaintops, Flame Peak
         // 7130: Subterranean, Moonlight Altar
-        // -- HP rates 6.563 to 6.875 - bats 42000042, 887 souls, rats 2008. rot avatar 1051400800, 91000 souls. 2 mult = 20
+        // -- HP rates 6.563 to 6.875
         // 7140: Fire Giant, Farum Azula
-        // 7150: Maliketh, Dragonbarrow, Ashen Leyndell
+        // 7150: Maliketh, Dragonbarrow, Ashen Leyndell - 19365
         // 7160: Ashen Leyndell Bosses, Consecrated Snowfield
-        // -- HP rates 7.047 to 7.422 (7180 is 7.203). rot avatar id 1050570850, 160000 souls. 1.75 mult = 35
+        // -- HP rates 7.047 to 7.422
         // 7170: Final bosses, Mohgwyn
         // 7180: Mohg, Haligtree, Snowfield Bosses
         // 7190: More Haligtree
         // 7200: Malenia
 
         // Returns a mapping from (source section, target section) to (scaling without xp, scaling with xp)
-        // TODO: Create third category for damage-only scaling?
         public SpEffectValues EditScalingSpEffects()
         {
             SpEffectValues ret = new SpEffectValues();
@@ -384,9 +396,20 @@ namespace RandomizerCommon
             {
                 throw new Exception($"Internal error: bad scaling values");
             }
+            ret.MaxTier = d.MaxTier;
 
             int newSpBase = d.NewScalingBase;
             PARAM.Row defaultSp = game.Params["SpEffectParam"][d.ScalingBase];
+
+            PARAM.Row createCustomEffect(string name)
+            {
+                int newCustomSp = newSpBase++;
+                PARAM.Row customSp = game.AddRow("SpEffectParam", newCustomSp);
+                customSp.Name = name;
+                GameEditor.CopyRow(defaultSp, customSp);
+                return customSp;
+            }
+
             int maxTier = d.SectionPairs.Select(p => p.Item2).Max();
             for (int i = 1; i <= maxTier; i++)
             {
@@ -400,39 +423,44 @@ namespace RandomizerCommon
                     int index = scaleUp == -1 ? scaleDown : scaleUp;
                     bool invert = scaleUp == -1;
 
-                    int newSp = newSpBase++;
-                    int newSpXp = newSpBase++;
-                    PARAM.Row sp = game.AddRow("SpEffectParam", newSp);
-                    PARAM.Row spXp = game.AddRow("SpEffectParam", newSpXp);
-                    GameEditor.CopyRow(defaultSp, sp);
-                    GameEditor.CopyRow(defaultSp, spXp);
-                    ret.Areas[(i, j)] = new AreaScalingValue { FixedScaling = newSp, RegularScaling = newSpXp };
-                    foreach (KeyValuePair<string, List<string>> entry in d.ScalingFields)
+                    int fillFields(Dictionary<string, List<double>> scalingMatrix, bool includeXp, string desc)
                     {
-                        double val = d.ScalingMatrix[entry.Key][index];
-                        // If scaling down, just take opposite of calculated difference. If scaling up, nerf a bit, since these numbers tend to come from simpler enemies.
-                        if (invert) val = 1 / val;
-                        else if (game.Sekiro) val = val / 1.333333;
-                        // Console.WriteLine($"{i}->{j} {entry.Key}: {val}");
-                        foreach (string field in entry.Value)
+                        PARAM.Row sp = createCustomEffect(desc);
+                        foreach (KeyValuePair<string, List<string>> entry in d.ScalingFields)
                         {
-                            spXp[field].Value = (float)val;
-                            if (entry.Key == "xp") continue;
-                            sp[field].Value = (float)val;
+                            double val = d.ScalingMatrix[entry.Key][index];
+                            // If scaling down, just take opposite of calculated difference. If scaling up, nerf a bit, since these numbers tend to come from simpler enemies.
+                            if (invert) val = 1 / val;
+                            else if (game.Sekiro) val = val / 1.333333;
+                            // Console.WriteLine($"{i}->{j} {entry.Key}: {val}");
+                            foreach (string field in entry.Value)
+                            {
+                                if (!includeXp && entry.Key == "xp") continue;
+                                sp[field].Value = (float)val;
+                            }
                         }
+                        return sp.ID;
+                    }
+                    AreaScalingValue sps = new AreaScalingValue();
+                    ret.Areas[(i, j)] = sps;
+                    sps.FixedScaling = fillFields(d.ScalingMatrix, false, $"Randomizer scaling fixedxp {i}->{j}");
+                    sps.RegularScaling = fillFields(d.ScalingMatrix, true, $"Randomizer scaling regular {i}->{j}");
+                    if (d.UniqueScalingMatrix != null)
+                    {
+                        sps.UniqueFixedScaling = fillFields(d.UniqueScalingMatrix, false, $"Randomizer scaling fixedxp unique {i}->{j}");
+                        sps.UniqueRegularScaling = fillFields(d.UniqueScalingMatrix, true, $"Randomizer scaling regular unique {i}->{j}");
+                    }
+                    else
+                    {
+                        sps.UniqueFixedScaling = sps.FixedScaling;
+                        sps.UniqueRegularScaling = sps.RegularScaling;
                     }
                 }
             }
+
             // A few more for special cases
-            PARAM.Row createCustomEffect()
-            {
-                int newCustomSp = newSpBase++;
-                PARAM.Row customSp = game.AddRow("SpEffectParam", newCustomSp);
-                GameEditor.CopyRow(defaultSp, customSp);
-                return customSp;
-            }
             // Tutorial bosses, before upgrading anything is possible
-            PARAM.Row tutSp = createCustomEffect();
+            PARAM.Row tutSp = createCustomEffect("Randomizer scaling early boss");
             ret.TutorialScaling = tutSp.ID;
             foreach (string fieldType in new[] { "health", "damage" })
             {
@@ -442,7 +470,7 @@ namespace RandomizerCommon
                 }
             }
             // Boss health scaling option
-            PARAM.Row basicSp = createCustomEffect();
+            PARAM.Row basicSp = createCustomEffect("Randomizer scaling boss->basic");
             ret.BossAsBasicScaling = basicSp.ID;
             foreach (string fieldType in new[] { "health", "xp" })
             {
@@ -452,9 +480,10 @@ namespace RandomizerCommon
                 }
             }
             // Enemy multiplier scaling, for 2-5 multipliers
+            int amt = 2;
             foreach (double reduce in bossDupeScaling)
             {
-                PARAM.Row dupeSp = createCustomEffect();
+                PARAM.Row dupeSp = createCustomEffect($"Randomizer scaling {amt++}x boss");
                 ret.Dupes.Add(dupeSp.ID);
                 foreach (string fieldType in new[] { "health" })
                 {
@@ -465,8 +494,8 @@ namespace RandomizerCommon
                 }
             }
             // Phase changes
-            PARAM.Row phaseDown = createCustomEffect();
-            PARAM.Row phaseUp = createCustomEffect();
+            PARAM.Row phaseDown = createCustomEffect("Randomizer phase down");
+            PARAM.Row phaseUp = createCustomEffect("Randomizer phase up");
             ret.PhaseDownScaling = phaseDown.ID;
             ret.PhaseUpScaling = phaseUp.ID;
             foreach (string fieldType in new[] { "health" })
@@ -483,16 +512,28 @@ namespace RandomizerCommon
         }
 
         // Utility for boss dupes, whose drops can be scaled with multiplier
+        // This scales both health and XP when the option is enabled.
         private static readonly List<double> bossDupeScaling = Enumerable.Range(2, 4).Select(c => Math.Sqrt(1.0 / c)).ToList();
+
+        public static double GetXpModifier(int dupeCount, bool scaleDown)
+        {
+            if (dupeCount <= 0) return 1;
+            int dupeIndex = dupeCount - 1;
+            double multiplier = 1;
+            if (scaleDown)
+            {
+                int scaleIndex = Math.Min(dupeIndex, bossDupeScaling.Count - 1);
+                multiplier = bossDupeScaling[scaleIndex];
+            }
+            return multiplier;
+        }
+
         public static double GetXpRate(int dupeCount, bool scaleDown)
         {
             if (dupeCount <= 0) return 1;
             int dupeIndex = dupeCount - 1;
-            if (dupeIndex >= bossDupeScaling.Count)
-            {
-                dupeIndex = bossDupeScaling.Count - 1;
-            }
-            return (dupeIndex + 2) * (scaleDown ? bossDupeScaling[dupeIndex] : 1);
+            double multiplier = GetXpModifier(dupeCount, scaleDown);
+            return (dupeIndex + 2) * multiplier;
         }
 
         // A whole ton of output
@@ -504,6 +545,7 @@ namespace RandomizerCommon
             public int BossAsBasicScaling { get; set; }
             public int PhaseDownScaling { get; set; }
             public int PhaseUpScaling { get; set; }
+            public int MaxTier { get; set; }
 
             public int GetDupeScaling(int dupeCount)
             {
@@ -516,7 +558,10 @@ namespace RandomizerCommon
         {
             public int RegularScaling { get; set; }
             public int FixedScaling { get; set; }
+            public int UniqueRegularScaling { get; set; }
+            public int UniqueFixedScaling { get; set; }
         }
+
         public class DupeScalingValue
         {
             public int NoHealthScaling { get; set; }

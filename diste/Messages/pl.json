@@ -3,6 +3,12 @@
   "translators": "Leekos",
   "messages": [
     {
+      "name": "EldenForm_allcraft",
+      "explanation": "When checked, all craftable item recipes are unlocked without requiring cookbooks",
+      "english_text": "Unlock all craftable items in Crafting Kit from the start",
+      "text": ""
+    },
+    {
       "name": "EldenForm_allitem0",
       "explanation": "Explanation for regular item placement for 0 bias%, unweighted randomization",
       "english_text": "All eligible locations for items are equally likely.",
@@ -39,6 +45,12 @@
       "text": "Stopień losowości/trudności"
     },
     {
+      "name": "EldenForm_bossbgm",
+      "explanation": "When checked, background music for bosses will be randomly swapped with background music from other bosses. (to be implemented)",
+      "english_text": "Randomize boss background music",
+      "text": ""
+    },
+    {
       "name": "EldenForm_bosshp",
       "explanation": "When checked, non-boss enemies can have their HP increased when they become boss enemies (e.g. Crab the Fell Omen)",
       "english_text": "Increase HP for regular enemies as bosses",
@@ -60,6 +72,12 @@
       "name": "EldenForm_convenienceGroup",
       "explanation": "Label for options in the Misc tab which allow changes to the game to make playthroughs more convenient and straightforward, unrelated to randomization",
       "english_text": "Convenience",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_crawl",
+      "explanation": "Secondary option after EldenForm_fog, which allows item/enemy randomizer to be used with the 'Fog Gate Randomizer' mod, particularly its 'Dungeon Crawl' mode which restricts items to not-open-world locations. So far Fog Gate Randomizer doesn't have localization.",
+      "english_text": "Dungeon Crawl mode in Fog Gate Randomizer",
       "text": ""
     },
     {
@@ -243,6 +261,18 @@
       "text": "Seed ogólny"
     },
     {
+      "name": "EldenForm_fog",
+      "explanation": "Misc option which allows item/enemy randomizer to be used with the 'Fog Gate Randomizer' mod by placing any item in any area, regardless of the normal game order. So far Fog Gate Randomizer doesn't have localization.",
+      "english_text": "Unrestricted item placement for Fog Gate Randomizer",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_fogL",
+      "explanation": "Additional note for Fog Gate Randomizer option. If the mode is enabled, item/enemy randomizer can't be used on its own, but should be merged into Fog Gate Randomizer after",
+      "english_text": "Only use this if you're installing Fog Gate Randomizer after",
+      "text": ""
+    },
+    {
       "name": "EldenForm_healthGroup",
       "explanation": "Label asking how to randomize Golden Seeds/Sacred Tears",
       "english_text": "Flask upgrades randomized?",
@@ -339,6 +369,12 @@
       "text": ""
     },
     {
+      "name": "EldenForm_launchFog",
+      "explanation": "Dialog box shown when clicking launchButton when Fog Gate Randomizer option is checked. This option requires merging item/enemy randomizer into a different mod, rather than launching it on its own.",
+      "english_text": "If you're using Fog Gate Randomizer (under Misc Options), launch the game from FogMod.exe, not from here",
+      "text": ""
+    },
+    {
       "name": "EldenForm_launchMismatch",
       "explanation": "Dialog box shown to confirm 'Launch Elden Ring' when the launch files are different from the currently selected options.",
       "english_text": "Randomizer options appear to be changed from the last time randomizer was run. Launch anyway?",
@@ -353,7 +389,7 @@
     {
       "name": "EldenForm_loadOptionsFileToolStripMenuItem",
       "explanation": "Action in the Options menu for selecting an options file to set all randomizer options",
-      "english_text": "Load options file...",
+      "english_text": "Import options file...",
       "text": ""
     },
     {
@@ -406,8 +442,8 @@
     },
     {
       "name": "EldenForm_mergeButton",
-      "explanation": "Button to open a file select dialog for an alternate file-based mod to merge",
-      "english_text": "Select other mod",
+      "explanation": "Button to open a file select dialog for an alternate file-based mod to merge. Previously 'Select other mod'",
+      "english_text": "Merge other mod",
       "text": ""
     },
     {
@@ -453,6 +489,12 @@
       "text": ""
     },
     {
+      "name": "EldenForm_nerfgargoyles",
+      "explanation": "Checkbox to disable poison-over-time damage while in Valiant Gargoyle's poison cloud, but it can still poison you",
+      "english_text": "Disable damage tick in Valiant Gargoyles' poison cloud",
+      "text": ""
+    },
+    {
       "name": "EldenForm_nerfmalenia",
       "explanation": "Checkbox to disable Malenia healing when she hits you",
       "english_text": "Disable heal-on-hit by a late-game boss",
@@ -462,6 +504,12 @@
       "name": "EldenForm_nerfmalenia",
       "explanation": "Checkbox to disable Malenia healing when she hits you",
       "english_text": "Disable Malenia's heal-on-hit",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_nerfsh",
+      "explanation": "Misc option which doesn't allow Serpent-Hunter (weapon to defeat Rykard) to be upgraded, leaving it stuck at +0. This is for balancing in races, since it's a very powerful weapon.",
+      "english_text": "Disable upgrading Serpent-Hunter",
       "text": ""
     },
     {
@@ -540,6 +588,12 @@
       "name": "EldenForm_phasehp",
       "explanation": "Checkbox to scale the health of multi-phase bosses which are normally part of one healthbar. Fire Giant p1 becoming Margit would be scaled up slightly (around 140%), but Margit becoming Fire Giant p1 would be scaled down slightly (around 70%)",
       "english_text": "Scale up/down multi-phase bosses slightly",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_placementGroup",
+      "explanation": "Label for checkboxes with broad randomization options, like what to randomize and which routing to allow",
+      "english_text": "Item placement",
       "text": ""
     },
     {
@@ -795,6 +849,30 @@
       "text": "Błąd! Częściowy log w pliku spoiler_logs jako {0}"
     },
     {
+      "name": "EldenForm_runes_endL",
+      "explanation": "Label which appears after a dropdown with values from 0-7. It describes the count of how many Great Runes are required to enter the Erdtrefe, previously the runereq option",
+      "english_text": "Great Runes to access the final boss",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_runes_leyndellL",
+      "explanation": "Label which appears after a dropdown with values from 0-7. It describes the count of how many Great Runes are required to remove the golden seal before Leyndell, which is normally 2.",
+      "english_text": "Great Runes to enter Leyndell",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_runes_roldL",
+      "explanation": "Label which appears after a dropdown with values form 0-7, and a blank value. When not blank, it requires the given number of Great Runes to use Rold Medallion to reach Mountaintops of the Giants and beat the game.",
+      "english_text": "Great Runes to enter Mountaintops",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_runes_roldL2",
+      "explanation": "Further label for the runes_rold dropdown, which indicates that Rold Medallion is no longer required to use Grand Lift of Rold and that the player should not try to search for it if they are using this feature. If there's not enough space, the 'only Great Runes' part is not as important",
+      "english_text": "If selected, Rold Medallion is not required, only Great Runes",
+      "text": ""
+    },
+    {
       "name": "EldenForm_running",
       "explanation": "Text that replaces the 'Randomize' button when randomization is running",
       "english_text": "Running...",
@@ -809,13 +887,25 @@
     {
       "name": "EldenForm_saveOptionsFileToolStripMenuItem",
       "explanation": "Action in Options menu to select a filename to store current randomizer options. These can be shared with other people.",
-      "english_text": "Save options file...",
+      "english_text": "Export options file...",
       "text": ""
     },
     {
       "name": "EldenForm_scale",
       "explanation": "When checked, increases or decreases enemy stats (HP/health they have, and how much damage they deal) using scaling",
       "english_text": "Scale up/down enemy health/damage",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_scalerandom",
+      "explanation": "Custom preset option which scales enemies to a random tier, rather than based on where they're placed",
+      "english_text": "Randomly scale enemies",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_scaleup",
+      "explanation": "Custom preset option which never scales enemies down. They either remain at their current level or are scaled up based on their destination.",
+      "english_text": "Only scale enemies up",
       "text": ""
     },
     {
@@ -840,6 +930,12 @@
       "name": "EldenForm_sombermodeL",
       "explanation": "More details about sombermode. Instead of upgrades requiring 2-4-6 of any Smithing Stone, it is changed to 1-1-1 (from 97 in total, to 25 in total).",
       "english_text": "Require only one Smithing Stone per weapon level",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_specialGroup",
+      "explanation": "Label for Misc Options options group, to select options which change randomizer behavior for special reasons",
+      "english_text": "Special modes",
       "text": ""
     },
     {
@@ -885,6 +981,12 @@
       "text": ""
     },
     {
+      "name": "EldenForm_swaprewards",
+      "explanation": "When bosses are randomized, changes their rune drop amounts. For instance, if Malenia is in Margit's arena, her runes will be based on her original amount but scaled down from Malenia's level to Margit's level",
+      "english_text": "Change boss runes to correspond to the original boss",
+      "text": ""
+    },
+    {
       "name": "EldenForm_updateButton",
       "explanation": "Button which opens the randomizer files page, to allow easy checks for newer versions of the randomizer",
       "english_text": "Check for updates",
@@ -919,6 +1021,12 @@
       "explanation": "Checkbox to make Smithing Stones more likely to be available in early/late areas depending on their type. This affects the placement and distribution of Smithing Stones, so that you can upgrade your weapon like in the unmodified game. You will be able to reliably find tiers 1 to 3 in Limgrave and Liurnia. Otherwise, finding upgrade materials may be much more difficult.",
       "english_text": "Smithing Stone availability similar to base game",
       "text": "Dostępność kamieni kowalskich podobnie jak w podstawowej wersji gry."
+    },
+    {
+      "name": "EldenForm_weaponreqs",
+      "explanation": "Checkbox to make all weapons in the game wieldable regardless of stats",
+      "english_text": "Remove all weapon and spell requirements",
+      "text": ""
     },
     {
       "name": "EnemyClass_AdjustSourceDoc",
@@ -1053,6 +1161,12 @@
       "text": ""
     },
     {
+      "name": "GameMenu_fogRunningError",
+      "explanation": "Dialog message which appears in-game when Fog Gate Randomizer option is enabled, but the user attempted to launch Item/Enemy Randomizer without actually running Fog Gate Randomizer. The \n is a line break. When Fog Gate Randomizer runs, it removes this error message.",
+      "english_text": "Error: Unrestricted item placement was enabled in Item Randomizer,\nbut Fog Gate Randomizer was not detected",
+      "text": ""
+    },
+    {
       "name": "GameMenu_hintItemLabel",
       "explanation": "Label placed in the in-game map, which includes an item name {0} and area name {1} with its exact location. For example: Talisman Pouch in Altus Plateau",
       "english_text": "{0} in {1}",
@@ -1149,6 +1263,36 @@
       "text": ""
     },
     {
+      "name": "MergeModForm_clear",
+      "explanation": "Button in 'Merge other mod' which clears the merged mod textbox",
+      "english_text": "Clear merged mod",
+      "text": ""
+    },
+    {
+      "name": "MergeModForm_dir",
+      "explanation": "Button in 'Merge other mod' which prompts selecting a mod directory",
+      "english_text": "Select mod directory to merge",
+      "text": ""
+    },
+    {
+      "name": "MergeModForm_MergeModForm",
+      "explanation": "Title of 'Merge other mod' dialog box",
+      "english_text": "Select mod to merge",
+      "text": ""
+    },
+    {
+      "name": "MergeModForm_reg",
+      "explanation": "Button in 'Merge other mod' which prompts selecting a regulation.bin file",
+      "english_text": "Select regulation.bin to merge",
+      "text": ""
+    },
+    {
+      "name": "MergeModForm_toml",
+      "explanation": "Button in 'Merge other mod' which prompts selecting a toml file, such as Mod Engine's config_eldenring.toml file, which contains a list of mods to launch. This allows merging multiple mods into randomizer.",
+      "english_text": "Select toml file (merge multiple mods)",
+      "text": ""
+    },
+    {
       "name": "OptionsForm_errorInternal",
       "explanation": "Internal error for 'Set options from string', when it somehow starts out with invalid options",
       "english_text": "Invalid options: internal error",
@@ -1212,6 +1356,12 @@
       "name": "Preset_oopsAll",
       "explanation": "Oops All mode, where all enemies are replaced with the enemy named in {0}. The phrase is based on an American cereal https://knowyourmeme.com/memes/oops-all-berries-box-parodies, and in this case, DS1 enemy randomizer runs by streamer LobosJr where he was constantly running into enemies who turned into Gwyn.",
       "english_text": "Oops All {0}",
+      "text": ""
+    },
+    {
+      "name": "Preset_options",
+      "explanation": "Summary of custom options enabled for the preset, where {0} is a comma-separated list of preset options. This is currently not used, since the options are just listed one-by-one",
+      "english_text": "Options: {0}",
       "text": ""
     },
     {

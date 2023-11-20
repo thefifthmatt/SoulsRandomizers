@@ -95,6 +95,8 @@ namespace RandomizerCommon
             // In the case of phase transitions with cutscenes, each one should unset and set the music flag, but this
             // needs to use a custom music flag if the start flag is already taken (in particular, with copyphase, dupeIndex -1).
             public string MusicFlagArg { get; set; }
+            // Args used for changing param-based boss music selection, with <defeat flag> <boss bgm id>.
+            public string BossBgmArg { get; set; }
             // The condition groups used to end a boss fight, first for music flag and second for permanent flag. Either a group or a command name (with cond group 0)
             public string EndCond { get; set; }
             public string EndCond2 { get; set; }
@@ -134,6 +136,10 @@ namespace RandomizerCommon
             // Args to replace (TODO: replacing entire commands, selecting EventValueTypes, and 'Replaces')
             public string Replace { get; set; }
             public List<EventReplaceCommand> Replaces { get; set; }
+            // Order of condition groups, to resolve ambigous applications for condition group rewriting.
+            public string CondOrder { get; set; }
+            // Passively registered commands for detecting condition group rewriting.
+            public List<string> CondIdentity { get; set; }
             // When provided, rewrites the entire event to the given commands, before applying other edits.
             // This is effectively like creating a brand new event, but per enemy randomization target.
             public List<string> NewEvent { get; set; }
@@ -216,6 +222,8 @@ namespace RandomizerCommon
             // Removed when the entity is not moved
             public List<string> MoveOnly { get; set; }
             public List<string> NonMoveOnly { get; set; }
+            // When the entity is not moved and is the original
+            public List<string> OriginalOnly { get; set; }
             // Commands, which mostly match ones in the range. (This can include some custom commands? hide, show, fall damage)
             // If not altsetup and not NoMatch, this must include at least one matching instruction
             public List<string> Commands { get; set; }

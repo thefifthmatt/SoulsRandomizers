@@ -263,6 +263,8 @@ ItemEvents:
   Comment: Boss drop
   ItemTemplate:
   - Type: singleton
+  - Type: removecheck
+    EventFlagArg: X12
   - Type: locarg
     Comment: This can run into issues when the flag was already set, and other drops won't be rewarded. For instance, Radahn Remembrance (510300) getting replaced by Godrick's Great Rune (171), but the GR has already been acquired somehow. Maybe remove the event flag check? This should not affect normal playthroughs.
     EventFlag: 197 60440 60510 60520 510010 510030 510040 510060 510070 510080 510090 510100 510110 510120 510140 510150 510160 510190 510200 510210 510220 510230 510250 510260 510280 510290 510300 510310 510320 510330 510340 510350 510730 510740 510800 510810 510820 510830 510840
@@ -311,6 +313,8 @@ ItemEvents:
   Comment: Alt boss drop
   ItemTemplate:
   - Type: singleton
+  - Type: removecheck
+    EventFlagArg: X12
   - Type: locarg
     EventFlag: 520000 520010 520020 520030 520040 520050 520060 520070 520080 520090 520100 520110 520120 520130 520140 520150 520160 520170 520180 520190 520200 520210 520220 520300 520310 520330 520340 520350 520360 520370 520380 520390 520400 520410 520420 520430 520440 520450 520460 520470 520480 520490 520600 520610 520620 520630 520640 520650 520660 520670 520680
     EventFlagArg: X12
@@ -1043,10 +1047,18 @@ ItemEvents:
     EventFlag: 60500
   DebugInfo:
   - m11_10_00_00 (Roundtable Hold) - IfEventFlag(60500) - Talisman Pouch
-- ID: 12042400
-  Comment: Allows player to pass to Moonlight Altar
+- ID: 12032500
+  Comment: Depths to Leyndell entry
   ItemTemplate:
-  - Type: item
+  - Type: leyndell
+- ID: 1045522500
+  Comment: Outskirts to Leyndell entry. Occurs in both _00 and _10 maps, but we only edit the initialized one.
+  ItemTemplate:
+  - Type: leyndell
+- ID: 12042400
+  Comment: Allows player to pass to Moonlight Altar. This can't use item id since you give it to Ranni.
+  ItemTemplate:
+  - Type: itemflag
     EventFlag: 114
     ItemCond: 5
   DebugInfo:

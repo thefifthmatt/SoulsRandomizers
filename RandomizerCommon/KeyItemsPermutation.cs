@@ -24,7 +24,7 @@ namespace RandomizerCommon
         private Dictionary<string, HashSet<string>> loops = new Dictionary<string, HashSet<string>>();
         private Dictionary<string, HashSet<string>> itemEvents = new Dictionary<string, HashSet<string>>();
 
-        public KeyItemsPermutation(RandomizerOptions options, LocationData data, AnnotationData ann, EnemyLocations enemies, bool explain)
+        public KeyItemsPermutation(RandomizerOptions options, LocationData data, AnnotationData ann, bool explain)
         {
             this.data = data;
             this.ann = ann;
@@ -43,12 +43,79 @@ namespace RandomizerCommon
                     (UniqueCategory cat, int count) = counts[scope];
                     dict[cat] += count;
                 }
-                if (false && ann.Slots.Count == 0 && !e.Key.EndsWith("tower_inner") && e.Key != "erdtree" && !e.Key.Contains("0"))
-                {
-                    dict[UniqueCategory.KEY_LOT] = 5;
-                }
                 return dict;
             });
+
+            if (ann.Events.ContainsKey("ashen"))
+            {
+                // Elden Ring has dynamic conditions which are hard to genericize logic for, so fill those in here.
+                // runes_leyndell, runes_rold, runes_rold_event can be replaced. runes_end is also dynamic, but does not affect logic.
+                List<string> runes;
+                if (options["norandom"])
+                {
+                    // Use vanilla ordering or else we may have late-game Great Runes being required to enter Leyndell
+                    runes = ann.Items.Keys.Where(i => i.StartsWith("rune")).ToList();
+                }
+                else
+                {
+                    runes = ann.Items.Keys.Where(i => i.StartsWith("rune")).OrderBy(i => i).ToList();
+                    Shuffle(new Random((int)options.Seed), runes);
+                }
+                if (explain) Console.WriteLine($"Order of required Great Runes: {string.Join(", ", runes)}");
+                int leyndellRunes = 2;
+                if (options.GetInt("runes_leyndell", 0, 7, out int runeOpt))
+                {
+                    leyndellRunes = runeOpt;
+                }
+                int roldRunes = -1;
+                if (options.GetInt("runes_rold", 0, 7, out runeOpt))
+                {
+                    roldRunes = runeOpt;
+                }
+                // Logic-only "free rune". This might be sensible to do given high bias and rune count.
+                if (options["runebuffer"])
+                {
+                    leyndellRunes = Math.Min(leyndellRunes + 1, 7);
+                    if (roldRunes >= 0)
+                    {
+                        roldRunes = Math.Min(roldRunes + 1, 7);
+                    }
+                }
+
+                // If leyndellRunes is 0, this condition just becomes true
+                configExprs["runes_leyndell"] = new Expr(runes.Take(leyndellRunes).Select(r => Expr.Named(r)).ToList(), true);
+                if (roldRunes == -1)
+                {
+                    // Default, just require Rold
+                    configExprs["runes_rold"] = Expr.Named("roldmedallion");
+                    configExprs["runes_rold_event"] = Expr.Named("roldmedallion");
+                }
+                else
+                {
+                    // Do not reference Rold. It won't be placed here (and it is removed from the item pool anyway).
+                    configExprs["runes_rold"] = new Expr(runes.Take(roldRunes).Select(r => Expr.Named(r)).ToList(), true);
+                    // This is used for Until logic and redundant to mountaintops access condition, so blank it out if not a single item anymore.
+                    configExprs["runes_rold_event"] = Expr.TRUE;
+                }
+                if (options["fog"] && ann.ItemGroups.TryGetValue("nofogaccess", out List<ItemKey> fogItems))
+                {
+                    // For fog gate randomizer (currently Elden Ring only), override the above.
+                    // Also ignore keys unless the locked area is not accessible by gates/warps.
+                    List<string> trueConds = new List<string> { "runes_leyndell", "runes_rold", "runes_rold_event" };
+                    foreach ((string name, ItemKey item) in ann.Items)
+                    {
+                        if (!fogItems.Contains(item) && !runes.Contains(name))
+                        {
+                            trueConds.Add(name);
+                        }
+                    }
+                    foreach (string name in trueConds)
+                    {
+                        configExprs[name] = Expr.TRUE;
+                    }
+                }
+                if (explain) Console.WriteLine($"Using special Great Rune config {string.Join(", ", configExprs)}");
+            }
 
             Dictionary<string, string> equivalentGraph = new Dictionary<string, string>();
             void processDependencies(AreaAnnotation area, ISet<string> frees, bool assignItems)
@@ -67,6 +134,7 @@ namespace RandomizerCommon
                             AddMulti(itemEvents, free, name);
                             if (area.AlwaysBefore != null)
                             {
+                                // Another placement for key items, so e.g. Mortal Blade can be required in area with until=invasion2
                                 AddMulti(itemEvents, free, area.AlwaysBefore);
                             }
                         }
@@ -377,6 +445,11 @@ namespace RandomizerCommon
                 {
                     specialScaling = allowedAreas.Where(area => ann.Areas[area].BoringKeyItem).ToDictionary(area => area, _ => 1 / scaling);
                 }
+                // Prevent Dectus in Precipice also hackily. We don't want to do this in logic directly because of precipice earliness
+                if (item == "dectusmedallionleft" || item == "dectusmedallionright")
+                {
+                    specialScaling = new Dictionary<string, float> { ["precipice"] = 0 };
+                }
                 if (ann.ItemRestrict != null && ann.ItemRestrict.TryGetValue(itemKey, out PlacementRestrictionAnnotation restrict) && restrict.KeyAreas != null)
                 {
                     string[] restrictAreas = restrict.KeyAreas.Split(' ');
@@ -430,6 +503,11 @@ namespace RandomizerCommon
             }
             // The last placed item has the highest priority
             ret.Priority.Reverse();
+            // Academy Glintstone Key is not a key in crawl mode but it needs to be at Loretta with min locations and earlylegacy
+            if (options["crawl"] && options["earlylegacy"] && !ret.Priority.Contains(new ItemKey(ItemType.GOOD, 8109)))
+            {
+                ret.Priority.Add(new ItemKey(ItemType.GOOD, 8109));
+            }
 
             // Now that all key items have been assigned, determine which areas are blocked by other areas.
             // This is used to determine lateness within the game (by # of items encountered up to that point).
@@ -573,10 +651,14 @@ namespace RandomizerCommon
                 List<string> allowedAreas = ann.ItemRestrict.ContainsKey(itemKey)
                     ? areas.Intersect(ann.ItemRestrict[itemKey].Unique[0].AllowedAreas(ret.IncludedAreas, combinedWeights)).ToList()
                     : areas.ToList();
-                bool allowMissable = ann.ExcludeTags.TryGetValue(itemKey, out HashSet<string> excludeTags) ? !excludeTags.Contains("missable") : true;
-                string selected = WeightedChoice(random, allowedAreas, a => Weight(a, allowMissable, 0.01f, questAreas.ContainsKey(a) ? questAreas[a] : 0));
-                if (explain) Console.WriteLine($"Selecting {questItem} to go in {selected}");
-                nodes[selected].AddItem(true, true);
+                bool itemAllowMissable = ann.ExcludeTags.TryGetValue(itemKey, out HashSet<string> excludeTags) ? !excludeTags.Contains("missable") : true;
+                bool allowQuest = itemAllowMissable || ann.NoQuestTags.Contains("missable");
+                string selected = WeightedChoice(random, allowedAreas, a => Weight(a, allowQuest, 0.01f, questAreas.ContainsKey(a) ? questAreas[a] : 0));
+                if (explain) Console.WriteLine($"Selecting {questItem} to go in {selected} ({string.Join(" ", nodes[selected].Counts)})");
+                // if (selected == "volcano" || true) Console.WriteLine($"  can miss {allowMissable}, areas {string.Join(" ", questAreas)}. weights {string.Join(", ", allowedAreas.Select(a => $"{a}={Weight(a, allowMissable, 0.01f, questAreas.ContainsKey(a) ? questAreas[a] : 0)}"))}");
+                // if (selected == "volcano" || true) Console.WriteLine($"  areas {string.Join(" ", questAreas)}. weights {string.Join(", ", allowedAreas.Where(a => nodes[a].Count(true, true) >= 0).Select(a => $"{a}={nodes[a].Count(true, true)}"))}");
+                // if (selected == "volcano" || true) Console.WriteLine($"  can miss {allowMissable}, areas {string.Join(" ", questAreas)}. weights sum >>{allowedAreas.Sum(a => Weight(a, allowMissable, 0.01f, questAreas.ContainsKey(a) ? questAreas[a] : 0))}");
+                nodes[selected].AddItem(allowQuest, true);
                 ret.Assign[itemKey] = new HashSet<string> { selected };
                 if (ann.AreaEvents.TryGetValue(selected, out List<string> events)) ret.Assign[itemKey].UnionWith(events);
             }
@@ -669,7 +751,7 @@ namespace RandomizerCommon
                                 return;
                             }
                         }
-                        throw new Exception("Hard dependency loop");
+                        throw new Exception($"Unsolvable seed: hard dependency loop [{string.Join(",", subpath)}]");
                     }
                     return;
                 }
@@ -753,7 +835,7 @@ namespace RandomizerCommon
                         return;
                     }
                 }
-                throw new Exception($"Cannot add item to {Name} in quest {allowQuest}, shops {allowShops}");
+                throw new Exception($"Cannot add item to {Name} in quest {allowQuest}, shops {allowShops} (counts: {string.Join(" ", Counts)})");
             }
             public void AddShopCapacity(bool allowQuest, int amount)
             {

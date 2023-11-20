@@ -23,10 +23,14 @@ namespace RandomizerCommon
             this.ann = ann;
         }
 
-        public void Randomize(Random random, Permutation perm)
+        public void Randomize(RandomizerOptions opt, Permutation perm)
         {
+            Random random = new Random((int)opt.Seed);
             Dictionary<int, string> assetDrops = new Dictionary<int, string>();
             Dictionary<int, HashSet<string>> assetMaps = new Dictionary<int, HashSet<string>>();
+            // There are 233 glovewort, 3366 rowa, 1128 erdleaf flower
+            HashSet<int> fodderIds = new HashSet<int>();
+            HashSet<int> glovewortIds = new HashSet<int>();
             if (data == null || ann == null || perm == null)
             {
                 assetDrops = game.Params["AssetEnvironmentGeometryParam"].Rows
@@ -80,6 +84,14 @@ namespace RandomizerCommon
                             row["pickUpActionButtonParamId"].Value = 7823;
                         }
                     }
+                    if (itemName.Contains("Glovewort"))
+                    {
+                        glovewortIds.UnionWith(assets);
+                    }
+                    if (itemName == "Rowa Fruit" || itemName == "Erdleaf Flower")
+                    {
+                        fodderIds.UnionWith(assets);
+                    }
                     HashSet<string> restrictMaps = new HashSet<string>();
                     foreach (string area in restrictAreas)
                     {
@@ -125,8 +137,39 @@ namespace RandomizerCommon
                 }
             }
             int modelCount = locations.Count;
-            List<AssetPart> models = locations.ToList();
+            if (opt["matstats"])
+            {
+                Dictionary<string, int> counts = new Dictionary<string, int>();
+                foreach (AssetPart part in locations)
+                {
+                    string name = assetDrops[part.ModelID];
+                    if (!counts.ContainsKey(name)) counts[name] = 0;
+                    counts[name]++;
+                }
+                foreach ((string name, int count) in counts.OrderBy(e => e.Value))
+                {
+                    Console.WriteLine($"{count}: {name}");
+                }
+            }
             Shuffle(random, locations);
+            // To balance spirit upgrades: glovewort is not placed in minidungeons right now, so triple it in the overworld.
+            List<AssetPart> gloveworts = locations.Where(p => glovewortIds.Contains(p.ModelID)).ToList();
+            List<AssetPart> models = locations.ToList();
+            int glovewortIndex = 0;
+            int glovewortMax = gloveworts.Count * 2;
+            for (int i = 0; i < models.Count; i++)
+            {
+                if (glovewortIndex == glovewortMax)
+                {
+                    break;
+                }
+                if (fodderIds.Contains(models[i].ModelID))
+                {
+                    AssetPart replace = gloveworts[glovewortIndex % gloveworts.Count];
+                    glovewortIndex++;
+                    models[i] = replace;
+                }
+            }
             Shuffle(random, models);
             // Mapping from target location to source item
             Dictionary<AssetPart, AssetPart> mapping = new Dictionary<AssetPart, AssetPart>();
@@ -168,6 +211,20 @@ namespace RandomizerCommon
                         // Console.WriteLine($"{assetDrops[itemPart.ModelID]} - {game.MapLocationName(locPart.Map)}");
                     }
                     mapping[locPart] = itemPart;
+                }
+            }
+            if (opt["matstats"])
+            {
+                Dictionary<string, List<string>> placeMaps = new Dictionary<string, List<string>>();
+                foreach ((AssetPart location, AssetPart model) in mapping)
+                {
+                    string modelName = assetDrops[model.ModelID];
+                    string mapName = game.MapLocationName(location.Map);
+                    AddMulti(placeMaps, modelName, mapName);
+                }
+                foreach ((string modelName, List<string> mapNames) in placeMaps.OrderBy(e => e.Key))
+                {
+                    Console.WriteLine($"{modelName}: {string.Join(", ", mapNames.GroupBy(m => m).OrderByDescending(g => g.Count()).Select(g => $"{g.Count()}: {g.Key}"))}");
                 }
             }
             foreach (KeyValuePair<string, MSBE> entry in game.EldenMaps)

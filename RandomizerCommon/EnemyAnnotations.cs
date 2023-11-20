@@ -4,6 +4,7 @@ using System.Linq;
 using System.Globalization;
 using System.Numerics;
 using YamlDotNet.Serialization;
+using SoulsFormats;
 using static RandomizerCommon.Messages;
 
 namespace RandomizerCommon
@@ -107,6 +108,8 @@ namespace RandomizerCommon
             public string EndEvent { get; set; }
             // ESD containing line said on death, which should be delayed until DefeatFlag is set (using machine 1103)
             public int DeathLine { get; set; }
+            // Cosplay
+            public string Outfit { get; set; }
             // Tags and metadata
             public string Tags { get; set; }
             // Category for presets
@@ -137,6 +140,8 @@ namespace RandomizerCommon
             public string FullName { get; set; }
             // Specific name for name mashups
             public string PartName { get; set; }
+            // Mapping from other part names to an even more custom combined name
+            public Dictionary<string, string> CustomName { get; set; }
             // Fun name for dupes
             public string DupeName { get; set; }
             // Npc name id for non-mashup substitutions
@@ -230,6 +235,7 @@ namespace RandomizerCommon
             public Vector3 Box { get; set; }
             public Matrix4x4 RotMatrix { get; set; }
             public Matrix4x4 InvRotMatrix { get; set; }
+
             public static Arena Parse(string arena)
             {
                 // This format is highly ad hoc, but it is all the needed numbers
@@ -250,6 +256,34 @@ namespace RandomizerCommon
                 return res;
             }
 
+            public static Arena FromRegion(IMsbRegion region)
+            {
+                if (region.Shape is not MSB.Shape.Box box) throw new Exception($"Arena only supported for box regions, not {region} {region.Shape} {region.Name}");
+                Arena res = new Arena
+                {
+                    Pos = region.Position,
+                    Rot = region.Rotation,
+                    Box = new Vector3(box.Width, box.Height, box.Depth),
+                };
+                res.RotMatrix = Matrix4x4.CreateFromYawPitchRoll(res.Rot.Y * radConvert, res.Rot.X * radConvert, res.Rot.Z * radConvert);
+                Matrix4x4.Invert(res.RotMatrix, out Matrix4x4 inv);
+                res.InvRotMatrix = inv;
+                return res;
+            }
+
+            public bool ContainsXZ(Vector3 point)
+            {
+                Vector3 local = InverseTransform(point);
+                // Is this correct??
+                return Math.Abs(local.X) < Box.X / 2 && Math.Abs(local.Z) < Box.Z / 2;
+            }
+
+            public bool Contains(Vector3 point)
+            {
+                Vector3 local = InverseTransform(point);
+                return Math.Abs(local.X) < Box.X / 2 && Math.Abs(local.Z) < Box.Z / 2 && local.Y > 0 && local.Y < Box.Y;
+            }
+
             public Vector3 Transform(Vector3 point)
             {
                 point = Vector3.Transform(point, RotMatrix);
@@ -263,6 +297,8 @@ namespace RandomizerCommon
                 point = Vector3.Transform(point, InvRotMatrix);
                 return point;
             }
+
+            public override string ToString() => $"Arena[Pos={Pos}, Rot={Rot}, Box={Box}]";
         }
 
         public class ObjectInfo

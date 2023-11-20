@@ -623,7 +623,12 @@ namespace RandomizerCommon
                 e2.ThinkParamID = source.Think;
                 e2.CharaInitID = source.Char;
                 e2.EntityID = (uint)newTarget;
-                e2.Name = $"{e2.ModelName}_{newPartId:d4}";
+                string prefix = "";
+                if (sourcePart.Name.StartsWith("m") && sourcePart.Name.Contains("-"))
+                {
+                    prefix = $"{sourcePart.Name.Split('-')[0]}-";
+                }
+                e2.Name = $"{prefix}{e2.ModelName}_{newPartId:d4}";
                 // Needed to avoid sudden deaths, evidently. TODO see where this mismatches in vanilla
                 e2.Unk08 = newPartId;
                 // Transplanting talks seems to break most talk scripts
@@ -656,9 +661,34 @@ namespace RandomizerCommon
                     // Even if the two maps are the same, this event is called when the helper is removed
                     toMsb.Events.Mounts.Add(new MSBE.Event.Mount
                     {
+                        Name = $"{owner.Name} on {helper.Name}",
                         RiderPartName = owner.Name,
                         MountPartName = helper.Name,
                     });
+                }
+                // Find all platoons led by this enemy, and see which copies exist using EnemyRandomizer naming convention
+                // Use static count in case toMsb == fromMsb
+                int platoonCount = fromMsb.Events.PlatoonInfo.Count;
+                for (int i = 0; i < platoonCount; i++)
+                {
+                    MSBE.Event.PlatoonInfo sourcePlatoon = fromMsb.Events.PlatoonInfo[i];
+                    if (sourcePlatoon.GroupPartsNames[0] != ownerSource.Name) continue;
+                    string destName = $"{owner.Name}_{sourcePlatoon.Name}";
+                    int helperIndex = Array.IndexOf(sourcePlatoon.GroupPartsNames, helperSource.Name);
+                    if (helperIndex == -1) continue;
+                    // This is a platoon which contains both entities
+                    MSBE.Event.PlatoonInfo targetPlatoon = toMsb.Events.PlatoonInfo.Find(p => p.Name == destName);
+                    if (targetPlatoon == null)
+                    {
+                        targetPlatoon = (MSBE.Event.PlatoonInfo)sourcePlatoon.DeepCopy();
+                        targetPlatoon.Name = destName;
+                        Array.Clear(targetPlatoon.GroupPartsNames);
+                        targetPlatoon.GroupPartsNames[0] = owner.Name;
+                        toMsb.Events.PlatoonInfo.Add(targetPlatoon);
+                        // Console.WriteLine($"Making platoon {destName} from {ownerSource.MainMap}");
+                    }
+                    targetPlatoon.GroupPartsNames[helperIndex] = helper.Name;
+                    // Console.WriteLine($"  Adding {helperIndex}={helper.Name}");
                 }
             }
 
@@ -711,7 +741,7 @@ namespace RandomizerCommon
             {
                 // HashSet<string> dummiedEntities = usedEnemies;
                 // Don't do removal of events, as this probably breaks some things. Instead, dummy things out
-                HashSet<string> names = new HashSet<string>(msb.Parts.Enemies.Where(e => e.Scale.X != 66).Select(e => e.Name));
+                HashSet<string> names = new HashSet<string>(msb.Parts.Enemies.Select(e => e.Name));
                 void dummyParts(string[] parts)
                 {
                     for (int i = 0; i < parts.Length; i++)
@@ -741,7 +771,8 @@ namespace RandomizerCommon
                             || t.MountPartName.StartsWith("c8101")
                             || t.MountPartName.StartsWith("c8110"))
                         {
-                            // TODO: Handle this better. Delete all of these cases for now
+                            // This is probably fine? Helpers are deleted only in second pass.
+                            continue;
                         }
                         else
                         {
@@ -948,7 +979,8 @@ namespace RandomizerCommon
                 int groupIndex = Array.IndexOf(targetGroups, defaultValue);
                 if (groupIndex == -1)
                 {
-                    throw new Exception($"Ran out of group slots mapping {groupToAdd} from {source.ID} -> {targetGroups}");
+                    // TODO: Pick hardcoded victims from ERR?
+                    throw new Exception($"Ran out of group slots for {source.ID}. Want to add {string.Join(",", addGroups)} but stuck at {string.Join(",", targetGroups)}");
                 }
                 targetGroups[groupIndex] = groupToAdd;
             }

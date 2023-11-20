@@ -15,6 +15,9 @@ using static RandomizerCommon.Messages;
 using static RandomizerCommon.Permutation;
 using static RandomizerCommon.Util;
 using static SoulsFormats.EMEVD.Instruction;
+using static System.Windows.Forms.Design.AxImporter;
+using Org.BouncyCastle.Ocsp;
+using System.IO;
 
 namespace RandomizerCommon
 {
@@ -75,6 +78,7 @@ namespace RandomizerCommon
         public class Result
         {
             public Dictionary<ItemKey, int> ItemEventFlags { get; set; }
+            public Dictionary<SlotKey, int> SlotEventFlags { get; set; }
             public Dictionary<int, int> MerchantGiftFlags { get; set; }
         }
 
@@ -142,6 +146,7 @@ namespace RandomizerCommon
                 foreach (KeyValuePair<ItemKey, ItemLocations> entry in data.Data)
                 {
                     ItemKey item = entry.Key;
+                    // Only Elden Ring has custom weapons, where itemValueCells is not used
                     PARAM.Row row = game.Item(item);
                     int price = game.EldenRing ? -1 : (int)row[itemValueCells[(int)item.Type]].Value;
                     // int sellPrice = (int)row["sellValue"].Value;
@@ -323,6 +328,9 @@ namespace RandomizerCommon
 
             // Map from item to its final item get flag, to be filled in
             Dictionary<ItemKey, int> itemEventFlags = new Dictionary<ItemKey, int>();
+            // Other map from slot to final item get flag, also to be filled in
+            Dictionary<SlotKey, int> slotEventFlags = new Dictionary<SlotKey, int>();
+            HashSet<ItemKey> trackedSlotItems = new HashSet<ItemKey>();
             // Mapping from old permanent event flag to slot key
             Dictionary<SlotKey, int> permanentSlots = new Dictionary<SlotKey, int>();
             if (isPermanent != null)
@@ -398,6 +406,8 @@ namespace RandomizerCommon
                 {
                     itemEventFlags[keyItem] = 0;
                 }
+                // Other items for hints, which may not be singletons and are tracked by slot
+                trackedSlotItems.UnionWith(ann.ItemGroups["markhints"]);
 
                 // There are a few events/qwcs dependent on getting other items
                 // Duplicating boss souls: should depend on getting the boss soul (QWC edit)
@@ -742,6 +752,10 @@ namespace RandomizerCommon
                         {
                             itemEventFlags[sourceKey.Item] = setEventFlag;
                         }
+                        if (trackedSlotItems.Contains(sourceKey.Item) && setEventFlag > 0)
+                        {
+                            slotEventFlags[sourceKey] = setEventFlag;
+                        }
                     }
                 }
             }
@@ -756,6 +770,17 @@ namespace RandomizerCommon
             // Hacky convenience function for generating race mode list
             if (opt["racemodeinfo"])
             {
+                List<string> locationDocs = new List<string>
+                {
+                    "This is a list of all possible important locations: places you may need to check to finish an item randomizer run, depending on options.",
+                    "You may configure which categories apply to a run by checking or unchecking important location categories in the randomizer program.",
+                    "To see the actual locations of items in a run, check the latest file in the spoiler_logs directory.",
+                };
+                foreach (string locationDoc in locationDocs)
+                {
+                    Console.WriteLine(locationDoc);
+                    Console.WriteLine();
+                }
                 Dictionary<string, List<(string, string)>> areaEntries = new Dictionary<string, List<(string, string)>>();
                 SortedDictionary<string, string> tagTypes = new SortedDictionary<string, string>
                 {
@@ -1367,6 +1392,18 @@ namespace RandomizerCommon
                     }
                 }
 
+                // Synthetic Rold lot. The location flag is still 40001, but the item's flag is changed.
+                int roldFlag = GameData.EldenRingBase + 2010;
+                int roldEventId = GameData.EldenRingBase + 1010;
+                if (opt.GetInt("runes_rold", 0, 7, out _))
+                {
+                    ItemKey rold = ann.ItemGroups["removerold"][0];
+                    if (!(itemEventFlags.TryGetValue(rold, out int flag) && flag > 0))
+                    {
+                        itemEventFlags[rold] = roldFlag;
+                    }
+                }
+
                 HashSet<(ItemTemplate, int)> completedTemplates = new HashSet<(ItemTemplate, int)>();
                 bool getFlagEdit(string type, int flag, out int targetFlag, out ItemKey item)
                 {
@@ -1420,6 +1457,10 @@ namespace RandomizerCommon
                 };
 
                 Dictionary<int, EMEVD.Event> commonEvents = game.Emevds["common_func"].Events.ToDictionary(e => (int)e.ID, e => e);
+                HashSet<string> specialEdits = new HashSet<string>
+                {
+                    "ashdupe", "singleton", "removecheck", "volcanoreq", "runearg", "leyndell"
+                };
                 foreach (KeyValuePair<string, EMEVD> entry in game.Emevds)
                 {
                     EMEVD emevd = entry.Value;
@@ -1449,7 +1490,7 @@ namespace RandomizerCommon
                                 if (t.Type == "remove" || t.Type == "fixeditem" || t.Type == "default") continue;
                                 List<int> templateFlags = t.EventFlag == null ? new List<int>() : t.EventFlag.Split(' ').Select(int.Parse).ToList();
                                 List<int> flags;
-                                if (t.Type == "ashdupe" || t.Type == "singleton" || t.Type == "volcanoreq" || t.Type == "runearg")
+                                if (specialEdits.Contains(t.Type))
                                 {
                                     flags = new List<int> { 0 };
                                 }
@@ -1520,6 +1561,30 @@ namespace RandomizerCommon
                                     pre.Postprocess();
                                     continue;
                                 }
+                                else if (t.Type == "removecheck")
+                                {
+                                    OldParams pre = OldParams.Preprocess(e2);
+                                    if (TryArgSpec(t.EventFlagArg, out int pos))
+                                    {
+                                        for (int j = e2.Instructions.Count - 1; j >= 0; j--)
+                                        {
+                                            EMEVD.Instruction ins = e2.Instructions[j];
+                                            // EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, X12_4)
+                                            if (ins.Bank == 1003 && ins.ID == 2)
+                                            {
+                                                EMEVD.Parameter flagParam = e2.Parameters.Find(p =>
+                                                    p.InstructionIndex == j && p.SourceStartByte == pos * 4 && p.TargetStartByte == 4);
+                                                if (flagParam != null)
+                                                {
+                                                    e2.Instructions[j] = new EMEVD.Instruction(1014, 69);
+                                                    game.WriteEmevds.Add(entry.Key);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    pre.Postprocess();
+                                    continue;
+                                }
                                 else if (t.Type == "volcanoreq")
                                 {
                                     // Don't switch to 3106 and 3107 without joining the Volcano Manor (flag 16009208)
@@ -1577,11 +1642,43 @@ namespace RandomizerCommon
                                     }
                                     continue;
                                 }
+                                else if (t.Type == "leyndell")
+                                {
+                                    // For the leyndell edit, replace the Great Runes flag with a different amount if requested
+                                    // It turns out that 180 is a valid flag after 0 GRs.
+                                    if (!opt.GetInt("runes_leyndell", 0, 7, out int leyndellRunes) || leyndellRunes == 2)
+                                    {
+                                        continue;
+                                    }
+                                    int unlockFlag = 180 + leyndellRunes;
+                                    OldParams pre = OldParams.Preprocess(e2);
+                                    for (int j = e2.Instructions.Count - 1; j >= 0; j--)
+                                    {
+                                        EMEVD.Instruction ins = e2.Instructions[j];
+                                        if (flagPositions.TryGetValue((ins.Bank, ins.ID), out (int, int) range))
+                                        {
+                                            (int aPos, int bPos) = range;
+                                            List<object> args = ins.UnpackArgs(Enumerable.Repeat(ArgType.Int32, ins.ArgData.Length / 4));
+                                            int flagVal = (int)args[bPos];
+                                            if (flagVal != 182) continue;
+                                            args[aPos] = args[bPos] = unlockFlag;
+                                            ins.PackArgs(args);
+                                            game.WriteEmevds.Add(entry.Key);
+                                        }
+                                    }
+                                    pre.Postprocess();
+                                    continue;
+                                }
                                 if (flag <= 0) throw new Exception($"Internal error: Flag missing for {callee} item flag rewrite");
 
                                 if (!getFlagEdit(t.Type, flag, out int targetFlag, out ItemKey item))
                                 {
                                     continue;
+                                }
+                                if (t.Type == "itemflag")
+                                {
+                                    // In cases where items are given for quests, the item's presence can't be used
+                                    item = null;
                                 }
 
                                 bool edited = false;
@@ -1689,14 +1786,14 @@ namespace RandomizerCommon
                                 // IfPlayerHasdoesntHaveItem(-reg, b.Type, b.ID, OwnershipState.Owns = 1)
                                 new EMEVD.Instruction(3, 4, new List<object> { (sbyte)-reg, (byte)a.Type, a.ID, (byte)1 }),
                                 new EMEVD.Instruction(3, 4, new List<object> { (sbyte)-reg, (byte)b.Type, b.ID, (byte)1 }),
-                                // IfConditionGroup(reg, ON, -reg)
+                                // IfConditionGroup(reg, PASS, -reg)
                                 new EMEVD.Instruction(0, 0, new List<object> { (sbyte)reg, (byte)1, (sbyte)-reg }),
-                                // IfConditionGroup(-10, ON, reg)
+                                // IfConditionGroup(-10, PASS, reg)
                                 new EMEVD.Instruction(0, 0, new List<object> { (sbyte)-10, (byte)1, (sbyte)reg }),
                             });
                             reg++;
                         }
-                        // IfConditionGroup(MAIN, ON, -10)
+                        // IfConditionGroup(MAIN, PASS, -10)
                         runeInstrs.Add(new EMEVD.Instruction(0, 0, new List<object> { (sbyte)0, (byte)1, (sbyte)-10 }));
                         // runeInstrs.Add(new EMEVD.Instruction(2003, 4, new List<object> { 997220 }));
                         reg = 1;
@@ -1715,6 +1812,41 @@ namespace RandomizerCommon
                         // We could loop this, but there are weird states (like flag on but no item)
                         // so it's simpler just to make it happen a single time on reload.
                         addNewEvent(19003130, runeInstrs, EMEVD.Event.RestBehaviorType.Restart);
+                    }
+                    if (entry.Key == "m60_49_53_00" && opt.GetInt("runes_rold", 0, 7, out int roldRunes))
+                    {
+                        int unlockFlag = 180 + roldRunes;
+                        // Rold Medallion has been taken out of logic, so make self-contained logic to award it here.
+                        // This is similar to Sekiro memory lots, which are invented from whole cloth.
+                        // It precludes it from being added in hint logs easily. As an alternative, add it in data scraper.
+                        ItemKey rold = ann.ItemGroups["removerold"][0];
+                        LotCells roldCells = ShopToItemLot(ShopCellsForItem(rold), rold, random, false);
+                        roldCells.EventFlag = roldFlag;
+                        AddLot("ItemLotParam_map", roldFlag, roldCells, itemRarity, false);
+
+                        // Just put this in Rold map, otherwise we'd want to add a map check before the radius check
+                        List<EMEVD.Instruction> runeInstrs = new List<EMEVD.Instruction>
+                        {
+                            // EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, roldFlag)
+                            new EMEVD.Instruction(1003, 2, new List<object> { (byte)0, (byte)1, (byte)2, roldFlag }),
+                            // IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, unlockFlag)
+                            new EMEVD.Instruction(3, 0, new List<object> { (sbyte)0, (byte)1, (byte)0, unlockFlag }),
+                            // IfEntityInoutsideRadiusOfEntity(OR_01, InsideOutsideState.Inside = 1, 10000, <action button entity>, 10f, 1)
+                            new EMEVD.Instruction(3, 3, new List<object> { (sbyte)-1, (byte)1, 10000, 1049531502, 10f, 1 }),
+                            new EMEVD.Instruction(3, 3, new List<object> { (sbyte)-1, (byte)1, 10000, 1049531504, 10f, 1 }),
+                            // IfConditionGroup(MAIN, PASS, OR_01)
+                            new EMEVD.Instruction(0, 0, new List<object> { (sbyte)0, (byte)1, (sbyte)-1 }),
+                            // IfPlayerHasdoesntHaveItem(AND_01, type, id, OwnershipState.Owns = 1)
+                            new EMEVD.Instruction(3, 4, new List<object> { (byte)1, (byte)rold.Type, rold.ID, (byte)1 }),
+                            // EndIfConditionGroupStateUncompiled(EventEndType.End, PASS, AND_01)
+                            new EMEVD.Instruction(1000, 2, new List<object> { (byte)0, (byte)1, (sbyte)1 }),
+                            // AwardItemLot(roldFlag)
+                            new EMEVD.Instruction(2003, 4, new List<object> { roldFlag }),
+                        };
+                        addNewEvent(roldEventId, runeInstrs, EMEVD.Event.RestBehaviorType.Default);
+                        game.WriteEmevds.Add(entry.Key);
+                        // "You do not have the required medallion" (msg 20020/20021) -> "You cannot use this without more Great Runes" 20004
+                        // But the original string does not appear anywhere? So this remains as-is.
                     }
                 }
 
@@ -1839,7 +1971,7 @@ namespace RandomizerCommon
                 // This is mainly only relevant during item randomizer, as otherwise merchant contents are known.
                 int merchantMsg = 28000070;
                 game.WriteFMGs = true;
-                messages.SetFMGEntry(game.MenuFMGs, game.OtherMenuFMGs, "EventTextForTalk", merchantMsg, receiveBellBearing);
+                messages.SetFMGEntry(game, FMGCategory.Menu, "EventTextForTalk", merchantMsg, receiveBellBearing);
                 // Mapping from talk id to (item lot, item lot flag)
                 Dictionary<int, (int, int)> talkIds = new Dictionary<int, (int, int)>();
                 foreach (KeyValuePair<LocationScope, List<SlotKey>> entry in data.Locations)
@@ -1918,10 +2050,18 @@ namespace RandomizerCommon
                     }
                 }
 
+                // This could also be applied to enemy randomizer, but it affects logic
+                if (opt["allcraft"])
+                {
+                    foreach (PARAM.Row row in game.Params["ShopLineupParam_Recipe"].Rows)
+                    {
+                        row["eventFlag_forRelease"].Value = (uint)0;
+                    }
+                }
                 // End Elden Ring edits
             }
 
-            return new Result { ItemEventFlags = itemEventFlags, MerchantGiftFlags = merchantGiftFlags };
+            return new Result { ItemEventFlags = itemEventFlags, SlotEventFlags = slotEventFlags, MerchantGiftFlags = merchantGiftFlags };
         }
 
         private static readonly Regex phraseRe = new Regex(@"\s*;\s*");
@@ -1943,6 +2083,10 @@ namespace RandomizerCommon
                     if (key.Type == ItemType.WEAPON && key.ID >= 50000000 && key.ID < 60000000)
                     {
                         return PriceCategory.ARROWS;
+                    }
+                    if (key.Type == ItemType.CUSTOM)
+                    {
+                        return PriceCategory.WEAPON;
                     }
                     return (PriceCategory)key.Type;
                 }
@@ -2033,7 +2177,8 @@ namespace RandomizerCommon
             else
             {
                 PriceCategory cat = GetPriceCategory(item);
-                PARAM.Row row = game.Item(item);
+                ItemKey rowKey = game.FromCustomWeapon(item);
+                PARAM.Row row = game.Item(rowKey);
                 // Upgrade materials roughly same. Unique ones on sale because of how many are moved to shops usually.
                 if (cat == PriceCategory.UPGRADE)
                 {
@@ -2047,7 +2192,18 @@ namespace RandomizerCommon
                         return siloType == RandomSilo.FINITE ? basePrice / 2 : basePrice;
                     }
                 }
-                int sellPrice = item.Type == ItemType.GEM ? 0 : (int)row["sellValue"].Value;
+                int sellPrice = 0;
+                if (rowKey.Type != ItemType.CUSTOM)
+                {
+                    if (row == null)
+                    {
+                        throw new Exception($"{item} was randomized but it doesn't exist in params, likely due to a merged mod");
+                    }
+                    else
+                    {
+                        sellPrice = (int)row["sellValue"].Value;
+                    }
+                }
                 // If it's a soul, make it cost a more than the soul cost.
                 if (cat == PriceCategory.FINITE_GOOD && sellPrice >= 2000)
                 {
@@ -2186,7 +2342,7 @@ namespace RandomizerCommon
                 Game = game,
                 Cells = new Dictionary<string, object>(),
             };
-            cells.Item = item;
+            cells.Item = game.FromCustomWeapon(item);
             cells.Quantity = 1;
             return cells;
         }
@@ -2276,6 +2432,11 @@ namespace RandomizerCommon
                 {
                     // Selling Mibu Breathing Technique
                     shopCells.Item = new ItemKey(ItemType.GOOD, 2420);
+                }
+                else if (game.EldenRing && lotKey.Type == ItemType.CUSTOM)
+                {
+                    // If this still returns a custom id, it'll just be invisible
+                    shopCells.Item = game.FromCustomWeapon(lotKey);
                 }
                 else
                 {

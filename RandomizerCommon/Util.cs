@@ -104,6 +104,19 @@ namespace RandomizerCommon
             }
         }
 
+        public static uint JavaStringHash(string s)
+        {
+            unchecked
+            {
+                uint hash = 0;
+                foreach (char c in s)
+                {
+                    hash = hash * 31 + c;
+                }
+                return hash;
+            }
+        }
+
         public static void Shuffle<T>(Random random, IList<T> list)
         {
             // Fisher Yates shuffle - O(n)

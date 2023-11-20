@@ -11,6 +11,9 @@ using static RandomizerCommon.Util;
 using static RandomizerCommon.AnnotationData;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.LocationData.ItemScope;
+using YamlDotNet.Serialization.NamingConventions;
+using SoulsFormats.KF4;
+using Org.BouncyCastle.Utilities;
 
 namespace RandomizerCommon
 {
@@ -557,6 +560,761 @@ namespace RandomizerCommon
             }
         }
 
+        class FogPartConfig { public List<FogArea> Areas { get; set; } }
+        class FogArea
+        {
+            public string Name { get; set; }
+            public int DefeatFlag { get; set; }
+            public string OpenArea { get; set; }
+            public string Maps { get; set; }
+            public string Tags { get; set; }
+        }
+        // To generate
+        public class DungeonItem
+        {
+            // EntityId map, with Roundtable preferred last
+            public string Map { get; set; }
+            // Copied from foglocations
+            public List<string> DebugText { get; set; }
+            // Base lot, from foglocations
+            public string ItemLot { get; set; }
+            // By default 25, Twin Maiden Husks have 100
+            public string ShopRange { get; set; }
+            // "Relocated to <blah>"
+            public string Text { get; set; }
+            public string Comment { get; set; }
+            // To be filled in
+            public string ToArea { get; set; }
+            public string ToMap { get; set; }
+            // XYZ
+            public string Location { get; set; }
+            // Copy from slot tags: seedtree, church, raceshop
+            public string Tags { get; set; }
+        }
+
+        public void FogEldenCrawl(RandomizerOptions opt, GameData game, LocationData data, AnnotationData ann)
+        {
+            // Produce a rough version of the dungeon items listing, for items to relocate.
+            // Golden trees (seedtree), Marika statues (church), merchants (raceshop): default crawl in m60, unless nocrawl/fortress.
+            // boss: default crawl
+            // racemode/altboss/talisman have default nocrawl in m60, unless crawl (not yet implemented)/fortress.
+            // altboss is just cellars, not evergaols or field bosses. This is basically just Redmane Duo and Nox Duo.
+            IDeserializer deserializer = new DeserializerBuilder().IgnoreUnmatchedProperties().Build();
+            string fogDir = "configs/diste";
+            FogLocations locs = new FogLocations();
+            using (var reader = File.OpenText($"{fogDir}/foglocations.txt")) locs = deserializer.Deserialize<FogLocations>(reader);
+
+            Dictionary<string, KeyItemLoc> storedItems = locs.Items.ToDictionary(l => l.Key, l => l);
+            List<DungeonItem> results = new List<DungeonItem>();
+            foreach (KeyValuePair<LocationScope, List<SlotKey>> entry in data.Locations)
+            {
+                LocationScope locScope = entry.Key;
+                if (!ann.Slots.TryGetValue(locScope, out SlotAnnotation slotAnn)) continue;
+                if (!storedItems.TryGetValue(slotAnn.Key, out KeyItemLoc loc)) continue;
+                if (slotAnn.Area == "unknown") continue;
+
+                string relocType = null;
+                foreach (string tag in new[] { "seedtree", "church", "raceshop" })
+                {
+                    if (slotAnn.HasTag(tag))
+                    {
+                        relocType = tag;
+                    }
+                }
+                if (relocType == null) continue;
+                if (slotAnn.HasTag("nocrawl") || slotAnn.HasTag("fortress")) continue;
+                // All item lots and shop items
+                List<EntityId> ids = new List<EntityId>();
+                List<ItemKey> items = new List<ItemKey>();
+                foreach (SlotKey itemLocKey in entry.Value)
+                {
+                    ItemLocation location = data.Location(itemLocKey);
+                    ItemScope scope = location.Scope;
+                    if (scope.Type != ScopeType.EVENT && scope.Type != ScopeType.ENTITY) continue;
+                    items.Add(itemLocKey.Item);
+                    foreach (LocationKey locKey in location.Keys)
+                    {
+                        ids.AddRange(locKey.Entities);
+                    }
+                }
+                EntityId id = ids
+                    .Where(e => e.MapName != null && e.Type != null && (e.Type.Contains("asset") || e.Type.Contains("enemy")))
+                    .OrderBy(e => e.MapName == "m11_10_00_00" ? 1 : 0)
+                    .FirstOrDefault();
+                if (id == null) continue;
+                if (!id.MapName.StartsWith("m60")) continue;
+                // Console.WriteLine($"{relocType} - {game.EntityName(id, true, true)} - {loc.DebugText[0]}");
+                DungeonItem item = new DungeonItem
+                {
+                    Map = id.MapName,
+                    DebugText = loc.DebugText,
+                    Text = "",
+                    ToArea = "",
+                    ToMap = "",
+                    Location = "",
+                    Tags = relocType,
+                };
+                if (loc.Lots != null)
+                {
+                    item.ItemLot = loc.Lots;
+                }
+                else if (loc.Shops != null)
+                {
+                    // Assume merchant convention
+                    int start = int.Parse(loc.Shops.Split(' ')[0]);
+                    start = start / 25 * 25;
+                    item.ShopRange = $"{start} {start + 24}";
+                }
+                // Set ItemLot/ShopRange
+                results.Add(item);
+            }
+            results = results.OrderBy(loc => loc.Map).ToList();
+            if (opt["outyaml"])
+            {
+                Console.WriteLine(GameData.Serializer.Serialize(results));
+            }
+        }
+
+        public void FogElden(RandomizerOptions opt, GameData game, LocationData data, AnnotationData ann, EldenCoordinator coord)
+        {
+            if (opt["crawl"])
+            {
+                FogEldenCrawl(opt, game, data, ann);
+                return;
+            }
+            IDeserializer deserializer = new DeserializerBuilder().IgnoreUnmatchedProperties().Build();
+            FogPartConfig fogConfig;
+            using (var reader = File.OpenText("../FogMod/eldendata/Base/fog.txt")) fogConfig = deserializer.Deserialize<FogPartConfig>(reader);
+            Dictionary<string, FogArea> fogAreas = fogConfig.Areas.ToDictionary(a => a.Name, a => a);
+            Dictionary<int, FogArea> defeatFogAreas = fogConfig.Areas.Where(a => a.DefeatFlag > 0).ToDictionary(a => a.DefeatFlag, a => a);
+
+            // First pass: generate possible area dictionary
+            // Do this just based on names
+            if (opt["gendict"])
+            {
+                foreach (FogArea area in fogConfig.Areas)
+                {
+                    string fog = area.Name;
+                    List<string> cands = ann.Areas.Keys.Where(area => fog.StartsWith(area)).ToList();
+                    string cand = cands.Count > 0 ? cands.MaxBy(m => m.Length) : "";
+                    // Console.WriteLine($"[\"{fog}\"] = \"{cand}\",");
+                    Console.WriteLine($"{fog}={cand}");
+                }
+                return;
+            }
+
+            Dictionary<string, string> fogToItemArea = game.Editor.LoadNames("../../fogboss", x => x);
+            List<string> missingMapping = fogAreas.Keys.Except(fogToItemArea.Keys).ToList();
+            if (missingMapping.Count > 0)
+            {
+                throw new Exception($"Missing areas in fogboss.txt: {string.Join(" ", missingMapping)}");
+            }
+            deserializer = new DeserializerBuilder().Build();
+
+            string enemyConfigPath = $"diste/Base/enemy.txt";
+            EnemyAnnotations enemyAnn;
+            using (var reader = File.OpenText(enemyConfigPath)) enemyAnn = deserializer.Deserialize<EnemyAnnotations>(reader);
+            Dictionary<int, EnemyInfo> infos = enemyAnn.Enemies.ToDictionary(i => i.ID, i => i);
+            Dictionary<int, int> enemyIdFlags = new Dictionary<int, int>();
+            Dictionary<(string, string), EnemyInfo> nameInfos = new Dictionary<(string, string), EnemyInfo>();
+            foreach (EnemyInfo info in enemyAnn.Enemies)
+            {
+                int id = info.ID;
+                if (info.OwnedBy > 0)
+                {
+                    id = info.OwnedBy;
+                }
+                if (infos[id].NextPhase > 0)
+                {
+                    id = infos[id].NextPhase;
+                }
+                if (infos[id].DefeatFlag > 0)
+                {
+                    enemyIdFlags[info.ID] = infos[id].DefeatFlag;
+                }
+                nameInfos[(info.Map, info.Name)] = info;
+                if (info.DupeMap != null)
+                {
+                    nameInfos[(info.DupeMap, info.DupePartName ?? info.Name)] = info;
+                }
+            }
+            // Item config doesn't have Patches
+            enemyIdFlags[31000800] = 31000800;
+            // Things in DisplayEntities in itemlocations.txt
+            enemyIdFlags[12030700] = 12030850;
+            enemyIdFlags[12021609] = 12080800;
+            enemyIdFlags[12021629] = 12090800;
+            Dictionary<int, List<int>> flagEnemies = enemyIdFlags.GroupBy(e => e.Value).ToDictionary(g => g.Key, g => g.Select(e => e.Key).ToList());
+
+            // To fully classify: stormveil_start
+            // peninsula_postmorne should be trivial
+
+            // Overall approach to produce heuristic area classifications for item lots and also enemies
+            // ~ if there are no items in that area in fog rando
+            // If defeat flag exists, solely use that (and locked chests after boss)
+            // Other exceptions: Eiglay drop (and upstairs), Gostoc, Mohg chest, Radahn many, Rykard items, Malenia needle
+            // trivial areas are not added by default, but noted down for later to fill in manually.
+            // EldenAreaClassifier is used for some specific disambiguations?
+            Dictionary<string, List<string>> itemToFogArea = fogToItemArea.Where(e => !e.Value.StartsWith("~")).GroupBy(e => e.Value).ToDictionary(g => g.Key, g => g.Select(e => e.Key).ToList());
+            HashSet<int> entities = new HashSet<int>(data.Data.Values.SelectMany(itemLocs => itemLocs.Locations.Values.SelectMany(itemLoc => itemLoc.Keys.SelectMany(loc => loc.Entities.Select(e => e.EntityID)))));
+            HashSet<string> keepFogAreas = new HashSet<string>
+            {
+                "caelid_radahn", "leyndell_bedchamber", "leyndell2_bedchamber", "stormveil_throne",
+                "limgrave_tower", "limgraver_tower2", "liurnia_tower",
+                "leyndell_tower_start", "leyndell_tower", "leyndell_tower_boss",
+                "roundtable",
+            };
+            HashSet<string> classifyLater = new HashSet<string>
+            {
+                "leyndell_pretower",  // This could be a simple xz check
+                "academy_entrance",
+            };
+            List<string> trivialAreas = new List<string>();
+            foreach (KeyValuePair<string, List<string>> entry in itemToFogArea)
+            {
+                List<string> keys = entry.Value.ToList();
+                bool singleEntry = keys.Count == 1;
+                foreach (string key in keys)
+                {
+                    FogArea area = fogAreas[key];
+                    if (area.DefeatFlag > 0)
+                    {
+                        if (!flagEnemies.TryGetValue(area.DefeatFlag, out List<int> enemies))
+                        {
+                            throw new Exception($"Missing flag: {area.Name} {area.DefeatFlag}");
+                        }
+                        if (!enemies.Any(id => entities.Contains(id)))
+                        {
+                            // Console.WriteLine($"Missing item location: {area.Name} for entities {string.Join(",", enemies)}");
+                        }
+                        if (!keepFogAreas.Contains(key) && !singleEntry)
+                        {
+                            entry.Value.Remove(key);
+                        }
+                    }
+                    if ((area.Tags != null && area.Tags.Contains("trivial")) || classifyLater.Contains(key))
+                    {
+                        if (!keepFogAreas.Contains(key) && !singleEntry)
+                        {
+                            entry.Value.Remove(key);
+                            trivialAreas.Add(key);
+                        }
+                    }
+                }
+                if (entry.Value.Count == 0) throw new Exception($"No areas left in {entry.Key}: {string.Join(",", keys)}");
+            }
+            Dictionary<string, List<string>> mapOnlyFogAreas = new Dictionary<string, List<string>>();
+            HashSet<string> itemMapAreas = new HashSet<string>
+            {
+                // Overworld sub-areas which should require Maps to match or else not consider them. Because the big areas are too big
+                "peninsula_morne", "liurnia_manor", "caelid_redmane", "altus_shaded", "mountaintops_sol",
+            };
+            foreach (FogArea area in fogAreas.Values)
+            {
+                string name = area.Name;
+                if (!itemMapAreas.Contains(name)) continue;
+                foreach (string map in area.Maps.Split(' '))
+                {
+                    AddMulti(mapOnlyFogAreas, map, name);
+                }
+            }
+
+            if (opt["trivial"])
+            {
+                Console.WriteLine($"Trivial areas: {string.Join(" ", trivialAreas)}");
+                return;
+            }
+
+            // Iteration order is not reliable, but anyway, rely on it
+            List<string> fogOrder = fogToItemArea.Select(e => e.Key).ToList();
+
+            // string fogDir = "../FogMod/eldendata/Base";
+            // Eh, just add another level of copying
+            string fogDir = "configs/diste";
+            FogLocations locs = new FogLocations();
+            using (var reader = File.OpenText($"{fogDir}/foglocations.txt")) locs = deserializer.Deserialize<FogLocations>(reader);
+
+            Dictionary<string, KeyItemLoc> storedItems = locs.Items.ToDictionary(l => l.Key, l => l);
+            Dictionary<EntityId, KeyItemLoc> entityFogAreas = new Dictionary<EntityId, KeyItemLoc>();
+
+            // For each item: find its old area in item rando, new proposed area in fog rando based on that, and entity id
+            HashSet<string> excludeKeyItem = new HashSet<string> { }; // "missable", "enemy", "norandom", "nokey", "crow", "end" };
+
+            EldenAreaClassifier classifier = new EldenAreaClassifier(game, coord);
+            foreach (KeyValuePair<LocationScope, List<SlotKey>> entry in data.Locations)
+            {
+                LocationScope locScope = entry.Key;
+                if (!ann.Slots.TryGetValue(locScope, out SlotAnnotation slotAnn)) continue;
+                if (slotAnn.Area == "unknown") continue;
+
+                // All item lots and shop items
+                SortedSet<int> lots = new SortedSet<int>();
+                SortedSet<int> shops = new SortedSet<int>();
+                List<EntityId> ids = new List<EntityId>();
+                List<ItemKey> items = new List<ItemKey>();
+                foreach (SlotKey itemLocKey in entry.Value)
+                {
+                    ItemLocation location = data.Location(itemLocKey);
+                    ItemScope scope = location.Scope;
+                    if (scope.Type != ScopeType.EVENT && scope.Type != ScopeType.ENTITY) continue;
+                    items.Add(itemLocKey.Item);
+                    foreach (LocationKey locKey in location.Keys)
+                    {
+                        if (locKey.Type == LocationKey.LocationType.LOT) lots.Add(locKey.ID);
+                        else shops.Add(locKey.ID);
+                        ids.AddRange(locKey.Entities);
+                    }
+                }
+                if (items.Count == 0) continue;
+                foreach (int id in lots.ToList())
+                {
+                    lots.Remove(id + 1);
+                }
+                // Tonic of Forgetfulness is given by Tanith (100700) but also on her chair (100726), and the latter
+                // gets conflated with Drawing-Room Key on chair (100725).
+                // Fully accounting for this may require looking at adjacent lots with different flags and checking safety.
+                if (lots.Contains(100700)) lots.Remove(100726);
+
+                // For this to be most valid: check " Area: .* "
+                if (storedItems.TryGetValue(slotAnn.Key, out KeyItemLoc existLoc))
+                {
+                    if (existLoc.Area != null && existLoc.Area.Contains(' ')) continue;
+                    foreach (EntityId id in ids)
+                    {
+                        entityFogAreas[id] = existLoc;
+                    }
+                }
+
+                // We only care about key item eligible lots/shops, but still can care about item locations, since they can be used to find enemy locations.
+                // Make sure not to set any norandom options, including setting ngplusrings
+                if (!slotAnn.HasAnyTags(excludeKeyItem))
+                {
+                    // Console.WriteLine(slotAnn.Area + " " + slotAnn.QuestReqs + " " + slotAnn.Event);
+                    // Find the best area
+                    List<string> areas = new List<string>();
+                    // slotAnn.Event is not used/needed, since defeat flag is used
+                    List<string> fogs = null;
+                    foreach (EntityId id in ids)
+                    {
+                        if (enemyIdFlags.TryGetValue(id.EntityID, out int flag) && defeatFogAreas.TryGetValue(flag, out FogArea fogArea))
+                        {
+                            fogs = new List<string> { fogArea.Name };
+                            break;
+                        }
+                    }
+                    // Beware: fogs is shared between all areas, do not mutate it directly
+                    if (fogs == null && (!itemToFogArea.TryGetValue(slotAnn.Area, out fogs) || fogs.Count == 0))
+                    {
+                        throw new Exception($"Unknown area {slotAnn.Area}: {string.Join("\n", slotAnn.DebugText)}");
+                    }
+                    fogs = classifier.FogClassify(fogs, ids);
+                    if (fogs.Any(f => itemMapAreas.Contains(f)))
+                    {
+                        // Console.WriteLine($"Removing {string.Join(",", fogs)} - {string.Join(" ", ids)}");
+                        List<string> maps = ids.Select(id => id.MapName).Where(x => x != null).Distinct().ToList();
+                        // If it's in map-only areas, require at least one map to belong to the area
+                        fogs = fogs.Where(f => !itemMapAreas.Contains(f) || maps.Any(m => mapOnlyFogAreas.TryGetValue(m, out List<string> mapAreas) && mapAreas.Contains(f))).ToList();
+                    }
+
+                    areas.AddRange(fogs);
+                    // Handle QuestReqs in a later pass, using slotAnn.Key to find the actual areas
+                    string text = $"{slotAnn.Text.TrimEnd('.')}. ";
+                    if (text.Contains("aaaaa"))
+                    {
+                        if (slotAnn.DebugText.Last().Contains("o'clock"))
+                        {
+                            text = slotAnn.DebugText.Last().Split(" - ")[0] + ". ";
+                        }
+                        else
+                        {
+                            text = "";
+                        }
+                    }
+                    List<string> debug = new List<string>
+                    {
+                        $"{text}Replaces {string.Join(", ", items.Select(i => game.Name(i)))}",
+                    };
+                    if (ids.Count > 0)
+                    {
+                        debug.Add($"{string.Join(", ", ids.Select(i => game.EntityName(i, true, true)).Distinct())}");
+                    }
+                    KeyItemLoc loc = existLoc;
+                    if (loc == null)
+                    {
+                        loc = new KeyItemLoc { Key = slotAnn.Key };
+                        locs.Items.Add(loc);
+                    }
+                    loc.DebugText = debug;
+                    loc.AArea = string.Join(" ", areas);
+                    loc.Lots = lots.Count == 0 ? null : string.Join(" ", lots);
+                    loc.Shops = shops.Count == 0 ? null : string.Join(" ", shops);
+                    if (loc.Area == null && areas.Count > 1)
+                    {
+                        // To disambiguate. Put more specific areas first since they usually have the other area as prefix
+                        loc.Area = string.Join(" ", Enumerable.Reverse(areas));
+                    }
+                }
+            }
+            // Rold flag and lot is GameData.EldenRingBase + 2010, or 1032502010
+            // Instead of adding it here, preserve the behavior of claiming it doesn't exist in fog gate rando
+            locs.Items = locs.Items.OrderBy(l => fogOrder.IndexOf(l.OrderArea)).ToList();
+
+            // --------------------------------------------------------------------------------------------------------
+
+            FogLocations enemyLocs = new FogLocations();
+            // To combine them
+            // if (locs.Enemies != null) enemyLocs.Enemies = locs.Enemies;
+            using (var reader = File.OpenText($"{fogDir}/foglocations2.txt")) enemyLocs = deserializer.Deserialize<FogLocations>(reader);
+            Dictionary<(string, string), EnemyLoc> existEnemyLocs = enemyLocs.Enemies
+                .ToDictionary(e => (e.Map, e.ID), e => e);
+
+            if (opt["outmaps"])
+            {
+                SortedSet<string> mapTiers = new SortedSet<string>();
+                foreach (EnemyLocArea area in enemyLocs.EnemyAreas)
+                {
+                    if (area.MainMap == null) continue;
+                    string name = area.Name;
+                    int tier = area.ScalingTier;
+                    foreach (string map in area.MainMap.Split(' '))
+                    {
+                        // Transform _10, and don't include _01 _02 etc
+                        if (!map.EndsWith("_00")) continue;
+                        List<byte> mapId = GameData.ParseMap(map);
+                        string parts = string.Join("", mapId.Select(p => $"{p:X2}"));
+                        mapTiers.Add($"    {{0x{parts}, {tier}}}, // {map} {name}");
+                    }
+                }
+                Console.Write("#pragma once\n\n#include \"pch.h\"\n\n#include <map>\n\n");
+                Console.Write($"std::map<uint32_t, int> mapTiers = {{\n");
+                foreach (string line in mapTiers) Console.Write(line + "\n");
+                Console.Write($"}};\n");
+                return;
+            }
+
+            // Continuing to use items for enemy locations
+            (string, Vector3) entityMapName(string fullMap, string partName, Vector3 pos)
+            {
+                if (!fullMap.EndsWith("0") && partName.StartsWith("m") && partName.Contains('-'))
+                {
+                    // 02 parts will contain the actual map in the name
+                    string partMap = partName.Split('-').First();
+                    return (partMap, pos + coord.RelocationOffset(fullMap, partMap));
+                }
+                return (fullMap, pos);
+            }
+            List<FogCoordinate> coords = new List<FogCoordinate>();
+            foreach (KeyValuePair<string, MSBE> entry in game.EldenMaps)
+            {
+                if (!game.Locations.ContainsKey(entry.Key)) continue;
+                string map = entry.Key;
+                MSBE msb = entry.Value;
+                foreach (MSBE.Part e in msb.Parts.GetEntries())
+                {
+                    // Item ids are rewritten to their entity map
+                    (string entMap, Vector3 pos) = entityMapName(map, e.Name, e.Position);
+                    EntityId id = new EntityId(entMap, e.Name);
+                    if (entityFogAreas.TryGetValue(id, out KeyItemLoc area))
+                    {
+                        coords.Add(new FogCoordinate
+                        {
+                            Map = entMap,
+                            Pos = pos,
+                            Area = area.ActualArea,
+                        });
+                    }
+                    // Feedback loop from definitely classified enemies
+                    else if (existEnemyLocs.TryGetValue((map, e.Name), out EnemyLoc loc) && loc.Area != null && !loc.Area.Contains(' '))
+                    {
+                        coords.Add(new FogCoordinate
+                        {
+                            Map = entMap,
+                            Name = e.Name,
+                            Pos = pos,
+                            Area = loc.Area,
+                        });
+                    }
+                }
+            }
+            // Is there a scaled c1000? like in Archdragon
+            HashSet<string> excludeModel = new HashSet<string>
+            {
+                "c0100", "c1000", "c0110",
+            };
+            Dictionary<string, List<string>> mapFogAreas = new Dictionary<string, List<string>>();
+            HashSet<string> mixedBossAreas = new HashSet<string> { "caelid_radahn", "volcano_rykard", "erdtree" }; // Fire Giant also?
+            HashSet<string> trivialEnemyAreas = new HashSet<string> { "liurnia_slumbering" };
+            foreach (FogArea area in fogAreas.Values)
+            {
+                string name = area.Name;
+                if (area.DefeatFlag > 0 && !mixedBossAreas.Contains(name)) continue;
+                if (name.EndsWith("_chest") || trivialEnemyAreas.Contains(name)) continue;
+                if (area.Maps != null)
+                {
+                    foreach (string map in area.Maps.Split(' '))
+                    {
+                        AddMulti(mapFogAreas, map, name);
+                    }
+                }
+            }
+            // 11050320 is leyndell2_divinebridge, but the real area is leyndell2
+            // c6001_9176 (Eagle) in m12_02_00_00 (Siofra River) should not in aqueduct, from AEG099_620_9074 in siofra_nokron
+            // c3670_9037 (Albinauric Lookout) in m16_00_00_00 (Volcano Manor) is inquisition chamber
+            // 34130298 is caelid tower basement, just combine with caelid tower
+            // _91 name in m35 may be catacombs
+            string[][] similarLocGroups = new[]
+            {
+                new[]{ "altus", "gelmir", "outskirts" },
+                new[]{ "bellum", "liurnia", "liurnia_postmanor" },
+                new[]{ "limgrave", "stormhill", "peninsula", "caelid", "dragonbarrow" },
+            };
+            Dictionary<string, HashSet<string>> similarLocs = similarLocGroups
+                .SelectMany(gs => gs.Select(g => (g, new HashSet<string>(gs))))
+                .ToDictionary(e => e.Item1, e => e.Item2);
+            Dictionary<int, EnemyData> defaultData = new Dictionary<int, EnemyData>();
+            Dictionary<string, List<EnemyInfo>> areaInfos = new Dictionary<string, List<EnemyInfo>>();
+            foreach (KeyValuePair<string, MSBE> entry in game.EldenMaps)
+            {
+                if (!game.Locations.ContainsKey(entry.Key)) continue;
+                string map = entry.Key;
+                MSBE msb = entry.Value;
+                foreach (MSBE.Part.Enemy e in msb.Parts.Enemies)
+                {
+                    if (excludeModel.Contains(e.ModelName)) continue;
+                    (string entMap, Vector3 pos) = entityMapName(map, e.Name, e.Position);
+                    EntityId id = new EntityId(entMap, e.Name, (int)e.EntityID, e.NPCParamID, e.CharaInitID, e.EntityGroupIDs.Where(g => g > 0).Select(e => (int)e).ToList());
+                    id.OriginalMapName = map;
+                    id.Position = pos;
+                    string name = $"{game.EntityName(id, true, true)}";
+                    (string, string) key = (map, e.Name);
+                    if (!nameInfos.TryGetValue(key, out EnemyInfo info)) throw new Exception($"Unknown {name}?");
+                    // Make fake default data for scaling. NPC, Model, MainMap are needed. Also Col, Group
+                    defaultData[info.ID] = new EnemyData
+                    {
+                        Name = e.Name,
+                        NPC = e.NPCParamID,
+                        Model = e.ModelName,
+                        MainMap = map,
+                        Col = e.CollisionPartName,
+                        Group = id.GroupIds,
+                    };
+
+                    // TODO: Include summonable helpers and quest invasions, to avoid e.g. Alexander completely wrecking
+                    // TODO: What about some DupeOnly enemies like clumps and snails?
+                    // if (info.Class == EnemyClass.None) continue;
+                    if (!mapFogAreas.TryGetValue(entMap, out List<string> compat)) throw new Exception($"Unknown fog map {entMap} for {name}");
+                    string guess;
+                    if (enemyIdFlags.TryGetValue(info.ID, out int flag) && defeatFogAreas.TryGetValue(flag, out FogArea fogArea))
+                    {
+                        guess = fogArea.Name;
+                        name += " - from boss";
+                    }
+                    else if (entityFogAreas.TryGetValue(id, out KeyItemLoc area) && compat.Contains(area.ActualArea))
+                    {
+                        guess = area.ActualArea;
+                        name += " - from item";
+                    }
+                    else
+                    {
+                        List<FogCoordinate> topCoords = coords
+                            .Where(c => c.Map == entMap && c.Name != e.Name)
+                            .OrderBy(f => Vector3.DistanceSquared(f.Pos, pos))
+                            .ToList();
+                        List<string> areas = topCoords.Take(5).Select(a => a.Area).Where(a => compat.Contains(a)).Distinct().ToList();
+                        if (areas.Count > 1 && similarLocs.TryGetValue(areas[0], out HashSet<string> sim) && areas.All(a => sim.Contains(a)))
+                        {
+                            areas = new List<string> { areas[0] };
+                        }
+                        if (areas.Count == 0)
+                        {
+                            areas = compat;
+                        }
+                        areas = classifier.FogClassify(areas, id);
+                        guess = string.Join(" ", areas);
+                    }
+                    string colName = null;
+                    // This is not reliably present, mainly legacy dungeons.
+                    // TODO: Generalize to play regions? Randomizer will preserve existing ones, anyway.
+                    if (e.CollisionPartName != null)
+                    {
+                        // MSBE.Part.Collision col = msb.Parts.Collisions.Find(c => c.Name == e.CollisionPartName);
+                        // if (col.PlayRegionID > 0) colName = $"{col.PlayRegionID}";
+                        // Console.WriteLine($"{name} - {guess}: {e.CollisionPartName}: {col.PlayRegionID}");
+                        colName = e.CollisionPartName;
+                    }
+                    existEnemyLocs.TryGetValue(key, out EnemyLoc loc);
+                    if (loc == null)
+                    {
+                        loc = new EnemyLoc
+                        {
+                            Map = map,
+                            ID = e.Name,
+                        };
+                        enemyLocs.Enemies.Add(loc);
+                        existEnemyLocs[key] = loc;
+                    }
+                    // TODO: Null these out, not part of enemy definition
+                    loc.Col = colName;
+                    loc.DebugText = name;
+                    loc.AArea = guess;
+                    if ((loc.Area == null && guess.Contains(' ')) || (loc.Area != null && loc.Area.Contains(' ') && guess.Contains(' ')))
+                    {
+                        // To disambiguate, but also it can become more ambiguous expanding neighbor count
+                        loc.Area = loc.AArea;
+                    }
+                    else if (loc.Area == loc.AArea)
+                    {
+                        // Actually, if we've definitely classified it, keep that
+                        // loc.Area = null;
+                    }
+                    if (loc.Area == "correct me" && !loc.AArea.Contains(' '))
+                    {
+                        loc.Area = null;
+                    }
+                    // Console.WriteLine($"{name}: {guess}");
+                    string result = loc.ActualArea;
+                    if (!string.IsNullOrEmpty(result) && !result.Contains(' '))
+                    {
+                        AddMulti(areaInfos, result, info);
+                    }
+                }
+            }
+            // I guess keep them separate for now
+            enemyLocs.Enemies = enemyLocs.Enemies.OrderBy(e => (e.Map, e.ID)).ToList();
+            // Fill in scaling data now
+            ScalingEffects scaling = new ScalingEffects(game);
+            Dictionary<int, int> scalingTiers = scaling.InitializeEldenScaling(defaultData, new Dictionary<int, List<int>>());
+            // Make a bunch of maps for area mapping
+            // Majority per enemy in area: ScalingTier, can do last
+            // Majority per map: MainMap
+            // Exclusive per area: Groups, Cols
+            Dictionary<T, int> getHist<T>(IEnumerable<T> es) => es.GroupBy(e => e).ToDictionary(g => g.Key, g => g.Count());
+            Dictionary<string, List<int>> areaScaling = new Dictionary<string, List<int>>();
+            SortedDictionary<string, List<string>> mapAreas = new();
+            SortedDictionary<int, SortedSet<string>> groupAreas = new();
+            SortedDictionary<string, SortedSet<string>> colAreas = new();
+            Dictionary<string, EnemyLocArea> enemyLocAreas = new();
+            enemyLocs.EnemyAreas = new List<EnemyLocArea>();
+            HashSet<string> tier1Areas = new HashSet<string> { "limgrave", "stormhill" };
+            Dictionary<string, int> manualAreas = new Dictionary<string, int>
+            {
+                ["limgrave_murkwatercave_boss"] = 3, // Patches
+                ["volcano"] = 10, // Ghiza
+            };
+            foreach ((string area, List<EnemyInfo> enemies) in areaInfos.OrderBy(e => fogConfig.Areas.FindIndex(ar => ar.Name == e.Key)))
+            {
+                // Console.WriteLine($"{area}: {enemies.Count}");
+                foreach (EnemyInfo info in enemies)
+                {
+                    EnemyData enemy = defaultData[info.ID];
+                    if (scalingTiers.TryGetValue(info.ID, out int tier))
+                    {
+                        AddMulti(areaScaling, area, tier);
+                        if (opt["enemyarea"] && area == "x" && tier > 0) Console.WriteLine($"{area} tier {tier}: {existEnemyLocs[(enemy.MainMap, enemy.Name)].DebugText}");
+                    }
+                    AddMulti(mapAreas, enemy.MainMap, area);
+                    if (enemy.Col != null)
+                    {
+                        string col = $"{enemy.MainMap}_{enemy.Col}";
+                        AddMulti(colAreas, col, area);
+                    }
+                    foreach (int group in enemy.Group)
+                    {
+                        AddMulti(groupAreas, group, area);
+                    }
+                }
+                Dictionary<int, int> scalingHist = getHist(areaScaling[area]);
+                int areaTier = scalingHist.MaxBy(e => e.Value).Key;
+                if (scalingHist.Count > 1)
+                {
+                    bool simple = false;
+                    if (manualAreas.TryGetValue(area, out int manualTier))
+                    {
+                        simple = true;
+                        areaTier = manualTier;
+                    }
+                    else if (fogAreas[area].DefeatFlag > 0)
+                    {
+                        simple = true;
+                        areaTier = scalingHist.MaxBy(e => e.Key).Key;
+                    }
+                    else if (scalingHist.ContainsKey(1) && !tier1Areas.Contains(area))
+                    {
+                        simple = scalingHist.Count == 2;
+                        areaTier = scalingHist.Where(e => e.Key > 1).MaxBy(e => e.Value).Key;
+                    }
+                    if (opt["enemyarea"] && !simple) Console.WriteLine($"{area} ({areaTier}) has tiers: {string.Join(", ", scalingHist.OrderBy(e => e.Key).Select(e => $"tier {e.Key} = {e.Value} count"))}");
+                }
+                EnemyLocArea enemyArea = new EnemyLocArea { Name = area, ScalingTier = areaTier };
+                enemyLocAreas[area] = enemyArea;
+                enemyLocs.EnemyAreas.Add(enemyArea);
+            }
+            // Go through all of the dictionaries and fill in items
+            string addSpaceItem(string exist, object obj) => exist == null ? $"{obj}" : $"{exist} {obj}";
+            HashSet<string> separateBosses = new HashSet<string>(fogAreas.Values.Where(area => area.DefeatFlag > 0 && !mixedBossAreas.Contains(area.Name)).Select(area => area.Name));
+            foreach ((string map, List<string> areas) in mapAreas)
+            {
+                Dictionary<string, int> hist = getHist(areas);
+                string main = hist.MaxBy(e => e.Value).Key;
+                if (hist.Count > 1)
+                {
+                    bool simple = false;
+                    List<string> nonBoss = hist.OrderByDescending(e => e.Value).Select(e => e.Key).Where(a => !separateBosses.Contains(a)).ToList();
+                    if (nonBoss.Count > 0)
+                    {
+                        simple = nonBoss.Count == 1;
+                        main = nonBoss[0];
+                    }
+                    // Exclude boss areas
+                    if (opt["enemyarea"] && !simple) Console.WriteLine($"Map {map} has areas: {string.Join(", ", hist.OrderByDescending(e => e.Value).Select(e => $"{e.Key} = {e.Value} count"))}");
+                }
+                EnemyLocArea loc = enemyLocAreas[main];
+                loc.MainMap = addSpaceItem(loc.MainMap, map);
+            }
+            foreach ((int group, SortedSet<string> areas) in groupAreas)
+            {
+                if (opt["enemyarea"] && areas.Count > 1 && areas.Any(a => separateBosses.Contains(a)))
+                {
+                    Console.WriteLine($"Group {group} has areas {string.Join(", ", areas)}");
+                }
+                if (areas.Count == 1)
+                {
+                    EnemyLocArea loc = enemyLocAreas[areas.First()];
+                    loc.Groups = addSpaceItem(loc.Groups, group);
+                }
+            }
+            foreach ((string col, SortedSet<string> areas) in colAreas)
+            {
+                if (opt["enemyarea"] && areas.Count > 1)
+                {
+                    Console.WriteLine($"Col {col} has areas {string.Join(", ", areas)}");
+                }
+                if (areas.Count == 1)
+                {
+                    EnemyLocArea loc = enemyLocAreas[areas.First()];
+                    loc.Cols = addSpaceItem(loc.Cols, col);
+                }
+            }
+            foreach (EnemyLocArea loc in enemyLocs.EnemyAreas)
+            {
+                FogArea fogArea = fogAreas[loc.Name];
+                // Note: evergaol is currently open area, but it can have added enemies
+                if (opt["enemyarea"] && fogArea.DefeatFlag > 0 && fogArea.OpenArea == null && loc.Cols == null && loc.Groups == null)
+                {
+                    Console.WriteLine($"Missing cols or groups: {loc.Name} tier {loc.ScalingTier}");
+                }
+            }
+
+            if (opt["outenemy"])
+            {
+                Console.WriteLine(GameData.Serializer.Serialize(enemyLocs));
+            }
+            if (opt["outyaml"])
+            {
+                Console.WriteLine(GameData.Serializer.Serialize(locs));
+            }
+        }
+
         public void FogDS3(GameData game, LocationData data, AnnotationData ann)
         {
             Dictionary<int, string> names = GetDS3Bonfires(game);
@@ -964,7 +1722,7 @@ namespace RandomizerCommon
             }
 
             // Overall approach to produce heuristic area classifications for item lots and also enemies
-
+            // ~ seems to be if there are no items in that area in fog rando
             Dictionary<string, string> fogToItemArea = new Dictionary<string, string>
             {
                 ["firelink_cemetery"] = "firelink_cemetery",
@@ -1282,28 +2040,54 @@ namespace RandomizerCommon
         public class FogLocations
         {
             public List<KeyItemLoc> Items = new List<KeyItemLoc>();
+            public List<EnemyLocArea> EnemyAreas = new List<EnemyLocArea>();
             public List<EnemyLoc> Enemies = new List<EnemyLoc>();
         }
         public class KeyItemLoc
         {
             public string Key { get; set; }
             public List<string> DebugText { get; set; }
+            public string AArea { get; set; }
             public string Area { get; set; }
+            public string ReqAreas { get; set; }
             public string Lots { get; set; }
             public string Shops { get; set; }
+            [YamlIgnore]
+            public string OrderArea => (AArea ?? Area).Split(' ')[0];
+            [YamlIgnore]
+            public string ActualArea => (Area ?? AArea).Split(' ')[0];
         }
+
+        public class EnemyLocArea
+        {
+            public string Name { get; set; }
+            public string Groups { get; set; }
+            public string Cols { get; set; }
+            public string MainMap { get; set; }
+            public int ScalingTier { get; set; }
+        }
+
         public class EnemyLoc
         {
+            // In ER, Map ID Col are used separated. In DS3 they're combined in ID.
+            public string Map { get; set; }
             public string ID { get; set; }
+            // TODO: Don't do it
+            public string Col { get; set; }
             public string DebugText { get; set; }
+            public string AArea { get; set; }
             public string Area { get; set; }
+            [YamlIgnore]
+            public string ActualArea => (Area ?? AArea).Split(' ')[0];
         }
 
         public class FogCoordinate
         {
             public string Map { get; set; }
+            public string Name { get; set; }
             public Vector3 Pos { get; set; }
             public KeyItemLoc Loc { get; set; }
+            public string Area { get; set; }
         }
         public class Path
         {
@@ -2138,6 +2922,186 @@ namespace RandomizerCommon
                 }
             }
             return allSections;
+        }
+
+        public class EldenAreaClassifier
+        {
+            private GameData game;
+            private EldenCoordinator coord;
+            // In m12_01
+            private List<Arena> AinselStart { get; set; }
+            // In m12_01
+            private List<Arena> AinselMain { get; set; }
+            // In m60_08_10_02
+            private List<Arena> Moonlight { get; set; }
+            // In m12_02
+            private List<Arena> SacredGround { get; set; }
+
+            private static readonly HashSet<string> moonlight = new HashSet<string> { "moonlight", "liurnia" };
+            private static readonly HashSet<string> ainsel = new HashSet<string> { "ainsel", "ainsel_start", "lakeofrot" };
+            private static readonly HashSet<string> siofra = new HashSet<string> { "siofra_nokron", "siofra", "siofrabank_nokron", "siofra_limited" };
+            private static readonly HashSet<string> siofraStart = new HashSet<string> { "siofrabank_nokron", "siofra" };
+            private static readonly HashSet<string> haligtree = new HashSet<string> { "haligtree", "haligtree_elphael" };
+
+            public EldenAreaClassifier(GameData game, EldenCoordinator coord)
+            {
+                this.game = game;
+                this.coord = coord;
+                Dictionary<string, MSBE> maps = game.EldenMaps;
+                List<Arena> GetArenas(string map, Func<MSBE.Region, bool> pred)
+                {
+                    return maps[map].Regions.GetEntries().Where(pred).Select(Arena.FromRegion).ToList();
+                }
+                AinselStart = GetArenas("m12_01_00_00", r => r.Name == "Env_Box204" || r.Name == "Env_Box501");
+                AinselMain = GetArenas("m12_01_00_00", r => r.Name == "Env_Box052" || r.Name == "Env_Box053" || r.Name == "Env_Box054");
+                Moonlight = GetArenas("m60_08_10_02", r => r is MSBE.Region.PlayArea p && p.UnkT00 == 6202000);
+                SacredGround = GetArenas("m12_02_00_00", r => r.Name.StartsWith("サウンド領域_BGM_マリカ遺跡"));
+            }
+
+            public string Classify(List<string> areas, List<EntityId> entity)
+            {
+                if (entity.Count == 1)
+                {
+                    return Classify(areas, entity[0]);
+                }
+                else if (entity.Count == 0)
+                {
+                    return null;
+                }
+                List<string> results = entity.Select(e => Classify(areas, e)).Distinct().ToList();
+                return results.Count == 1 ? results[0] : null;
+            }
+
+            public string Classify(List<string> areas, EntityId entity)
+            {
+                string map = entity.MapName;
+                if (entity.Position is not Vector3 pos) return null;
+                // Console.WriteLine($"Examining {string.Join(",", areas)} for {entity}");
+                // Heuristics for cases with very different area scaling
+                // moonlight liurnia: regions with playarea 6202000
+                if (moonlight.SetEquals(areas))
+                {
+                    Vector3 bigTile = pos + coord.RelocationOffset(map, "m60_08_10_02");
+                    if (false && entity.EntityName == "AEG099_610_9000" && map.Contains("35_42"))
+                    {
+                        Arena a = Moonlight[0];
+                        // Console.WriteLine($"Found {map} {pos} -> {bigTile} for {entity}");
+                        // Console.WriteLine($"  {Vector3.Subtract(bigTile, a.Pos)} -> {a.InverseTransform(bigTile)} in {a} -> {a.Contains(bigTile)}");
+                    }
+                    return Moonlight.Any(a => a.Contains(bigTile)) ? "moonlight" : "liurnia";
+                }
+
+                // m12_01 ainsel ainsel_start lakeofrot
+                // ainsel_start is > -260 and < -165, and also Env_Box204 and Env_Box501 (start)
+                // ainsel is Env_Box052 Env_Box053 Env_Box054 (nokstella) when > -215 and < -165
+                // lakeofrot is < -285 ish
+                if (ainsel.SetEquals(areas) && map == "m12_01_00_00")
+                {
+                    if (pos.Y < -285) return "lakeofrot";
+                    if (pos.Y > -260 && pos.Y < -165)
+                    {
+                        if (pos.Y > -215 && AinselMain.Any(a => a.Contains(pos))) return "ainsel";
+                        return "ainsel_start";
+                    }
+                    if (AinselStart.Any(a => a.Contains(pos))) return "ainsel_start";
+                    return "ainsel";
+                }
+
+                // m12_02 siofra_nokron siofra siofrabank_nokron siofra_limited (also aqueducts, sacred ground, and dragonkin)
+                // < -700 siofra_dragonkin
+                // < -765 siofra (AEG099_620_9039 included?)
+                // night's ground: "サウンド領域_BGM_マリカ遺跡_01", "サウンド領域_BGM_マリカ遺跡_02", "サウンド領域_BGM_マリカ遺跡_03"
+                // aqueducts are nokron, x > 1180, and y < -617
+                if (siofra.SetEquals(areas) && map == "m12_02_00_00")
+                {
+                    return pos.Y < -700 ? "siofra" : "siofra_nokron";
+                }
+
+                // m12_07 siofrabank_nokron siofra, < -650 is siofra
+                if (siofraStart.SetEquals(areas) && map == "m12_07_00_00")
+                {
+                    return pos.Y < -650 ? "siofra" : "siofrabank_nokron";
+                }
+
+                // m15_00
+                if (haligtree.SetEquals(areas) && map == "m15_00_00_00")
+                {
+                    return pos.Y > 380 ? "haligtree" : "haligtree_elphael";
+                }
+
+                return null;
+            }
+
+            public List<string> FogClassify(List<string> areas, List<EntityId> entities)
+            {
+                // Is this really worth it
+                if (areas.Count == 1) return areas;
+                // This is based on item areas
+                if (!areas.Contains("siofra_nokron") && !areas.Contains("siofra") && !areas.Contains("siofrabank_nokron"))
+                {
+                    return areas;
+                }
+                // Add this here, after area check
+                List<EntityId> entity = entities.Where(e => e.Type != null && (e.Type.Contains("asset") || e.Type.Contains("enemy"))).ToList();
+                if (entity.Count == 1)
+                {
+                    return FogClassify(areas, entity[0]);
+                }
+                else if (entity.Count == 0)
+                {
+                    return areas;
+                }
+                List<List<string>> results = entity.Select(e => FogClassify(areas, e)).DistinctBy(r => string.Join(",", r)).ToList();
+                return results.Count == 1 ? results[0] : areas;
+            }
+
+            public List<string> FogClassify(List<string> areas, EntityId entity)
+            {
+                // Prerequisite: entity is in siofra_nokron area
+                if (entity.Position is not Vector3 pos) return areas;
+                string map = entity.MapName;
+                string select = null;
+                if (map == "m12_02_00_00")
+                {
+                    if (pos.Y < -700)
+                    {
+                        if (pos.Y < -765) select = "siofra";
+                        else select = "siofra_dragonkin";
+                    }
+                    else
+                    {
+                        if (pos.Z > 1720 && pos.Y < -617 && pos.Y > -635) select = "siofra_nokron_aqueduct";
+                        else if (SacredGround.Any(a => a.Contains(pos))) select = "siofra_nokron_grounds";
+                        else select = "siofra_nokron";
+                    }
+                }
+                if (map == "m12_07_00_00" && areas.Contains("siofra"))
+                {
+                    select = "siofra";
+                }
+                if (map == "m12_07_00_00" && areas.Contains("siofrabank_nokron"))
+                {
+                    if (pos.Y > -567) select = "siofrabank_prenokron";
+                    else select = "siofrabank_nokron";
+                }
+                if (map == "m34_11_00_00")
+                {
+                    // Study Hall: enemies in 34115150, assets in 34116150
+                    // Inverted: enemies in 34115160, assets in 34116160
+                    // However, treasure assets don't have them
+                    if (entity.GroupIds.Contains(34115150)) select = "liurnia_studyhall";
+                    else if (entity.GroupIds.Contains(34115160)) select = "liurnia_tower";
+                }
+                // Some redundancy with non-fog calc
+                if (moonlight.SetEquals(areas))
+                {
+                    Vector3 bigTile = pos + coord.RelocationOffset(map, "m60_08_10_02");
+                    select = Moonlight.Any(a => a.Contains(bigTile)) ? "moonlight" : "liurnia";
+                    // if (map == "m60_33_42_00" && entity.EntityName == "c3350_9000") Console.WriteLine($"Identified with {string.Join(",", areas)}, {moonlight.SetEquals(areas)} -> {select}");
+                }
+                if (select != null && areas.Contains(select)) return new List<string> { select };
+                return areas;
+            }
         }
 
         public void InvestigateSpEffects(GameData game)

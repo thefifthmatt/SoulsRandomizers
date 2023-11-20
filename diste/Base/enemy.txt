@@ -343,6 +343,27 @@ Groups:
 - Name: nosouls
   Models:
   - Night's Cavalry Horse
+- Name: nonunique
+  Models:
+  - Red Wolf
+  - Ulcerated Tree Spirit
+  - Grave Warden Duelist
+  - Ancient Hero of Zamor
+  - Bloodhound Knight
+  - Crystalian
+  - Demi-Human Queen
+  - Erdtree Avatar
+  - Putrid Avatar
+  - Glintstone Dragon
+  - Flying Dragon
+  - Death Rite Bird
+  - Night's Cavalry
+  - Bell Bearing Hunter
+  - Tibia Mariner
+- Name: ballista
+  Models:
+  - Ballista
+  - Dragon-Faced Flamethrower
 Defaults: []
 Enemies:
 - ID: 10000715
@@ -449,12 +470,14 @@ Enemies:
   DefeatFlag: 10000850
   StartFlag: 10002855
   MusicFlag: 10002852
-  DeathLine: 204101000
+  Outfit: Omensmirk Mask; Fell Omen Cloak; Eccentric's Manchettes; Astrologer Trousers
   Tags: exclude:unkillable perceptive exclude:fallout exclude:strand
   BuddyGroup: 10005108
   ExtraName: Margit, the Fell Omen
   FullName: $1, the Fell Omen
   PartName: Margit
+  CustomName:
+    Godskin Duo: $1, the Fell Omens
   NpcName: 902130000
 - ID: 10000620
   Map: m10_00_00_00
@@ -1262,6 +1285,7 @@ Enemies:
   StartFlag: 10002805
   MusicFlag: 10002802
   DeathLine: 207101000
+  Outfit: Aristocrat Headband; Godrick Knight Armor; Godrick Knight Gauntlets; Godrick Knight Greaves
   Tags: exclude:unkillable perceptive exclude:fallout excludemultiphase
   BuddyGroup: 10005106
   ExtraName: Godrick the Grafted
@@ -1454,12 +1478,12 @@ Enemies:
   Map: m11_00_00_00
   Name: c0000_9040
   Class: HostileNPC
-  Tags: exclude:unkillable
+  Tags: exclude:unkillable manualteam
 - ID: 11000745
   Map: m11_00_00_00
   Name: c0000_9045
   Class: HostileNPC
-  Tags: exclude:unkillable
+  Tags: exclude:unkillable manualteam
 - ID: 11000760
   Map: m11_00_00_00
   Name: c0000_9050
@@ -1548,6 +1572,7 @@ Enemies:
   DefeatFlag: 11000800
   StartFlag: 11002805
   MusicFlag: 11002802
+  Outfit: Omensmirk Mask; Fell Omen Cloak; Eccentric's Manchettes; Astrologer Trousers
   Tags: exclude:unkillable perceptive exclude:fallout exclude:strand
   Groups:
   - 11005800
@@ -1555,6 +1580,8 @@ Enemies:
   ExtraName: Morgott, the Omen King
   FullName: $1, the Omen King
   PartName: Morgott
+  CustomName:
+    Godskin Duo: $1, the Omen Kings
   NpcName: 902130003
 - ID: 11000720
   Map: m11_00_00_00
@@ -2510,6 +2537,7 @@ Enemies:
   DefeatFlag: 11000850
   StartFlag: 11002855
   MusicFlag: 11002852
+  Outfit: Elden Lord Crown; Elden Lord Armor; Elden Lord Bracers; Elden Lord Greaves
   Tags: exclude:unkillable resist perceptive manualname exclude:fallout noswamp
   Groups:
   - 11005850
@@ -2517,6 +2545,8 @@ Enemies:
   ExtraName: Goldfrey, First Elden Lord
   FullName: $1, First Elden Lord
   PartName: Godfrey
+  CustomName:
+    Godskin Duo: $1, First Elden Lords
   NpcName: 904720002
 - ID: 11000391
   Map: m11_00_00_00
@@ -2733,13 +2763,18 @@ Enemies:
   NextPhase: 11050800
   DefeatFlag: 11052802
   StartFlag: 11052805
+  Outfit: Elden Lord Crown; Elden Lord Armor; Elden Lord Bracers; Elden Lord Greaves
   Tags: exclude:unkillable perceptive scalephase manualname exclude:fallout exclude:strand
   RemoveGroup: 11055800
   BuddyGroup: 11055100
   ExtraName: Godfrey, First Elden Lord
   FullName: $1, First Elden Lord
   PartName: Godfrey
+  CustomName:
+    Godskin Duo: $1, First Elden Lords
   NpcName: 904720000
+  ExtraArenas:
+    primary: 41.24 64.96 -421.85 143.32
 - ID: 11050800
   Map: m11_05_00_00
   Name: c4721_9000
@@ -2747,15 +2782,18 @@ Enemies:
   DefeatFlag: 11050800
   StartFlag: 11052802
   DeathLine: 206101105
+  Outfit: Elden Lord Crown; Elden Lord Armor; Elden Lord Bracers; Elden Lord Greaves
   Tags: exclude:unkillable perceptive scalephase exclude:fallout exclude:strand
   RemoveGroup: 11055800
   BuddyGroup: 11055100
   ExtraName: Hoarah Loux, Warrior
   FullName: $1, Warrior
   PartName: Hoarah Loux
+  CustomName:
+    Godskin Duo: $1, Warriors
   NpcName: 904720001
   ExtraArenas:
-    primary: 41.24 64.96 -421.85 -36.68
+    primary: 41.24 64.96 -421.85 143.32
 - ID: 11050310
   Map: m11_05_00_00
   Name: c4770_9000
@@ -4320,6 +4358,7 @@ Enemies:
   DefeatFlag: 12020850
   StartFlag: 12022858
   MusicFlag: 12022852
+  Outfit: Silver Tear Mask; None; None; None
   Tags: multi exclude:unkillable perceptive noscale
   BuddyGroup: 12025116
   ExtraName: Mimic Tear
@@ -7195,19 +7234,23 @@ Enemies:
 - ID: 12030800
   Map: m12_03_00_00
   Name: c0000_9011
-  Class: Helper
-  OwnedBy: 12030814
-  Tags: multi perceptive combathelper
+  Class: Boss
+  DefeatFlag: 12030800
+  StartFlag: 12032810
+  Outfit: Spellblade's Pointed Hat; Spellblade's Traveling Attire; Spellblade's Gloves; Spellblade's Trousers
+  Tags: multi exclude:unkillable perceptive manualname
   BuddyGroup: 12035104
-  ExtraName: Fia's Champion
+  ExtraName: Fia's Champions
   FullName: Fia's $1
   PartName: Fia's Champion
+  CustomName:
+    Fire Giant: Fia's Giant
   NpcName: 136100
 - ID: 12030810
   Map: m12_03_00_00
   Name: c0000_9012
   Class: Helper
-  OwnedBy: 12030814
+  OwnedBy: 12030800
   Tags: multi perceptive combathelper
   BuddyGroup: 12035104
   ExtraName: Sorcerer Rogier
@@ -7218,7 +7261,7 @@ Enemies:
   Map: m12_03_00_00
   Name: c0000_9013
   Class: Helper
-  OwnedBy: 12030814
+  OwnedBy: 12030800
   Tags: multi perceptive combathelper
   BuddyGroup: 12035104
   ExtraName: Lionel the Lionhearted
@@ -7229,7 +7272,7 @@ Enemies:
   Map: m12_03_00_00
   Name: c0000_9014
   Class: Helper
-  OwnedBy: 12030814
+  OwnedBy: 12030800
   HealthbarIndex: 2
   Tags: multi perceptive combathelper
   BuddyGroup: 12035104
@@ -7241,7 +7284,7 @@ Enemies:
   Map: m12_03_00_00
   Name: c0000_9015
   Class: Helper
-  OwnedBy: 12030814
+  OwnedBy: 12030800
   HealthbarIndex: 1
   Tags: multi perceptive combathelper
   BuddyGroup: 12035104
@@ -7268,17 +7311,12 @@ Enemies:
 - ID: 12030814
   Map: m12_03_00_00
   Name: c0000_9020
-  Class: Boss
-  DefeatEntity: 12030800
-  DefeatFlag: 12030800
-  StartFlag: 12032810
-  Tags: multi perceptive manualname
+  Class: Helper
+  OwnedBy: 12030800
+  Tags: multi perceptive
   BuddyGroup: 12035104
-  ExtraName: Fia's Champions
   FullName: Fia's $1
   PartName: Fia's Champion
-  ExtraArenas:
-    primary: -370.11 149.47 -203.45 30.00
 - ID: 2800912
   Map: m12_03_00_00
   Name: c0100_9008
@@ -8284,6 +8322,7 @@ Enemies:
   DefeatFlag: 12040800
   StartFlag: 12042805
   MusicFlag: 12042802
+  Outfit: Snow Witch Hat; Snow Witch Robe; None; Snow Witch Skirt
   Tags: multi exclude:unkillable perceptive
   BuddyGroup: 12045100
   ExtraName: Astel, Naturalborn of the Void
@@ -9227,11 +9266,14 @@ Enemies:
   DefeatFlag: 12050800
   StartFlag: 12052805
   MusicFlag: 12052802
+  Outfit: Omensmirk Mask; Lord of Blood's Robe; None; Sanguine Noble Waistcloth
   Tags: exclude:unkillable perceptive
   BuddyGroup: 12055104
   ExtraName: Mohg, Lord of Blood
   FullName: $1, Lord of Blood
   PartName: Mohg
+  CustomName:
+    Godskin Duo: $1, Lords of Blood
   NpcName: 904800000
 - ID: 12050360
   Map: m12_05_00_00
@@ -9630,6 +9672,7 @@ Enemies:
   DefeatFlag: 12080800
   StartFlag: 12082805
   MusicFlag: 12082802
+  Outfit: Shining Horned Headband; Shaman Furs; None; Shaman Leggings
   Tags: exclude:unkillable perceptive
   BuddyGroup: 12085100
   ExtraName: Ancestor Spirit
@@ -9653,6 +9696,7 @@ Enemies:
   DefeatFlag: 12090800
   StartFlag: 12092805
   MusicFlag: 12092802
+  Outfit: Shining Horned Headband; Shaman Furs; None; Shaman Leggings
   Tags: multi exclude:unkillable perceptive singleton noinvincible
   Groups:
   - 12095200
@@ -9970,11 +10014,15 @@ Enemies:
   NextPhase: 13000800
   DefeatFlag: 13002802
   StartFlag: 13002805
+  DeathLine: 202111300
+  Outfit: Page Hood; Highwayman Cloth Armor; Highwayman Gauntlets; Foot Soldier Greaves
   Tags: exclude:unkillable perceptive scalephase manualname exclude:fallout
   BuddyGroup: 13005120
   ExtraName: Beast Clergyman
   FullName: Beast Clergyman $1
   PartName: Beast Clergyman
+  CustomName:
+    Elden Beast: Elden Beast Clergyman
   NpcName: 902110000
 - ID: 13000800
   Map: m13_00_00_00
@@ -9983,6 +10031,7 @@ Enemies:
   DefeatFlag: 13000800
   StartFlag: 13002802
   DeathLine: 202101300
+  Outfit: Maliketh's Helm; Maliketh's Armor; Maliketh's Gauntlets; Maliketh's Greaves
   Tags: exclude:unkillable perceptive scalephase exclude:fallout
   BuddyGroup: 13005120
   ExtraName: Maliketh, the Black Blade
@@ -10261,6 +10310,7 @@ Enemies:
   DefeatFlag: 13000850
   StartFlag: 13002855
   MusicFlag: 13002852
+  Outfit: Godskin Apostle Hood; Godskin Apostle Robe; Godskin Apostle Bracelets; Godskin Apostle Trousers
   Tags: multi exclude:unkillable
   BuddyGroup: 13005100
   ExtraName: Godskin Duo
@@ -10812,6 +10862,7 @@ Enemies:
   NextPhase: 14000800
   DefeatFlag: 14002802
   StartFlag: 14002805
+  Outfit: Queen's Crescent Crown; Queen's Robe; Queen's Bracelets; Queen's Leggings
   Tags: multi exclude:unkillable perceptive scalephase singleton manualname
   Groups:
   - 14005810
@@ -10821,6 +10872,8 @@ Enemies:
   ExtraName: Rennala 1
   FullName: $1, Queen of the Full Moon
   PartName: Rennala
+  CustomName:
+    Godskin Duo: $1, Queens of the Full Moon
   NpcName: 902030000
 - ID: 14000700
   Map: m14_00_00_00
@@ -10837,6 +10890,7 @@ Enemies:
   DefeatFlag: 14000800
   StartFlag: 14002802
   DeathLine: 200111400
+  Outfit: Queen's Crescent Crown; Queen's Robe; Queen's Bracelets; Queen's Leggings
   Tags: multi exclude:unkillable perceptive manualname
   Groups:
   - 14005820
@@ -10845,6 +10899,8 @@ Enemies:
   ExtraName: Rennala 2
   FullName: $1, Queen of the Full Moon
   PartName: Rennala
+  CustomName:
+    Godskin Duo: $1, Queens of the Full Moon
   NpcName: 902030001
 - ID: 14000810
   Map: m14_00_00_00
@@ -11162,6 +11218,7 @@ Enemies:
   DefeatFlag: 14000850
   StartFlag: 14002855
   MusicFlag: 14000852
+  Outfit: Karolos Glintstone Crown; Raya Lucarian Robe; Sorcerer Manchettes; Sorcerer Leggings
   Tags: exclude:unkillable perceptive
   BuddyGroup: 14005102
   ExtraName: Red Wolf of Radagon
@@ -12114,6 +12171,7 @@ Enemies:
   DefeatFlag: 15000800
   StartFlag: 15002805
   MusicFlag: 15002802
+  Outfit: Malenia's Winged Helm; Malenia's Armor; Malenia's Gauntlet; Malenia's Greaves
   Tags: multi exclude:unkillable perceptive excludemultiphase immortal manualname
   Groups:
   - 15005800
@@ -12161,6 +12219,7 @@ Enemies:
   DefeatFlag: 15000850
   StartFlag: 15002855
   MusicFlag: 15002852
+  Outfit: Royal Knight Helm; Royal Knight Armor; Royal Knight Gauntlets; Royal Knight Greaves
   Tags: exclude:unkillable perceptive exclude:fallout
   Groups:
   - 15005850
@@ -12168,6 +12227,8 @@ Enemies:
   ExtraName: Loretta, Knight of the Haligtree
   FullName: $1, Knight of the Haligtree
   PartName: Loretta
+  CustomName:
+    Godskin Duo: $1, Knights of the Haligtree
   NpcName: 903252000
 - ID: 15000310
   Map: m15_00_00_00
@@ -13274,6 +13335,7 @@ Enemies:
   DefeatFlag: 16000850
   StartFlag: 16002855
   MusicFlag: 16002852
+  Outfit: Godskin Noble Hood; Godskin Noble Robe; Godskin Noble Bracelets; Godskin Noble Trousers
   Tags: exclude:unkillable perceptive
   BuddyGroup: 16005850
   ExtraName: Godskin Noble
@@ -14024,12 +14086,15 @@ Enemies:
   DefeatFlag: 16000800
   StartFlag: 16002802
   DeathLine: 214101600
+  Outfit: Rotten Duelist Helm; Rotten Gravekeeper Cloak (Altered); Drake Knight Gauntlets; Rotten Duelist Greaves
   Tags: exclude:unkillable perceptive noscaleup scalephase manualbuddy
   RemoveGroup: 16005800
   BuddyGroup: 16005802
   ExtraName: Rykard, Lord of Blasphemy
   FullName: $1, Lord of Blasphemy
   PartName: Rykard
+  CustomName:
+    Godskin Duo: $1, Lords of Blasphemy
   NpcName: 904710001
 - ID: 16000801
   Map: m16_00_00_00
@@ -14038,6 +14103,7 @@ Enemies:
   NextPhase: 16000800
   DefeatFlag: 16002802
   StartFlag: 16002803
+  Outfit: Rotten Duelist Helm; Rotten Gravekeeper Cloak (Altered); Drake Knight Gauntlets; Rotten Duelist Greaves
   Tags: exclude:unkillable perceptive noscaleup scalephase manualbuddy
   RemoveGroup: 16005800
   BuddyGroup: 16005802
@@ -14235,7 +14301,7 @@ Enemies:
   Tags: exclude:unkillable perceptive
   ExtraName: Soldier of Godrick
   FullName: $1 of Godrick
-  PartName: Soldier
+  PartName: Rick
   NpcName: 904311000
   ExtraArenas:
     primary: -33.610 8.552 52.219 -140.000
@@ -14293,6 +14359,7 @@ Enemies:
   NextPhase: 19000800
   DefeatFlag: 19002802
   StartFlag: 19002805
+  Outfit: None; None; Godskin Apostle Bracelets; Sanguine Noble Waistcloth
   Tags: exclude:unkillable perceptive exclude:strand
   RemoveGroup: 19005800
   BuddyGroup: 19005130
@@ -22020,6 +22087,7 @@ Enemies:
   DefeatFlag: 35000800
   StartFlag: 35002805
   MusicFlag: 35002802
+  Outfit: Omensmirk Mask; Lord of Blood's Robe; None; Sanguine Noble Waistcloth
   Tags: exclude:unkillable resist perceptive noswamp
   BuddyGroup: 35005100
   ExtraName: Mohg, the Omen
@@ -22157,6 +22225,7 @@ Enemies:
   Map: m39_20_00_00
   Name: c4220_9000
   Class: Basic
+  Tags: allowframes
 - ID: 39200360
   Map: m39_20_00_00
   Name: c4230_9000
@@ -22284,6 +22353,8 @@ Enemies:
   ExtraName: Magma Wyrm Makar
   FullName: Magma Wyrm $1
   PartName: Makar
+  CustomName:
+    Fire Giant: Magma Giant
   NpcName: 904910000
 - ID: 45000100
   Map: m45_00_00_00
@@ -22884,6 +22955,7 @@ Enemies:
   DefeatFlag: 1252380800
   StartFlag: 1252382815
   MusicFlag: 1252382895
+  Outfit: Radahn's Redmane Helm; Radahn's Lion Armor; Radahn's Gauntlets; Radahn's Greaves
   Tags: multi exclude:unkillable perceptive
   ExtraName: Starscourge Radahn
   FullName: Starscourge $1
@@ -22896,6 +22968,7 @@ Enemies:
   NextPhase: 1052520800
   DefeatFlag: 1252522802
   StartFlag: 1252520804
+  Outfit: None; Champion Pauldron; Champion Bracers; Champion Gaiters
   Tags: exclude:unkillable perceptive scalephase manualname npcpart
   RemoveGroup: 1052525800
   ExtraName: Fire Giant 1
@@ -22910,6 +22983,7 @@ Enemies:
   Class: Boss
   DefeatFlag: 1252520800
   StartFlag: 1252522802
+  Outfit: None; Champion Pauldron; Champion Bracers; Champion Gaiters
   Tags: exclude:unkillable perceptive scalephase manualname
   RemoveGroup: 1052525800
   BuddyGroup: 1052525100
@@ -28296,11 +28370,14 @@ Enemies:
   Class: Boss
   DefeatFlag: 1035500800
   StartFlag: 1035502805
+  Outfit: Royal Knight Helm; Royal Knight Armor; Royal Knight Gauntlets; Royal Knight Greaves
   Tags: exclude:unkillable resist perceptive noswamp
   BuddyGroup: 1035505106
   ExtraName: Royal Knight Loretta
   FullName: Royal Knight $1
   PartName: Loretta
+  CustomName:
+    Godskin Duo: Royal Knights $1
   NpcName: 903253500
 - ID: 2802715
   Map: m60_35_50_00
@@ -61634,9 +61711,9 @@ Enemies:
   DefeatFlag: 1049390800
   StartFlag: 1049392805
   MusicFlag: 1049392802
-  Tags: multi exclude:unkillable perceptive
+  Tags: multi exclude:unkillable perceptive manualname
   BuddyGroup: 1049395102
-  ExtraName: Nox Monk
+  ExtraName: Nox Duo
   FullName: Nox $1
   PartName: Monk
   NpcName: 903300560
@@ -64152,9 +64229,9 @@ Enemies:
   StartFlag: 1051362805
   MusicFlag: 1051362802
   HealthbarIndex: 1
-  Tags: multi exclude:unkillable perceptive
+  Tags: multi exclude:unkillable perceptive manualname
   BuddyGroup: 1051365100
-  ExtraName: Crucible Knight
+  ExtraName: Redmane Duo
   FullName: Crucible Knight $1
   PartName: Crucible Knight
   NpcName: 902500500
@@ -65663,6 +65740,7 @@ Enemies:
   DefeatFlag: 1051570800
   StartFlag: 1051572805
   MusicFlag: 1051572802
+  Outfit: Veteran's Helm; Veteran's Armor; Veteran's Gauntlets; Veteran's Greaves
   Tags: multi exclude:unkillable perceptive exclude:strand
   Groups:
   - 1051575801
@@ -66523,7 +66601,7 @@ Enemies:
   BuddyGroup: 1052565100
   ExtraName: Erdtree Avatar
   FullName: Erdtree $1
-  PartName: Avatar
+  PartName: Erdtree Avatar
   NpcName: 904810601
 - ID: 1052560801
   Map: m60_52_56_00
@@ -66534,7 +66612,7 @@ Enemies:
   BuddyGroup: 1052565100
   ExtraName: Erdtree Avatar
   FullName: Erdtree $1
-  PartName: Avatar
+  PartName: Erdtree Avatar
   NpcName: 904810601
 - ID: 1052560802
   Map: m60_52_56_00
@@ -66545,7 +66623,7 @@ Enemies:
   BuddyGroup: 1052565100
   ExtraName: Erdtree Avatar
   FullName: Erdtree $1
-  PartName: Avatar
+  PartName: Erdtree Avatar
   NpcName: 904810601
 - ID: 1052560803
   Map: m60_52_56_00
@@ -66555,7 +66633,7 @@ Enemies:
   Tags: multi nosouls
   ExtraName: Erdtree Avatar
   FullName: Erdtree $1
-  PartName: Avatar
+  PartName: Erdtree Avatar
   NpcName: 904810601
 - ID: 1052570950
   Map: m60_52_57_00

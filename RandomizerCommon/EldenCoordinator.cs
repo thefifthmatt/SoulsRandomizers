@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -306,6 +307,13 @@ namespace RandomizerCommon
             int tileX = mapId[1];
             int tileZ = mapId[2];
             return global - new Vector3((tileX - 16) * 256, 0, (tileZ - 16) * 256);
+        }
+
+        public Vector3 RelocationOffset(string fromArea, string toArea)
+        {
+            Vector3 originCoord = ToGlobalCoords(fromArea, Vector3.Zero).Item1;
+            Vector3 mapCoord = ToGlobalCoords(toArea, Vector3.Zero).Item1;
+            return originCoord - mapCoord;
         }
 
         public enum MarkerType

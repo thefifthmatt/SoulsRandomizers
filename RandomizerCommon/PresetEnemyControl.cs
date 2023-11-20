@@ -44,6 +44,7 @@ namespace RandomizerCommon
             Pre.AutoSize = true;
             Pre.Text = text;
             Pre.Margin = new Padding(0, 5, 0, 0);
+            // Do something like https://stackoverflow.com/questions/11780558/c-sharp-winforms-combobox-dynamic-autocomplete
             Dropdown = new ComboBox();
             Dropdown.Width = 200;
             Dropdown.AutoCompleteMode = AutoCompleteMode.SuggestAppend;

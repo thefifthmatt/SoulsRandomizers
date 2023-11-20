@@ -2,11 +2,13 @@
 
 Items found in the world, shops items, enemy and boss drops, and character starting loadouts are all randomized. Key item randomization is supported. Most enemies can be randomized as well, with extensive customization for different enemy types.
 
-Normally, all you need to complete the game is two Great Runes and the Rold Medallion. The key item randomizer can chain key items together, especially when the bias slider is higher. There's also a mode to collect all 7 Great Runes before you can challenge the final boss.
+Normally, all you need to complete the game is two Great Runes and the Rold Medallion. The key item randomizer can chain key items together, especially when the bias slider is higher. There are also options to add, change, and remove Great Rune requirements. In the most restrictive mode, you must collect all 7 Great Runes before you can challenge the final boss.
+
+If you use this mod in a casual livestream or published video, please link this mod page from a chat command or video description if possible. If you use this mod in a unique live event like a showcase or a contest, please credit me (thefifthmatt) for the mod if it's reasonable to do so. There isn't a team behind this mod. I created it for people to use it, so please facilitate that if you manage to create engaging content from it. Thank you!
 
 If you would like to provide feedback or playtest, you can join the discord server at https://discord.gg/QArcYud (also for Fog Gate Randomizer, Sekiro Randomizer, DS3 Static Randomizer). This mod is under development, and it will update when the game updates, so please check this mod page and the server for updates.
 
-If you're a native speaker of languages supported by Elden Ring without existing mod translations or notice partially missing translations, you can add yourself to [this spreadsheet](https://docs.google.com/spreadsheets/d/1NfW_qniivBZgwP1O6BupFgcqUl1s2hIUliDuUzcgPAQ/edit) and fill in the files in `diste\Messages` to help make this mod available in other languages. Also let me know if features are needed like font changes or space adjustments. Thank you!
+If you're a native speaker of languages supported by Elden Ring without existing mod translations or notice partially missing translations, you can add yourself to [this spreadsheet](https://docs.google.com/spreadsheets/d/1NfW_qniivBZgwP1O6BupFgcqUl1s2hIUliDuUzcgPAQ/edit) and fill in the files in `diste\Messages` to help make this mod available in other languages. Also let me know if features are needed like font changes or space adjustments.
 
 ## Installation
 
@@ -14,7 +16,7 @@ These instructions are a bit long, but mainly to account for all of the differen
 
 There are mainly two types of Elden Ring mods: dll mods and file mods. dll mods hook into the game when it's running to change it in various ways, similar to what a Cheat Engine script might do. For example, [Seamless Co-op](https://www.nexusmods.com/eldenring/mods/510) or [Item and Param Randomiser](https://www.nexusmods.com/eldenring/mods/97). File mods provide an altered version of the data files used by the game, such as regulation.bin (containing game params) or files packed inside archives like Data0.bdt. For example, this randomizer or [Elden Ring Reforged](https://www.nexusmods.com/eldenring/mods/541).
 
-File mods like this randomizer *cannot hook into the game on their own*, and require either [Mod Engine 2](https://github.com/soulsmods/ModEngine2/releases) or Elden Ring UXM to do this for them. Both of these tools are in beta and are maintained by users in the FromSoftware modding server ?ServerName? (https://discord.gg/mT2JJjx). On the other hand, dll mods can be installed with something like Elden Mod Loader, or used standalone with their own launchers.
+File mods like this randomizer *cannot hook into the game on their own*, and require either [Mod Engine 2](https://github.com/soulsmods/ModEngine2/releases) or [Elden Ring Selective UXM](https://www.nexusmods.com/eldenring/mods/1651) to do this for them. Both of these tools are in beta and are maintained by users in the FromSoftware modding server ?ServerName? (https://discord.gg/mT2JJjx). On the other hand, dll mods can be installed with something like Elden Mod Loader, or used standalone with their own launchers.
 
 As a result, using this randomizer requires one of these three options (more details in Step 2):
 1. Automatic Mod Engine. In this case, you can download the randomizer anywhere, and you do not have to download anything else. When you run the randomizer, it outputs hundreds of game files, and also outputs a `config_eldenringrandomizer.toml` file. You can click the "Launch Elden Ring" button in the randomizer to launch a built-in Mod Engine. Mod Engine may not work unless Steam is running, Elden Ring is installed in the default Steam library, and `eldenring.exe` has *not* been modified to run as administrator.
@@ -24,6 +26,8 @@ As a result, using this randomizer requires one of these three options (more det
 The Mod Engine approach is covered by [Elden Ring Key Item Randomizer: Installation Instructions](https://www.youtube.com/watch?v=3GdUwpzYf8o) by Nax. The same overall approach applies even with enemy randomizer, just with more options in Step 3 below.
 
 A note about [Seamless Co-op](https://www.nexusmods.com/eldenring/mods/510): You can use [these instructions](https://www.nexusmods.com/eldenring/articles/94) for basic compatibility with Mod Engine. If you're using that guide, *ignore the second-to-last step* and follow the specific instructions below instead. Custom enemy placements (especially boss replacements) seem to result in disconnections, so try to avoid those. See also [How to Install Elden Ring Enemy/Item Randomizer and Full Co-op](https://www.youtube.com/watch?v=IM3U6oZ4egg) by itsSpicy, which recommends having only one person run the randomizer and upload their files to a host like Google Drive for their partners to download.
+
+If you're using [Elden Ring Fog Gate Randomizer](https://www.nexusmods.com/eldenring/mods/3295), read that page *first* for the required installation steps. The overall idea is to first install Item/Enemy Randomizer with specific options, and then merge Item/Enemy Randomizer directory into a separate Fog Gate Randomizer directory.
 
 ### 1. Go offline on Steam (optional)
 
@@ -47,7 +51,7 @@ To use this option, **manually** download the randomizer zip from the [Files tab
 
 Do **not** use Vortex Mod Manager, because apparently it does not know how to properly install game files generated by the randomizer.
 
-If you want to use randomizer with other file-based mods, including regulation.bin edits, you will be able to specify another mod directory in the randomizer program using "Select other mod". When randomization is applied, it will automatically merge this mod. When it launches, it will launch using the mod's other files.
+If you want to use randomizer with other file-based mods, you will be able to specify other mods in the randomizer program using "Merge other mod" before randomizing. See the "Select options" step below for more details. When randomization is applied, randomizer will automatically merge the mods' files. When the game launches, it will load both the merged files and the mods' other files.
 
 ### 3b. Manual Mod Engine
 
@@ -67,7 +71,7 @@ If you want to use randomizer with other file-based mods, including regulation.b
 
 To use UXM, unpack and patch the game using UXM. Unpacking the game requires around 50 GB of disk space.
 
-UXM is only officially available in the [?ServerName? Discord server](https://discord.gg/mT2JJjx), pinned in #tools-and-resources channel. You should also make sure you can bypass EAC when you launch the game, or else Elden Ring with refuse to start with the modified exe. You can find guides for this online.
+The recommended UXM version is [Elden Ring Selective UXM](https://www.nexusmods.com/eldenring/mods/1651). You should also make sure you can bypass EAC when you launch the game, or else Elden Ring with refuse to start with the modified exe. You can find guides for this online.
 
 Download the randomizer zip from the [Files tab](https://www.nexusmods.com/eldenring/mods/428?tab=files). It doesn't matter where you download it to do, because you will specify the game install path inside of it. Unzip it using "Extract here" in 7-Zip.
 
@@ -77,7 +81,7 @@ Download the randomizer zip from the [Files tab](https://www.nexusmods.com/elden
 
 Open EldenRingRandomizer.exe and select your Elden Ring game exe. Select "Output files for UXM" only if you're using UXM. When this is checked, the randomizer will output game files into the game directory, creating backups of all of the files it replaces. Otherwise, it will output game files directly into the `randomizer` directory.
 
-If you have other file-based mods to merge with randomizer, use "Select other mod". You can select a custom regulation.bin from a different directory, or enter a mod directory name manually. When the randomizer writes its files, it will use files from that directory as a base. (Also with Manual Mod Engine, you need to edit the config file [like this](https://cdn.discordapp.com/attachments/936393685585780846/980279218602643536/unknown.png), as mentioned in Step 2b). Be warned that some mods cannot be merged with item randomizer currently, and will always result in errors.
+If you have other file-based mods to merge with randomizer, use "Merge other mod". Select either a directory or a regulation.bin file to merge another mod's directory. (With Manual Mod Engine, you'll also need to edit the config file [like this](https://cdn.discordapp.com/attachments/936393685585780846/980279218602643536/unknown.png), as mentioned in Step 2b). Select a Mod Engine toml file to merge all of the mod directories listed in the toml file. This uses the same resolution order as Mod Engine: if a file exists in multiple mods, randomizer only merges the file which is found first in the mod order. Be warned that some mods cannot be merged with item randomizer currently, and will always result in errors.
 
 Then, select randomization options in both the Item Randomizer and Enemy Randomizer tabs, which can be enabled or disabled with the corresponding checkboxes. In item randomizer, "Important locations" are all of the places you might have to check to finish the game or get essential upgrades. See more information about key items and locations below. By default, enemies get randomized within predefined categories (dragons bosses become other dragon bosses), but this is highly configurable with custom enemy placement.
 
@@ -119,9 +123,13 @@ Mod Engine's launchmod script seems to be incompatible with running as administr
 
 This could indicate two things: either `config_eldenring.toml` has not been edited with the right values, or the game has updated and so it no longer can use modded `regulation.bin` files meant for older versions of the game. If you're using a version of the randomizer from at least the latest game patch, then double-check Step 3a to make sure the config is correct.
 
+This issue may arise if merged mods are from an older version of the game, in which case those mods need to be updated. This can still work in some cases, by loading into the main menu without any mods installed and then quitting out, or sometimes by moving the current ER0000.sl2 and letting the game re-create it.
+
 *I loaded into the game and I keep seeing "?EventTextForMap?" or "Error: Mismatch between regulation.bin and other randomizer files".*
 
-This is a failsafe in the randomizer when it's not properly installed, meaning it only detected some of the files it needs. It can happen when the required game files are not kept together (please see the warning in Step 4: **do not manually copy and paste individual files**), or when files are copy-pasted on top of the randomizer, or when the randomizer is not at the top of the mod list in `config_eldenring.toml`. It can also happen when the game files are re-randomized without fully shutting down the game, in which case you should exit to desktop and re-launch the game. More rarely, it can indicate the above case where the randomizer version mismatches the game version.
+This is a failsafe in the randomizer when it's not properly installed, meaning it only detected some of the files it needs. It can happen when the required game files are not kept together (please see the warning in Step 4: **do not manually copy and paste individual files**), or when files are copy-pasted on top of the randomizer, or when the randomizer is not at the top of the mod list in `config_eldenring.toml`. It can also happen when the game files are re-randomized without fully shutting down the game, in which case you should exit to desktop and re-launch the game.
+
+This can also indicate the case from "none of the items are random" where the randomizer version (or a merged regulation.bin mod) mismatches the game version.
 
 If the issue is due to partial installation, the best way to resolve this is to rerun the randomizer and let it output files to their intended locations, and remove any previous instances of copy-pasted files. If you want to use other file-based mods with the randomizer, follow the instructions for using the separate "mod" directory. With the exception of other file-based randomizers and installers, **the randomizer should always be the last-installed mod**.
 
@@ -148,9 +156,7 @@ Important changes (and non-changes):
 - Shop contents are randomized. All shop NPCs drop their own Bell Bearings which will match the contents of their shops.
 - Optional NPC questlines are not required for key items. It is also never necessary to kill an NPC (so don't kill Patches!), and no good items are obtainable through NPC death. It is also never necessary to repeatedly farm enemies for key items.
 
-Planned future features include an cookbook randomization, glitched logic, and of course an enemy randomizer. Feedback is greatly appreciated.
-
-If you find any bugs, especially those which make a run incompletable, you can upload your spoiler log in the discord server and I will take a look. Otherwise, open the spoiler log and send me the first line (the one that starts with "Options and seed").
+If you find any bugs, especially those which make a run incompletable, you can upload your spoiler log in the discord server and I will take a look.
 
 ### Locations
 
@@ -184,12 +190,12 @@ Key items are defined as items which unlock other unmissable items. They are onl
 - Dectus Medallion (Left and Right): Used to ascend the Grand Lift of Dectus. Other routes to enter Altus Plateau are also possible.
 - Discarded Palace Key: Used to unlock the treasure chest in the Raya Lucaria Grand Library.
 - Drawing-Room Key: Used to access the access the Volcano Manor Drawing Room and the lava area hidden within.
-- Great Runes: Two are required to enter Leyndell, either though Capital Outskirts or Deeproot Depths. All seven are required to fight the final boss if that option is selected.
+- Great Runes: By default, two of seven are required to enter Leyndell, either though Capital Outskirts or Deeproot Depths. With modified rulesets, any number of these can be required to enter Leyndell, enter Mountaintops, or access the final boss.
 - Haligtree Secret Medallion (Left and Right): Used to access Consecrated Snowfield, the hidden path to the Haligtree.
 - Imbued Sword Key: Used to unlock a Sending Gate at the Four Belfries in Liurnia. There are three of these in the game.
 - Pureblood Knight's Medal: Used to immediately access Mohgwyn Palace without using the Sending Gate in Consecrated Snowfield.
-- Rold Medallion: Used to access Mountaintops of the Giants after Leyndell.
-- Rusty Key: Used to progress into Stormveil Castle. This is optional... unless Gostoc dies before he opens the main gate for you.
+- Rold Medallion: Used to access Mountaintops of the Giants after Leyndell. With modified rulesets, it can be replaced with a Great Runes requirement.
+- Rusty Key: Used to progress into Stormveil Castle. This is optional, unless Gostoc dies before he opens the main gate for you.
 
 ### Other important items
 
@@ -229,12 +235,26 @@ There is also an option to mark item locations, down to the exact map coordinate
 
 OOT Randomizer-style hints are planned in the future, in the style of "a catacombs boss drops a key item" or "there are no key items in Leyndell".
 
+## Enemy randomization
+
+Enemy randomizer shuffles enemies and bosses within categories. By default, major bosses replace other bosses, minor bosses replace other minor bosses, regular enemies replace other regular enemies, and so on. Minibosses like night bosses, overworld dragon bosses, and evergaol bosses each have their own categories.
+
+The categorization of major bosses in enemy randomizer is slightly different from the categorization in item randomizer. Some additional major bosses are added in enemy randomizer, like Fia's Champions, Fortissax, Gideon. Elemer of the Briar is a major boss in item randomizer, because he has an achievement, but is downgraded to a minor boss in enemy randomizer because room very small.
+
+The warp from Raya Lucaria to Volcano Manor is changed so that getting consumed by the abductor enemy is no longer required. Instead, the only requirement is to die at the bottom of the elevator through any means.
+
+Aside from default enemy categories, customization is possible if you check "Custom enemy placement" and then click "Edit custom enemy placement". Each custom configuration is called a preset and is saved as a file in the `presets` directory. Most common types of customization like "Merge non-major bosses" and "Replace wildlife with regular enemies" can be achieved by clicking on Quick Edit links at the bottom.
+
+For each category, custom enemy pools can specify which enemies are randomly selected. Within a category, all pool frequencies add up to 100%. Click the "+" button to add a new pool. You can add enemies to pools, and when a pool is selected, an enemy in that pool will be randomly selected based on its frequency in the vanilla game. "Self" is synonymous with whichever category you're editing, so by default, all categories are replaced with 100% Self.
+
+Finally, custom enemy placement also has "Oops All" mode, which replaces all enemies with a single boss or enemy type, and "Enemy Onslaught" which duplicates (or more) each enemy and boss. Onslaught can be used with or without randomization, by adding or removing "All Enemies and Bosses" from being randomized or not.
+
 ## Special thanks
 
-Thanks to TKGP for SoulsFormats, Meowmaritus for SoulsFormats EMEVD editing and quickhack UXM, and HotPocketRemix for EMEVD instruction reversing. Thanks to everyone in ?ServerName? for being helpful and informative, and everyone in the rando discord for brainstorming ideas.
+Thanks to TKGP and katalash for SoulsFormats, Meowmaritus for SoulsFormats EMEVD editing and initial UXM, and HotPocketRemix for EMEVD instruction reversing. Thanks to everyone in ?ServerName? for being helpful and informative, and everyone in the rando discord for brainstorming ideas.
 
 Thanks to katalash for creating Mod Engine and giving special permission to distribute it with this mod.
 
-Finally, thanks to Saltyfish_King, Fababfan, Plante, proteh, Leekos, Kuroko, 刀子, and SaniTOS for contributing translations and permission to use them in this mod.
+Finally, thanks to Saltyfish_King, Fababfan, Plante, proteh, Leekos, Kuroko, 刀子, SaniTOS, and HiJacked for contributing translations and permission to use them in this mod.
 
-Source code is partly published to https://github.com/thefifthmatt/SoulsRandomizers - this may not be directly usable until I can clean it up and MSBE is available in SoulsFormats.
+Source code is published to https://github.com/thefifthmatt/SoulsRandomizers and updated occasionally. Thanks to nex3 for creating a DSMS-compatible SoulsFormats fork to make this possible.

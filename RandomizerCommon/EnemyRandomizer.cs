@@ -115,9 +115,11 @@ namespace RandomizerCommon
                 entityMax = 5000000;
                 tmpBase = 1700000;
                 tmpBaseMax = 1800000;
-                writeBase = 1032502000;
+                // Less than 100 can be used for manual custom flags
+                writeBase = EldenRingBase + 2100;
                 // Absolute max is 1032650000, but even doing 5x onslaught results in 1032505416 used.
-                writeMax = 1032520000;
+                // So two map tiles should be enough here.
+                writeMax = EldenRingBase + 20000;
             }
             int newEntity()
             {
@@ -242,6 +244,11 @@ namespace RandomizerCommon
                 preset.ProcessParents(ann);
             }
 
+            bool presetOpt(string name)
+            {
+                return opt[name] || (preset != null && preset[name]);
+            }
+
             Dictionary<EnemyClass, EnemyClass> parentClass = new Dictionary<EnemyClass, EnemyClass>();
             Dictionary<EnemyClass, int> classDupeCount = new Dictionary<EnemyClass, int>();
             if (ann.Classes != null && preset?.Classes != null)
@@ -298,7 +305,9 @@ namespace RandomizerCommon
                     {
                         continue;
                     }
-                    string modelName = info.Name.Split('_')[0];
+                    // This is using the config names, which will have m prefix in Elden Ring. The _ split is also not valid for assets
+                    string[] segments = info.Name.Split('-');
+                    string modelName = segments.Length == 1 ? info.Name.Split('_')[0] : $"{segments[0]}-{segments[1].Split('_')[0]}";
                     if (!classDupeCount.TryGetValue(siloClass(info.Class), out int enemyDupeCount))
                     {
                         enemyDupeCount = defaultDupeCount;
@@ -373,6 +382,11 @@ namespace RandomizerCommon
             Dictionary<int, List<int>> owners = new Dictionary<int, List<int>>();
             // Map from (name, part) to entity id, for enemies initially without entity ids
             Dictionary<(string, string), int> configEntityIds = new Dictionary<(string, string), int>();
+            bool isFakeId(int id)
+            {
+                // Used by Elden Ring and DS3
+                return (id >= 2800000 && id < 2900000) || (id >= 2888000 && id < 2889000);
+            }
             // Splits to perform
             Dictionary<int, List<EnemyInfo>> copyTo = new Dictionary<int, List<EnemyInfo>>();
             // Map from owner enemy to total healthbars used. If missing, assume this is 1.
@@ -385,10 +399,13 @@ namespace RandomizerCommon
             {
                 if (infos.ContainsKey(info.ID)) throw new Exception($"Duplicate config entity {info.ID}");
                 infos[info.ID] = info;
-                configEntityIds[(info.Map, info.Name)] = info.ID;
-                if (info.DupeMap != null && info.DupePartName != null)
+                if (isFakeId(info.ID))
                 {
-                    configEntityIds[(info.DupeMap, info.DupePartName)] = info.ID;
+                    configEntityIds[(info.Map, info.Name)] = info.ID;
+                    if (info.DupeMap != null && info.DupePartName != null)
+                    {
+                        configEntityIds[(info.DupeMap, info.DupePartName)] = info.ID;
+                    }
                 }
                 if (info.OwnedBy > 0)
                 {
@@ -410,7 +427,8 @@ namespace RandomizerCommon
                 }
                 if (info.DeathLine > 0 && info.DefeatFlag > 0)
                 {
-                    deathLineFlags[info.DeathLine] = info.DefeatFlag;
+                    // Slight hack - no line for first phase with never-true flag. (Change this if it's relied upon)
+                    deathLineFlags[info.DeathLine] = info.NextPhase > 0 ? 6000 : info.DefeatFlag;
                 }
                 if (info.RemoveGroup > 0 && info.BuddyGroup > 0 && info.OwnedBy <= 0 && info.NextPhase <= 0)
                 {
@@ -500,6 +518,11 @@ namespace RandomizerCommon
                 float forward = (rotation.Y - 90 + angle) * (float)Math.PI / 180;
                 return new Vector3((float)Math.Sin(forward) * amt, 0, (float)Math.Cos(forward) * amt);
             }
+            Vector3 moveInDirection(Vector3 v, Vector3 r, float dist)
+            {
+                float angle = r.Y * (float)Math.PI / 180;
+                return new Vector3(v.X + (float)Math.Sin(angle) * dist, v.Y, v.Z + (float)Math.Cos(angle) * dist);
+            }
 
             // Mapping from target entity to event map name.
             // In the case of Elden Ring, this should not be a 01 or 02 tile.
@@ -529,10 +552,22 @@ namespace RandomizerCommon
                             continue;
                         }
                     }
-                    // if (defaultData.ContainsKey(data.ID)) Console.WriteLine($"{data.ID}, {ownerMap.ContainsKey(data.ID)}");
                     if (!infos.TryGetValue(data.ID, out EnemyInfo info))
                     {
-                        Console.WriteLine($"Unknown enemy {entry.Key} {e.Name} #{data.ID}");
+                        // Allow EntityID-less enemies to be given an id by other mods, and try to recognize it.
+                        // Hopefully, the enemies are compatible and there are no notable caches indexed by fakeId.
+                        if (game.HasMods
+                            && configEntityIds.TryGetValue((entry.Key, e.Name), out int fakeId)
+                            && infos.TryGetValue(fakeId, out info))
+                        {
+                            infos.Remove(fakeId);
+                            infos[data.ID] = info;
+                            info.ID = data.ID;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Unknown enemy {entry.Key} {e.Name} #{data.ID}");
+                        }
                     }
                     string eventMap = entry.Key;
                     string eventPart = data.Name;
@@ -653,12 +688,31 @@ namespace RandomizerCommon
 
             // Process core enemy config
             List<int> treeDragonOrder = Enumerable.Repeat(0, 5).ToList();
+            // Unused feature which compensated for prior lack of BuddyGroup
             HashSet<int> defeatIds = new HashSet<int>(game.Params["GameAreaParam"].Rows.Select(r => r.ID));
+            // Used feature for altering GameAreaParam amounts aesthetically
+            int roundBonusSoul(int val)
+            {
+                if (val > 100000) val = (int)Math.Ceiling(val / 10000.0) * 10000;
+                else if (val > 10000) val = (int)Math.Ceiling(val / 1000.0) * 1000;
+                else val = (int)Math.Ceiling(val / 100.0) * 100;
+                val = Math.Max(val, 200);
+                return val;
+            }
+            // Entities for whom to use multcolor
             List<int> importantDupes = new List<int>();
+            // Report on these and don't randomize them by default
+            SortedSet<int> missingInfos = new SortedSet<int>();
+            // Mapping from defeat flag to main boss entity id, for use in bossbgm which is keyed by defeat flag
+            Dictionary<int, int> defeatFlagIds = new Dictionary<int, int>();
             foreach (EnemyInfo info in ann.Enemies)
             {
-                if (!defaultData.TryGetValue(info.ID, out EnemyData data)) throw new Exception($"Entity {info.ID} does not exist in map; cannot randomize it");
-
+                if (!defaultData.TryGetValue(info.ID, out EnemyData data))
+                {
+                    // These can potentially be fine. Handle them later.
+                    missingInfos.Add(info.ID);
+                    Console.WriteLine($"Missing enemy {info.Map} {info.Name} #{info.ID}");
+                }
                 if (info.Name == null) throw new Exception($"Entity {info.ID} has no name");
                 string modelId = info.Name;
                 if (modelId.StartsWith("m") && modelId.Contains('-'))
@@ -694,7 +748,6 @@ namespace RandomizerCommon
                         info.Class = EnemyClass.Basic;
                     }
                 }
-                string model = game.ModelName(data.Model);
                 if (info.OwnedBy != 0)
                 {
                     if (!infos.TryGetValue(info.OwnedBy, out EnemyInfo main)) throw new Exception($"Entity {info.ID} referencing {info.OwnedBy} which does not exist in config");
@@ -838,21 +891,16 @@ namespace RandomizerCommon
                         }
                     }
                     // Default soul multiplier for dupe status. TODO backport to previous games
-                    if (isDuped && selfRow != null && game.EldenRing)
+                    if (isDuped && selfRow != null && game.EldenRing && !opt["swaprewards"])
                     {
-                        double mult = GetXpRate(dupeCount(info.ID), opt["multhp"]);
-                        void applyMult(string field)
-                        {
-                            uint val = (uint)((uint)selfRow[field].Value * mult);
-                            if (val > 10000) val = val / 1000 * 1000;
-                            else val = val / 100 * 100;
-                            selfRow[field].Value = val;
-                        }
-                        applyMult("bonusSoul_single");
-                        applyMult("bonusSoul_multi");
+                        double mult = GetXpRate(dupeCount(info.ID), presetOpt("multhp"));
+                        uint val = (uint)selfRow["bonusSoul_single"].Value;
+                        val = (uint)roundBonusSoul((int)(val * mult));
+                        selfRow["bonusSoul_single"].Value = val;
+                        selfRow["bonusSoul_multi"].Value = val;
                     }
                 }
-                if (info.BuddyGroup > 0 && info.OwnedBy <= 0 && info.NextPhase <= 0)
+                if (info.BuddyGroup > 0 && info.OwnedBy <= 0 && info.NextPhase <= 0 && data != null)
                 {
                     foreach (int group in data.Group)
                     {
@@ -861,7 +909,34 @@ namespace RandomizerCommon
                         buffGroupEntities[group] = info.BuddyGroup;
                     }
                 }
+                if (info.IsImportantTarget && info.OwnedBy <= 0 && info.DefeatFlag > 0)
+                {
+                    defeatFlagIds[info.DefeatFlag] = info.ID;
+                }
             }
+            // If enemies are not important, allow them to be missing
+            // Other entities must be added to a preset as explicitly removed.
+            foreach (int id in missingInfos)
+            {
+                infos[id].Class = EnemyClass.None;
+                /*if (isFakeId(id))
+                {
+                }*/
+            }
+            /*
+            if (missingInfos.Count > 0)
+            {
+                List<int> mainIds = missingInfos
+                    .Where(i => infos[i].Class != EnemyClass.None)
+                    .Select(i => infos[i].Class == EnemyClass.Helper && infos[i].OwnedBy > 0 ? infos[i].OwnedBy : i)
+                    .Distinct()
+                    .ToList();
+                if (mainIds.Count > 0)
+                {
+                    Console.WriteLine($"To disable randomization for missing enemies:");
+                    Console.WriteLine($"DontRandomize: {string.Join("; ", mainIds)}");
+                }
+            }*/
 
             foreach (EnemyGroup group in ann.Groups)
             {
@@ -963,6 +1038,47 @@ namespace RandomizerCommon
             }
             int seed = opt.Seed2 == 0 ? (int)opt.Seed : (int)opt.Seed2;
 
+            Dictionary<int, int> targetScalingSections = ann.ScalingSections;
+            if (ann.ScalingSections != null && opt["scale"] && (presetOpt("scalerandom") || (preset != null && preset.RandomScaling)))
+            {
+                Random scalingRandom = new Random(seed);
+                targetScalingSections = new Dictionary<int, int>(ann.ScalingSections);
+                foreach (KeyValuePair<int, int> entry in ann.ScalingSections)
+                {
+                    int target = entry.Key;
+                    int targetSection = entry.Value;
+                    if (targetSection > 0)
+                    {
+                        targetScalingSections[target] = scalingRandom.Next(scalingSpEffects.MaxTier) + 1;
+                    }
+                }
+            }
+            bool getScalingSections(int source, int target, out int sourceSection, out int targetSection, bool ignoreCustom = false)
+            {
+                sourceSection = ann.ScalingSections.TryGetValue(source, out int s) ? s : -1;
+                targetSection = targetScalingSections.TryGetValue(target, out s) ? s : -1;
+                if (sourceSection == -1 || targetSection == -1)
+                {
+                    return false;
+                }
+                if (ignoreCustom)
+                {
+                    return true;
+                }
+                if (infos.TryGetValue(source, out EnemyInfo sourceInfo))
+                {
+                    if (sourceInfo.HasTag("noscale") || (sourceInfo.HasTag("noscaleup") && targetSection > sourceSection))
+                    {
+                        targetSection = sourceSection;
+                    }
+                }
+                if (presetOpt("scaleup") && targetSection < sourceSection)
+                {
+                    targetSection = sourceSection;
+                }
+                return true;
+            }
+
             // Finally process Old Dragons
             if (randomOldDragons > 0)
             {
@@ -1008,6 +1124,8 @@ namespace RandomizerCommon
                 // Also try to implement norandom as enemies mapping to themselves
                 foreach (int norandom in preset.DontRandomizeIDs)
                 {
+                    // This allows Enemies mapping to override norandom, but keep current behavior for now
+                    // if (!forceMap.ContainsKey(norandom)) 
                     forceMap[norandom] = norandom;
                 }
                 // Finally, if there are doubles, randomize them to their originals
@@ -1085,6 +1203,7 @@ namespace RandomizerCommon
                     }
                     else
                     {
+                        if (missingInfos.Contains(info.ID)) throw new Exception($"Can't randomize #{info.ID} since it was removed from the game. See spoiler log for a full list.");
                         silo.Targets.Add(info.ID);
                     }
 
@@ -1115,6 +1234,7 @@ namespace RandomizerCommon
                     }
                     else
                     {
+                        if (missingInfos.Contains(info.ID)) throw new Exception($"Can't randomize #{info.ID} since it was removed from the game. See spoiler log for a full list.");
                         silo.Sources.Add(info.ID);
                     }
                 }
@@ -1127,6 +1247,24 @@ namespace RandomizerCommon
                     return $"{data.Name} #{ent} ({game.ModelCharacterName(data.Model, data.Char)})";
                 }
                 return $"#{ent}";
+            }
+            string enameClass(int ent)
+            {
+                string modelName = null;
+                if (defaultData.TryGetValue(ent, out EnemyData data))
+                {
+                    modelName = game.ModelCharacterName(data.Model, data.Char);
+                }
+                string className = "";
+                if (infos.TryGetValue(ent, out EnemyInfo info))
+                {
+                    if (info.ExtraName != null && info.ExtraName != modelName)
+                    {
+                        modelName = info.ExtraName;
+                    }
+                    className = $"{siloClass(info.Class)} ";
+                }
+                return $"{className}#{ent} ({modelName ?? "unknown"})";
             }
             // Don't populate a given arena with the same enemy type. For Sekiro minibosses, it is mainly Shigekichi, Juzou,
             // and Vilehand arenas that are reused.
@@ -1632,6 +1770,7 @@ namespace RandomizerCommon
                 Console.WriteLine($"-- {siloType} placements");
                 string fullName(int ent, bool target)
                 {
+                    if (missingInfos.Contains(ent)) return $"missing #{ent}";
                     EnemyData data = defaultData[ent];
                     string name = infos[ent].ExtraName ?? game.ModelCharacterName(data.Model, data.Char);
                     string cat = infos[ent].Category;
@@ -1684,19 +1823,20 @@ namespace RandomizerCommon
                     }
                 }
                 bool printScale = opt["scale"] && ann.ScalingSections != null
-                    && (siloType == EnemyClass.Boss || siloType == EnemyClass.Miniboss);
+                   ; // && (siloType == EnemyClass.Boss || siloType == EnemyClass.Miniboss);
                 foreach (KeyValuePair<int, int> transfer in printMapping)
                 {
                     string scale = "";
                     if (printScale
-                        && ann.ScalingSections.TryGetValue(transfer.Key, out int targetSection)
-                        && ann.ScalingSections.TryGetValue(transfer.Value, out int sourceSection)
+                        && getScalingSections(transfer.Value, transfer.Key, out int sourceSection, out int targetSection)
+                        // && targetScalingSections.TryGetValue(transfer.Key, out int targetSection)
+                        // && ann.ScalingSections.TryGetValue(transfer.Value, out int sourceSection)
                         && targetSection != sourceSection)
                     {
                         // -1 ideally should not happen
                         // TODO: This logic is duplicated from below; maybe make determinations about this independently
-                        if (!infos[transfer.Value].HasTag("noscale")
-                            && !(infos[transfer.Value].HasTag("noscaleup") && targetSection > sourceSection))
+                        // if (!infos[transfer.Value].HasTag("noscale")
+                        //    && !(infos[transfer.Value].HasTag("noscaleup") && targetSection > sourceSection))
                         {
                             scale = $" (scaling {sourceSection}->{targetSection})";
                         }
@@ -1713,7 +1853,7 @@ namespace RandomizerCommon
 #endif
             }
 
-            // Region transplanets
+            // Region transplants
             // TODO all of this is a good candidate for a different file.
             // Arena points can be independent of seed, keeping things a bit interesting, and also fixes issues on rerandomization
             Random arenaRandom = new Random();
@@ -1736,8 +1876,7 @@ namespace RandomizerCommon
                         bool valid = true;
                         foreach (Arena exclude in excludes)
                         {
-                            Vector3 exclPos = exclude.InverseTransform(res);
-                            if (Math.Abs(exclPos.X) < exclude.Box.X && Math.Abs(exclPos.Z) < exclude.Box.Z)
+                            if (exclude.ContainsXZ(res))
                             {
                                 valid = false;
                                 break;
@@ -2185,7 +2324,7 @@ namespace RandomizerCommon
 
             ParamDictionary Params = game.Params;
             string noDead = game.EldenRing ? "disableInitializeDead" : "disableIntiliazeDead";
-            if (opt["printnpc"])
+            if (opt["dumpnpc"])
             {
                 HashSet<int> npcPrintInfo = new HashSet<int>();
                 foreach (EnemyInfo info in infos.Values.Where(i => i.Class != EnemyClass.None).OrderBy(i => i.ID))
@@ -2284,10 +2423,10 @@ namespace RandomizerCommon
 
                 return null;
             }
-            if (opt["printscaling"])
+            if (opt["dumpscaling"])
             {
                 Dictionary<int, string> sps = File.ReadLines("er_speffects.txt")
-                    .Select(l => Regex.Split(l, ": "))
+                    .Select(l => l.Split(": "))
                     .ToDictionary(p => int.Parse(p[0]), p => p[1]);
 
                 SortedDictionary<string, SortedDictionary<int, List<string>>> mapSps =
@@ -2295,6 +2434,7 @@ namespace RandomizerCommon
                 SortedDictionary<int, List<string>> spMaps =
                     new SortedDictionary<int, List<string>>();
                 HashSet<(string, int)> usedNpcs = new HashSet<(string, int)>();
+                Dictionary<int, uint> bossSouls = game.Params["GameAreaParam"].Rows.ToDictionary(r => r.ID, r => (uint)r["bonusSoul_single"].Value);
                 foreach (EnemyInfo info in infos.Values)
                 {
                     if (info.Class == EnemyClass.None) continue;
@@ -2302,11 +2442,13 @@ namespace RandomizerCommon
                     if (row == null) continue;
                     if (!usedNpcs.Add((info.Map, row.ID))) continue;
                     int scalingSp = (int)row["spEffectID3"].Value;
-                    AddMultiNest(mapSps, info.Map, scalingSp, info.DebugText);
-                    AddMulti(spMaps, scalingSp, info.DebugText);
+                    string bossSoul = bossSouls.TryGetValue(info.ID, out uint soul) ? $" <{soul}>" : "";
+                    string text = $"{info.DebugText} - {row["getSoul"].Value}{bossSoul} runes";
+                    AddMultiNest(mapSps, info.Map, scalingSp, text);
+                    AddMulti(spMaps, scalingSp, text);
                     // Console.WriteLine($"{scalingSp}: {info.DebugText}");
                 }
-                bool humanSps = opt["human"];
+                bool humanSps = opt["humanonly"];
                 foreach (var entry in spMaps)
                 {
                     Console.WriteLine("--- " + entry.Key);
@@ -2549,7 +2691,7 @@ namespace RandomizerCommon
                 // Enemies which don't get getBasicAsBoss
                 // Rennala seems to crash without helpers being nodead
                 HashSet<int> noDeadNpcs = new HashSet<int>(
-                    infos.Values.Where(i => i.IsBuffSource || (i.OwnedBy > 0 && infos[i.OwnedBy].IsBuffSource))
+                    infos.Values.Where(i => i.Class != EnemyClass.None && (i.IsBuffSource || (i.OwnedBy > 0 && infos[i.OwnedBy].IsBuffSource)))
                         .Select(i => defaultData[i.ID].NPC));
                 HashSet<int> hostileNpcs = new HashSet<int>(
                     infos.Values.Where(i => i.Class == EnemyClass.HostileNPC).Select(i => defaultData[i.ID].NPC));
@@ -2599,10 +2741,45 @@ namespace RandomizerCommon
                     shrinkNpc(row, 2.5f, 5.1f);
                 }
 
+                if (opt["bossbgm"])
+                {
+                    // Swap around >1 threatLvs if randomizing boss BGMs.
+                    // At present, having infinite nose range is equivalent to having manual BGM. A new bool can be introduced if this changes.
+                    // threatLv may be read directly later (but event checks are generally preprocessed out).
+                    HashSet<int> worldBossNpcs = new HashSet<int>(
+                        infos.Values.Where(i => i.IsImportantTarget && !i.HasPerceptiveNose).Select(i => defaultData[i.ID].NPC));
+
+                    List<uint> threatLvs = new List<uint>();
+                    foreach (PARAM.Row row in Params["NpcParam"].Rows)
+                    {
+                        if (!worldBossNpcs.Contains(row.ID)) continue;
+                        uint threatLv = (uint)row["threatLv"].Value;
+                        if (threatLv > 1)
+                        {
+                            threatLvs.Add(threatLv);
+                        }
+                    }
+                    Shuffle(new Random(seed + 400), threatLvs);
+                    // Console.WriteLine($"threat levels: {string.Join(",", threatLvs)}");
+                    int index = 0;
+                    foreach (PARAM.Row row in Params["NpcParam"].Rows)
+                    {
+                        if (!worldBossNpcs.Contains(row.ID)) continue;
+                        uint threatLv = (uint)row["threatLv"].Value;
+                        if (threatLv > 1)
+                        {
+                            uint newThreatLv = threatLvs[index++ % threatLvs.Count];
+                            row["threatLv"].Value = newThreatLv;
+                        }
+                    }
+                }
+
                 // Elden Ring version of DS3 item stuff, with a few more constraints here too
                 // Always do it for all eligible enemies so that restart isn't required between randomizations
                 foreach (EnemyInfo info in infos.Values.Where(i => i.HasTag("npcitem")))
                 {
+                    // Don't need it for vanilla enemy onslaught, even though it leads to duplicates
+                    if (!anyRandomized) break;
                     int npc = defaultData[info.ID].NPC;
                     if (npcItemLots.ContainsKey(npc)) continue;
                     PARAM.Row row = Params["NpcParam"][npc];
@@ -2659,7 +2836,16 @@ namespace RandomizerCommon
                         if (flags.Count == 1)
                         {
                             // Copy over rows, and blank out originals
-                            int newMapLot = enemyLot;
+                            int newBaseMapLot = enemyLot;
+                            if (game.HasMods)
+                            {
+                                // The lot is free real estate in vanilla, but some mods use it. Unfortunately expensive to look up.
+                                while (Params["ItemLotParam_map"][newBaseMapLot] != null)
+                                {
+                                    newBaseMapLot += 10;
+                                }
+                            }
+                            int newMapLot = newBaseMapLot;
                             foreach (PARAM.Row item in enemyItems)
                             {
                                 PARAM.Row newItem = game.AddRow("ItemLotParam_map", newMapLot++);
@@ -2673,7 +2859,7 @@ namespace RandomizerCommon
                                     item[$"lotItemCategory0{i}"].Value = 0;
                                 }
                             }
-                            npcItemLots[npc] = (enemyLot, (int)flags.First());
+                            npcItemLots[npc] = (newBaseMapLot, (int)flags.First());
                         }
                     }
                 }
@@ -2774,6 +2960,8 @@ namespace RandomizerCommon
             }
             foreach (EnemyInfo info in infosToBasic)
             {
+                // Handle missing infos
+                if (info.Class == EnemyClass.None) continue;
                 int source = info.ID;
                 int baseNpc = defaultData[source].NPC;
                 PARAM.Row row = duplicateAdjacentRow("NpcParam", baseNpc);
@@ -2863,7 +3051,7 @@ namespace RandomizerCommon
                 // Just make a new row every time, and also do speffect-based warn
                 infos.TryGetValue(target, out EnemyInfo targetInfo);
                 if (game.EldenRing
-                    ? opt["bosshp"]
+                    ? presetOpt("bosshp")
                     : (true || (preset != null && preset.BuffBasicEnemiesAsBosses)))
                 {
                     foreach (string field in basicBuffFields)
@@ -2933,7 +3121,12 @@ namespace RandomizerCommon
             {
                 if (!multichrSwitch) return false;
                 // Allow splits, although this may get unwieldy
-                if (source == infos[target].SplitFrom) return true;
+                if (source == infos[target].SplitFrom)
+                {
+                    // It's too much for Gideon, who comes with many c0000s
+                    if (source == 11050850) return false;
+                    return true;
+                }
                 if (game.Sekiro)
                 {
                     // Hirata Masanaga. Don't forbid having dogs past the limit, but limit the global number of dogs.
@@ -3291,7 +3484,6 @@ namespace RandomizerCommon
                         }
                         models.UseModel(e.ModelName);
 
-                        // Also add minions
                         if (owners.TryGetValue(source, out List<int> helpers))
                         {
                             Arena arena = infos[target].ArenaData;
@@ -3343,6 +3535,11 @@ namespace RandomizerCommon
                                         extraHeight = 0.5f;
                                     }
                                 }
+                                if (source == 12090800)
+                                {
+                                    double angle = new Random().NextDouble() * Math.PI * 2;
+                                    // e2.Position += new Vector3((float)Math.Cos(angle) * 5, 0, (float)Math.Sin(angle) * 5);
+                                }
                                 if (dupeTarget)
                                 {
                                     // If duplicating in-place, use that position if possible
@@ -3363,6 +3560,11 @@ namespace RandomizerCommon
                                 {
                                     e2.Position = new Vector3(e2.Position.X, e2.Position.Y + extraHeight, e2.Position.Z);
                                 }
+                                if (infos[helper].HasTag("ballista"))
+                                {
+                                    Vector3 pos = e2.Position;
+                                    e2.Position = moveInDirection(e2.Position, e2.Rotation, -1.5f);
+                                }
                                 if (smallDest && infos[helper].HasTag("large"))
                                 {
                                     shrinkNpc(Params["NpcParam"][data2.NPC], 1f, 3f);
@@ -3373,7 +3575,6 @@ namespace RandomizerCommon
                                 ownerMap[target2] = eventMap;
                                 enemyEditor.CopyGroups(data2, groupMapping, e2);
                                 // The part names come from MainMap, so use the original MSB here
-                                // TODO dupe: make ballistas travel with enemies
                                 enemyEditor.CopyAssociations(maps[data.MainMap], data, data2, msb, e, e2);
                                 if (infos[helper].Regions != null && uniqueTarget)
                                 {
@@ -3578,7 +3779,11 @@ namespace RandomizerCommon
                         }
                     }
                 }
-                enemyEditor.GarbageCollect(msb, models.EnemyUsed, removedObjects);
+                if (removedObjects.Count > 0)
+                {
+                    // Is this needed given second pass? Only keep in DS3 for now.
+                    enemyEditor.GarbageCollect(msb, models.EnemyUsed, removedObjects);
+                }
             }
             // Finally, remove all randomized helpers
             foreach (KeyValuePair<string, TMap> entry in maps)
@@ -3731,12 +3936,6 @@ namespace RandomizerCommon
                 "quickstart", "healthbar", "unhealthbar", "healthbarcheck", "unhealthbarcheck",
             };
 
-            // Animation info: (entity id) -> (starting animation, wakeup animation)
-            Dictionary<int, (int, int)> startingAnimations = new Dictionary<int, (int, int)>();
-            Dictionary<int, List<(int, int)>> npcStartingAnimations = new Dictionary<int, List<(int, int)>>();
-            HashSet<EventKey> animationEvents =
-                new HashSet<EventKey>(templates.Values.Where(ev => ev.Template.Any(t => t.Animation != null)).Select(ev => ev.Key));
-
             HashSet<(EventKey, int, List<CommandSegment>)> segmentEntities = new HashSet<(EventKey, int, List<CommandSegment>)>();
             void addSegments(EventKey eventID, int entity, List<CommandSegment> segments, Instr init = null)
             {
@@ -3812,6 +4011,16 @@ namespace RandomizerCommon
             bool disableEvents = false;
             bool partialEventConfig = false;
 
+            // Animation info: (entity id) -> (starting animation, wakeup animation)
+            Dictionary<int, (int, int)> startingAnimations = new Dictionary<int, (int, int)>();
+            Dictionary<int, List<(int, int)>> npcStartingAnimations = new Dictionary<int, List<(int, int)>>();
+            HashSet<EventKey> animationEvents =
+                new HashSet<EventKey>(templates.Values.Where(ev => ev.Template.Any(t => t.Animation != null)).Select(ev => ev.Key));
+            // All BGM ids which are later shuffled around, keyed by defeat flag
+            SortedDictionary<int, int> defeatFlagBgmIds = new SortedDictionary<int, int>();
+            HashSet<EventKey> bossBgmEvents =
+                new HashSet<EventKey>(templates.Values.Where(ev => ev.Template.Any(t => t.BossBgmArg != null)).Select(ev => ev.Key));
+
             // Preprocess emevds
             foreach (KeyValuePair<string, EMEVD> entry in game.Emevds)
             {
@@ -3842,6 +4051,22 @@ namespace RandomizerCommon
                                 if (entity == 0) throw new Exception($"Internal error: Segment template missing entity: {init}");
                                 addSegments(callee, entity, t.Segments, init);
                             }
+                        }
+                        if (init.TryCalleeKey(bossBgmEvents, entry.Key, out callee))
+                        {
+                            EnemyTemplate t = templates[callee].Template.Find(t => t.BossBgmArg != null);
+                            string[] parts = t.BossBgmArg.Split(' ');
+                            if (!events.ParseArgSpec(parts[0], out int defeatFlagPos) || !events.ParseArgSpec(parts[1], out int bgmIdPos))
+                            {
+                                throw new Exception($"Internal error: badly formatted BossBgmArg {t.BossBgmArg} for {init}");
+                            }
+                            int defeatFlag = (int)init[init.Offset + defeatFlagPos];
+                            int bgmId = (int)init[init.Offset + bgmIdPos];
+                            if (!defeatFlagIds.ContainsKey(defeatFlag)) continue;
+                            // Note that if there are multiple, the second one will be used, generally.
+                            // For instance, Caelid Godskin has 930000 (generic) and then 356000 (also used in duo)
+                            // if (defeatFlagBgmIds.ContainsKey(defeatFlag)) Console.WriteLine($"Multiple entries for flag: {defeatFlag}->{bgmId} (exist: {defeatFlagBgmIds[defeatFlag]})");
+                            defeatFlagBgmIds[defeatFlag] = bgmId;
                         }
                         if (init.TryCalleeKey(animationEvents, entry.Key, out callee))
                         {
@@ -4089,9 +4314,19 @@ namespace RandomizerCommon
                     // To-be-filled-in
                     if (sourcePart != null && sourcePart.Contains("^")) sourcePart = null;
                     if (targetFull != null && targetFull.Contains("^")) targetFull = null;
-                    string fullName = targetFull == null
-                        ? sourceModelName
-                        : targetFull.Replace("$1", sourcePart ?? sourceModelName);
+                    if (infos[target].CustomName != null && sourcePart != null && infos[target].CustomName.TryGetValue(sourcePart, out string customName))
+                    {
+                        targetFull = customName;
+                    }
+                    string fullName;
+                    if (targetFull == null)
+                    {
+                        fullName = sourceModelName;
+                    }
+                    else
+                    {
+                        fullName = targetFull.Replace("$1", sourcePart ?? sourceModelName);
+                    }
                     if (infos[target].DupeFrom == source)
                     {
                         fullName = infos[source].DupeName ?? infos[source].ExtraName ?? sourceModelName;
@@ -4124,8 +4359,9 @@ namespace RandomizerCommon
                     // For other languages, use the NPC name directly if it exists
                     if (id != nameId)
                     {
-                        foreach (KeyValuePair<string, FMGDictionary> lang in game.OtherItemFMGs)
+                        foreach (KeyValuePair<string, FMGDictionary> lang in game.AllItemFMGs)
                         {
+                            if (lang.Key == "engus") continue;
                             string backupName = null;
                             if (infos[source].NpcName > 0)
                             {
@@ -4609,6 +4845,54 @@ namespace RandomizerCommon
                 }
                 return addedFlags;
             }
+            Dictionary<int, int> assignedDefeatFlagBgmIds = new Dictionary<int, int>();
+            if (opt["bossbgm"])
+            {
+                Random bossBgmRandom = new Random(seed + 420);
+                // A few weird cases use an invalid id but still work in-game (900000 in side tomb -> soldier of godrick)
+                HashSet<int> paramIds = new HashSet<int>(Params["WwiseValueToStrParam_BgmBossChrIdConv"].Rows.Select(r => r.ID));
+                if (opt["bossbgmexplain"])
+                {
+                    foreach ((int flag, int bgm) in defeatFlagBgmIds)
+                    {
+                        if (!paramIds.Contains(bgm)) Console.WriteLine($"Bad {flag} -> {bgm}");
+                    }
+                }
+                // Lots of dict accesses but these should exist. Also, the order is deterministic (sorted) here.
+                List<int> majorBgms = defeatFlagBgmIds
+                    .Where(e => infos[defeatFlagIds[e.Key]].Class == EnemyClass.Boss && paramIds.Contains(e.Value))
+                    .Select(e => e.Value)
+                    .Distinct()
+                    .ToList();
+                List<int> allBgms = defeatFlagBgmIds.Where(e => paramIds.Contains(e.Value)).Select(e => e.Value).Distinct().ToList();
+                Shuffle(bossBgmRandom, majorBgms);
+                List<int> bgmDefeatIds = defeatFlagBgmIds.Select(e => e.Key).ToList();
+                Shuffle(bossBgmRandom, bgmDefeatIds);
+                foreach (int defeatFlag in bgmDefeatIds)
+                {
+                    int originalBgm = defeatFlagBgmIds[defeatFlag];
+                    int newBgm;
+                    if (majorBgms.Count > 0 && infos[defeatFlagIds[defeatFlag]].Class == EnemyClass.Boss)
+                    {
+                        newBgm = majorBgms[majorBgms.Count - 1];
+                        // Only sorta try to guarantee uniqueness for these important placements, otherwise don't care
+                        if (originalBgm == newBgm && majorBgms.Count > 1)
+                        {
+                            newBgm = majorBgms[majorBgms.Count - 2];
+                            majorBgms.RemoveAt(majorBgms.Count - 2);
+                        }
+                        else
+                        {
+                            majorBgms.RemoveAt(majorBgms.Count - 1);
+                        }
+                    }
+                    else
+                    {
+                        newBgm = Choice(bossBgmRandom, allBgms);
+                    }
+                    assignedDefeatFlagBgmIds[defeatFlag] = newBgm;
+                }
+            }
 
             // Utilites to avoid using mapping/revMapping directly
             bool isRandomizedTarget(int target)
@@ -4689,6 +4973,7 @@ namespace RandomizerCommon
             }
 
             // Main event loop
+            List<string> eventEditErrors = new List<string>();
             foreach (KeyValuePair<string, EMEVD> entry in game.Emevds)
             {
                 if (disableEvents) break;
@@ -4717,14 +5002,24 @@ namespace RandomizerCommon
                             bool simpleRemove = false;
                             foreach (EnemyTemplate t in ev.Template)
                             {
+                                if (!t.Type.StartsWith("remove")) continue;
                                 // If the target is specified and comes from somewhere else, remove the event
                                 if (t.Type == "removearg")
                                 {
-                                    // TODO: Needs fixing for Elden Ring...
-                                    // Simple "remove" does not work in these cases, though, for some reason?
-                                    int removeEntity = getIntArgs(originalInit.Args.Skip(originalInit.Offset))
-                                        .Find(a => infos.ContainsKey(a));
-                                    simpleRemove |= isRandomizedTarget(removeEntity);
+                                    if (game.EldenRing)
+                                    {
+                                        // ArgEntities aware
+                                        if (getEntityFromInit(originalInit, t, out int removeEntity))
+                                        {
+                                            simpleRemove |= isRandomizedTarget(removeEntity);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        int removeEntity = getIntArgs(originalInit.Args.Skip(originalInit.Offset))
+                                            .Find(a => infos.ContainsKey(a));
+                                        simpleRemove |= isRandomizedTarget(removeEntity);
+                                    }
                                 }
                                 else if (t.Entity > 0)
                                 {
@@ -4901,6 +5196,7 @@ namespace RandomizerCommon
                         // Set up in-place edits
                         string lastDeadType = null;
                         int lastDeadEntity = 0;
+                        bool segmentCopied = false;
                         foreach (EnemyTemplate t in ev.Template)
                         {
                             if (t.Type.Contains("chr")) continue;
@@ -4910,22 +5206,6 @@ namespace RandomizerCommon
                                 // If a dupe event and dupe is disabled, ignore it.
                                 // Do this before counting the template against canRemove.
                                 continue;
-                            }
-
-                            bool templateCausesEventToStay = true;
-                            if (t.Type.Contains("stay") && t.Entity > 0 && isRandomizedTarget(t.Entity))
-                            {
-                                // "stay" templates apply only when Entity is not randomized
-                                templateCausesEventToStay = false;
-                            }
-                            else if (t.Type == "segmentcopy")
-                            {
-                                // Copied segment inits can be removed, without an alternate event to take their place.
-                                templateCausesEventToStay = false;
-                            }
-                            if (templateCausesEventToStay)
-                            {
-                                // canRemove = false;
                             }
 
                             bool shouldRewriteEntity(int id)
@@ -5009,9 +5289,10 @@ namespace RandomizerCommon
                                     if (getEntityFromInit(originalInit, t, out int seg) && shouldRewriteEntity(seg))
                                     {
                                         eventCopies.Add((0, 0, events.CopyEvent(theEvent, NewID()), t));
-                                        // Skip setting canRemove, as the event is now copied
-                                        continue;
+                                        segmentCopied = true;
                                     }
+                                    // Figure out canRemove later
+                                    continue;
                                 }
                                 else
                                 {
@@ -5019,7 +5300,8 @@ namespace RandomizerCommon
                                     eventCopies.Add((0, 0, theEvent, t));
                                 }
                             }
-                            else if ((t.Type.StartsWith("common") || t.Type == "locarg") && commonEvents.TryGetValue(callee, out EMEVD.Event comEvent))
+                            else if ((t.Type.StartsWith("common") || t.Type == "locarg" || t.Type == "removearg")
+                                && commonEvents.TryGetValue(callee, out EMEVD.Event comEvent))
                             {
                                 if (completedTemplates.Contains(t))
                                 {
@@ -5034,12 +5316,21 @@ namespace RandomizerCommon
                                 if (getEntityFromInit(originalInit, t, out int seg) && shouldRewriteEntity(seg))
                                 {
                                     eventCopies.Add((0, 0, events.CopyEvent(comEvent, NewID()), t));
-                                    // Skip setting canRemove, as the event is now copied
-                                    continue;
+                                    segmentCopied = true;
                                 }
+                                // Figure out canRemove later
+                                continue;
                             }
                             else throw new Exception($"Can't find event {callee} with {t.Type} template");
                             // At this point, loc handling was added, so the event should not be removed.
+                            canRemove = false;
+                        }
+                        // Hack for cases where there are multiple segmentcopy templates.
+                        // canRemove should be true when any of them are copied elsewhere, since each initialization should apply to only one entity.
+                        // This is not something any individual segmentcopy can determine, since it can only change canRemove from true->false.
+                        // So instead do the contrapositive, if no segmentcopy resulted in a copy, canRemove should be false.
+                        if (canRemove && ev.Template.Any(t => t.Type == "segmentcopy") && !segmentCopied)
+                        {
                             canRemove = false;
                         }
 
@@ -5155,6 +5446,14 @@ namespace RandomizerCommon
                                 }
                             }
 
+                            if (t.CondIdentity != null)
+                            {
+                                // No-op, but used to infer condition group rewrites in other instructions
+                                foreach (string check in events.Decomment(t.CondIdentity))
+                                {
+                                    events.IdentityMacro(edits, check);
+                                }
+                            }
                             // TODO: Make partial Remove and Replace work for Elden Ring (add types)
                             if (t.Remove != null)
                             {
@@ -5589,6 +5888,9 @@ namespace RandomizerCommon
                                             invTargets.Add(data.Target);
                                             foreach (int invTarget in invTargets)
                                             {
+                                                // No Gideon invincibility
+                                                // TODO: Figure out how to safely get this data. It's only this one entity id
+                                                if (invTarget == 11050850) continue;
                                                 // TODO dupe: base on dupe indices
                                                 revMapping.TryGetValue(invTarget, out int x);
                                                 // Don't bother if the enemy is not moved (should skip this section entirely?)
@@ -5653,6 +5955,10 @@ namespace RandomizerCommon
                                             else if (data.IsRandom && sourceSegment.NonMoveOnly != null)
                                             {
                                                 ignoreCommands.AddRange(sourceSegment.NonMoveOnly);
+                                            }
+                                            if ((data.IsRandom || data.DupeIndex >= 0) && sourceSegment.OriginalOnly != null)
+                                            {
+                                                ignoreCommands.AddRange(sourceSegment.OriginalOnly);
                                             }
                                             foreach (string newCmdStr in sourceSegment.NewCommands)
                                             {
@@ -5781,9 +6087,10 @@ namespace RandomizerCommon
                                                 // if (segTarget == 1042360800) Console.WriteLine($"{cmdStr} -> {newCmd}");
                                                 editedCmds.Add(newCmd);
                                                 // Detection for final end condition, while we have parse data
-                                                if ((cmd.StartsWith("If") || cmd.StartsWith("c4_"))
+                                                if ((cmd.StartsWith("If") || condCmdRe.IsMatch(cmd))
                                                     && (cmdArgs[0] == "MAIN" || (int.TryParse(cmdArgs[0], out int group) && group == 0)))
                                                 {
+                                                    // This doesn't save the index, so make sure this is unique if it has to be
                                                     lastMainCond = newCmd;
                                                 }
                                             }
@@ -6167,6 +6474,26 @@ namespace RandomizerCommon
                                     }
                                 }
                             }
+                            if (t.BossBgmArg != null && opt["bossbgm"])
+                            {
+                                string[] parts = t.BossBgmArg.Split(' ');
+                                if (!events.ParseArgSpec(parts[0], out int defeatFlagPos) || !events.ParseArgSpec(parts[1], out int bgmIdPos))
+                                {
+                                    throw new Exception($"Internal error: badly formatted BossBgmArg {t.BossBgmArg} for {init}");
+                                }
+                                int defeatFlag = (int)originalInit[originalInit.Offset + defeatFlagPos];
+                                int bgmId = (int)originalInit[originalInit.Offset + bgmIdPos];
+                                if (assignedDefeatFlagBgmIds.TryGetValue(defeatFlag, out int newBgmId))
+                                {
+                                    init[init.Offset + bgmIdPos] = newBgmId;
+                                    if (opt["explainbossbgm"])
+                                    {
+                                        Console.WriteLine($"For {defeatFlag}: {bgmId} -> {newBgmId}");
+                                    }
+                                    init.Save(initOld);
+                                    e.Instructions[i] = init.Val;
+                                }
+                            }
                             // Conditional flags present in both the event and the target
                             if (entity > 0 && infos.ContainsKey(target))
                             {
@@ -6485,6 +6812,20 @@ namespace RandomizerCommon
                                     if (!found) throw new Exception($"Could not find condition group to apply deathblow rewrite in {callee}");
                                 }
 
+                                // Rewrite condition groups for non-vanilla. Blanket exclude animation events since they dynamically edit conditions.
+                                Dictionary<int, int> condRewrite = null;
+                                if (t.Animation == null)
+                                {
+                                    bool adjustGroups = game.HasMods;
+#if DEBUG
+                                    adjustGroups = true;
+#endif
+                                    if (adjustGroups)
+                                    {
+                                        // This may set PreprocessError which will be shown later if edits fail.
+                                        condRewrite = events.AdjustConditionGroups(edits, e2, pre, t.CondOrder, !game.HasMods, callee.ID);
+                                    }
+                                }
                                 // Apply standard line-by-line edits, line-by-line. Plus a few misc custom ones
                                 for (int j = 0; j < e2.Instructions.Count; j++)
                                 {
@@ -6762,8 +7103,12 @@ namespace RandomizerCommon
                                             // (if needed, newCond can be manually defined)
                                             if (int.TryParse(condStr, out int cond))
                                             {
+                                                if (condRewrite != null && condRewrite.TryGetValue(cond, out int actualCond))
+                                                {
+                                                    cond = actualCond;
+                                                }
                                                 int condType = Math.Sign(cond);
-                                                List<int> lines = events.FindCond(e2, condStr, pre);
+                                                List<int> lines = events.FindCond(e2, cond.ToString(), pre);
                                                 // Only handle definition+usage, not single-line definitions, for now
                                                 if (lines.Count < 2) throw new Exception($"Unsupported cond in {callee}: {condStr}");
                                                 for (int j = 0; j < lines.Count; j++)
@@ -7015,7 +7360,21 @@ namespace RandomizerCommon
                             // if (totalEditCount > 0) Console.WriteLine($"{callee}: applied edits {totalEditCount} -> {edits.PendingEdits.Count}");
                             if (edits.PendingEdits.Count != 0)
                             {
-                                throw new Exception($"{callee} has unapplied edits: {string.Join("; ", edits.PendingEdits)}");
+                                eventEditErrors.Add($"-- Unapplied edits in {originalInit} in {entry.Key}");
+                                if (t.Entity > 0)
+                                {
+                                    eventEditErrors.Add($"It was processed because {enameClass(t.Entity)} was randomized");
+                                }
+                                else if (t.Entities != null)
+                                {
+                                    eventEditErrors.Add($"It was processed because one of these enemies was randomized: {string.Join(", ", t.Entities.Split(' ').Select(int.Parse).Select(enameClass))}");
+                                }
+                                if (edits.PreprocessError != null)
+                                {
+                                    eventEditErrors.Add(edits.PreprocessError);
+                                }
+                                eventEditErrors.Add($"Unapplied edits: {string.Join("; ", edits.PendingEdits)}");
+                                eventEditErrors.Add("");
                             }
                             bool useReplaceDupe = t.Dupe?.Type == "replace" && ev.DupeIndex >= 0;
                             if (reloc.Count > 0 || useReplaceDupe)
@@ -7090,6 +7449,14 @@ namespace RandomizerCommon
                     }  // For each initialization in caller event
                     initOld.Postprocess();
                 }
+            }
+            if (eventEditErrors.Count > 0)
+            {
+                foreach (string err in eventEditErrors)
+                {
+                    Console.WriteLine(err);
+                }
+                throw new Exception($"Failed to edit event scripts in enemy randomizer, likely because merged mod is incompatible. See spoiler logs for details.");
             }
 
             // Add common functions
@@ -7234,17 +7601,19 @@ namespace RandomizerCommon
                     {
                         scaleEvent = "scale2";
                     }
-                    int sourceSection = ann.ScalingSections.TryGetValue(enemySource, out int s) ? s : -1;
-                    int targetSection = ann.ScalingSections.TryGetValue(baseTarget, out s) ? s : -1;
+                    getScalingSections(enemySource, baseTarget, out int sourceSection, out int targetSection);
+                    // int sourceSection = ann.ScalingSections.TryGetValue(enemySource, out int s) ? s : -1;
+                    // int targetSection = targetScalingSections.TryGetValue(baseTarget, out s) ? s : -1;
                     bool fixedXp = targetInfo.IsFixedSource;
                     if (sourceSection > 0 && targetSection > 0
                         && scalingSpEffects.Areas.TryGetValue((sourceSection, targetSection), out AreaScalingValue sp))
                     {
                         // Console.WriteLine($"{ename(source)}->{target}: fixed {fixedXp}");
-                        if (!sourceInfo.HasTag("noscale")
-                            && !(sourceInfo.HasTag("noscaleup") && targetSection > sourceSection))
+                        // if (!sourceInfo.HasTag("noscale")
+                        //    && !(sourceInfo.HasTag("noscaleup") && targetSection > sourceSection))
                         {
-                            addCommonFuncInit(scaleEvent, target, new List<object> { target, fixedXp ? sp.FixedScaling : sp.RegularScaling });
+                            int scaleSp = fixedXp ? (sourceInfo.HasTag("nonunique") ? sp.FixedScaling : sp.UniqueFixedScaling) : sp.RegularScaling;
+                            addCommonFuncInit(scaleEvent, target, new List<object> { target, scaleSp });
                         }
                         // Additional scaling for Gundyr and First Lizard, because no upgrades of any kind
                         if (targetInfo.HasTag("earlyscale") && !sourceInfo.HasTag("early"))
@@ -7252,7 +7621,7 @@ namespace RandomizerCommon
                             addCommonFuncInit(scaleEvent, target, new List<object> { target, scalingSpEffects.TutorialScaling });
                         }
                     }
-                    else if ((sourceSection > 0 && sourceSection == targetSection))
+                    else if (sourceSection > 0 && sourceSection == targetSection)
                     {
                         // This is fine: we don't expect to find the speffect when the sections are the same,
                         // or if the source explicitly has section 99 (do not scale).
@@ -7265,7 +7634,7 @@ namespace RandomizerCommon
                     }
                     // Additional downscaling for boss-as-basic, if the option is enabled
                     // Don't scale down simple enemy helpers, so only allow non-helper (boss) or boss-equivalent helpers
-                    if (opt["regularhp"] && !fixedXp && bossAsBasicNpc.ContainsKey(source)
+                    if (presetOpt("regularhp") && !fixedXp && bossAsBasicNpc.ContainsKey(source)
                         && (sourceInfo.Class != EnemyClass.Helper || sourceInfo.HasTag("mainhelper")))
                     {
                         addCommonFuncInit(scaleEvent, target, new List<object> { target, scalingSpEffects.BossAsBasicScaling });
@@ -7308,7 +7677,7 @@ namespace RandomizerCommon
                 }
 #endif
             }
-            if (importantDupes.Count > 0 && opt["multcolor"])
+            if (importantDupes.Count > 0 && presetOpt("multcolor"))
             {
                 // For any important target, see if there are dupe sources which may conflict.
                 // If so, color-code all of the possibly conflicting ones, and any of their helpers.
@@ -7358,6 +7727,7 @@ namespace RandomizerCommon
                 bool generated = targetInfo?.HasTag("generated") ?? false;
                 // The target info here comes from baseTarget for randomized enemies, so it should work for randomized helpers
                 bool noSwamp = targetInfo?.HasTag("noswamp") ?? false;
+                bool manualTeam = targetInfo?.HasTag("manualteam") ?? false;
                 // Scale is just speffect application, so it also works for e.g. poison resistance
                 if (npcCopySpEffect.TryGetValue(npc, out List<int> sps) && !noSwamp)
                 {
@@ -7374,7 +7744,7 @@ namespace RandomizerCommon
                 }
                 // Add infighting if the original enemy had it, or the original owner had it, and not overpowered
                 // TODO: Dupe is a bit tricky, as dupeEnabled does not catch all cases (e.g. helpers? should use getBaseTarget?)
-                if (npcOriginalTeam.TryGetValue(npc, out byte team) && !sourceInfo.HasTag("ultra") && !sourceInfo.HasTag("multi")
+                if (npcOriginalTeam.TryGetValue(npc, out byte team) && !sourceInfo.HasTag("ultra") && !sourceInfo.HasTag("multi") && !manualTeam
                     && (!anyDupeEnabled || acceptableDupeTeams.Contains(team)))
                 {
                     addCommonFuncInit("teamtype", target, new List<object> { target, team });
@@ -7391,7 +7761,7 @@ namespace RandomizerCommon
                 // Finally, easier scaling for enemy onslaught
                 // Use a similar condition as boss-as-basic scaling, but applied to both source and target being fixed
                 // Alternatively, we could change the conditions to apply to all boss targets, regardless of source classification
-                if (opt["scale"] && opt["multhp"] && dupeEnabled(target)
+                if (opt["scale"] && presetOpt("multhp") && dupeEnabled(target)
                     && targetInfo != null && targetInfo.IsFixedSource
                     && bossAsBasicNpc.ContainsKey(sourceInfo.ID) && (sourceInfo.Class != EnemyClass.Helper || sourceInfo.HasTag("mainhelper")))
                 {
@@ -7461,6 +7831,8 @@ namespace RandomizerCommon
                         emevd.Events[0].Instructions.Add(newEvent);
                     }
                 }
+
+                // Some custom edits
                 foreach (EMEVD.Event e in emevd.Events)
                 {
                     EventKey key = new EventKey((int)e.ID, entry.Key);
@@ -7470,8 +7842,13 @@ namespace RandomizerCommon
                         // Open Senpou door (set objact event flag)
                         emevd.Events[0].Instructions.Add(new EMEVD.Instruction(2003, 2, new List<object> { 62000503, (byte)1 }));
                     }
+                    bool foundDefeat = false;
+                    bool foundSave = false;
                     for (int i = 0; i < e.Instructions.Count; i++)
                     {
+                        EMEVD.Instruction ins = e.Instructions[i];
+                        foundDefeat |= ins.Bank == 2003 && ins.ID == 12;
+                        foundSave |= ins.Bank == 2000 && ins.ID == 5;
                         Instr instr = events.Parse(e.Instructions[i]);
                         if (instr.Init) continue;
                         if (instr.Name == "Set Character Immortality" && instr[0] is int imm)
@@ -7496,6 +7873,11 @@ namespace RandomizerCommon
                                 e.Parameters = e.Parameters.Where(p => p.InstructionIndex != i).ToList();
                             }
                         }
+                    }
+                    if (!entry.Key.StartsWith("common") && foundDefeat && !foundSave)
+                    {
+                        // Quick hack for sitting-at-grace crashes in Elden Ring. Doesn't work for minibosses
+                        e.Instructions.Add(new EMEVD.Instruction(2000, 5, new List<object> { 0 }));
                     }
                 }
             }
@@ -7621,6 +8003,7 @@ namespace RandomizerCommon
                 // Progress speffects are added in MiscSetup instead
 
                 // Look at deathline cases, probably just always
+                // TODO: This doesn't work
                 foreach (KeyValuePair<string, Dictionary<string, ESD>> entry in game.Talk)
                 {
                     bool modified = false;
@@ -7642,6 +8025,156 @@ namespace RandomizerCommon
                         game.WriteESDs.Add(entry.Key);
                     }
                 }
+
+                if (opt["swaprewards"])
+                {
+                    bool debugBonus = opt["debugbonus"];
+                    Dictionary<int, uint> bossSouls = new Dictionary<int, uint>();
+                    foreach (PARAM.Row row in Params["GameAreaParam"].Rows)
+                    {
+                        uint amt = (uint)row["bonusSoul_single"].Value;
+                        if (amt > 0)
+                        {
+                            bossSouls[row.ID] = amt;
+                        }
+                    }
+                    foreach (PARAM.Row row in Params["GameAreaParam"].Rows)
+                    {
+                        if (!infos.ContainsKey(row.ID) || !bossSouls.ContainsKey(row.ID)) continue;
+                        List<int> targets = new List<int> { row.ID };
+                        List<(int, int)> sourceMapping = new List<(int, int)>();
+                        if (multiPhase.ContainsKey(row.ID))
+                        {
+                            targets.AddRange(multiPhase.Where(e => e.Key != row.ID && e.Value == row.ID).Select(e => e.Key));
+                        }
+                        // Just add up the bosses
+                        foreach (int target in targets)
+                        {
+                            if (infos[target].DupeFrom > 0) continue;
+                            int count = dupeCount(target);
+                            for (int dupeIndex = -1; dupeIndex < count; dupeIndex++)
+                            {
+                                getRandomizedSource(target, dupeIndex, out int source, out int realTarget);
+                                sourceMapping.Add((target, source));
+                            }
+                        }
+                        int total = 0;
+                        foreach ((int target, int source) in sourceMapping)
+                        {
+                            // Start with base soul amount.
+                            // Modifiers to souls: scaling tiers, dupe amount (GetXpRate), phase HP
+                            double baseAmt = 0;
+                            int mainSource = multiPhase.TryGetValue(source, out int nextSource) ? nextSource : source;
+                            // Some hardcoding for double-horse bosses. Should this try some kind of averaging...? bleh
+                            if (mainSource == 1041510801)
+                            {
+                                mainSource = 1041510800;
+                            }
+                            else if (mainSource == 1248550801)
+                            {
+                                mainSource = 1248550800;
+                            }
+                            if (bossSouls.TryGetValue(mainSource, out uint bossAmt))
+                            {
+                                baseAmt = bossAmt;
+                                // Could divvy up based on phase health etc, but start with this for now
+                                if (multiPhase.ContainsKey(source)) baseAmt /= 2;
+                            }
+                            if (defaultData.TryGetValue(source, out EnemyData data) && baseAmt == 0)
+                            {
+                                // TODO: Find actual boss-as-basic HP scaling used here. For now, just use their soul amount directly.
+                                PARAM.Row npc = Params["NpcParam"][data.NPC];
+                                if (npc != null)
+                                {
+                                    baseAmt = (uint)npc["getSoul"].Value;
+                                }
+                            }
+                            if (baseAmt < 1)
+                            {
+                                Console.WriteLine($"Note: no runes to move {ename(source)}->{ename(target)} (GameAreaParam {mainSource}, NpcParam {data?.NPC})");
+                                continue;
+                            }
+                            double dupeMult = GetXpModifier(dupeCount(target), presetOpt("multhp"));
+                            double dupeAmt = baseAmt * dupeMult;
+                            double scaleAmt, scalePhaseAmt;
+                            // As with all things scaling, much logic is duplicated in different places
+                            if (opt["scale"]
+                                && infos.TryGetValue(source, out EnemyInfo sourceInfo)
+                                && infos.TryGetValue(target, out EnemyInfo targetInfo))
+                            {
+                                getScalingSections(source, target, out int sourceSection, out int targetSection, true);
+                                double scaleMult = 1;
+                                if (sourceSection > 0 && targetSection > 0)
+                                {
+                                    scaleMult = EldenSoulScaling[targetSection - 1] / EldenSoulScaling[sourceSection - 1];
+                                }
+                                scaleAmt = dupeAmt * scaleMult;
+                                double phaseMult = 1;
+                                if (opt["phasehp"])
+                                {
+                                    bool phaseSource = sourceInfo.HasTag("scalephase");
+                                    bool phaseTarget = targetInfo.HasTag("scalephase");
+                                    // Scale up phase source, like Fire Giant 1 -> Gideon. Use magic constants from ScalingEffects
+                                    if (phaseSource && !phaseTarget)
+                                    {
+                                        phaseMult = 1.4;
+                                    }
+                                    // Scale down phase target, like Placidusax -> Hoarah Loux.
+                                    else if (!phaseSource && phaseTarget)
+                                    {
+                                        phaseMult = 0.7;
+                                    }
+                                }
+                                scalePhaseAmt = scaleAmt * phaseMult;
+                            }
+                            else
+                            {
+                                scaleAmt = scalePhaseAmt = dupeAmt;
+                            }
+                            if (debugBonus)
+                            {
+                                Console.WriteLine($"Target {ename(target)} <- {ename(source)}: {baseAmt} -> dupe {dupeAmt:0} -> scale {scaleAmt:0} -> final {roundBonusSoul((int)scalePhaseAmt)}, vs {bossSouls[row.ID]}");
+                            }
+                            total += (int)scalePhaseAmt;
+                        }
+                        uint val = (uint)roundBonusSoul(total);
+                        row["bonusSoul_single"].Value = val;
+                        row["bonusSoul_multi"].Value = val;
+                        if (debugBonus && sourceMapping.Count > 1)
+                        {
+                            Console.WriteLine($"  Total: {val}");
+                        }
+                    }
+                }
+
+                // Invisible enemies hack. Take this from invisible enemies mod installer
+                {
+                    int newSp = 1450601;
+                    PARAM.Row phRow = GameEditor.AddRow(Params["PhantomParam"], newSp, 260);
+                    foreach (PARAM.Cell cell in phRow.Cells)
+                    {
+                        if (cell.Value is byte)
+                        {
+                            cell.Value = (byte)0;
+                        }
+                        if (cell.Value is float)
+                        {
+                            cell.Value = (float)0;
+                        }
+                    }
+                    // 10101 completely empty
+                    PARAM.Row spRow = GameEditor.AddRow(Params["SpEffectParam"], newSp, 13177);
+                    spRow["vfxId"].Value = newSp;
+                    PARAM.Row vfxRow = GameEditor.AddRow(Params["SpEffectVfxParam"], newSp, 0);
+                    vfxRow["playCategory"].Value = (byte)3;
+                    vfxRow["playPriority"].Value = (byte)255;
+                    vfxRow["useCamouflage"].Value = (byte)1;
+                    vfxRow["invisibleAtFriendCamouflage"].Value = (byte)1;
+                    vfxRow["effectInvisibleAtCamouflage"].Value = (byte)1;
+                    vfxRow["isHideFootEffect_forCamouflage"].Value = (byte)1;
+                    vfxRow["phantomParamOverwriteId"].Value = newSp;
+                    vfxRow["phantomParamOverwriteType"].Value = (byte)2;
+                }
             }
 
 #if DEBUG
@@ -7649,7 +8182,8 @@ namespace RandomizerCommon
 #endif
 
             // Return item info
-            Dictionary<string, List<string>> named = new Dictionary<string, List<string>>();
+            EnemyLocations itemLocs = new EnemyLocations();
+
             foreach (KeyValuePair<int, List<int>> entry in mapping)
             {
                 string sourceName = infos[entry.Key].ItemName;
@@ -7660,14 +8194,22 @@ namespace RandomizerCommon
                     string targetName = infos[target].ItemName;
                     if (sourceName != null && targetName != null)
                     {
-                        AddMulti(named, sourceName, targetName);
+                        AddMulti(itemLocs.Target, sourceName, targetName);
                     }
                 }
             }
-            return new EnemyLocations { Target = named };
+
+            if (game.EldenRing && mapping.TryGetValue(11050850, out List<int> gideonTarget) && gideonTarget.Count == 1)
+            {
+                itemLocs.Outfit = infos[gideonTarget[0]].Outfit;
+                if (opt["testoutfit"]) itemLocs.Outfit = string.Join("|", infos.Values.Where(i => i.Outfit != null).OrderBy(i => i.ID).Select(i => i.Outfit));
+            }
+
+            return itemLocs;
         }
 
         private static readonly Regex phraseRe = new Regex(@"\s*;\s*");
+        private static readonly Regex condCmdRe = new Regex(@"^c\d_");
 
         public class BossPhaseLimit
         {
