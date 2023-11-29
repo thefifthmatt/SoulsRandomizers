@@ -14,7 +14,6 @@ using static RandomizerCommon.MapEditors;
 using static RandomizerCommon.Preset;
 using static RandomizerCommon.Util;
 using static RandomizerCommon.GameData;
-using static RandomizerCommon.ScalingEffects;
 using System.Drawing;
 
 namespace RandomizerCommon
@@ -893,7 +892,7 @@ namespace RandomizerCommon
                     // Default soul multiplier for dupe status. TODO backport to previous games
                     if (isDuped && selfRow != null && game.EldenRing && !opt["swaprewards"])
                     {
-                        double mult = GetXpRate(dupeCount(info.ID), presetOpt("multhp"));
+                        double mult = ScalingEffects.GetXpRate(dupeCount(info.ID), presetOpt("multhp"));
                         uint val = (uint)selfRow["bonusSoul_single"].Value;
                         val = (uint)roundBonusSoul((int)(val * mult));
                         selfRow["bonusSoul_single"].Value = val;
@@ -1025,7 +1024,7 @@ namespace RandomizerCommon
 
             // Make all scaling speffects, even if we're not using them in this run.
             // Mapping from (source section, target section) to (scaling without xp, scaling with xp)
-            SpEffectValues scalingSpEffects;
+            ScalingEffects.SpEffectValues scalingSpEffects;
             if (game.EldenRing)
             {
                 ScalingEffects scaling = new ScalingEffects(game);
@@ -1043,13 +1042,22 @@ namespace RandomizerCommon
             {
                 Random scalingRandom = new Random(seed);
                 targetScalingSections = new Dictionary<int, int>(ann.ScalingSections);
+                bool onlyScaleUp = presetOpt("scaleup");
                 foreach (KeyValuePair<int, int> entry in ann.ScalingSections)
                 {
                     int target = entry.Key;
                     int targetSection = entry.Value;
                     if (targetSection > 0)
                     {
-                        targetScalingSections[target] = scalingRandom.Next(scalingSpEffects.MaxTier) + 1;
+                        // MaxTier is something like 20 (tier 0 ignored in Elden Ring), so normally this goes from 0 to 19 -> 1 to 20.
+                        int newScale = scalingRandom.Next(scalingSpEffects.MaxTier) + 1;
+                        if (onlyScaleUp)
+                        {
+                            // Random scaling has some chance of not applying alongside onlyScaleUp, with higher chance for higher scalings,
+                            // compared to e.g. choosing a number between targetSection and MaxTier. This approach seems better balanced.
+                            newScale = Math.Max(newScale, targetSection);
+                        }
+                        targetScalingSections[target] = newScale;
                     }
                 }
             }
@@ -1709,11 +1717,11 @@ namespace RandomizerCommon
                     int source;
                     if (adds != null && infos[target].Add != 0)
                     {
-                        source = adds.Next(singletons);
+                        source = adds.Next(singletons, target);
                     }
                     else if (custom != null)
                     {
-                        source = custom.Next(singletons);
+                        source = custom.Next(singletons, target);
                     }
                     else
                     {
@@ -1809,7 +1817,13 @@ namespace RandomizerCommon
                         });
                     }
                 }
-                SortedDictionary<int, int> printMapping = new SortedDictionary<int, int>();
+                // Originally was from entity id, but for bosses, we'd like (scaling level, -entity id),
+                // and for basic, (map, entity id). Use a helper object to communicate this.
+                // Boss ids usually decrease from side to major bosses, although e.g. Fortissax is an exception.
+                SortedDictionary<(int, int), int> printMapping = new SortedDictionary<(int, int), int>();
+                Dictionary<int, int> sortScalingSections = ann.ScalingSections ?? new Dictionary<int, int>();
+                // Hopefully constructing this should be worth the cost of avoiding thousands of string keys (did not benchmark)
+                Dictionary<string, int> mapIndices = maps.Keys.OrderBy(x => x).Select((x, i) => (x, i)).ToDictionary(e => e.Item1, e => e.Item2);
                 foreach (EnemyClass printSilo in printSilos)
                 {
                     if (!isRandomized(printSilo))
@@ -1818,30 +1832,36 @@ namespace RandomizerCommon
                     }
                     foreach (KeyValuePair<int, int> transfer in silos[printSilo].Mapping)
                     {
-                        if (autoForce.Contains(transfer.Key)) continue;
-                        printMapping[transfer.Key] = transfer.Value;
+                        int targetId = transfer.Key;
+                        if (autoForce.Contains(targetId)) continue;
+                        int grouping;
+                        if (siloType == EnemyClass.Basic)
+                        {
+                            grouping = mapIndices.TryGetValue(defaultData[targetId].MainMap, out int index) ? index : int.MaxValue;
+                        }
+                        else
+                        {
+                            grouping = sortScalingSections.TryGetValue(targetId, out int section) ? section : int.MaxValue;
+                            targetId = -targetId;
+                        }
+                        printMapping[(grouping, targetId)] = transfer.Value;
                     }
                 }
-                bool printScale = opt["scale"] && ann.ScalingSections != null
-                   ; // && (siloType == EnemyClass.Boss || siloType == EnemyClass.Miniboss);
-                foreach (KeyValuePair<int, int> transfer in printMapping)
+                bool printScale = opt["scale"] && ann.ScalingSections != null;
+                foreach (KeyValuePair<(int, int), int> transfer in printMapping)
                 {
+                    int targetId = Math.Abs(transfer.Key.Item2);
+                    int sourceId = transfer.Value;
                     string scale = "";
                     if (printScale
-                        && getScalingSections(transfer.Value, transfer.Key, out int sourceSection, out int targetSection)
+                        && getScalingSections(sourceId, targetId, out int sourceSection, out int targetSection)
                         // && targetScalingSections.TryGetValue(transfer.Key, out int targetSection)
                         // && ann.ScalingSections.TryGetValue(transfer.Value, out int sourceSection)
                         && targetSection != sourceSection)
                     {
-                        // -1 ideally should not happen
-                        // TODO: This logic is duplicated from below; maybe make determinations about this independently
-                        // if (!infos[transfer.Value].HasTag("noscale")
-                        //    && !(infos[transfer.Value].HasTag("noscaleup") && targetSection > sourceSection))
-                        {
-                            scale = $" (scaling {sourceSection}->{targetSection})";
-                        }
+                        scale = $" (scaling {sourceSection}->{targetSection})";
                     }
-                    Console.WriteLine($"Replacing {fullName(transfer.Key, true)}: {fullName(transfer.Value, false)}{scale}");
+                    Console.WriteLine($"Replacing {fullName(targetId, true)}: {fullName(sourceId, false)}{scale}");
                 }
                 if (printMapping.Count == 0)
                 {
@@ -2502,8 +2522,9 @@ namespace RandomizerCommon
                 }
             }
 
+            // Fire Giant and Valiant Gargoyles, see comment below
             HashSet<int> noBackHome = new HashSet<int> { 47600900, 47700200, 47701200 };
-            void shrinkRange(PARAM.Row row, int range)
+            void shrinkRange(PARAM.Row row, int range, int? backRange = null)
             {
                 if (row == null || !anyRandomized) return;
                 if ((ushort)row["eye_dist"].Value > range)
@@ -2515,8 +2536,9 @@ namespace RandomizerCommon
                     row["nose_dist"].Value = (ushort)range;
                 }
                 // This causes issues in non-random dupe fights, though just disable in dupe mode entirely for now
-                // This is mainly for bosses tracking you super long distances in the overworld, but disrupts vanilla Fire Giant/Gargoyles.
+                // This is mainly for bosses tracking you super long distances in the overworld, but disrupts vanilla fights.
                 // Temp hack: hardcode specific rows and let them be nightmares for the time being.
+                range = backRange ?? range;
                 if ((ushort)row["maxBackhomeDist"].Value > range && !noBackHome.Contains(row.ID))
                 {
                     row["maxBackhomeDist"].Value = (ushort)range;
@@ -2871,7 +2893,7 @@ namespace RandomizerCommon
                     // max out nose_dist and eye_dist at 100. (basic gets further manual edits)
                     // Especially fix Tanith's Knight, which has 9999 nose_dist
                     // Fire Giant is 100 eye_dist, 999 nose_dist
-                    shrinkRange(row, 100);
+                    shrinkRange(row, 100, 200);
                     // Further shrink Tanith's Knight to be close to other Crucible Knights (20)
                     if (row.ID == 25009000)
                     {
@@ -2888,6 +2910,13 @@ namespace RandomizerCommon
                     {
                         row["TeamAttackEffectivity"].Value = (byte)0;
                     }
+                }
+
+                // Transplant Chapel's Grafted Scion behavior this way, from speffectset 46900030, entity id 10010800
+                PARAM.Row scion = game.Params["NpcParam"][46900008];
+                if (scion != null && (int)scion["spEffectID30"].Value <= 0)
+                {
+                    scion["spEffectID30"].Value = 16291;
                 }
 
                 // Undo CreatedReferredDamagePair
@@ -3712,10 +3741,12 @@ namespace RandomizerCommon
                             }
                         }
                     }
+                    // TODO: Do this for stairs up to Dragon Barracks. Alternatively, debug crash directly.
                     else if (map == "ringedcity")
                     {
                         // Mapping from collisions which are unnecessarily loaded (DrawGroups) to collisions which see too much (DispGroups)
                         // The main crashes are crossing over to swamp, or dropping down to final judicator
+                        // TODO: Restrict this even further
                         Dictionary<string, List<string>> visibilityReductions = new Dictionary<string, List<string>>
                         {
                             // Curse hallway, to lower stairs and Purging Monument area
@@ -6165,7 +6196,7 @@ namespace RandomizerCommon
                                         }
                                         if (!game.EldenRing && segment.Invincibility)
                                         {
-                                            setInvincibility(segment.Type.Contains("start"));
+                                            setInvincibility(!segment.Type.Contains("start"));
                                         }
                                         if (duals.Contains("endphase") && segment.Type == "end" && data.DupeIndex == -1)
                                         {
@@ -6313,8 +6344,9 @@ namespace RandomizerCommon
                                     if (events.ParseArgSpec(part, out int partPos)) return $"X{partPos * 4}_4";
                                     return part;
                                 }
-                                // There are two types of animation routines: rewriting 5450-based events, and changing anims
-                                if (type == "active" || type == "passive" || type == "suspend")
+                                // There are two types of animation routines: rewriting 5450-based events, and changing anims in initializations
+                                // Only suspend is ever used in Elden Ring
+                                if (type == "active" || type == "passive" || type == "suspend" || type == "suspendgravity")
                                 {
                                     // For 5450-based events, we need to remove the 5450 check before a MAIN IfConditionGroup
                                     // For passive events, we additionally need to disable AI with starting anim and
@@ -6322,37 +6354,66 @@ namespace RandomizerCommon
                                     if (e2 == null) throw new Exception($"Internal error: {callee} anim template type {t.Type}");
                                     bool alwaysActive = type == "active";
                                     Instr ifActive = null;
-                                    List<string> aiCommands(bool enable)
+                                    IEnumerable<string> aiCommands(bool enable)
                                     {
                                         if (alwaysActive) return new List<string>();
                                         if (type == "passive")
                                         {
                                             // Passive if an animation is not present
+                                            // TODO: Why does this hardcode X0 and X4?
                                             return new List<string>
                                             {
                                                 $"SkipIfComparison(1, ComparisonType.NotEqual, X4_4, -1)",
                                                 $"SetCharacterAIState(X0_4, {(enable ? "Enabled" : "Disabled")})",
                                             };
                                         }
+                                        string entityArg = parseArgPart(1);
+                                        List<string> enableBlock = new List<string>
+                                        {
+                                            $"SetCharacterAIState({entityArg}, {(enable ? "Enabled" : "Disabled")})",
+                                        };
+                                        if (type == "suspendgravity")
+                                        {
+                                            // Elden Ring only
+                                            // This seems to not work for mounted characters, but most others do
+                                            enableBlock.AddRange(new[]
+                                            {
+                                                // Egh boolean not supported with lite emedf
+                                                $"SetCharacterMaphit({entityArg}, {(enable ? "1" : "0")})",
+                                                $"SetCharacterGravity({entityArg}, {(enable ? "Enabled" : "Disabled")})",
+                                            });
+                                            if (enable)
+                                            {
+                                                // Fall damage/death prevention. These have durations of 180 and 60 seconds, but are
+                                                // needed in Mountaintops (could be controlled more precisely if needed)
+                                                enableBlock.AddRange(new[]
+                                                {
+                                                    $"SetSpEffect({entityArg}, 4080)",
+                                                    $"SetSpEffect({entityArg}, 4085)",
+                                                });
+                                            }
+                                        }
+                                        // Suspend mode, if not unconditionally active
                                         if (ifActive == null)
                                         {
-                                            // Passive if an animation is not present
-                                            return new List<string>
+                                            // Passive if an animation is not present, and there's no "if active" condition
+                                            // So enemy without an animation and without an AI check is managed only by emevd.
+                                            return new[]
                                             {
-                                                $"SkipIfComparison(1, ComparisonType.NotEqual, {parseArgPart(2)}, -1)",
-                                                $"SetCharacterAIState({parseArgPart(1)}, {(enable ? "Enabled" : "Disabled")})",
-                                            };
+                                                $"SkipIfComparison({enableBlock.Count}, ComparisonType.NotEqual, {parseArgPart(2)}, -1)",
+                                            }.Concat(enableBlock);
                                         }
                                         else
                                         {
                                             // Passive if an animation is not present *and* the "if active" condition is false
-                                            return new List<string>
+                                            // This means every enemy without an animation and without a conditional (parameter-based) AI
+                                            // check is managed only by emevd. This parameter logic is in many Elden Ring events, but rarely used.
+                                            return new[]
                                             {
-                                                $"SkipIfComparison(3, ComparisonType.NotEqual, {parseArgPart(2)}, -1)",
+                                                $"SkipIfComparison({enableBlock.Count + 2}, ComparisonType.NotEqual, {parseArgPart(2)}, -1)",
                                                 ifActive.ToString(),
-                                                $"SkipUnconditionally(1)",
-                                                $"SetCharacterAIState({parseArgPart(1)}, {(enable ? "Enabled" : "Disabled")})",
-                                            };
+                                                $"SkipUnconditionally({enableBlock.Count})",
+                                            }.Concat(enableBlock);
                                         }
                                     }
                                     Instr prevInstr = null;
@@ -6360,7 +6421,7 @@ namespace RandomizerCommon
                                     {
                                         EMEVD.Instruction ins = e2.Instructions[j];
                                         Instr instr = events.Parse(ins, pre);
-                                        if (type == "suspend" && instr.Name == "IfCharacterAIState")
+                                        if ((type == "suspend" || type == "suspendgravity") && instr.Name == "IfCharacterAIState")
                                         {
                                             // Before the main IfConditionGroup, see if there is a check for IfCharacterAIState.
                                             // First check this applies to the entity
@@ -6383,6 +6444,10 @@ namespace RandomizerCommon
                                                 if (prevInstr != null
                                                     && (prevInstr.Name == "SkipIfUnsignedComparison" || prevInstr.Name == "SkipIfComparison2"))
                                                 {
+                                                    // This is a construct in Elden Ring like:
+                                                    // SkipIfUnsignedComparison(1, ComparisonType.Equal, X24_4, 0)
+                                                    // IfCharacterAIState(OR_09, X0_4, AIStateType.Combat, ComparisonType.Equal, 1)
+                                                    // Which is rarely used, but we should allow think ranges to work in cases where it is used.
                                                     if (ifActive == null) ifActive = prevInstr;
                                                 }
                                                 else
@@ -6396,6 +6461,7 @@ namespace RandomizerCommon
                                             string toFind = instr.ToString();
                                             foreach (string cmd in aiCommands(true))
                                             {
+                                                // TODO: Make this a one-time edit?
                                                 events.AddMacro(edits, EditType.AddAfter, cmd, instr.ToString());
                                             }
                                             break;
@@ -6413,6 +6479,7 @@ namespace RandomizerCommon
                                         events.AddMacro(edits, EditType.AddBefore, cmd);
                                     }
                                 }
+                                // pose, wakeup, gravity - edit animation ids in-place in event, or in args, or remove event entirely
                                 else
                                 {
                                     int locEntity = parsePart(1);
@@ -6818,7 +6885,8 @@ namespace RandomizerCommon
                                 {
                                     bool adjustGroups = game.HasMods;
 #if DEBUG
-                                    adjustGroups = true;
+                                    // TODO: Fill out the cond fields for DS3 if needed
+                                    adjustGroups = game.EldenRing;
 #endif
                                     if (adjustGroups)
                                     {
@@ -7606,7 +7674,7 @@ namespace RandomizerCommon
                     // int targetSection = targetScalingSections.TryGetValue(baseTarget, out s) ? s : -1;
                     bool fixedXp = targetInfo.IsFixedSource;
                     if (sourceSection > 0 && targetSection > 0
-                        && scalingSpEffects.Areas.TryGetValue((sourceSection, targetSection), out AreaScalingValue sp))
+                        && scalingSpEffects.Areas.TryGetValue((sourceSection, targetSection), out ScalingEffects.AreaScalingValue sp))
                     {
                         // Console.WriteLine($"{ename(source)}->{target}: fixed {fixedXp}");
                         // if (!sourceInfo.HasTag("noscale")
@@ -8094,7 +8162,7 @@ namespace RandomizerCommon
                                 Console.WriteLine($"Note: no runes to move {ename(source)}->{ename(target)} (GameAreaParam {mainSource}, NpcParam {data?.NPC})");
                                 continue;
                             }
-                            double dupeMult = GetXpModifier(dupeCount(target), presetOpt("multhp"));
+                            double dupeMult = ScalingEffects.GetXpModifier(dupeCount(target), presetOpt("multhp"));
                             double dupeAmt = baseAmt * dupeMult;
                             double scaleAmt, scalePhaseAmt;
                             // As with all things scaling, much logic is duplicated in different places
@@ -8106,7 +8174,7 @@ namespace RandomizerCommon
                                 double scaleMult = 1;
                                 if (sourceSection > 0 && targetSection > 0)
                                 {
-                                    scaleMult = EldenSoulScaling[targetSection - 1] / EldenSoulScaling[sourceSection - 1];
+                                    scaleMult = ScalingEffects.EldenSoulScaling[targetSection - 1] / ScalingEffects.EldenSoulScaling[sourceSection - 1];
                                 }
                                 scaleAmt = dupeAmt * scaleMult;
                                 double phaseMult = 1;
@@ -8241,6 +8309,11 @@ namespace RandomizerCommon
                     {
                         pool.PoolGroups = new List<List<int>> { defaultPool.ToList() };
                     }
+                    else if (pool.Norandom)
+                    {
+                        // A magic number here
+                        pool.PoolGroups = new List<List<int>> { new List<int> { -1 } };
+                    }
                     else if (pool.DefaultCount > 0)
                     {
                         if (pool.PoolGroups == null)
@@ -8257,7 +8330,7 @@ namespace RandomizerCommon
                         Console.WriteLine($"Ignoring pool group {pool.PoolGroups} {pool.PoolGroups?.Count}");
                         continue;
                     }
-                    if (!pool.RandomByType)
+                    if (!pool.RandomByType && pool.PoolGroups.Count > 1)
                     {
                         pool.PoolGroups = new List<List<int>> { pool.PoolGroups.SelectMany(g => g).ToList() };
                     }
@@ -8305,7 +8378,7 @@ namespace RandomizerCommon
                 return ret;
             }
 
-            public int Next(Dictionary<int, bool> singletons)
+            public int Next(Dictionary<int, bool> singletons, int target)
             {
                 int pool = PoolOrder.Count > 1 ? PoolOrder[PoolIndex] : 0;
                 int ret = 0;
@@ -8316,6 +8389,10 @@ namespace RandomizerCommon
                     int group = GroupIndices[pool];
                     int chosen = Indices[pool][group];
                     ret = Pools[pool].PoolGroups[group][chosen];
+                    if (ret == -1)
+                    {
+                        ret = target;
+                    }
 
                     Indices[pool][group] = (Indices[pool][group] + 1) % Pools[pool].PoolGroups[group].Count;
                     GroupIndices[pool] = (GroupIndices[pool] + 1) % Pools[pool].PoolGroups.Count;

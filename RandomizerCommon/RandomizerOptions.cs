@@ -27,6 +27,8 @@ namespace RandomizerCommon
             };
         }
 
+        public static int EldenRingVersion = 10;
+
         public RandomizerOptions(FromGame game)
         {
             Game = game;
@@ -46,7 +48,7 @@ namespace RandomizerCommon
             }
             else if (game == FromGame.ER)
             {
-                int version = 9;
+                int version = EldenRingVersion;
                 for (int i = 1; i < version; i++)
                 {
                     opt[$"v{i}"] = false;

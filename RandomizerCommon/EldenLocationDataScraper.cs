@@ -509,14 +509,14 @@ namespace RandomizerCommon
                         modelBase = new SortedSet<int>(loc.Keys.Select(k => k.BaseID));
                     }
                     bool onlyShops = loc.Keys.All(k => k.Type == LocationType.SHOP) && allShop.Count() > 0;
-                    LocationScope locationScope = new LocationScope(scope.Type, id == -1 ? 0 : id, allShop, modelBase, onlyShops);
+                    LocationScope locationScope = new LocationScope(GameSpec.FromGame.ER, scope.Type, id == -1 ? 0 : id, allShop, modelBase, onlyShops);
                     data.AddLocationScope(entry.Key, scope, locationScope);
                     loc.LocScope = locationScope;
                     // if (flags.Count >= 2) Console.WriteLine($"{loc}");
                 }
                 string name = game.Name(entry.Key);
                 // This also includes ashes, talismans, weapons, spells, quest items, ashes of war
-                entry.Value.Unique = unique > 0 && unique < 10 && entry.Key.Type != ItemType.ARMOR && !name.Contains("Note: ");
+                entry.Value.Unique = unique > 0 && unique < 10 && entry.Key.Type != ItemType.ARMOR && !name.Contains("Note: ") && !name.Contains("Letter");
                 // if (entry.Value.Unique) Console.WriteLine(name);
             }
 
@@ -797,11 +797,13 @@ namespace RandomizerCommon
                         EMEVD.Instruction ins = ev.Instructions[j];
                         if (ins.Bank == 2000 && (ins.ID == 0 || ins.ID == 6))
                         {
-                            List<object> args = ins.UnpackArgs(Enumerable.Repeat(ArgType.Int32, ins.ArgData.Length / 4));
+                            // TODO: Put this in a utility to avoid doing UnpackArgs so much everywhere.
+                            // The offset logic needs to be general for other games, should generalize it there.
                             int offset = ins.ID == 0 ? 2 : 2;
-                            int eventId = (int)args[offset - 1];
+                            int eventId = BitConverter.ToInt32(ins.ArgData, (offset - 1) * 4);
                             if (eventLotCalls.TryGetValue(eventId, out SortedSet<int> indices))
                             {
+                                List<object> args = ins.UnpackArgs(Enumerable.Repeat(ArgType.Int32, ins.ArgData.Length / 4));
                                 foreach (int index in indices)
                                 {
                                     int lot = (int)args[offset + index];
@@ -826,6 +828,7 @@ namespace RandomizerCommon
                             }
                             if (npcNameCalls.TryGetValue(eventId, out SortedSet<(int, int)> nameIndices))
                             {
+                                List<object> args = ins.UnpackArgs(Enumerable.Repeat(ArgType.Int32, ins.ArgData.Length / 4));
                                 foreach ((int, int) val in nameIndices)
                                 {
                                     (int entityIndex, int nameIndex) = val;
@@ -864,7 +867,7 @@ namespace RandomizerCommon
                 ret.ShopRanges[entry.Value.Item1] = entry.Value.Item2;
             }
             HashSet<int> allEsds = new HashSet<int>();
-            IEnumerable<ESD.Condition> GetCommands(List<ESD.Condition> condList) => Enumerable.Concat(condList, condList.SelectMany(cond => GetCommands(cond.Subconditions)));
+            IEnumerable<ESD.Condition> GetConditions(List<ESD.Condition> condList) => Enumerable.Concat(condList, condList.SelectMany(cond => GetConditions(cond.Subconditions)));
             bool getEsdInt(byte[] arg, out int val)
             {
                 val = 0;
@@ -889,7 +892,7 @@ namespace RandomizerCommon
                     foreach ((int, int, ESD.State) stateDesc in esd.StateGroups.SelectMany(stateGroup => stateGroup.Value.Select(state => (stateGroup.Key, state.Key, state.Value))))
                     {
                         (int groupId, int id, ESD.State state) = stateDesc;
-                        foreach (ESD.CommandCall cmd in new[] { state.EntryCommands, state.WhileCommands, state.ExitCommands, GetCommands(state.Conditions).SelectMany(c => c.PassCommands) }.SelectMany(c => c))
+                        foreach (ESD.CommandCall cmd in new[] { state.EntryCommands, state.WhileCommands, state.ExitCommands, GetConditions(state.Conditions).SelectMany(c => c.PassCommands) }.SelectMany(c => c))
                         {
                             if (cmd.CommandBank == 1 && cmd.CommandID == 104 && cmd.Arguments.Count == 1)
                             {
@@ -931,7 +934,7 @@ namespace RandomizerCommon
                         foreach ((int, int, ESD.State) stateDesc in esd.StateGroups.SelectMany(stateGroup => stateGroup.Value.Select(state => (stateGroup.Key, state.Key, state.Value))))
                         {
                             (int groupId, int id, ESD.State state) = stateDesc;
-                            foreach (ESD.CommandCall cmd in new[] { state.EntryCommands, state.WhileCommands, state.ExitCommands, GetCommands(state.Conditions).SelectMany(c => c.PassCommands) }.SelectMany(c => c))
+                            foreach (ESD.CommandCall cmd in new[] { state.EntryCommands, state.WhileCommands, state.ExitCommands, GetConditions(state.Conditions).SelectMany(c => c.PassCommands) }.SelectMany(c => c))
                             {
                                 if (!(cmd.CommandBank == 6 && cmd.CommandID == talkLotCall && cmd.Arguments.Count == 1)) continue;
                                 byte[] arg = cmd.Arguments[0];

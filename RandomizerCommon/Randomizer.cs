@@ -35,7 +35,7 @@ namespace RandomizerCommon
         private static readonly Text mergeWrongDirError =
             new Text("Error merging mods: already running from {0} directory", "Randomizer_mergeWrongDirError");
 
-        public static readonly string EldenVersion = "v0.7.3";
+        public static readonly string EldenVersion = "v0.8";
 
         // TODO: There are way too many arguments here. Config object?
         private static readonly Dictionary<FromGame, string> distDirs = new Dictionary<FromGame, string>
@@ -79,7 +79,10 @@ namespace RandomizerCommon
                     outPath = Directory.GetCurrentDirectory();
                 }
             }
-            bool header = !opt.GetOptions().Any(o => o.StartsWith("dump")) && !opt["configgen"];
+            bool header = true;
+#if DEV
+            header = !opt.GetOptions().Any(o => o.StartsWith("dump")) && !opt["configgen"];
+#endif
             if (!header)
             {
                 notify = null;
@@ -244,6 +247,7 @@ namespace RandomizerCommon
                     eventConfig = deserializer.Deserialize<EventConfig>(reader);
                 }
 
+                // This is currently done before enemy randomizer as it refers to map data which may change.
                 LocationDataScraper scraper = new LocationDataScraper(logUnused: false);
                 LocationData data = scraper.FindItems(game);
                 AnnotationData ann = new AnnotationData(game, data);
@@ -274,7 +278,7 @@ namespace RandomizerCommon
                 }
                 else if (opt["enemychr"])
                 {
-                    // temp
+                    // TODO: This is not used, right?
                     Random random = new Random(seed);
                     CharacterWriter characters = new CharacterWriter(game, data);
                     characters.Write(random, opt);
@@ -405,7 +409,15 @@ namespace RandomizerCommon
                         characters.SetSpecialOutfits(opt, enemyLocs);
                     }
                 }
+#if DEV
+                // Should add some global logging levels
+                if (!header) return;
+#endif
 
+                if (!opt["nogesture"])
+                {
+                    new GestureRandomizer(game).Randomize(opt);
+                }
                 MiscSetup.EldenCommonPass(game, opt, messages, permResult);
 
                 if (!opt["dryrun"])

@@ -212,6 +212,7 @@ namespace RandomizerCommon
                 "PresetEditForm_multiplyBox", "PresetEditForm_classMultiplyBox", "PresetEditForm_newPoolButton",
                 "PresetEditForm_poolDesc", "PresetEditForm_poolTitle",
                 "PresetEditForm_classMerge2",
+                "PresetEditForm_classCustomHelp",
             };
             List<string> ignoreRegexes = new List<string> { @"^PresetEditForm_custom_" };
             ignoreRegex = new Regex(string.Join("|", ignoreRegexes.Concat(ignoreNames.Select(n => $"^{n}$"))));

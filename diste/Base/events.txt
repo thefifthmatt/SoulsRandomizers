@@ -3,14 +3,14 @@ NewEvents:
   Name: scale
   Commands:
   - c4_7(0, 0, 0, 0, X0_4, 1, 1065353216)
-  - c2004_8(X0_4, X4_4)
+  - SetSpEffect(X0_4, X4_4)
   - c4_7(0, 0, 0, 0, X0_4, 0, 1065353216)
   - WaitFixedTimeSeconds(1)
   - c1000_4(1)
 - ID: 9005891
   Name: scale2
   Commands:
-  - c2004_8(X0_4, X4_4)
+  - SetSpEffect(X0_4, X4_4)
   - WaitFixedTimeSeconds(1)
   - c1000_4(1)
 - ID: 9005892
@@ -37,7 +37,7 @@ NewEvents:
   - IfCharacterHasSpEffect(1, 20000, 416, 1, 0, 1)
   - IfEntityInoutsideRadiusOfEntity(1, 1, X0_4, 10000, 25, 1)
   - IfConditionGroup(0, 1, 1)
-  - c2004_8(20000, 14508)
+  - SetSpEffect(20000, 14508)
   - WaitFixedTimeSeconds(1)
   - c1000_4(1)
 - ID: 9005899
@@ -611,7 +611,7 @@ EnemyEvents:
       - ForceCharacterDeath(11050800, 0)
     - Type: remove
       Commands:
-      - c2004_10(11050800, 0)
+      - SetCharacterGravity(11050800, 0)
       - SetCharacterAnimationState(11050800, 0)
       - c2004_33(11050801, 11050800)
   - Type: segment
@@ -696,7 +696,7 @@ EnemyEvents:
     Segments:
     - Type: remove
       Commands:
-      - c2004_10(11050800, 1)
+      - SetCharacterGravity(11050800, 1)
     - Type: setup
       Commands:
       - ChangeCharacterEnableState(11050800, 1)
@@ -753,7 +753,7 @@ EnemyEvents:
       - c4_14(0, 0, 0, 0, 11050850, 5, 0, 0, 1065353216)
       - WaitFixedTimeSeconds(4)
       - PlaySE(11058050, 5, 888880000)
-      - c2004_8(20000, 1899)
+      - SetSpEffect(20000, 1899)
       - c3_26(2, 0, 0, 0)
       - IfCharacterDeadalive(2, 11050850, 1, 0, 1)
       - IfCharacterHasSpEffect(2, 10000, 9646, 0, 0, 1)
@@ -850,7 +850,7 @@ EnemyEvents:
       Start: IfConditionGroup(0, 1, -11)
       End: Label1()
       Commands:
-      - c2004_8(11050850, 9644)
+      - SetSpEffect(11050850, 9644)
     - Type: secondsetup
       IgnoreMatch: true
       PreSegment: firststart
@@ -951,7 +951,7 @@ EnemyEvents:
       - c2004_33(12010802, 12010800)
       - SetCharacterImmortality(12010801, 1)
       - SetCharacterImmortality(12010802, 1)
-      - c2004_10(12010800, 0)
+      - SetCharacterGravity(12010800, 0)
       - SetCharacterAnimationState(12010800, 0)
       - ChangeCharacterEnableState(12010802, 0)
       - c2003_18(12010801, 30002, 1, 1065353216)
@@ -977,7 +977,7 @@ EnemyEvents:
       Commands:
       - ChangeCharacterEnableState(12010801, 1)
       - c2004_41(12010800, 1, 12012801, -1)
-      - c2004_8(12010800, 1450601)
+      - SetSpEffect(12010800, 1450601)
       - ChangeCharacterEnableState(12010800, 1)
       - c2003_18(12010801, 20002, 0, 1065353216)
     - Type: secondsetup
@@ -999,7 +999,7 @@ EnemyEvents:
       Commands:
       - c2003_18(12010801, 20002, 0, 1065353216)
       - c2004_41(12010800, 1, 12012801, -1)
-      - c2004_8(12010800, 1450601)
+      - SetSpEffect(12010800, 1450601)
       - ChangeCharacterEnableState(12010800, 1)
     - Type: start
       Start: Label2()
@@ -1017,11 +1017,11 @@ EnemyEvents:
     - c2004_33(12010802, 12010800)
     - SetCharacterImmortality(12010801, 1)
     - SetCharacterImmortality(12010802, 1)
-    - c2004_10(12010800, 0)
+    - SetCharacterGravity(12010800, 0)
     - SetCharacterAnimationState(12010800, 0)
     - ChangeCharacterEnableState(12010802, 0)
     - c2004_41(12010800, 1, 12012801, -1)
-    - c2004_8(12010800, 1450601)
+    - SetSpEffect(12010800, 1450601)
 - ID: 12012811
   Map: m12_01_00_00
   Template:
@@ -1411,7 +1411,7 @@ EnemyEvents:
       - ChangeCharacterEnableState(12030814, 1)
       - c2004_50(12030814, 220, 0)
       - c2004_30(12030814, 0)
-      - c2004_8(12030814, 297810)
+      - SetSpEffect(12030814, 297810)
       - c2004_34(12030814, 1)
       - WaitFixedTimeFrames(1)
       - c2003_18(12030800, 63010, 0, 1065353216)
@@ -2014,7 +2014,7 @@ EnemyEvents:
       - SetCharacterAIState(13000800, 0)
       - c2004_30(13000800, 0)
       - ChangeCharacterEnableState(13000800, 0)
-      - c2004_10(13000800, 0)
+      - SetCharacterGravity(13000800, 0)
       - SetCharacterAnimationState(13000800, 0)
       - ChangeCharacterEnableState(13000800, 1)
       - c2004_34(13000800, 1)
@@ -2092,7 +2092,7 @@ EnemyEvents:
       - SetCharacterAIState(13000800, 0)
     - Type: remove
       Commands:
-      - c2004_10(13000800, 1)
+      - SetCharacterGravity(13000800, 1)
     - Type: start
       PreSegment: setup
       Regions:
@@ -2241,7 +2241,7 @@ EnemyEvents:
       - ForceCharacterDeath(13000851, 0)
       - ForceCharacterDeath(13000852, 0)
       - SetEventFlag(0, 13002854, 1)
-      - c2004_8(13000850, 6950)
+      - SetSpEffect(13000850, 6950)
       - WaitFixedTimeSeconds(4)
       - PlaySE(13000850, 5, 888880000)
       - IfCharacterDeadalive(0, 13000850, 1, 0, 1)
@@ -2254,7 +2254,7 @@ EnemyEvents:
     - c4_14(0, 0, 0, 0, 13000850, 5, 0, 0, 1065353216)
     - ForceCharacterDeath(13000851, 0)
     - ForceCharacterDeath(13000852, 0)
-    - c2004_8(13000850, 6950)
+    - SetSpEffect(13000850, 6950)
 - ID: 13002860
   Map: m13_00_00_00
   Template:
@@ -2286,7 +2286,7 @@ EnemyEvents:
       - SetCharacterAIState(13000851, 0)
       - SetCharacterAIState(13000852, 0)
       - ChangeCharacterEnableState(13000850, 0)
-      - c2004_10(13000850, 0)
+      - SetCharacterGravity(13000850, 0)
       - SetCharacterAnimationState(13000850, 0)
     - Type: remove
       PreSegment: presetup
@@ -2341,7 +2341,7 @@ EnemyEvents:
       Commands:
       - SetCharacterAIState(13000850, 0)
       - c2004_41(13000850, 1, 13002881, -1)
-      - c2004_8(13000850, 1450601)
+      - SetSpEffect(13000850, 1450601)
       - ChangeCharacterEnableState(13000850, 1)
       - SetCharacterAIState(13000851, 1)
       - SetCharacterAIState(13000852, 1)
@@ -2357,11 +2357,11 @@ EnemyEvents:
     - event chrpoint-50 13002881
     NewEvent:
     - c2004_35(13000850, 1)
-    - c2004_10(13000850, 0)
+    - SetCharacterGravity(13000850, 0)
     - SetCharacterAnimationState(13000850, 0)
     - SetCharacterAIState(13000850, 0)
     - c2004_41(13000850, 1, 13002881, -1)
-    - c2004_8(13000850, 1450601)
+    - SetSpEffect(13000850, 1450601)
     - c2004_33(13000851, 13000850)
     - c2004_33(13000852, 13000850)
 - ID: 13002861
@@ -3033,11 +3033,11 @@ EnemyEvents:
       Start: GotoIfEventFlag(1, 1, 0, 15000801)
       End: IfConditionGroup(0, 1, 1)
       Commands:
-      - c2004_8(15000800, 5402)
+      - SetSpEffect(15000800, 5402)
       - ChangeCharacterEnableState(15000800, 1)
       - SetCharacterAnimationState(15000800, 1)
       - SetCharacterAnimationState(15000800, 0)
-      - c2004_10(15000800, 0)
+      - SetCharacterGravity(15000800, 0)
       - c2004_26(15000800, 0)
       - c2004_26(15000800, 12)
       - c2004_26(15000800, 13)
@@ -3058,9 +3058,9 @@ EnemyEvents:
       NonMoveOnly:
       - c2004_41(15000800, 1, 15002812, -1)
       Commands:
-      - c2004_8(15000800, 5400)
+      - SetSpEffect(15000800, 5400)
       - c2004_41(15000800, 1, 15002812, -1)
-      - c2004_10(15000800, 1)
+      - SetCharacterGravity(15000800, 1)
       - SetCharacterAnimationState(15000800, 1)
       - c2004_26(15000800, 256)
       - c2004_26(15000800, 268)
@@ -3135,7 +3135,7 @@ EnemyEvents:
     - Cmds:
       - c4_2(5, 0, 0, 0, 15000800, 4, 1056964608, 0, 1065353216)
       - SkipIfConditionGroupStateUncompiled(1, 1, 5)
-      - c2004_8(15000800, 110)
+      - SetSpEffect(15000800, 110)
       Before: c2004_20(15000800)
     Removes:
     - c2002_11(15000010, 0, 15002815, 15000000, 10000, 0, 0)
@@ -3156,7 +3156,7 @@ EnemyEvents:
     - Cmds:
       - c4_2(5, 0, 0, 0, 15000800, 4, 1056964608, 0, 1065353216)
       - SkipIfConditionGroupStateUncompiled(1, 1, 5)
-      - c2004_8(15000800, 110)
+      - SetSpEffect(15000800, 110)
       Before: c2004_20(15000800)
     - Cmds:
       - SetEventFlag(0, 15002802, 0)
@@ -3173,7 +3173,7 @@ EnemyEvents:
     - Cmds:
       - c4_2(5, 0, 0, 0, 15000800, 4, 1056964608, 0, 1065353216)
       - SkipIfConditionGroupStateUncompiled(1, 1, 5)
-      - c2004_8(15000800, 110)
+      - SetSpEffect(15000800, 110)
       Before: c2004_20(15000800)
     - Cmds:
       - SetEventFlag(0, 15002802, 0)
@@ -3274,7 +3274,7 @@ EnemyEvents:
       - c2003_18(15000850, 3005, 0, 1065353216)
       - SetCharacterAIState(15005850, 1)
       - c2004_34(15005800, 1)
-      - c2004_8(15000110, 9532)
+      - SetSpEffect(15000110, 9532)
       - WaitFixedTimeSeconds(2)
       - DisplayBossHealthBar(1, 15000850, 0, 903252000)
 - ID: 15002861
@@ -3376,10 +3376,10 @@ EnemyEvents:
     - Type: start
       Start: Label2()
       EncounterOnly:
-      - c2004_8(10000, 1908)
+      - SetSpEffect(10000, 1908)
       - SetEventFlag(0, 16002697, 1)
       Commands:
-      - c2004_8(10000, 1908)
+      - SetSpEffect(10000, 1908)
       - SetCharacterAIState(16000801, 1)
       - c2004_34(16000801, 1)
       - DisplayBossHealthBar(1, 16000801, 0, 904710000)
@@ -3399,14 +3399,14 @@ EnemyEvents:
     Segments:
     - Type: setup
       Commands:
-      - c2004_8(16000800, 11901)
+      - SetSpEffect(16000800, 11901)
       - ChangeCharacterEnableState(16000800, 1)
       - SetCharacterAIState(16000800, 0)
     - Type: start
       PreSegment: setup
       Start: c2004_42(16000800, 1, 16002831, 0, 16000801)
       EncounterOnly:
-      - c2004_8(10000, 1908)
+      - SetSpEffect(10000, 1908)
       Commands:
       - SetCharacterAnimationState(16000800, 1)
       - c2004_34(16000800, 1)
@@ -3416,7 +3416,7 @@ EnemyEvents:
       - c2004_50(16000800, 221, 1)
       - SetEventFlag(0, 16002697, 1)
       - c2003_18(16000800, 20002, 256, 1065353216)
-      - c2004_8(10000, 1908)
+      - SetSpEffect(10000, 1908)
   - Type: segment
     Entity: 16000801
     Segments:
@@ -3530,7 +3530,7 @@ EnemyEvents:
     - IfCharacterAIState(1, 16000800, 3, 0, 1)
     - IfEntityInoutsideRadiusOfEntity(1, 1, 16000800, 10000, 50, 1)
     - GotoIfConditionGroupStateUncompiled(0, 0, 1)
-    - c2004_8(10000, 1908)
+    - SetSpEffect(10000, 1908)
     - Label0()
     - WaitFixedTimeSeconds(1)
     - c1000_4(1)
@@ -3544,7 +3544,7 @@ EnemyEvents:
     - IfCharacterAIState(1, 16000801, 3, 0, 1)
     - IfEntityInoutsideRadiusOfEntity(1, 1, 16000801, 10000, 50, 1)
     - GotoIfConditionGroupStateUncompiled(0, 0, 1)
-    - c2004_8(10000, 1908)
+    - SetSpEffect(10000, 1908)
     - Label0()
     - WaitFixedTimeSeconds(1)
     - c1000_4(1)
@@ -4606,7 +4606,7 @@ EnemyEvents:
       Commands:
       - SetCharacterAIState(30110800, 1)
       - c2004_34(30110800, 1)
-      - c2004_8(30110800, 4404)
+      - SetSpEffect(30110800, 4404)
       - WaitFixedTimeSeconds(1)
       - DisplayBossHealthBar(1, 30110800, 0, 902100300)
       - WaitFixedTimeSeconds(0.7)
@@ -5400,7 +5400,7 @@ EnemyEvents:
       - SetCharacterAIState(31040800, 0)
       - ChangeCharacterEnableState(31040800, 1)
       - SetCharacterAnimationState(31040800, 1)
-      - c2004_8(31040800, 90000)
+      - SetSpEffect(31040800, 90000)
       - c2003_18(31040800, 30001, 0, 1065353216)
     - Type: start
       Start: Label2()
@@ -5601,8 +5601,8 @@ EnemyEvents:
       - SetCharacterAnimationState(31070801, 1)
       - SetCharacterAIState(31070800, 0)
       - SetCharacterAIState(31070801, 0)
-      - c2004_8(31070800, 8092)
-      - c2004_8(31070801, 8092)
+      - SetSpEffect(31070800, 8092)
+      - SetSpEffect(31070801, 8092)
     - Type: start
       Start: Label2()
       SpecificHelperOnly:
@@ -5681,7 +5681,7 @@ EnemyEvents:
       - SetCharacterAIState(31090800, 0)
       - ChangeCharacterEnableState(31090800, 1)
       - SetCharacterAnimationState(31090800, 1)
-      - c2004_8(31090800, 8092)
+      - SetSpEffect(31090800, 8092)
     - Type: start
       Start: Label2()
       Commands:
@@ -6534,7 +6534,7 @@ EnemyEvents:
       - DisplayBossHealthBar(1, 31220801, 0, 903560310)
       - WaitFixedTimeSeconds(1.5)
       - SetCharacterAIState(31220801, 1)
-      - c2004_8(31220803, 297810)
+      - SetSpEffect(31220803, 297810)
       - SetCharacterAnimationState(31220803, 0)
       - c2004_34(31220803, 1)
     - Type: althealthbar
@@ -6580,8 +6580,8 @@ EnemyEvents:
     - event chrgen 31223308
     Add:
     - Cmds:
-      - c2004_8(31220800, 6950)
-      - c2004_8(31220800, 6951)
+      - SetSpEffect(31220800, 6950)
+      - SetSpEffect(31220800, 6951)
       After: DeactivateGenerator
   - Type: locstay
     Entity: 31220800
@@ -6664,7 +6664,7 @@ EnemyEvents:
       - SetCharacterAIState(32000800, 1)
       - c2004_34(32000800, 1)
       - DisplayBossHealthBar(1, 32000800, 0, 903451320)
-      - c2004_8(32000800, 8089)
+      - SetSpEffect(32000800, 8089)
 - ID: 32002811
   Map: m32_00_00_00
   Template:
@@ -6786,7 +6786,7 @@ EnemyEvents:
       - SetCharacterAIState(32020800, 0)
       - ChangeCharacterEnableState(32020800, 1)
       - SetCharacterAnimationState(32020800, 1)
-      - c2004_8(32020800, 8090)
+      - SetSpEffect(32020800, 8090)
       - c2004_50(32020800, 220, 0)
       - c2003_18(32020800, 30001, 1, 1065353216)
     - Type: start
@@ -7914,7 +7914,7 @@ EnemyEvents:
       - c2004_34(1043300800, 1)
       - DisplayBossHealthBar(1, 1043300800, 0, 903460500)
       - c2004_50(1043300800, 220, 1)
-      - c2004_8(1043300800, 8089)
+      - SetSpEffect(1043300800, 8089)
 - ID: 1044362800
   Map: m60_44_36_00
   Template:
@@ -8321,7 +8321,7 @@ EnemyEvents:
       - ChangeCharacterEnableState(1052380800, 1)
       - SetCharacterAnimationState(1052380800, 1)
       - ChangeCharacterEnableState(1052380899, 1)
-      - c2004_10(1052380899, 0)
+      - SetCharacterGravity(1052380899, 0)
       - c2004_50(1052380899, 220, 0)
       - c2004_2(1052380899, 0)
       - SetCharacterAIState(1052380899, 0)
@@ -8336,8 +8336,8 @@ EnemyEvents:
       - c2004_34(1052380899, 1)
       - c2004_34(1052380800, 1)
       - SetCharacterAIState(1052380800, 1)
-      - c2004_8(10000, 13925)
-      - c2004_8(1052380800, 13918)
+      - SetSpEffect(10000, 13925)
+      - SetSpEffect(1052380800, 13918)
       - IfCharacterDeadalive(5, 1052380800, 0, 0, 1)
       - c4_7(5, 0, 0, 0, 1052380800, 1, 1065353216)
       - IfCharacterAIState(5, 1052380800, 3, 0, 1)
@@ -8409,7 +8409,7 @@ EnemyEvents:
       Start: Label0()
       End: GotoIfEventFlag(1, 1, 0, 1252520801)
       Commands:
-      - c2004_10(1052520800, 0)
+      - SetCharacterGravity(1052520800, 0)
       - SetCharacterAnimationState(1052520800, 0)
       - SetCharacterAIState(1052520800, 0)
       - c2004_50(1052520800, 221, 0)
@@ -8504,7 +8504,7 @@ EnemyEvents:
       IgnoreMatch: true
       Start: c2004_42(1052520800, 1, 1052522815, -1, 1052520801)
       Commands:
-      - c2004_10(1052520800, 1)
+      - SetCharacterGravity(1052520800, 1)
       - SetCharacterAIState(1052520800, 0)
       - c2004_50(1052520800, 221, 0)
       - c2004_50(1052520800, 222, 0)
@@ -8549,7 +8549,7 @@ EnemyEvents:
     DefeatFlag: 1252520800
     StartFlag: 1252522802
     Removes:
-    - c2004_8(1052520800, 12780)
+    - SetSpEffect(1052520800, 12780)
 - ID: 1052522815
   Map: m60_52_52_00
   Template:
@@ -8666,7 +8666,7 @@ EnemyEvents:
     Regions:
     - arg chrpoint 1038522340 1038522341 1038522342
     Add:
-    - Cmd: c2004_8(X0_4, 15347)
+    - Cmd: SetSpEffect(X0_4, 15347)
       Before: start
 - ID: 1038522344
   Map: m60_38_52_00
@@ -8749,7 +8749,7 @@ EnemyEvents:
     Regions:
     - arg chrpoint 1039442800 1039442801 1039442802
     Add:
-    - Cmd: c2004_8(X0_4, 15347)
+    - Cmd: SetSpEffect(X0_4, 15347)
       Before: start
 - ID: 1039442344
   Map: m60_39_44_00
@@ -8911,7 +8911,7 @@ EnemyEvents:
     DefeatFlagLabel: on 19
     Name: X0 X4 X8
     Removes:
-    - c2004_8(X0_4, 4401)
+    - SetSpEffect(X0_4, 4401)
     - c3_33
     CondOrder: <1
     CondIdentity:
@@ -8993,7 +8993,7 @@ EnemyEvents:
     Regions:
     - arg chrrel 1045392340 1045392341 1045392342
     Add:
-    - Cmd: c2004_8(X0_4, 15347)
+    - Cmd: SetSpEffect(X0_4, 15347)
       Before: start
 - ID: 1045392345
   Map: m60_45_39_00
@@ -9194,8 +9194,8 @@ EnemyEvents:
     ArgEntities: X0
     Removes:
     - IfCharacterHasSpEffect(2, X0_4, 11825, 1, 0, 1)
-    - c2004_8(X0_4, 11825)
-    - c2004_8(X0_4, 11826)
+    - SetSpEffect(X0_4, 11825)
+    - SetSpEffect(X0_4, 11826)
 - ID: 1248552830
   Map: m60_48_55_00
   Template:
@@ -9297,8 +9297,8 @@ EnemyEvents:
     - Cmds:
       - SetCharacterAnimationState(1052560801, 0)
       - SetCharacterAnimationState(1052560802, 0)
-      - c2004_10(1052560801, 0)
-      - c2004_10(1052560802, 0)
+      - SetCharacterGravity(1052560801, 0)
+      - SetCharacterGravity(1052560802, 0)
       - SetCharacterAIState(1052560801, 0)
       - SetCharacterAIState(1052560802, 0)
       - c2004_41(1052560801, 1, 1052562800, -1)
@@ -9978,7 +9978,7 @@ EnemyEvents:
     Entities: 12030240 12030241 12030242 12030243 12030244 12030245 12030246 12030247 12030248 12030249 12030250 12030251 12030252 12030253 12030254 12030255 12030256 12030257
     ArgEntities: X0
     Removes:
-    - c2004_8(X0_4, 10949)
+    - SetSpEffect(X0_4, 10949)
 - ID: 12032830
   Map: m12_03_00_00
   Entities: ''
@@ -10776,7 +10776,7 @@ EnemyEvents:
   - Type: loc
     Entities: 35000208
     Removes:
-    - c2004_8(35000208, 17153)
+    - SetSpEffect(35000208, 17153)
 - ID: 35002215
   Map: m35_00_00_00
   Dupe: copy
@@ -10962,21 +10962,27 @@ EnemyEvents:
   Entities: X0 X8 X16
   Template:
   - Type: locarg
-    Animation: pose X16 X20 X24
+    Animation: gravity X16 X20 X24
+  - Type: loc
+    Animation: suspendgravity X16 X20 X24
 - ID: 1034472262
   Map: m60_34_47_00
   Dupe: copy
   Entities: X0 X8 X16
   Template:
   - Type: locarg
-    Animation: pose X16 X20 X24
+    Animation: gravity X16 X20 X24
+  - Type: loc
+    Animation: suspendgravity X16 X20 X24
 - ID: 1034482262
   Map: m60_34_48_00
   Dupe: copy
   Entities: X0 X8 X16
   Template:
   - Type: locarg
-    Animation: pose X16 X20 X24
+    Animation: gravity X16 X20 X24
+  - Type: loc
+    Animation: suspendgravity X16 X20 X24
 - ID: 1035472205
   Map: m60_35_47_00
   Template:
@@ -11042,7 +11048,9 @@ EnemyEvents:
   Entities: X0 X8 X16
   Template:
   - Type: locarg
-    Animation: pose X16 X20 X24
+    Animation: gravity X16 X20 X24
+  - Type: loc
+    Animation: suspendgravity X16 X20 X24
 - ID: 1035492220
   Map: m60_35_49_00
   Dupe: copy
@@ -11206,7 +11214,9 @@ EnemyEvents:
   Entities: X0 X8 X16
   Template:
   - Type: locarg
-    Animation: pose X16 X20 X24
+    Animation: gravity X16 X20 X24
+  - Type: loc
+    Animation: suspendgravity X16 X20 X24
 - ID: 1038462340
   Map: m60_38_46_00
   Template:
@@ -11314,11 +11324,11 @@ EnemyEvents:
   - Type: loc
     Entities: 1041540200
     Removes:
-    - c2004_8(1041540200, 12054)
+    - SetSpEffect(1041540200, 12054)
   - Type: chr
     Entity: 1041540200
     Removes:
-    - c2004_8(1041540200, 8092)
+    - SetSpEffect(1041540200, 8092)
 - ID: 1041542230
   Map: m60_41_54_00
   Dupe: copy
@@ -11373,7 +11383,7 @@ EnemyEvents:
     Add:
     - Cmd: c2004_21(1042360800, 5080)
       Before: start
-    - Cmd: c2004_8(1042360800, 5080)
+    - Cmd: SetSpEffect(1042360800, 5080)
       Before: ChangeCharacterEnableState(X0_4, 1)
 - ID: 1042360712
   Map: m60_42_36_00
@@ -11699,7 +11709,7 @@ EnemyEvents:
     - Cmd: GotoUnconditionally(1)
       Before: start
     Removes:
-    - c2004_10(X12_4, 0)
+    - SetCharacterGravity(X12_4, 0)
     - SetCharacterAIState(X12_4, 0)
     - c2003_69(0, X4_4, 1)
 - ID: 1049552410
@@ -11957,7 +11967,9 @@ EnemyEvents:
   Entities: X8 X16
   Template:
   - Type: locarg
-    Animation: pose X16 X20 X24
+    Animation: gravity X16 X20 X24
+  - Type: loc
+    Animation: suspendgravity X16 X20 X24
 - ID: 1053572200
   Map: m60_53_57_00
   Entities: ''
@@ -13042,12 +13054,14 @@ ValueTypes:
 - Bank: 2004
   ID: 8
   Length: 8
+  Alias: SetSpEffect UInt32 Int32
   Args:
     0: Entity
     4: Speffect
 - Bank: 2004
   ID: 10
   Length: 8
+  Alias: SetCharacterGravity UInt32 Byte
   Args:
     0: Enemy
 - Bank: 2004
@@ -13155,6 +13169,7 @@ ValueTypes:
 - Bank: 2004
   ID: 31
   Length: 8
+  Alias: SetCharacterMaphit UInt32 Byte
   Args:
     0: Enemy
 - Bank: 2004

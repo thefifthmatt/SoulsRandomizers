@@ -212,9 +212,9 @@ namespace RandomizerCommon
             List<string> previousOpts = defaultOpts.Split(' ').ToList();
             options = RandomizerOptions.Parse(previousOpts, FromGame.ER, isValidOption);
 
-            // New defaults
-            int prevVersion = 0;
-            for (int i = 1; i <= 9; i++)
+            // New defaults. Just in case no version, choose not to do anything.
+            int prevVersion = RandomizerOptions.EldenRingVersion;
+            for (int i = 1; i <= RandomizerOptions.EldenRingVersion; i++)
             {
                 if (previousOpts.Contains($"v{i}")) prevVersion = i;
             }
@@ -227,8 +227,8 @@ namespace RandomizerCommon
                 options["enemy"] = true;
                 options["scale"] = true;
                 options["editnames"] = true;
-                options["regularhp"] = true;
-                options["bosshp"] = true;
+                // options["regularhp"] = true;
+                // options["bosshp"] = true;
             }
             if (prevVersion < 7)
             {
@@ -236,8 +236,12 @@ namespace RandomizerCommon
             }
             if (prevVersion < 9)
             {
-                options["swaprewards"] = true;
                 options["bossbgm"] = true;
+            }
+            if (prevVersion < 10)
+            {
+                options["swaprewards"] = false;
+                if (options["nohand"]) options["changestats"] = false;
             }
             // Misc required options
             options["racemode"] = true;
@@ -747,6 +751,7 @@ namespace RandomizerCommon
             setCheck(default_twohand, !options["nostarting"], true, true, null);
             setCheck(onehand, !options["nostarting"], false, false, null);
             setCheck(nohand, !options["nostarting"], false, false, null);
+            setCheck(changestats, !options["nostarting"] && !options["nohand"], true, false, null);
             setCheck(crawl, options["fog"], false, false, null);
             // Universal options not in the misc tab
             toEnable[language] = true;
@@ -1012,11 +1017,14 @@ namespace RandomizerCommon
                     Console.SetOut(stdout);
                 }
             });
+            // TODO: Still needed given udpate below?
             randomize.Text = buttonText;
             randomize.BackColor = SystemColors.Control;
             randomize.UseVisualStyleBackColor = true;
             UpdateLaunchGame();
             working = false;
+            // Postprocess button, to switch between set seed and randomize
+            UpdateRandomizeButtonText();
         }
 
         private EnemyAnnotations enemyAnn;
@@ -1244,6 +1252,10 @@ namespace RandomizerCommon
             "Randomize items",
             "EldenForm_randomizeItem");
         [Localize]
+        private static readonly Text randomizeSame = new Text(
+            "Run with set seed",
+            "EldenForm_randomizedFixed");
+        [Localize]
         private static readonly Text randomizeEnemy = new Text(
             "Randomize enemies",
             "EldenForm_randomizeEnemy");
@@ -1280,6 +1292,10 @@ namespace RandomizerCommon
                     if (defaultRerollEnemy.Checked)
                     {
                         text = randomizeEnemyOnly;
+                    }
+                    else
+                    {
+                        text = randomizeSame;
                     }
                 }
             }
@@ -1583,9 +1599,9 @@ namespace RandomizerCommon
 
         private void CreateLaunchFile()
         {
-            // TODO: Use ModRunUtil
             StringWriter writer = new StringWriter();
             RandomizerOptionsFile.Create(Randomizer.EldenVersion, options, selectedPreset).Save(writer);
+            // Console.WriteLine($"Launch file [{writer.ToString()}]");
             string hash = MiscSetup.GetMD5TextHash(writer.ToString());
             List<string> comments = new List<string>
             {
@@ -1635,6 +1651,7 @@ namespace RandomizerCommon
 
             StringWriter writer = new StringWriter();
             RandomizerOptionsFile.Create(Randomizer.EldenVersion, options, selectedPreset).Save(writer);
+            // Console.WriteLine($"Launch compare [{writer.ToString()}]");
             string hash = MiscSetup.GetMD5TextHash(writer.ToString());
 
             string fileHash = null;
@@ -1645,7 +1662,8 @@ namespace RandomizerCommon
             {
                 fileHash = match.Groups[1].Value;
             }
-            if (hash != fileHash)
+            // TODO: This is no longer working in v0.8. Debug it later. (Ideally, use custom save files)
+            if (false && hash != fileHash)
             {
                 DialogResult result = MessageBox.Show(
                     messages.Get(launchMismatch),

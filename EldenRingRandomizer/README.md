@@ -245,7 +245,7 @@ The warp from Raya Lucaria to Volcano Manor is changed so that getting consumed 
 
 Aside from default enemy categories, customization is possible if you check "Custom enemy placement" and then click "Edit custom enemy placement". Each custom configuration is called a preset and is saved as a file in the `presets` directory. Most common types of customization like "Merge non-major bosses" and "Replace wildlife with regular enemies" can be achieved by clicking on Quick Edit links at the bottom.
 
-For each category, custom enemy pools can specify which enemies are randomly selected. Within a category, all pool frequencies add up to 100%. Click the "+" button to add a new pool. You can add enemies to pools, and when a pool is selected, an enemy in that pool will be randomly selected based on its frequency in the vanilla game. "Self" is synonymous with whichever category you're editing, so by default, all categories are replaced with 100% Self.
+For each category, custom enemy lists can specify which enemies are randomly selected. Within a category, you can have several source groups (also known as "pools") whose percentages add up to 100%. Click the "+" button to add a new source group. You can add enemy types to source groups, and when a group is used, an enemy in that group will be randomly selected based on its frequency in the vanilla game. "Same category" is synonymous with whichever category you're editing, so by default, all categories are replaced with 100% same category. There's also a special source group called "Not randomized" which gives a % chance for some enemies in a category to be randomized and for others to not be randomized.
 
 Finally, custom enemy placement also has "Oops All" mode, which replaces all enemies with a single boss or enemy type, and "Enemy Onslaught" which duplicates (or more) each enemy and boss. Onslaught can be used with or without randomization, by adding or removing "All Enemies and Bosses" from being randomized or not.
 
@@ -255,6 +255,6 @@ Thanks to TKGP and katalash for SoulsFormats, Meowmaritus for SoulsFormats EMEVD
 
 Thanks to katalash for creating Mod Engine and giving special permission to distribute it with this mod.
 
-Finally, thanks to Saltyfish_King, Fababfan, Plante, proteh, Leekos, Kuroko, 刀子, SaniTOS, and HiJacked for contributing translations and permission to use them in this mod.
+Finally, thanks to Saltyfish_King, Fababfan, Plante, proteh, Leekos, Kuroko, 刀子, SaniTOS, HiJacked, and frioosin for contributing translations and permission to use them in this mod.
 
 Source code is published to https://github.com/thefifthmatt/SoulsRandomizers and updated occasionally. Thanks to nex3 for creating a DSMS-compatible SoulsFormats fork to make this possible.

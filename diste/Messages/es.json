@@ -57,6 +57,12 @@
       "text": ""
     },
     {
+      "name": "EldenForm_changestats",
+      "explanation": "When randomizing starting classes, this setting gives a small chance for changing starting class stats to allow wielding more weapons. For instance, it could increase the Astrologer's strength from 8 to 11 so it can wield the Bastard Sword.",
+      "english_text": "Allow changing stats slightly for more starting weapons",
+      "text": ""
+    },
+    {
       "name": "EldenForm_confirmCreatePreset",
       "explanation": "Confirm prompt to write a preset file from an options file. {0} is the file name. \n means to insert a newline - do not put spaces around it.",
       "english_text": "Create preset file?\n{0}",
@@ -243,6 +249,12 @@
       "text": "Error: No se encuentran los archivos de metadatos requeridos.\nPara que el randomizador funcione, debes descomprimirlo y mantener todos sus archivos juntos"
     },
     {
+      "name": "EldenForm_fileUnpackError",
+      "explanation": "Error usually encountered when the randomizer exe is run from 7zip etc, without unpacking it. This is a more detailed version compared to before, where {0} is the name of the directory, which is diste in the case of Elden Ring, and {1} contains the full path the randomizer is running from and expects to find the directory. To reproduce this error message, you can delete the diste directory yourself, or you can open the zip file in 7-Zip and click the exe without extracting it. (In the future, this message may be copied inside the program itself, because messages are themselves in metadata files.)",
+      "english_text": "Error: Required metadata directory \"{0}\" not found at {1}\r\nFirst use \"Extract here\" on the entire zip file, then run the program from inside of the extracted \"randomizer\" directory. Do not drag-and-drop individual files.",
+      "text": ""
+    },
+    {
       "name": "EldenForm_fileUxmPatchWarning",
       "explanation": "Validation warning for game exe textbox. A file that usually indicates the user did UXM Patch does not exist",
       "english_text": "Warning: UXM output is selected, but the game may not be patched (_backup\\eldenring.exe not found)",
@@ -294,6 +306,18 @@
       "name": "EldenForm_impoliteL",
       "explanation": "Explanation label for 'Impolite enemies'",
       "english_text": "Make enemies less passive in groups",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_invertenvbgm",
+      "explanation": "When checked, ambient background music in levels can be swapped with each other, so you could hear Leyndell music while wandering around in Limgrave",
+      "english_text": "Randomize ambient music",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_invertgestures",
+      "explanation": "When checked, all starting gestures and unlockable gestures will be swapped with each other (except the one in Blaidd's quest)",
+      "english_text": "Randomize gestures",
       "text": ""
     },
     {
@@ -717,6 +741,12 @@
       "text": "Aleatorizar con una semilla fija"
     },
     {
+      "name": "EldenForm_randomizedFixed",
+      "explanation": "Randomize button when a seed is filled in and 'Reroll seed' and 'Reroll enemy seed' are unchecked. 'Set seed' means 'fixed seed', a seed number provided by the user",
+      "english_text": "Run with set seed",
+      "text": ""
+    },
+    {
       "name": "EldenForm_randomizeEnemy",
       "explanation": "Randomize button when only enemyPage is checked",
       "english_text": "Randomize enemies",
@@ -1031,7 +1061,7 @@
     {
       "name": "EnemyClass_AdjustSourceDoc",
       "explanation": "Explanation for how to configure Frequency Adjustments, which appears in the enemy customization form. Reducing passive enemy types is an example of this. If crabs start with a 5% chance to show up, and their frequency adjustment is 50%, they will end up with a 2.5% chance.",
-      "english_text": "Special configuration to adjust the frequency of enemies relative to others of the same type",
+      "english_text": "Special configuration to reduce the frequency of certain enemies relative to others in the same category. Use the + button to add an adjustment. For example, setting crabs to 50% will cut their chance of appearing by half.",
       "text": ""
     },
     {
@@ -1503,6 +1533,12 @@
       "text": ""
     },
     {
+      "name": "PresetEditForm_confirmNorandom",
+      "explanation": "Yes/no prompt which appears when trying to add 'Not randomized' to a custom enemy category. One way to make this appear is to edit custom enemy placement, click Reset, select the dropdown next to the '100%' textbox, and select 'Not randomized' from the dropdown. The 'Not randomized' selection is a way to not randomize a % of enemies, and it makes no sense for a group to both specify source enemies and say that none should be randomized. If the user clicks Yes, the editor automatically clicks the + button to make a new group and adds 'Not randomized' there.",
+      "english_text": "\"Not randomized\" can't be added to this source group because other enemies are already configured. Would you like to create a new group to set a percentage for non-random enemies?",
+      "text": ""
+    },
+    {
       "name": "PresetEditForm_confirmOverwrite",
       "explanation": "Dialog text for 'Save as' or 'Create new' when the preset filename already exists",
       "english_text": "Overwrite existing file?",
@@ -1524,6 +1560,12 @@
       "name": "PresetEditForm_createNew",
       "explanation": "In the 'Preset:' dropdown, a special option which prompts the name of a new preset to create",
       "english_text": "Create new...",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_customHelpText",
+      "explanation": "Long explanation for using the custom enemy editor which can be accessed by clicking on the '?' link in a particular enemy category. This refers to other parts of the UI which have their own entries. Please ask me if you'd like further explanation for any of this, since this text tries to communicate how the randomizer works internally, which is complicated, and how to configure it, which is also complicated.",
+      "english_text": "Enemy randomizer works by swapping out enemies with other enemies taken from elsewhere in the game. It does this independently for each enemy category. Here you can configure a custom list of source enemies which can replace enemies in this category. You can also merge some categories together, by selecting \"Merge with\" in subcategories, or clicking on \"Quick edit\" links below to do this automatically.\r\n\r\nWhen configuring source enemies, you can click the + button to add a new source group. The % probability across all groups in a category must add up to 100%. If you want 10% of enemies in this category to become any boss, use a 90% group with \"Same category\" and a 10% group with \"All Bosses\". If you want only 50% of enemies in this category to be randomized, use a 50% group with \"Same category\" and a 50% group with \"Not randomized\".",
       "text": ""
     },
     {
@@ -1600,8 +1642,14 @@
     },
     {
       "name": "PresetEditForm_poolDefault",
-      "explanation": "Type of enemy replacement within the same category, so for Major Bosses, this means other Major Bosses. This is same thing as 'Themselves' in Preset_poolDefault, but it's in an enemy list editor and not in a summary",
+      "explanation": "Type of enemy replacement within the same category, so for Major Bosses, this means other Major Bosses. This used to be what appeared in the enemy editor, but now poolDefaultExplain is used",
       "english_text": "Self",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_poolDefaultExplain",
+      "explanation": "Type of enemy replacement within the same category, so for Major Bosses, this means other Major Bosses. This shows up in the enemy editor for each enemy category with custom source groups. The {0} is the name of the current category. The reason why this is used, instead of just saying the category name by itself, is because of the 'Copy config from <other category>' option. For example, suppose that Regular Enemies are replaced with Same category (Regular Enemies). If Passive Wildlife copies its config from Regular Enemies, then it will be replaced with Same category (Passive Wildlife) instead, because the meaning of the current category is different there.",
+      "english_text": "Same category ({0})",
       "text": ""
     },
     {

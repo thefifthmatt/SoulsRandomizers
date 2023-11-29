@@ -128,10 +128,13 @@
             this.nerfmalenia = new System.Windows.Forms.CheckBox();
             this.allmaps = new System.Windows.Forms.CheckBox();
             this.extraRandomGroup = new System.Windows.Forms.GroupBox();
+            this.invertgestures = new System.Windows.Forms.CheckBox();
+            this.invertenvbgm = new System.Windows.Forms.CheckBox();
+            this.invertoutfits = new System.Windows.Forms.CheckBox();
             this.onehand = new System.Windows.Forms.RadioButton();
             this.default_twohand = new System.Windows.Forms.RadioButton();
             this.nohand = new System.Windows.Forms.RadioButton();
-            this.invertoutfits = new System.Windows.Forms.CheckBox();
+            this.changestats = new System.Windows.Forms.CheckBox();
             this.invertstarting = new System.Windows.Forms.CheckBox();
             this.enemy = new System.Windows.Forms.CheckBox();
             this.item = new System.Windows.Forms.CheckBox();
@@ -735,8 +738,8 @@
             this.tabControl.NewTabButton = false;
             this.tabControl.OverIndex = -1;
             this.tabControl.ScrollButtonStyle = GrayIris.Utilities.UI.Controls.YaScrollButtonStyle.Never;
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.SelectedTab = this.itemPage;
+            this.tabControl.SelectedIndex = 2;
+            this.tabControl.SelectedTab = this.miscPage;
             this.tabControl.Size = new System.Drawing.Size(1156, 537);
             this.tabControl.TabDock = System.Windows.Forms.DockStyle.Top;
             this.tabControl.TabDrawer = null;
@@ -1063,13 +1066,11 @@
             // swaprewards
             // 
             this.swaprewards.AutoSize = true;
-            this.swaprewards.Checked = true;
-            this.swaprewards.CheckState = System.Windows.Forms.CheckState.Checked;
             this.swaprewards.Enabled = false;
-            this.swaprewards.Location = new System.Drawing.Point(6, 42);
+            this.swaprewards.Location = new System.Drawing.Point(6, 62);
             this.swaprewards.Name = "swaprewards";
             this.swaprewards.Size = new System.Drawing.Size(343, 20);
-            this.swaprewards.TabIndex = 1;
+            this.swaprewards.TabIndex = 2;
             this.swaprewards.Text = "Change boss runes to correspond to the original boss";
             this.swaprewards.UseVisualStyleBackColor = true;
             this.swaprewards.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
@@ -1079,10 +1080,10 @@
             this.bossbgm.AutoSize = true;
             this.bossbgm.Checked = true;
             this.bossbgm.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.bossbgm.Location = new System.Drawing.Point(6, 62);
+            this.bossbgm.Location = new System.Drawing.Point(5, 42);
             this.bossbgm.Name = "bossbgm";
             this.bossbgm.Size = new System.Drawing.Size(241, 20);
-            this.bossbgm.TabIndex = 2;
+            this.bossbgm.TabIndex = 1;
             this.bossbgm.Text = "Randomize boss background music";
             this.bossbgm.UseVisualStyleBackColor = true;
             this.bossbgm.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
@@ -1225,10 +1226,10 @@
             this.specialGroup.Controls.Add(this.crawl);
             this.specialGroup.Controls.Add(this.fogL);
             this.specialGroup.Controls.Add(this.fog);
-            this.specialGroup.Location = new System.Drawing.Point(6, 296);
+            this.specialGroup.Location = new System.Drawing.Point(7, 209);
             this.specialGroup.Name = "specialGroup";
-            this.specialGroup.Size = new System.Drawing.Size(428, 101);
-            this.specialGroup.TabIndex = 6;
+            this.specialGroup.Size = new System.Drawing.Size(452, 101);
+            this.specialGroup.TabIndex = 1;
             this.specialGroup.TabStop = false;
             this.specialGroup.Text = "Special modes";
             // 
@@ -1283,10 +1284,10 @@
             this.convenienceGroup.Controls.Add(this.sombermode);
             this.convenienceGroup.Controls.Add(this.nerfmalenia);
             this.convenienceGroup.Controls.Add(this.allmaps);
-            this.convenienceGroup.Location = new System.Drawing.Point(6, 144);
+            this.convenienceGroup.Location = new System.Drawing.Point(478, 6);
             this.convenienceGroup.Name = "convenienceGroup";
-            this.convenienceGroup.Size = new System.Drawing.Size(428, 146);
-            this.convenienceGroup.TabIndex = 1;
+            this.convenienceGroup.Size = new System.Drawing.Size(453, 146);
+            this.convenienceGroup.TabIndex = 2;
             this.convenienceGroup.TabStop = false;
             this.convenienceGroup.Text = "Convenience";
             // 
@@ -1357,17 +1358,59 @@
             // 
             // extraRandomGroup
             // 
+            this.extraRandomGroup.Controls.Add(this.invertgestures);
+            this.extraRandomGroup.Controls.Add(this.invertenvbgm);
+            this.extraRandomGroup.Controls.Add(this.invertoutfits);
             this.extraRandomGroup.Controls.Add(this.onehand);
             this.extraRandomGroup.Controls.Add(this.default_twohand);
             this.extraRandomGroup.Controls.Add(this.nohand);
-            this.extraRandomGroup.Controls.Add(this.invertoutfits);
+            this.extraRandomGroup.Controls.Add(this.changestats);
             this.extraRandomGroup.Controls.Add(this.invertstarting);
             this.extraRandomGroup.Location = new System.Drawing.Point(6, 6);
             this.extraRandomGroup.Name = "extraRandomGroup";
-            this.extraRandomGroup.Size = new System.Drawing.Size(428, 132);
+            this.extraRandomGroup.Size = new System.Drawing.Size(453, 195);
             this.extraRandomGroup.TabIndex = 0;
             this.extraRandomGroup.TabStop = false;
             this.extraRandomGroup.Text = "Additional randomization";
+            // 
+            // invertgestures
+            // 
+            this.invertgestures.AutoSize = true;
+            this.invertgestures.Checked = true;
+            this.invertgestures.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.invertgestures.Location = new System.Drawing.Point(6, 161);
+            this.invertgestures.Name = "invertgestures";
+            this.invertgestures.Size = new System.Drawing.Size(150, 20);
+            this.invertgestures.TabIndex = 7;
+            this.invertgestures.Text = "Randomize gestures";
+            this.invertgestures.UseVisualStyleBackColor = true;
+            this.invertgestures.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
+            // invertenvbgm
+            // 
+            this.invertenvbgm.AutoSize = true;
+            this.invertenvbgm.Checked = true;
+            this.invertenvbgm.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.invertenvbgm.Location = new System.Drawing.Point(6, 141);
+            this.invertenvbgm.Name = "invertenvbgm";
+            this.invertenvbgm.Size = new System.Drawing.Size(184, 20);
+            this.invertenvbgm.TabIndex = 6;
+            this.invertenvbgm.Text = "Randomize ambient music";
+            this.invertenvbgm.UseVisualStyleBackColor = true;
+            this.invertenvbgm.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            // 
+            // invertoutfits
+            // 
+            this.invertoutfits.AutoSize = true;
+            this.invertoutfits.Checked = true;
+            this.invertoutfits.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.invertoutfits.Location = new System.Drawing.Point(6, 121);
+            this.invertoutfits.Name = "invertoutfits";
+            this.invertoutfits.Size = new System.Drawing.Size(163, 20);
+            this.invertoutfits.TabIndex = 5;
+            this.invertoutfits.Text = "Randomize NPC outfits";
+            this.invertoutfits.UseVisualStyleBackColor = true;
+            this.invertoutfits.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
             // onehand
             // 
@@ -1404,18 +1447,18 @@
             this.nohand.UseVisualStyleBackColor = true;
             this.nohand.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
-            // invertoutfits
+            // changestats
             // 
-            this.invertoutfits.AutoSize = true;
-            this.invertoutfits.Checked = true;
-            this.invertoutfits.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.invertoutfits.Location = new System.Drawing.Point(6, 101);
-            this.invertoutfits.Name = "invertoutfits";
-            this.invertoutfits.Size = new System.Drawing.Size(163, 20);
-            this.invertoutfits.TabIndex = 4;
-            this.invertoutfits.Text = "Randomize NPC outfits";
-            this.invertoutfits.UseVisualStyleBackColor = true;
-            this.invertoutfits.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
+            this.changestats.AutoSize = true;
+            this.changestats.Checked = true;
+            this.changestats.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.changestats.Location = new System.Drawing.Point(28, 101);
+            this.changestats.Name = "changestats";
+            this.changestats.Size = new System.Drawing.Size(347, 20);
+            this.changestats.TabIndex = 4;
+            this.changestats.Text = "Allow changing stats slightly for more starting weapons";
+            this.changestats.UseVisualStyleBackColor = true;
+            this.changestats.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
             // invertstarting
             // 
@@ -1745,7 +1788,7 @@
         private System.Windows.Forms.GroupBox convenienceGroup;
         private System.Windows.Forms.GroupBox extraRandomGroup;
         private System.Windows.Forms.CheckBox invertstarting;
-        private System.Windows.Forms.CheckBox invertoutfits;
+        private System.Windows.Forms.CheckBox changestats;
         private System.Windows.Forms.CheckBox nerfmalenia;
         private System.Windows.Forms.CheckBox allmaps;
         private System.Windows.Forms.RadioButton nohand;
@@ -1776,6 +1819,9 @@
         private System.Windows.Forms.Label fogL;
         private System.Windows.Forms.CheckBox crawl;
         private System.Windows.Forms.CheckBox nerfsh;
+        private System.Windows.Forms.CheckBox invertgestures;
+        private System.Windows.Forms.CheckBox invertenvbgm;
+        private System.Windows.Forms.CheckBox invertoutfits;
     }
 }
 

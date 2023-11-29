@@ -347,6 +347,20 @@ namespace RandomizerCommon
             [EnemyClass.Evergaol] = new Text("Evergaol Minibosses", "EnemyClass_Evergaol"),
             [EnemyClass.Spectator] = new Text("Spectators", "EnemyClass_Spectator"),
         };
+        // Don't localize this for now, use a different placeholder
+        private static readonly Dictionary<EnemyClass, Text> ClassNamesOther = new Dictionary<EnemyClass, Text>
+        {
+            [EnemyClass.Basic] = new Text("Other Regular Enemies", "EnemyClass_BasicOther"),
+            [EnemyClass.Miniboss] = new Text("Other World Minibosses", "EnemyClass_MinibossOther"),
+            [EnemyClass.Boss] = new Text("Other Major Bosses", "EnemyClass_BossOther"),
+            [EnemyClass.HostileNPC] = new Text("Other Hostile Humans", "EnemyClass_HostileNPCOther"),
+            [EnemyClass.Wildlife] = new Text("Other Passive Wildlife", "EnemyClass_WildlifeOther"),
+            [EnemyClass.Scarab] = new Text("Other Scarabs", "EnemyClass_ScarabOther"),
+            [EnemyClass.MinorBoss] = new Text("Other Minor Bosses", "EnemyClass_MinorBossOther"),
+            [EnemyClass.NightMiniboss] = new Text("Other Night Minibosses", "EnemyClass_NightMinibossOther"),
+            [EnemyClass.DragonMiniboss] = new Text("Other Dragon Minibosses", "EnemyClass_DragonMinibossOther"),
+            [EnemyClass.Evergaol] = new Text("Other Evergaol Minibosses", "EnemyClass_EvergaolOther"),
+        };
         [Localize]
         public static readonly Dictionary<EnemyClass, Text> ClassDocs = new Dictionary<EnemyClass, Text>
         {
@@ -359,7 +373,7 @@ namespace RandomizerCommon
             [EnemyClass.Spectator] = new Text("Special configuration for regular enemies who are nearby minibosses. This is meant to prevent unreasonably difficult open world fights.", "EnemyClass_SpectatorDesc"),
         };
         [Localize]
-        public static readonly Text AdjustSourceDoc = new Text("Special configuration to adjust the frequency of enemies relative to others of the same type", "EnemyClass_AdjustSourceDoc");
+        public static readonly Text AdjustSourceDoc = new Text("Special configuration to reduce the frequency of certain enemies relative to others in the same category. Use the + button to add an adjustment. For example, setting crabs to 50% will cut their chance of appearing by half.", "EnemyClass_AdjustSourceDoc");
         public enum EnemyClass
         {
             // Unspecified
@@ -446,7 +460,6 @@ namespace RandomizerCommon
             AllBosses = 3,
         }
 
-        // TODO: add
         public class PassiveAdjustment
         {
             public string Source { get; set; }

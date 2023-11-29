@@ -161,10 +161,12 @@ namespace RandomizerCommon
             public string Pool { get; set; }
             // Whether to select by group
             public bool RandomByType { get; set; }
+            // Whether this pool should
+            public bool Norandom { get; set; }
             // Enemies per pool, filtered by other constraints as well
             [YamlIgnore]
             public List<List<int>> PoolGroups = new List<List<int>>();
-            // Whether to also add default as its own PoolGroup
+            // Whether to also add default as its own PoolGroup, alongside non-default groups, because "default" cannot be resolved here
             [YamlIgnore]
             public int DefaultCount { get; set; }
 
@@ -375,8 +377,9 @@ namespace RandomizerCommon
         private static readonly Text poolExcludeText = new Text("- (excluding {0})", "Preset_poolExclude");
         [Localize]
         private static readonly Text poolDefaultText = new Text("Themselves", "Preset_poolDefault");
+        // Also used in PresetEditForm
         [Localize]
-        private static readonly Text poolNorandomText = new Text("Not randomized", "Preset_poolNorandom");
+        internal static readonly Text poolNorandomText = new Text("Not randomized", "Preset_poolNorandom");
         [Localize]
         private static readonly Text poolDelimitTypeText = new Text(", ", "Preset_poolDelimitType");
         // Should not be a comma
@@ -420,6 +423,10 @@ namespace RandomizerCommon
                     else if (part == "default")
                     {
                         parts.Add(defaultText ?? messages.Get(poolDefaultText));
+                    }
+                    else if (part == "norandom")
+                    {
+                        parts.Add(messages.Get(poolNorandomText));
                     }
                     else
                     {
@@ -937,6 +944,10 @@ namespace RandomizerCommon
                             }
                         }
                     }
+                    else if (name == "norandom")
+                    {
+                        findId = ". \"norandom\" must appear by itself in pools, without any other enemy names.";
+                    }
                     errors.Add($"Unrecognized enemy name \"{name}\"{findId}");
                     return new List<int>();
                 }
@@ -1091,6 +1102,11 @@ namespace RandomizerCommon
                 }
                 if (pool.Pool.ToLowerInvariant() == "default")
                 {
+                    return;
+                }
+                else if (pool.Pool.ToLowerInvariant() == "norandom")
+                {
+                    pool.Norandom = true;
                     return;
                 }
                 pool.PoolGroups = getPoolMultiIds(pool.Pool, out int defaultCount);

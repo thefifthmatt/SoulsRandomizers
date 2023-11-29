@@ -99,16 +99,18 @@ namespace RandomizerCommon
 
         [Localize]
         private static readonly Text fileUnpackError = new Text(
-            "Error: Can't find required metadata files.\nFor the randomizer to work, you must unpack it to disk and keep all of the files together",
+            "Error: Required metadata directory \"{0}\" not found at {1}\r\nFirst use \"Extract here\" on the entire zip file, then run the program from inside of the extracted \"randomizer\" directory. Do not drag-and-drop individual files.",
+            // "Error: Can't find required metadata files.\nFor the randomizer to work, you must unpack it to disk and keep all of the files together",
             "EldenForm_fileUnpackError");
 
         public static bool CheckRequiredEldenFiles(Messages messages, out string ret)
         {
             // Return true if no errors
             ret = null;
-            if (!Directory.Exists("diste"))
+            DirectoryInfo dist = new DirectoryInfo("diste");
+            if (!dist.Exists)
             {
-                ret = messages.Get(fileUnpackError);
+                ret = messages.Get(fileUnpackError, "diste", dist.FullName);
             }
             return ret == null;
         }
@@ -678,6 +680,26 @@ namespace RandomizerCommon
                     row[$"originEquipWep{i}"].Value = -1;
                 }
             }
+            // Always Nerf Boc if we can, just because
+            if (game.WriteESDs.Contains("m60_00_00_00")
+                && game.Talk["m60_00_00_00"].TryGetValue("t223006000", out ESD boc)
+                && boc.StateGroups.TryGetValue(2000, out Dictionary<long, ESD.State> machine))
+            {
+                foreach (ESD.State state in machine.Values)
+                {
+                    foreach (ESD.CommandCall command in state.EntryCommands)
+                    {
+                        if (command.CommandBank != 6) continue;
+                        for (int i = 0; i < command.Arguments.Count; i++)
+                        {
+                            if (AST.DisassembleExpression(command.Arguments[i]).TryAsInt(out int arg) && arg == 50)
+                            {
+                                command.Arguments[i] = AST.AssembleExpression(AST.MakeVal(25));
+                            }
+                        }
+                    }
+                }
+            }
             if (opt["weaponreqs"])
             {
                 // Same fields used in CharacterWriter requirements gathering
@@ -697,6 +719,42 @@ namespace RandomizerCommon
                         row[field].Value = (byte)0;
                     }
                 }
+            }
+            if (!opt["noenvbgm"])
+            {
+                // Some maps e.g. m34_12 Sealed Tunnel have a SoundRegion with BGM.
+                // BgmPlaceInfo=320 (Tunnel), EnvPlaceInfo=340 (Tower), Region=180 (Tutorial?)
+                // EnvPlaceType refers to Env_320_Tunnel, BgmBossChrIdConv refers to Bgm_320_Tunnel
+                // Editing this param seems to account for most simple cases, though.
+                // WwiseValueToStrParam_EnvPlaceType is presumably for ambient non-music sounds.
+                List<string> bgms = new List<string>();
+                foreach (PARAM.Row row in game.Params["WwiseValueToStrParam_BgmBossChrIdConv"].Rows)
+                {
+                    string bgm = (string)row["ParamStr"].Value;
+                    if (!bgm.StartsWith("Bgm") || bgm.Contains("None")) continue;
+                    bgms.Add(bgm);
+                }
+                Util.Shuffle(new Random((int)opt.Seed), bgms);
+                Console.WriteLine("-- Level BGM placements");
+                foreach (PARAM.Row row in game.Params["WwiseValueToStrParam_BgmBossChrIdConv"].Rows)
+                {
+                    string bgm = (string)row["ParamStr"].Value;
+                    if (!bgm.StartsWith("Bgm") || bgm.Contains("None")) continue;
+                    string newBgm = bgms[bgms.Count - 1];
+                    if (bgm == newBgm && bgms.Count >= 2)
+                    {
+                        // Take the second-to-last instead of last to prefer derangements
+                        newBgm = bgms[bgms.Count - 2];
+                        bgms.RemoveAt(bgms.Count - 2);
+                    }
+                    else
+                    {
+                        bgms.RemoveAt(bgms.Count - 1);
+                    }
+                    Console.WriteLine($"Replacing {bgm}: {newBgm}");
+                    row["ParamStr"].Value = newBgm;
+                }
+                Console.WriteLine();
             }
             // 71801 is graveyard flag, 102 is "definitely in limgrave"?
             // This one should be opening the graveyard exit but it seems to activate straight away (because endif tutorial?)

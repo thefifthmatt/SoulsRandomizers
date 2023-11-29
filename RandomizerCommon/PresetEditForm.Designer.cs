@@ -40,6 +40,7 @@
             this.classNorandom = new System.Windows.Forms.RadioButton();
             this.classRandom = new System.Windows.Forms.RadioButton();
             this.classCustom = new System.Windows.Forms.RadioButton();
+            this.classCustomHelp = new System.Windows.Forms.LinkLabel();
             this.classMultiplyBox = new System.Windows.Forms.ComboBox();
             this.newPoolBreak = new System.Windows.Forms.Label();
             this.newPoolButton = new System.Windows.Forms.Button();
@@ -119,6 +120,7 @@
             this.customPanel.Controls.Add(this.classNorandom);
             this.customPanel.Controls.Add(this.classRandom);
             this.customPanel.Controls.Add(this.classCustom);
+            this.customPanel.Controls.Add(this.classCustomHelp);
             this.customPanel.Controls.Add(this.classMultiplyBox);
             this.customPanel.Controls.Add(this.newPoolBreak);
             this.customPanel.Controls.Add(this.newPoolButton);
@@ -187,7 +189,7 @@
             this.classMerge2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.classMerge2.Name = "classMerge2";
             this.classMerge2.Size = new System.Drawing.Size(130, 20);
-            this.classMerge2.TabIndex = 9;
+            this.classMerge2.TabIndex = 4;
             this.classMerge2.Text = "Merge with parent";
             this.classMerge2.UseVisualStyleBackColor = true;
             this.classMerge2.CheckedChanged += new System.EventHandler(this.classMode_CheckChanged);
@@ -200,7 +202,7 @@
             this.classNorandom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.classNorandom.Name = "classNorandom";
             this.classNorandom.Size = new System.Drawing.Size(120, 20);
-            this.classNorandom.TabIndex = 4;
+            this.classNorandom.TabIndex = 5;
             this.classNorandom.Text = "Not randomized";
             this.classNorandom.UseVisualStyleBackColor = true;
             this.classNorandom.CheckedChanged += new System.EventHandler(this.classMode_CheckChanged);
@@ -213,7 +215,7 @@
             this.classRandom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.classRandom.Name = "classRandom";
             this.classRandom.Size = new System.Drawing.Size(102, 20);
-            this.classRandom.TabIndex = 5;
+            this.classRandom.TabIndex = 6;
             this.classRandom.Text = "Randomized";
             this.classRandom.UseVisualStyleBackColor = true;
             this.classRandom.CheckedChanged += new System.EventHandler(this.classMode_CheckChanged);
@@ -223,13 +225,27 @@
             this.classCustom.AutoSize = true;
             this.classCustom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.classCustom.Location = new System.Drawing.Point(646, 51);
-            this.classCustom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.classCustom.Margin = new System.Windows.Forms.Padding(4, 3, 0, 3);
             this.classCustom.Name = "classCustom";
             this.classCustom.Size = new System.Drawing.Size(70, 20);
-            this.classCustom.TabIndex = 6;
+            this.classCustom.TabIndex = 7;
             this.classCustom.Text = "Custom";
             this.classCustom.UseVisualStyleBackColor = true;
             this.classCustom.CheckedChanged += new System.EventHandler(this.classMode_CheckChanged);
+            // 
+            // classCustomHelp
+            // 
+            this.classCustomHelp.AutoSize = true;
+            this.classCustomHelp.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.classCustomHelp.Location = new System.Drawing.Point(716, 48);
+            this.classCustomHelp.Margin = new System.Windows.Forms.Padding(0);
+            this.classCustomHelp.Name = "classCustomHelp";
+            this.classCustomHelp.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.classCustomHelp.Size = new System.Drawing.Size(14, 20);
+            this.classCustomHelp.TabIndex = 8;
+            this.classCustomHelp.TabStop = true;
+            this.classCustomHelp.Text = "?";
+            this.classCustomHelp.Click += new System.EventHandler(this.classCustomHelp_LinkClicked);
             // 
             // classMultiplyBox
             // 
@@ -239,7 +255,7 @@
             this.classMultiplyBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.classMultiplyBox.Name = "classMultiplyBox";
             this.classMultiplyBox.Size = new System.Drawing.Size(76, 24);
-            this.classMultiplyBox.TabIndex = 10;
+            this.classMultiplyBox.TabIndex = 9;
             this.classMultiplyBox.SelectedIndexChanged += new System.EventHandler(this.opt_Changed);
             // 
             // newPoolBreak
@@ -250,16 +266,15 @@
             this.newPoolBreak.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.newPoolBreak.Name = "newPoolBreak";
             this.newPoolBreak.Size = new System.Drawing.Size(0, 16);
-            this.newPoolBreak.TabIndex = 7;
+            this.newPoolBreak.TabIndex = 10;
             // 
             // newPoolButton
             // 
             this.customPanel.SetFlowBreak(this.newPoolButton, true);
-            this.newPoolButton.Location = new System.Drawing.Point(4, 107);
-            this.newPoolButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.newPoolButton.Location = new System.Drawing.Point(3, 107);
             this.newPoolButton.Name = "newPoolButton";
-            this.newPoolButton.Size = new System.Drawing.Size(58, 27);
-            this.newPoolButton.TabIndex = 8;
+            this.newPoolButton.Size = new System.Drawing.Size(50, 23);
+            this.newPoolButton.TabIndex = 11;
             this.newPoolButton.Text = "+";
             this.newPoolButton.UseVisualStyleBackColor = true;
             // 
@@ -642,5 +657,6 @@
         private System.Windows.Forms.RadioButton classMerge2;
         private System.Windows.Forms.Button resetButton;
         private System.Windows.Forms.ComboBox classMultiplyBox;
+        private System.Windows.Forms.LinkLabel classCustomHelp;
     }
 }

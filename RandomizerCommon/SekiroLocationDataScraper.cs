@@ -418,7 +418,7 @@ namespace RandomizerCommon
                     }
                     SortedSet<int> modelBase = scope.Type == ScopeType.MODEL ? new SortedSet<int>(loc.Keys.Select(k => k.BaseID)) : new SortedSet<int>();
                     bool onlyShops = loc.Keys.All(k => k.Type == LocationType.SHOP) && allShop.Count() > 0;
-                    LocationScope locationScope = new LocationScope(scope.Type, id, allShop, modelBase, onlyShops);
+                    LocationScope locationScope = new LocationScope(SoulsIds.GameSpec.FromGame.SDT, scope.Type, id, allShop, modelBase, onlyShops);
                     data.AddLocationScope(entry.Key, scope, locationScope);
                     loc.LocScope = locationScope;
                 }

@@ -2585,7 +2585,7 @@ Enemies:
   DefeatFlag: 11050850
   StartFlag: 11052855
   MusicFlag: 11052852
-  Tags: multi exclude:unkillable perceptive bossonlymulti
+  Tags: multi exclude:unkillable perceptive exclude:12010800 bossonlymulti
   Groups:
   - 11055850
   - 11055851
@@ -10863,7 +10863,7 @@ Enemies:
   DefeatFlag: 14002802
   StartFlag: 14002805
   Outfit: Queen's Crescent Crown; Queen's Robe; Queen's Bracelets; Queen's Leggings
-  Tags: multi exclude:unkillable perceptive scalephase singleton manualname
+  Tags: multi exclude:unkillable perceptive exclude:12010800 scalephase singleton manualname
   Groups:
   - 14005810
   - 14005811
@@ -11219,7 +11219,7 @@ Enemies:
   StartFlag: 14002855
   MusicFlag: 14000852
   Outfit: Karolos Glintstone Crown; Raya Lucarian Robe; Sorcerer Manchettes; Sorcerer Leggings
-  Tags: exclude:unkillable perceptive
+  Tags: exclude:unkillable perceptive exclude:12010800
   BuddyGroup: 14005102
   ExtraName: Red Wolf of Radagon
   FullName: $1 of Radagon
@@ -13336,7 +13336,7 @@ Enemies:
   StartFlag: 16002855
   MusicFlag: 16002852
   Outfit: Godskin Noble Hood; Godskin Noble Robe; Godskin Noble Bracelets; Godskin Noble Trousers
-  Tags: exclude:unkillable perceptive
+  Tags: exclude:unkillable perceptive exclude:12010800
   BuddyGroup: 16005850
   ExtraName: Godskin Noble
   FullName: Godskin $1
@@ -30037,8 +30037,8 @@ Enemies:
   DefeatFlag: 1036450800
   Tags: exclude:unkillable resist perceptive noswamp
   ExtraName: Death Rite Bird
-  FullName: Death $1
-  PartName: Deathbird
+  FullName: Death Rite $1
+  PartName: Death Rite Bird
   NpcName: 904980604
 - ID: 2802965
   Map: m60_36_45_00
@@ -31769,6 +31769,8 @@ Enemies:
   ExtraName: Deathbird
   FullName: Death $1
   PartName: Deathbird
+  CustomName:
+    Death Rite Bird: Death Rite Bird
   NpcName: 904980603
 - ID: 2803266
   Map: m60_37_42_00
@@ -46569,6 +46571,8 @@ Enemies:
   ExtraName: Deathbird
   FullName: Death $1
   PartName: Deathbird
+  CustomName:
+    Death Rite Bird: Death Rite Bird
   NpcName: 904980601
 - ID: 2812072
   Map: m60_42_38_00
@@ -51725,6 +51729,8 @@ Enemies:
   ExtraName: Deathbird
   FullName: Death $1
   PartName: Deathbird
+  CustomName:
+    Death Rite Bird: Death Rite Bird
   NpcName: 904980602
 - ID: 2813037
   Map: m60_44_32_00
@@ -54696,6 +54702,8 @@ Enemies:
   ExtraName: Deathbird
   FullName: Death $1
   PartName: Deathbird
+  CustomName:
+    Death Rite Bird: Death Rite Bird
   NpcName: 904980605
 - ID: 2813621
   Map: m60_44_53_00
@@ -60961,8 +60969,8 @@ Enemies:
   DefeatFlag: 1048570800
   Tags: exclude:unkillable resist perceptive noswamp
   ExtraName: Death Rite Bird
-  FullName: Death $1
-  PartName: Deathbird
+  FullName: Death Rite $1
+  PartName: Death Rite Bird
   NpcName: 904980607
 - ID: 2820828
   Map: m60_48_57_00
@@ -61328,8 +61336,8 @@ Enemies:
   DefeatFlag: 1049370850
   Tags: exclude:unkillable resist perceptive noswamp
   ExtraName: Death Rite Bird
-  FullName: Death $1
-  PartName: Deathbird
+  FullName: Death Rite $1
+  PartName: Death Rite Bird
   NpcName: 904980606
 - ID: 2820884
   Map: m60_49_37_00
@@ -64144,8 +64152,8 @@ Enemies:
   Tags: exclude:unkillable resist perceptive noswamp
   BuddyGroup: 1050575100
   ExtraName: Death Rite Bird
-  FullName: Death $1
-  PartName: Deathbird
+  FullName: Death Rite $1
+  PartName: Death Rite Bird
   NpcName: 904980600
 - ID: 1051350290
   Map: m60_51_35_00

@@ -20817,10 +20817,11 @@ Slots:
   - Unique location in [m11_10_00_00 (Roundtable Hold), m60_44_39_00 (Limgrave - Summonwater Village Outskirts), m60_45_39_00 (Limgrave - Summonwater Village)]
   - Litany of Proper Death - shop 100126[enemy c0000_9000 (D, Hunter of the Dead - id 1044390700 - <D, Hunter of the Dead>) in m60_44_39_00 (Limgrave - Summonwater Village Outskirts), enemy c0000_9000 (D, Hunter of the Dead - id 1045390700 - <D, Hunter of the Dead>) in m60_45_39_00 (Limgrave - Summonwater Village), enemy c0000_9015 (D, Hunter of the Dead - id 11100735 - <D, Hunter of the Dead>) in m11_10_00_00 (Roundtable Hold), enemy c0000_9016 (D, Hunter of the Dead - id 11100736 - <D, Hunter of the Dead>) in m11_10_00_00 (Roundtable Hold), enemy c1000_9005 (Talk Dummy - id 11100700 - <Twin Maiden Husks>) in m11_10_00_00 (Roundtable Hold)] 1x for 2500 runes - flag 110260
   - Order's Blade - shop 100127[enemy c0000_9000 (D, Hunter of the Dead - id 1044390700 - <D, Hunter of the Dead>) in m60_44_39_00 (Limgrave - Summonwater Village Outskirts), enemy c0000_9000 (D, Hunter of the Dead - id 1045390700 - <D, Hunter of the Dead>) in m60_45_39_00 (Limgrave - Summonwater Village), enemy c0000_9015 (D, Hunter of the Dead - id 11100735 - <D, Hunter of the Dead>) in m11_10_00_00 (Roundtable Hold), enemy c0000_9016 (D, Hunter of the Dead - id 11100736 - <D, Hunter of the Dead>) in m11_10_00_00 (Roundtable Hold), enemy c1000_9005 (Talk Dummy - id 11100700 - <Twin Maiden Husks>) in m11_10_00_00 (Roundtable Hold)] 1x for 3000 runes - flag 110270
-  Text: aaaaaaaaaaaaaaaaa
-  Area: limgrave
+  Text: Sold by D, Hunter of the Dead
+  Comment: Some progression of Gurranq, may require Deathroot?
+  Area: roundtable
   FullArea: limgrave roundtable
-  Tags: aaaaaaaaaaaaaaaaa
+  Tags: incantations missable
 - Key: '4439,0:0000000000:100525:'
   DebugText:
   - Unique location in [m11_10_00_00 (Roundtable Hold), m60_44_39_00 (Limgrave - Summonwater Village Outskirts)]

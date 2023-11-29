@@ -259,11 +259,16 @@ ConfigItems:
     EndID: 3:5030
   - ID: 3:5100
     EndID: 3:5110
+  # Night Maiden's Mist hanging out by itself
+  - ID: 3:6500
 - GroupName: incantations
   NoConfigNames: true
   Items:
   - ID: 3:5040
+  # Skip Night Maiden's Mist (6500) here conversely
   - ID: 3:6000
+    EndID: 3:6490
+  - ID: 3:6510
     EndID: 3:7903
 - GroupName: add
   Items: []

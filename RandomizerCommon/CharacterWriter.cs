@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using YamlDotNet.Core.Tokens;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.Util;
 
@@ -68,7 +69,6 @@ namespace RandomizerCommon
             public int Fai { get; set; }
             public int Arc { get; set; }
             public int Att { get; set; }
-            public bool TwoHand { get; set; }
             public int Eligible(StatReq ch)
             {
                 int[] comps = new int[] {
@@ -84,6 +84,10 @@ namespace RandomizerCommon
                 if (Str == 0 && Dex == 0 && Int == 0 && Fai == 0 && Arc == 0) return 4;
                 return comps.Sum();
             }
+            public int GetMaxStat()
+            {
+                return new[] { Str, Dex, Int, Arc, Fai }.Max();
+            }
             public void Adjust(StatReq wep)
             {
                 if (wep.Str > Str) Str = wep.Str;
@@ -92,6 +96,7 @@ namespace RandomizerCommon
                 if (wep.Fai > Fai) Fai = wep.Fai;
                 if (wep.Arc > Arc) Arc = wep.Arc;
             }
+            public override string ToString() => $"StatReq[Str={Str}, Dex={Dex}, Int={Int}, Fai={Fai}, Arc={Arc}, Att={Att}]";
         }
 
         private static readonly Dictionary<string, EquipCategory> DS3BaseStart = new Dictionary<string, EquipCategory>()
@@ -367,6 +372,7 @@ namespace RandomizerCommon
             HashSet<ItemKey> crossbows = new HashSet<ItemKey>();
             PARAM magics = game.Param("Magic");
             bool twoHand = !opt["onehand"];
+            bool changeStats = !opt["nohand"] && !opt["changestats"];
             SortedDictionary<int, List<ItemKey>> cats = new SortedDictionary<int, List<ItemKey>>();
             foreach (ItemKey dataKey in data.Data.Keys)
             {
@@ -419,11 +425,13 @@ namespace RandomizerCommon
 
                     int str = (byte)row["properStrength"].Value;
                     // Add two hand adjustment for weapons. Note this doesn't work exactly for casting items, but does not affect casting.
-                    if (twoHand && (byte)row[game.DS3 ? "Unk14" : "bothHandEquipable"].Value == 0 && (mainCat == EquipCategory.WEAPON || mainCat == EquipCategory.UNSET))
+                    // TODO: Double-check DS3 requirement here, the Elden Ring req was wrong for a while
+                    if (twoHand
+                        && (mainCat == EquipCategory.WEAPON || mainCat == EquipCategory.UNSET)
+                        && (game.DS3 ? (byte)row["Unk14"].Value == 0 : (byte)row["bothHandEquipable"].Value == 1 && (byte)row["isDualBlade"].Value == 0))
                     {
                         str = (int)Math.Ceiling(str / 1.5);
                     }
-                    // TODO: Why sbyte again?
                     requirements[key] = new StatReq
                     {
                         Str = str,
@@ -448,6 +456,7 @@ namespace RandomizerCommon
                         {
                             EquipCategory cat = ArmorCats[i];
                             // These are marked as headEquip for some reason??
+                            // This is the wrong field to look at, but this works for now.
                             if (name == "Deathbed Dress" || name == "Fia's Robe")
                             {
                                 cat = EquipCategory.BODY;
@@ -612,9 +621,9 @@ namespace RandomizerCommon
                     // Instead of using Distinct, could also make it a SortedSet. It's necessary because of normalization.
                     Dictionary<ItemKey, int> statDiffs = items[cat].Distinct().ToDictionary(item => item, item => requirements[item].Eligible(dynamicReqs));
                     List<ItemKey> candidates = items[cat];
-                    if (cat == EquipCategory.SHIELD || chClass.Name == "Deprived" || chClass.Name == "Wretch")
+                    if (!opt["nohand"] && (cat == EquipCategory.SHIELD || chClass.Name == "Deprived" || chClass.Name == "Wretch" || !opt["changestats"]))
                     {
-                        candidates = candidates.Where(item => opt["nohand"] || statDiffs[item] >= 0).ToList();
+                        candidates = candidates.Where(item => statDiffs[item] >= 0).ToList();
                     }
                     if (cat == EquipCategory.SORCERY || cat == EquipCategory.MIRACLE || cat == EquipCategory.PYROMANCY)
                     {
@@ -628,15 +637,44 @@ namespace RandomizerCommon
                         candidates = candidates.Where(item => attSlots + requirements[item].Att <= chReqs.Att).ToList();
                     }
                     // Select weapon and adjust stats if necessary
-                    // I forgot what this does
+                    // This could just be WeightedChoice?
                     List<ItemKey> weightKeys = WeightedShuffle(random, candidates, item =>
                     {
                         if (opt["nohand"]) return 1;
                         int diff = statDiffs[item];
-                        if (diff >= 4) return (float)Math.Pow(2, -4 * (Math.Min(diff, 20) / 20.0));
-                        if (diff >= 0) return 2;
-                        return (float)Math.Pow(fudgeFactor, diff);
+                        float weight;
+                        if (diff >= 4)
+                        {
+                            // A dropoff from 1 to 0.0625 to not have bad weapons (big gap) chosen too often
+                            weight = (float)Math.Pow(2, -4 * (Math.Min(diff - 4, 20) / 20.0));
+                        }
+                        else if (diff >= 0)
+                        {
+                            weight = 2;
+                        }
+                        else if (diff < -15)
+                        {
+                            // Try to avoid SL much more than 20
+                            weight = 0;
+                        }
+                        else
+                        {
+                            // For unwieldable weapons, start at 1.5^-1 (0.666), then 1.5^-2 (0.444), etc.
+                            weight = (float)Math.Pow(fudgeFactor, diff);
+                            // To prevent something too absurd from happening, keep all stats under 20. Multi-stat increases don't look as bad by comparison.
+                            StatReq req = requirements[item];
+                            if (req.GetMaxStat() >= 20) weight = 0;
+                        }
+                        // Console.WriteLine($"{game.Name(item)}: {diff} -> {weight}");
+                        return weight;
                     });
+                    if (cat == EquipCategory.WEAPON && chClass.Name == "Wretch")
+                    {
+                        foreach (ItemKey key in candidates)
+                        {
+                            // Console.WriteLine($"{game.Name(key)}: stats {requirements[key]}, diff {statDiffs[key]}");
+                        }
+                    }
                     ItemKey selected = weightKeys[0];
                     items[cat].Remove(selected);
                     if (statDiffs[selected] < 0 && !opt["nohand"])
@@ -764,6 +802,7 @@ namespace RandomizerCommon
                     }
                 }
             }
+            if (printChars) Console.WriteLine();
 
             // Now, have fun with NPCs
             if (opt["nooutfits"]) return;
@@ -813,6 +852,7 @@ namespace RandomizerCommon
                     }
                 }
             }
+            if (printChars) Console.WriteLine();
         }
 
         public void SetSpecialOutfits(RandomizerOptions opt, EnemyLocations enemyLocs)
