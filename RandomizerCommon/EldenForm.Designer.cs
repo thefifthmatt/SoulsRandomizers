@@ -128,6 +128,7 @@
             this.nerfmalenia = new System.Windows.Forms.CheckBox();
             this.allmaps = new System.Windows.Forms.CheckBox();
             this.extraRandomGroup = new System.Windows.Forms.GroupBox();
+            this.nodeathvalid = new System.Windows.Forms.CheckBox();
             this.invertgestures = new System.Windows.Forms.CheckBox();
             this.invertenvbgm = new System.Windows.Forms.CheckBox();
             this.invertoutfits = new System.Windows.Forms.CheckBox();
@@ -1358,6 +1359,7 @@
             // 
             // extraRandomGroup
             // 
+            this.extraRandomGroup.Controls.Add(this.nodeathvalid);
             this.extraRandomGroup.Controls.Add(this.invertgestures);
             this.extraRandomGroup.Controls.Add(this.invertenvbgm);
             this.extraRandomGroup.Controls.Add(this.invertoutfits);
@@ -1372,6 +1374,19 @@
             this.extraRandomGroup.TabIndex = 0;
             this.extraRandomGroup.TabStop = false;
             this.extraRandomGroup.Text = "Additional randomization";
+            // 
+            // nodeathvalid
+            // 
+            this.nodeathvalid.AutoSize = true;
+            this.nodeathvalid.Checked = true;
+            this.nodeathvalid.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.nodeathvalid.Location = new System.Drawing.Point(6, 161);
+            this.nodeathvalid.Name = "nodeathvalid";
+            this.nodeathvalid.Size = new System.Drawing.Size(150, 20);
+            this.nodeathvalid.TabIndex = 7;
+            this.nodeathvalid.Text = "Make sure the run can be done deathless";
+            this.nodeathvalid.UseVisualStyleBackColor = true;
+            this.nodeathvalid.CheckedChanged += new System.EventHandler(this.option_CheckedChanged);
             // 
             // invertgestures
             // 
@@ -1822,6 +1837,7 @@
         private System.Windows.Forms.CheckBox invertgestures;
         private System.Windows.Forms.CheckBox invertenvbgm;
         private System.Windows.Forms.CheckBox invertoutfits;
+        private System.Windows.Forms.CheckBox nodeathvalid;
     }
 }
 

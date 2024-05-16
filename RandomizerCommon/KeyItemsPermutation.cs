@@ -82,6 +82,24 @@ namespace RandomizerCommon
                     }
                 }
 
+                //If noDeath guaranteed, set the drawingroomkey forced requirements
+                if (options["nodeathvalid"])
+                {
+                    configExprs["drawingroomkeyreq"] = Expr.Named("volcano_drawingroom");
+                }
+                else
+                {
+                    //"volcano_drawingroom OR (academy AND altus);
+                    configExprs["drawingroomkeyreq"] =
+                        new Expr(
+                            new List<Expr>(){
+                                Expr.Named("volcano_drawingroom"),
+                                new Expr(
+                                    new List<Expr>(){
+                                        Expr.Named("academy"),
+                                        Expr.Named("altus") }) }, false);
+                }
+
                 // If leyndellRunes is 0, this condition just becomes true
                 configExprs["runes_leyndell"] = new Expr(runes.Take(leyndellRunes).Select(r => Expr.Named(r)).ToList(), true);
                 if (roldRunes == -1)

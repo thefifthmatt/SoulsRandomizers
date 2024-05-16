@@ -597,7 +597,8 @@ Areas:
 - Name: volcano_town
   Text: Volcano Manor
   # Add 'altus' condition so that Dectus medallion isn't placed here
-  Req: volcano_drawingroom OR (academy AND altus)
+  # Old was : volcano_drawingroom OR (academy AND altus)
+  Req: drawingroomkeyreq
   Maps: m16_00_00_00
   MainMaps: m16_00_00_00
 - Name: volcano_temple

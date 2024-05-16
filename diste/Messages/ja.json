@@ -567,6 +567,12 @@
       "text": "上記すべての場所からミニダンジョンを除外"
     },
     {
+      "name": "EldenForm_nodeathvalid",
+      "explanation": "Button to force the randomizer to allow a no death run, making sur the drawing room key isn't inaccessible",
+      "english_text": "Make sure the run can be done deathless",
+      "text": ""
+    },
+    {
       "name": "EldenForm_nohand",
       "explanation": "Radio button for starting class randomization: if chosen, all starting class stat requirements are completely ignored, and the player may start with a weapon or spell they do not have the stats to use",
       "english_text": "Allow unwieldable weapon and spells",
