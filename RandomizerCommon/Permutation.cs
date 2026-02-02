@@ -766,6 +766,8 @@ namespace RandomizerCommon
         /// removed from the game entirely.</param>
         public void Forced(Dictionary<SlotKey, List<SlotKey>> items, Dictionary<SlotKey, List<SlotKey>> remove = null)
         {
+            items = new(items);
+
             foreach (var (targetKey, sourceKeys) in remove)
             {
                 AddMulti(Silos[RandomSilo.REMOVE].Mapping, targetKey, sourceKeys);
@@ -781,11 +783,19 @@ namespace RandomizerCommon
                 silo.ExcludeTargets.UnionWith(remove.Values.SelectMany(keys => keys));
                 foreach (SlotKey targetKey in silo.Targets.SelectMany(loc => data.Location(loc)))
                 {
-                    if (items.TryGetValue(targetKey, out var sourceKeys))
+                    if (items.Remove(targetKey, out var sourceKeys))
                     {
                         AddMulti(silo.Mapping, targetKey, sourceKeys);
                     }
                 }
+            }
+
+            if (items.Count > 0)
+            {
+                throw new Exception(
+                    "One or more items didn't have corresponding slots, including " +
+                        $"{items.First().Key}"
+                );
             }
         }
 

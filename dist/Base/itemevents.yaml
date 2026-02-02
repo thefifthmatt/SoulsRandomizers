@@ -65,6 +65,17 @@ NewEvents:
     - IfConditionGroup(MAIN, PASS, AND_01)
     # Return Greirat to Firelink
     - Set Event Flag (74000318, ON)
+    
+  - Comment: Trigger Patches returning from Lothric after beating Twin Princes.
+    If: safequest
+    Commands:
+    # If Patches has been sent to Lothric
+    - IF Event Flag (AND_01, ON, TargetEventFlagType.EventFlag, 74000921)
+    # And if Twin Princes is defeated
+    - IF Event Flag (AND_01, ON, TargetEventFlagType.EventFlag, 13410830)
+    - IfConditionGroup(MAIN, PASS, AND_01)
+    # Return Patches to Firelink
+    - Set Event Flag (74000925, ON)
 
   m33_00_00_00: # Road of Sacrifices / Farron Keep
   - Comment: Make Orbeck invincible
@@ -84,6 +95,15 @@ NewEvents:
     If: safequest
     Commands:
     - SetCharacterInvincibility(3900700, Enabled)
+
+  - Comment: Grant Siegbräu after picking up Siegward's death lot.
+    If: safequest
+    Commands:
+    - END IF Event Flag (EventEndType.End, ON, TargetEventFlagType.EventFlag, 50006212)
+    - IF Event Flag (OR_01, ON, TargetEventFlagType.EventFlag, 50006216)
+    - IF Event Flag (OR_01, ON, TargetEventFlagType.EventFlag, 50006218)
+    - IfConditionGroup(MAIN, PASS, OR_01)
+    - Award Item Lot (62105)
 
   m40_00_00_00: # Firelink
   - Comment: |
@@ -135,6 +155,15 @@ NewEvents:
     - IfBatchEventFlags(0, LogicalOperationType.AllON, TargetEventFlagType.EventFlag, 70000300, 70000303)
     - SetCharacterInvincibility(4000740, Disabled)
 
+  - Comment: "Make Patches invincible until he's looted Lothric Castle."
+    If: safequest
+    Commands:
+    - SetCharacterInvincibility(4000790, Enabled)
+    - SetCharacterInvincibility(4000791, Enabled)
+    - IF Event Flag (MAIN, ON, TargetEventFlagType.EventFlag, 70000401)
+    - SetCharacterInvincibility(4000790, Disabled)
+    - SetCharacterInvincibility(4000791, Disabled)
+
   - Comment: Make Greirat invincible.
     If: safequest
     Commands:
@@ -167,13 +196,13 @@ ExistingEvents:
   - ID: 0
     If: safequest
     Edits:
-    # In vanilla, Greirat  returns from each quest after you defeat any boss. This is hard to
-    # factor into randomizer logic, though, because you may start the quest at a point where
-    # it's difficult to find and defeat another boss. This removes the initializer that triggers
-    # the "return from Settlement" and "return from Irithyll" events after boss defeats, and
-    # above we add different triggers.
+    # In vanilla, Greirat and Patches return from their raids after you defeat any boss. This is
+    # hard to factor into randomizer logic, though, because you may start the quest at a point
+    # where it's difficult to find and defeat another boss. This removes the initializer that
+    # triggers the "return from Settlement", "return from Irithyll", and "return from Lothric"
+    # events after boss defeats, and above we add different triggers.
     - Match: {Init: {Callee: 9120}, Arguments: [74000303]}
-      MatchLength: 2
+      MatchLength: 3
       Remove: true
 
     # Stop Orbeck from leaving Firelink after defeating a certain number of bosses without giving
@@ -267,6 +296,22 @@ ExistingEvents:
     # Same with Cornyx
     - Match: {Init: {Callee: 20006002}, Arguments: [3100710]}
       Remove: true
+    # Same with Siegward
+    - Match: {Init: {Callee: 20006002}, Arguments: [3100730]}
+      Remove: true
+    - Match: {Init: {Callee: 20006000}, Arguments: [3100730]}
+      Remove: true
+    - Match: {Init: {Callee: 20006001}, Arguments: [3100730]}
+      Remove: true
+    - Match: {Init: {Callee: 20006002}, Arguments: [3100731]}
+      Remove: true
+
+  - ID: 13100210
+    If: safequest
+    Edits:
+    # Remove an event that can disable Siegward's invincibility
+    - Match: "SetCharacterInvincibility(X0_4, Disabled)"
+      Remove: true
 
   - ID: 13105600
     Comment: The driver for Yoel's quest in US
@@ -289,6 +334,14 @@ ExistingEvents:
     If: safequest
     Edits:
     - AddBefore: ["SetCharacterInvincibility(X0_4, Enabled)"]
+  
+  # Make Siegward invinvible
+  - ID: 13105740
+    If: safequest
+    Edits:
+    - AddBefore:
+      - SetCharacterInvincibility(X0_4, Enabled)
+      - SetCharacterInvincibility(X4_4, Enabled)
 
   - ID: 13105171
     If: phantomhunters
@@ -340,6 +393,69 @@ ExistingEvents:
       Repeat: -1
       Remove: true
 
+  m35_00_00_00: # Cathedral of the Deep
+  - ID: 0
+    If: safequest
+    Edits:
+    # Remove events that make Patches hostile or dead
+    - Match: {Init: {Callee: 20006002}, Arguments: [null, 1378]}
+      Repeat: -1
+      Remove: true
+    - Match: {Init: {Callee: 20006000}, Arguments: [null, 1376]}
+      Repeat: -1
+      Remove: true
+    - Match: {Init: {Callee: 20006001}, Arguments: [null, 1376]}
+      Repeat: -1
+      Remove: true
+    - Match: {Init: {Callee: 20006032}}
+      Repeat: -1
+      Remove: true
+    # Remove an event that makes Patches leave prematurely
+    - Match: {Init: {Callee: 13500782}}
+      Remove: true
+
+  - ID: 13505760
+    If: safequest
+    Edits:
+    # Don't allow Siegward to move into the well until you've finished celebrating the defeat of
+    # the fire demon with him. This makes his first Siegbräu lot unmissable.
+    - Match: IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 73100350)
+      Remove: true
+    - Match: IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 73100360)
+      Remove: true
+    - Match: IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 73100363)
+      Set: [{Param: targetEventFlagId, Value: 73100365}]
+
+  - ID: 13505780
+    If: safequest
+    Edits:
+    # Make Patches invulnerable
+    - AddBefore:
+      - SetCharacterInvincibility(X0_4, Enabled)
+      - SetCharacterInvincibility(X4_4, Enabled)
+      - SetCharacterInvincibility(X8_4, Enabled)
+    # The Siegward conditions above are mirrored in Patches's event to trigger him arriving.
+    - Match: IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 73100350)
+      Remove: true
+    - Match: IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 73100360)
+      Remove: true
+    - Match: IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 73100363)
+      Set: [{Param: targetEventFlagId, Value: 73100365}]
+    # Prevent Patches leaving if you open Rosaria's door first.
+    - Match: IfEventFlag(AND_03, ON, TargetEventFlagType.EventFlag, 63500202)
+      Condition: false
+
+  - ID: 13500786
+    If: safequest
+    Edits:
+    # The Siegward conditions above are *also* mirrored in this event for unknown reasons.
+    - Match: IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 73100350)
+      Remove: true
+    - Match: IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 73100360)
+      Remove: true
+    - Match: IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 73100363)
+      Set: [{Param: targetEventFlagId, Value: 73100365}]
+
   m37_00_00_00: # Irithyll / Anor Londo
   - ID: 0
     If: safequest
@@ -356,6 +472,13 @@ ExistingEvents:
       Remove: true
     - Match: {Init: {Callee: 20006002}, Arguments: [null, 1578]} # Pilgrim dead
       Repeat: -1
+      Remove: true
+    # Same for Siegward
+    - Match: {Init: {Callee: 20006000}, Arguments: [3700715]}
+      Remove: true
+    - Match: {Init: {Callee: 20006001}, Arguments: [3700715]}
+      Remove: true
+    - Match: {Init: {Callee: 20006002}, Arguments: [3700715]}
       Remove: true
 
   # Prevent Greirat becoming lost from triggering here. Skip straight ahead to the point where his
@@ -431,6 +554,13 @@ ExistingEvents:
     - Match: IfEventFlag(AND_08, ON, TargetEventFlagType.EventFlag, 1043)
       Condition: false
 
+  - ID: 13705660
+    Comment: Siegward logic
+    If: safequest
+    Edits:
+    # Make Siegward invincible
+    - AddBefore: ["SetCharacterInvincibility(X0_4, Enabled)"]
+
   m38_00_00_00: # Catacombs / Smouldering Lake
   - ID: 0
     If: safequest
@@ -490,10 +620,37 @@ ExistingEvents:
     If: safequest  
     Edits:
     # Remove the events that make Karla die or aggro.
+    - Match: {Init: {Callee: 20006003}, Arguments: [3900700]}
+      Remove: true
     - Match: {Init: {Callee: 20006002}, Arguments: [3900700]}
       Remove: true
-    - Match: {Init: {Callee: 20006000}, Arguments: [3900700]}
+    # Same with Siegward
+    - Match: {Init: {Callee: 20006002}, Arguments: [null, 1398]}
+      Repeat: -1
       Remove: true
+    - Match: {Init: {Callee: 20006000}, Arguments: [3900705]}
+      Remove: true
+    - Match: {Init: {Callee: 20006001}, Arguments: [3900705]}
+      Remove: true
+
+  - ID: 13900729
+    If: safequest
+    Edits:
+    # It's unclear why, but this event can also bring Siegward into the dungeon.
+    - Match: {Name: IfEventFlag, Arguments: [null, null, null, 73500105]}
+      Set: [{Param: targetEventFlagId, Value: 50006211}]
+
+  - ID: 13905720
+    Comment: Siegward logic
+    If: safequest
+    Edits:
+    # Make Siegward invincible
+    - AddBefore:
+      - SetCharacterInvincibility(X0_4, Enabled)
+      - SetCharacterInvincibility(X4_4, Enabled)
+    # Don't let Siegward show up in the dungeon until he's given Siegbräu in Irithyll
+    - Match: {Name: IfEventFlag, Arguments: [null, null, null, 73500105]}
+      Set: [{Param: targetEventFlagId, Value: 50006211}]
 
   # Prevent Storm Ruler infinite shiny from appearing, since it's randomized elsewhere
   - ID: 13905870
@@ -515,13 +672,6 @@ ExistingEvents:
       Remove: true
     # Same with Yoel
     - Match: {Init: {Callee: 20006002}, Arguments: [null, 1078]}
-      Remove: true
-    # Same with Orbeck
-    - Match: {Init: {Callee: 20006002}, Arguments: [4000745]}
-      Remove: true
-    - Match: {Init: {Callee: 20006000}, Arguments: [4000745]}
-      Remove: true
-    - Match: {Init: {Callee: 20006001}, Arguments: [4000745]}
       Remove: true
     # Same with Anri and Horace
     - Match: {Init: {Callee: 20006001}, Arguments: [null, 1356]} # Anri attacked
@@ -546,9 +696,16 @@ ExistingEvents:
     - Match: {Init: {Callee: 14005587}} # Despairing Anri dead
       Repeat: -1
       Remove: true
-    # Same with Karla
-    - Match: {Init: {Callee: 20006002}, Arguments: [4000740]}
-      Remove: true
+
+  - ID: 14000621
+    Comment: Patches Betrayal
+    If: safequest
+    Edits:
+    # Rather than allowing Patches to show up at the bell tower under a variety of circumstances,
+    # only let him show up once he's given the player the rusted coin. (This is guaranteed to
+    # be possible because we disable the option to say you don't know who he is.)
+    - Match: IfConditionGroup(AND_01, PASS, OR_01)
+      Replace: ["IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 50006200)"]
 
   - ID: 14005501
     Name: countOrbeckSpells
@@ -557,7 +714,7 @@ ExistingEvents:
     # This event contains conditions for every spell, but those outside the default shop items and
     # Sage's Scroll are in the unused AND_01 condition group. Put them in OR_01 instead so that
     # players don't have to try to track which specific items they buy from Orbeck.
-    - Match: {Name: IfEventFlag, Arguments: [AND_01, ON]}
+    - Match: {Name: IfEventFlag, Arguments: [AND_01, "ON"]}
       Repeat: -1
       Set:
       - {Param: {Index: 0}, Value: OR_01}
@@ -579,7 +736,7 @@ ExistingEvents:
       Condition: false
 
   - ID: 14005740
-    Comment: The primary driver for Yoel's quest
+    Comment: Yoel logic
     If: safequest
     Edits:
     # Make Yoel invincible
@@ -591,7 +748,7 @@ ExistingEvents:
       Condition: false
 
   - ID: 14005700
-    Comment: The primary driver event for Greirat's quest
+    Comment: Greirat logic
     If: safequest
     Edits:
     # Prevent the player from killing Greirat
@@ -600,12 +757,11 @@ ExistingEvents:
     # always fail.
     - Match: "IfEventFlag(AND_05, OFF, TargetEventFlagType.EventFlag, 1385)"
       Condition: false
-    # Don't require either Siegward or Patches to come back from Irithyll by removing those
-    # conditions.
-    # TODO: Consider requiring Siegward to save him, and making that unfailable
+    # Don't allow Siegward to rescue Greirat from Irithyll. This, combined with the above,
+    # guarantees that Greirat only returns when Patches rescues him. (We also modify Greirat's
+    # dialogue so he doesn't suggest raiding Irithyll until Patches is in Firelink.)
     - Match: "IfEventFlag(OR_01, ON, TargetEventFlagType.EventFlag, 1385)"
-      MatchLength: 3
-      Remove: true
+      Condition: true
 
 Initialize:
   m40_00_00_00: # Firelink

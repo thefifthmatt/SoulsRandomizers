@@ -1741,28 +1741,54 @@ Slots:
   Text: Dropped by Eygon of Carim
   Area: settlement
   Tags: missable death
-- Key: '02,0:50006217:200000,70000403:'
+- Key: '99,0:73501010:200000,70000403:'
   DebugText:
-  - Unique location from [Siegward of Catarina, Unbreakable Patches] in [firelink, settlement, cathedral, irithyll, dungeon]
-  - Catarina Helm - 52021[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 52100[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52110[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon], 200006[Patches while Patches has Siegward's armor (1)]
-  - Catarina Armor - 52022[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 52101[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52111[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon], 200007[Patches while Patches has Siegward's armor (1)]
-  - Catarina Gauntlets - 52023[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 52102[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52112[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon], 200008[Patches while Patches has Siegward's armor (1)]
-  - Catarina Leggings - 52024[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 52103[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52113[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon], 200009[Patches while Patches has Siegward's armor (1)]
-  Text: Armor acquirable by killing Siegward, completing his quest, buying from Patches while Siegward is in the well, or killing Patches while Siegward is in the well
+  - Catarina Helm - 52021[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 200006[Patches while Patches has Siegward's armor (1)]
+  Text: Armor sold by Patches
+  Area: cathedral
+  Tags: missable
+  QuestReqs: irithyll
+- Key: '99,0:73501020:200000,70000403:'
+  DebugText:
+  - Catarina Armor - 52022[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 200007[Patches while Patches has Siegward's armor (1)]
+  Text: Armor sold by Patches
+  Area: cathedral
+  Tags: missable
+- Key: '99,0:73501030:200000,70000403:'
+  DebugText:
+  - Catarina Gauntlets - 52023[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 200008[Patches while Patches has Siegward's armor (1)]
+  Text: Armor sold by Patches
+  Area: cathedral
+  Tags: missable
+  QuestReqs: irithyll
+- Key: '99,0:73501040:200000,70000403:'
+  DebugText:
+  - Catarina Leggings - 52024[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 200009[Patches while Patches has Siegward's armor (1)]
+  Text: Armor sold by Patches
+  Area: cathedral
+  Tags: missable
+  QuestReqs: irithyll
+- Key: '02,0:50006217::'
+  DebugText:
+  - Catarina Helm - 52100[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52110[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon]
+  - Catarina Armor - 52101[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52111[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon]
+  - Catarina Gauntlets - 52102[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52112[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon]
+  - Catarina Leggings - 52103[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52113[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon]
+  Text: Armor acquirable by killing Siegward or completing his quest
   Area: settlement
   Tags: norandom
+  QuestReqs: irithyll
+- Key: '99,0:73501050:200000,70000403:'
+  DebugText:
+  - Pierce Shield - 52020[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 200010[Patches while Patches has Siegward's armor (1)]
+  Text: Sold by Patches
+  Area: cathedral
+  Tags: missable
   QuestReqs: irithyll
 - Key: '02,0:50006218::'
   DebugText:
   - Storm Ruler - 52104[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52114[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon], 62140[Invisible [o000499_0001] @ dungeon]
   Text: Dropped by Siegward upon death or quest completion.
-  Area: settlement
-  Tags: missable
-  QuestReqs: irithyll
-- Key: '02,0:50006218:200000,70000403:'
-  DebugText:
-  - Pierce Shield - 52020[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0012] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink], 52105[Siegward of Catarina [c0000_0007] @ settlement, Siegward of Catarina [c0000_0015] @ settlement, Siegward of Catarina [c0000_0011] @ irithyll], 52115[Siegward of Catarina [c0000_0015] @ dungeon, Siegward of Catarina [c0000_0016] @ dungeon], 200010[Patches while Patches has Siegward's armor (1)]
-  Text: Dropped by Siegward upon death or quest completion, and sold by Patches while Siegward is in the well.
   Area: settlement
   Tags: missable
   QuestReqs: irithyll
@@ -3032,7 +3058,7 @@ Slots:
   DebugText:
   - Winged Spear - 52000[Unbreakable Patches [c0000_0011] @ cathedral, Unbreakable Patches [c0000_0031] @ firelink, Unbreakable Patches [c0000_0032] @ firelink]
   Text: Dropped by Patches when killed in his own armor.
-  Area: cathedral
+  Area: firelink
   Tags: missable death
 - Key: '04,0:50006202:110000,200000,70000402,70000427:'
   DebugText:
@@ -7821,14 +7847,14 @@ Slots:
   DebugText:
   - Ember - 118100[Shrine Handmaid after Patches moves to Firelink Shrine (4)], 200100[Patches after Patches moves to Firelink Shrine (4)]
   Text: Sold by Patches in Firelink Shrine
-  Area: cathedral
+  Area: firelink
   Tags: missable
   QuestReqs: firelink_belltower
 - Key: '99,0:-1:110000,200000,70000401,70000426:'
   DebugText:
   - Hidden Blessing - 118200[Shrine Handmaid after sending Greirat to pillage Lothric Castle, telling Patches, and Patches returning (1)], 200200[Patches after sending Greirat to pillage Lothric Castle, telling Patches, and Patches returning (1)]
   Text: Sold by Patches after Greirat pillages Lothric Castle, telling Patches, and Patches returning
-  Area: cathedral
+  Area: firelink
   Tags: missable
   QuestReqs: lorettasbone irithyll archives firelink_belltower
 - Key: '99,0:-1:110000,53700990:'
@@ -8342,14 +8368,14 @@ Slots:
 - Key: '99,0:50006130::'
   DebugText:
   - Young Dragon Ring - 61300[?EVENT?]
-  Text: Given by Orbeck after purchasing four sorceries from him and giving him one scroll.
+  Text: Given by Orbeck after purchasing three sorceries from him and giving him one scroll.
   Area: firelink
   Tags: missable exclusive
   QuestReqs: farronkeep_road
 - Key: '99,0:50006131::'
   DebugText:
   - Slumbering Dragoncrest Ring - 61310[?EVENT?]
-  Text: Given by Orbeck after purchasing four sorceries from him and giving him one scroll.
+  Text: Given by Orbeck after purchasing seven sorceries from him and giving him one scroll.
   Area: firelink
   Tags: missable
   QuestReqs: farronkeep_road

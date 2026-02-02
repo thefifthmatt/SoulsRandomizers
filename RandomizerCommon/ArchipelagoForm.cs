@@ -621,17 +621,46 @@ namespace RandomizerCommon
             var locationToCounts =
                 locationToSlots.ToDictionary(pair => pair.Key, pair => pair.Value.Count);
 
+            var scopesToLocations = new Dictionary<LocationScope, List<ScoutedItemInfo>>();
             var result = new Dictionary<long, LocationScope>();
-            foreach (var location in locations)
+
+            // Adds [location] and [slot] to [result]. Throws an error if [slot] has been added for
+            // more locations than it has in the static randomizer.
+            void add(ScoutedItemInfo location, AnnotationData.SlotAnnotation slot)
             {
-                if (location.LocationName == "US: Vertebra Shackle - Hodrick drop")
+                if (!scopesToLocations.TryGetValue(slot.LocationScope, out var locs))
                 {
-                    Console.WriteLine("HERE");
+                    locs = new();
+                    scopesToLocations[slot.LocationScope] = locs;
+                }
+                locs.Add(location);
+
+                if (locs.Count > slot.DebugText.Count)
+                {
+                    var builder = new StringBuilder(
+                        $"[BUG] Too many Archipelago locations map to the slot " +
+                        $"{slot.LocationScope} ({slot.Text}):\n\n");
+                    foreach (var loc in locs)
+                    {
+                        builder.AppendLine($"* {loc.LocationDisplayName}");
+                    }
+                    builder.AppendLine();
+                    builder.AppendLine("Expected:\n");
+                    foreach (var line in slot.DebugText)
+                    {
+                        builder.AppendLine($"* {line}");
+                    }
+                    throw new Exception(builder.ToString());
                 }
 
+                 result[location.LocationId] = slot.LocationScope;
+            }
+
+            foreach (var location in locations)
+            {
                 if (apIdsToKeys.TryGetValue(location.LocationId, out var key))
                 {
-                    result[location.LocationId] = ann.SlotsByAnnotationsKey[key].LocationScope;
+                    add(location, ann.SlotsByAnnotationsKey[key]);
                     continue;
                 }
 
@@ -651,7 +680,7 @@ namespace RandomizerCommon
                 {
                     if (locationSlots.TryDequeue(out var slot))
                     {
-                        result[location.LocationId] = slot.LocationScope;
+                        add(location, slot);
                         continue;
                     }
                     else
@@ -665,7 +694,7 @@ namespace RandomizerCommon
 
                 if (itemNameToSlots.TryGetValue(itemName, out var itemSlots) && itemSlots.Count == 1)
                 {
-                    result[location.LocationId] = itemSlots.First().LocationScope;
+                    add(location, itemSlots.First());
                     continue;
                 }
 
