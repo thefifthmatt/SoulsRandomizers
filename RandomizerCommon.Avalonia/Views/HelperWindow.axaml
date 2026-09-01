@@ -1,0 +1,65 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RandomizerCommon.ViewModels"
+        xmlns:loc="using:RandomizerCommon.Localization"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600"
+        x:Class="RandomizerCommon.Views.HelperWindow"
+        x:DataType="vm:HelperViewModel"
+        WindowStartupLocation="CenterOwner"
+        Width="650" Height="550"
+        MinWidth="360" MinHeight="250"
+        Title="{Binding Title^}">
+
+    <Design.DataContext>
+        <vm:HelperViewModel/>
+    </Design.DataContext>
+
+    <Window.Styles>
+        <StyleInclude Source="avares://RandomizerCommon.Avalonia/Styles/MainStyles.axaml"/>
+    </Window.Styles>
+
+    <Grid ColumnDefinitions="*" RowDefinitions="Auto,*,Auto,Auto" Margin="10">
+        <loc:Message Grid.Column="0" Grid.Row="0" Key="HelperForm_helperL" 
+                     Text="When RandomizerHelper is active, changes to these settings will immediately apply without needing to rerun randomizer or restart the game." />
+        <ScrollViewer Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" Margin="0,5">
+            <ItemsControl ItemsSource="{Binding Options}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Classes="optionlist" Spacing="3" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.Styles>
+                </ItemsControl.Styles>
+                <ItemsControl.DataTemplates>
+                    <DataTemplate DataType="{x:Type vm:HelperViewModel+BoolOptionState}">
+                        <CheckBox IsChecked="{Binding Value}" IsEnabled="{Binding Enabled}" Margin="{Binding Margin}">
+                            <loc:Message From="{Binding Text}" />
+                        </CheckBox>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:HelperViewModel+IntOptionState}">
+                        <DockPanel>
+                            <NumericUpDown Value="{Binding Value}" Minimum="{Binding Info.Min}" Maximum="{Binding Info.Max}" LostFocus="Option_LostFocus"
+                                           FormatString="0" Width="60" DockPanel.Dock="Left" VerticalAlignment="Center"
+                                           IsEnabled="{Binding Enabled}" Margin="{Binding Margin}" />
+                            <loc:Message Classes="postcombo" From="{Binding Text}" />
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.DataTemplates>
+            </ItemsControl>
+        </ScrollViewer>
+        <Panel Grid.Column="0" Grid.Row="2">
+            <loc:Message Key="HelperForm_activity" Text="No activity detected" IsVisible="{Binding ActiveTime, Converter={x:Static ObjectConverters.IsNull}}" />
+            <loc:Message Key="HelperForm_active" Text="Last active at {0}" Param="{Binding ActiveTime}" IsVisible="{Binding ActiveTime, Converter={x:Static ObjectConverters.IsNotNull}}" />
+        </Panel>
+        <WrapPanel Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Classes="bigspaced">
+            <Button Command="{Binding ResetCommand}" IsDefault="True" HorizontalContentAlignment="Center" MinWidth="100">
+                <loc:Message Key="HelperForm_resetButton" Text="Reset..." />
+            </Button>
+            <Button Command="{Binding OkCommand}" IsDefault="True" HorizontalContentAlignment="Center" MinWidth="100">
+                <loc:Message Key="HelperForm_okButton" Text="OK" />
+            </Button>
+        </WrapPanel>
+    </Grid>
+</Window>

@@ -1,3 +1,5 @@
+6951 with Shadow of the Erdtree
+6953 with Tarnished Pack
 # Used for armor, but also Mausoleum duplication
 9101 after defeating Godrick
 9104 after defeating Morgott
@@ -15,8 +17,18 @@
 9130 after defeating Radahn
 9131 after defeating Fire Giant
 9133 after defeating Regal Ancestor Spirit
+9140 after defeating Divine Beast Dancing Lion
+9143 after defeating Radahn, Consort of Miquella
+9146 after defeating Messmer the Impaler
+9148 after defeating Putrescent Knight
+9155 after defeating Metyr, Mother of Fingers
+9156 after defeating Midra, Lord of Frenzied Flame
+9160 after defeating Romina, Saint of the Bud
+9162 after defeating Scadutree Avatar
+9164 after defeating Commander Gaius
 9182 after defeating Elemer of the Briar
 9184 after defeating Commander Niall
+9190 after defeating Rellana, Twin Moon Knight
 60150 after getting Golden Tailoring Tools
 # These flags are set based on item get flags
 65810 after getting Ash of War: Impaling Thrust
@@ -110,6 +122,31 @@
 65899 after getting Ash of War: Through and Through
 65900 after getting Ash of War: Enchanted Shot
 65901 after getting Ash of War: Rain of Arrows
+65910 after getting Ash of War: Dryleaf Whirlwind
+65911 after getting Ash of War: Aspects of the Crucible: Wings
+65912 after getting Ash of War: Spinning Gravity Thrust
+65913 after getting Ash of War: Palm Blast
+65914 after getting Ash of War: Piercing Throw
+65915 after getting Ash of War: Scattershot Throw
+65916 after getting Ash of War: Wall of Sparks
+65917 after getting Ash of War: Rolling Sparks
+65918 after getting Ash of War: Raging Beast
+65919 after getting Ash of War: Savage Claws
+65920 after getting Ash of War: Blind Spot
+65921 after getting Ash of War: Swift Slash
+65922 after getting Ash of War: Overhead Stance
+65923 after getting Ash of War: Wing Stance
+65924 after getting Ash of War: Blinkbolt
+65925 after getting Ash of War: Flame Skewer
+65926 after getting Ash of War: Savage Lion's Claw
+65927 after getting Ash of War: Divine Beast Frost Stomp
+65928 after getting Ash of War: Flame Spear
+65929 after getting Ash of War: Carian Sovereignty
+65930 after getting Ash of War: Shriek of Sorrow
+65931 after getting Ash of War: Ghostflame Call
+65932 after getting Ash of War: The Poison Flower Blooms Twice
+65933 after getting Ash of War: Igon's Drake Hunt
+65934 after getting Ash of War: Shield Strike
 # qwc flag is directly the item get flag of each cookbook
 67000 after getting Nomadic Warrior's Cookbook [1]
 67010 after getting Nomadic Warrior's Cookbook [3]
@@ -170,6 +207,51 @@
 68230 after getting Missionary's Cookbook [7]
 68400 after getting Frenzied's Cookbook [1]
 68410 after getting Frenzied's Cookbook [2]
+68950 after getting St. Trina Disciple's Cookbook [2]
+68940 after getting Grave Keeper's Cookbook [1]
+68930 after getting Battlefield Priest's Cookbook [4]
+68920 after getting Finger-Weaver's Cookbook [1]
+68910 after getting Antiquity Scholar's Cookbook [1]
+68900 after getting Fire Knight's Cookbook [2]
+68890 after getting Battlefield Priest's Cookbook [3]
+68880 after getting Mad Craftsman's Cookbook [3]
+68870 after getting Tibia's Cookbook
+68860 after getting Antiquity Scholar's Cookbook [2]
+68850 after getting Grave Keeper's Cookbook [2]
+68840 after getting St. Trina Disciple's Cookbook [3]
+68830 after getting Forager Brood Cookbook [7]
+68820 after getting Battlefield Priest's Cookbook [2]
+68810 after getting Igon's Cookbook [1]
+68800 after getting Battlefield Priest's Cookbook [1]
+68790 after getting Loyal Knight's Cookbook
+68780 after getting Ancient Dragon Knight's Cookbook [2]
+68770 after getting Fire Knight's Cookbook [1]
+68760 after getting St. Trina Disciple's Cookbook [1]
+68750 after getting Mad Craftsman's Cookbook [1]
+68740 after getting Ancient Dragon Knight's Cookbook [1]
+68730 after getting Greater Potentate's Cookbook [2]
+68720 after getting Greater Potentate's Cookbook [6]
+68710 after getting Greater Potentate's Cookbook [14]
+68700 after getting Greater Potentate's Cookbook [13]
+68690 after getting Greater Potentate's Cookbook [3]
+68680 after getting Greater Potentate's Cookbook [8]
+68670 after getting Mad Craftsman's Cookbook [2]
+68660 after getting Greater Potentate's Cookbook [11]
+68650 after getting Greater Potentate's Cookbook [10]
+68640 after getting Greater Potentate's Cookbook [9]
+68630 after getting Greater Potentate's Cookbook [7]
+68620 after getting Greater Potentate's Cookbook [12]
+68610 after getting Greater Potentate's Cookbook [5]
+68600 after getting Greater Potentate's Cookbook [4]
+68590 after getting Greater Potentate's Cookbook [1]
+68580 after getting Finger-Weaver's Cookbook [2]
+68570 after getting Igon's Cookbook [2]
+68560 after getting Forager Brood Cookbook [5]
+68550 after getting Forager Brood Cookbook [4]
+68540 after getting Forager Brood Cookbook [3]
+68530 after getting Forager Brood Cookbook [2]
+68520 after getting Forager Brood Cookbook [1]
+68510 after getting Forager Brood Cookbook [6]
 10009516 after completing Gostoc's quest
 11009455 after Corhyn moves to Leyndell
 # bell item = flag - 11109710 + 8910
@@ -200,6 +282,14 @@
 11109775 after getting two Great Runes, if not already gotten
 11109776 after getting two Great Runes, if not already gotten
 11109777 after Finger Reader Enia dies, if not already gotten
+11109792 after giving Herbalist's Bell Bearing
+11109793 after giving Mushroom-Seller's Bell Bearing [1]
+11109794 after giving Mushroom-Seller's Bell Bearing [2]
+11109795 after giving Greasemonger's Bell Bearing
+11109796 after giving Moldmonger's Bell Bearing
+11109797 after giving Igon's Bell Bearing
+11109798 after giving Spellmachinist's Bell Bearing
+11109799 after giving String-Seller's Bell Bearing
 11109781 after giving Smithing-Stone Miner's Bell Bearing [1] or Somberstone Miner's Bell Bearing [1]
 11109874 after giving Fire Monks' Prayerbook
 11109875 after giving Giant's Prayerbook
@@ -248,3 +338,4 @@
 1050400800 after defeating Elder Dragon Grayoll
 1050560800 after defeating Great Wyrm Theodorix
 1254560800 after defeating Borealis the Freezing Fog
+2045429330 from Thiollier or after Moore takes over

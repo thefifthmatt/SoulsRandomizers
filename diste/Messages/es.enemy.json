@@ -1,0 +1,5131 @@
+{
+  "instructions": "https://docs.google.com/document/d/1KTB5vIQIkYo65fMJr3pvKbL1dovn8cB2-CD_02YGDZI/edit",
+  "status": "0/172 custom names complete, 139/484 config names complete",
+  "capitalize_first_letter_in_custom_name": false,
+  "boss_names": [
+    {
+      "base": {
+        "key": "Abductor Virgin (Swinging Sickle)",
+        "full_name": "Abductor Virgin (Swinging Sickle)",
+        "partial_template": "Abductor $1"
+      },
+      "translated": {
+        "key": "Virgen secuestradora (hoz oscilante)",
+        "full_name": "Virgen secuestradora (hoz oscilante)",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Abductor Virgin",
+          "text": "",
+          "info": "22x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Abductor Virgin Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Abductor Virgin"
+        },
+        {
+          "english_text": "Basic Abductor Virgin",
+          "text": "",
+          "info": "21x in Regular Enemies, part of Abductor Virgin"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Abductor Virgin (Wheel)",
+        "full_name": "Abductor Virgin (Wheel)",
+        "partial_template": "Abductor $1"
+      },
+      "translated": {
+        "key": "Virgen secuestradora (rueda)",
+        "full_name": "Virgen secuestradora (rueda)",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Adan, Thief of Fire",
+        "proper_name": "Adan",
+        "full_template": "$1, Thief of Fire"
+      },
+      "translated": {
+        "key": "Adan, Ladrón del Fuego",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Adan, Thief of Fire",
+          "text": "Adan, Ladrón del Fuego",
+          "info": "1x in Evergaol Minibosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Ancestor Spirit",
+        "full_name": "Ancestor Spirit",
+        "full_template": "$1 Spirit"
+      },
+      "translated": {
+        "key": "Espíritu Ancestral",
+        "full_name": "Espíritu Ancestral",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Ancestor Spirit",
+          "text": "Espíritu Ancestral",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Ancient Dragon Lansseax",
+        "proper_name": "Lansseax",
+        "partial_template": "Ancient $1",
+        "proper_template": "Ancient Dragon $1"
+      },
+      "translated": {
+        "key": "Dragón antiguo Lansseax",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Ancient Dragon Lansseax",
+          "text": "Dragón antiguo Lansseax",
+          "info": "1x in Dragon Minibosses, part of Ancient Dragon"
+        },
+        {
+          "english_text": "Ancient Dragon",
+          "text": "",
+          "info": "8x in Regular Enemies + Dragon Minibosses"
+        },
+        {
+          "english_text": "Basic Ancient Dragon",
+          "text": "",
+          "info": "6x in Regular Enemies, part of Ancient Dragon"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Ancient Dragon Senessax",
+        "proper_name": "Senessax",
+        "partial_template": "Ancient $1",
+        "proper_template": "Ancient Dragon $1"
+      },
+      "translated": {
+        "key": "Dragón antiguo Senessax",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Ancient Dragon Senessax",
+          "text": "Dragón antiguo Senessax",
+          "info": "1x in Dragon Minibosses, part of Ancient Dragon"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Ancient Dragon-Man",
+        "full_name": "Ancient Dragon-Man",
+        "partial_name": "Dragon-Man",
+        "partial_template": "Ancient $1"
+      },
+      "translated": {
+        "key": "Hombre dragón antiguo",
+        "full_name": "Hombre dragón antiguo",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Ancient Dragon-Man",
+          "text": "Hombre dragón antiguo",
+          "info": "1x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Ancient Hero of Zamor",
+        "full_name": "Ancient Hero",
+        "full_template": "$1 of Zamor"
+      },
+      "translated": {
+        "key": "Héroe antiguo de Zamor",
+        "full_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Ancient Hero of Zamor",
+          "text": "Héroe antiguo de Zamor",
+          "info": "11x in Regular Enemies + Minor Bosses + Evergaol Minibosses"
+        },
+        {
+          "english_text": "Ancient Hero of Zamor Boss",
+          "text": "",
+          "info": "3x in Minor Bosses + Evergaol Minibosses, part of Ancient Hero of Zamor"
+        },
+        {
+          "english_text": "Basic Ancient Hero of Zamor",
+          "text": "",
+          "info": "8x in Regular Enemies, part of Ancient Hero of Zamor"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Astel, Stars of Darkness",
+        "proper_name": "Astel",
+        "full_template": "$1, Stars of Darkness"
+      },
+      "translated": {
+        "key": "Astel, Estrellas de la Oscuridad",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Astel, Stars of Darkness",
+          "text": "Astel, Estrellas de la Oscuridad",
+          "info": "1x in Minor Bosses, part of Astel"
+        },
+        {
+          "english_text": "Astel",
+          "text": "",
+          "info": "4x in Regular Enemies + Major Bosses + Minor Bosses"
+        },
+        {
+          "english_text": "Withered Astel",
+          "text": "",
+          "info": "2x in Regular Enemies, part of Astel"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Astel, Naturalborn of the Void",
+        "proper_name": "Astel",
+        "full_template": "$1, Naturalborn of the Void"
+      },
+      "translated": {
+        "key": "Astel, Nacido del Vacío",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Astel, Naturalborn of the Void",
+          "text": "Astel, Nacido del Vacío",
+          "info": "1x in Major Bosses, part of Astel"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Baleful Shadow",
+        "full_name": "Baleful Shadow",
+        "full_template": "Baleful $1"
+      },
+      "translated": {
+        "key": "Sombra siniestra",
+        "full_name": "Sombra siniestra",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Baleful Shadow",
+          "text": "Sombra siniestra",
+          "info": "1x in Regular Enemies"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Battlemage Hugues",
+        "proper_name": "Hugues",
+        "partial_template": "Battlemage $1"
+      },
+      "translated": {
+        "key": "Mago de batalla Hugues",
+        "proper_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Battlemage Hugues",
+          "text": "Mago de batalla Hugues",
+          "info": "1x in Evergaol Minibosses, part of Battlemage"
+        },
+        {
+          "english_text": "Battlemage",
+          "text": "",
+          "info": "6x in Regular Enemies + Evergaol Minibosses"
+        },
+        {
+          "english_text": "Basic Battlemage",
+          "text": "",
+          "info": "5x in Regular Enemies, part of Battlemage"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Bayle the Dread",
+        "proper_name": "Bayle",
+        "full_template": "$1 the Dread"
+      },
+      "translated": {
+        "key": "Bayle el Temible",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Bayle the Dread",
+          "text": "Bayle el Temible",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Beast Clergyman",
+        "full_name": "Beast Clergyman",
+        "partial_name": "Clergyman",
+        "partial_template": "Beast $1",
+        "proper_template": "Beast Clergyman $1"
+      },
+      "translated": {
+        "key": "Clérigo Bestia",
+        "full_name": "Clérigo Bestia",
+        "partial_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Beast Clergyman",
+          "text": "Clérigo Bestia",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Beastman of Farum Azula",
+        "full_name": "Beastman",
+        "full_template": "$1 of Farum Azula"
+      },
+      "translated": {
+        "key": "Hombre bestia de Farum Azula",
+        "full_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Beastman of Farum Azula",
+          "text": "Hombre bestia de Farum Azula",
+          "info": "57x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Beastman of Farum Azula Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Beastman of Farum Azula"
+        },
+        {
+          "english_text": "Basic Beastman of Farum Azula",
+          "text": "",
+          "info": "55x in Regular Enemies, part of Beastman of Farum Azula"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Beastman of Farum Azula (Cleaver)",
+        "full_name": "Beastman (Cleaver)",
+        "full_template": "$1 of Farum Azula"
+      },
+      "translated": {
+        "key": "Hombre bestia de Farum Azula (cuchilla)",
+        "full_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Beastman of Farum Azula Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Beastman of Farum Azula"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Beastman of Farum Azula (Throwing Knife)",
+        "full_name": "Beastman (Throwing Knife)",
+        "full_template": "$1 of Farum Azula"
+      },
+      "translated": {
+        "key": "Hombre bestia de Farum Azula (cuchillo arrojadizo)",
+        "full_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Bell Bearing Hunter",
+        "full_name": "Bell Bearing Hunter",
+        "partial_name": "Hunter",
+        "partial_template": "Bell Bearing $1"
+      },
+      "translated": {
+        "key": "Cazador de rodamientos de campana",
+        "full_name": "Cazador de rodamientos de campana",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Bell Bearing Hunter",
+          "text": "Cazador de rodamientos de campana",
+          "info": "5x in Night Minibosses + Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Elemer of the Briar",
+        "proper_name": "Elemer",
+        "full_template": "$1 of the Briar"
+      },
+      "translated": {
+        "key": "Elemer de la Zarza",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Elemer of the Briar",
+          "text": "Elemer de la Zarza",
+          "info": "1x in Minor Bosses, part of Bell Bearing Hunter"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Black Knife Assassin",
+        "full_name": "Black Knife Assassin",
+        "partial_name": "Assassin",
+        "partial_template": "Black Knife $1"
+      },
+      "translated": {
+        "key": "Asesino Cuchillo Negro",
+        "full_name": "Asesino Cuchillo Negro",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Black Knife Assassin",
+          "text": "Asesino Cuchillo Negro",
+          "info": "10x in Regular Enemies + Minor Bosses + Evergaol Minibosses + World Minibosses"
+        },
+        {
+          "english_text": "Black Knife Assassin Boss",
+          "text": "",
+          "info": "3x in Minor Bosses + World Minibosses, part of Black Knife Assassin"
+        },
+        {
+          "english_text": "Basic Black Knife Assassin",
+          "text": "",
+          "info": "5x in Regular Enemies, part of Black Knife Assassin"
+        },
+        {
+          "english_text": "All Black Knife Assassin Bosses",
+          "text": "",
+          "info": "5x in Minor Bosses + Evergaol Minibosses + World Minibosses, part of Black Knife Assassin"
+        },
+        {
+          "english_text": "Invisible Black Knife Assassin Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Black Knife Assassin"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Alecto, Black Knife Ringleader",
+        "proper_name": "Alecto",
+        "full_template": "$1, Black Knife Ringleader"
+      },
+      "translated": {
+        "key": "Alecto, Líder de los Cuchillos Negros",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Alecto, Black Knife Ringleader",
+          "text": "Alecto, Líder de los Cuchillos Negros",
+          "info": "1x in Evergaol Minibosses, part of Black Knife Assassin"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Black Knight Edredd",
+        "proper_name": "Edredd",
+        "full_template": "Black Knight $1"
+      },
+      "translated": {
+        "key": "Edredd, el Caballero Negro",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Black Knight Edredd",
+          "text": "Edredd, el Caballero Negro",
+          "info": "1x in World Minibosses, part of Black Knight"
+        },
+        {
+          "english_text": "All Black Knight Bosses",
+          "text": "",
+          "info": "2x in World Minibosses, part of Black Knight"
+        },
+        {
+          "english_text": "Black Knight",
+          "text": "",
+          "info": "28x in Regular Enemies + World Minibosses"
+        },
+        {
+          "english_text": "Basic Black Knight",
+          "text": "",
+          "info": "26x in Regular Enemies, part of Black Knight"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Black Knight Garrew",
+        "proper_name": "Garrew",
+        "full_template": "Black Knight $1"
+      },
+      "translated": {
+        "key": "Garrew, el Caballero Negro",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Black Knight Garrew",
+          "text": "Garrew, el Caballero Negro",
+          "info": "1x in World Minibosses, part of Black Knight"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Bloodhound Knight",
+        "full_name": "Bloodhound Knight",
+        "partial_template": "Bloodhound $1",
+        "proper_template": "Bloodhound Knight $1"
+      },
+      "translated": {
+        "key": "Caballero sabueso",
+        "full_name": "Caballero sabueso",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Bloodhound Knight",
+          "text": "Caballero sabueso",
+          "info": "6x in Regular Enemies + Minor Bosses + Evergaol Minibosses"
+        },
+        {
+          "english_text": "Bloodhound Knight Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Bloodhound Knight"
+        },
+        {
+          "english_text": "Basic Bloodhound Knight",
+          "text": "",
+          "info": "4x in Regular Enemies, part of Bloodhound Knight"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Bloodhound Knight Darriwil",
+        "proper_name": "Darriwil",
+        "partial_template": "Bloodhound $1",
+        "proper_template": "Bloodhound Knight $1"
+      },
+      "translated": {
+        "key": "Caballero sabueso Darriwil",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Bloodhound Knight Darriwil",
+          "text": "Caballero sabueso Darriwil",
+          "info": "1x in Evergaol Minibosses, part of Bloodhound Knight"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Bols, Carian Knight",
+        "proper_name": "Bols",
+        "full_template": "$1, Carian Knight"
+      },
+      "translated": {
+        "key": "Bols, caballero de Caria",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Bols, Carian Knight",
+          "text": "Bols, caballero de Caria",
+          "info": "1x in Evergaol Minibosses, part of Troll Knight"
+        },
+        {
+          "english_text": "Troll Knight",
+          "text": "",
+          "info": "9x in Regular Enemies + Evergaol Minibosses"
+        },
+        {
+          "english_text": "Basic Troll Knight",
+          "text": "",
+          "info": "8x in Regular Enemies, part of Troll Knight"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Borealis the Freezing Fog",
+        "proper_name": "Borealis",
+        "full_template": "$1 the Freezing Fog"
+      },
+      "translated": {
+        "key": "Borealis, la niebla congelante",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Borealis the Freezing Fog",
+          "text": "Borealis, la niebla congelante",
+          "info": "1x in Dragon Minibosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Cemetery Shade",
+        "full_name": "Cemetery Shade",
+        "partial_name": "Shade",
+        "partial_template": "Cemetery $1"
+      },
+      "translated": {
+        "key": "Sombra del cementerio",
+        "full_name": "Sombra del cementerio",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Cemetery Shade",
+          "text": "Sombra del cementerio",
+          "info": "7x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Cemetery Shade and Skeletons",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Cemetery Shade"
+        },
+        {
+          "english_text": "Cemetery Shade Boss",
+          "text": "",
+          "info": "2x in Minor Bosses, part of Cemetery Shade"
+        },
+        {
+          "english_text": "Basic Cemetery Shade",
+          "text": "",
+          "info": "4x in Regular Enemies, part of Cemetery Shade"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Chief Bloodfiend",
+        "full_name": "Chief Bloodfiend",
+        "partial_name": "Bloodfiend",
+        "partial_template": "Chief $1"
+      },
+      "translated": {
+        "key": "Líder de los demonios sanguíneos",
+        "full_name": "Líder de los demonios sanguíneos",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Chief Bloodfiend",
+          "text": "Líder de los demonios sanguíneos",
+          "info": "3x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Chief Bloodfiend Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Chief Bloodfiend"
+        },
+        {
+          "english_text": "Basic Chief Bloodfiend",
+          "text": "",
+          "info": "2x in Regular Enemies, part of Chief Bloodfiend"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Cleanrot Knight",
+        "full_name": "Cleanrot Knight",
+        "partial_template": "Cleanrot $1",
+        "proper_template": "Cleanrot Knight $1"
+      },
+      "translated": {
+        "key": "Caballero purificador",
+        "full_name": "Caballero purificador",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Cleanrot Knight",
+          "text": "Caballero purificador",
+          "info": "38x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Cleanrot Knight Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Cleanrot Knight"
+        },
+        {
+          "english_text": "Basic Cleanrot Knight",
+          "text": "",
+          "info": "36x in Regular Enemies, part of Cleanrot Knight"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Cleanrot Knight (Sickle)",
+        "full_name": "Cleanrot Knight (Sickle)",
+        "partial_template": "Cleanrot $1",
+        "proper_template": "Cleanrot Knight $1"
+      },
+      "translated": {
+        "key": "Caballero purificador (hoz)",
+        "full_name": "Caballero purificador (hoz)",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Cleanrot Knight (Spear)",
+        "full_name": "Cleanrot Knight (Spear)",
+        "partial_template": "Cleanrot $1",
+        "proper_template": "Cleanrot Knight $1"
+      },
+      "translated": {
+        "key": "Caballero purificador (lanza)",
+        "full_name": "Caballero purificador (lanza)",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Cleanrot Knight Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Cleanrot Knight"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Commander Gaius",
+        "proper_name": "Gaius",
+        "partial_template": "Commander $1"
+      },
+      "translated": {
+        "key": "Comandante Gaius",
+        "proper_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Commander Gaius",
+          "text": "Comandante Gaius",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Commander Niall",
+        "proper_name": "Niall",
+        "partial_template": "Commander $1"
+      },
+      "translated": {
+        "key": "Comandante Niall",
+        "proper_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Commander Niall",
+          "text": "Comandante Niall",
+          "info": "1x in Major Bosses, part of Commander"
+        },
+        {
+          "english_text": "Commander",
+          "text": "",
+          "info": "2x in World Minibosses + Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Commander O'Neil",
+        "proper_name": "O'Neil",
+        "partial_template": "Commander $1"
+      },
+      "translated": {
+        "key": "Comandante O'Neil",
+        "proper_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Commander O'Neil",
+          "text": "Comandante O'Neil",
+          "info": "1x in World Minibosses, part of Commander"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Count Ymir, Mother of Fingers",
+        "proper_name": "Ymir",
+        "full_template": "$1, Mother of Fingers"
+      },
+      "translated": {
+        "key": "Conde Ymir, Madre de los Dedos",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Count Ymir, Mother of Fingers",
+          "text": "Conde Ymir, Madre de los Dedos",
+          "info": "1x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Crucible Knight",
+        "full_name": "Crucible Knight",
+        "partial_template": "Crucible $1",
+        "proper_template": "Crucible Knight $1"
+      },
+      "translated": {
+        "key": "Caballero del Crisol",
+        "full_name": "Caballero del Crisol",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Crucible Knight",
+          "text": "Caballero del Crisol",
+          "info": "14x in Regular Enemies + World Minibosses + Minor Bosses + Evergaol Minibosses"
+        },
+        {
+          "english_text": "Crucible Knight Boss",
+          "text": "",
+          "info": "1x in Evergaol Minibosses, part of Crucible Knight"
+        },
+        {
+          "english_text": "Crucible Knight Devonia",
+          "text": "",
+          "info": "1x in Regular Enemies, part of Crucible Knight"
+        },
+        {
+          "english_text": "Basic Crucible Knight",
+          "text": "",
+          "info": "9x in Regular Enemies, part of Crucible Knight"
+        },
+        {
+          "english_text": "All Crucible Knight Bosses",
+          "text": "",
+          "info": "4x in World Minibosses + Minor Bosses + Evergaol Minibosses, part of Crucible Knight"
+        },
+        {
+          "english_text": "Crucible Misbegotten Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Crucible Knight"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Crucible Knight Ordovis",
+        "proper_name": "Ordovis",
+        "partial_template": "Crucible $1",
+        "proper_template": "Crucible Knight $1"
+      },
+      "translated": {
+        "key": "Caballero del Crisol Ordovis",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Crucible Knight Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Crucible Knight"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Crucible Knight Siluria",
+        "full_name": "Siluria",
+        "partial_template": "Crucible $1",
+        "proper_template": "Crucible Knight $1"
+      },
+      "translated": {
+        "key": "Siluria, la Caballera del Crisol",
+        "full_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Crucible Knight Siluria",
+          "text": "Siluria, la Caballera del Crisol",
+          "info": "1x in World Minibosses, part of Crucible Knight"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Spiritcaller Snail",
+        "full_name": "Spiritcaller Snail",
+        "partial_name": "Snail",
+        "partial_template": "Spiritcaller $1"
+      },
+      "translated": {
+        "key": "Caracol llamador de espíritus",
+        "full_name": "Caracol llamador de espíritus",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Crucible Spiritcaller Snail",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Snail"
+        },
+        {
+          "english_text": "Godskin Spiritcaller Snail",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Snail"
+        },
+        {
+          "english_text": "Snail",
+          "text": "",
+          "info": "152x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Basic Snail",
+          "text": "",
+          "info": "150x in Regular Enemies, part of Snail"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Crystalian (Staff)",
+        "full_name": "Crystalian (Staff)",
+        "partial_template": "Crystalian $1"
+      },
+      "translated": {
+        "key": "Cristalino (báculo)",
+        "full_name": "Cristalino (báculo)",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "All Crystalian Bosses",
+          "text": "",
+          "info": "4x in Minor Bosses, part of Crystalian"
+        },
+        {
+          "english_text": "Crystalian",
+          "text": "Cristalino",
+          "info": "20x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Crystalian Staff Spear Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Crystalian"
+        },
+        {
+          "english_text": "Basic Crystalian",
+          "text": "",
+          "info": "16x in Regular Enemies, part of Crystalian"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Crystalian",
+        "full_name": "Crystalian",
+        "partial_template": "Crystalian $1"
+      },
+      "translated": {
+        "key": "Cristalino",
+        "full_name": "Cristalino",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Ringblade Crystalian Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Crystalian"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Crystalian (Ringblade)",
+        "full_name": "Crystalian (Ringblade)",
+        "partial_template": "Crystalian $1"
+      },
+      "translated": {
+        "key": "Cristalino (anillo cortante)",
+        "full_name": "Cristalino (anillo cortante)",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Crystalian Ringblade Spear Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Crystalian"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Crystalian (Spear)",
+        "full_name": "Crystalian (Spear)",
+        "partial_template": "Crystalian $1"
+      },
+      "translated": {
+        "key": "Cristalino (lanza)",
+        "full_name": "Cristalino (lanza)",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Putrid Crystalian (Ringblade)",
+        "full_name": "Crystalian (Ringblade)",
+        "partial_template": "Putrid $1"
+      },
+      "translated": {
+        "key": "Cristalino podrido (anillo cortante)",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Putrid Crystalian (Spear)",
+        "full_name": "Crystalian (Spear)",
+        "partial_template": "Putrid $1"
+      },
+      "translated": {
+        "key": "Cristalino podrido (lanza)",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Putrid Crystalian Trio",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Crystalian"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Putrid Crystalian (Staff)",
+        "full_name": "Crystalian (Staff)",
+        "partial_template": "Putrid $1"
+      },
+      "translated": {
+        "key": "Cristalino podrido (báculo)",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Curseblade Labirith",
+        "proper_name": "Labirith",
+        "full_template": "Curseblade $1"
+      },
+      "translated": {
+        "key": "Labirith, Filo Maldito",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Curseblade Labirith",
+          "text": "Labirith, Filo Maldito",
+          "info": "1x in Minor Bosses, part of Curseblade"
+        },
+        {
+          "english_text": "Curseblade",
+          "text": "",
+          "info": "12x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Basic Curseblade",
+          "text": "",
+          "info": "11x in Regular Enemies, part of Curseblade"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Dancer of Ranah",
+        "full_name": "Dancer of Ranah",
+        "partial_name": "Dancer",
+        "partial_template": "$1 of Ranah"
+      },
+      "translated": {
+        "key": "Bailarina de Ranah",
+        "full_name": "Bailarina de Ranah",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Dancer of Ranah",
+          "text": "Bailarina de Ranah",
+          "info": "1x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Death Rite Bird",
+        "full_name": "Death Rite Bird",
+        "partial_name": "Rite Bird",
+        "partial_template": "Death Rite $1"
+      },
+      "translated": {
+        "key": "Ave del rito de la muerte",
+        "full_name": "Ave del rito de la muerte",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Death Rite Bird",
+          "text": "Ave del rito de la muerte",
+          "info": "5x in Night Minibosses + World Minibosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Deathbird",
+        "full_name": "Deathbird",
+        "partial_template": "Death $1"
+      },
+      "translated": {
+        "key": "Ave de la muerte",
+        "full_name": "Ave de la muerte",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Deathbird",
+          "text": "Ave de la muerte",
+          "info": "4x in Night Minibosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Decaying Ekzykes",
+        "proper_name": "Ekzykes",
+        "partial_template": "Decaying $1"
+      },
+      "translated": {
+        "key": "Ekzykes en descomposición",
+        "proper_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Decaying Ekzykes",
+          "text": "Ekzykes en descomposición",
+          "info": "1x in Dragon Minibosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Demi-Human Chief",
+        "full_name": "Demi-Human Chief",
+        "partial_template": "Demi-Human $1",
+        "proper_template": "Demi-Human Chief $1"
+      },
+      "translated": {
+        "key": "Semihumano jefe",
+        "full_name": "Semihumano jefe",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Demi-Human Chief",
+          "text": "Semihumano jefe",
+          "info": "13x in Regular Enemies + Minor Bosses, part of Demi-Humans"
+        },
+        {
+          "english_text": "Demi-Human Chief Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Demi-Humans"
+        },
+        {
+          "english_text": "Basic Demi-Human Chief",
+          "text": "",
+          "info": "12x in Regular Enemies, part of Demi-Humans"
+        },
+        {
+          "english_text": "Demi-Human",
+          "text": "",
+          "info": "246x in Regular Enemies, part of Demi-Humans"
+        },
+        {
+          "english_text": "Demi-Human Queen",
+          "text": "",
+          "info": "5x in Minor Bosses + World Minibosses + Regular Enemies, part of Demi-Humans"
+        },
+        {
+          "english_text": "Basic Demi-Human Queen",
+          "text": "",
+          "info": "1x in Regular Enemies, part of Demi-Humans"
+        },
+        {
+          "english_text": "Demi-Human Shaman",
+          "text": "",
+          "info": "33x in Regular Enemies, part of Demi-Humans"
+        },
+        {
+          "english_text": "Demi-Human Swordmaster",
+          "text": "",
+          "info": "2x in Minor Bosses + Regular Enemies, part of Demi-Humans"
+        },
+        {
+          "english_text": "Basic Demi-Human Swordmaster",
+          "text": "",
+          "info": "1x in Regular Enemies, part of Demi-Humans"
+        },
+        {
+          "english_text": "Demi-Humans",
+          "text": "",
+          "info": "330x in Minor Bosses + World Minibosses + Regular Enemies"
+        },
+        {
+          "english_text": "Large Demi-Human",
+          "text": "",
+          "info": "31x in Regular Enemies, part of Demi-Humans"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Demi-Human Queen Gilika",
+        "proper_name": "Gilika",
+        "partial_template": "Demi-Human $1",
+        "proper_template": "Demi-Human Queen $1"
+      },
+      "translated": {
+        "key": "Gilika, reina semihumana",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Demi-Human Queen Gilika",
+          "text": "Gilika, reina semihumana",
+          "info": "1x in Minor Bosses, part of Demi-Humans"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Demi-Human Queen Maggie",
+        "proper_name": "Maggie",
+        "partial_template": "Demi-Human $1",
+        "proper_template": "Demi-Human Queen $1"
+      },
+      "translated": {
+        "key": "Maggie, reina semihumana",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Demi-Human Queen Maggie",
+          "text": "Maggie, reina semihumana",
+          "info": "1x in World Minibosses, part of Demi-Humans"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Demi-Human Queen Margot",
+        "proper_name": "Margot",
+        "partial_template": "Demi-Human $1",
+        "proper_template": "Demi-Human Queen $1"
+      },
+      "translated": {
+        "key": "Margot, reina semihumana",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Demi-Human Queen Margot",
+          "text": "Margot, reina semihumana",
+          "info": "1x in Minor Bosses, part of Demi-Humans"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Demi-Human Queen Marigga",
+        "proper_name": "Marigga",
+        "partial_template": "Demi-Human $1",
+        "proper_template": "Demi-Human Queen $1"
+      },
+      "translated": {
+        "key": "Marigga, reina semihumana",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Demi-Human Queen Marigga",
+          "text": "Marigga, reina semihumana",
+          "info": "1x in World Minibosses, part of Demi-Humans"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Demi-Human Swordmaster Onze",
+        "proper_name": "Onze",
+        "partial_template": "Demi-Human $1",
+        "proper_template": "Demi-Human Swordmaster $1"
+      },
+      "translated": {
+        "key": "Onze, maestro espadachín semihumano",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Demi-Human Swordmaster Onze",
+          "text": "Onze, maestro espadachín semihumano",
+          "info": "1x in Minor Bosses, part of Demi-Humans"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Divine Beast Dancing Lion",
+        "full_name": "Dancing Lion",
+        "partial_template": "Divine Beast Dancing $1"
+      },
+      "translated": {
+        "key": "León Danzante, Bestia Divina",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Divine Beast Dancing Lion",
+          "text": "León Danzante, Bestia Divina",
+          "info": "1x in Major Bosses"
+        },
+        {
+          "english_text": "Divine Beast Dancing Lion and Basilisks",
+          "text": "",
+          "info": "1x in World Minibosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Draconic Tree Sentinel",
+        "full_name": "Draconic Tree Sentinel",
+        "partial_name": "Tree Sentinel",
+        "partial_template": "Draconic $1"
+      },
+      "translated": {
+        "key": "Centinela arbóreo dragónico",
+        "full_name": "Centinela arbóreo dragónico",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Draconic Tree Sentinel",
+          "text": "Centinela arbóreo dragónico",
+          "info": "2x in Regular Enemies + World Minibosses"
+        },
+        {
+          "english_text": "Draconic Tree Sentinel Boss",
+          "text": "",
+          "info": "1x in World Minibosses, part of Draconic Tree Sentinel"
+        },
+        {
+          "english_text": "Basic Draconic Tree Sentinel",
+          "text": "",
+          "info": "1x in Regular Enemies, part of Draconic Tree Sentinel"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Dragonkin Soldier",
+        "full_name": "Dragonkin Soldier",
+        "partial_template": "Dragonkin $1"
+      },
+      "translated": {
+        "key": "Soldado Dragonante",
+        "full_name": "Soldado Dragonante",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Dragonkin Soldier",
+          "text": "Soldado Dragonante",
+          "info": "9x in Major Bosses + World Minibosses + Regular Enemies"
+        },
+        {
+          "english_text": "Dragonkin Soldier Boss",
+          "text": "",
+          "info": "2x in World Minibosses, part of Dragonkin Soldier"
+        },
+        {
+          "english_text": "Basic Dragonkin Soldier",
+          "text": "",
+          "info": "6x in Regular Enemies, part of Dragonkin Soldier"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Dragonkin Soldier of Nokstella",
+        "full_name": "Dragonkin Soldier",
+        "full_template": "$1 of Nokstella"
+      },
+      "translated": {
+        "key": "Soldado Dragonante de Nokstella",
+        "full_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Dragonkin Soldier of Nokstella",
+          "text": "Soldado Dragonante de Nokstella",
+          "info": "1x in Major Bosses, part of Dragonkin Soldier"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Dragonlord Placidusax",
+        "proper_name": "Placidusax",
+        "partial_template": "Dragonlord $1"
+      },
+      "translated": {
+        "key": "Señordragón Placidusax",
+        "proper_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Dragonlord Placidusax",
+          "text": "Señordragón Placidusax",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Dryleaf Dane",
+        "proper_name": "Dane",
+        "partial_template": "Dryleaf $1"
+      },
+      "translated": {
+        "key": "Dane Hojaseca",
+        "proper_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Dryleaf Dane",
+          "text": "Dane Hojaseca",
+          "info": "1x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Elden Beast",
+        "full_name": "Elden Beast",
+        "partial_template": "Elden $1"
+      },
+      "translated": {
+        "key": "Bestia de Elden",
+        "full_name": "Bestia de Elden",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Elden Beast",
+          "text": "Bestia de Elden",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Erdtree Avatar",
+        "full_name": "Erdtree Avatar",
+        "partial_name": "Avatar",
+        "partial_template": "Erdtree $1"
+      },
+      "translated": {
+        "key": "Avatar del Terrárbol",
+        "full_name": "Avatar del Terrárbol",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Erdtree Avatar",
+          "text": "Avatar del Terrárbol",
+          "info": "6x in Regular Enemies + World Minibosses"
+        },
+        {
+          "english_text": "Erdtree Avatar Boss",
+          "text": "",
+          "info": "3x in World Minibosses, part of Erdtree Avatar"
+        },
+        {
+          "english_text": "Erdtree Avatar Duo",
+          "text": "",
+          "info": "1x in World Minibosses, part of Erdtree Avatar"
+        },
+        {
+          "english_text": "Basic Erdtree Avatar",
+          "text": "",
+          "info": "2x in Regular Enemies, part of Erdtree Avatar"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Erdtree Burial Watchdog (Sword)",
+        "full_name": "Watchdog (Sword)",
+        "partial_template": "Erdtree Burial $1"
+      },
+      "translated": {
+        "key": "Perro guardián mortuorio del Terrárbol (espada)",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "All Erdtree Burial Watchdog Bosses",
+          "text": "",
+          "info": "5x in Minor Bosses, part of Erdtree Burial Watchdog"
+        },
+        {
+          "english_text": "Erdtree Burial Watchdog",
+          "text": "Perro guardián mortuorio del Terrárbol",
+          "info": "13x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Erdtree Burial Watchdog Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Erdtree Burial Watchdog"
+        },
+        {
+          "english_text": "Basic Erdtree Burial Watchdog",
+          "text": "",
+          "info": "8x in Regular Enemies, part of Erdtree Burial Watchdog"
+        },
+        {
+          "english_text": "Fire Erdtree Burial Watchdog Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Erdtree Burial Watchdog"
+        },
+        {
+          "english_text": "Lightning Erdtree Burial Watchdog Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Erdtree Burial Watchdog"
+        },
+        {
+          "english_text": "Scepter Erdtree Burial Watchdog Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Erdtree Burial Watchdog"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Erdtree Burial Watchdog",
+        "full_name": "Watchdog",
+        "partial_template": "Erdtree Burial $1"
+      },
+      "translated": {
+        "key": "Perro guardián mortuorio del Terrárbol",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Erdtree Burial Watchdog and Imps",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Erdtree Burial Watchdog"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Erdtree Burial Watchdog (Scepter)",
+        "full_name": "Watchdog (Scepter)",
+        "partial_template": "Erdtree Burial $1"
+      },
+      "translated": {
+        "key": "Perro guardián mortuorio del Terrárbol (cetro)",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Esgar, Priest of Blood",
+        "proper_name": "Esgar",
+        "full_template": "$1, Priest of Blood"
+      },
+      "translated": {
+        "key": "Esgar, Sacerdote de la Sangre",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Esgar, Priest of Blood",
+          "text": "Esgar, Sacerdote de la Sangre",
+          "info": "1x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Fell Twin",
+        "full_name": "Fell Twin",
+        "partial_template": "Fell $1"
+      },
+      "translated": {
+        "key": "Gemelo Cruel",
+        "full_name": "Gemelo Cruel",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Fell Twin Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Omen"
+        },
+        {
+          "english_text": "Omen",
+          "text": "",
+          "info": "33x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Basic Omen",
+          "text": "",
+          "info": "32x in Regular Enemies, part of Omen"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Fia's Champion",
+        "full_name": "Fia's Champion",
+        "partial_name": "Champion",
+        "partial_template": "Fia's $1"
+      },
+      "translated": {
+        "key": "Campeón de Fia",
+        "full_name": "Campeón de Fia",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Fia's Champions",
+          "text": "",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Lionel the Lionhearted",
+        "full_name": "Lionel",
+        "full_template": "$1 the Lionhearted"
+      },
+      "translated": {
+        "key": "Lionel, el Corazón de León",
+        "full_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Sorcerer Rogier",
+        "full_name": "Rogier",
+        "full_template": "Sorcerer $1"
+      },
+      "translated": {
+        "key": "Rogier, el Hechicero",
+        "full_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Fire Giant",
+        "full_name": "Fire Giant",
+        "partial_template": "Fire $1"
+      },
+      "translated": {
+        "key": "Gigante de fuego",
+        "full_name": "Gigante de fuego",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Fire Giant",
+          "text": "Gigante de fuego",
+          "info": "2x in Major Bosses"
+        },
+        {
+          "english_text": "Fire Giant 1",
+          "text": "",
+          "info": "1x in Major Bosses, part of Fire Giant"
+        },
+        {
+          "english_text": "Fire Giant 2",
+          "text": "",
+          "info": "1x in Major Bosses, part of Fire Giant"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Flying Dragon Agheel",
+        "proper_name": "Agheel",
+        "partial_template": "Flying $1",
+        "proper_template": "Flying Dragon $1"
+      },
+      "translated": {
+        "key": "Dragón volador Aguil",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Flying Dragon Agheel",
+          "text": "Dragón volador Aguil",
+          "info": "1x in Dragon Minibosses, part of Flying Dragon"
+        },
+        {
+          "english_text": "Flying Dragon",
+          "text": "",
+          "info": "2x in Dragon Minibosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Flying Dragon Greyll",
+        "proper_name": "Greyll",
+        "partial_template": "Flying $1",
+        "proper_template": "Flying Dragon $1"
+      },
+      "translated": {
+        "key": "Dragón volador Greyoll",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Flying Dragon Greyll",
+          "text": "Dragón volador Greyoll",
+          "info": "1x in Dragon Minibosses, part of Flying Dragon"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Ghostflame Dragon",
+        "full_name": "Ghostflame Dragon",
+        "partial_template": "Ghostflame $1"
+      },
+      "translated": {
+        "key": "Dragón de llama espectral",
+        "full_name": "Dragón de llama espectral",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Ghostflame Dragon",
+          "text": "Dragón de llama espectral",
+          "info": "3x in Dragon Minibosses"
+        },
+        {
+          "english_text": "Ghostflame Dragon and Skeletons",
+          "text": "",
+          "info": "1x in Dragon Minibosses, part of Ghostflame Dragon"
+        },
+        {
+          "english_text": "Ghostflame Dragon Boss",
+          "text": "",
+          "info": "2x in Dragon Minibosses, part of Ghostflame Dragon"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Glintstone Dragon Adula",
+        "proper_name": "Adula",
+        "partial_template": "Glintstone $1",
+        "proper_template": "Glintstone Dragon $1"
+      },
+      "translated": {
+        "key": "Dragón de destellita Adula",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Glintstone Dragon Adula",
+          "text": "Dragón de destellita Adula",
+          "info": "1x in Dragon Minibosses, part of Glintstone Dragon"
+        },
+        {
+          "english_text": "Glintstone Dragon",
+          "text": "",
+          "info": "5x in Regular Enemies + Dragon Minibosses"
+        },
+        {
+          "english_text": "Basic Glintstone Dragon",
+          "text": "",
+          "info": "3x in Regular Enemies, part of Glintstone Dragon"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Glintstone Dragon Smarag",
+        "proper_name": "Smarag",
+        "partial_template": "Glintstone $1",
+        "proper_template": "Glintstone Dragon $1"
+      },
+      "translated": {
+        "key": "Dragón de destellita Smarag",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Glintstone Dragon Smarag",
+          "text": "Dragón de destellita Smarag",
+          "info": "1x in Dragon Minibosses, part of Glintstone Dragon"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "God-Devouring Serpent",
+        "full_name": "Serpent",
+        "partial_template": "God-Devouring $1",
+        "source_template": "$1-Devouring Serpent"
+      },
+      "translated": {
+        "key": "Serpiente devoradora de dioses",
+        "full_name": "",
+        "partial_template": "",
+        "source_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "God-Devouring Serpent",
+          "text": "Serpiente devoradora de dioses",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Godefroy the Grafted",
+        "proper_name": "Godefroy",
+        "full_template": "$1 the Grafted"
+      },
+      "translated": {
+        "key": "Godefroy el Injertado",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Godefroy the Grafted",
+          "text": "Godefroy el Injertado",
+          "info": "1x in Evergaol Minibosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Godrick the Grafted",
+        "proper_name": "Godrick",
+        "full_template": "$1 the Grafted"
+      },
+      "translated": {
+        "key": "Godric el Injertado",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Godrick the Grafted",
+          "text": "Godric el Injertado",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Godskin Apostle",
+        "full_name": "Godskin Apostle",
+        "partial_name": "Apostle",
+        "partial_template": "Godskin $1"
+      },
+      "translated": {
+        "key": "Apóstol piel de dios",
+        "full_name": "Apóstol piel de dios",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Godskin Apostle",
+          "text": "Apóstol piel de dios",
+          "info": "2x in Minor Bosses + World Minibosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Godskin Duo",
+        "full_name": "Godskin Duo",
+        "partial_name": "Duo",
+        "partial_template": "Godskin $1"
+      },
+      "translated": {
+        "key": "Dúo piel de dios",
+        "full_name": "Dúo piel de dios",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Godskin Duo",
+          "text": "Dúo piel de dios",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Godskin Noble",
+        "full_name": "Godskin Noble",
+        "partial_name": "Noble",
+        "partial_template": "Godskin $1"
+      },
+      "translated": {
+        "key": "Noble piel de dios",
+        "full_name": "Noble piel de dios",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Godskin Noble",
+          "text": "Noble piel de dios",
+          "info": "2x in Major Bosses + Regular Enemies"
+        },
+        {
+          "english_text": "Godskin Noble Boss",
+          "text": "",
+          "info": "1x in Major Bosses, part of Godskin Noble"
+        },
+        {
+          "english_text": "Basic Godskin Noble",
+          "text": "",
+          "info": "1x in Regular Enemies, part of Godskin Noble"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Golden Hippopotamus",
+        "full_name": "Golden Hippopotamus",
+        "partial_name": "Hippopotamus",
+        "partial_template": "Golden $1"
+      },
+      "translated": {
+        "key": "Hipopótamo dorado",
+        "full_name": "Hipopótamo dorado",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Golden Hippopotamus",
+          "text": "Hipopótamo dorado",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Godfrey, First Elden Lord",
+        "proper_name": "Godfrey",
+        "full_template": "$1, First Elden Lord"
+      },
+      "translated": {
+        "key": "Godfrey, Primer Señor de Elden",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Godfrey, First Elden Lord",
+          "text": "Godfrey, Primer Señor de Elden",
+          "info": "1x in Major Bosses, part of Godfrey"
+        },
+        {
+          "english_text": "Godfrey",
+          "text": "",
+          "info": "2x in Major Bosses"
+        },
+        {
+          "english_text": "Goldfrey, First Elden Lord",
+          "text": "",
+          "info": "1x in Major Bosses, part of Godfrey"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Grafted Scion",
+        "full_name": "Grafted Scion",
+        "partial_name": "Scion",
+        "partial_template": "Grafted $1"
+      },
+      "translated": {
+        "key": "Vástago injertado",
+        "full_name": "Vástago injertado",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Grafted Scion",
+          "text": "Vástago injertado",
+          "info": "6x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Grafted Scion Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Grafted Scion"
+        },
+        {
+          "english_text": "Basic Grafted Scion",
+          "text": "",
+          "info": "5x in Regular Enemies, part of Grafted Scion"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Grave Warden Duelist",
+        "full_name": "Duelist",
+        "partial_template": "Grave Warden $1"
+      },
+      "translated": {
+        "key": "Duelista vigía de la tumba",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Grave Warden Duelist",
+          "text": "Duelista vigía de la tumba",
+          "info": "8x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Grave Warden Duelist Boss",
+          "text": "",
+          "info": "2x in Minor Bosses, part of Grave Warden Duelist"
+        },
+        {
+          "english_text": "Basic Grave Warden Duelist",
+          "text": "",
+          "info": "4x in Regular Enemies, part of Grave Warden Duelist"
+        },
+        {
+          "english_text": "All Grave Warden Duelist Bosses",
+          "text": "",
+          "info": "4x in Minor Bosses, part of Grave Warden Duelist"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Frenzied Duelist",
+        "full_name": "Duelist",
+        "partial_template": "Frenzied $1"
+      },
+      "translated": {
+        "key": "Duelista frenético",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Frenzied Duelist",
+          "text": "Duelista frenético",
+          "info": "1x in Minor Bosses, part of Grave Warden Duelist"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Putrid Grave Warden Duelist",
+        "full_name": "Duelist",
+        "partial_template": "Putrid Grave Warden $1"
+      },
+      "translated": {
+        "key": "Duelista pútrido vigía de la tumba",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Putrid Grave Warden Duelist",
+          "text": "Duelista pútrido vigía de la tumba",
+          "info": "1x in Minor Bosses, part of Grave Warden Duelist"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Guardian Golem",
+        "full_name": "Guardian Golem",
+        "partial_name": "Golem",
+        "partial_template": "Guardian $1"
+      },
+      "translated": {
+        "key": "Gólem guardián",
+        "full_name": "Gólem guardián",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Guardian Golem",
+          "text": "Gólem guardián",
+          "info": "26x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Guardian Golem Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Guardian Golem"
+        },
+        {
+          "english_text": "Basic Guardian Golem",
+          "text": "",
+          "info": "25x in Regular Enemies, part of Guardian Golem"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Hoarah Loux, Warrior",
+        "proper_name": "Hoarah Loux",
+        "full_template": "$1, Warrior"
+      },
+      "translated": {
+        "key": "Hoarah Loux, Guerrero",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Hoarah Loux, Warrior",
+          "text": "Hoarah Loux, Guerrero",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Jagged Peak Drake",
+        "full_name": "Jagged Peak Drake",
+        "partial_name": "Drake",
+        "partial_template": "Jagged Peak $1"
+      },
+      "translated": {
+        "key": "Draco de la cumbre escarpada",
+        "full_name": "Draco de la cumbre escarpada",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Jagged Peak Drake",
+          "text": "Draco de la cumbre escarpada",
+          "info": "3x in Dragon Minibosses + Regular Enemies"
+        },
+        {
+          "english_text": "Jagged Peak Drake Boss",
+          "text": "",
+          "info": "2x in Dragon Minibosses, part of Jagged Peak Drake"
+        },
+        {
+          "english_text": "Basic Jagged Peak Drake",
+          "text": "",
+          "info": "1x in Regular Enemies, part of Jagged Peak Drake"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Jori, Elder Inquisitor",
+        "proper_name": "Jori",
+        "full_template": "$1, Elder Inquisitor"
+      },
+      "translated": {
+        "key": "Jori, Inquisidor Anciano",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Jori, Elder Inquisitor",
+          "text": "Jori, Inquisidor Anciano",
+          "info": "1x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Kindred of Rot",
+        "full_name": "Kindred of Rot",
+        "full_template": "$1 of Rot"
+      },
+      "translated": {
+        "key": "Parentela de la Podredumbre",
+        "full_name": "Parentela de la Podredumbre",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Kindred of Rot",
+          "text": "Parentela de la Podredumbre",
+          "info": "77x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Kindred of Rot Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Kindred of Rot"
+        },
+        {
+          "english_text": "Basic Kindred of Rot",
+          "text": "",
+          "info": "76x in Regular Enemies, part of Kindred of Rot"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Knight of the Solitary Gaol",
+        "full_name": "Solitary Knight",
+        "full_template": "$1 of the Solitary Gaol"
+      },
+      "translated": {
+        "key": "Caballero de la Cárcel Solitaria",
+        "full_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Knight of the Solitary Gaol",
+          "text": "Caballero de la Cárcel Solitaria",
+          "info": "1x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Lamenter",
+        "full_name": "Lamenter",
+        "partial_template": "Lamenter $1"
+      },
+      "translated": {
+        "key": "Lamentante",
+        "full_name": "Lamentante",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Lamenter",
+          "text": "Lamentante",
+          "info": "1x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Leonine Misbegotten",
+        "full_name": "Leonine Misbegotten",
+        "partial_name": "Misbegotten",
+        "partial_template": "Leonine $1"
+      },
+      "translated": {
+        "key": "Malnacido Leonino",
+        "full_name": "Malnacido Leonino",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Leonine Misbegotten",
+          "text": "Malnacido Leonino",
+          "info": "8x in Regular Enemies + Minor Bosses + Major Bosses"
+        },
+        {
+          "english_text": "Leonine Misbegotten Boss",
+          "text": "",
+          "info": "1x in Major Bosses, part of Leonine Misbegotten"
+        },
+        {
+          "english_text": "Basic Leonine Misbegotten",
+          "text": "",
+          "info": "5x in Regular Enemies, part of Leonine Misbegotten"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Misbegotten Crusader",
+        "full_name": "Misbegotten Crusader",
+        "partial_name": "Crusader",
+        "partial_template": "Misbegotten $1"
+      },
+      "translated": {
+        "key": "Cruzado malnacido",
+        "full_name": "Cruzado malnacido",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Misbegotten Crusader",
+          "text": "Cruzado malnacido",
+          "info": "1x in Minor Bosses, part of Leonine Misbegotten"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Misbegotten Warrior",
+        "full_name": "Misbegotten Warrior",
+        "partial_name": "Misbegotten",
+        "partial_template": "Misbegotten $1"
+      },
+      "translated": {
+        "key": "Malnacido Leonino",
+        "full_name": "Malnacido Leonino",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Misbegotten Perfumer Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Leonine Misbegotten"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Perfumer Tricia",
+        "proper_name": "Tricia",
+        "full_template": "Perfumer $1"
+      },
+      "translated": {
+        "key": "Perfumista Tricia",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Lichdragon Fortissax",
+        "proper_name": "Fortissax",
+        "partial_template": "Lichdragon $1"
+      },
+      "translated": {
+        "key": "Lichdragón Fortissax",
+        "proper_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Lichdragon Fortissax",
+          "text": "Lichdragón Fortissax",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Loretta, Knight of the Haligtree",
+        "proper_name": "Loretta",
+        "full_template": "$1, Knight of the Haligtree"
+      },
+      "translated": {
+        "key": "Loretta, caballera del Santoárbol",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Loretta, Knight of the Haligtree",
+          "text": "Loretta, caballera del Santoárbol",
+          "info": "1x in Major Bosses, part of Loretta"
+        },
+        {
+          "english_text": "Loretta",
+          "text": "",
+          "info": "2x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Royal Knight Loretta",
+        "proper_name": "Loretta",
+        "partial_template": "Royal $1",
+        "proper_template": "Royal Knight $1"
+      },
+      "translated": {
+        "key": "Loretta, caballera real",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Royal Knight Loretta",
+          "text": "Loretta, caballera real",
+          "info": "1x in Major Bosses, part of Loretta"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Mad Pumpkin Head",
+        "full_name": "Mad Pumpkin Head",
+        "partial_name": "Pumpkin Head",
+        "partial_template": "Mad $1"
+      },
+      "translated": {
+        "key": "Calabáceo loco",
+        "full_name": "Calabáceo loco",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Mad Pumpkin Head",
+          "text": "Calabáceo loco",
+          "info": "14x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Mad Pumpkin Head Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Mad Pumpkin Head"
+        },
+        {
+          "english_text": "Basic Mad Pumpkin Head",
+          "text": "",
+          "info": "12x in Regular Enemies, part of Mad Pumpkin Head"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Mad Pumpkin Head (Flail)",
+        "full_name": "Mad Pumpkin Head (Flail)",
+        "partial_name": "Pumpkin Head (Flail)",
+        "partial_template": "Mad $1"
+      },
+      "translated": {
+        "key": "Calabáceo loco (mangual)",
+        "full_name": "Calabáceo loco (mangual)",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Mad Pumpkin Head (Hammer)",
+        "full_name": "Mad Pumpkin Head (Hammer)",
+        "partial_name": "Pumpkin Head (Hammer)",
+        "partial_template": "Mad $1"
+      },
+      "translated": {
+        "key": "Calabáceo loco (martillo)",
+        "full_name": "Calabáceo loco (martillo)",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Mad Pumpkin Head Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Mad Pumpkin Head"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Magma Wyrm",
+        "full_name": "Magma Wyrm",
+        "partial_name": "Wyrm",
+        "partial_template": "Magma $1",
+        "proper_template": "Magma Wyrm $1"
+      },
+      "translated": {
+        "key": "Serpiente de Magma",
+        "full_name": "Serpiente de Magma",
+        "partial_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Magma Wyrm",
+          "text": "Serpiente de Magma",
+          "info": "6x in Regular Enemies + Minor Bosses + Major Bosses + World Minibosses"
+        },
+        {
+          "english_text": "Magma Wyrm Boss",
+          "text": "",
+          "info": "2x in Minor Bosses + World Minibosses, part of Magma Wyrm"
+        },
+        {
+          "english_text": "Basic Magma Wyrm",
+          "text": "",
+          "info": "2x in Regular Enemies, part of Magma Wyrm"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Great Wyrm Theodorix",
+        "proper_name": "Theodorix",
+        "partial_template": "Great Wyrm $1"
+      },
+      "translated": {
+        "key": "Theodorix, la Gran Serpiente",
+        "proper_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Great Wyrm Theodorix",
+          "text": "Theodorix, la Gran Serpiente",
+          "info": "1x in World Minibosses, part of Magma Wyrm"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Magma Wyrm Makar",
+        "proper_name": "Makar",
+        "partial_template": "Magma $1",
+        "proper_template": "Magma Wyrm $1"
+      },
+      "translated": {
+        "key": "Serpiente de Magma Makar",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Magma Wyrm Makar",
+          "text": "Serpiente de Magma Makar",
+          "info": "1x in Major Bosses, part of Magma Wyrm"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Malenia, Blade of Miquella",
+        "proper_name": "Malenia",
+        "full_template": "$1, Blade of Miquella"
+      },
+      "translated": {
+        "key": "Malenia, Espada de Miquella",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Malenia, Blade of Miquella",
+          "text": "Malenia, Espada de Miquella",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Maliketh, the Black Blade",
+        "proper_name": "Maliketh",
+        "full_template": "$1, the Black Blade"
+      },
+      "translated": {
+        "key": "Maliketh, la Espada Negra",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Maliketh, the Black Blade",
+          "text": "Maliketh, la Espada Negra",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Messmer the Impaler",
+        "proper_name": "Messmer",
+        "full_template": "$1 the Impaler"
+      },
+      "translated": {
+        "key": "Messmer el Empalador",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Messmer the Impaler",
+          "text": "Messmer el Empalador",
+          "info": "1x in Major Bosses, part of Messmer"
+        },
+        {
+          "english_text": "Messmer",
+          "text": "",
+          "info": "2x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Base Serpent Messmer",
+        "proper_name": "Messmer",
+        "full_template": "Base $1"
+      },
+      "translated": {
+        "key": "Messmer, la Serpiente Vil",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Base Serpent Messmer",
+          "text": "Messmer, la Serpiente Vil",
+          "info": "1x in Major Bosses, part of Messmer"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Metyr, Mother of Fingers",
+        "proper_name": "Metyr",
+        "full_template": "$1, Mother of Fingers"
+      },
+      "translated": {
+        "key": "Metyr, Madre de los Dedos",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Metyr, Mother of Fingers",
+          "text": "Metyr, Madre de los Dedos",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Midra, Lord of Frenzied Flame",
+        "proper_name": "Midra",
+        "full_template": "$1, Lord of Frenzied Flame"
+      },
+      "translated": {
+        "key": "Midra, Señor del Fuego Frenético",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Midra, Lord of Frenzied Flame",
+          "text": "Midra, Señor del Fuego Frenético",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Mimic Tear",
+        "full_name": "Mimic Tear",
+        "partial_template": "Mimic $1"
+      },
+      "translated": {
+        "key": "Lágrima mimética",
+        "full_name": "Lágrima mimética",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Mimic Tear",
+          "text": "Lágrima mimética",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Miranda Blossom",
+        "proper_name": "Miranda",
+        "full_template": "$1 Blossom"
+      },
+      "translated": {
+        "key": "Flor de Miranda",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Miranda Blossom",
+          "text": "Flor de Miranda",
+          "info": "64x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Miranda Blossom and Sprouts",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Miranda Blossom"
+        },
+        {
+          "english_text": "Basic Miranda Blossom",
+          "text": "",
+          "info": "62x in Regular Enemies, part of Miranda Blossom"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Miranda the Blighted Bloom",
+        "proper_name": "Miranda",
+        "full_template": "$1 the Blighted Bloom"
+      },
+      "translated": {
+        "key": "Miranda, la Flor Marchita",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Miranda Omenkiller Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Miranda Blossom"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Mohg, the Omen",
+        "proper_name": "Mohg",
+        "full_template": "$1, the Omen"
+      },
+      "translated": {
+        "key": "Mohg, el Aojo",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Mohg, the Omen",
+          "text": "Mohg, el Aojo",
+          "info": "1x in Major Bosses, part of Mohg"
+        },
+        {
+          "english_text": "Mohg",
+          "text": "",
+          "info": "2x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Mohg, Lord of Blood",
+        "proper_name": "Mohg",
+        "full_template": "$1, Lord of Blood"
+      },
+      "translated": {
+        "key": "Mohg, Señor de la Sangre",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Mohg, Lord of Blood",
+          "text": "Mohg, Señor de la Sangre",
+          "info": "1x in Major Bosses, part of Mohg"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Morgott, the Omen King",
+        "proper_name": "Morgott",
+        "full_template": "$1, the Omen King"
+      },
+      "translated": {
+        "key": "Morgott, el Rey de los Aojos",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Morgott, the Omen King",
+          "text": "Morgott, el Rey de los Aojos",
+          "info": "1x in Major Bosses, part of Morgott"
+        },
+        {
+          "english_text": "Capital Outskirts Margit",
+          "text": "",
+          "info": "1x in Regular Enemies, part of Morgott"
+        },
+        {
+          "english_text": "Morgott",
+          "text": "",
+          "info": "3x in Major Bosses + Regular Enemies"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Margit, the Fell Omen",
+        "proper_name": "Margit",
+        "full_template": "$1, the Fell Omen"
+      },
+      "translated": {
+        "key": "Margit, el Aojo Cruel",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Margit, the Fell Omen",
+          "text": "Margit, el Aojo Cruel",
+          "info": "1x in Major Bosses, part of Morgott"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Necromancer Garris",
+        "full_name": "\"Gary\" Garris",
+        "partial_template": "Necromancer $1"
+      },
+      "translated": {
+        "key": "Garris, el nigromante",
+        "proper_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Necromancer Garris",
+          "text": "Garris, el nigromante",
+          "info": "1x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Night's Cavalry",
+        "full_name": "Night's Cavalry",
+        "partial_name": "Cavalry",
+        "partial_template": "Night's $1"
+      },
+      "translated": {
+        "key": "Caballería de la Noche",
+        "full_name": "Caballería de la Noche",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Night's Cavalry",
+          "text": "Caballería de la Noche",
+          "info": "10x in Night Minibosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Night's Cavalry (Flail)",
+        "full_name": "Night's Cavalry (Flail)",
+        "partial_name": "Cavalry",
+        "partial_template": "Night's $1"
+      },
+      "translated": {
+        "key": "Caballería de la Noche (mangual)",
+        "full_name": "Caballería de la Noche (mangual)",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Night's Cavalry (Glaive)",
+        "full_name": "Night's Cavalry (Glaive)",
+        "partial_name": "Cavalry",
+        "partial_template": "Night's $1"
+      },
+      "translated": {
+        "key": "Caballería de la Noche (guja)",
+        "full_name": "Caballería de la Noche (guja)",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Nox Monk",
+        "full_name": "Nox Monk",
+        "partial_name": "Monk",
+        "partial_template": "Nox $1"
+      },
+      "translated": {
+        "key": "Monje de Nox",
+        "full_name": "Monje de Nox",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Ant-Riding Nox Swordstress",
+          "text": "",
+          "info": "5x in Regular Enemies, part of Nox Fighter"
+        },
+        {
+          "english_text": "Nox Duo",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Nox Fighter"
+        },
+        {
+          "english_text": "Nox Fighter",
+          "text": "",
+          "info": "19x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Basic Nox Fighter",
+          "text": "",
+          "info": "18x in Regular Enemies, part of Nox Fighter"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Nox Swordstress",
+        "full_name": "Nox Swordstress",
+        "partial_name": "Swordstress",
+        "partial_template": "Nox $1"
+      },
+      "translated": {
+        "key": "Espadachina nox",
+        "full_name": "Espadachina nox",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Omenkiller",
+        "full_name": "Omenkiller",
+        "partial_template": "Omenkiller $1"
+      },
+      "translated": {
+        "key": "Asesinaojos",
+        "full_name": "Asesinaojos",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Omenkiller",
+          "text": "Asesinaojos",
+          "info": "8x in Regular Enemies + World Minibosses"
+        },
+        {
+          "english_text": "Omenkiller Boss",
+          "text": "",
+          "info": "1x in World Minibosses, part of Omenkiller"
+        },
+        {
+          "english_text": "Basic Omenkiller",
+          "text": "",
+          "info": "7x in Regular Enemies, part of Omenkiller"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Onyx Lord",
+        "full_name": "Onyx Lord",
+        "partial_template": "$1 Lord"
+      },
+      "translated": {
+        "key": "Señor de Ónix",
+        "full_name": "Señor de Ónix",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Onyx Lord",
+          "text": "Señor de Ónix",
+          "info": "8x in Regular Enemies + Minor Bosses + Evergaol Minibosses"
+        },
+        {
+          "english_text": "Onyx Lord Boss",
+          "text": "",
+          "info": "2x in Minor Bosses + Evergaol Minibosses, part of Onyx Lord"
+        },
+        {
+          "english_text": "Basic Onyx Lord",
+          "text": "",
+          "info": "6x in Regular Enemies, part of Onyx Lord"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Patches",
+        "proper_name": "Patches",
+        "partial_template": "Patches $1"
+      },
+      "translated": {
+        "key": "Parches",
+        "proper_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Patches",
+          "text": "Parches",
+          "info": "2x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Promised Consort Radahn",
+        "proper_name": "Radahn",
+        "full_template": "Promised Consort $1"
+      },
+      "translated": {
+        "key": "Radahn, consorte prometido",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Promised Consort Radahn",
+          "text": "Radahn, consorte prometido",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Putrescent Knight",
+        "full_name": "Putrescent Knight",
+        "partial_template": "Putrescent $1"
+      },
+      "translated": {
+        "key": "Caballero Putrescente",
+        "full_name": "Caballero Putrescente",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Putrescent Knight",
+          "text": "Caballero Putrescente",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Putrid Avatar",
+        "full_name": "Putrid Avatar",
+        "partial_name": "Avatar",
+        "partial_template": "Putrid $1"
+      },
+      "translated": {
+        "key": "Avatar podrido",
+        "full_name": "Avatar podrido",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Putrid Avatar",
+          "text": "Avatar podrido",
+          "info": "5x in Regular Enemies + World Minibosses"
+        },
+        {
+          "english_text": "Putrid Avatar Boss",
+          "text": "",
+          "info": "3x in World Minibosses, part of Putrid Avatar"
+        },
+        {
+          "english_text": "Basic Putrid Avatar",
+          "text": "",
+          "info": "2x in Regular Enemies, part of Putrid Avatar"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Radagon of the Golden Order",
+        "proper_name": "Radagon",
+        "full_template": "$1 of the Golden Order"
+      },
+      "translated": {
+        "key": "Rádagon de la Orden Dorada",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Radagon of the Golden Order",
+          "text": "Rádagon de la Orden Dorada",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Radahn, Consort of Miquella",
+        "proper_name": "Radahn",
+        "full_template": "$1, Consort of Miquella"
+      },
+      "translated": {
+        "key": "Radahn, consorte de Miquella",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Radahn, Consort of Miquella",
+          "text": "Radahn, consorte de Miquella",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Rakshasa",
+        "full_name": "Rakshasa",
+        "partial_template": "Rakshasa $1",
+        "proper_template": "$1shasa"
+      },
+      "translated": {
+        "key": "Rakshasa",
+        "full_name": "Rakshasa",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Rakshasa",
+          "text": "Rakshasa",
+          "info": "1x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Ralva the Great Red Bear",
+        "proper_name": "Ralva",
+        "full_template": "$1 the Great Red Bear"
+      },
+      "translated": {
+        "key": "Ralva, el Gran Oso Rojo",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Ralva the Great Red Bear",
+          "text": "Ralva, el Gran Oso Rojo",
+          "info": "1x in World Minibosses, part of Great Red Bear"
+        },
+        {
+          "english_text": "Great Red Bear",
+          "text": "",
+          "info": "2x in World Minibosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Rugalea the Great Red Bear",
+        "proper_name": "Rugalea",
+        "full_template": "$1 the Great Red Bear"
+      },
+      "translated": {
+        "key": "Rugalea, el Gran Oso Rojo",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Rugalea the Great Red Bear",
+          "text": "Rugalea, el Gran Oso Rojo",
+          "info": "1x in World Minibosses, part of Great Red Bear"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Red Bear",
+        "full_name": "Red Bear",
+        "partial_template": "Red $1"
+      },
+      "translated": {
+        "key": "Oso Rojo",
+        "full_name": "Oso Rojo",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Red Bear",
+          "text": "Oso Rojo",
+          "info": "1x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Red Wolf of Radagon",
+        "full_name": "Red Wolf",
+        "full_template": "$1 of Radagon"
+      },
+      "translated": {
+        "key": "Lobo Rojo de Rádagon",
+        "full_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Red Wolf of Radagon",
+          "text": "Lobo Rojo de Rádagon",
+          "info": "1x in Major Bosses, part of Red Wolf"
+        },
+        {
+          "english_text": "Red Wolf",
+          "text": "",
+          "info": "6x in Regular Enemies + Major Bosses + Minor Bosses"
+        },
+        {
+          "english_text": "Basic Red Wolf",
+          "text": "",
+          "info": "4x in Regular Enemies, part of Red Wolf"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Red Wolf of the Champion",
+        "full_name": "Red Wolf",
+        "full_template": "$1 of the Champion"
+      },
+      "translated": {
+        "key": "Lobo Rojo del campeón",
+        "full_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Red Wolf of the Champion",
+          "text": "Lobo Rojo del campeón",
+          "info": "1x in Minor Bosses, part of Red Wolf"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Regal Ancestor Spirit",
+        "full_name": "Ancestor Spirit",
+        "full_template": "Regal $1 Spirit"
+      },
+      "translated": {
+        "key": "Espíritu Ancestral Real",
+        "full_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Regal Ancestor Spirit",
+          "text": "Espíritu Ancestral Real",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Fallingstar Beast",
+        "full_name": "Fallingstar Beast",
+        "partial_template": "Fallingstar $1"
+      },
+      "translated": {
+        "key": "Bestia de estrella fugaz",
+        "full_name": "Bestia de estrella fugaz",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Fallingstar Beast",
+          "text": "Bestia de estrella fugaz",
+          "info": "4x in Minor Bosses + World Minibosses"
+        },
+        {
+          "english_text": "Regular Fallingstar Beast",
+          "text": "",
+          "info": "3x in Minor Bosses + World Minibosses, part of Fallingstar Beast"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Full-Grown Fallingstar Beast",
+        "full_name": "Fallingstar Beast",
+        "partial_template": "Full-Grown $1"
+      },
+      "translated": {
+        "key": "Bestia de estrella fugaz adulta",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Full-Grown Fallingstar Beast",
+          "text": "Bestia de estrella fugaz adulta",
+          "info": "1x in World Minibosses, part of Fallingstar Beast"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Rellana, Twin Moon Knight",
+        "proper_name": "Rellana",
+        "full_template": "$1, Twin Moon Knight"
+      },
+      "translated": {
+        "key": "Rellana, Caballera de las Lunas Gemelas",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Rellana, Twin Moon Knight",
+          "text": "Rellana, Caballera de las Lunas Gemelas",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Rennala, Queen of the Full Moon",
+        "proper_name": "Rennala",
+        "full_template": "$1, Queen of the Full Moon"
+      },
+      "translated": {
+        "key": "Rennala, Reina de la Luna Llena",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Rennala",
+          "text": "",
+          "info": "2x in Major Bosses"
+        },
+        {
+          "english_text": "Rennala 1",
+          "text": "",
+          "info": "1x in Major Bosses, part of Rennala"
+        },
+        {
+          "english_text": "Rennala 2",
+          "text": "",
+          "info": "1x in Major Bosses, part of Rennala"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Romina, Saint of the Bud",
+        "proper_name": "Romina",
+        "full_template": "$1, Saint of the Bud"
+      },
+      "translated": {
+        "key": "Romina, Santa de los Capullos",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Romina, Saint of the Bud",
+          "text": "Romina, Santa de los Capullos",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Roundtable Knight Vyke",
+        "proper_name": "Vyke",
+        "partial_template": "Roundtable $1",
+        "proper_template": "Roundtable Knight $1"
+      },
+      "translated": {
+        "key": "Vyke, el Caballero de la Mesa Redonda",
+        "proper_name": "",
+        "partial_template": "",
+        "proper_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Roundtable Knight Vyke",
+          "text": "Vyke, el Caballero de la Mesa Redonda",
+          "info": "1x in Evergaol Minibosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Royal Revenant",
+        "full_name": "Royal Revenant",
+        "partial_name": "Revenant",
+        "partial_template": "Royal $1"
+      },
+      "translated": {
+        "key": "Espectro real",
+        "full_name": "Espectro real",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Royal Revenant",
+          "text": "Espectro real",
+          "info": "16x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Royal Revenant Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Royal Revenant"
+        },
+        {
+          "english_text": "Basic Royal Revenant",
+          "text": "",
+          "info": "15x in Regular Enemies, part of Royal Revenant"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Runebear",
+        "full_name": "Runebear",
+        "full_template": "Rune $1"
+      },
+      "translated": {
+        "key": "Oso rúnico",
+        "full_name": "Oso rúnico",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Runebear",
+          "text": "Oso rúnico",
+          "info": "32x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Runebear Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Runebear"
+        },
+        {
+          "english_text": "Basic Runebear",
+          "text": "",
+          "info": "31x in Regular Enemies, part of Runebear"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Rykard, Lord of Blasphemy",
+        "proper_name": "Rykard",
+        "full_template": "$1, Lord of Blasphemy"
+      },
+      "translated": {
+        "key": "Rykard, Señor de la Blasfemia",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Rykard, Lord of Blasphemy",
+          "text": "Rykard, Señor de la Blasfemia",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Sanguine Noble",
+        "full_name": "Sanguine Noble",
+        "partial_name": "Noble",
+        "partial_template": "Sanguine $1"
+      },
+      "translated": {
+        "key": "Noble sanguinario",
+        "full_name": "Noble sanguinario",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Sanguine Noble",
+          "text": "Noble sanguinario",
+          "info": "8x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Sanguine Noble Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Sanguine Noble"
+        },
+        {
+          "english_text": "Basic Sanguine Noble",
+          "text": "",
+          "info": "7x in Regular Enemies, part of Sanguine Noble"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Scadutree Avatar",
+        "full_name": "Scadutree Avatar",
+        "partial_name": "Avatar",
+        "partial_template": "Scadutree $1"
+      },
+      "translated": {
+        "key": "Avatar del Noctárbol",
+        "full_name": "Avatar del Noctárbol",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Scadutree Avatar",
+          "text": "Avatar del Noctárbol",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Scaly Misbegotten",
+        "full_name": "Scaly Misbegotten",
+        "partial_name": "Misbegotten",
+        "partial_template": "Scaly $1"
+      },
+      "translated": {
+        "key": "Malnacido escamoso",
+        "full_name": "Malnacido escamoso",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Scaly Misbegotten",
+          "text": "Malnacido escamoso",
+          "info": "25x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Scaly Misbegotten Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Scaly Misbegotten"
+        },
+        {
+          "english_text": "Basic Scaly Misbegotten",
+          "text": "",
+          "info": "24x in Regular Enemies, part of Scaly Misbegotten"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Sir Gideon Ofnir, the All-Knowing",
+        "proper_name": "Gideon Ofnir",
+        "full_template": "$1, the All-Knowing"
+      },
+      "translated": {
+        "key": "Sir Gideon Ofnir, el Omnisciente",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Sir Gideon Ofnir, the All-Knowing",
+          "text": "Sir Gideon Ofnir, el Omnisciente",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Soldier of Godrick",
+        "proper_name": "Rick",
+        "full_template": "$1 of Godrick"
+      },
+      "translated": {
+        "key": "Soldado de Godric",
+        "proper_name": "",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Soldier of Godrick",
+          "text": "Soldado de Godric",
+          "info": "1x in Minor Bosses, part of Godrick Soldier"
+        },
+        {
+          "english_text": "Godrick Soldier",
+          "text": "",
+          "info": "81x in Regular Enemies + Minor Bosses"
+        },
+        {
+          "english_text": "Basic Godrick Soldier",
+          "text": "",
+          "info": "80x in Regular Enemies, part of Godrick Soldier"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Starscourge Radahn",
+        "proper_name": "Radahn",
+        "partial_template": "Starscourge $1"
+      },
+      "translated": {
+        "key": "Radahn Azotestelar",
+        "proper_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Starscourge Radahn",
+          "text": "Radahn Azotestelar",
+          "info": "1x in Major Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Stonedigger Troll",
+        "full_name": "Stonedigger Troll",
+        "partial_name": "Troll",
+        "partial_template": "Stonedigger $1"
+      },
+      "translated": {
+        "key": "Trol cavarrocas",
+        "full_name": "Trol cavarrocas",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Stonedigger Troll",
+          "text": "Trol cavarrocas",
+          "info": "2x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Stray Mimic Tear",
+        "full_name": "Mimic Tear",
+        "partial_template": "Stray $1"
+      },
+      "translated": {
+        "key": "Lágrima mimética perdida",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Stray Mimic Tear",
+          "text": "Lágrima mimética perdida",
+          "info": "1x in Minor Bosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Tibia Mariner",
+        "full_name": "Tibia Mariner",
+        "partial_name": "Mariner",
+        "partial_template": "Tibia $1"
+      },
+      "translated": {
+        "key": "Marinero de Tibia",
+        "full_name": "Marinero de Tibia",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Tibia Mariner",
+          "text": "Marinero de Tibia",
+          "info": "5x in World Minibosses + Regular Enemies"
+        },
+        {
+          "english_text": "Tibia Mariner Boss",
+          "text": "",
+          "info": "3x in World Minibosses, part of Tibia Mariner"
+        },
+        {
+          "english_text": "Basic Tibia Mariner",
+          "text": "",
+          "info": "2x in Regular Enemies, part of Tibia Mariner"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Tree Sentinel",
+        "full_name": "Tree Sentinel",
+        "full_template": "$1 Sentinel"
+      },
+      "translated": {
+        "key": "Centinela arbóreo",
+        "full_name": "Centinela arbóreo",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Tree Sentinel",
+          "text": "Centinela arbóreo",
+          "info": "5x in World Minibosses"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Death Knight",
+        "full_name": "Death Knight",
+        "partial_template": "Death $1"
+      },
+      "translated": {
+        "key": "Caballero de la Muerte",
+        "full_name": "Caballero de la Muerte",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Death Knight",
+          "text": "Caballero de la Muerte",
+          "info": "2x in Minor Bosses"
+        },
+        {
+          "english_text": "Longhaft Death Knight",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Death Knight"
+        },
+        {
+          "english_text": "Twin Axe Death Knight",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Death Knight"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Ulcerated Tree Spirit",
+        "full_name": "Tree Spirit",
+        "partial_template": "Ulcerated $1"
+      },
+      "translated": {
+        "key": "Espíritu arbóreo ulceroso",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Ulcerated Tree Spirit",
+          "text": "Espíritu arbóreo ulceroso",
+          "info": "16x in Regular Enemies + Minor Bosses + World Minibosses"
+        },
+        {
+          "english_text": "Ulcerated Tree Spirit Boss",
+          "text": "",
+          "info": "3x in Minor Bosses + World Minibosses, part of Ulcerated Tree Spirit"
+        },
+        {
+          "english_text": "Basic Ulcerated Tree Spirit",
+          "text": "",
+          "info": "12x in Regular Enemies, part of Ulcerated Tree Spirit"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Putrid Tree Spirit",
+        "full_name": "Tree Spirit",
+        "partial_template": "Putrid $1"
+      },
+      "translated": {
+        "key": "Espíritu arbóreo podrido",
+        "full_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Putrid Tree Spirit Boss",
+          "text": "",
+          "info": "1x in Minor Bosses, part of Ulcerated Tree Spirit"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Valiant Gargoyle",
+        "full_name": "Valiant Gargoyle",
+        "partial_name": "Gargoyle",
+        "partial_template": "Valiant $1"
+      },
+      "translated": {
+        "key": "Gárgola Valiente",
+        "full_name": "Gárgola Valiente",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Valiant Gargoyles",
+          "text": "",
+          "info": "1x in Major Bosses, part of Gargoyle"
+        },
+        {
+          "english_text": "Gargoyle",
+          "text": "",
+          "info": "16x in Regular Enemies + Major Bosses + World Minibosses"
+        },
+        {
+          "english_text": "Basic Gargoyle",
+          "text": "",
+          "info": "13x in Regular Enemies, part of Gargoyle"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Black Blade Kindred",
+        "full_name": "Black Blade Kindred",
+        "partial_name": "Kindred",
+        "partial_template": "Black Blade $1"
+      },
+      "translated": {
+        "key": "Parentela de la Espada Negra",
+        "full_name": "Parentela de la Espada Negra",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Black Blade Kindred",
+          "text": "Parentela de la Espada Negra",
+          "info": "2x in World Minibosses, part of Gargoyle"
+        }
+      ]
+    },
+    {
+      "base": {
+        "key": "Valiant Gargoyle (Twinblade)",
+        "full_name": "Valiant Gargoyle (Twinblade)",
+        "partial_name": "Gargoyle (Twinblade)",
+        "partial_template": "Valiant $1"
+      },
+      "translated": {
+        "key": "Gárgola Valiente (hojas gemelas)",
+        "full_name": "Gárgola Valiente (hojas gemelas)",
+        "partial_name": "",
+        "partial_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": []
+    },
+    {
+      "base": {
+        "key": "Wormface",
+        "full_name": "Wormface",
+        "full_template": "$1face"
+      },
+      "translated": {
+        "key": "Cara de gusano",
+        "full_name": "Cara de gusano",
+        "full_template": ""
+      },
+      "other_translated": [],
+      "enemy_config_names": [
+        {
+          "english_text": "Wormface",
+          "text": "Cara de gusano",
+          "info": "45x in Regular Enemies, part of Wormfaces"
+        },
+        {
+          "english_text": "Wormface Boss",
+          "text": "",
+          "info": "1x in World Minibosses, part of Wormfaces"
+        },
+        {
+          "english_text": "Wormfaces",
+          "text": "",
+          "info": "48x in World Minibosses + Regular Enemies"
+        },
+        {
+          "english_text": "Large Wormface",
+          "text": "",
+          "info": "3x in Regular Enemies + World Minibosses, part of Wormfaces"
+        },
+        {
+          "english_text": "Basic Large Wormface",
+          "text": "",
+          "info": "2x in Regular Enemies, part of Wormfaces"
+        }
+      ]
+    }
+  ],
+  "special_replacements": [],
+  "enemy_config_names": [
+    {
+      "english_text": "Aging Untouchable",
+      "text": "",
+      "info": "6x in Regular Enemies"
+    },
+    {
+      "english_text": "Albinauric",
+      "text": "",
+      "info": "169x in Regular Enemies"
+    },
+    {
+      "english_text": "Albinauric Archer",
+      "text": "",
+      "info": "22x in Regular Enemies"
+    },
+    {
+      "english_text": "Ancestral Follower",
+      "text": "",
+      "info": "89x in Regular Enemies"
+    },
+    {
+      "english_text": "Ancestral Follower Shaman",
+      "text": "",
+      "info": "6x in Regular Enemies"
+    },
+    {
+      "english_text": "Avionette Soldier",
+      "text": "",
+      "info": "34x in Regular Enemies"
+    },
+    {
+      "english_text": "Banished Knight",
+      "text": "",
+      "info": "31x in Regular Enemies"
+    },
+    {
+      "english_text": "Basilisk",
+      "text": "",
+      "info": "140x in Regular Enemies"
+    },
+    {
+      "english_text": "Bear",
+      "text": "",
+      "info": "59x in Regular Enemies"
+    },
+    {
+      "english_text": "Blackflame Monk",
+      "text": "",
+      "info": "3x in Regular Enemies"
+    },
+    {
+      "english_text": "Bloodbane Giant Crow",
+      "text": "",
+      "info": "4x in Regular Enemies"
+    },
+    {
+      "english_text": "Bloodfiend",
+      "text": "",
+      "info": "94x in Regular Enemies"
+    },
+    {
+      "english_text": "Boar",
+      "text": "",
+      "info": "147x in Passive Wildlife"
+    },
+    {
+      "english_text": "Catacombs Sorcerer",
+      "text": "",
+      "info": "12x in Regular Enemies"
+    },
+    {
+      "english_text": "Clayman",
+      "text": "",
+      "info": "128x in Regular Enemies"
+    },
+    {
+      "english_text": "Commoner",
+      "text": "",
+      "info": "156x in Regular Enemies"
+    },
+    {
+      "english_text": "Crabs",
+      "text": "",
+      "info": "479x in Regular Enemies + Passive Wildlife"
+    },
+    {
+      "english_text": "Albinauric Crab",
+      "text": "",
+      "info": "197x in Passive Wildlife, part of Crabs"
+    },
+    {
+      "english_text": "Black Crab",
+      "text": "",
+      "info": "15x in Passive Wildlife, part of Crabs"
+    },
+    {
+      "english_text": "Crab",
+      "text": "",
+      "info": "198x in Passive Wildlife, part of Crabs"
+    },
+    {
+      "english_text": "Death Crab",
+      "text": "",
+      "info": "12x in Passive Wildlife, part of Crabs"
+    },
+    {
+      "english_text": "Giant Albinauric Crab",
+      "text": "",
+      "info": "21x in Regular Enemies, part of Crabs"
+    },
+    {
+      "english_text": "Giant Black Crab",
+      "text": "",
+      "info": "3x in Regular Enemies, part of Crabs"
+    },
+    {
+      "english_text": "Giant Crab",
+      "text": "",
+      "info": "31x in Regular Enemies, part of Crabs"
+    },
+    {
+      "english_text": "Giant Death Crab",
+      "text": "",
+      "info": "2x in Regular Enemies, part of Crabs"
+    },
+    {
+      "english_text": "Cuckoo Knight",
+      "text": "",
+      "info": "12x in Regular Enemies"
+    },
+    {
+      "english_text": "Deer",
+      "text": "",
+      "info": "1341x in Passive Wildlife"
+    },
+    {
+      "english_text": "Depraved Perfumer",
+      "text": "",
+      "info": "9x in Regular Enemies"
+    },
+    {
+      "english_text": "Disciple of Rot",
+      "text": "",
+      "info": "88x in Regular Enemies"
+    },
+    {
+      "english_text": "Divine Bird Warrior",
+      "text": "",
+      "info": "16x in Regular Enemies"
+    },
+    {
+      "english_text": "Dogs",
+      "text": "",
+      "info": "340x in Regular Enemies"
+    },
+    {
+      "english_text": "Bloodbane Stray",
+      "text": "",
+      "info": "48x in Regular Enemies, part of Dogs"
+    },
+    {
+      "english_text": "Farum Azula Stray",
+      "text": "",
+      "info": "9x in Regular Enemies, part of Dogs"
+    },
+    {
+      "english_text": "Giant Dog",
+      "text": "",
+      "info": "48x in Regular Enemies, part of Dogs"
+    },
+    {
+      "english_text": "Large Bloodbane Stray",
+      "text": "",
+      "info": "3x in Regular Enemies, part of Dogs"
+    },
+    {
+      "english_text": "Large Farum Azula Stray",
+      "text": "",
+      "info": "1x in Regular Enemies, part of Dogs"
+    },
+    {
+      "english_text": "Large Messmerfire Stray",
+      "text": "",
+      "info": "1x in Regular Enemies, part of Dogs"
+    },
+    {
+      "english_text": "Large Rotten Stray",
+      "text": "",
+      "info": "7x in Regular Enemies, part of Dogs"
+    },
+    {
+      "english_text": "Large Shadow Stray",
+      "text": "",
+      "info": "8x in Regular Enemies, part of Dogs"
+    },
+    {
+      "english_text": "Large Stray",
+      "text": "",
+      "info": "13x in Regular Enemies, part of Dogs"
+    },
+    {
+      "english_text": "Messmerfire Stray",
+      "text": "",
+      "info": "11x in Regular Enemies, part of Dogs"
+    },
+    {
+      "english_text": "Rotten Stray",
+      "text": "",
+      "info": "13x in Regular Enemies, part of Dogs"
+    },
+    {
+      "english_text": "Shadow Stray",
+      "text": "",
+      "info": "54x in Regular Enemies, part of Dogs"
+    },
+    {
+      "english_text": "Stray",
+      "text": "",
+      "info": "124x in Regular Enemies, part of Dogs"
+    },
+    {
+      "english_text": "Dominula Celebrant",
+      "text": "",
+      "info": "39x in Regular Enemies"
+    },
+    {
+      "english_text": "Dragonflies",
+      "text": "",
+      "info": "272x in Passive Wildlife"
+    },
+    {
+      "english_text": "Dragonfly",
+      "text": "",
+      "info": "209x in Passive Wildlife, part of Dragonflies"
+    },
+    {
+      "english_text": "Great Dragonfly",
+      "text": "",
+      "info": "14x in Passive Wildlife, part of Dragonflies"
+    },
+    {
+      "english_text": "Yellow Dragonfly",
+      "text": "",
+      "info": "49x in Passive Wildlife, part of Dragonflies"
+    },
+    {
+      "english_text": "Eagle",
+      "text": "",
+      "info": "1788x in Passive Wildlife"
+    },
+    {
+      "english_text": "Elder Albinauric",
+      "text": "",
+      "info": "72x in Regular Enemies"
+    },
+    {
+      "english_text": "Elder Lion",
+      "text": "",
+      "info": "9x in Regular Enemies"
+    },
+    {
+      "english_text": "Exile Soldier",
+      "text": "",
+      "info": "105x in Regular Enemies"
+    },
+    {
+      "english_text": "Fallen Hawks Soldier",
+      "text": "",
+      "info": "39x in Regular Enemies"
+    },
+    {
+      "english_text": "Fat Hornsent Inquisitor",
+      "text": "",
+      "info": "3x in Regular Enemies"
+    },
+    {
+      "english_text": "Fingercreepers",
+      "text": "",
+      "info": "324x in Regular Enemies"
+    },
+    {
+      "english_text": "Colossal Fingercreeper",
+      "text": "",
+      "info": "5x in Regular Enemies, part of Fingercreepers"
+    },
+    {
+      "english_text": "Fingercreeper",
+      "text": "",
+      "info": "61x in Regular Enemies, part of Fingercreepers"
+    },
+    {
+      "english_text": "Small Fingercreeper",
+      "text": "",
+      "info": "258x in Regular Enemies, part of Fingercreepers"
+    },
+    {
+      "english_text": "Fire Knight",
+      "text": "",
+      "info": "21x in Regular Enemies"
+    },
+    {
+      "english_text": "Fire Monk",
+      "text": "",
+      "info": "15x in Regular Enemies"
+    },
+    {
+      "english_text": "Fire Prelate",
+      "text": "",
+      "info": "4x in Regular Enemies"
+    },
+    {
+      "english_text": "Flame Chariot",
+      "text": "",
+      "info": "12x in Regular Enemies"
+    },
+    {
+      "english_text": "Frenzied Merchant",
+      "text": "",
+      "info": "8x in Regular Enemies"
+    },
+    {
+      "english_text": "Giant Ant",
+      "text": "",
+      "info": "110x in Regular Enemies"
+    },
+    {
+      "english_text": "Giant Ball",
+      "text": "",
+      "info": "4x in Regular Enemies"
+    },
+    {
+      "english_text": "Giant Crayfish",
+      "text": "",
+      "info": "39x in Regular Enemies"
+    },
+    {
+      "english_text": "Giant Crow",
+      "text": "",
+      "info": "25x in Regular Enemies"
+    },
+    {
+      "english_text": "Giant Ram",
+      "text": "",
+      "info": "10x in Regular Enemies"
+    },
+    {
+      "english_text": "Glintstone Miner",
+      "text": "",
+      "info": "52x in Regular Enemies"
+    },
+    {
+      "english_text": "Glintstone Sorcerer",
+      "text": "",
+      "info": "76x in Regular Enemies"
+    },
+    {
+      "english_text": "Godrick Foot Soldier",
+      "text": "",
+      "info": "53x in Regular Enemies"
+    },
+    {
+      "english_text": "Godrick Knight",
+      "text": "",
+      "info": "5x in Regular Enemies"
+    },
+    {
+      "english_text": "Gravebird",
+      "text": "",
+      "info": "120x in Regular Enemies"
+    },
+    {
+      "english_text": "Graven School",
+      "text": "",
+      "info": "14x in Regular Enemies"
+    },
+    {
+      "english_text": "Guardian",
+      "text": "",
+      "info": "99x in Regular Enemies"
+    },
+    {
+      "english_text": "Guillemot",
+      "text": "",
+      "info": "273x in Passive Wildlife"
+    },
+    {
+      "english_text": "Guilty",
+      "text": "",
+      "info": "60x in Regular Enemies"
+    },
+    {
+      "english_text": "Haligtree Foot Soldier",
+      "text": "",
+      "info": "9x in Regular Enemies"
+    },
+    {
+      "english_text": "Haligtree Knight",
+      "text": "",
+      "info": "7x in Regular Enemies"
+    },
+    {
+      "english_text": "Haligtree Soldier",
+      "text": "",
+      "info": "45x in Regular Enemies"
+    },
+    {
+      "english_text": "Highwayman",
+      "text": "",
+      "info": "7x in Regular Enemies"
+    },
+    {
+      "english_text": "Hippopotamus",
+      "text": "",
+      "info": "4x in Regular Enemies"
+    },
+    {
+      "english_text": "Hornsent Inquisitor",
+      "text": "",
+      "info": "74x in Regular Enemies"
+    },
+    {
+      "english_text": "Hornsent Shaman",
+      "text": "",
+      "info": "2x in Regular Enemies"
+    },
+    {
+      "english_text": "Human Bosses",
+      "text": "",
+      "info": "16x in Evergaol Minibosses + Minor Bosses + Major Bosses"
+    },
+    {
+      "english_text": "Imp",
+      "text": "",
+      "info": "241x in Regular Enemies"
+    },
+    {
+      "english_text": "Jar Innards",
+      "text": "",
+      "info": "43x in Regular Enemies"
+    },
+    {
+      "english_text": "Kaiden Sellsword",
+      "text": "",
+      "info": "21x in Regular Enemies"
+    },
+    {
+      "english_text": "Lamprey",
+      "text": "",
+      "info": "101x in Regular Enemies"
+    },
+    {
+      "english_text": "Land Octopus",
+      "text": "",
+      "info": "43x in Regular Enemies"
+    },
+    {
+      "english_text": "Land Squirts",
+      "text": "",
+      "info": "162x in Regular Enemies"
+    },
+    {
+      "english_text": "Giant Land Squirt",
+      "text": "",
+      "info": "12x in Regular Enemies, part of Land Squirts"
+    },
+    {
+      "english_text": "Giant Rotten Land Squirt",
+      "text": "",
+      "info": "11x in Regular Enemies, part of Land Squirts"
+    },
+    {
+      "english_text": "Land Squirt",
+      "text": "",
+      "info": "139x in Regular Enemies, part of Land Squirts"
+    },
+    {
+      "english_text": "Large Albinauric",
+      "text": "",
+      "info": "20x in Regular Enemies"
+    },
+    {
+      "english_text": "Large Bigmouth Imp",
+      "text": "",
+      "info": "1x in Regular Enemies"
+    },
+    {
+      "english_text": "Large Exile Soldier",
+      "text": "",
+      "info": "12x in Regular Enemies"
+    },
+    {
+      "english_text": "Large Glintstone Miner",
+      "text": "",
+      "info": "3x in Regular Enemies"
+    },
+    {
+      "english_text": "Large Jar Innards",
+      "text": "",
+      "info": "4x in Regular Enemies"
+    },
+    {
+      "english_text": "Large Lamprey",
+      "text": "",
+      "info": "3x in Regular Enemies"
+    },
+    {
+      "english_text": "Large Putrid Corpse",
+      "text": "",
+      "info": "30x in Regular Enemies"
+    },
+    {
+      "english_text": "Large Putrid Flesh",
+      "text": "",
+      "info": "3x in Regular Enemies"
+    },
+    {
+      "english_text": "Large Shadow Commoner",
+      "text": "",
+      "info": "19x in Regular Enemies"
+    },
+    {
+      "english_text": "Larva of Rot",
+      "text": "",
+      "info": "38x in Regular Enemies"
+    },
+    {
+      "english_text": "Larval Land Octopus",
+      "text": "",
+      "info": "145x in Regular Enemies"
+    },
+    {
+      "english_text": "Leyndell Foot Soldier",
+      "text": "",
+      "info": "143x in Regular Enemies"
+    },
+    {
+      "english_text": "Leyndell Knight",
+      "text": "",
+      "info": "36x in Regular Enemies"
+    },
+    {
+      "english_text": "Leyndell Soldier",
+      "text": "",
+      "info": "107x in Regular Enemies"
+    },
+    {
+      "english_text": "Lightning Ball",
+      "text": "",
+      "info": "43x in Regular Enemies"
+    },
+    {
+      "english_text": "Living Jar",
+      "text": "",
+      "info": "115x in Regular Enemies"
+    },
+    {
+      "english_text": "Living Jar Warrior",
+      "text": "",
+      "info": "26x in Regular Enemies"
+    },
+    {
+      "english_text": "Living Magma",
+      "text": "",
+      "info": "40x in Regular Enemies"
+    },
+    {
+      "english_text": "Man-Bat",
+      "text": "",
+      "info": "324x in Regular Enemies"
+    },
+    {
+      "english_text": "Man-Fly",
+      "text": "",
+      "info": "168x in Regular Enemies"
+    },
+    {
+      "english_text": "Man-Serpent",
+      "text": "",
+      "info": "16x in Regular Enemies"
+    },
+    {
+      "english_text": "Marionette Soldier",
+      "text": "",
+      "info": "199x in Regular Enemies"
+    },
+    {
+      "english_text": "Massive Bigmouth Imp",
+      "text": "",
+      "info": "1x in Regular Enemies"
+    },
+    {
+      "english_text": "Mausoleum Foot Soldier",
+      "text": "",
+      "info": "3x in Regular Enemies"
+    },
+    {
+      "english_text": "Mausoleum Knight",
+      "text": "",
+      "info": "12x in Regular Enemies"
+    },
+    {
+      "english_text": "Mausoleum Soldier",
+      "text": "",
+      "info": "88x in Regular Enemies"
+    },
+    {
+      "english_text": "Messmer Foot Soldier",
+      "text": "",
+      "info": "49x in Regular Enemies"
+    },
+    {
+      "english_text": "Messmer Soldier",
+      "text": "",
+      "info": "153x in Regular Enemies"
+    },
+    {
+      "english_text": "Miner",
+      "text": "",
+      "info": "68x in Regular Enemies"
+    },
+    {
+      "english_text": "Mini Midra",
+      "text": "",
+      "info": "1x in Regular Enemies"
+    },
+    {
+      "english_text": "Miranda Sprout",
+      "text": "",
+      "info": "338x in Regular Enemies"
+    },
+    {
+      "english_text": "Misbegotten",
+      "text": "",
+      "info": "146x in Regular Enemies"
+    },
+    {
+      "english_text": "Operatic Bat",
+      "text": "",
+      "info": "17x in Regular Enemies"
+    },
+    {
+      "english_text": "Oracle Envoys",
+      "text": "",
+      "info": "47x in Regular Enemies"
+    },
+    {
+      "english_text": "Fat Oracle Envoy",
+      "text": "",
+      "info": "3x in Regular Enemies, part of Oracle Envoys"
+    },
+    {
+      "english_text": "Small Oracle Envoy",
+      "text": "",
+      "info": "37x in Regular Enemies, part of Oracle Envoys"
+    },
+    {
+      "english_text": "Tall Oracle Envoy",
+      "text": "",
+      "info": "7x in Regular Enemies, part of Oracle Envoys"
+    },
+    {
+      "english_text": "Owl",
+      "text": "",
+      "info": "88x in Passive Wildlife"
+    },
+    {
+      "english_text": "Page",
+      "text": "",
+      "info": "26x in Regular Enemies"
+    },
+    {
+      "english_text": "Perfumer",
+      "text": "",
+      "info": "36x in Regular Enemies"
+    },
+    {
+      "english_text": "Putrid Corpse",
+      "text": "",
+      "info": "550x in Regular Enemies"
+    },
+    {
+      "english_text": "Putrid Flesh",
+      "text": "",
+      "info": "271x in Regular Enemies"
+    },
+    {
+      "english_text": "Radahn Foot Soldier",
+      "text": "",
+      "info": "44x in Regular Enemies"
+    },
+    {
+      "english_text": "Radahn Soldier",
+      "text": "",
+      "info": "88x in Regular Enemies"
+    },
+    {
+      "english_text": "Ram",
+      "text": "",
+      "info": "1724x in Passive Wildlife"
+    },
+    {
+      "english_text": "Rats",
+      "text": "",
+      "info": "328x in Regular Enemies"
+    },
+    {
+      "english_text": "Giant Rat",
+      "text": "",
+      "info": "39x in Regular Enemies, part of Rats"
+    },
+    {
+      "english_text": "Rat",
+      "text": "",
+      "info": "289x in Regular Enemies, part of Rats"
+    },
+    {
+      "english_text": "Raya Lucaria Foot Soldier",
+      "text": "",
+      "info": "72x in Regular Enemies"
+    },
+    {
+      "english_text": "Raya Lucaria Soldier",
+      "text": "",
+      "info": "81x in Regular Enemies"
+    },
+    {
+      "english_text": "Redmane Knight",
+      "text": "",
+      "info": "13x in Regular Enemies"
+    },
+    {
+      "english_text": "Revenant Follower",
+      "text": "",
+      "info": "153x in Regular Enemies"
+    },
+    {
+      "english_text": "Rotten Miranda Blossom",
+      "text": "",
+      "info": "17x in Regular Enemies"
+    },
+    {
+      "english_text": "Rotten Miranda Sprout",
+      "text": "",
+      "info": "139x in Regular Enemies"
+    },
+    {
+      "english_text": "Scarab",
+      "text": "",
+      "info": "11x in Scarabs"
+    },
+    {
+      "english_text": "Extra Large Scarab",
+      "text": "",
+      "info": "8x in Scarabs, part of Scarab"
+    },
+    {
+      "english_text": "Large Scarab",
+      "text": "",
+      "info": "4x in Scarabs, part of Scarab"
+    },
+    {
+      "english_text": "Small Scarab",
+      "text": "",
+      "info": "178x in Scarabs, part of Scarab"
+    },
+    {
+      "english_text": "Sentry Stone",
+      "text": "",
+      "info": "76x in Regular Enemies"
+    },
+    {
+      "english_text": "Shadow Commoner",
+      "text": "",
+      "info": "719x in Regular Enemies"
+    },
+    {
+      "english_text": "Shadow Militia",
+      "text": "",
+      "info": "53x in Regular Enemies"
+    },
+    {
+      "english_text": "Silver Tear",
+      "text": "",
+      "info": "100x in Regular Enemies"
+    },
+    {
+      "english_text": "Skeletons",
+      "text": "",
+      "info": "449x in Regular Enemies"
+    },
+    {
+      "english_text": "Catacombs Skeleton",
+      "text": "",
+      "info": "81x in Regular Enemies, part of Skeletons"
+    },
+    {
+      "english_text": "Giant Beast Skeleton",
+      "text": "",
+      "info": "14x in Regular Enemies, part of Skeletons"
+    },
+    {
+      "english_text": "Giant Skeleton",
+      "text": "",
+      "info": "17x in Regular Enemies, part of Skeletons"
+    },
+    {
+      "english_text": "Giant Skeleton Torso",
+      "text": "",
+      "info": "11x in Regular Enemies, part of Skeletons"
+    },
+    {
+      "english_text": "Skeleton",
+      "text": "",
+      "info": "326x in Regular Enemies, part of Skeletons"
+    },
+    {
+      "english_text": "Skull Plate Giant Ant",
+      "text": "",
+      "info": "6x in Regular Enemies"
+    },
+    {
+      "english_text": "Slug",
+      "text": "",
+      "info": "198x in Regular Enemies"
+    },
+    {
+      "english_text": "Small Flying Dragon",
+      "text": "",
+      "info": "13x in Regular Enemies"
+    },
+    {
+      "english_text": "Smith Golem",
+      "text": "",
+      "info": "16x in Regular Enemies"
+    },
+    {
+      "english_text": "Snowfield Troll",
+      "text": "",
+      "info": "11x in Regular Enemies"
+    },
+    {
+      "english_text": "Spider Scorpions",
+      "text": "",
+      "info": "77x in Regular Enemies"
+    },
+    {
+      "english_text": "Large Spider Scorpion",
+      "text": "",
+      "info": "4x in Regular Enemies, part of Spider Scorpions"
+    },
+    {
+      "english_text": "Small Spider Scorpion",
+      "text": "",
+      "info": "42x in Regular Enemies, part of Spider Scorpions"
+    },
+    {
+      "english_text": "Spider Scorpion",
+      "text": "",
+      "info": "31x in Regular Enemies, part of Spider Scorpions"
+    },
+    {
+      "english_text": "Spirit Eel",
+      "text": "",
+      "info": "257x in Regular Enemies"
+    },
+    {
+      "english_text": "Spirit Jellyfish",
+      "text": "",
+      "info": "199x in Regular Enemies"
+    },
+    {
+      "english_text": "Springhare",
+      "text": "",
+      "info": "1714x in Passive Wildlife"
+    },
+    {
+      "english_text": "Starcaller",
+      "text": "",
+      "info": "20x in Regular Enemies"
+    },
+    {
+      "english_text": "Troll",
+      "text": "",
+      "info": "29x in Regular Enemies"
+    },
+    {
+      "english_text": "Turtle",
+      "text": "",
+      "info": "150x in Passive Wildlife"
+    },
+    {
+      "english_text": "Vulgar Militia",
+      "text": "",
+      "info": "143x in Regular Enemies"
+    },
+    {
+      "english_text": "Wandering Noble",
+      "text": "",
+      "info": "466x in Regular Enemies"
+    },
+    {
+      "english_text": "Warhawk",
+      "text": "",
+      "info": "45x in Regular Enemies"
+    },
+    {
+      "english_text": "Wolves",
+      "text": "",
+      "info": "520x in Regular Enemies"
+    },
+    {
+      "english_text": "Archer's Wolf",
+      "text": "",
+      "info": "6x in Regular Enemies, part of Wolves"
+    },
+    {
+      "english_text": "White Wolf",
+      "text": "",
+      "info": "88x in Regular Enemies, part of Wolves"
+    },
+    {
+      "english_text": "Wolf",
+      "text": "",
+      "info": "426x in Regular Enemies, part of Wolves"
+    }
+  ]
+}

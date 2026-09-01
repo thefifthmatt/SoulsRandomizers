@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="using:RandomizerCommon.Views"
+        xmlns:vm="using:RandomizerCommon.ViewModels"
+        xmlns:loc="using:RandomizerCommon.Localization"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600"
+        x:Class="RandomizerCommon.Views.EnemyPresetWindow"
+        x:DataType="vm:EnemyPresetViewModel"
+        WindowStartupLocation="CenterOwner"
+        Width="1000" Height="500"
+        MinWidth="700" MinHeight="300"
+        Title="{Binding Title^}">
+    <!-- 1150 is wide enough to fix entire modes WrapPanel but looks awkward. At least be wide enough for Same Category desc -->
+
+    <Design.DataContext>
+        <vm:EnemyPresetViewModel/>
+    </Design.DataContext>
+
+    <Window.Styles>
+        <StyleInclude Source="avares://RandomizerCommon.Avalonia/Styles/MainStyles.axaml"/>
+    </Window.Styles>
+    
+    <views:EnemyPresetView />
+</Window>

@@ -1,0 +1,393 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:RandomizerCommon.ViewModels"
+             xmlns:common="using:RandomizerCommon"
+             xmlns:converters="using:Avalonia.Controls.Converters"
+             xmlns:loc="using:RandomizerCommon.Localization"
+             xmlns:views="using:RandomizerCommon.Views"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:idd="clr-namespace:Avalonia.Xaml.Interactions.DragAndDrop;assembly=Avalonia.Xaml.Interactions.DragAndDrop"
+             xmlns:b="using:RandomizerCommon.Behaviors"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="RandomizerCommon.Views.ItemPresetView"
+             x:DataType="vm:ItemPresetViewModel">
+    
+    <UserControl.Resources>
+        <converters:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="TreeView.ItemsDragAndDrop">
+            <Style.Resources>
+                <b:ItemPresetDropHandler x:Key="ItemPresetDropHandler" />
+            </Style.Resources>
+            <Setter Property="(i:Interaction.Behaviors)">
+                <i:BehaviorCollectionTemplate>
+                    <i:BehaviorCollection>
+                        <idd:ContextDropBehavior Handler="{StaticResource ItemPresetDropHandler}" />
+                    </i:BehaviorCollection>
+                </i:BehaviorCollectionTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="TreeView.ItemsDragAndDrop TreeViewItem">
+            <Setter Property="(i:Interaction.Behaviors)">
+                <i:BehaviorCollectionTemplate>
+                    <i:BehaviorCollection>
+                        <idd:ContextDragBehavior />
+                    </i:BehaviorCollection>
+                </i:BehaviorCollectionTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="StackPanel.splat > :is(Control)[IsVisible=true]:not(:nth-child(1))">
+            <Setter Property="Margin" Value="0,10,0,0" />
+        </Style>
+    </UserControl.Styles>
+    
+    <Grid ColumnDefinitions="250,*">
+        <TreeView Grid.Column="0" ItemsSource="{Binding Panels}" SelectedItem="{Binding SelectedItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Classes="ItemsDragAndDrop">
+            <TreeView.Styles>
+                <Style Selector="TreeViewItem">
+                    <Setter Property="IsExpanded" Value="True"/>
+                </Style>
+            </TreeView.Styles>
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate ItemsSource="{Binding Children}">
+                    <!-- It doesn't extend the full horizontal width when nested like this -->
+                    <Panel HorizontalAlignment="Stretch">
+                        <Panel.ContextMenu>
+                            <ContextMenu>
+                                <ContextMenu.IsVisible>
+                                    <!-- This could also be handled in ContextMenu.Opening based on child IsVisible but this is fine -->
+                                    <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                                        <Binding Path="CanAddChildren" />
+                                        <Binding Path="IsCustom" />
+                                    </MultiBinding>
+                                </ContextMenu.IsVisible>
+                                <MenuItem Command="{Binding AddChildCommand}" IsVisible="{Binding CanAddChildren}">
+                                    <MenuItem.Header>
+                                        <loc:Message Key="ItemPreset_menuAdd" Text="Add new" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem Command="{Binding RemoveChildCommand}" IsVisible="{Binding IsCustom}">
+                                    <MenuItem.Header>
+                                        <loc:Message Key="ItemPreset_menuRemove" Text="Remove" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Panel.ContextMenu>
+                        <loc:Message From="{Binding NameText}" IsVisible="{Binding NameText, Converter={x:Static ObjectConverters.IsNotNull}}" Classes.struckout="{Binding IsDisabled}" HorizontalAlignment="Stretch" />
+                        <TextBlock Text="{Binding Name}" IsVisible="{Binding NameText, Converter={x:Static ObjectConverters.IsNull}}" Classes.struckout="{Binding IsDisabled}" HorizontalAlignment="Stretch" />
+                    </Panel>
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="10,5" DataContext="{Binding SelectedItem}" IsVisible="{Binding ., Converter={x:Static ObjectConverters.IsNotNull}}" x:Name="Panel" Classes="splat">
+            <WrapPanel>
+                <loc:Message From="{Binding NameText}" FontSize="18" IsVisible="{Binding !IsCustom}" Classes.struckout="{Binding IsDisabled}" />
+                <!-- Undo must be disabled because there's no way of resetting it when SelectedItem changes -->
+                <TextBox Text="{Binding EditName}" FontSize="18" IsVisible="{Binding IsCustom}" IsUndoEnabled="False" Width="400"
+                         Classes.struckout="{Binding IsDisabled}">
+                    <TextBox.KeyBindings>
+                        <KeyBinding Command="{Binding SaveNameCommand}" Gesture="Enter" />
+                    </TextBox.KeyBindings>
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="LostFocus">
+                            <ia:InvokeCommandAction Command="{Binding SaveNameCommand}" />
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
+                <CheckBox IsChecked="{Binding IsDisabled}" IsVisible="{Binding CanBeDisabled}" Margin="7,0,0,0">
+                    <loc:Message Key="ItemPreset_disable" Text="Disable rule" />
+                </CheckBox>
+                <Button Command="{Binding RemoveChildCommand}" IsVisible="{Binding IsCustom}" Classes="imagebutton" Margin="7,0,0,0">
+                    <PathIcon Classes="delete">
+                        <ToolTip.Tip>
+                            <loc:Message Key="ItemPreset_menuRemove" Text="Remove" />
+                        </ToolTip.Tip>
+                    </PathIcon>
+                </Button>
+            </WrapPanel>
+            <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ItemPanelViewModel+TabType.Placements}}">
+                <Button Command="{Binding AddChildCommand}" IsVisible="{Binding CanAddChildren}" HorizontalAlignment="Left">
+                    <loc:Message Key="PresetItemForm_parentPlacementsAdd" Text="Add custom item placement rule" />
+                </Button>
+            </ContentControl>
+            <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ItemPanelViewModel+TabType.PremiumGroups}}">
+                <Button Command="{Binding AddChildCommand}" IsVisible="{Binding CanAddChildren}" HorizontalAlignment="Left">
+                    <loc:Message Key="ItemPreset_premiumGroupsAdd" Text="Add custom premium location rule" />
+                </Button>
+            </ContentControl>
+            <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ItemPanelViewModel+TabType.Silos}}">
+                <Button Command="{Binding AddChildCommand}" IsVisible="{Binding CanAddChildren}" HorizontalAlignment="Left">
+                    <loc:Message Key="ItemPreset_itemSiloAdd" Text="Add custom item silo" />
+                </Button>
+            </ContentControl>
+            <StackPanel IsVisible="{Binding ExplainLabel, Converter={x:Static ObjectConverters.IsNotNull}}" Classes="splat">
+                <loc:Message From="{Binding ExplainLabel}" />
+                <Separator />
+            </StackPanel>
+            <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ItemPanelViewModel+TabType.Overview}}">
+                <StackPanel DataContext="{Binding Preset}" Classes="splat">
+                    <Button Command="{Binding ResetCommand}" HorizontalAlignment="Left">
+                        <loc:Message Key="ItemPreset_reset" Text="Reset custom placement settings" />
+                    </Button>
+                    <TextBlock Text="{Binding PresetDesc}" />
+                </StackPanel>
+            </ContentControl>
+            <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ItemPanelViewModel+TabType.AreaSilo}}">
+                <StackPanel Spacing="10" DataContext="{Binding Preset}">
+                    <WrapPanel Classes="spaced">
+                        <loc:Message Key="ItemPreset_overallSilo" Text="Overall item placement silo:" />
+                        <RadioButton IsChecked="{Binding OverallSilo, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:LocationData+AreaSiloType.None}}">
+                            <loc:Message Key="ItemPreset_AreaSiloType_None" Text="None" />
+                        </RadioButton>
+                        <RadioButton IsChecked="{Binding OverallSilo, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:LocationData+AreaSiloType.DLC}}">
+                            <loc:Message Key="ItemPreset_AreaSiloType_DLC" Text="Separate base game and DLC" />
+                        </RadioButton>
+                    </WrapPanel>
+                    <WrapPanel Classes="spaced">
+                        <loc:Message Key="ItemPreset_keyItemSilo" Text="Key item placement silo:" />
+                        <RadioButton IsChecked="{Binding KeyItemSilo, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:LocationData+AreaSiloType.None}}"
+                                     IsEnabled="{Binding OverallSilo, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:LocationData+AreaSiloType.None}}">
+                            <loc:Message Key="ItemPreset_AreaSiloType_None" Text="None" />
+                        </RadioButton>
+                        <RadioButton IsChecked="{Binding KeyItemSilo, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:LocationData+AreaSiloType.DLC}}">
+                            <loc:Message Key="ItemPreset_AreaSiloType_DLC" Text="Separate base game and DLC" />
+                        </RadioButton>
+                    </WrapPanel>
+                </StackPanel>
+            </ContentControl>
+            <WrapPanel IsVisible="{Binding CanShowMode}" Classes="spaced">
+                <loc:Message Key="ItemPreset_placementOverall" Text="Placed in:" />
+                <RadioButton IsChecked="{Binding PlacementMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:ItemPreset+PlacementMode.Important}}">
+                    <loc:Message Key="ItemPreset_PlacementMode_Important" Text="Important locations" />
+                </RadioButton>
+                <RadioButton IsChecked="{Binding PlacementMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:ItemPreset+PlacementMode.Anywhere}}">
+                    <loc:Message Key="ItemPreset_PlacementMode_Anywhere" Text="Anywhere" />
+                </RadioButton>
+                <RadioButton IsChecked="{Binding PlacementMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:ItemPreset+PlacementMode.Norandom}}">
+                    <loc:Message Key="ItemPreset_PlacementMode_Norandom" Text="Not randomized" />
+                </RadioButton>
+                <RadioButton IsChecked="{Binding PlacementMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:ItemPreset+PlacementMode.Custom}}">
+                    <loc:Message Key="ItemPreset_PlacementMode_Custom" Text="Custom" />
+                </RadioButton>
+            </WrapPanel>
+            <WrapPanel IsVisible="{Binding CanShowItemSilo}" Classes="spaced">
+                <loc:Message Key="ItemPreset_itemSiloMode" Text="Item silo group:" />
+                <RadioButton IsChecked="{Binding ItemSiloType, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:LocationData+ItemSiloType.Manual}}">
+                    <loc:Message Key="ItemPreset_ItemSiloType_Manual" Text="Listed items" />
+                </RadioButton>
+                <RadioButton IsChecked="{Binding ItemSiloType, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:LocationData+ItemSiloType.WeaponType}}">
+                    <loc:Message Key="ItemPreset_ItemSiloType_WeaponType" Text="Weapons by type" />
+                </RadioButton>
+                <RadioButton IsChecked="{Binding ItemSiloType, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:LocationData+ItemSiloType.ArmorType}}">
+                    <loc:Message Key="ItemPreset_ItemSiloType_ArmorType" Text="Armor by type" />
+                </RadioButton>
+            </WrapPanel>
+            <WrapPanel IsVisible="{Binding ShowItems}">
+                <!-- Nested fields cause binding errors, but it's not visible so it's fine -->
+                <views:ItemList DataContext="{Binding Items}" Items="{Binding Items}" Source="{Binding Source}" IsEditable="{Binding IsEditable}">
+                    <views:ItemList.Label>
+                        <loc:Message Key="ItemPreset_placementItems" Text="Items:" />
+                    </views:ItemList.Label>
+                </views:ItemList>
+            </WrapPanel>
+            <WrapPanel IsVisible="{Binding ShowLocations}">
+                <views:ItemList DataContext="{Binding Locations}" Items="{Binding Items}" Source="{Binding Source}" IsEditable="{Binding IsEditable}">
+                    <views:ItemList.Label>
+                        <loc:Message DataContext="{Binding #Panel.((vm:ItemPanelViewModel)DataContext)}" From="{Binding LocationLabel}" />
+                    </views:ItemList.Label>
+                </views:ItemList>
+            </WrapPanel>
+            <WrapPanel IsVisible="{Binding ShowExcludes}">
+                <views:ItemList DataContext="{Binding Excludes}" Items="{Binding Items}" Source="{Binding Source}" IsEditable="{Binding IsEditable}">
+                    <views:ItemList.Label>
+                        <loc:Message Key="ItemPreset_placementExcludes" Text="Never placed in:" />
+                    </views:ItemList.Label>
+                </views:ItemList>
+            </WrapPanel>
+            <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ItemPanelViewModel+TabType.Placements}}">
+                <StackPanel Spacing="10" DataContext="{Binding Preset}">
+                    <views:ItemList DataContext="{Binding NorandomItems}" Items="{Binding Items}" Source="{Binding Source}" IsEditable="{Binding IsEditable}">
+                        <views:ItemList.Label>
+                            <loc:Message Key="ItemPreset_norandomItemsItems" Text="Not randomized (items):" />
+                        </views:ItemList.Label>
+                    </views:ItemList>
+                    <views:ItemList DataContext="{Binding NorandomLocs}" Items="{Binding Items}" Source="{Binding Source}" IsEditable="{Binding IsEditable}">
+                        <views:ItemList.Label>
+                            <loc:Message Key="ItemPreset_norandomLocations" Text="Not randomized (locations):" />
+                        </views:ItemList.Label>
+                    </views:ItemList>
+                    <views:ItemList DataContext="{Binding Remove}" Items="{Binding Items}" Source="{Binding Source}" IsEditable="{Binding IsEditable}">
+                        <views:ItemList.Label>
+                            <StackPanel Orientation="Horizontal">
+                                <loc:Message Key="ItemPreset_removeItemsLabel" Text="Removed from the game:" />
+                                <PathIcon Classes="helpsep">
+                                    <ToolTip.Tip>
+                                        <loc:Message Key="ItemPreset_removeItemsHelp">
+                                            Removed items are not available anywhere in the game, but other items can be randomized to their spot.
+                                            If a removed item is also not randomized, it may not be removed.
+                                            If a removed item is excluded from missable locations in any item placement rule, it will never be removed and a warning will be added to spoiler logs.
+                                            If too many items are removed, junk items will be added in their place.
+                                        </loc:Message>
+                                    </ToolTip.Tip>
+                                </PathIcon>
+                            </StackPanel>
+                        </views:ItemList.Label>
+                    </views:ItemList>
+                </StackPanel>
+            </ContentControl>
+            <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ItemPanelViewModel+TabType.ItemShards}}">
+                <StackPanel Spacing="10" DataContext="{Binding Preset}">
+                    <views:ItemList DataContext="{Binding MultiKeyItems}" Items="{Binding Items}" Source="{Binding Source}" IsEditable="True">
+                        <views:ItemList.Label>
+                            <loc:Message Key="ItemPreset_itemShardLabel" Text="Item to split:" />
+                        </views:ItemList.Label>
+                    </views:ItemList>
+                    <ItemsControl ItemsSource="{Binding ItemShards}" Grid.IsSharedSizeScope="True">
+                        <ItemsControl.Styles>
+                            <Style Selector=":is(TextBlock)">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="FontSize" Value="16" />
+                            </Style>
+                        </ItemsControl.Styles>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Spacing="3" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid RowDefinitions="auto" HorizontalAlignment="Left">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition SharedSizeGroup="ItemShardItem" />
+                                        <ColumnDefinition Width="20" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
+                                        <Button Command="{Binding $parent[views:ItemPresetView].((vm:ItemPresetViewModel)DataContext).RemoveMultiItemCommand}" CommandParameter="{Binding .}"
+                                                Classes="imagebutton" Margin="0,0,5,0">
+                                            <PathIcon Classes="delete">
+                                                <ToolTip.Tip>
+                                                    <loc:Message Key="ItemPreset_menuRemove" Text="Remove" />
+                                                </ToolTip.Tip>
+                                            </PathIcon>
+                                        </Button>
+                                        <loc:Message Key="GameMenu_shardName" Text="{}{0} Shard" Param="{Binding LocalizedText}" />
+                                    </StackPanel>
+                                    <WrapPanel Grid.Column="2" Grid.Row="0">
+                                        <loc:Message Key="ItemPreset_itemShard1" Text="" />
+                                        <NumericUpDown Value="{Binding ReqCount}"
+                                                       Minimum="0" Maximum="20" FormatString="0" Width="60" Margin="5,0" />
+                                        <loc:Message Key="ItemPreset_itemShard2" Text="/" />
+                                        <NumericUpDown Value="{Binding Count}"
+                                                       Minimum="1" Maximum="20" FormatString="0" Width="60" Margin="5,0" />
+                                        <loc:Message Key="ItemPreset_itemShard3" Text="required" />
+                                    </WrapPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ContentControl>
+            <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ItemPanelViewModel+TabType.Bias}}">
+                <StackPanel Spacing="10" DataContext="{Binding Preset}" Classes.manual="{Binding ManualBias}">
+                    <StackPanel.Styles>
+                        <Style Selector="NumericUpDown">
+                            <Setter Property="FormatString" Value="0.00" />
+                            <Setter Property="Increment" Value="0.1" />
+                            <Setter Property="MaxWidth" Value="85" />
+                        </Style>
+                        <Style Selector="StackPanel:not(.manual) NumericUpDown">
+                            <Setter Property="MinWidth" Value="70" />
+                            <Setter Property="IsReadOnly" Value="True" />
+                            <Setter Property="ShowButtonSpinner" Value="False" />
+                        </Style>
+                        <Style Selector="StackPanel.manual NumericUpDown">
+                            <Setter Property="MinWidth" Value="85" />
+                            <Setter Property="IsReadOnly" Value="False" />
+                            <Setter Property="ShowButtonSpinner" Value="True" />
+                        </Style>
+                    </StackPanel.Styles>
+                    <StackPanel IsEnabled="{Binding !ManualBias}">
+                        <Slider Minimum="0" Maximum="100" Value="{Binding Bias}" TickFrequency="1" IsSnapToTickEnabled="True" />
+                        <TextBlock HorizontalAlignment="Right" Text="{Binding BiasLabel}" FontSize="16" />
+                    </StackPanel>
+                    <CheckBox IsChecked="{Binding ManualBias}">
+                        <loc:Message Key="ItemPreset_biasManual" Text="Configure individual weights" />
+                    </CheckBox>
+                    <WrapPanel>
+                        <NumericUpDown Value="{Binding ItemSpread}" Minimum="0" Maximum="15" LostFocus="BiasWeight_LostFocus" />
+                        <loc:Message Classes="postcombo" Key="ItemPreset_biasItemSpread" Text="Item spread" />
+                        <PathIcon Classes="helpsep">
+                            <ToolTip.Tip>
+                                <loc:Message Key="ItemPreset_biasItemSpreadHelp">
+                                    Item spread defines the weight of the most difficult and late location in the game, for placing normal items.
+                                    The lowest location weight is 1 and highest weight is 2^spread, and other weights are gradually spaced in between them.
+                                    If this is 0, all locations have the same weight.
+                                    If it's 1, the most desirable location is at most twice as likely for whichever item is eligible to go there first.
+                                </loc:Message>
+                            </ToolTip.Tip>
+                        </PathIcon>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <NumericUpDown Value="{Binding KeyItemSpread}" Minimum="0" Maximum="20" LostFocus="BiasWeight_LostFocus" />
+                        <loc:Message Classes="postcombo" Key="ItemPreset_biasKeyItemSpread" Text="Key item spread" />
+                        <PathIcon Classes="helpsep">
+                            <ToolTip.Tip>
+                                <loc:Message Key="ItemPreset_biasKeyItemSpreadHelp">
+                                    Key item spread defines the weight of the most difficult and late location in the game, for placing important items.
+                                    It makes major key items more likely to be placed at bosses.
+                                    It works the same way as normal item spread, but is usually higher because major key items are limited to specific areas by logic, and locations within specific areas have closer weights.
+                                </loc:Message>
+                            </ToolTip.Tip>
+                        </PathIcon>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <NumericUpDown Value="{Binding KeyItemChain}" Minimum="1" Maximum="100" LostFocus="BiasWeight_LostFocus" />
+                        <loc:Message Classes="postcombo" Key="ItemPreset_biasKeyItemChainWeight" Text="Key item chain weight" />
+                        <PathIcon Classes="helpsep">
+                            <ToolTip.Tip>
+                                <loc:Message Key="ItemPreset_biasKeyItemChainWeightHelp">
+                                    When assigning a major key item to an area, the desirability of areas blocked by the item is multiplied by the key item chain weight, leading to key item chains.
+                                    The desirability for an area is also divided by this value when an item is placed there, cancelling out the chain multiplier and overall spreading out key items.
+                                    For key item placement, an "area" is a group of locations which are mutually accessible without needing any key items.
+                                </loc:Message>
+                            </ToolTip.Tip>
+                        </PathIcon>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <NumericUpDown Value="{Binding KeyItemRegionSpread}" Minimum="1" Maximum="100" LostFocus="BiasWeight_LostFocus" />
+                        <loc:Message Classes="postcombo" Key="ItemPreset_biasKeyItemRegionSpread" Text="Key item region spread" />
+                        <PathIcon Classes="helpsep">
+                            <ToolTip.Tip>
+                                <loc:Message Key="ItemPreset_biasKeyItemRegionSpreadHelp">
+                                    Key item region spread is an alternative to chain weight which can spread out key items across areas without forcing chains.
+                                    The weight for areas is divided by this value when an item is placed there.
+                                    This stacks multiplicatively with chain weight if both are present.
+                                    For key item placement, an "area" is a group of locations which are mutually accessible without needing any key items.
+                                </loc:Message>
+                            </ToolTip.Tip>
+                        </PathIcon>
+                    </WrapPanel>
+                </StackPanel>
+            </ContentControl>
+            <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ItemPanelViewModel+TabType.SharedOptions}}">
+                <ContentPresenter Content="{Binding $parent[views:ItemPresetView].SharedOptions}" />
+            </ContentControl>
+            <StackPanel IsVisible="{Binding LocationList, Converter={x:Static ObjectConverters.IsNotNull}}">
+                <Separator Margin="0" />
+                <Button Command="{Binding ShowLocationListCommand}" HorizontalAlignment="Left" Margin="0,10,0,3">
+                    <loc:Message Text="View all {0} selected locations" Key="PresetItemForm_listLocations" Param="{Binding LocationCount}" />
+                </Button>
+                <loc:Message From="{Binding LocationsWarning}" IsVisible="{Binding LocationsWarning, Converter={x:Static ObjectConverters.IsNotNull}}" />
+            </StackPanel>
+        </StackPanel>
+        </ScrollViewer>
+    </Grid>
+    
+</UserControl>

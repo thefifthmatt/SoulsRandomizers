@@ -66,7 +66,6 @@ ConfigItems:
   - Name: Contraption Key
   - Name: Small Envoy Banner
   - Name: Path of the Dragon
-  - Name: Spook
 - GroupName: questitems
   HintName: quest items
   Items:
@@ -207,6 +206,121 @@ ConfigItems:
   - Name: Sunlight Shield
   - Name: Scholar's Shed Skin
 
+StartingGroups:
+- GroupName: souls
+  Comment: Default 2000, range from 1000 to 3000
+  Entries:
+  - Items:
+    - Name: Large Soul of an Unknown Traveler
+    - Name: Soul of a Nameless Soldier
+    - Name: Large Soul of a Nameless Soldier
+- GroupName: throwables
+  Comment: Quantities used in Soulsborne games are 1 2 3 5 7 10, summary in https://redd.it/jssa6e
+  Entries:
+  - Items:
+    - Name: Black Firebomb
+    Quantity: 4 5 6
+  - Items:
+    - Name: Rope Black Firebomb
+    Quantity: 7 8
+  - Items:
+    - Name: Firebomb
+    Quantity: 10
+  - Items:
+    - Name: Lightning Urn
+    Quantity: 5 7
+  - Items:
+    - Name: Kukri
+    Quantity: 5 7 8 9
+  - Items:
+    - Name: Throwing Knife
+    Quantity: 10 15
+  - Items:
+    - Name: Poison Throwing Knife
+    Quantity: 10 15
+  - Items:
+    - Name: Dung Pie
+    Quantity: 8 10 12
+- GroupName: gems
+  Entries:
+  - Items:
+    - Name: Heavy Gem
+    - Name: Sharp Gem
+    - Name: Refined Gem
+    - Name: Crystal Gem
+    - Name: Simple Gem
+    - Name: Fire Gem
+    - Name: Chaos Gem
+    - Name: Lightning Gem
+    - Name: Deep Gem
+    - Name: Dark Gem
+    - Name: Poison Gem
+    - Name: Blood Gem
+    - Name: Raw Gem
+    - Name: Blessed Gem
+    - Name: Hollow Gem
+    - Name: Shriving Stone
+- GroupName: buffs
+  Entries:
+  - Items:
+    - Name: Hidden Blessing
+  - Items:
+    - Name: Divine Blessing
+  - Items:
+    - Name: Siegbr√§u
+  - Items:
+    - Name: Green Blossom
+    Quantity: 5 7
+    Comment: Budding Green Blossom is 3:261
+  - Items:
+    - Name: Rusted Gold Coin
+    Quantity: 5 7 10
+  - Items:
+    - Name: Alluring Skull
+    Quantity: 3 5
+  - Items:
+    - Name: Undead Hunter Charm
+    Quantity: 2 3 5
+  - Items:
+    - Name: Charcoal Pine Resin
+    - Name: Gold Pine Resin
+    - Name: Human Pine Resin
+    - Name: Carthus Rouge
+    - Name: Pale Pine Resin
+    - Name: Rotten Pine Resin
+    Quantity: 2 3 4
+  - Items:
+    - Name: Prism Stone
+    Quantity: 10 15 20
+- GroupName: keys
+  Entries:
+  - Items:
+    - Name: Rubbish
+  - Items:
+    - Name: Binoculars
+  - Items:
+    - Name: Homeward Bone
+    Quantity: 3 4 5
+  - Items:
+    - Name: Pale Tongue
+    Quantity: 1 2
+  - Items:
+    - Name: Young White Branch
+      ID: 3:454
+    Quantity: 3 5
+  - Items:
+    - Name: Young White Branch
+      ID: 3:463
+  - Items:
+    - Name: Ember
+    Quantity: 1 2 3
+  - Items:
+    - Name: Hello Carving
+    - Name: Thank you Carving
+    - Name: Very good! Carving
+    - Name: I'm sorry Carving
+    - Name: Help me! Carving
+
 Events:
 - Name: iudexgundyr
   Req: firelink_cemetery
@@ -313,7 +427,7 @@ Areas:
   Req: catacombs
 - Name: irithyll
   Text: Irithyll
-  Req: catacombs AND (smalldoll OR (vilhelmskip AND spook))
+  Req: catacombs AND (smalldoll OR vilhelmskip)
   Aliases:
   - irithyll early
   - irithyll mid, dungeon early
@@ -380,13 +494,16 @@ Areas:
 - Name: ariandel
   Text: pre-Contraption Ariandel
   Req: dlc1 AND cathedral AND (earlydlc OR irithyll)
+  Tags: dlc
 - Name: ariandel_vilhelm
   Text: post-Contraption Ariandel
-  Req: dlc1 AND ariandel AND (contraptionkey OR (vilhelmskip AND spook))
+  Req: dlc1 AND ariandel AND (contraptionkey OR vilhelmskip)
+  Tags: dlc
 - Name: dregheap
   Text: Dreg Heap
   # Make sure that DLC2 coming from cinder at least includes all of main lothric, to avoid cutting off most of the game
   Req: dlc2 AND ((dlc2fromkiln AND irithyll AND lothric AND cinder1 AND cinder2 AND cinder3 AND cinder4) OR (dlc1 AND dlc2fromdlc1 AND ariandel_vilhelm AND friede))
+  Tags: dlc
 - Name: ringedcity
   Text: Ringed City
   Req: dlc2 AND dregheap AND smallenvoybanner AND demonprince
@@ -397,9 +514,11 @@ Areas:
   - filianore early
   - filianore mid
   - filianore late
+  Tags: dlc
 - Name: filianore
   Text: Filianore's Rest
   Req: dlc2 AND ringedcity AND halflight
+  Tags: dlc
 - Name: kiln
   Text: Kiln of the First Flame
   Req: settlement AND cinder1 AND cinder2 AND cinder3 AND cinder4
@@ -681,6 +800,15 @@ PlacementRestrictions:
 - Name: Dreamchaser's Ashes
   Unique:
   - UpTo: settlement
+# Loose placement for Doll Skip (does not strictly require these items)
+- Name: Spook
+  Switch: vilhelmskip
+  Unique:
+  - Before: irithyll
+- Name: Tears of Denial
+  Switch: vilhelmskip
+  Unique:
+  - Before: irithyll
 # In case High Wall Ancient Wyvern needs to be killed early
 - Name: Longbow
   Unique:
@@ -780,6 +908,8 @@ ItemPriority:
   ExcludeTags: missable nokey end
   Names:
   - Chameleon
+  - Spook
+  - Tears of Denial
 - Names:
   - Fire Keeper Soul
   - Eyes of a Fire Keeper
@@ -1028,7 +1158,7 @@ Slots:
   - Estus Shard - 4000180[Corpse [o000250_0018] @ firelink]
   Text: In the Firelink Shrine rafters, accessible from the roof
   Area: firelink_roof
-  Tags: racemode
+  Tags: health
 - Key: '00,0:54000190::'
   DebugText:
   - Fire Keeper Soul - 4000190[Fire Keeper Set Corpse [o407211_1000] @ firelink]
@@ -1216,7 +1346,7 @@ Slots:
   - Estus Shard - 3000000[Corpse [o000250_0000] @ highwall]
   Text: From the middle level of the first Consumed King's Gardens elevator, out the balcony and to the right
   Area: highwall_garden
-  Tags: racemode
+  Tags: health
 - Key: '01,0:53000010::'
   DebugText:
   - Green Blossom - 3000010[Corpse [o000250_0001] @ highwall] (2)
@@ -1519,7 +1649,7 @@ Slots:
   - Estus Shard - 3000650[Invisible [o000499_0002] @ highwall]
   Text: In the basement of the building with the Pus of Man on the roof, on the blacksmith anvil
   Area: highwall
-  Tags: late racemode
+  Tags: late health
 - Key: '01,0:53000700::'
   DebugText:
   - Fleshbite Ring+1 - 3000700[Corpse [o000250_0070] @ highwall]
@@ -1756,7 +1886,7 @@ Slots:
   - Undead Bone Shard - 3100010[Corpse [o000250_0001] @ settlement]
   Text: In the area past the Dilapidated Bridge bonfire, where the Giant is shooting arrows, jumping to the floating platform on the right
   Area: settlement
-  Tags: outoftheway racemode
+  Tags: outoftheway health
 - Key: '02,0:53100020::'
   DebugText:
   - Alluring Skull - 3100020[Corpse [o000250_0002] @ settlement] (2)
@@ -2019,7 +2149,7 @@ Slots:
   - Estus Shard - 3100450[Corpse [o000250_0045] @ settlement]
   Text: In front of the burning tree guarded by the Cathedral Evangelist
   Area: settlement
-  Tags: outoftheway racemode
+  Tags: outoftheway health
 - Key: '02,0:53100460::'
   DebugText:
   - Firebomb - 3100460[Corpse [o000250_0046] @ settlement] (6)
@@ -2327,7 +2457,7 @@ Slots:
   - Estus Shard - 3300030[Corpse [o000250_0003] @ farronkeep]
   Text: Behind the building leading to Crystal Sage, approached from Crucifixion Woods bonfire. Can drop down on left side of go under bridge on right side
   Area: farronkeep_road
-  Tags: racemode outoftheway
+  Tags: outoftheway health
 - Key: '03,0:53300040::'
   DebugText:
   - Ring of Sacrifice - 3300040[Corpse [o000250_0004] @ farronkeep]
@@ -2450,7 +2580,7 @@ Slots:
   - Undead Bone Shard - 3300270[Corpse [o000250_0027] @ farronkeep]
   Text: In a standalone pavillion down the ramp from Keep Ruins bonfire and to the right
   Area: farronkeep
-  Tags: ambush racemode late
+  Tags: ambush health late
 - Key: '03,0:53300280::'
   DebugText:
   - Atonement - 3300280[Corpse [o000250_0028] @ farronkeep]
@@ -2605,7 +2735,7 @@ Slots:
   - Estus Shard - 3300530[Corpse [o000250_0053] @ farronkeep]
   Text: Straight ahead from the Farron Keep bonfire to the ritual fire stairs, guarded by a slug
   Area: farronkeep
-  Tags: racemode
+  Tags: health
 - Key: '03,0:53300535::'
   DebugText:
   - Homeward Bone - 3300535[Corpse [o000250_0092] @ farronkeep] (2)
@@ -3047,7 +3177,7 @@ Slots:
   - Undead Bone Shard - 3500040[Corpse [o000250_0004] @ cathedral]
   Text: In the graveyard with the Infested Corpses, on a coffin partly hanging off of the ledge
   Area: cathedral
-  Tags: outoftheway racemode
+  Tags: outoftheway health
 - Key: '04,0:53500050::'
   DebugText:
   - Curse Ward Greatshield - 3500050[Corpse [o000250_0005] @ cathedral]
@@ -3125,7 +3255,7 @@ Slots:
   - Estus Shard - 3500200[Corpse [o000250_0020] @ cathedral]
   Text: Right outside of the Cleansing Chapel. Requires killing praying hollows.
   Area: cathedral
-  Tags: racemode
+  Tags: health
 - Key: '04,0:53500210::'
   DebugText:
   - Maiden Hood - 3500210[Corpse [o000250_0021] @ cathedral]
@@ -3701,7 +3831,7 @@ Slots:
   - Undead Bone Shard - 3800450[Corpse [o000250_0045] @ catacombs]
   Text: In the close end of the Demon Ruins main hall, right below a Smouldering Writhing Flesh
   Area: catacombs_lake
-  Tags: ambush racemode
+  Tags: ambush health
 - Key: '05,0:53800460::'
   DebugText:
   - Titanite Scale - 3800460[Corpse [o000250_0046] @ catacombs]
@@ -3760,7 +3890,7 @@ Slots:
   - Estus Shard - 3800590[Corpse [o000250_0059] @ catacombs]
   Text: Behind an illusory wall and Smouldering Writhing Flesh-filled corridor from Antechamber bonfire
   Area: catacombs_lake
-  Tags: hidden racemode
+  Tags: hidden health
 - Key: '05,0:53800600::'
   DebugText:
   - Ring of Steel Protection+2 - 3800600[Corpse [o000250_0060] @ catacombs]
@@ -3796,7 +3926,7 @@ Slots:
   - Undead Bone Shard - 3800900[Invisible [o000499_0022] @ catacombs]
   Text: Dropped by first Skeleton Ball after killing its sorcerer skeleton
   Area: catacombs
-  Tags: racemode  # Seems fine in enemy rando
+  Tags: health  # Seems fine in enemy rando
 - Key: '05,0:53800910::'
   DebugText:
   - Dark Gem - 3800910[Invisible [o000499_0023] @ catacombs]
@@ -3815,7 +3945,7 @@ Slots:
   - Lightning Stake - 22000000[Carthus Sandworm [c2200_0000] @ catacombs]
   Text: Dropped by the giant Carthus Sandworm
   Area: catacombs_lake
-  Tags: miniboss racemode
+  Tags: miniboss health
 - Key: '05,0:53800945::'
   DebugText:
   - Symbol of Avarice - 21202000[Mimic Chest [c2120_0000] @ catacombs] (5%)
@@ -3969,7 +4099,7 @@ Slots:
   - Estus Shard - 3700090[Chest [o000200_0007] @ irithyll]
   Text: In a chest on the floor of the Anor Londo cathedral
   Area: irithyll
-  Tags: late ambush racemode chest
+  Tags: late ambush health chest
 - Key: '06,0:53700100::'
   DebugText:
   - Budding Green Blossom - 3700100[Corpse [o000250_0010] @ irithyll]
@@ -4057,7 +4187,7 @@ Slots:
   - Undead Bone Shard - 3700240[Corpse [o000250_0024] @ irithyll]
   Text: In the graveyard down the stairs from the Church of Yorshka, behind the grave with the Corvian
   Area: irithyll
-  Tags: mid hidden racemode
+  Tags: mid hidden health
 - Key: '06,0:53700250::'
   DebugText:
   - Kukri - 3700250[Corpse [o000250_0025] @ irithyll] (8)
@@ -4823,10 +4953,9 @@ Slots:
 - Key: '07,0:53900440::'
   DebugText:
   - Large Titanite Shard - 3900440[Corpse [o000250_0044] @ dungeon]
-  Text: Seemingly unused treasure
-  Area: dungeon
-  # Seems unreachable?
-  Tags: norandom
+  Text: Behind a pillar on the base floor of the Distant Manor building
+  Area: irithyll
+  Tags: mid
 - Key: '07,0:53900450::'
   DebugText:
   - Rusted Coin - 3900450[Corpse [o000250_0045] @ dungeon]
@@ -4932,7 +5061,7 @@ Slots:
   - Undead Bone Shard - 3900900[Laddersmith Gilligan Corpse [o393000_4000] @ dungeon]
   Text: On the corpse of Laddersmith Gilligan next to the Profaned Capital bonfire
   Area: dungeon_profaned
-  Tags: racemode
+  Tags: health
 - Key: '07,0:53900910::'
   DebugText:
   - Eleonora - 20400020[Monstrosity of Sin [c2040_0003] @ dungeon]
@@ -5022,7 +5151,7 @@ Slots:
   - Estus Shard - 21203051[Mimic Chest [c2120_0006] @ dungeon]
   Text: Dropped by the mimic in the room after the outside area of Irithyll Dungeon overlooking Profaned Capital
   Area: dungeon
-  Tags: mid miniboss racemode
+  Tags: mid miniboss health
 - Key: '07,0:53900996::'
   DebugText:
   - Symbol of Avarice - 21203050[Mimic Chest [c2120_0006] @ dungeon] (5%)
@@ -5137,7 +5266,7 @@ Slots:
   - Undead Bone Shard - 3010100[Corpse [o000250_0010] @ lothric]
   Text: Dropping down from the bridge where the Pus of Man wyverns breathe fire on the far side from the bonfire
   Area: lothric
-  Tags: mid racemode
+  Tags: mid health
 - Key: '08,0:53010110::'
   DebugText:
   - Lightning Urn - 3010110[Corpse [o000250_0011] @ lothric] (3)
@@ -5523,7 +5652,7 @@ Slots:
   - Estus Shard - 3410100[Corpse [o000250_0010] @ archives]
   Text: On the Archives roof near the three Winged Knights, in a side area overlooking the ocean.
   Area: archives
-  Tags: late outoftheway racemode
+  Tags: late outoftheway health
 - Key: '09,0:53410110::'
   DebugText:
   - Homeward Bone - 3410110[Corpse [o000250_0011] @ archives] (3)
@@ -5721,7 +5850,7 @@ Slots:
   - Undead Bone Shard - 3410620[Archives Scholar Corpse [o342000_0002] @ archives]
   Text: On the corpse of a sitting Archives Scholar on a balcony high in the Archives overlooking the area with the Grand Archives Scholars with a shortcut ladder, near the final wax pool
   Area: archives
-  Tags: late racemode
+  Tags: late health
 - Key: '09,0:53410900::'
   DebugText:
   - Titanite Slab - 12902200[Winged Knight [c1290_0000] @ archives]
@@ -6589,7 +6718,7 @@ Slots:
   Event: demonprince
 - Key: '12,0:50006620::'
   DebugText:
-  - Siegbr‰u - 56210[Amnesiac Lapp [c0000_0008] @ dregheap], 56251[Amnesiac Lapp [c0000_0011] @ dregheap], 66200[Invisible [o000499_0001] @ dregheap]
+  - Siegbr√§u - 56210[Amnesiac Lapp [c0000_0008] @ dregheap], 56251[Amnesiac Lapp [c0000_0011] @ dregheap], 66200[Invisible [o000499_0001] @ dregheap]
   Text: Given by Lapp after collecting the Titanite Slab in Earthen Peak Ruins, or left after Demon Princes fight, or dropped upon death if not given.
   Area: dregheap
   Tags: missable
@@ -6933,7 +7062,7 @@ Slots:
   Event: midir
 - Key: '13,0:50006622::'
   DebugText:
-  - Siegbr‰u - 56220[Amnesiac Lapp [c0000_0015] @ ringedcity], 56230[Amnesiac Lapp [c0000_0016] @ ringedcity], 56240[Amnesiac Lapp [c0000_0014] @ ringedcity], 66220[?EVENT?]
+  - Siegbr√§u - 56220[Amnesiac Lapp [c0000_0015] @ ringedcity], 56230[Amnesiac Lapp [c0000_0016] @ ringedcity], 56240[Amnesiac Lapp [c0000_0014] @ ringedcity], 66220[?EVENT?]
   Text: Given by Lapp within the Ringed Inner Wall.
   Area: ringedcity
   Tags: missable
@@ -7445,7 +7574,7 @@ Slots:
   - Iron Dragonslayer Leggings - 31600003[Dragonslayer Armour [c3160_0000] @ ringedcity]
   Text: Dropped by Dragonslayer Armour at the far end of the muck pit.
   Area: ringedcity
-  # Technically mid, but he is pretty tough. And unfortunately, not guaranteed drop.
+  # Technically mid, but he is pretty tough. And unfortunately, not guaranteed drop (why?)
   Tags: late enemy
 - Key: '13,0:6660::'
   DebugText:
@@ -8030,8 +8159,9 @@ Slots:
   - Firelink Gauntlets - 110552[Shrine Handmaid after defeating Soul of Cinder (1)]
   - Firelink Leggings - 110553[Shrine Handmaid after defeating Soul of Cinder (1)]
   Text: Sold by Handmaid after defeating Soul of Cinder
-  Area: kiln
+  Area: firelink
   Tags: end raceshop
+  QuestReqs: kiln
 - Key: '99,0:-1:9210,110000:'
   DebugText:
   - Titanite Slab - 111952[Shrine Handmaid after placing all Cinders of a Lord on their thrones (1)]
@@ -8213,7 +8343,7 @@ Slots:
 - Key: '99,0:50004321::'
   DebugText:
   - Armor of the Sun - 4321[from talk from talk]
-  Text: Trade Siegbrau with crow
+  Text: Trade Siegbr√§u with crow
   Area: firelink_roof
   Tags: crow
 - Key: '99,0:50004322::'
@@ -8329,19 +8459,19 @@ Slots:
   QuestReqs: cathedral firelink_belltower
 - Key: '99,0:50006210::'
   DebugText:
-  - Siegbr‰u - 62100[?EVENT?]
+  - Siegbr√§u - 62100[?EVENT?]
   Text: Given by Siegward after helping him defeat the Fire Demon.
   Area: settlement
   Tags: missable late
 - Key: '99,0:50006211::'
   DebugText:
-  - Siegbr‰u - 62103[?EVENT?]
+  - Siegbr√§u - 62103[?EVENT?]
   Text: Given by Siegward meeting him in the Irithyll kitchen after the Sewer Centipedes.
   Area: irithyll
   Tags: missable mid
 - Key: '99,0:50006212::'
   DebugText:
-  - Siegbr‰u - 62105[?EVENT?]
+  - Siegbr√§u - 62105[?EVENT?]
   Text: Given by Siegward after helping him defeat Yhorm the Giant. You must talk to him before Emma teleports you.
   Area: dungeon_profaned
   Tags: missable

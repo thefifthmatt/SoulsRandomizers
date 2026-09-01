@@ -3,17 +3,29 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-# Custom
+# Custom for randomizer
+/Directory.build.props
+/presets*/
+*.netbak
+*.dcx
+Vanilla/
+Data0.bdt
+AI/
+ModEngine*/
+dll/
+
+# Clutter in workspace
 /*.dll
 /*.exe
+/*.html
 /*.js
+/*.json
 /*.pdb
+/*.py
+/*.toml
 /*.txt
 /*.zip
-/*.json
-*.netbak
-scratch/
-presets/
+/scratch/
 
 # User-specific files
 *.rsuser

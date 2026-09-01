@@ -1,0 +1,304 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:RandomizerCommon.ViewModels"
+             xmlns:common="using:RandomizerCommon"
+             xmlns:converters="using:Avalonia.Controls.Converters"
+             xmlns:loc="using:RandomizerCommon.Localization"
+             xmlns:localconv="using:RandomizerCommon.Converters"
+             xmlns:views="using:RandomizerCommon.Views"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:idd="clr-namespace:Avalonia.Xaml.Interactions.DragAndDrop;assembly=Avalonia.Xaml.Interactions.DragAndDrop"
+             xmlns:b="using:RandomizerCommon.Behaviors"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="RandomizerCommon.Views.EnemyPresetView"
+             x:DataType="vm:EnemyPresetViewModel">
+    
+    <UserControl.Resources>
+        <converters:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+        <localconv:ContainsItemConverter x:Key="ContainsItemConverter" />
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="TreeView.ItemsDragAndDrop">
+            <Style.Resources>
+                <b:EnemyPresetDropHandler x:Key="EnemyPresetDropHandler" />
+            </Style.Resources>
+            <Setter Property="(i:Interaction.Behaviors)">
+                <i:BehaviorCollectionTemplate>
+                    <i:BehaviorCollection>
+                        <idd:ContextDropBehavior Handler="{StaticResource EnemyPresetDropHandler}" />
+                    </i:BehaviorCollection>
+                </i:BehaviorCollectionTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="TreeView.ItemsDragAndDrop TreeViewItem">
+            <Setter Property="(i:Interaction.Behaviors)">
+                <i:BehaviorCollectionTemplate>
+                    <i:BehaviorCollection>
+                        <idd:ContextDragBehavior />
+                    </i:BehaviorCollection>
+                </i:BehaviorCollectionTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="StackPanel.splat > :is(Control)[IsVisible=true]:not(:nth-last-child(1))">
+            <!-- Maybe ItemPresetView should use bottom margin as well -->
+            <Setter Property="Margin" Value="0,0,0,10" />
+        </Style>
+        <Style Selector="NumericUpDown.multiplier">
+            <Setter Property="FormatString" Value="0" />
+            <Setter Property="Minimum" Value="1" />
+            <Setter Property="Maximum" Value="999" />
+            <Setter Property="Increment" Value="1" />
+            <Setter Property="HorizontalContentAlignment" Value="Right" />
+            <Setter Property="InnerRightContent" Value="x" />
+        </Style>
+        <Style Selector="NumericUpDown.multiplier:not(.readonly)">
+            <Setter Property="MaxWidth" Value="80" />
+            <Setter Property="IsReadOnly" Value="False" />
+            <Setter Property="ShowButtonSpinner" Value="True" />
+        </Style>
+        <Style Selector="NumericUpDown.multiplier.readonly">
+            <Setter Property="MaxWidth" Value="65" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="ShowButtonSpinner" Value="False" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Menu Grid.Column="0" Grid.Row="0" Classes="topmenu" Margin="5,5,0,0">
+            <MenuItem>
+                <MenuItem.Header>
+                    <loc:Message Key="EldenForm_fileToolStripMenuItem" Text="File" />
+                </MenuItem.Header>
+                <MenuItem Command="{Binding OpenDirectoryCommand}">
+                    <MenuItem.Header>
+                        <loc:Message Key="PresetEditForm_directoryButton" Text="Open presets directory" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Command="{Binding ImportCommand}">
+                    <MenuItem.Header>
+                        <loc:Message Key="PresetEditForm_menuImport" Text="Import enemy preset..." />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Command="{Binding ExportCommand}">
+                    <MenuItem.Header>
+                        <loc:Message Key="PresetEditForm_menuExport" Text="Export enemy preset..." />
+                    </MenuItem.Header>
+                </MenuItem>
+                <Separator />
+                <MenuItem Command="{Binding ResetCommand}">
+                    <MenuItem.Header>
+                        <loc:Message Key="PresetEditForm_resetButton" Text="Reset..." />
+                    </MenuItem.Header>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Column="0" Grid.Row="1" ColumnDefinitions="200,*" RowDefinitions="*,Auto">
+            <TreeView Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" ItemsSource="{Binding Panels}" SelectedItem="{Binding SelectedItem}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" Classes="ItemsDragAndDrop">
+                <TreeView.Styles>
+                    <Style Selector="TreeViewItem">
+                        <Setter Property="IsExpanded" Value="True"/>
+                    </Style>
+                </TreeView.Styles>
+                <TreeView.ItemTemplate>
+                    <TreeDataTemplate ItemsSource="{Binding Children}">
+                        <!-- No ContextMenu for now. Lots of ItemPresetView things may get added back when custom tabs are possible -->
+                        <loc:Message From="{Binding NameText}" />
+                    </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <ScrollViewer Grid.Column="1" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Margin="10,5" DataContext="{Binding SelectedItem}" IsVisible="{Binding ., Converter={x:Static ObjectConverters.IsNotNull}}" x:Name="Panel" Classes="splat">
+                    <loc:Message From="{Binding NameText}" FontSize="18" />
+                    <StackPanel IsVisible="{Binding ExplainLabel, Converter={x:Static ObjectConverters.IsNotNull}}" Classes="splat">
+                        <loc:Message From="{Binding ExplainLabel}" />
+                        <Separator />
+                    </StackPanel>
+                    <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+TabType.GlobalSettings}}">
+                        <StackPanel Spacing="3" DataContext="{Binding Preset}">
+                            <views:EnemyList DataContext="{Binding Norandom}" Items="{Binding Items}" Source="{Binding Source}" />
+                            <views:EnemyList DataContext="{Binding RemoveSource}" Items="{Binding Items}" Source="{Binding Source}" />
+                            <CheckBox IsVisible="{Binding !DlcSiloForced}" IsChecked="{Binding OverallDlcSilo}">
+                                <loc:Message Key="PresetEditForm_dlcsilo" Text="Randomize DLC separately for all bosses and enemies" />
+                            </CheckBox>
+                            <CheckBox IsVisible="{Binding DlcSiloForced}" IsChecked="True" IsEnabled="False">
+                                <loc:Message Key="PresetEditForm_dlcsilo" Text="Randomize DLC separately for all bosses and enemies" />
+                            </CheckBox>
+                            <WrapPanel Classes="spaced">
+                                <CheckBox IsChecked="{Binding EnableMultiplier}">
+                                    <loc:Message Key="PresetEditForm_modeMultiply" Text="Enemy Onslaught" />
+                                </CheckBox>
+                                <PathIcon Classes="help">
+                                    <ToolTip.Tip>
+                                        <loc:Message Key="PresetEditForm_modeMultiplyL" Text="Enemy Onslaught mode adds copies of enemies and bosses which you can fight simultaneously. 2x is double enemies. Past 3x, this is unstable and resting at some Sites of Grace may crash the game. At high enough values, enemies in crowded areas might not load in. To alleviate this, configure multipliers for individual enemy categories." />
+                                    </ToolTip.Tip>
+                                </PathIcon>
+                                <NumericUpDown Classes="multiplier" Value="{Binding Multiplier}" LostFocus="NumericUpDown_LostFocus" />
+                            </WrapPanel>
+                            <WrapPanel Classes="spaced">
+                                <CheckBox IsChecked="{Binding EnableOopsAll}">
+                                    <loc:Message Key="PresetEditForm_modeOopsall" Text="Oops All" />
+                                </CheckBox>
+                                <PathIcon Classes="help">
+                                    <ToolTip.Tip>
+                                        <loc:Message Key="PresetEditForm_modeOopsallL" Text="Oops All mode replaces all bosses and enemies in the game with a single enemy type. You can get a similar result by merging all enemy categories and then configuring the main category." />
+                                    </ToolTip.Tip>
+                                </PathIcon>
+                                <views:EnemyList DataContext="{Binding OopsAll}" Items="{Binding Items}" Source="{Binding Source}" />
+                            </WrapPanel>
+                        </StackPanel>
+                    </ContentControl>
+                    <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+TabType.MiscOptions}}">
+                        <ItemsControl ItemsSource="{Binding Preset.MiscOptions}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="3" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <CheckBox IsChecked="{Binding Enabled}">
+                                            <loc:Message From="{Binding Text}" />
+                                        </CheckBox>
+                                        <loc:Message Classes="moreinfo" From="{Binding Label}" IsVisible="{Binding Label, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ContentControl>
+                    <ContentControl IsVisible="{Binding Class, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:EnemyAnnotations+EnemyClass.Basic}}">
+                        <Button HorizontalAlignment="Left" Command="{Binding QuickBossCommand}" IsVisible="{Binding ShowModes}">
+                            <loc:Message Key="PresetEditForm_quickReplace10" Text="Replace 10% of regular enemies with bosses" />
+                        </Button>
+                    </ContentControl>
+                    <ContentControl IsVisible="{Binding Class, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:EnemyAnnotations+EnemyClass.Wildlife}}">
+                        <Button HorizontalAlignment="Left" Command="{Binding QuickWildlifeCommand}" IsVisible="{Binding ShowModes}">
+                            <loc:Message Key="PresetEditForm_quickReplaceWildlife" Text="Replace wildlife with regular enemies" />
+                        </Button>
+                    </ContentControl>
+                    <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+TabType.AdjustSource}}">
+                        <Button HorizontalAlignment="Left" Command="{Binding QuickPassiveCommand}">
+                            <loc:Message Key="PresetEditForm_quickReducePassive" Text="Reduce passive enemy frequency" />
+                        </Button>
+                    </ContentControl>
+                    <Panel IsVisible="{Binding CanEditDlcSilo}">
+                        <CheckBox IsVisible="{Binding !DlcSiloForced}" IsChecked="{Binding DlcSilo}">
+                            <loc:Message Key="PresetEditForm_dlcsiloClass" Text="Randomize DLC separately for {0}" Param="{Binding NameText}" />
+                        </CheckBox>
+                        <CheckBox IsVisible="{Binding DlcSiloForced}" IsChecked="True" IsEnabled="False">
+                            <loc:Message Key="PresetEditForm_dlcsiloClass" Text="Randomize DLC separately for {0}" Param="{Binding NameText}" />
+                        </CheckBox>
+                    </Panel>
+                    <WrapPanel Classes="spaced" IsVisible="{Binding ShowMultiplier}">
+                        <CheckBox IsChecked="{Binding OverrideMultiplier}">
+                            <loc:Message Key="PresetEditForm_modeMultiplyOverride" Text="Override enemy multiplier" />
+                        </CheckBox>
+                        <NumericUpDown Classes="multiplier" Classes.readonly="{Binding !OverrideMultiplier}" Value="{Binding Multiplier}" LostFocus="NumericUpDown_LostFocus" />
+                    </WrapPanel>
+                    <ContentControl IsVisible="{Binding OopsAllOverride}">
+                        <RadioButton IsChecked="True">
+                            <loc:Message Key="PresetEditForm_modeOopsall" Text="Oops All" />
+                        </RadioButton>
+                    </ContentControl>
+                    <ContentControl IsVisible="{Binding NorandomOverride}">
+                        <RadioButton IsChecked="True">
+                            <loc:Message Key="PresetEditForm_classNorandom" Text="Not randomized" />
+                        </RadioButton>
+                    </ContentControl>
+                    <!-- LineSpacing may be a reason to bump Avalonia to later 11.x -->
+                    <WrapPanel IsVisible="{Binding ShowModes}" Classes="spaced">
+                        <RadioButton IsVisible="{Binding Modes, Converter={StaticResource ContainsItemConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+PlacementMode.Inherit}}"
+                                     IsChecked="{Binding Mode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+PlacementMode.Inherit}}">
+                            <loc:Message Key="PresetEditForm_classInheritName" Text="Copy config from {0}" Param="{Binding ParentLabel}" />
+                        </RadioButton>
+                        <RadioButton IsVisible="{Binding Modes, Converter={StaticResource ContainsItemConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+PlacementMode.Merge}}"
+                                     IsChecked="{Binding Mode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+PlacementMode.Merge}}">
+                            <loc:Message Key="PresetEditForm_classMergeName" Text="Merge with {0}" Param="{Binding ParentLabel}" />
+                        </RadioButton>
+                        <RadioButton IsVisible="{Binding Modes, Converter={StaticResource ContainsItemConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+PlacementMode.Merge2}}"
+                                     IsChecked="{Binding Mode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+PlacementMode.Merge2}}">
+                            <loc:Message Key="PresetEditForm_classMergeName" Text="Merge with {0}" Param="{Binding ParentLabel2}" />
+                        </RadioButton>
+                        <RadioButton IsVisible="{Binding Modes, Converter={StaticResource ContainsItemConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+PlacementMode.Norandom}}"
+                                     IsChecked="{Binding Mode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+PlacementMode.Norandom}}">
+                            <loc:Message Key="PresetEditForm_classNorandom" Text="Not randomized" />
+                        </RadioButton>
+                        <RadioButton IsVisible="{Binding Modes, Converter={StaticResource ContainsItemConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+PlacementMode.Random}}"
+                                     IsChecked="{Binding Mode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+PlacementMode.Random}}">
+                            <loc:Message Key="PresetEditForm_classRandom" Text="Randomized" />
+                        </RadioButton>
+                        <RadioButton IsVisible="{Binding Modes, Converter={StaticResource ContainsItemConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+PlacementMode.Custom}}"
+                                     IsChecked="{Binding Mode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+PlacementMode.Custom}}">
+                            <loc:Message Key="PresetEditForm_classCustom" Text="Custom" />
+                        </RadioButton>
+                        <PathIcon Classes="help" Margin="0"
+                                    IsVisible="{Binding Modes, Converter={StaticResource ContainsItemConverter}, ConverterParameter={x:Static vm:EnemyPanelViewModel+PlacementMode.Custom}}">
+                            <ToolTip.Tip>
+                                <loc:Message From="{x:Static vm:EnemyPanelViewModel.CustomHelpText}" />
+                            </ToolTip.Tip>
+                        </PathIcon>
+                    </WrapPanel>
+                    <ContentControl IsVisible="{Binding RemoveSource, Converter={x:Static ObjectConverters.IsNotNull}}">
+                        <views:EnemyList DataContext="{Binding RemoveSource}" Items="{Binding Items}" Source="{Binding Source}" />
+                    </ContentControl>
+                    <ItemsControl ItemsSource="{Binding Pools}"
+                                  IsVisible="{Binding ShowPools}"
+                                  Margin="0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <views:EnemyList Items="{Binding Items}" Source="{Binding Source}" Margin="0,0,0,10" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Button Command="{Binding AddPoolCommand}" Classes="imagebutton"
+                            IsVisible="{Binding ShowPools}"
+                            HorizontalAlignment="Left">
+                        <PathIcon Classes="add">
+                            <ToolTip.Tip>
+                                <loc:Message Key="PresetEditForm_poolAdd" Text="Add source group" />
+                            </ToolTip.Tip>
+                        </PathIcon>
+                    </Button>
+                </StackPanel>
+            </ScrollViewer>
+            <WrapPanel Grid.Column="1" Grid.Row="1" Classes="spaced" Margin="5" DataContext="{Binding SelectedItem}" IsVisible="{Binding ShowPercentTotal}">
+                <loc:Message Key="PresetEditForm_poolPercentTotal" Text="Total: {0}%" Param="{Binding PercentTotal}" FontSize="16" />
+                <CheckBox IsChecked="{Binding AutoBalance}">
+                    <loc:Message Key="PresetEditForm_poolAutoBalance" Text="Auto-balance" />
+                </CheckBox>
+            </WrapPanel>
+        </Grid>
+        <StackPanel Grid.Column="0" Grid.Row="2">
+            <WrapPanel Classes="spaced" Margin="3">
+                <loc:Message Key="PresetEditForm_quickMergeL" Text="Merge presets:" VerticalAlignment="Center" />
+                <Button Command="{Binding QuickSeparateCommand}" Classes.simplechecked="{Binding IsSeparate}">
+                    <loc:Message Key="PresetEditForm_quickSeparate" Text="Split enemies by category" />
+                </Button>
+                <Button Command="{Binding QuickMergeMinorCommand}" Classes.simplechecked="{Binding IsMergeMinor}">
+                    <loc:Message Key="PresetEditForm_quickMergeMinor" Text="Merge non-major bosses" />
+                </Button>
+                <Button Command="{Binding QuickMergeBossCommand}" Classes.simplechecked="{Binding IsMergeBoss}">
+                    <loc:Message Key="PresetEditForm_quickMergeBoss" Text="Merge all bosses" />
+                </Button>
+            </WrapPanel>
+            <WrapPanel HorizontalAlignment="Right" Classes="spaced" Margin="3">
+                <Button Command="{Binding ApplyCommand}" HorizontalContentAlignment="Center" MinWidth="100" IsEnabled="{Binding Modified}">
+                    <loc:Message Key="PresetEditForm_applyButton" Text="Apply" />
+                </Button>
+                <Button Command="{Binding OkCommand}" HorizontalContentAlignment="Center" MinWidth="100">
+                    <loc:Message Key="PresetEditForm_okButton" Text="OK" />
+                </Button>
+            </WrapPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -568,6 +568,12 @@ EnemyEvents:
   Template:
   - Type: segment
     Entity: 3000800
+    Add:
+    - Cmds:
+      - // Unify cutscene handling, and exclude enemies for whom it breaks their AI
+      - SkipIfCharacterHasSpEffect(1, 3000800, 6968, true, ComparisonType.Equal, 1)
+      - PlayCutsceneAndWarpPlayer(30000030, CutscenePlayMode.Skippable, 3002810, 30, 0, 10000)
+      After: GotoIfEventFlag(Label.LABEL2, ON, TargetEventFlagType.EventFlag, 13000801)
     Segments:
     - Type: disable
       End: EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 13000800)
@@ -586,6 +592,10 @@ EnemyEvents:
       - SetCharacterAIState(3000800, Enabled)
       - SetNetworkUpdateRate(3000800, true, CharacterUpdateFrequency.AlwaysUpdate)
       - DisplayBossHealthBar(Enabled, 3000800, 0, 902240)
+    - Type: remove
+      Commands:
+      - PlayCutsceneAndWarpPlayer
+      - PlayCutsceneToPlayer
   DebugInfo:
   - 3000800 (highwall c2240_0000 - Vordt of the Boreal Valley)
   - region 3002811 (領域_フルアーマー獣_ポリ劇後ワープ地点（ボス）)
@@ -1492,10 +1502,13 @@ EnemyEvents:
   - Type: chrboss
     Entity: 3010800
     DefeatFlag: 13010800
-    MusicFlag: ForceAnimationPlayback -> 13015811
+    MusicFlag: ForceAnimationPlayback -> 13015888
     Remove: 3010801; 3010802
   - Type: loc
-    Remove: ForceAnimationPlayback
+    Remove: ForceAnimationPlayback; IfCharacterDamagedBy
+    Replaces:
+    - From: IfCharacterHPRatio(AND_01, 3010800, ComparisonType.LessOrEqual, 0.7, ComparisonType.Equal, 1)
+      To: IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 13015888)
   DebugInfo:
   - 3010801 (lothric c3080_0000 - Pilgrim Butterfly)
   - 3010802 (lothric c3080_0004 - Pilgrim Butterfly)
@@ -2284,19 +2297,19 @@ EnemyEvents:
   - SetEventFlag(13100801, ON)
 - ID: 13105811
   Map: m31_00_00_00
-  Comment: Greatwood floor collapse when Greatwood has an event message. TODO Replace this with phase change info (may need to be custom?)
+  Comment: Greatwood floor collapse when Greatwood has an event message. Prev condition IfCharacterHPRatio(MAIN, 3100800, ComparisonType.LessOrEqual, 0.6, ComparisonType.Equal, 1)
   Template:
   - Type: loc
     Entity: 3100800
     Add:
-    - Cmd: IfCharacterHPRatio(MAIN, 3100800, ComparisonType.LessOrEqual, 0.6, ComparisonType.Equal, 1)
+    - Cmd: IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, 13105888)
       Before: ActivateMapPart
     Remove: 3100800; 3104810
   - Type: multichrboss
     Comment: Phase transition without floor, and match 3.266 time delay in music event to set music flag. This won't activate if parts disabled.
     Entity: 3100800
     DefeatFlag: 13100800
-    MusicFlag: IfCharacterHasEventMessage -> 13105881
+    MusicFlag: IfCharacterHasEventMessage -> 13105888
     Regions:
     - event arenagen 3104810
     Add:
@@ -3740,11 +3753,11 @@ EnemyEvents:
       - IfConditionGroup(MAIN, PASS, AND_01)
       - IfCharacterHasSpEffect(OR_01, 3200850, 12160, true, ComparisonType.Equal, 1)
       - SkipIfConditionGroupStateUncompiled(1, PASS, OR_01)
-      - ForceAnimationPlayback(3200850, 20001, false, true, false, 0, 1)
+      - ForceAnimationPlayback(3200850, 20001, false, true, false, 0, 1)  // 3.133s
       - WaitFixedTimeFrames(1)
       - ForceCharacterDeath(3200850, false)
-      - ChangeCharacterEnableState(3200850, Disabled)
-      - SetCharacterAnimationState(3200850, Disabled)
+      - ChangeCharacterEnableState(3200850, Disabled)  // Required
+      - SetCharacterAnimationState(3200850, Disabled)  // Required
       - SetCharacterAIState(3200850, Disabled)
       - SetNetworkUpdateRate(3200850, true, CharacterUpdateFrequency.NoUpdate)
       - DisplayBossHealthBar(Disabled, 3200850, 0, 905030)
@@ -4301,7 +4314,7 @@ EnemyEvents:
     Add:
     - Cmd: ChangeCharacterEnableState(3300802, Enabled)
       Before: ForceAnimationPlayback(3300802, 30000, false, false, false, 0, 1)
-    Remove: 3302806; 13305801
+    Remove: 3302806; 13305801; IfEventFlag(AND_09, ON, TargetEventFlagType.EventIDSlotNumber, 0)
   DebugInfo:
   - 3300802 (farronkeep c3040_0001 - Abyss Watchers)
   - 3300801 (farronkeep c3040_0000 - Abyss Watchers)
@@ -4345,7 +4358,7 @@ EnemyEvents:
     Add:
     - Cmd: ChangeCharacterEnableState(3300803, Enabled)
       Before: ForceAnimationPlayback(3300803, 30001, false, false, false, 0, 1)
-    Remove: 3302806; 13305801
+    Remove: 3302806; 13305801; IfEventFlag(AND_09, ON, TargetEventFlagType.EventIDSlotNumber, 0)
   DebugInfo:
   - 3300803 (farronkeep c3040_0002 - Abyss Watchers)
   - 3300801 (farronkeep c3040_0000 - Abyss Watchers)
@@ -4382,15 +4395,24 @@ EnemyEvents:
   - EndUnconditionally(EventEndType.End)
 - ID: 13305814
   Map: m33_00_00_00
-  Comment: Phase transition for Abyss Watchers, warping the main dude
+  Comment: Abyss Watchers phase 2, warping the main dude
   Template:
   - Type: multichr
     Entity: 3300801
     DefeatFlag: 13300800
     MusicFlag: 13305802
-    Remove: WarpCharacterAndCopyFloor; PlayCutsceneToPlayer
+    Remove: WarpCharacterAndCopyFloor; PlayCutsceneToPlayer; ForceAnimationPlayback(3300801, 20, false, false, false, 0, 1)
     RemoveDupe: 13305802
-    Replace: WaitFixedTimeSeconds(0.3 -> 2.5)
+    Replace: WaitFixedTimeSeconds(0.3 -> 0.1)
+    Add:
+    - Cmd: WaitFixedTimeSeconds(3)
+      Before: SetCharacterAIId
+    - Cmds:
+      - SkipIfCharacterHasSpEffect(2, 3300801, 12243, true, ComparisonType.Equal, 1)
+      - ForceAnimationPlayback(3300801, 20001, false, false, false, 0, 1)
+      - SkipUnconditionally(1)
+      - ForceAnimationPlayback(3300801, 20000, false, false, false, 0, 1)
+      After: ForceAnimationPlayback(3300801, 20, false, false, false, 0, 1)
   DebugInfo:
   - 3300801 (farronkeep c3040_0000 - Abyss Watchers)
   - group 3305801 [3300802 (farronkeep c3040_0001 - Abyss Watchers), 3300803 (farronkeep c3040_0002 - Abyss Watchers), dummyenemy 3300804 (farronkeep c3040_0003)]
@@ -5365,12 +5387,17 @@ EnemyEvents:
       - IfCharacterHPRatio(AND_01, 3410832, ComparisonType.Less, 0.01, ComparisonType.Equal, 1)
       - IfCharacterHasSpEffect(AND_01, 3410832, 11602, false, ComparisonType.Equal, 1)
       - IfConditionGroup(MAIN, PASS, AND_01)
+      - SetCharacterAIState(3410832, Disabled)  // Earlier
       - ChangeCamera(-1, -1)
-      - ChangeCharacterEnableState(3410832, Disabled)
-      - SetCharacterAnimationState(3410832, Disabled)
-      - SetCharacterAIState(3410832, Disabled)
+      - ForceAnimationPlayback(3410832, 10000, false, true, false, 0, 1)  // Extra
+      - // ChangeCharacterEnableState(3410832, Disabled)
+      - // SetCharacterAnimationState(3410832, Disabled)
       - DisplayBossHealthBar(Disabled, 3410832, 0, 905250)
       - SetNetworkUpdateRate(3410832, false, CharacterUpdateFrequency.AlwaysUpdate)
+    - Type: remove
+      Commands:
+      - ChangeCharacterEnableState(3410832, Disabled)
+      - SetCharacterAnimationState(3410832, Disabled)
   - Type: segment
     Entity: 3410830
     Remove: WarpCharacterAndCopyFloor(3410830, TargetEntityType.Character, 3410832, -1, 3410832)
@@ -8199,11 +8226,13 @@ EnemyEvents:
   - + SetSpEffect(3700850*, 10641)
 - ID: 13705887
   Map: m37_00_00_00
-  Comment: Management for Pontiff clone warping
+  Comment: Management for Pontiff clone warping. (5033 seems to be strafe only, speffect-less strafe seems to not happen in rando)
   Template:
   - Type: multichronly
     Entity: 3700850
     DefeatFlag: 13700850
+    Replace: IfElapsedSeconds(OR_02, 5 -> 1.5)
+    Remove: IfCharacterHasSpEffect(OR_01, 3700851, 5033, true, ComparisonType.Equal, 1)
   DebugInfo:
   - 3700850 (irithyll c5140_0000 - Pontiff Sulyvahn)
   - 3700851 (irithyll c5140_0001 - Pontiff Sulyvahn)
@@ -10022,6 +10051,7 @@ EnemyEvents:
   Comment: Disabling Profaned Flame fire when the jailer behind it wakes up or leaves their home
   Template:
   - Type: default
+    Comment: 3900360 breaks it, falls through floor maybe? Seems reliable enough
   DebugInfo:
   - 3900223 (dungeon c2230_0036 - Jailer)
   - region 3902475 (【イベント】炎の器オブジェ_獄吏司祭生存判定用領域)
@@ -11130,6 +11160,7 @@ EnemyEvents:
       - IfCharacterDeadalive(AND_02, 4500861, DeathState.Dead, ComparisonType.Equal, 1)
       - IfConditionGroup(MAIN, PASS, AND_02)
       - HandleBossDefeat(4500860)
+      - DisplayBossHealthBar(Disabled, 4500861, 1, 906030)  // Extra
   DebugInfo:
   - 4500860 (ariandel c0000_0009 - Champion's Gravetender)
   - 4500861 (ariandel c6030_0004 - Greatwolf)
@@ -15382,9 +15413,12 @@ EnemyEvents:
   - + SetLockOnPoint(5100320*, 221, Disabled)
 - ID: 15105310
   Map: m51_00_00_00
-  Comment: Backread management for judicator helpers based on judicators
+  Comment: Backread management for judicator helpers based on judicators. Has a bug so just try to reduce flickering bug, even at the cost of performance
   Template:
   - Type: multichrarg
+    NewEvent:
+    - SetNetworkSyncState(Disabled)
+    - SetNetworkUpdateRate(X4_4, true, CharacterUpdateFrequency.AlwaysUpdate)
   DebugInfo:
   - 5100300 (ringedcity c6280_0001 - Judicator)
   - 5100301 (ringedcity c6281_0001 - Judicator Helper)
@@ -16883,6 +16917,8 @@ EnemyEvents:
       - IfConditionGroup(AND_01, PASS, OR_01)
       - IfPlayerIsNotInOwnWorldExcludesArena(AND_01, false)
       - IfConditionGroup(MAIN, PASS, AND_01)
+    - Type: remove
+      Commands:
       - ChangeCharacterEnableState(5110801, Disabled)
       - SetCharacterAnimationState(5110801, Disabled)
   - Type: segment
@@ -23711,3 +23747,28 @@ EnemyEvents:
   - + IfCharacterBackreadStatus(AND_02, X0_4*, false, ComparisonType.Equal, 1)
   - IfConditionGroup(MAIN, PASS, AND_02)
   - EndUnconditionally(EventEndType.Restart)
+EnemyScripts:
+- Name: 314000_battle
+  Comment: Hellkite_314000_Battle
+  Replaces:
+  - From: ai:IsInsideTargetRegion(TARGET_ENE_0, 3204354)
+    To: ai:IsInsideTargetRegion(TARGET_ENE_0, 3204354) or ai:HasSpecialEffectId(TARGET_SELF, 6969)
+- Name: 525000_battle
+  Comment: DarknessBigBrotherBattle
+  Replaces:
+  - From: ai:IsInsideMsbRegion(TARGET_ENE_0, AI_DIR_TYPE_F, 0, 3412890) == true
+    To: (ai:IsInsideMsbRegion(TARGET_ENE_0, AI_DIR_TYPE_F, 0, 3412890) == true or ai:IsInsideMsbRegion(TARGET_ENE_0, AI_DIR_TYPE_F, 0, 3412891) == true) and not ai:HasSpecialEffectId(TARGET_SELF, 6969)
+  - From: ai:IsInsideMsbRegion(TARGET_ENE_0, AI_DIR_TYPE_F, 0, 3412890) == false
+    To: (ai:IsInsideMsbRegion(TARGET_ENE_0, AI_DIR_TYPE_F, 0, 3412890) == false and ai:IsInsideMsbRegion(TARGET_ENE_0, AI_DIR_TYPE_F, 0, 3412891) == false) or ai:HasSpecialEffectId(TARGET_SELF, 6969)
+  - From: 0, 18, 1
+    To: -4, 19, 1
+- Name: 620000_battle
+  Comment: GOAL_YUPA620000, Gael 2
+  Replaces:
+  - From: ai:IsInsideMsbRegion(TARGET_ENE_0, AI_DIR_TYPE_F, 0, 5112822) == false
+    To: ai:IsInsideMsbRegion(TARGET_ENE_0, AI_DIR_TYPE_F, 0, 5112822) == false and not ai:HasSpecialEffectId(TARGET_SELF, 6969)
+- Name: 621100_battle
+  Comment: GOAL_DarknessDragon621100_Battle
+  Replaces:
+  - From: ai:IsInsideTargetRegion(TARGET_SELF, 5102880)
+    To: true

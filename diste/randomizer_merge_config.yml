@@ -1,0 +1,25 @@
+# This file allows configuration of randomizer when copied to a merged mod's root directory (the same directory with regulation.bin).
+# Currently, this only supports configuration of ids added by other mods which cause significant errors or imbalance when they're randomized.
+# Do *not* add vanilla key item locations here, as the run will softlock if any are required.
+#
+# Supported fields are as follows:
+# NorandomEntities: Entity ids for enemies to ignore and not randomize
+# NorandomLots: ItemLotParam_map entries to not randomize
+# NorandomEnemyLots: ItemLotParam_enemy entries to not randomize
+# NorandomLotFlags: Event flags in ItemLotParam where all lots with the flag should not be randomized (for shops, use the next field instead)
+# NorandomShops: ShopLineupParam entries to not randomize
+# NorandomItems: Item ids to not randomize, formatted like <type>:<id>, where type is weapon, protector, accessory, goods, gem, or custom. For example, goods:40040.
+#                For vanilla items only, the item name may also be used, but please only do this if randomizer errors arise otherwise.
+# When a lot/shop is not randomized, anything with the same event flag will also not be randomized.
+# Note that if a higher priority mod overrides any of these params, this config will still be applied.
+#
+# For any id, first check randomizer spoiler logs (or the regulation.bin it makes) to see if it's already ignored.
+# Randomizer will already ignore all item lots with non-vanilla event flags and all new enemies with non-vanilla entity ids.
+# Otherwise, for any field, you can specify either numbers or ranges of numbers as a YAML list below (*without* the # in front):
+#
+# NorandomShops:
+# - 1234500
+# - 100945-100949
+#
+# Note that ranges are inclusive, so the above range includes both 100945 and 100949, but not 100950.
+# 

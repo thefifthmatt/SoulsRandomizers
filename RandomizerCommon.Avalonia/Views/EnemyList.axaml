@@ -1,0 +1,86 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:RandomizerCommon.ViewModels"
+             xmlns:common="using:RandomizerCommon"
+             xmlns:converters="using:Avalonia.Controls.Converters"
+             xmlns:loc="using:RandomizerCommon.Localization"
+             xmlns:localconv="using:RandomizerCommon.Converters"
+             xmlns:views="using:RandomizerCommon.Views"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="RandomizerCommon.Views.EnemyList"
+             x:DataType="vm:EnemyPanelViewModel+DisplayEnemyList">
+    
+    <ItemsControl ItemsSource="{Binding $parent[views:EnemyList].Children}">
+        <ItemsControl.Resources>
+            <localconv:ContainsItemConverter x:Key="ContainsItemConverter" />
+        </ItemsControl.Resources>
+        <ItemsControl.Styles>
+            <Style Selector=":is(AutoCompleteBox) /template/ Popup">
+                <Setter Property="OverlayDismissEventPassThrough" Value="True" />
+                <Setter Property="PlacementMode" Value="Bottom" />
+            </Style>
+        </ItemsControl.Styles>
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <WrapPanel />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.DataTemplates>
+            <DataTemplate DataType="{x:Type vm:EnemyPanelViewModel+DisplayEnemySource}">
+                <StackPanel Orientation="Horizontal" Spacing="7">
+                    <Button Command="{Binding RemoveSelfCommand}"
+                            IsVisible="{Binding IsDeletable}" Classes="imagebutton">
+                        <PathIcon Classes="delete" Height="18">
+                            <ToolTip.Tip>
+                                <loc:Message Key="PresetEditForm_poolRemove" Text="Remove source group" />
+                            </ToolTip.Tip>
+                        </PathIcon>
+                    </Button>
+                    <NumericUpDown IsVisible="{Binding HasWeight}" Value="{Binding Weight}"
+                                   Minimum="0" Maximum="100" FormatString="0.0" Increment="1" Width="90"
+                                   VerticalAlignment="Center" HorizontalContentAlignment="Right" InnerRightContent="%"
+                                   GotFocus="Weight_GotFocus" LostFocus="Weight_LostFocus" />
+                    <ContentControl IsVisible="{Binding Label, Converter={x:Static ObjectConverters.IsNotNull}}" VerticalAlignment="Center">
+                        <loc:Message From="{Binding Label}" />
+                    </ContentControl>
+                    <views:PopulateListBox ItemsSource="{Binding Items}" ValueMemberBinding="{Binding DropdownName}"
+                                           ItemFilter="{Binding ItemFilter}" FilterMode="Custom" MinimumPrefixLength="0"
+                                           ChooseItem="Box_ChooseItem" KeyDown="Box_KeyDown"
+                                           Width="340" MaxDropDownHeight="500" VerticalAlignment="Center">
+                        <views:PopulateListBox.InnerRightContent>
+                            <Button Background="Transparent" BorderThickness="0" Padding="0" Content="⨉" />
+                        </views:PopulateListBox.InnerRightContent>
+                    </views:PopulateListBox>
+                    <ToggleButton IsChecked="{Binding RandomByType}" IsVisible="{Binding ShowRandomByType}" Classes="imagebutton" Cursor="Hand">
+                        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <PathIcon Data="{StaticResource grid_off_regular}" Height="18" IsVisible="{Binding !RandomByType}">
+                                <ToolTip.Tip>
+                                    <loc:Message Key="PresetEditForm_poolByEntryOff" Text="Each included enemy is equally likely to be selected, so bigger groups of enemies are more likely to be selected than smaller groups." />
+                                </ToolTip.Tip>
+                            </PathIcon>
+                            <PathIcon Data="{StaticResource grid_regular}" Height="18" IsVisible="{Binding RandomByType}">
+                                <ToolTip.Tip>
+                                    <loc:Message Key="PresetEditForm_poolByEntryOn" Text="Each entry in the list is equally likely to be selected (duplicate entries are allowed), and each included enemy is equally likely to be selected within each entry." />
+                                </ToolTip.Tip>
+                            </PathIcon>
+                        </StackPanel>
+                    </ToggleButton>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:EnemyPanelViewModel+DisplayEnemy}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding LocalizedText}" VerticalAlignment="Center" Margin="7,0,0,0"
+                               Classes.struckout="{Binding RedundantTo, Converter={x:Static ObjectConverters.IsNotNull}}"
+                               ToolTip.ServiceEnabled="{Binding RedundantTo, Converter={x:Static ObjectConverters.IsNotNull}}">
+                        <ToolTip.Tip>
+                            <TextBlock Text="{Binding RedundantTo}" TextDecorations="{x:Null}" />
+                        </ToolTip.Tip>
+                    </TextBlock>
+                    <Button Background="Transparent" BorderThickness="0" Padding="1" Content="⨉" Command="{Binding RemoveCommand}" />
+                </StackPanel>
+            </DataTemplate>
+        </ItemsControl.DataTemplates>
+    </ItemsControl>
+</UserControl>

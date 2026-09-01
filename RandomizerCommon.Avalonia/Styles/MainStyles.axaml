@@ -1,0 +1,261 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Override to make simple theme look better -->
+    <!-- Font and color overrides in MainResources.axaml -->
+    <Style Selector="ToolTip">
+        <Setter Property="MaxWidth" Value="500" />
+        <Setter Property="ShowOnDisabled" Value="True" />
+    </Style>
+    <Style Selector="ToolTip > :is(TextBlock)">
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector=":is(TextBlock)">
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector=":is(TextBlock):disabled">
+        <Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}" />
+    </Style>
+    <Style Selector="TabItem">
+        <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
+    </Style>
+    <Style Selector="Separator">
+        <Setter Property="Background" Value="{DynamicResource ThemeControlMidHighBrush}" />
+    </Style>
+    <Style Selector="Separator:not(Menu Separator)">
+        <Setter Property="Margin" Value="0" />
+    </Style>
+    <!-- Default spacing between interactible controls (don't include TextBlock as those are labels) -->
+    <Style Selector="StackPanel > :is(Button):not(:nth-child(1))">
+        <Setter Property="Margin" Value="0,3,0,0" />
+    </Style>
+    <Style Selector="StackPanel > DockPanel:not(:nth-child(1))">
+        <Setter Property="Margin" Value="0,3,0,0" />
+    </Style>
+    <Style Selector="StackPanel > NumericUpDown:not(:nth-child(1))">
+        <Setter Property="Margin" Value="0,3,0,0" />
+    </Style>
+    <Style Selector="NumericUpDown">
+        <Setter Property="ClipValueToMinMax" Value="True" />
+    </Style>
+    <!-- Custom classes -->
+    <Style Selector="TabItem.disabletab :is(Control).tab">
+        <Setter Property="IsEnabled" Value="False" />
+    </Style>
+    <Style Selector="TabItem.disabletab :is(TextBlock).tabtitle, :is(TextBlock).tabtitle.disabletab">
+        <Setter Property="TextDecorations" Value="Strikethrough" />
+        <Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}" />
+    </Style>
+    <Style Selector="Menu.topmenu > MenuItem">
+        <Setter Property="Padding" Value="3" />
+    </Style>
+    <!-- Tabs following checkboxes -->
+    <Style Selector=":is(TextBlock):nth-child(2).tabtitle">
+        <Setter Property="Padding" Value="5,0,0,0" />
+    </Style>
+    <Style Selector=":is(TextBlock).struck">
+        <Setter Property="TextDecorations" Value="Strikethrough" />
+    </Style>
+    <Style Selector=":is(TextBlock).struckout">
+        <Setter Property="TextDecorations" Value="Strikethrough" />
+        <Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}" />
+    </Style>
+    <Style Selector=":is(TextBox).struckout">
+        <!-- No TextDecorations in Avalonia 11. The control isn't actually disabled but it's visually distinct -->
+        <Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}" />
+    </Style>
+    <Style Selector=":is(PathIcon).inactive">
+        <!-- The difference is readable but not really clear at a glance -->
+        <Setter Property="Foreground" Value="{DynamicResource ThemeBorderMidColor}" />
+    </Style>
+    <Style Selector="TextBlock#status">
+        <Setter Property="Background" Value="{DynamicResource NeutralBack}"/>
+    </Style>
+    <Style Selector="TextBlock#status.success">
+        <Setter Property="Background" Value="{DynamicResource SuccessBack}"/>
+    </Style>
+    <Style Selector="TextBlock#status.failure">
+        <Setter Property="Background" Value="{DynamicResource ErrorBack}"/>
+    </Style>
+    <Style Selector="TextBlock#message.error">
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource ErrorText}"/>
+    </Style>
+    <Style Selector="Button.working">
+        <Setter Property="Background" Value="{DynamicResource WorkingBack}" />
+        <Style Selector="^:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource WorkingBack}" />
+        </Style>
+    </Style>
+    <!-- Yeah just copy https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Fluent/Controls/ToggleButton.xaml -->
+    <Style Selector="Button.checked">
+        <Style Selector="^ /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ToggleButtonBackgroundChecked}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ToggleButtonBorderBrushChecked}" />
+            <Setter Property="Foreground" Value="{DynamicResource ToggleButtonForegroundChecked}" />
+        </Style>
+        <Style Selector="^:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ToggleButtonBackgroundCheckedPointerOver}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ToggleButtonBorderBrushCheckedPointerOver}" />
+            <Setter Property="Foreground" Value="{DynamicResource ToggleButtonForegroundCheckedPointerOver}" />
+        </Style>
+        <Style Selector="^:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ToggleButtonBackgroundCheckedPressed}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ToggleButtonBorderBrushCheckedPressed}" />
+            <Setter Property="Foreground" Value="{DynamicResource ToggleButtonForegroundCheckedPressed}" />
+        </Style>
+        <!-- Ignore this due to Custom button selection while disabled -->
+        <Style Selector="^.dont:disabled /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ToggleButtonBackgroundCheckedDisabled}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ToggleButtonBorderBrushCheckedDisabled}" />
+            <Setter Property="Foreground" Value="{DynamicResource ToggleButtonForegroundCheckedDisabled}" />
+        </Style>
+    </Style>
+    <!-- https://github.com/AvaloniaUI/Avalonia/blob/main/src/Avalonia.Themes.Simple/Controls/ToggleButton.xaml, but used Selected like TreeViewItem -->
+    <Style Selector="Button.simplechecked">
+        <Style Selector="^ /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush4}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderMidBrush}" />
+        </Style>
+        <Style Selector="^:pointerover /template/ ContentPresenter">
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderMidBrush}" />
+        </Style>
+        <Style Selector="^:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush3}" />
+        </Style>
+    </Style>
+    <Style Selector="CheckBox.section">
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="Margin" Value="0,0,0,10" />
+    </Style>
+    <Style Selector=":is(Control).indent">
+        <Setter Property="Margin" Value="22,3,0,0" />
+    </Style>
+    <Style Selector=":is(TextElement).moreinfo">
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+    <Style Selector=":is(Control).moreinfo">
+        <Setter Property="Margin" Value="22,0,0,0" />
+    </Style>
+    <Style Selector=":is(TextBlock).moreinfo, :is(Control).moreinfo :is(TextBlock)">
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+    <Style Selector=":is(TextBlock).extrainfo">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Margin" Value="0,3,0,0" />
+    </Style>
+    <Style Selector=":is(TextBlock).postcombo">
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="7,0,0,0" />
+    </Style>
+    <Style Selector="Grid.panel Button">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="MinWidth" Value="150"/>
+    </Style>
+    <Style Selector="WrapPanel.itemgroup > :is(Control):not(:nth-last-child(1))">
+        <Setter Property="Margin" Value="0,0,3,0" />
+    </Style>
+    <Style Selector="WrapPanel.spaced > :is(Control):not(:nth-last-child(1))">
+        <Setter Property="Margin" Value="0,0,5,0" />
+    </Style>
+    <Style Selector="WrapPanel.bigspaced > :is(Control):not(:nth-last-child(1))">
+        <Setter Property="Margin" Value="0,0,7,0" />
+    </Style>
+    <!-- Icons -->
+    <Style Selector=":is(Button).imagebutton">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ClipToBounds" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector=":is(Button):checked:not(:pressed).imagebutton /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="PathIcon.help">
+        <Setter Property="Data" Value="{StaticResource question_circle_regular}" />
+    </Style>
+    <Style Selector="PathIcon.helpsep">
+        <Setter Property="Data" Value="{StaticResource question_circle_regular}" />
+        <Setter Property="Margin" Value="3,0,0,0" />
+    </Style>
+    <Style Selector="PathIcon.info">
+        <Setter Property="Data" Value="{StaticResource info_regular}" />
+    </Style>
+    <Style Selector="PathIcon.add">
+        <Setter Property="Data" Value="{StaticResource add_regular}" />
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
+    <Style Selector="PathIcon.delete">
+        <Setter Property="Data" Value="{StaticResource delete_regular}" />
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
+    <Style Selector="PathIcon.grid">
+        <Setter Property="Data" Value="{StaticResource grid_regular}" />
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
+    <!-- https://docs.avaloniaui.net/docs/tutorials/groupbox with changed colors, radius, margin -->
+    <Style Selector="HeaderedContentControl.groupbox">
+        <Setter Property="Margin" Value="0,0,0,3" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Header -->
+                    <Border
+                        ZIndex="1"
+                        Background="{DynamicResource ThemeBackgroundBrush}"
+                        Padding="5,0,5,0"
+                        Margin="5,0,0,0">
+                        <ContentPresenter
+                            Name="PART_HeaderPresenter"
+                            Content="{TemplateBinding Header}" />
+                    </Border>
+
+                    <!-- Content Area -->
+                    <Border
+                        Grid.RowSpan="2"
+                        Padding="0,5,0,0"
+                        Grid.ColumnSpan="2"
+                        CornerRadius="3"
+                        Margin="0,10,0,0"
+                        BorderBrush="{DynamicResource ThemeBorderLowBrush}"
+                        BorderThickness="1">
+                        <ContentPresenter
+                            Name="PART_ContentPresenter"
+                            Padding="8"
+                            Content="{TemplateBinding Content}"/>
+                    </Border>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    <Style Selector="HeaderedContentControl.groupbox /template/ ContentPresenter#PART_HeaderPresenter">
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+    <!-- In fluent style to try to make the NumericUpDown buttons less awkwardly huge -->
+    <Style Selector="Viewbox.onedigit">
+        <Setter Property="Width" Value="90" />
+    </Style>
+    <Style Selector="Viewbox.onedigit NumericUpDown">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Width" Value="117" />
+    </Style>
+    <Style Selector="Viewbox.threedigit">
+        <Setter Property="Width" Value="100" />
+    </Style>
+    <Style Selector="Viewbox.threedigit NumericUpDown">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Width" Value="130" />
+    </Style>
+</Styles>

@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RandomizerCommon.ViewModels"
+        xmlns:loc="using:RandomizerCommon.Localization"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="250"
+        x:Class="RandomizerCommon.Views.OptionsWindow"
+        x:DataType="vm:OptionsViewModel"
+        WindowStartupLocation="CenterOwner"
+        Width="800" Height="250"
+        MinWidth="500" MinHeight="250"
+        Title="{Binding Title^}">
+
+    <Design.DataContext>
+        <vm:OptionsViewModel/>
+    </Design.DataContext>
+
+    <Grid ColumnDefinitions="*" RowDefinitions="Auto,*,Auto" Margin="10">
+        <loc:Message Grid.Column="0" Grid.Row="0" TextWrapping="Wrap" Key="OptionsForm_strL" 
+                     Text="This text box allows you to give your options and seed to someone else (after running randomization) and to copy someone else's options. This string can also be found on the first line of hint/spoiler logs in the spoiler_logs directory. Also, you can set it to blank to restore all default options." />
+        <TextBox Margin="0 10" Grid.Column="0" Grid.Row="1" Text="{Binding Text}" MinHeight="100" TextWrapping="Wrap"></TextBox>
+        <Button Grid.Column="0" Grid.Row="2" Command="{Binding OkCommand}" IsDefault="True" HorizontalAlignment="Right" HorizontalContentAlignment="Center" MinWidth="100">
+            <loc:Message Key="OptionsForm_select" Text="Set options" />
+        </Button>
+    </Grid>
+</Window>

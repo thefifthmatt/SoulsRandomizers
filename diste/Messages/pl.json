@@ -1,7 +1,44 @@
 {
   "language": "Polski",
   "translators": "Leekos",
+  "instructions": "To translate the mod, translate english_text -> text when the text is empty. See https://docs.google.com/spreadsheets/d/1NfW_qniivBZgwP1O6BupFgcqUl1s2hIUliDuUzcgPAQ/edit for more details. Thank you!",
   "messages": [
+    {
+      "name": "DllForm_addButton",
+      "explanation": "Button to add a new dll file to the list in the 'Add dll mod' dialog box. This opens a file select dialog",
+      "english_text": "Add...",
+      "text": ""
+    },
+    {
+      "name": "DllForm_DllForm",
+      "explanation": "Title of the 'Add dll mod' dialog box, listing all dll files which are loaded using automatic mod launch",
+      "english_text": "Dll mods",
+      "text": ""
+    },
+    {
+      "name": "DllForm_infoL",
+      "explanation": "Text displayed at the top of the dll file list in the 'Add dll mod' dialog box. This is for mods like Seamless Coop and RandomizerHelper. The second sentence has technical requirements for the mods - it must export a Windows function called DirectInput8Create, to act like a system dll called dinput8.dll. Some dll mods can't be activated immediately when the game loads so they require delayed initialization, but this is *not* supported by the randomizer launcher. Finally, the last sentence refers to manual Mod Engine installation, described on the mod page, where someone launches the game from Mod Engine and not from randomizer. In that case, they have to edit the Mod Engine toml file to load the dll mods, because this UI only works if randomizer launches it.",
+      "english_text": "These dll mods are automatically loaded when \"Launch Elden Ring\" is used. They must implement DirectInput8Create and not require any initialization delay. To load dlls with manual Mod Engine, instead add them to external_dlls in the toml file.",
+      "text": ""
+    },
+    {
+      "name": "DllForm_okButton",
+      "explanation": "Standard dialog confirmation button",
+      "english_text": "OK",
+      "text": ""
+    },
+    {
+      "name": "DllForm_removeButton",
+      "explanation": "Button to remove a dll file in the list of the 'All dll mod' dialog box",
+      "english_text": "Remove",
+      "text": ""
+    },
+    {
+      "name": "DllForm_saveButton",
+      "explanation": "Button to save changes made to the dll file list in the 'Add dll mod' dialog box and close it",
+      "english_text": "Save",
+      "text": ""
+    },
     {
       "name": "EldenForm_allcraft",
       "explanation": "When checked, all craftable item recipes are unlocked without requiring cookbooks",
@@ -39,6 +76,18 @@
       "text": "Odblokuj całą mapę oraz ikony (punktów orientacyjnych)"
     },
     {
+      "name": "EldenForm_altusgate",
+      "explanation": "Checkbox for logic option which requires Dectus Medallion (Medalion Dectus (lewa połówka) and Medalion Dectus (prawa połówka)) to reach Płaskowyż Altus, as normally you can circumvent it via Makar in the Precipice or through Volcano Manor",
+      "english_text": "Require Dectus Medallion to reach Altus Plateau",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_altusgateL",
+      "explanation": "Further explanation for altusgate explaining how the option is implemented",
+      "english_text": "All exits to Altus are blocked off without it",
+      "text": ""
+    },
+    {
       "name": "EldenForm_biasGroup",
       "explanation": "Label for number slider from 0% to 100% which changes randomization from uniform (anything can go anywhere) to weighted (more key item chaining and more preference for later/difficult locations)",
       "english_text": "Bias",
@@ -63,6 +112,18 @@
       "text": ""
     },
     {
+      "name": "EldenForm_checkAmount",
+      "explanation": "Text in item randomizer indicating the # of checks for an important location. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc. You can click this link to see the checks. {0} gets replaced with a number like 40, depending on other options",
+      "english_text": "{0} checks",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_checkImportantExcluded",
+      "explanation": "Part of the dialog box showing all checks for an important location. You can see it by unchecking the DLC tab checkbox, then clicking a link like '13 checks' in item randomizer. The dialog box lists all checks in that category, and this line becomes before all checks which are currently disabled because of DLC or minidungeons being disabled",
+      "english_text": "Excluded by current options:",
+      "text": ""
+    },
+    {
       "name": "EldenForm_confirmCreatePreset",
       "explanation": "Confirm prompt to write a preset file from an options file. {0} is the file name. \n means to insert a newline - do not put spaces around it.",
       "english_text": "Create preset file?\n{0}",
@@ -81,6 +142,24 @@
       "text": ""
     },
     {
+      "name": "EldenForm_copydrops",
+      "explanation": "Item randomizer feature which affects random enemy drops and guaranteed pickups/drops, which are usually randomized independently. When enabled, armor/weapons/etc which can only be acquired through random drops can now also appear as guaranteed pickups/drops, so they can be acquired either way",
+      "english_text": "Add guaranteed copies of random enemy drops",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_crashfix",
+      "explanation": "Misc option to load RandomizerCrashFix.dll when using 'Launch Elden Ring', which also adds it to the dll mod list. The dll name can be kept untranslated",
+      "english_text": "Enable RandomizerCrashFix.dll",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_crashfixL",
+      "explanation": "Short explanation about RandomizerCrashFix.dll. It mainly prevents crashes by increasing memory limits for how many enemy types can be spawned at once, which can be high when moving between areas. It also patches validation for the regulation.bin file which may result in incorrect 'Save file corrupted' error messages for mods, and skips the Bandai Namco/Fromsoft logos before the main menu as a convenience feature",
+      "english_text": "Patch memory limits, regulation check, and startup logo",
+      "text": ""
+    },
+    {
       "name": "EldenForm_crawl",
       "explanation": "Secondary option after EldenForm_fog, which allows item/enemy randomizer to be used with the 'Fog Gate Randomizer' mod, particularly its 'Dungeon Crawl' mode which restricts items to not-open-world locations. So far Fog Gate Randomizer doesn't have localization.",
       "english_text": "Dungeon Crawl mode in Fog Gate Randomizer",
@@ -88,8 +167,32 @@
     },
     {
       "name": "EldenForm_customGroup",
-      "explanation": "Label for enemy randomizer options for custom enemy distribution",
-      "english_text": "Customization",
+      "explanation": "Group box in enemy randomizer for options related to how enemies are placed (previously 'Customization')",
+      "english_text": "Enemy placement",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_customitem",
+      "explanation": "Checkbox in item randomizer which turns on in-depth customization of item placement",
+      "english_text": "Custom item placement",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_customitemHelp",
+      "explanation": "Tooltip text which appears when hovering over the custom item placement checkbox in item randomizer. This switches the UI from the basic view to a much more complicated view, which switches back when unchecked. This has some overlap with ItemPanel_TabTypeExplain_Overview",
+      "english_text": "Advanced mode for detailed configuration of items and locations. Settings configured in custom item placement won't apply anymore if this is unchecked.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_deathless",
+      "explanation": "Checkbox in item logic which changes how item randomizer calculates key item locations. When checked, the entire randomizer can be completed without any mandatory deaths (aside from tutorial boss). The most important change is Drawing-Room Key (Klucz do pracowni) won't be placed in Volcano Manor, which requires dying to the Abductor Virgin at the bottom of Raya Lucaria to reach Volcano Manor. 'Routing' is a term from speedrunning which means the order or strategy you use for completing the game.",
+      "english_text": "Deathless routing",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_deathlessL",
+      "explanation": "Further explanation for deathless option (see above), for reaching Volcano Manor (Wulkaniczny Dwór). Also has a note for an enemy randomizer change, described on the mod page, where the Abductor Virgin (Dziewica-porywaczka) at the bottom of the Raya Lucaria elevator is no longer required to do the warp. You just have to die from it or die nearby it (e.g. by falling to your death). This changed in v0.12 to remove the abduction mechanic, not just make it optional.",
+      "english_text": "Remove Volcano Manor abduction. Otherwise, it may be required, and is possible in enemy randomizer by dying nearby the abductor replacement.",
       "text": ""
     },
     {
@@ -103,6 +206,12 @@
       "explanation": "Explanation for default_boss. {0} is a number like 40. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
       "english_text": "Approx {0} checks. Includes all bosses which have achievements",
       "text": "W przybliżeniu {0} dodatkowych miejsc."
+    },
+    {
+      "name": "EldenForm_default_bossL",
+      "explanation": "Explanation for default_boss. {0} is replaced with a number like 40. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
+      "english_text": "{0} checks, including all achievement bosses",
+      "text": ""
     },
     {
       "name": "EldenForm_default_custom",
@@ -123,10 +232,34 @@
       "text": "W ważnych lokacjach"
     },
     {
+      "name": "EldenForm_default_key_any",
+      "explanation": "Response to keyGroup (Key items randomized?) which allows key items to be placed anywhere",
+      "english_text": "To anywhere",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_default_keyloc",
+      "explanation": "When checked, important items can be found in all of the places key items can normally be found in the unmodified (vanilla game). This option cannot be disabled. This replaces the previous EldenForm_racemode option by adding 'major' as a clarification",
+      "english_text": "Vanilla locations of major key items",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_default_keylocL",
+      "explanation": "Explanation for default_keyloc. {0} is replaced with a number like 40. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
+      "english_text": "{0} checks",
+      "text": ""
+    },
+    {
       "name": "EldenForm_default_reroll",
       "explanation": "Checkbox under seed number which generates a new seed every time 'Randomize' is clicked, instead of using the existing seed",
       "english_text": "Reroll seed",
       "text": "Wylosuj ponowie seed"
+    },
+    {
+      "name": "EldenForm_default_scadu",
+      "explanation": "Response to scaduGroup (Shadow Realm Blessings randomized?) which allows Scadutree Fragments/Revered Spirit Ashes to be placed anywhere",
+      "english_text": "To anywhere",
+      "text": ""
     },
     {
       "name": "EldenForm_default_twohand",
@@ -147,6 +280,180 @@
       "text": "Wylosuj seed przeciwników oddzielnie"
     },
     {
+      "name": "EldenForm_dlc",
+      "explanation": "Checkbox in the DLC tab to enable randomizing the Shadow of the Erdtree DLC",
+      "english_text": "Shadow of the Erdtree",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcblessing",
+      "explanation": "Item randomizer option which places Shadow Realm Blessings (Błogosławieństwo Królestwa Cieni), Scadutree Fragments/Revered Spirit Ashes, in the DLC only. If unchecked, you'll have to find them in the base game",
+      "english_text": "Place Shadow Realm Blessings in DLC only",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcInstallGroup",
+      "explanation": "Group label for DLC to randomize which the player has installed",
+      "english_text": "Installed DLC",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcInstallL",
+      "explanation": "Further explanation for Installed DLC",
+      "english_text": "If a DLC option is checked, it must be purchased and enabled in Steam.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlckeysilo",
+      "explanation": "Checkbox on the logic tab which is the same option as ItemPreset_keyItemSilo. If checked, base game key items cannot be placed in the DLC and vice versa",
+      "english_text": "Randomize base game and DLC key items separately",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlckeysiloL",
+      "explanation": "Further description for dlckeysilo",
+      "english_text": "Keep base game key items in the base game",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlconlyhand",
+      "explanation": "Checkbox on the misc tab under starting class randomization. If selected, base game items do not appear in random starting classes",
+      "english_text": "Limit starting items to DLC items only",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcpackage",
+      "explanation": "Short description for an option in the DLC Start mode. See dlcstartL for an explanation of that. When enabled, the player spawns with a bunch of random non-DLC items automatically added to their inventory, as if they did a base game randomizer before entering the DLC. A 'care package' is a package from a loved one that you get in the mail, usually containing food and other gifts. It might be sent by a parent during their child's first semester away in college. Use any name which is similar to that, or just a package/parcel",
+      "english_text": "Base game care package",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcpackageL",
+      "explanation": "Further description for the base game care package. {0} is replaced with the number of items added",
+      "english_text": "Start with {0} extra base game items",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcPage",
+      "explanation": "Tab title for DLC options",
+      "english_text": "DLC",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcroundtable",
+      "explanation": "Option for DLC randomization which makes the Roundtable Hold (Twierdza Okrągłego Stołu) grace available as soon as possible",
+      "english_text": "Unlock Roundtable Hold at the start",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcroundtableL",
+      "explanation": "Futher explanation for dlcroundtable explaining the behavior if it's not enabled. This was previously described in dlcstartL. The last sentence is about how to access Roundtable Hold (Twierdza Okrągłego Stołu), because normally it requires unlocking graces in Liurnia, Caelid, etc. DLC Start does a similar thing except you have to reach Cerulean Coast, Scadu Altus, etc. (outside the starting area of Gravesite Plain - Cmentarna Równina) to get an invite from Melina",
+      "english_text": "Otherwise, it's available after encountering a major boss or finding an overworld grace outside main Gravesite Plain",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcshop",
+      "explanation": "Short description for an option in the DLC start mode. When enabled, non-DLC items are available at a grace",
+      "english_text": "Base game shop",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcshopL",
+      "explanation": "Further description for the base game shop. All items are free and come in several categories, which fall under GameMenu_ShopCat below",
+      "english_text": "Add shop at grace with all base game equipment for free",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcsilo",
+      "explanation": "Option for DLC to randomize base game with base game, and DLC with DLC. You won't find a base game item in the DLC and vice versa",
+      "english_text": "Randomize DLC and base game separately",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcsilo_default",
+      "explanation": "Option for DLC to mix up base game and DLC content, so you can find a base game item in the DLC, and vice versa",
+      "english_text": "Randomize DLC and base game together",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcsiloGroup",
+      "explanation": "Description for the DLC option group to randomize DLC and base game separately or together. It says Overall because it's meant to apply to all randomizers: item, enemy, gestures, materials, music, etc. Some individual randomizers have their own configuration for this as well.",
+      "english_text": "Overall randomization",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcsiloL",
+      "explanation": "Further explanation for dlcsilo options. When DLC and base game are randomized separately, items from the DLC are only placed in the DLC, and items from the base game are only placed in the base game. With the DLC-only and Base-game-only categories in custom item placement, the classification of individual items can be changed",
+      "english_text": "You can override whether items are placed in the DLC or not using custom item placement.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcstart",
+      "explanation": "Radio button to enable the DLC Start mode and all of the options associated with it. See dlcstartL",
+      "english_text": "DLC Start",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcstart_default",
+      "explanation": "Radio button for when DLC Start is disabled. The usual setup, like going through the tutorial and talking to Melina to get Torrent, is skipped with DLC Start. See dlcstartL.",
+      "english_text": "Normal progression",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcstartGroup",
+      "explanation": "Group label for core options for DLC start",
+      "english_text": "DLC Start",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcstartL",
+      "explanation": "Explanation for DLC Start, which allows doing a full DLC playthrough without entering the base game. All setup can be done at a new grace in the starting room in Chapel of Anticipation (Kaplica Oczekiwania). This previously described Roundtable Hold access which is now in dlcroundtableL.",
+      "english_text": "DLC Start is a special game mode to skip the base game. You get set up in Chapel of Anticipation and then warp to the DLC. Important items are given automatically.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcstartMiscGroup",
+      "explanation": "Group level for additional options for DLC start, to get additional convenient things instead of starting from nothing",
+      "english_text": "DLC Start extras",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcstartUpgradesGroup",
+      "explanation": "Group label for character upgrade options for DLC start, which is a feature to grant critical items automatically without needing to find them in the world. This covers talisman pouches, flask upgrades, etc",
+      "english_text": "DLC Start upgrades",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dlcstartUpgradesL",
+      "explanation": "Explanation for the character upgrade options for DLC start. This describes about an interaction with item randomizer. Upgrade items in the list are either removed from the item pool or restricted to DLC-only placement, depending on whether they are selected or not.",
+      "english_text": "When both DLC Start and Item Randomizer are enabled, upgrade items will be removed from the game if upgrades are given automatically, and placed somewhere in the DLC otherwise.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dllButton",
+      "explanation": "Opens the dialog box to configure dll files to load when launching Elden Ring through randomizer",
+      "english_text": "Add dll mod",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dllGroup",
+      "explanation": "Group level in Misc Options for enabling and configuring dll mods which come with randomizer",
+      "english_text": "Built-in dll mods",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dllList",
+      "explanation": "When using the 'All dll mod' feature, this is a list of all dll mod filenames. For instance if you're using seamless coop, this will say 'Using ersc.dll'. You can also get this to show up by enabling RandomizerHelper in the misc tab. Note this will get cut off at the end if there are too many dll mods to show.",
+      "english_text": "Using {0}",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_dllUsageL",
+      "explanation": "Further information about dlls which come with randomizer, enabled with the 'helper' and 'crashfix' options. There are two ways to use activate them. One is using the built-in randomizer launch button, the other is with manual Mod Engine. In the second case, the installation instructions involve editing the Mod Engine toml file and requires referencing the mod page. This was previously part of helperInfoL",
+      "english_text": "Built-in dll mods activate automatically with the \"Launch Elden Ring\" button. Otherwise, see the mod page for instructions on activating them.",
+      "text": ""
+    },
+    {
       "name": "EldenForm_earlylegacy",
       "explanation": "Checkbox for mode where the items to enter Stormveil and Raya Lucaria are available early",
       "english_text": "Early legacy dungeons are available early",
@@ -154,13 +461,25 @@
     },
     {
       "name": "EldenForm_earlylegacyL",
-      "explanation": "Explanation for earlylegacy, talking about Rusty Key and Academy Glintstone Key",
+      "explanation": "Explanation for earlylegacy, talking about Rusty Key (Zardzewiały klucz) and Academy Glintstone Key (Błyskamienny klucz do Akademii)",
       "english_text": "Place Rusty Key in Limgrave and Academy Key in Liurnia",
       "text": "Zardzewiały klucz jest umieszczony w Pogrobnie, klucz do Akademii jest umieszczony w Liurni"
     },
     {
+      "name": "EldenForm_earlymedal",
+      "explanation": "Checkbox for mode where the item to enter Mohgwyn Palace (Pałac Mohgwynów) is available early",
+      "english_text": "Early Mohgwyn Palace",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_earlymedalL",
+      "explanation": "Explanation for earlymedal, talking about Pureblood Knight's Medal placement (Medal rycerza czystej krwi)",
+      "english_text": "Place Pureblood Knight's Medal before Leyndell",
+      "text": ""
+    },
+    {
       "name": "EldenForm_editnames",
-      "explanation": "When checked",
+      "explanation": "When checked, boss healthbar names are changed to custom names",
       "english_text": "Edit boss names",
       "text": ""
     },
@@ -189,6 +508,12 @@
       "text": "Oddzielny seed przeciwników"
     },
     {
+      "name": "EldenForm_enemyseedL",
+      "explanation": "Label for enemy randomizer seed settings",
+      "english_text": "Separate enemy seed",
+      "text": "Oddzielny seed przeciwników"
+    },
+    {
       "name": "EldenForm_enemyseedPlaceholder",
       "explanation": "Placeholder text in the enemy randomizer seed textbox when it's empty. By default, if not specified, the enemy randomizer seed is just the same as the overall seed",
       "english_text": "(same as overall seed)",
@@ -196,8 +521,8 @@
     },
     {
       "name": "EldenForm_enemyWarningL",
-      "explanation": "Note in enemy tab about stability of the randomizer. This advice may change over time. Quitting to main menu does usually make sounds load in better.",
-      "english_text": "Warning: Placing too many bosses in the game may result in crashes and frame rate drops. Also, if enemies stop making sounds, you can usually save+quit to remedy this.",
+      "explanation": "Note in enemy tab about stability of the randomizer. This advice may change over time. Quitting to main menu does usually make sounds load in better. In v0.12 this added 'human NPCs' and removed the 'Warning' in front.",
+      "english_text": "Placing too many bosses and human NPCs in the game may result in crashes and frame rate drops. Also, if enemies stop making sounds, you can usually save+quit to remedy this.",
       "text": ""
     },
     {
@@ -205,6 +530,12 @@
       "explanation": "Label for button to open file select for eldenring.exe",
       "english_text": "Select game exe",
       "text": "Wybierz plik exe gry"
+    },
+    {
+      "name": "EldenForm_exePlaceholder",
+      "explanation": "Placeholder text for exe path textbox when it's empty",
+      "english_text": "eldenring.exe path",
+      "text": ""
     },
     {
       "name": "EldenForm_extraRandomGroup",
@@ -243,6 +574,12 @@
       "text": "Błąd: Nieprawidłowy plik exe(nie znaleziono pliku oo2core_6_win64.dll  w folderze z grą)"
     },
     {
+      "name": "EldenForm_fileToolStripMenuItem",
+      "explanation": "Title of the menu bar in the top right for misc functionality to update mod files. This can be kept untranslated if desired",
+      "english_text": "File",
+      "text": ""
+    },
+    {
       "name": "EldenForm_fileUnpackError",
       "explanation": "Error usually encountered when the randomizer exe is run from 7zip etc, without unpacking it. (In the future, this message may be copied inside the program itself, because messages are themselves in metadata files)",
       "english_text": "Error: Can't find required metadata files.\nFor the randomizer to work, you must unpack it to disk and keep all of the files together",
@@ -261,15 +598,33 @@
       "text": "Ostrzeżenie: UXM jest wybrane, ale gra może nie być zpatchowana(nie znaleziono _backup\\eldenring.exe)"
     },
     {
+      "name": "EldenForm_fileUxmPatchWarning",
+      "explanation": "Validation warning for game exe textbox. This file usually indicates that the user did Nuxe Patch (previously known as UXM Patch)",
+      "english_text": "Warning: Nuxe output is selected, but the game is not patched (_backup\\eldenring.exe not found)",
+      "text": ""
+    },
+    {
       "name": "EldenForm_fileUxmUnpackError",
       "explanation": "Validation error for the game exe textbox. When the user does UXM Unpack, it adds directories with game data which must exist",
       "english_text": "Error: UXM output is selected, but the game is not unpacked (event subdirectory not found)",
       "text": "Błąd: UXM jest wybrane, ale gra nie jest rozpakowana(nie znaleziono folderu event) "
     },
     {
+      "name": "EldenForm_fileUxmUnpackError",
+      "explanation": "Validation error for the game exe textbox. When the user does Nuxe Unpack, it adds directories with game data which must exist (previously known as UXM Unpack)",
+      "english_text": "Error: Nuxe output is selected, but the game is not unpacked (event subdirectory not found)",
+      "text": ""
+    },
+    {
       "name": "EldenForm_fixedseedL",
       "explanation": "Label for seed number textbox. 'Overall' means it's for both item and enemy randomizer, in the future",
       "english_text": "Overall seed:",
+      "text": "Seed ogólny"
+    },
+    {
+      "name": "EldenForm_fixedseedL",
+      "explanation": "Placeholder for seed number textbox when it is empty. 'Overall' means it's for both item and enemy randomizer, in the future",
+      "english_text": "Overall seed",
       "text": "Seed ogólny"
     },
     {
@@ -285,16 +640,76 @@
       "text": ""
     },
     {
+      "name": "EldenForm_gaolkeys",
+      "explanation": "Logic option to randomize the keys in Lamenter's Gaol (Loch płaczki). This is off by default, as they're in a minidungeon and have no purpose other than completing the minidungeon",
+      "english_text": "Randomize Lamenter's Gaol Keys",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_gaolkeysL",
+      "explanation": "Further explanation for gaolkeys, emphasizing that the player may need to go there to complete their playthrough (find major key items like Messmer's Kindling, O Mother, etc) if the option is checked",
+      "english_text": "If enabled, other major key items may spawn there",
+      "text": ""
+    },
+    {
       "name": "EldenForm_healthGroup",
       "explanation": "Label asking how to randomize Golden Seeds/Sacred Tears",
       "english_text": "Flask upgrades randomized?",
       "text": "Losować ulepszenia fiolek?"
     },
     {
+      "name": "EldenForm_helper",
+      "explanation": "Misc option to load RandomizerHelper.dll when using 'Launch Elden Ring', which also adds it to the dll mod list. The dll name can be kept untranslated",
+      "english_text": "Enable RandomizerHelper.dll",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_helperButton",
+      "explanation": "Button to open a dialog to edit RandomizerHelper.dll settings, only if the checkbox is checked (see also HelperOptions below)",
+      "english_text": "Edit RandomizerHelper options...",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_helperGroup",
+      "explanation": "Option group for RandomizerHelper. This can probably be kept untranslated, since it's the dll name",
+      "english_text": "RandomizerHelper",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_helperInfoL",
+      "explanation": "Further information about Randomizerhelper.dll, mentioning that it implements auto-equip (if you pick up a weapon, it replaces your current weapon) and auto-upgrade (weapon level of new items is changed automatically). There are two ways to use it. One is using the built-in randomizer launch button, the other is with manual Mod Engine. In the second case, the installation instructions involve editing the Mod Engine toml file and requires referencing the mod page",
+      "english_text": "RandomizerHelper is a dll that adds features to randomizer like auto-equip and auto-upgrade. It activates automatically with the \"Launch Elden Ring\" button. Otherwise, see the mod page for instructions on activating it.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_helperL",
+      "explanation": "Further information about RandomizerHelper.dll, mentioning that it implements auto-equip (if you pick up a weapon, it replaces your current weapon) and auto-upgrade (weapon level of new items is changed automatically). This was previously part of helperInfoL.",
+      "english_text": "Add features like auto-equip and auto-upgrade",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_hideseedHide",
+      "explanation": "Tooltip on eye icon next to overall seed to make it hide the seed number by making it look like a password, for people who are screen-sharing and want to avoid spoilers",
+      "english_text": "Hide seed",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_hideseedShow",
+      "explanation": "Tooltip on eye icon next to overall seed to make it show the seed number when it is currently hidden",
+      "english_text": "Show seed",
+      "text": ""
+    },
+    {
       "name": "EldenForm_hintGroup",
       "explanation": "Label for options which show hints and item locations inside the game",
       "english_text": "Hints",
       "text": "Podpowiedzi"
+    },
+    {
+      "name": "EldenForm_ignoresize",
+      "explanation": "If checked, any boss can spawn in any boss arena which won't softlock it. If unchecked, boss size and arena size are taken into account to avoid 'unfair' placements, like multi-enemy fights in very small arenas.",
+      "english_text": "Ignore arena size for boss placement",
+      "text": ""
     },
     {
       "name": "EldenForm_impolite",
@@ -306,6 +721,12 @@
       "name": "EldenForm_impoliteL",
       "explanation": "Explanation label for 'Impolite enemies'",
       "english_text": "Make enemies less passive in groups",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_installGroup",
+      "explanation": "Label for misc options related to how mod files are installed",
+      "english_text": "Installation",
       "text": ""
     },
     {
@@ -321,6 +742,12 @@
       "text": ""
     },
     {
+      "name": "EldenForm_invertgifts",
+      "explanation": "When checked, all starting gifts will be replaced with other random items. These are items you can select when creating a character, like a Golden Seed or Crimson Amber Medallion.",
+      "english_text": "Randomize starting keepsakes",
+      "text": ""
+    },
+    {
       "name": "EldenForm_invertoutfits",
       "explanation": "Option to change clothes of NPC human models, such as Gideon and Fia, to a random armor set",
       "english_text": "Randomize NPC outfits",
@@ -333,8 +760,14 @@
       "text": ""
     },
     {
+      "name": "EldenForm_item2Page",
+      "explanation": "Name for the second item randomizer tab, which is mainly about how key items are placed. 'Logic' refers to the randomizer's logic for placing all items without softlocking the player, and the exact conditions for when areas can be accessed",
+      "english_text": "Logic",
+      "text": ""
+    },
+    {
       "name": "EldenForm_itemPage",
-      "explanation": "Main checkbox and tab for Enemy Randomizer",
+      "explanation": "Main checkbox and tab for Item Randomizer",
       "english_text": "Item Randomizer",
       "text": ""
     },
@@ -343,6 +776,12 @@
       "explanation": "Label asking how to randomize key items",
       "english_text": "Key items randomized?",
       "text": "Losować przedmioty fabularne?"
+    },
+    {
+      "name": "EldenForm_keyGroup",
+      "explanation": "Label asking how to randomize key items",
+      "english_text": "Major key items randomized?",
+      "text": ""
     },
     {
       "name": "EldenForm_keyitem0",
@@ -375,6 +814,24 @@
       "text": "Język:"
     },
     {
+      "name": "EldenForm_languageL",
+      "explanation": "Menu option in the options menu to select randomizer UI language",
+      "english_text": "Language",
+      "text": "Język"
+    },
+    {
+      "name": "EldenForm_latedragonbarrow",
+      "explanation": "Checkbox for logic option to block off Dragonbarrow (use abbreviation of Greyoll's Dragonbarrow, Smocze Kurhany Greyoll), which is north of Caelid but very highly scaled",
+      "english_text": "Restrict access to Dragonbarrow until reaching Leyndell",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_latedragonbarrowL",
+      "explanation": "Further explanation for latedragonbarrow about compatibility with other options",
+      "english_text": "If enabled, key items must be randomized",
+      "text": ""
+    },
+    {
       "name": "EldenForm_launchButton",
       "explanation": "Button in randomizer to try to start the game Elden Ring when it's installed on Steam and Mod Engine can be used",
       "english_text": "Launch Elden Ring",
@@ -382,8 +839,8 @@
     },
     {
       "name": "EldenForm_launchFailed",
-      "explanation": "Long error essage for debugging 'Launch Elden Ring' failing. It suggests basic prerequisites for using Mod Engine, and otherwise, suggests using the two other installation options, manual Mod Engine or UXM.",
-      "english_text": "Automatic Mod Engine launcher appeared to fail.\n\nMake sure Steam is running. If the game is currently running, close it and wait until it is fully shut down.\n\nCheck Troubleshooting on https://www.nexusmods.com/eldenring/mods/428/ to see when Mod Engine might fail. You may need to try using a manual Mod Engine launcher or UXM installation.",
+      "explanation": "Long error essage for debugging 'Launch Elden Ring' failing. It suggests basic prerequisites for using Mod Engine, and otherwise, suggests using the two other installation options, manual Mod Engine or Nuxe (previously UXM).",
+      "english_text": "Automatic Mod Engine launcher appeared to fail.\n\nMake sure Steam is running. If the game is currently running, close it and wait until it is fully shut down.\n\nCheck Troubleshooting on https://www.nexusmods.com/eldenring/mods/428/ to see when Mod Engine might fail. You may need to try using a manual Mod Engine launcher or Nuxe installation.",
       "text": ""
     },
     {
@@ -405,9 +862,21 @@
       "text": ""
     },
     {
+      "name": "EldenForm_launchMismatchZip",
+      "explanation": "Variant of launchMismatch dialog box, shown after running randomizer, changing a checkbox, then using File > Zip mod files.",
+      "english_text": "Randomizer options appear to be changed from the last time randomizer was run. Zip anyway?",
+      "text": ""
+    },
+    {
       "name": "EldenForm_launchRunning",
-      "explanation": "dialog box shown to confirm 'Launch Elden Ring' when it's alrady running. As part of automatic Mod Engine launcher usage, it can't launch the game if it's already running according to Steam",
+      "explanation": "Dialog box shown to confirm 'Launch Elden Ring' when it's alrady running. As part of automatic Mod Engine launcher usage, it can't launch the game if it's already running according to Steam",
       "english_text": "Elden Ring appears to be already running, so launching with Mod Engine will have no effect. Try anyway?",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_liurniagate",
+      "explanation": "Checkbox for logic option which blocks off the side path next to Stormveil Castle (Zamek Burzowego Całunu) which is an alternate way to reach Liurnia (full name Jeziorna Liurnia)",
+      "english_text": "Require going through Stormveil to reach Liurnia",
       "text": ""
     },
     {
@@ -435,6 +904,30 @@
       "text": ""
     },
     {
+      "name": "EldenForm_logicItemDlcGroup",
+      "explanation": "Group box in the logic tab containing options for where DLC key items are randomized",
+      "english_text": "DLC key item placement",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_logicItemDlcInfoL",
+      "explanation": "Info about DLC key item placement options in the logic tab. These are two separate pieces of info. The first sentence is a warning about Messmer's Kindling Shards (see messmershard options), because they add new key items into the game. The second sentence is just a reminder to check the DLC tab as some of those options affect DLC progression as well",
+      "english_text": "Randomization may fail if there are too many shards and too few key item locations. See the DLC tab for additional DLC options.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_logicItemDlcNoneL",
+      "explanation": "Alternate text shown in the DLC key item placement groupbox when custom item placement is enabled, because all options in DLC key item placement are redundant to custom item placement configuration.",
+      "english_text": "When custom item placement is active, all DLC item placement options are configured there.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_logicItemGroup",
+      "explanation": "Group by in the logic tab containing options for where overall key items are randomized",
+      "english_text": "Key item placement",
+      "text": ""
+    },
+    {
       "name": "EldenForm_markareas",
       "explanation": "Checkbox to modify Kalé's menu to spend runes to mark overall areas with required items (like Limgrave, Altus Tunnel, Leyndell) on the map",
       "english_text": "Purchase markers for required areas from Kalé",
@@ -442,7 +935,7 @@
     },
     {
       "name": "EldenForm_markareasL",
-      "explanation": "Explanation for when you can buy hint markers in-game from Kalé",
+      "explanation": "[obsolete] Explanation for when you can buy hint markers in-game from Kalé",
       "english_text": "Markers are unavailable before reaching Altus Plateau",
       "text": "Znaczniki są niedostępne zanim nie odblokowano Płaskowyżu Altus"
     },
@@ -460,13 +953,55 @@
     },
     {
       "name": "EldenForm_matsL",
-      "explanation": "Explanation for 'mats' checkbox. Currently this randomization doesn't happen across the entire game, only within maps.",
+      "explanation": "[obsolete] Explanation for 'mats' checkbox. Currently this randomization doesn't happen across the entire game, only within maps.",
       "english_text": "Move materials nearby their original location",
       "text": "Przenieś materiały do ich orginalnych lokacji"
     },
     {
+      "name": "EldenForm_maxbb",
+      "explanation": "DLC Start option which adds all update materials to the Roundtable Hold shop, as if all update Bell Bearings had been turned in (e.g. smithing stone and glovewort bell bearings)",
+      "english_text": "Activate all upgrade Bell Bearings",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_maxflask",
+      "explanation": "DLC Start option which gives the player fully upgraded flasks at the start. If disabled, it only gives +0 flasks and requires finding Sacred Tears",
+      "english_text": "Fully upgrade Sacred Flasks",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_maxflasknum",
+      "explanation": "DLC Start option which gives the player the max number of flasks at the start. If disabled, it only gives 3+1 flasks and requires finding Golden Seeds",
+      "english_text": "Give all Sacred Flasks",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_maxmemslot",
+      "explanation": "DLC Start option which automatically gives the player all Memory Stones for max permanent spell slots",
+      "english_text": "Give all Memory Stones",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_maxpouch",
+      "explanation": "DLC Start option which automatically gives the player all 3 Talisman Pouches at the start",
+      "english_text": "Give all Talisman Pouches",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_maxweapon",
+      "explanation": "DLC option which pre-upgrades all weapon pickups/drops in the DLC, to either +25 or +10 if they're regular or somber",
+      "english_text": "Upgrade all weapons in the DLC to max level",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_maxwhetblade",
+      "explanation": "DLC Start option which automatically gives the player all five whetblades for different weapon infusion types, including Żelazne ostrze and Czarne ostrze.",
+      "english_text": "Give all whetblades",
+      "text": ""
+    },
+    {
       "name": "EldenForm_mergeButton",
-      "explanation": "Button to open a file select dialog for an alternate file-based mod to merge. Previously 'Select other mod'",
+      "explanation": "Button to open a file select dialog for an alternate file-based mod to merge. 'Other' means other than randomizer. Previously 'Select other mod'",
       "english_text": "Merge other mod",
       "text": ""
     },
@@ -478,8 +1013,38 @@
     },
     {
       "name": "EldenForm_mergemods",
-      "explanation": "Checkbox to incorporate existing modifications to game files into the randomizer's output. Previously only merged param (regulation.bin) mods",
+      "explanation": "[obsolete] Checkbox to incorporate existing modifications to game files into the randomizer's output. Previously only merged param (regulation.bin) mods",
       "english_text": "Merge \"mod\" directory",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_mergePlaceholder",
+      "explanation": "Placeholder for mod merge textbox when it is empty. 'Other' means other than randomizer",
+      "english_text": "Other mod path (optional)",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_messmershard_default",
+      "explanation": "Checkbox to enable splitting up Messmer's Kindling (Podpałka Messmera) into multiple shards. When checked, the messmershard and shardreq options may be configured. See their descriptions for more information.",
+      "english_text": "Split up Messmer's Kindling into shards",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_messmershardL",
+      "explanation": "Label which appears after a number selection input. This option splits up Messmer's Kindling (Podpałka Messmera) into multiple shards, and you need to collect some amount of them to burn the Sealing Tree. This is an option for the total number available. See EldenForm_shardreq for the option of how many of the total is required, and see GameMenu_messmerShard for the in-game name of the shard item",
+      "english_text": "Total Messmer's Kindling Shards",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_messmershardL2",
+      "explanation": "Further explanation for the shard dropdown",
+      "english_text": "If selected, Messmer's Kindling is split up into shards",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_miscDlcGroup",
+      "explanation": "Label for set of miscellaneous options in the DLC tab",
+      "english_text": "Misc",
       "text": ""
     },
     {
@@ -501,6 +1066,12 @@
       "text": ""
     },
     {
+      "name": "EldenForm_moremaxslots",
+      "explanation": "Checkbox for logic option to change how key items are placed into locations. By default, only one key item can appear at each check.",
+      "english_text": "Allow multiple key items to be randomized to a single pickup or drop",
+      "text": ""
+    },
+    {
       "name": "EldenForm_multcolor",
       "explanation": "Checkbox to change the color of a boss when it is duplicated, to keep track of which is which. Like if there are 2 Margits at once, one is blue and the other is red.",
       "english_text": "Color-code bosses in Enemy Onslaught",
@@ -516,6 +1087,24 @@
       "name": "EldenForm_nerfgargoyles",
       "explanation": "Checkbox to disable poison-over-time damage while in Valiant Gargoyle's poison cloud, but it can still poison you",
       "english_text": "Disable damage tick in Valiant Gargoyles' poison cloud",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_nerflantern",
+      "explanation": "Checkbox to nerf Aging Untouchables, a DLC enemy also called Winter Lanterns. Normally you cannot damage them without parrying their attack. This is a pun on their name which is referenced in their talisman description: 'Talizman przedstawiający radość podstarzałego nietykalnego, którego głowa przypomina kiść ...'",
+      "english_text": "Aging Touchables",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_nerflanternEnemy",
+      "explanation": "Standalone name for Aging Untouchable in enemy preset description when custom enemy placement is disabled (will eventually come from enemy.json file)",
+      "english_text": "Aging Untouchable",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_nerflanternL",
+      "explanation": "Further explanation of the Aging Touchables option. This uses the full enemy name (Aging *Un*touchable), stating the player can damage them without parrying when the option is enabled",
+      "english_text": "Damage Aging Untouchables without parrying them",
       "text": ""
     },
     {
@@ -538,13 +1127,19 @@
     },
     {
       "name": "EldenForm_night",
-      "explanation": "When checked, bosses which only spawn at night (Night's Calvalry, Bell Bearing Hunters, etc.) can have important items. Only if raceloc_altboss is enabled",
+      "explanation": "[obsolete] When checked, bosses which only spawn at night (Night's Calvalry, Bell Bearing Hunters, etc.) can have important items. Only if raceloc_altboss is enabled",
       "english_text": "Include night-only bosses",
       "text": "Nocni bossowie mogą mieć przedmioty fabularne"
     },
     {
+      "name": "EldenForm_nightday",
+      "explanation": "Enemy randomizer option to enables night bosses regardless of what time it is, in both the day and night.",
+      "english_text": "Spawn night bosses at all hours",
+      "text": ""
+    },
+    {
       "name": "EldenForm_nightL",
-      "explanation": "Label for 'night' checkbox. {0} is a number like 10, and is 'additional' with the 'all bosses' label",
+      "explanation": "[obsolete] Label for 'night' checkbox. {0} is replaced with a number like 10, and is 'additional' with the 'all bosses' label.",
       "english_text": "Approx {0} additional checks",
       "text": "W przybliżeniu {0} dodatkowych miejsc."
     },
@@ -553,6 +1148,12 @@
       "explanation": "When checked, location in mini-dungeons *cannot* have important items",
       "english_text": "Exclude caves, graves, catacombs, and tunnels",
       "text": "Nie uwzględniaj jaskiń, grobowców, katakumb oraz tuneli"
+    },
+    {
+      "name": "EldenForm_nocaves",
+      "explanation": "When checked, location in mini-dungeons *cannot* have important items",
+      "english_text": "Exclude mini-dungeon locations",
+      "text": ""
     },
     {
       "name": "EldenForm_nocavesL",
@@ -579,6 +1180,12 @@
       "text": "Nie"
     },
     {
+      "name": "EldenForm_norandom_scadu",
+      "explanation": "Response to scaduGroup (Shadow Realm Blessings randomized?) which does not randomized Scadutree Fragments/Revered Spirit Ashes",
+      "english_text": "No",
+      "text": ""
+    },
+    {
       "name": "EldenForm_norandom_upgrades",
       "explanation": "Response to healthGroup (Upgrade Bell Bearings randomized?) which does not randomize them",
       "english_text": "No",
@@ -597,6 +1204,18 @@
       "text": ""
     },
     {
+      "name": "EldenForm_openDirectoryToolStripMenuItem",
+      "explanation": "Menu option in the file menu which opens file browsing for wherever the randomizer exe is located",
+      "english_text": "Show randomizer directory",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_optionsToolStripMenuItem",
+      "explanation": "Title of the menu bar in the top right for misc functionality to change options. This can be kept untranslated if desired",
+      "english_text": "Options",
+      "text": ""
+    },
+    {
       "name": "EldenForm_optionwindow",
       "explanation": "Button to open dialog box to set all options (checkboxes, seed, etc.) from a text string",
       "english_text": "Set options from string...",
@@ -609,6 +1228,12 @@
       "text": "Sprawdź stronę moda albo plik README dla pełnej listy fabularnych przedmiotów, ważnych lokacji i innych sczegółów. Podpowiedzi znajdują się w pliku spoiler_logs"
     },
     {
+      "name": "EldenForm_packagelite",
+      "explanation": "Extension of dlcpackage option. This changes which items are given to just utility items, in particular excluding most damage-dealing items",
+      "english_text": "Limit care package to utility items only",
+      "text": ""
+    },
+    {
       "name": "EldenForm_phasehp",
       "explanation": "Checkbox to scale the health of multi-phase bosses which are normally part of one healthbar. Fire Giant p1 becoming Margit would be scaled up slightly (around 140%), but Margit becoming Fire Giant p1 would be scaled down slightly (around 70%)",
       "english_text": "Scale up/down multi-phase bosses slightly",
@@ -618,6 +1243,18 @@
       "name": "EldenForm_placementGroup",
       "explanation": "Label for checkboxes with broad randomization options, like what to randomize and which routing to allow",
       "english_text": "Item placement",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_playerlevelL",
+      "explanation": "Label for DLC Start option, after a dropdown to select a rune level. This allows the player to level up to the selected level when they spawn into the game",
+      "english_text": "Initial Rune Level",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_playerlevelL2",
+      "explanation": "Further explanation for the Rune Level dropdown",
+      "english_text": "If selected, runes are given up to level up at the start",
       "text": ""
     },
     {
@@ -633,14 +1270,26 @@
       "text": ""
     },
     {
+      "name": "EldenForm_presetConfirmUpdate",
+      "explanation": "Dialog box which can appear when clicking 'Custom item placement' (the \n is a newline, don't add spaces around it). When you create custom placement, it's based on the current options, like which important locations are checked. If you disable custom placement, change important locations, and reenable custom placement, this dialog box will show up, with Yes/No/Cancel options.",
+      "english_text": "Custom item configuration already exists.\nUpdate it to reflect current options?",
+      "text": ""
+    },
+    {
       "name": "EldenForm_presetFileError",
-      "explanation": "Error message that the user tried to edit enemy placement but a necessary file did not exist or had an invalid format",
+      "explanation": "Error message that the user tried to edit item/enemy placement but a necessary file did not exist or had an invalid format",
       "english_text": "Error: failed to load file required for customization",
       "text": ""
     },
     {
+      "name": "EldenForm_presetItemButton",
+      "explanation": "Button to open the 'Custom item placement' dialog box, enabled by checking 'Custom item placement'",
+      "english_text": "Edit custom item placement...",
+      "text": ""
+    },
+    {
       "name": "EldenForm_progressGroup",
-      "explanation": "Label for checkboxes with broad randomization options, like what to randomize and which routing to allow",
+      "explanation": "Label for checkboxes which affect major progression and item randomizer win conditions",
       "english_text": "Game progression",
       "text": "Postępy w grze"
     },
@@ -651,16 +1300,34 @@
       "text": ""
     },
     {
+      "name": "EldenForm_quickstart",
+      "explanation": "DLC Start mode which also enables warping to the base game and removes some DLC-only placement restrictions (it doesn't really make sense but it's technically part of DLC Start for now)",
+      "english_text": "DLC Start with base game",
+      "text": ""
+    },
+    {
       "name": "EldenForm_raceloc_altboss",
       "explanation": "When checked, enemies with a boss healthbar can important items, not just achievement bosses",
       "english_text": "All bosses",
       "text": "Wszystkie bossy"
     },
     {
+      "name": "EldenForm_raceloc_altboss",
+      "explanation": "When checked, enemies with a boss healthbar can important items, not just achievement bosses",
+      "english_text": "Other bosses",
+      "text": ""
+    },
+    {
       "name": "EldenForm_raceloc_altbossL",
       "explanation": "Further explanation for raceloc_altboss. {0} is a number like 100 and it depends on the nocaves option",
       "english_text": "Approx {0} checks. Includes fights with boss healthbars (except Patches)",
       "text": "W przybliżeniu {0} dodatkowych miejsc. Bez łysola"
+    },
+    {
+      "name": "EldenForm_raceloc_altbossL",
+      "explanation": "Further explanation for raceloc_altboss. {0} is replaced with a number like 100. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
+      "english_text": "{0} checks, including anything with a boss healthbar",
+      "text": ""
     },
     {
       "name": "EldenForm_raceloc_health",
@@ -670,9 +1337,27 @@
     },
     {
       "name": "EldenForm_raceloc_healthL",
-      "explanation": "Further explanation for raceloc_health. {0} is a number like 30",
+      "explanation": "Further explanation for raceloc_health. {0} is replaced with a link like '30 checks'",
       "english_text": "Approx {0} checks",
       "text": "W przybliżeniu {0} dodatkowych miejsc"
+    },
+    {
+      "name": "EldenForm_raceloc_healthL",
+      "explanation": "Further explanation for raceloc_health. {0} is replaced with a number like 40. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
+      "english_text": "{0} checks",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_raceloc_scadu",
+      "explanation": "When checked, locations which normally have Shadow Realm Blessings (Błogosławieństwo Królestwa Cieni), Scadutree Fragments/Revered Spirit Ashes, can have important items. 'Pickup' means it's an item on the ground, and doesn't require killing an enemy to get it. For instance, Miquella's Crosses and large withered Hornsent corpses",
+      "english_text": "Shadow Realm Blessing pickups",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_raceloc_scaduL",
+      "explanation": "Further explanation for raceloc_scadu, specifying that it doesn't include drops from shiny pot enemies, hippos, etc. {0} is replaced with a number like 100. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
+      "english_text": "{0} checks, excluding enemy drops",
+      "text": ""
     },
     {
       "name": "EldenForm_raceloc_shops",
@@ -687,16 +1372,28 @@
       "text": "W przybliżeniu {0} dodatkowych miejsc"
     },
     {
+      "name": "EldenForm_raceloc_shopsL",
+      "explanation": "Further explanation for raceloc_shops. {0} is replaced with a number like 30. This option does not include shops which only sell sorceries or incantations",
+      "english_text": "{0} checks, excluding spell shops",
+      "text": ""
+    },
+    {
       "name": "EldenForm_raceloc_talisman",
-      "explanation": "When checked, certain treasures/chests can have important items. These are all of the places which originally had talismans in the unmodified (vanilla) game, which are usually hidden in interesting places.",
+      "explanation": "[obsolete] When checked, certain treasures/chests can have important items. These are all of the places which originally had talismans in the unmodified (vanilla) game, which are usually hidden in interesting places.",
       "english_text": "Vanilla locations of talisman treasures",
       "text": "Domyślne lokalizacje dla talizmanów"
     },
     {
       "name": "EldenForm_raceloc_talismanL",
-      "explanation": "Further explanation for raceloc_talisman. {0} is a number like 30. This value depends on the nocaves option. Again this is only from corpses/chests/etc, not bosses or other enemies.",
+      "explanation": "[obsolete] Further explanation for raceloc_talisman. {0} is a number like 30. This value depends on the nocaves option. Again this is only from corpses/chests/etc, not bosses or other enemies.",
       "english_text": "Approx {0} checks. Excludes talismans dropped by enemies",
       "text": "W przybliżeniu {0} dodatkowych miejsc"
+    },
+    {
+      "name": "EldenForm_racelocShow",
+      "explanation": "Tooltip on (i) icon next to the check count when selecting important locations in basic item randomizer settings, which opens a dialog box showing a list of location descriptions",
+      "english_text": "Show location list",
+      "text": ""
     },
     {
       "name": "EldenForm_racemode",
@@ -711,6 +1408,18 @@
       "text": "W ważnych lokacjach"
     },
     {
+      "name": "EldenForm_racemode_key",
+      "explanation": "Response to keyGroup (Major key items randomized?) which only places them in important locations",
+      "english_text": "To important locations",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_racemode_scadu",
+      "explanation": "Response to scaduGroup (Shadow Realm Blessings randomized?) which only places them in important locations",
+      "english_text": "To important locations",
+      "text": ""
+    },
+    {
       "name": "EldenForm_racemode_upgrades",
       "explanation": "Response to healthGroup (Flask upgrades randomized?) which only places Golden Seeds/Sacred Tears in important locations",
       "english_text": "To important locations",
@@ -723,8 +1432,26 @@
       "text": "W przybliżeniu {0} dodatkowych miejsc"
     },
     {
+      "name": "EldenForm_rainbow",
+      "explanation": "Misc option to change enemy colorization, like weapon and clothing colors. This chooses a random color per enemy type to use as a tint.",
+      "english_text": "Randomize enemy colors",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_randomania",
+      "explanation": "This is a custom option for a 2024 event called RandoMania (https://twitter.com/Kazoodl3/status/1753075550841934264). This option changes item randomizer to support simpler and more streamlined randomizer races. This option is meant to be used for event participants, but isn't meant for other types of races or for casual runs.",
+      "english_text": "Alternate item placement for RandoMania",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_randomaniaL",
+      "explanation": "Further explanation for RandoMania item placement, listing 2 changes in the option. First, RandoMania mode avoids placing Great Runes past Mountaintops in some circumstances, so there's more opportunity to find them earlier. Second, it adds more possible locations for Bell Bearings which normally appear in Altus Plateau. Normally, the randomizer will always keep all Bell Bearings in their vanilla areas, and Smithing-Stone Miner's Bell Bearing [2] and Somberstone Miner's Bell Bearing [2] will always be placed in Altus Plateau, usually dropping from Elemer. This second option allows these Bell Bearings to appear in Volcano Manor for balance reasons. It's not necessary to write any detail about this since the event competitors already know what it means.",
+      "english_text": "Fewer late Great Runes, more locations for Altus Bell Bearings",
+      "text": ""
+    },
+    {
       "name": "EldenForm_randomize",
-      "explanation": "Same as randomizeNew",
+      "explanation": "Placeholder for randomize button when none of the more specific options below are selected",
       "english_text": "Randomize new run!",
       "text": "Wylosuj nową przygodę!"
     },
@@ -780,6 +1507,12 @@
       "name": "EldenForm_randomizeNothing",
       "explanation": "Randomize button when neither itemPage nor enemyPage are checked. Just shows ??? since there's nothing to randomize.",
       "english_text": "???",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_randomizeRun",
+      "explanation": "Randomize button when neither itemPage nor enemyPage are checked",
+      "english_text": "Run",
       "text": ""
     },
     {
@@ -845,7 +1578,19 @@
     {
       "name": "EldenForm_restoreUXMFileBackupsToolStripMenuItem",
       "explanation": "Action in File menu to open 'restore backups' dialog box",
-      "english_text": "Restore UXM file backups...",
+      "english_text": "Restore Nuxe file backups...",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_royalaccess",
+      "explanation": "Checkbox in item logic which doesn't remove the graces from Leyndell, Royal Capital (Leyndell, królewska stolica) after defeating Maliketh (Maliketh, Czarna Klinga), allowing Royal Capital and Ashen Capital to coexist",
+      "english_text": "Keep Royal Capital accessible after Maliketh",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_royalaccessL",
+      "explanation": "Further explanation for royalaccess which explains the randomizer logic change. An unmissable item is an item, like a key item or bell bearing, which is not allowed to be placed in a missable location. Because Royal Capital graces don't disappear, they are no longer missable locations.",
+      "english_text": "Allow more Leyndell locations to have unmissable items",
       "text": ""
     },
     {
@@ -891,15 +1636,39 @@
       "text": ""
     },
     {
+      "name": "EldenForm_runes_rold",
+      "explanation": "Checkbox to enable the 'Great Runes to enter Mountaintops' input. Normally you must find the medallion (Medalion Rold) to enter Mountaintops. With this option, you must instead find 0-7 Great Runes according to configuration.",
+      "english_text": "Replace Rold Medallion with Great Runes requirement",
+      "text": ""
+    },
+    {
       "name": "EldenForm_runes_roldL",
-      "explanation": "Label which appears after a dropdown with values form 0-7, and a blank value. When not blank, it requires the given number of Great Runes to use Rold Medallion to reach Mountaintops of the Giants and beat the game.",
+      "explanation": "Label which appears after numeric input with values from 0-7. When enabled, it requires the given number of Great Runes to use Rold Medallion to reach Mountaintops of the Giants and beat the game.",
       "english_text": "Great Runes to enter Mountaintops",
       "text": ""
     },
     {
       "name": "EldenForm_runes_roldL2",
-      "explanation": "Further label for the runes_rold dropdown, which indicates that Rold Medallion is no longer required to use Grand Lift of Rold and that the player should not try to search for it if they are using this feature. If there's not enough space, the 'only Great Runes' part is not as important",
+      "explanation": "[obsolete] Further label for the runes_rold dropdown, which indicates that Rold Medallion is no longer required to use Grand Lift of Rold and that the player should not try to search for it if they are using this feature. If there's not enough space, the 'only Great Runes' part is not as important",
       "english_text": "If selected, Rold Medallion is not required, only Great Runes",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_runesGroup",
+      "explanation": "Label for logic settings to change the number of Great Runes required to pass certain points in the game (Wielkie runy)",
+      "english_text": "Great Runes",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_runExtractWarning",
+      "explanation": "Warning message that shows up as a popup after clicking Randomize and it completes. This happens in a niche case where the version of the game from the exe textbox is not the version that randomizer was built for, and randomizer knows this happens because it has some info on the data files which it expects to extract from the game directory",
+      "english_text": "Randomization succeeded, but the following files extracted from the game directory have unexpected contents. This version of the randomizer might be incompatible with the installed game version and might not function correctly.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_runExtractWarningTitle",
+      "explanation": "Title for runeExtractWarning popup message",
+      "english_text": "Unexpected game files",
       "text": ""
     },
     {
@@ -915,9 +1684,27 @@
       "text": "Zrobione! Podpowiedzi i spoilery znajdują sie w pliku spoiler_logs jako {0} - Zrestartuj grę!"
     },
     {
+      "name": "EldenForm_rustykey",
+      "explanation": "Checkbox in item logic which makes getting and using the Rusty Key (Zardzewiały klucz) required to enter Stormveil (Zamek Burzowego Całunu) as normally Gostoc allows skipping it if he's still alive",
+      "english_text": "Require Rusty Key to enter Stormveil",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_rustykeyL",
+      "explanation": "Further explanation for rustykey, as NPC Gostoc (Strażnik bramy Gostoc) won't show the dialogue option (Chcę skorzystać z głownej bramy) without Rusty Key in inventory",
+      "english_text": "Gostoc won't open the main gate without the key",
+      "text": ""
+    },
+    {
       "name": "EldenForm_saveOptionsFileToolStripMenuItem",
       "explanation": "Action in Options menu to select a filename to store current randomizer options. These can be shared with other people.",
       "english_text": "Export options file...",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_scaduGroup",
+      "explanation": "Label asking how to randomize Scadutree Fragments/Revered Spirit Ashes (Błogosławieństwo Królestwa Cieni)",
+      "english_text": "Shadow Realm Blessings randomized?",
       "text": ""
     },
     {
@@ -951,6 +1738,24 @@
       "text": ""
     },
     {
+      "name": "EldenForm_shardreqL",
+      "explanation": "Label for numeric input for a Meessmer Kindling Shard requirement. See messmershard for more details. This corresponds to the in-game prompt, Spalić drzewo pieczęci?",
+      "english_text": "Shards needed to burn the sealing tree",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_shardreqL2",
+      "explanation": "[obsolete] Further explanation for shardreq. Messmer's Kindling is broken up into shards, and some number of them (or all of them) is needed to burn the sealing tree (kindling description: Spala drzewo pieczęci)",
+      "english_text": "Number of shards needed to burn the sealing tree. If not selected, all are required.",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_snowfast",
+      "explanation": "When checked, this edits the map in Mountaintops of the Giants to allow skipping large amounts of it. It adds several spirit springs for Torrent and adds warp gates between near Castle Sol and near Fire Giant. The shortcuts allow going from the Grand Lift of Rold to Fire Giant in around 2 minutes",
+      "english_text": "Add shortcuts in Mountaintops for faster traversal",
+      "text": ""
+    },
+    {
       "name": "EldenForm_sombermode",
       "explanation": "Option which changes required amount of Smithing Stones to upgrade a weapon which uses regular Smithing Stones. Weapons which use Somber Smithing Stones are unchanged.",
       "english_text": "Reduce upgrade cost for non-somber weapons",
@@ -979,6 +1784,18 @@
       "explanation": "Further explanation of spellshops: sorcery shops only get sorceries, and incantation shops only get incantations",
       "english_text": "Place sorceries/incantations in shops of that type",
       "text": "Sklepy z zaklęciami  i inkantacjami losują odpowiednio  tylko zaklęcia oraz inkantacje"
+    },
+    {
+      "name": "EldenForm_springseals",
+      "explanation": "DLC option to randomize which seal unlocks which spiritspring. They're described in this item sold by Moore: Notatka znaleziona przez ród poszukiwaczy, zwięźle przekazująca wiedzę. „Jeśli natkniesz się na zapieczętowany duchowy strumień, wypatruj w pobliżu ułożonych w stos kamieni. Przewracając go, złamiesz pieczęć”.",
+      "english_text": "Randomize spiritspring seals",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_springsealsL",
+      "explanation": "Further explanation for springseals option",
+      "english_text": "Each stone stack unseals a random spiritspring",
+      "text": ""
     },
     {
       "name": "EldenForm_status",
@@ -1012,14 +1829,32 @@
     },
     {
       "name": "EldenForm_swaprewards",
-      "explanation": "When bosses are randomized, changes their rune drop amounts. For instance, if Malenia is in Margit's arena, her runes will be based on her original amount but scaled down from Malenia's level to Margit's level",
-      "english_text": "Change boss runes to correspond to the original boss",
+      "explanation": "When bosses are randomized, changes their rune drop amounts. When this is unchecked, Margit will always drop 12000 runes. When this is checked, and Malenia is in Margit's arena, the runes will be based on her original amount, but possibly scaled down from Malenia's level to Margit's level. This option's phrasing was changed in v0.9 to be less ambiguous.",
+      "english_text": "Change boss runes when the boss changes",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_tarnished",
+      "explanation": "Checkbox in the DLC tab to enable randomizing the Tarnished Pack DLC",
+      "english_text": "Tarnished Pack",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_toggleDarkModeToolStripMenuItem",
+      "explanation": "Menu option to enable or disable dark mode as the visual theme",
+      "english_text": "Toggle dark mode",
       "text": ""
     },
     {
       "name": "EldenForm_updateButton",
       "explanation": "Button which opens the randomizer files page, to allow easy checks for newer versions of the randomizer",
       "english_text": "Check for updates",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_updateToolStripMenuItem",
+      "explanation": "Menu option in the file menu in the top left. When clicked, this just opens a link to the randomizer's mod page",
+      "english_text": "Check for updates on Nexus Mods",
       "text": ""
     },
     {
@@ -1041,6 +1876,18 @@
       "text": "Pliki dla UXM"
     },
     {
+      "name": "EldenForm_uxm",
+      "explanation": "Checkbox to write randomized files to Nuxe (previously UXM) in misc options. If unchecked, it assumes Mod Engine installation",
+      "english_text": "Output files for Nuxe",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_uxmL",
+      "explanation": "Further description for Nuxe file output which has a disclaimer from installation instructions. The issues can arise without Nuxe too, so there are further instructions to go use 'Verify integrity of game files' under 'Installed Files' in the game's properties in Steam",
+      "english_text": "Installing the randomizer with Nuxe can lead to long or infinite loading screens. If you get long loading screens without Nuxe, verify integrity of installed files in Steam.",
+      "text": ""
+    },
+    {
       "name": "EldenForm_versionMismatch",
       "explanation": "Yes/no confirmation prompt when loading an options file. {0} and {1} are the randomizer version names, like v0.1. The different output refers to how the same set of randomizer options, at different versions of the randomizer, may result in different item/enemy placements.",
       "english_text": "Mismatched options versions! File has version {0}, but current randomizer version is {1}. This may result in different output. Try to continue anyway?",
@@ -1053,9 +1900,51 @@
       "text": "Dostępność kamieni kowalskich podobnie jak w podstawowej wersji gry."
     },
     {
+      "name": "EldenForm_weaponprogression",
+      "explanation": "Checkbox to make Smithing Stones more likely to be available in early/late areas depending on their type. This affects the placement and distribution of Smithing Stones, so that you can upgrade your weapon like in the unmodified game. You will be able to reliably find tiers 1 to 3 in Limgrave and Liurnia. Otherwise, finding upgrade materials may be much more difficult.",
+      "english_text": "Smithing Stone availability similar to vanilla",
+      "text": ""
+    },
+    {
       "name": "EldenForm_weaponreqs",
       "explanation": "Checkbox to make all weapons in the game wieldable regardless of stats",
       "english_text": "Remove all weapon and spell requirements",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_woodsfast",
+      "explanation": "Funny name for an option which enables torrent in the Abyssal Woods (Las Otchłani). Horse blinders or blinkers are worn by horses who drive tourists around on carts, to limit the horses' vision so they don't get frightened by crowds around them.",
+      "english_text": "Abyssal Woods horse blinders",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_woodsfastL",
+      "explanation": "Actual explanation for horse blinders, in reference to the message shown when summoning Torrent in the Abyssal Woods: Widmowy wierzchowiec jest przestraszony i nie można go przywołać",
+      "english_text": "Prevent Torrent from getting frightened",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_zipMergeConfirm",
+      "explanation": "Confirmation dialog box when when using File > Zip mod files, when there is a merged mod present. This question is followed by a list of directories to include in the zip file, then Yes/No/Cancel buttons.",
+      "english_text": "Include the following merged mod directories in the zip file?",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_zipModFilesToolStripMenuItem",
+      "explanation": "Action in the file menu to save a zip file with all of the randomized mod files, mainly for distributing mod files for Seamless Co-op",
+      "english_text": "Zip mod files...",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_zipStatusDone",
+      "explanation": "Status bar message which is shown when 'File > Zip mod files' has finished processing. {0} is replaced with the zip file name which was saved.",
+      "english_text": "Zipped {0}",
+      "text": ""
+    },
+    {
+      "name": "EldenForm_zipStatusProgress",
+      "explanation": "Status bar message which is shown when 'File > Zip mod files' is currently processing",
+      "english_text": "Zipping mod files...",
       "text": ""
     },
     {
@@ -1191,6 +2080,186 @@
       "text": ""
     },
     {
+      "name": "EnemyClassGroup_BaseAllBosses",
+      "explanation": "Meta-category based on EnemyClassGroup_AllBosses but limited to non-DLC bosses",
+      "english_text": "All Base Game Bosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_BaseAllEnemies",
+      "explanation": "Meta-category based on EnemyClassGroup_AllEnemies but limited to non-DLC enemies",
+      "english_text": "All Base Game Enemies and Bosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_BaseBasic",
+      "explanation": "Meta-category based on EnemyClass_Basic but limited to non-DLC enemies",
+      "english_text": "Base Game Regular Enemies",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_BaseBoss",
+      "explanation": "Meta-category based on EnemyClass_Boss but limited to non-DLC bosses",
+      "english_text": "Base Game Major Bosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_BaseDragonMiniboss",
+      "explanation": "Meta-category based on EnemyClass_DragonMiniboss but limited to non-DLC bosses",
+      "english_text": "Base Game Dragon Minibosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_BaseMiniboss",
+      "explanation": "Meta-category based on EnemyClass_Miniboss but limited to non-DLC bosses",
+      "english_text": "Base Game World Minibosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_BaseMinorBoss",
+      "explanation": "Meta-category based on EnemyClass_MinorBoss but limited to non-DLC bosses",
+      "english_text": "Base Game Minor Bosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_BaseWildlife",
+      "explanation": "Meta-category based on EnemyClass_Wildlife but limited to non-DLC enemies",
+      "english_text": "Base Game Passive Wildlife",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_DLCAllBosses",
+      "explanation": "Meta-category based on EnemyClassGroup_AllBosses but limited to DLC bosses",
+      "english_text": "All DLC Bosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_DLCAllEnemies",
+      "explanation": "Meta-category based on EnemyClassGroup_AllEnemies but limited to DLC enemies",
+      "english_text": "All DLC Enemies and Bosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_DLCBasic",
+      "explanation": "Meta-category based on EnemyClass_Basic but limited to DLC enemies",
+      "english_text": "DLC Regular Enemies",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_DLCBoss",
+      "explanation": "Meta-category based on EnemyClass_Boss but limited to DLC bosses",
+      "english_text": "DLC Major Bosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_DLCDragonMiniboss",
+      "explanation": "Meta-category based on EnemyClass_DragonMiniboss but limited to DLC bosses",
+      "english_text": "DLC Dragon Minibosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_DLCMiniboss",
+      "explanation": "Meta-category based on EnemyClass_Miniboss but limited to DLC bosses",
+      "english_text": "DLC World Minibosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_DLCMinorBoss",
+      "explanation": "Meta-category based on EnemyClass_MinorBoss but limited to DLC bosses",
+      "english_text": "DLC Minor Bosses",
+      "text": ""
+    },
+    {
+      "name": "EnemyClassGroup_DLCWildlife",
+      "explanation": "Meta-category based on EnemyClass_Wildlife but limited to DLC enemies",
+      "english_text": "DLC Passive Wildlife",
+      "text": ""
+    },
+    {
+      "name": "EnemyPanel_TabTypeDesc_GlobalSettings",
+      "explanation": "Default tab in custom enemy placement which contains placement settings which apply to the entire game, as opposed to individual enemy categories",
+      "english_text": "Global Settings",
+      "text": ""
+    },
+    {
+      "name": "EnemyPanel_TabTypeDesc_MiscOptions",
+      "explanation": "Tab in custom enemy placement for options which don't correspond to any placement rules, and can be the same as EldenForm_miscPage",
+      "english_text": "Misc Options",
+      "text": ""
+    },
+    {
+      "name": "FormText_confirmReset",
+      "explanation": "UI message used in multiple forms, to reset settings/files/etc to their original state",
+      "english_text": "Reset to default?",
+      "text": ""
+    },
+    {
+      "name": "FormText_fileMissing",
+      "explanation": "UI message used in multiple forms. {0} is replaced with the name of the file that's required and missing",
+      "english_text": "File does not exist: {0}",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_ashenGrace",
+      "explanation": "Changes the name of Ashen Capital (Leyndell, stolica popiołów) graces when royalaccess option is enabled, because the option allows Royal and Ashen graces with the same names to coexist. {0} is replaced with the name of the grace, so in English, this renames: Erdtree Sanctuary -> Erdtree Sanctuary (Ashen)",
+      "english_text": "{0} (Ashen)",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_dlcMissingSote",
+      "explanation": "In-game popup shown when the main DLC option is enabled but it's not detected in-game",
+      "english_text": "Error: Shadow of the Erdtree was enabled in randomizer but your game doesn't have it.\nEnable it on Steam or else uncheck it in the DLC tab.",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_dlcMissingTarnished",
+      "explanation": "In-game popup shown when the Tarnished Pack DLC option is enabled but it's not detected in-game",
+      "english_text": "Error: Tarnished Pack was enabled in randomizer but your game doesn't have it.\nEnable it on Steam or else uncheck it in the DLC tab.",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_dlcStart_door",
+      "explanation": "In-game prompt which appears when trying to open the Chapel of Anticipation door when DLC Start is enabled. The player has to use the grace menu",
+      "english_text": "Closed because DLC Start is enabled. Use the grace instead.",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_dlcStart_enter",
+      "explanation": "Option in the grace menu in DLC Start. This warps to the beginning of the DLC in Gravesite Plain",
+      "english_text": "Enter DLC",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_dlcStart_enterBase",
+      "explanation": "Option in the grace menu in DLC Start with base game. This warps to early in the base game, but after the tutorial",
+      "english_text": "Enter base game",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_dlcStart_enterConfirm",
+      "explanation": "After selecting 'Enter DLC' in the grace menu, yes/no prompt to warp to the DLC (Realm of Shadow: Królestwo Cieni). This also reduces all starting runes to 0, since the runes are only given for level up",
+      "english_text": "Forfeit all runes and enter the realm of shadow?",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_dlcStart_enterConfirmBase",
+      "explanation": "After selecting 'Enter base game' in the grace menu, yes/no prompt to warp the base game. This also reduces all starting runes to 0, since the runes are only given for level up",
+      "english_text": "Forfeit all runes and enter the base game?",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_dlcStart_menu",
+      "explanation": "Option in the grace menu for the DLC Start submenu",
+      "english_text": "DLC Start",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_dlcStart_shop",
+      "explanation": "When dlcshop is enabled, option in the grace menu to open the shop submenu",
+      "english_text": "Base game shop",
+      "text": ""
+    },
+    {
       "name": "GameMenu_fogRunningError",
       "explanation": "Dialog message which appears in-game when Fog Gate Randomizer option is enabled, but the user attempted to launch Item/Enemy Randomizer without actually running Fog Gate Randomizer. The \n is a line break. When Fog Gate Randomizer runs, it removes this error message.",
       "english_text": "Error: Unrestricted item placement was enabled in Item Randomizer,\nbut Fog Gate Randomizer was not detected",
@@ -1281,6 +2350,24 @@
       "text": ""
     },
     {
+      "name": "GameMenu_messmerShard",
+      "explanation": "In-game name of the item replacing Messmer's Kindling (Podpałka Messmera) when it's split up into multiple shards. To burn the sealing tree, you need to collect some number of them",
+      "english_text": "Messmer's Kindling Shard",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_messmerShardDesc",
+      "explanation": "In-game description for Messmer's Kindling Shards, with info added to the original description (Spala drzewo pieczęci). {0} will get replaced with the number of shards required to burn the sealing tree, either 0 or >1",
+      "english_text": "Burns the sealing tree, with {0} required",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_oMotherDesc",
+      "explanation": "In-game one-line description for O Mother which only appears when it is broken up into item shards. It's mostly nonsense flavor text hinting that the gesture is used in front of the Marika statue before Hinterland. Because it's combined with shardDesc, it should be short. The phrasing is based on Stonesword Key's 'Use to break one imp statue seal' (Użyj, aby złamać jedną pieczęć na posągu chochlika)",
+      "english_text": "Use to entreat Marika",
+      "text": ""
+    },
+    {
       "name": "GameMenu_receiveBellBearing",
       "explanation": "Option added to merchants in-game, alongside Purchase/Sell menus, which gives the player their Bell Bearing without killing them",
       "english_text": "Receive Bell Bearing",
@@ -1290,6 +2377,1428 @@
       "name": "GameMenu_restart",
       "explanation": "Error message shown in-game when the randomizer can load all required files. The \n corresponds to a line change. This normally happens if someone re-runs randomizer without restarting the game, but it can also happen after game updates if the regulation.bin becomes invalid and no longer loads. Finally, it can happen if the randomizer is incorrectly installed, and some critical files are detected as missing.",
       "english_text": "Error: Mismatch between regulation.bin and other randomizer files.\nMake sure all randomizer files are present, the game has been restarted\nafter randomization, and the game and regulation.bin versions are compatible.",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_shardDesc",
+      "explanation": "In-game one-line description for every item shard, which adds the number of shards required to use the key item. {0} gets replaced by the original one-line description of the item (for example: Spala drzewo pieczęci for Messmer's Kindling, Klucz do otwarcia dwóch zapieczętowanych bram Akademii for Academy Key). {1} will get replaced with the number of shards required",
+      "english_text": "{0}, with {1} required",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_shardName",
+      "explanation": "Generic name any key item shard, where {0} is the name of the key item. This literally replaces the item name in-game, and also appears when configuring item shards in custom item placement.",
+      "english_text": "{0} Shard",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_ShopCat_Armor",
+      "explanation": "Option in the base game shop in DLC Start to browse a shop with base game armor",
+      "english_text": "Armor",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_ShopCat_AshOfWar",
+      "explanation": "Option in the base game shop in DLC Start to browse a shop with base game Ashes of War",
+      "english_text": "Ashes of War",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_ShopCat_Cookbooks",
+      "explanation": "Option in the base game shop in DLC Start to browse a shop with base game cookbooks (for example: Książka z przepisami misjonarza [1], Książka z przepisami perfumiarza [2])",
+      "english_text": "Cookbooks",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_ShopCat_CraftingContainers",
+      "explanation": "Option in the base game shop in DLC Start to browse a shop with base game crafting containers. Cracked Pots, Ritual Pots, and Perfume Bottles",
+      "english_text": "Crafting containers",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_ShopCat_CrystalTear",
+      "explanation": "Option in the base game shop in DLC Start to browse a shop with base game crystal tears (Kryształowe łzy)",
+      "english_text": "Crystal tears",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_ShopCat_Incantation",
+      "explanation": "Option in the base game shop in DLC Start to browse a shop with base game incantations",
+      "english_text": "Incantations",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_ShopCat_ReusableTool",
+      "explanation": "Option in the base game shop in DLC Start to browse a shop with reusable base game 'tools' (Wielokr. + Narzędzia) which sometimes use FP, like the revenant bell or Margit's Shackle",
+      "english_text": "Reusable tools",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_ShopCat_Sorcery",
+      "explanation": "Option in the base game shop in DLC Start to browse a shop with base game sorceries",
+      "english_text": "Sorceries",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_ShopCat_SpiritAsh",
+      "explanation": "Option in the base game shop in DLC Start to browse a shop with base game summonable spirit ashes",
+      "english_text": "Spirit ashes",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_ShopCat_Talisman",
+      "explanation": "Option in the base game shop in DLC Start to browse a shop with base game talismans",
+      "english_text": "Talismans",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_ShopCat_Weapon",
+      "explanation": "Option in the base game shop in DLC Start to browse a shop with base game weapons",
+      "english_text": "Weapons",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_springsealBy",
+      "explanation": "Message which pops up in-game when spiritspring seals are randomized, when toppling a stone stack. {0} is a nearby location, like 'Moorth Ruins' for the Scadu Altus spiritspring. This is a modified version of the vanilla message: Gdzieś otworzyło się duchowe źródło",
+      "english_text": "A spiritspring has been unsealed by {0}",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_springsealIn",
+      "explanation": "Message which pops up in-game when spiritspring seals are randomized, when toppling a stone stack. {0} a broad location the spiritspring is located in, like 'Gravesite Plain'. This is a modified version of the vanilla message: Gdzieś otworzyło się duchowe źródło",
+      "english_text": "A spiritspring has been unsealed in {0}",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_thopsKey",
+      "explanation": "Changes the name of the key used for the Thops NPC quest (Czarodziej Thops) by adding his name to distinguish it from the base item. Just add the name, not the full NPC title, to avoid the text getting cut off. {0} is automatically replaced by the key item name, which is Academy Glintstone Key (Błyskamienny klucz do Akademii)",
+      "english_text": "{0} (Thops)",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_upgradeScadu",
+      "explanation": "Menu option which appears in the DLC grace menu when DLC randomization is enabled, under Shadow Realm Blessing, to upgrade all blessings at once (not implemented yet)",
+      "english_text": "Upgrade all",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_upgradeScaduDone",
+      "explanation": "Message which appears in the DLC grace menu when using 'Upgrade all', combining: Wzmocniono błogosławieństwo Ostrodrzewa + Wzmocniono błogosławieństwo prochów czcigodnego ducha",
+      "english_text": "Scadutree Blessing and Revered Spirit Ash Blessing empowered",
+      "text": ""
+    },
+    {
+      "name": "GameMenu_upgradeScaduMissing",
+      "explanation": "Message which appears in the DLC grace menu when attempting to use 'Upgrade all' but there's nothing to upgrade, combining: Za mało odłamków Ostrodrzewa + Za mało prochów czcigodnego ducha",
+      "english_text": "Not enough Scadutree Fragments or Revered Spirit Ashes",
+      "text": ""
+    },
+    {
+      "name": "HelperForm_active",
+      "explanation": "Shown in the RandomizerHelper settings when RandomizerHelper is enabled and when it emits active logs. This can be seen by running the game with RandomizerHelper active. {0} is a localized timestamp. For example, in English: Wednesday, December 25, 2024 1:45:30 PM",
+      "english_text": "Last active at {0}",
+      "text": ""
+    },
+    {
+      "name": "HelperForm_activity",
+      "explanation": "Shown in the RandomizerHelper settings when RandomizerHelper is enabled but no active logs are detected. This can be seen by removing dll/RandomizerHelper_log.txt if it exists",
+      "english_text": "No activity detected",
+      "text": ""
+    },
+    {
+      "name": "HelperForm_HelperForm",
+      "explanation": "title of the RandomizerHelper settings window",
+      "english_text": "Configure RandomizerHelper.dll",
+      "text": ""
+    },
+    {
+      "name": "HelperForm_helperL",
+      "explanation": "Basic info at the top of the RandomizerHelper settings window. As soon as any checkbox/textbox is changed, the mod's behavior will change while the game is running",
+      "english_text": "When RandomizerHelper is active, changes to these settings will immediately apply without needing to rerun randomizer or restart the game.",
+      "text": ""
+    },
+    {
+      "name": "HelperForm_okButton",
+      "explanation": "Standard dialog confirmation button",
+      "english_text": "OK",
+      "text": ""
+    },
+    {
+      "name": "HelperForm_resetButton",
+      "explanation": "Button in the RandomizerHelper settings window to reset all of the dll settings to their original values. This shows a yes/no prompt to confirm",
+      "english_text": "Reset...",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_autoEquip",
+      "explanation": "RandomizerHelper option to enable auto-equip of weapons, armor, etc, when they are acquired. Each have their own settings below",
+      "english_text": "Auto-equip",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_autoUpgrade",
+      "explanation": "RandomizerHelper option to enable auto-upgrading items when they are acquired",
+      "english_text": "Auto-upgrade",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_autoUpgradeDropped",
+      "explanation": "RandomizerHelper option to enable changing the upgrade level of items (weapons/spirit ashes/etc) after they've been acquired normally, by using 'Wyrzuć' from the equipment menu and picking the item up again",
+      "english_text": "Auto-upgrade items which are left on the ground and picked up",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_autoUpgradeEquipped",
+      "explanation": "RandomizerHelper option to enable changing the upgrade level of items (weapons/spirit ashes/etc) after they've been acquired normally by having the item actively equipped. The item can change upon being equipped or upon changing the highest level",
+      "english_text": "Auto-upgrade items in equipment slots to match the highest level achieved so far",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_autoUpgradeSpiritAshes",
+      "explanation": "RandomizerHelper option to enable auto-upgrading summonable spirit ashes. If the player has a max +5 in their inventory, any new ashes will be +5",
+      "english_text": "Auto-upgrade spirit ashes to the highest level achieved so far",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_autoUpgradeWeapons",
+      "explanation": "RandomizerHelper option to enable auto-upgrading weapons when they are acquired. The level is based on the max weapon level the player has previously reached. This value is also used for PvP matchmaking",
+      "english_text": "Auto-upgrade weapons to the player's max weapon level",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_bowLeft",
+      "explanation": "RandomizerHelper option when weapon auto-equip is enabled, to replace the left-hand weapon with bows. If disabled, it will go into the right hand instead",
+      "english_text": "Equip bows in the left hand",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_castLeft",
+      "explanation": "RandomizerHelper option when weapon auto-equip is enabled, to replace the left-hand weapon with staffs and seals. If disabled, it will go into the right hand instead",
+      "english_text": "Equip spell-casting weapons in the left hand",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_equipAccessory",
+      "explanation": "RandomizerHelper option when auto-equip is enabled, to replace equipped talismans when any new ones are acquired",
+      "english_text": "Auto-equip talismans",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_equipArmor",
+      "explanation": "RandomizerHelper option when auto-equip is enabled, to equip armor when it's acquired",
+      "english_text": "Auto-equip armor",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_equipCrystalTears",
+      "explanation": "RandomizerHelper option when auto-equip is enabled, to equip crystal tears into the Physick Flask when they are acquired",
+      "english_text": "Auto-equip crystal tears",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_equipShop",
+      "explanation": "RandomizerHelper option when auto-equip is enabled, to auto-equip items acquired from shops. If disabled, only pickups/drops are auto-equipped",
+      "english_text": "Auto-equip items purchased from shops",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_equipSpells",
+      "explanation": "RandomizerHelper option when auto-equip is enabled, to auto-equip sorceries and incantations when they are acquired",
+      "english_text": "Auto-equip spells",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_equipWeapons",
+      "explanation": "RandomizerOption when auto-equip is enabled, to auto-equip weapons and shields when they are acquired",
+      "english_text": "Auto-equip weapons",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_regionLockWeapons",
+      "explanation": "RandomizerOption when auto-upgrade weapons is enabled. Even if the player's max weapon level is +25, if they get a weapon in Limgrave, it will only be upgraded to +3, the max level for the region",
+      "english_text": "Limit max auto-upgrade level based on the region where the weapon is acquired",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_weaponLevelRange",
+      "explanation": "RandomizerOption when auto-upgrade weapons is enabled, for a textbox to choose a weapon level from 0 to 25. It describes how an example upgrade level is modified randomly",
+      "english_text": "Nerf auto-upgrade by reducing weapons' levels by a random amount. If set to 3, an auto-upgrade level of +10 (+4 somber) gives a +8 +9 or +10 weapon (+3 or +4 somber)",
+      "text": ""
+    },
+    {
+      "name": "HelperOptions_weaponLevelsBelowMax",
+      "explanation": "RandomizerOption when auto-upgrade weapons is enabled, for a textbox to choose a weapon level from 0 to 25. It describes how an example upgrade level is modified by a fixed amount",
+      "english_text": "Nerf auto-upgrade by reducing weapons' levels by a fixed amount. If set to 3, an auto-upgrade level of +20 (+8 somber) gives a +17 weapon (+7 somber)",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeDesc_AreaSilo",
+      "explanation": "Tab name for area-based silos in custom item placement, which currently allows randomizing the base game and DLC separately for some types of items. See an explanation for silos overall under TabTypeDesc_Silos.",
+      "english_text": "DLC silos",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeDesc_Bias",
+      "explanation": "Tab name for bias controls in custom item placement, same as EldenForm_biasGroup",
+      "english_text": "Bias",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeDesc_ItemShards",
+      "explanation": "Tab name for splitting up key items into shards in custom item placement.",
+      "english_text": "Key item shards",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeDesc_Overview",
+      "explanation": "Tab name for the default tab in custom item placement which has top-level controls and a summary of other configuration options",
+      "english_text": "Overview",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeDesc_PremiumGroups",
+      "explanation": "Tab name for the top-level tab for premium locations, containing an explanation of how they work and a button to add a custom rule. This is a mechanism for requiring a set of locations to pick from a set of selected items and no other items. This is usually to ensure these locations always have good rewards, which is why they're called premium, though it doesn't have to be used for that.",
+      "english_text": "Premium locations",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeDesc_SharedOptions",
+      "explanation": "Tab name for options in custom item placement which don't correspond to any placement rules, which can be the same as EldenForm_miscPage, though it is not capitalized here",
+      "english_text": "Misc options",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeDesc_Silos",
+      "explanation": "Tab name for the top-level tab in item placement for configuring both area silos and item silos, which contains an explanation and a button to add a new item silo. A silo is an isolated group of items/locations which are randomized among themselves. An item silo specifically has a list of items, and whatever items are defined there can only replace each other. A silo can be also called a partition, division, etc.",
+      "english_text": "Silos",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeExplain_AreaSilo",
+      "explanation": "Detailed explanation for the DLC silos tab in custom item placement. This references other settings in the DLC tab, where if those settings are used, the custom item placement settings will be ignored. Normally items are placed in silos based on their original location, but BaseOnlyItems and DlcOnlyItems allows switching an item's DLC silo (not allowed for major key items)",
+      "english_text": "DLC silos allow randomizing base game and DLC items separately. Note that selecting \"Randomize base game and DLC separately\" in the DLC tab or disabling the DLC tab altogether takes priority over these settings. You can override the DLC silo for non-key items with item placement rules.",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeExplain_ItemShards",
+      "explanation": "Detailed explanation for key item shards tab in custom item placement. This contains shared text with EldenForm_logicItemDlcInfoL, and recommends using the moremaxslots option in that case.",
+      "english_text": "When key items are split into shards, you need to acquire shards to use the key. Randomization may fail if there are too many shards and too few key item locations. If that happens, consider allowing multiple key items per location in the Logic tab. If you set 0 required shards, the item is no longer needed.",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeExplain_ItemSilo",
+      "explanation": "Detailed explanation for an item silo tab in custom item placement, which can be seen only by adding a custom item silo. A few things here: this contains an explation for ItemSiloType modes, then an explanation for possible failure cases. It references the copydrops setting as causing failures sometimes. A junk item is a low-value item that's unrelated to the silo, replacing a different item in the silo because *something* has to go there.",
+      "english_text": "Within item silos, individual items replace each other. By-type groups add many smaller silos for every weapon type or armor slot in the game. Normally all items are both sources and targets, but randomization will fail if there are more sources than targets in a silo, which can happen with the option to add guaranteed copies of random enemy drops. If there are more targets than sources, junk items may replace some target items. If items or item locations in a silo have placement restrictions, randomization may fail.",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeExplain_Overview",
+      "explanation": "Detailed explanation for custom item placement in the default Overview tab. This references the left sidebar which allows switching to different settings to configure, some of which are rules which are applied during randomization. Some settings are arranged in a hierarchy or tree, so this also points out that you can click on those to configure settings and add new rules. This text has some overlap with EldenForm_customitemHelp.",
+      "english_text": "Custom item placement is an advanced mode for detailed configuration of items and locations. Settings configured in custom item placement won't apply anymore if it's disabled. Select any category on the left to configure placement rules. In some cases, you can add new custom rules under root categories.",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeExplain_Placements",
+      "explanation": "Detailed explanation for the top-level 'Item placements' tab in custom item placement. This is mainly a summary of other item placement text, but talks about interactions between different placement rules or placement groups. 'All constraints' for an item can refer to settings that an item must be placed somewhere or cannot be placed there. 'Region constraints' are additional constraints added by randomizer logic, like enforcing that enough Sacred Tears are available before Leyndell or that a particular key item must be placed in a particular dungeon.",
+      "english_text": "Item placement rules control where individual items can or cannot be placed. If an item is configured in multiple rules, all constraints apply to it at once. It is easily possible to create impossible combinations of rules where there are not enough locations to fit the items, or vice versa, especially if items have separate region constraints. In those cases, the rules may be ignored or cause randomization failures.",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeExplain_PremiumGroups",
+      "explanation": "Very detailed explanation for the top-level 'Premium groups' tab in custom item placement. Unlike item placements which can add constraints for which locations an item must appear in, premium locations add constraints for which items a location must have. The last part of this talks about the interaction between item placement rules and premium location rules.",
+      "english_text": "Premium location rules control which items can be placed in particular locations. Ideally there are many more items than locations per rule. If a location is configured in multiple rules, the only allowed items come from the intersection of those rules. If this leaves no valid items for a location, the rule is ignored and a warning is added to spoiler logs. If there are not enough items for a location, the rules may be ignored. Note that item placement rules take priority over premium locations, so any items which can only appear at specific locations can always be placed there. If an item is already forbidden from appearing in a location, like unmissable items in missable locations or farmable items in guaranteed locations, putting it in a premium rule won't change that.",
+      "text": ""
+    },
+    {
+      "name": "ItemPanel_TabTypeExplain_Silos",
+      "explanation": "Detailed explanation for the top-level Silos tab in custom item placement, which summarizes DLC silos and item silos and their interaction. See LocationGroup_enemyinf for the main use of farmable enemy drops as a location category.",
+      "english_text": "Silos change which groups of locations are randomized among themselves. Note some locations are always randomized separately, like item pickups and farmable enemy drops. Within that, locations can be further split up by region with DLC silos. At the same time, locations can be split up based on groups of items. If an item is configured in multiple item silos, it is added to the first applicable silo only.",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_AreaSiloType_DLC",
+      "explanation": "Option in custom item placement. When selected, base game items are only placed in the base game, and DLC items are only placed in the DLC",
+      "english_text": "Separate base game and DLC",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_AreaSiloType_None",
+      "explanation": "Option in custom item placement. When selected, there is no separation between items from different sources",
+      "english_text": "None",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_biasItemSpread",
+      "explanation": "Label for a number in the Bias tab in custom item placement which goes from 0 to 15. The thing being spread is the probability range of desirable items being placed in difficult locations, and the higher it is, the more the probability is skewed.",
+      "english_text": "Item spread",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_biasItemSpreadHelp",
+      "explanation": "Detailed explanation for item spread which appears as a tooltip for the question mark icon. The expression 2^spread is exponentiation where spread is the number being configured, so this is basically a logarithmic setting. This setting does not apply to key items or important items, only to normal items. Key item spread is the version of this which applies to key items.",
+      "english_text": "Item spread defines the weight of the most difficult and late location in the game, for placing normal items. The lowest location weight is 1 and highest weight is 2^spread, and other weights are gradually spaced in between them. If this is 0, all locations have the same weight. If it's 1, the most desirable location is at most twice as likely for whichever item is eligible to go there first.",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_biasKeyItemChainWeight",
+      "explanation": "Label for a number in the Bias tab in custom item placement which goes from 1 to 100. Key item chaining is when a key item is locked behind another key item which is locked behind another key item, and so on, also described in EldenForm_keyitem2.",
+      "english_text": "Key item chain weight",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_biasKeyItemChainWeightHelp",
+      "explanation": "Detailed explanation for key item chain weight, or chain multiplier, which appears as a tooltip for the question mark icon. This is a fairly low-level explanation about the key item logic algorithm, where a group of locations (an area) can have special weights which get increased and decreased (multiplied and divided) as more key items are assigned.",
+      "english_text": "When assigning a major key item to an area, the desirability of areas blocked by the item is multiplied by the key item chain weight, leading to key item chains. The desirability for an area is also divided by this value when an item is placed there, cancelling out the chain multiplier and overall spreading out key items. For key item placement, an \"area\" is a group of locations which are mutually accessible without needing any key items.",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_biasKeyItemRegionSpread",
+      "explanation": "Label for a number in the Bias tab in custom item placement which goes from 1 to 100. Unlike 'key item spread', which is a spread in location probabilities, this is literally spreading items across different game regions.",
+      "english_text": "Key item region spread",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_biasKeyItemRegionSpreadHelp",
+      "explanation": "Detailed explanation for key item region spread which appears as a tooltip for the question mark icon. This has a lot of the same explanation as key item chain weight. The main new thing is an explanation that the two settings interact by stacking multiplicatively, which means that the weight for an area is divided by region spread times chain weight when both are set.",
+      "english_text": "Key item region spread is an alternative to chain weight which can spread out key items across areas without forcing chains. The weight for areas is divided by this value when an item is placed there. This stacks multiplicatively with chain weight if both are present. For key item placement, an \"area\" is a group of locations which are mutually accessible without needing any key items.",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_biasKeyItemSpread",
+      "explanation": "Label for a number in the Bias tab in custom item placement which goes from 0 to 20, and is a companion to regular 'Item spread' weight except it applies to key items only",
+      "english_text": "Key item spread",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_biasKeyItemSpreadHelp",
+      "explanation": "Detailed explanation for key item spread which appears as a tooltip for the question mark icon. It references 'Item spread' which applies to non-key items. The main important effect described is placing key items at bosses rather than item pickups.",
+      "english_text": "Key item spread defines the weight of the most difficult and late location in the game, for placing important items. It makes major key items more likely to be placed at bosses. It works the same way as normal item spread, but is usually higher because major key items are limited to specific areas by logic, and locations within specific areas have closer weights.",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_biasManual",
+      "explanation": "Checkbox in the Bias tab in custom item placement which changes whether the bias% slider is editable or the individual weights (e.g. item spread) are manually editable. If the slider is editable, the weights change automatically and are not editable individually. If the weights are editable, the bias% slider number is completely ignored.",
+      "english_text": "Configure individual weights",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_descEntry",
+      "explanation": "Entry in a description of an item preset. {0} is a type of item placement, {1} is the full description for it",
+      "english_text": "{0}: {1}",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_descExclude",
+      "explanation": "In a description of custom item placement, {0} is a list of locations where certain items are excluded from appearing, like minidungeons or night bosses",
+      "english_text": "Excludes {0}",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_descItemLine",
+      "explanation": "In a description of custom item placement, {0} is a list of items in a placement. The hyphen is indenting the previous lines, like a bulleted list.",
+      "english_text": "- Items: {0}",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_descLine",
+      "explanation": "In a description of custom item placement, this is a multi-purpose template for formatting a bulleted list. The hyphen is indenting the line, with one line per entry. {0} is replaced with the list entry, whatever it is.",
+      "english_text": "- {0}",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_descNone",
+      "explanation": "In a description of custom item placement, this text is shown when no items or locations are specified. This usually means the placement rule is not used.",
+      "english_text": "None",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_descRequire",
+      "explanation": "In a description of custom item placement, {0} is a list of locations where certain items must appear, like important locations",
+      "english_text": "Placed in {0}",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_descRequireExclude",
+      "explanation": "In a description of custom item placement, this is a combination of descRequire and descExclude. {0} is a list of locations where certain items must appear, and {1} is a list of locations where certain items may not appear",
+      "english_text": "Placed in {0}. Excludes {1}",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_descRequireExcludeLoc",
+      "explanation": "Another variant of descRequireExclude which is used when the thing being described is a location, so 'Placed in' would be redundant",
+      "english_text": "{0}. Excludes {1}",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_disable",
+      "explanation": "Label for checkbox shown in custom item placement rule, including premium groups and custom item silos. When checked, the rule does not apply during randomization, but it is kept around for later if needed. 'Core mechanics' is an example of a rule that can be disabled, but not all rules can be disabled.",
+      "english_text": "Disable rule",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemFilter_add",
+      "explanation": "Menu option in the dropdown menu for an item group in custom item placement, which changes the group to add a filter. For instance, after clicking 'Add filter: DLC' to 'Sorceries', the item group will change to 'Sorceries (DLC)'. You can see this in the 'Premium currency shop' tab by clicking one of the item groups",
+      "english_text": "Add filter: {0}",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemFilter_clear",
+      "explanation": "Menu option in the dropdown menu for an item group with a filter. For instance, after adding a filter to make 'Sorceries (DLC)', click 'Clear filter' to change it back to 'Sorceries'. You can see this in the 'Premium currency shop' tab by clicking one of the item groups",
+      "english_text": "Clear filter",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemFilterGroup_dlc",
+      "explanation": "Filter name for an item group which selects only items which were added in the DLC. This is a filter because it changes an existing group like 'Weapons' to 'Weapons (DLC)', for instance",
+      "english_text": "DLC",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemFilterGroup_legendary",
+      "explanation": "Filter name for an item group which selects only items which have big golden shiny pickups on the ground. For example, 'Weapons (Legendary)' includes Eclipse Shotel and Starscourge Greatsword.",
+      "english_text": "Legendary",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemFilterGroup_nodlc",
+      "explanation": "Filter name for an item group which selects items which were *not* added in the DLC. For example, you can create a filtered group called 'Cookbooks (Base game)'",
+      "english_text": "Base game",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemFilterGroup_rare",
+      "explanation": "Filter name for an item group which selects only items which have purple shiny pickups on the ground. For example, 'Weapons (Rare)' includes Golden Halberd and Bloodhound's Fang",
+      "english_text": "Rare",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemFilterGroupDesc",
+      "explanation": "This is the name of the filtered item group. {0} gets replaced by the item group name (see ItemGroup), and {1} gets replaced by the filter name (see ItemFilterGroup)",
+      "english_text": "{0} ({1})",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemFilterMultiDesc",
+      "explanation": "This is the name of a filter group which contains multiple filters. {0} is the first filter and {1} is the second filter. So a filter for DLC legendary weapons will become 'DLC & Legendary' which then applies to an item group like 'Weapon (DLC & Legendary)'. Note this may end up supporting 3 or more filters in the future by getting chained together.",
+      "english_text": "{0} & {1}",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_accessories",
+      "explanation": "Custom item group consisting of all talismans",
+      "english_text": "Talismans",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_arrows",
+      "explanation": "Custom item group consisting of all arrow and bolt ammunition (Strzały/bełty)",
+      "english_text": "Arrows/Bolts",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_bosssouls",
+      "explanation": "Custom item group consisting of all boss remembrances, like Wizerunek Palownika and Eldeński Wizerunek",
+      "english_text": "Remembrances",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_containers",
+      "explanation": "Custom item group consisting of all crafting containers: Cracked Pots, Ritual Pots, Perfume Bottles, and Hefty Cracked Pots",
+      "english_text": "Crafting Containers",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_cookbooks",
+      "explanation": "Custom item group consisting of all cookbooks, like Książka z przepisami misjonarza [1] and Książka z przepisami perfumiarza [2]",
+      "english_text": "Cookbooks",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_craftingmats",
+      "explanation": "Custom item group consisting of all items used for crafting (Materiały do tworzenia)",
+      "english_text": "Crafting Materials",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_crystaltears",
+      "explanation": "Custom item group consisting of all Crystal Tears (Kryształowe łzy)",
+      "english_text": "Crystal Tears",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_gems",
+      "explanation": "Custom item group consisting of all Ash of War items which can be equipped to weapons (Popioły wojny)",
+      "english_text": "Ashes of War",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_greatrunes",
+      "explanation": "Custom item group consisting of all demi-god Great Runes (Wielkie runy)",
+      "english_text": "Great Runes",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_incantations",
+      "explanation": "Custom item group consisting of all incantations",
+      "english_text": "Incantations",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_itemashes",
+      "explanation": "Custom item group consisting of all Bell Bearings containing crafting materials, like Dzwonek kulisty kupca kości and Dzwonek kulisty kupca pleśni. This does not include Bell Bearings from NPC shops or containing upgrade materials",
+      "english_text": "Material Bell Bearings",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_keyitems",
+      "explanation": "Custom item group consisting of all major key items",
+      "english_text": "Major Key Items",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_paintings",
+      "explanation": "Custom item group consisting of all paintings which can be used in painting puzzles",
+      "english_text": "Paintings",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_prayerbooks",
+      "explanation": "Custom item group consisting of all incantation prayerbooks, like Modlitewnik Złotego Drzewa and Modlitewnik boskiej skóry",
+      "english_text": "Prayerbooks",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_protectors",
+      "explanation": "Custom item group consisting of all armor",
+      "english_text": "Armor",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_questitems",
+      "explanation": "Custom item group consisting of all quest items, which are items which progress NPC quests",
+      "english_text": "Quest Items",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_regularstones",
+      "explanation": "Custom item group consisting of all regular smithing stones, which can be used to upgrade weapons to +25",
+      "english_text": "Regular Smithing Stones",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_scrolls",
+      "explanation": "Custom item group consisting of all sorcery scrolls, like Zwój Akademii and Zwój kodeksu",
+      "english_text": "Scrolls",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_somberstones",
+      "explanation": "Custom item group consisting of all somber smithing stones, which can be used to upgrade special weapons to +10 only",
+      "english_text": "Somber Smithing Stones",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_sorceries",
+      "explanation": "Custom item group consisting of all sorceries",
+      "english_text": "Sorceries",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_souls",
+      "explanation": "Custom item group consisting of all items which can be consumed to gain runes, excluding remembrances. For example, Złoty Run [1] and Run numena",
+      "english_text": "Consumable Runes",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_spiritashes",
+      "explanation": "Custom item group consisting of all summonable spirits (Prochy duchów)",
+      "english_text": "Spirit Ashes",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_tarnished",
+      "explanation": "Custom item group for all items from the Tarnished Pack DLC",
+      "english_text": "Tarnished Pack Items",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_upgradeashes",
+      "explanation": "Custom item group consisting of all bell bearings containing upgrade materials, like Dzwonek kulisty górnika-kowala [1] and Dzwonek kulisty zbieracza konwalii [1]",
+      "english_text": "Upgrade Bell Bearings",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_weapons",
+      "explanation": "Custom item group consisting of all weapons",
+      "english_text": "Weapons",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemGroup_whetblades",
+      "explanation": "Custom item group consisting of all whetblades which can be used to change weapon affinity, like Żelazne ostrze and Czarne ostrze",
+      "english_text": "Whetblades",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_itemShard1",
+      "explanation": "This is 3 messages used together in key item shard configuration, which looks like '{req}/{total} required' in English similar to ItemPreset_shardDescEntry, except {req} and {total} are both textboxes to configure numbers which cannot be part of messages. As a result, itemShard1 is any text which should appear before the first number, which is empty in English. itemShard2 is the separator between required and total, and itemShard3 is the suffix. If this order doesn't work in your language, you can instead make it e.g. '{req} required {total} total' by changing itemShard2 and itemShard3",
+      "english_text": "",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_itemShard2",
+      "explanation": "See ItemPreset_itemShard1",
+      "english_text": "/",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_itemShard3",
+      "explanation": "See ItemPreset_itemShard1",
+      "english_text": "required",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_itemShardLabel",
+      "explanation": "Label in key item shard configuration. When an item is selected from the dropdown, it is added to the list as a key item shard which is split up into multiple pieces",
+      "english_text": "Item to split:",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_itemSilo",
+      "explanation": "Label for a list of item silos shown in the 'Overview' text summarizing custom item placement. There are no item silos by default, as they are added by clicking a buttom in the 'Silos' tab. A silo is an isolated group of items/locations which are randomized among themselves. An item silo specifically has a list of items, and whatever items are defined there can only replace each other. A silo can be also called a partition, division, etc.",
+      "english_text": "Item silos:",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_itemSiloAdd",
+      "explanation": "Button in 'Silos' tab in custom item placement to add a new item silo",
+      "english_text": "Add custom item silo",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_itemSiloMode",
+      "explanation": "Label for selecting an ItemSiloType in a custom item silo, which defines how to select the item",
+      "english_text": "Item silo group:",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_itemSiloName",
+      "explanation": "Default name for a silo which is added using 'Add custom item silo'",
+      "english_text": "Custom item silo",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemSiloType_ArmorType",
+      "explanation": "This is a type of custom item silo which adds an item silo for every 'type' of armor, which means head armor, body armor, leg armor, etc",
+      "english_text": "Armor by type",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemSiloType_Manual",
+      "explanation": "This is a type of custom item silo which is associated with a list of items which can be manually edited",
+      "english_text": "Listed items",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_ItemSiloType_WeaponType",
+      "explanation": "This is a type of custom item silo which adds an item silo for every weapon type. A weapon's type is determined by the weapon category shown in the game menu, such as Straight Sword, Greataxe, or Bow",
+      "english_text": "Weapons by type",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_keyItemSilo",
+      "explanation": "Label used to determine which silo key items are placed in, like whether DLC and base game key items can be mixed together. This is a separate option from overallKeySilo, allowing key items to be restricted but other items aren't. In this case, a silo is an isolated region and can be also called a partition, division, etc.",
+      "english_text": "Key item placement silo:",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_altboss",
+      "explanation": "Description of custom item placement for boss drops other than major bosses. This was previously 'Other bosses' but changed when additional boss categories were added",
+      "english_text": "Non-major bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_basin",
+      "explanation": "Description of custom item placement for the vanilla locations of Crystal Tears which can be picked up at the base of Minor Erdtrees, like in Mistwood or Capital Outskirts. See the item description for the Flask of Wondrous Physick where they are described",
+      "english_text": "Crystal Tear basins",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_bluegraves",
+      "explanation": "Description of custom item placement for DLC-only glowing blue graves containing Larval Tears which only spawn at night. The spiritgraves are referenced in the DLC Larval Tear item description",
+      "english_text": "Night spiritgraves",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_boss",
+      "explanation": "Description of custom item placement for major bosses",
+      "english_text": "Major bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_bossarmorshop",
+      "explanation": "Description of custom item placement for the special shop which lets you buy boss armor after defeating the boss. It can be acccessed from Enia in Roundtable Hold after you get a Great Rune and defeat a boss with purchasable armor, under the menu Otrzymaj wyposażenie czempionów",
+      "english_text": "Boss armor shop",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_bosssoulshop",
+      "explanation": "Description of custom item placement for the special shop which lets you exchange a boss remembrance (such as Wizerunek ognistego olbrzyma and Eldeński Wizerunek) for legendary weapons and spells based on the boss. It can be accessed from Enia in Roundtable Hold after you get a Great Rune, under the menu Weź moc z wizerunku",
+      "english_text": "Remembrance shop",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_catacomb",
+      "explanation": "Description of custom item placement for all locations in catacombs, such as Katakumby Burzowego Podnóża and Katakumby Mglistej szczeliny",
+      "english_text": "Catacombs",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_catacombboss",
+      "explanation": "Description of custom item placement for bosses in catacombs",
+      "english_text": "Catacombs bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_cave",
+      "explanation": "Description of custom item placement for all locations in caves, such as Pieczara Mętnych Wód and Jaskinia porzuconych",
+      "english_text": "Caves",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_caveboss",
+      "explanation": "Description of custom item placement for bosses in caves",
+      "english_text": "Cave bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_cellarbosschest",
+      "explanation": "Description of custom item placement for items in chests after bosses which don't drop items. 'Cellar boss' refers to their location (piwnica), including bosses like Krwawy szlachcic and Gilika, królowa półludzi",
+      "english_text": "Chests after cellar bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_chest",
+      "explanation": "Description of custom item placement for all items in chests",
+      "english_text": "Chests",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_church",
+      "explanation": "Description of custom item placement for all places where Sacred Tears appear in the vanilla game, in Churches of Marika",
+      "english_text": "Sacred Tear churches",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_cookbook",
+      "explanation": "Description of custom item placement for all the places where cookbooks appear in the vanilla game",
+      "english_text": "Cookbook locations",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_criticalpath",
+      "explanation": "Description of custom item placement for non-major bosses which are on the 'critical path', required to reach major bosses, but not major bosses themselves.",
+      "english_text": "Non-major critical path bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_cross",
+      "explanation": "Description of custom item placement for all the places where Scadutree Fragments (Odłamek Ostrodrzewa) can be found under Miquella's Cross (Krzyż Miquelli) in the DLC",
+      "english_text": "Miquella's Cross Scadutree Fragments",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_dlc",
+      "explanation": "Description of custom item placement for the entire DLC",
+      "english_text": "DLC",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_dragonboss",
+      "explanation": "Description of custom item placement for dragon bosses which are the open world, not closed arenas. For example, Starożytna smoczyca Lansseax and Rozkładający się Ekzykes",
+      "english_text": "Overworld dragon minibosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_dragonshop",
+      "explanation": "Description of custom item placement for shops which let you trade Dragon Hearts for incantations, which shows the menu text Smocza komunia",
+      "english_text": "Dragon Communion shops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_enemy",
+      "explanation": "Description of custom item placement for all guaranteed unique one-time enemy drops, which includes a few other categories",
+      "english_text": "One-time enemy drops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_enemyfragment",
+      "explanation": "Description of custom item placement for all of the enemy drops which give Scadutree Fragments (Odłamek Ostrodrzewa) in the vanilla game, excluding places where they can picked up off the ground",
+      "english_text": "Scadutree Fragment enemy drops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_enemygem",
+      "explanation": "Description of custom item placement for all enemy drops which give Ashes of War in the vanilla game",
+      "english_text": "Ash of War enemy drops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_enemyincantation",
+      "explanation": "Description of custom item placement for all enemy drops which give incantations in the vanilla game",
+      "english_text": "Incantation enemy drops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_enemyinf",
+      "explanation": "Special group for custom item placement which only appears to select it as a non-randomized location in the 'Item placements' tab. This refers to items you can get infinite amounts of by repeatedly killing the same enemy, including item drops which drop based on a percent probability.",
+      "english_text": "Farmable enemy drops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_enemyrevered",
+      "explanation": "Description of custom item placement for all of the enemy drops which give Revered Spirit Ashes (Prochy czcigodnego ducha) in the vanilla game, excluding places where they can picked up off the ground",
+      "english_text": "Revered Spirit Ash enemy drops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_enemysorcery",
+      "explanation": "Description of custom item placement for all enemy drops which give sorceries in the vanilla game",
+      "english_text": "Sorcery enemy drops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_enemytalisman",
+      "explanation": "Description of custom item placement for all of the enemy drops which give talismans in the vanilla game, excluding places where talismans can picked up off the ground",
+      "english_text": "Talisman enemy drops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_enemyweapon",
+      "explanation": "Description of custom item placement for all enemy drops are guaranteed to give weapons in the vanilla game, but only the first time. 'One-time' is added to distinguish it from farmable drops. For instance, Carian Knight Shield is dropped by Moongrum before the Rennala fight",
+      "english_text": "One-time weapon enemy drops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_evergaol",
+      "explanation": "Descriptionn of custom item placement for evergaol boss drops, like in Wieczne więzienie Burzowego Wzgórza or Wieczne więzienie przywódcy",
+      "english_text": "Evergaol bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_forge",
+      "explanation": "Description of custom item placement for any items in a forge, like Ujęcie lawy w ruinach kuźni or Zrujnowana kuźnia Taylewa. Note this changed from a previous version, since rewards are now covered by forgereward.",
+      "english_text": "Forges",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_forgereward",
+      "explanation": "Description of custom item placement for items given by completing a forge in the DLC",
+      "english_text": "Forge rewards",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_fragment",
+      "explanation": "Description of custom item placement for all the places *other* than Miquella's Cross where Scadutree Fragments (Odłamek Ostrodrzewa) can be found as pickups on the ground",
+      "english_text": "Other Scadutree Fragment pickups",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_furnacegolem",
+      "explanation": "Description of custom item placement for drops from Furnace Golems, the giant wickerman enemies in the DLC",
+      "english_text": "Furnace Golems",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_gaol",
+      "explanation": "Description of custom item placement for all locations in gaols, such as Loch Belurat and Loch płaczki",
+      "english_text": "Gaols",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_gaolboss",
+      "explanation": "Description of custom item placement for bosses in gaols",
+      "english_text": "Gaol bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_gem",
+      "explanation": "Description of custom item placement for places where an Ash of War can be found as a pickup on the ground in the vanilla game (for instance, Popiół wojny: Wyszczerbione ostrze and Popiół wojny: Pazur dzikiego lwa)",
+      "english_text": "Ash of War pickups",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_gemshop",
+      "explanation": "Description of custom item placement for shops containing only Ashes of War in the vanilla game, like from Bernahl",
+      "english_text": "Ash of War shops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_grave",
+      "explanation": "Description of custom item placement for all locations in Hero's Graves, such as Grobowiec bohatera w Aurizie and Grobowiec bohatera Gelmir",
+      "english_text": "Hero's Graves",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_graveboss",
+      "explanation": "Description of custom item placement for bosses in Hero's Graves",
+      "english_text": "Hero's Grave bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_hangingpot",
+      "explanation": "Description of custom item placement for DLC hanging pots containing bell bearings",
+      "english_text": "Hanging pots",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_incantation",
+      "explanation": "Description of custom item placement for places where an incantation can be found as a pickup on the ground in the vanilla game",
+      "english_text": "Incantation pickups",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_incantationshop",
+      "explanation": "Description of custom item placement for shops containing only incantations in the vanilla game, like from Corhyn or Dragon Communion sites",
+      "english_text": "Incantation shops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_legendary",
+      "explanation": "Descruption of custom item placement for locations containing legendary items in the vanilla game, meaning items that have golden shiny pickups or make the big boom sound when acquiring them",
+      "english_text": "Legendary item pickups",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_minidungeon",
+      "explanation": "Description of custom item placement for all items in minidungeons, like caves, catacombs, etc",
+      "english_text": "Minidungeon",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_minidungeonboss",
+      "explanation": "Description of custom item placement for bosses in any minidungeon, like caves, catacombs, etc.",
+      "english_text": "Minidungeon bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_missable",
+      "explanation": "Description of custom item placement for all items which are known to be missable if a location or quest becomes unavailable",
+      "english_text": "Missable",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_namelessmausoleum",
+      "explanation": "Description of custom item placement for bosses in Nameless Mausoleums in the DLC such as Bezimienne mauzoleum na zachodzie",
+      "english_text": "Nameless Mausoleum bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_night",
+      "explanation": "Description of custom item placement for items dropped by minibosses which only spawn at night, like Night's Cavalry and Deathbirds",
+      "english_text": "Night bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_nodlc",
+      "explanation": "Description of custom item placement for the entire base game, excluding the DLC",
+      "english_text": "Base game",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_overworldboss",
+      "explanation": "Description of custom item placement for bosses which are the open world, not closed arenas (and not underground either)",
+      "english_text": "Overworld minibosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_painting",
+      "explanation": "Description of custom item placement for items which are looted from framed paintings, like in Artist's Shack. In the vanilla game, you get painting items from paintings (such as Obraz „Wyczucie kierunku”), but this can be anything in the randomizer",
+      "english_text": "Paintings",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_paintingreward",
+      "explanation": "Descriptions of custom item placement for items which are dropped by artists when you find them while holding their painting, solving their puzzle",
+      "english_text": "Painting rewards",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_prayerbook",
+      "explanation": "Description of custom item placement for all locations containing a prayerbook in the original game (Modlitewnik Złotego Drzewa and Modlitewnik boskiej skóry)",
+      "english_text": "Prayerbook locations",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_questreward",
+      "explanation": "Description of custom item placement for items given by or dropped by NPCs by following their quest. Some of these are the vanilla locations of quest items, which are items which progress quests even further, but many are the vanilla locations of unique items like weapons or talismans you can only get by doing the quest.",
+      "english_text": "Quest rewards",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_racemode",
+      "explanation": "Description of custom item placement for all the places major key items appear in the base game",
+      "english_text": "Major key item locations",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_raceshop",
+      "explanation": "Description of custom item placement for almost all regular shops in the game, such as Nomadic Merchant shops and NPCs like Patches and Moore",
+      "english_text": "NPC shops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_remembranceboss",
+      "explanation": "Description of custom item placement for bosses which drop remembrances (such as Wizerunek ognistego olbrzyma and Eldeński Wizerunek) in the vanilla game. All remembrance bosses are also major bosses",
+      "english_text": "Remembrance bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_revered",
+      "explanation": "Description of custom item placement for all the places where Revered Spirit Ashes (Prochy czcigodnego ducha) can be found as pickups on the ground",
+      "english_text": "Revered Spirit Ash pickups",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_rise",
+      "explanation": "Description of custom item placement for treasures in glintstone sorcery rises like Wieża Lenne and Wieża Testu, often containing Memory Stones in the vanilla game",
+      "english_text": "Rises",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_scarab",
+      "explanation": "Description of custom item placement for all items dropped by scarabs, referenced with in-game text like Skarabeusz popiołów wojny and Skarabeusze łez",
+      "english_text": "Scarab drops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_scroll",
+      "explanation": "Description of custom item placement for locations containing a scroll in the vanilla game (Zwój Akademii and Zwój kodeksu)",
+      "english_text": "Scroll locations",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_seedtree",
+      "explanation": "Description of custom item placement for items at illusory trees which are normally Golden Seeds in the vanilla game",
+      "english_text": "Golden Seed trees",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_sorcery",
+      "explanation": "Description of custom item placement for places where a sorcery can be found as a pickup on the ground in the vanilla game",
+      "english_text": "Sorcery pickups",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_sorceryshop",
+      "explanation": "Description of custom item placement for shops containing only sorceries in the vanilla game, like from Sellen",
+      "english_text": "Sorcery shops",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_statue",
+      "explanation": "Description of custom item placement for all items inside glowing statues which must be broken by a nearby powerful enemy, such as a Troll",
+      "english_text": "Glowing statues",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_talisman",
+      "explanation": "Description of custom item placement for all the places where talismans can be found as pickups on the ground",
+      "english_text": "Talisman pickups",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_tarnished",
+      "explanation": "Description of custom item placement for all items added in the Tarnished Pack DLC",
+      "english_text": "Tarnished Pack locations",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_tunnel",
+      "explanation": "Description of custom item placement for all locations in tunnels, such as Tunele Pogrobna and Zapieczętowany tunel",
+      "english_text": "Tunnels",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_tunnelboss",
+      "explanation": "Description of custom item placement for bosses in tunnels",
+      "english_text": "Tunnel bosses",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_upgradeshop",
+      "explanation": "Description of custom item placement for all of the places where upgrade bell bearings can be found in the vanilla game",
+      "english_text": "Upgrade Bell Bearing locations",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_LocationGroup_weapon",
+      "explanation": "Description of custom item placement for places where a weapon can be found as a pickup on the ground in the vanilla game",
+      "english_text": "Weapon pickups",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_menuAdd",
+      "explanation": "Context menu option which appears in custom item placement when right-clicking on a top-level rule in the left sidebar. For instance, right-clicking on 'Item placements' or 'Premium locations' in the left sidebar will show this, and this does the same thing as the Add button inside of those tabs",
+      "english_text": "Add new",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_menuRemove",
+      "explanation": "Context menu option which appears in custom item placement when right-clicking on a custom rule in the left sidebar. None of the default rules are removable, so to make this appear, you have to add a rule first, then right-click on it to remove it.",
+      "english_text": "Remove",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_menuRemoveConfirm",
+      "explanation": "Confirmation text which appears after clicking the trash icon in a custom rule, or by right-clicking on the custom rule. This can only be done after adding a custom rule or group or silo first. {0} gets replaced with the name of the rule, and in English \" is an escaped quotation mark which surrounds it",
+      "english_text": "Remove \"{0}\"?",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_norandomItems",
+      "explanation": "Label in custom item placement to show which items and locations are never randomized, which appears in the 'Overview' tab in the summary",
+      "english_text": "Not randomized:",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_norandomItemsItems",
+      "explanation": "Label in custom item placement to configure which items are never randomized, in the 'Item placements' tab",
+      "english_text": "Not randomized (items):",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_norandomLocations",
+      "explanation": "Label in custom item placement to configure which locations are never randomized, in the 'Item placements' tab",
+      "english_text": "Not randomized (locations):",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_overallSilo",
+      "explanation": "Label used to determine which silo items are placed in, like whether DLC and base game items can be mixed together. In this case, a silo is an isolated region and can be also called a partition, division, etc.",
+      "english_text": "Overall item placement silo:",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_placementExcludes",
+      "explanation": "Label shown in the custom item placement form, like for Important locations. Configured items are prevented from appearing in these locations. See also placementRequires",
+      "english_text": "Never placed in:",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_placementItems",
+      "explanation": "Label shown in the custom item placement form before a configurable list of items",
+      "english_text": "Items:",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementMode_Anywhere",
+      "explanation": "Placement mode which can be selected in custom item placement. If selected, the items can appear anywhere (except excluded locations)",
+      "english_text": "Anywhere",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementMode_Custom",
+      "explanation": "Placement mode which can be selected in custom item placement. If selected, the user can select further where items must appear and/or cannot appear",
+      "english_text": "Custom",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementMode_Important",
+      "explanation": "Placement mode which can be selected in custom item placement. If selected, the items' locations are whatever is configured under Important locations",
+      "english_text": "Important locations",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementMode_Norandom",
+      "explanation": "Placement mode which can be selected in custom item placement. If selected, the items are not randomized",
+      "english_text": "Not randomized",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementModeDesc_Important",
+      "explanation": "Detailed description for custom item placement rules for important locations. 'Pass' means that first all important location items are placed, then all other items are placed after that in the remaining locations.",
+      "english_text": "Placement for items configured to appear in important locations. This is done in a pass before all other items in the game, to ensure they have highest priority for placement. If they can't be placed, randomization will fail.",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_placementOverall",
+      "explanation": "Label for possible placement modes which can be selected in custom item placement",
+      "english_text": "Placed in:",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_placementRequires",
+      "explanation": "Label shown in the custom item placement form, like for Important locations. Configured items may only appear in these locations. See also placementExcludes",
+      "english_text": "Only placed in:",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementType_BaseOnlyItems",
+      "explanation": "Description for custom item placement rules to place certain items in the base game only (not DLC)",
+      "english_text": "Base-game-only items",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementType_BossTools",
+      "explanation": "Description for custom item placement rules to prevent certain items from appearing at bosses when they are required to defeat bosses",
+      "english_text": "Boss tools",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementType_CoreMechanics",
+      "explanation": "Description for custom item placement rules to place certain critical items like Talisman Pouches, Physick Flask, etc either in important locations or custom configuration",
+      "english_text": "Core mechanics",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementType_Custom",
+      "explanation": "Description for custom item placement rules for user-selected items and locations. This is the default user-editable name of a new rule created using 'Add custom item placement rule'",
+      "english_text": "Custom item placement",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementType_DlcOnlyItems",
+      "explanation": "Description for custom item placement rules to place certain items in the DLC only",
+      "english_text": "DLC-only items",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementType_KeyItems",
+      "explanation": "Description for custom item placement rules to place key items either in important locations or custom configuration",
+      "english_text": "Major key items",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementType_QuestItems",
+      "explanation": "Description for custom item placement rules to place quest items in configured locations",
+      "english_text": "Quest items",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementType_SacredFlaskUpgrades",
+      "explanation": "Description for custom item placement rules to place Golden Seed/Sacred Tear in configured locations",
+      "english_text": "Sacred Flask Upgrades",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementType_SecondaryMechanics",
+      "explanation": "Description for custom item placement rule for items which are not allowed to be missable by default, because Crystal Tears and Cookbooks etc should always be accessible if someone wants to find a particular one. This is in contrast to 'Core mechanics' which are much more important and placed in important locations by default.",
+      "english_text": "Secondary mechanics",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementType_ShadowRealmBlessings",
+      "explanation": "Description for custom item placement rules to place Scadutree Blessing/Revered Spirit Ash in configured locations (Błogosławieństwo Królestwa Cieni)",
+      "english_text": "Shadow Realm Blessings",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementType_UpgradeBellBearings",
+      "explanation": "Description for custom item placement rules to place Bell Bearings with upgrade materials in configured locations",
+      "english_text": "Upgrade Bell Bearings",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementTypeDesc_BaseOnlyItems",
+      "explanation": "Detailed description for custom item placement rules for base-game-only items",
+      "english_text": "Items which are only placed in the base game when they are randomized. Cannot include key or quest items currently.",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementTypeDesc_DlcOnlyItems",
+      "explanation": "Detailed description for custom item placement rules for DLC-only items",
+      "english_text": "Items which are only placed in the DLC when they are randomized. Cannot include key or quest items currently.",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementTypeDesc_KeyItems",
+      "explanation": "Detailed description for custom item placement rules for major key items, defining what counts as a major key item",
+      "english_text": "Placement for key items which unlock areas containing unmissable items",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PlacementTypeDesc_QuestItems",
+      "explanation": "Detailed description for custom item placement rules for major key items, defining what counts as a quest item",
+      "english_text": "Placement for items which advance quests but are not otherwise required to access areas",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_premiumGroupsAdd",
+      "explanation": "Button in 'Premium locations' tab in custom item placement to add a user-configurable premium location",
+      "english_text": "Add custom premium location rule",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PremiumGroupType_Custom",
+      "explanation": "Description for a premium location rule for user-selected items and locations. This is the default user-editable name of a new rule created using 'Add custom premium location rule'",
+      "english_text": "Custom location",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PremiumGroupType_MiracleShop",
+      "explanation": "Name of a default premium location rule for shops which only sell incantations in the vanilla game. It appears as a tab in custom item placement. When the rule is enabled, those shops sell random incantations",
+      "english_text": "Incantation shop",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PremiumGroupType_PremiumShop",
+      "explanation": "Name of a default premium location rule for shops which sell items by trading unique and hard-to-find items which act as currency, sometimes in addition to runes. In Elden Ring, these premium currencies are remembrances and Dragon Hearts. This rule appears as a tab in custom item placement.",
+      "english_text": "Premium currency shop",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_PremiumGroupType_SorceryShop",
+      "explanation": "Name of a default premium location rule for shops which only sell sorceries in the vanilla game. It appears as a tab in custom item placement. When the rule is enabled, those shops sell random sorceries",
+      "english_text": "Sorcery shop",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_randomItems",
+      "explanation": "Label in custom item placement to configure items which *are* randomized when normally they wouldn't be. Not used yet",
+      "english_text": "Randomized:",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_removeItems",
+      "explanation": "Label in custom item placement shown in the 'Overview' tab to represent items removed from the game, which can be configured in the 'Item placements' tab. This always includes at least Furcalling Finger Remedy",
+      "english_text": "Removed:",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_removeItemsHelp",
+      "explanation": "Tooltip shown when hovering over the question mark in the 'Item placements' tab in custom item placement, to configure items to remove from the game. This explains important edge cases in whether items will actually be removed or not. Items are 'excluded from missable locations' in item placement rules, like for instance, Quest items always have 'Never placed in: Missable'. It is possible to remove so many items that no items remain for a pickup location, but *something* has to go there, so a low-value item called a junk item is placed in those spots.",
+      "english_text": "Removed items are not available anywhere in the game, but other items can be randomized to their spot. If a removed item is also not randomized, it may not be removed. If a removed item is excluded from missable locations in any item placement rule, it will never be removed and a warning will be added to spoiler logs. If too many items are removed, junk items will be added in their place.",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_removeItemsLabel",
+      "explanation": "Label for a list of items to be removed from the game during item randomization, in the 'Item placements' tab in custom item placement",
+      "english_text": "Removed from the game:",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_reset",
+      "explanation": "Reset button in the 'Overview' tab in custom item placement",
+      "english_text": "Reset custom placement settings",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_resetConfirm",
+      "explanation": "Message that appears after pressing the reset button in the 'Overview' tab in custom item placement, in an OK/Cancel dialog box. This warns that reset cannot be undone. The suggestion at the end is to use the 'Export options file' menu item.",
+      "english_text": "Reset all custom item placement settings to their original values?\nThis erases all existing configuration. Export an options file first to restore it later.",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_shardDescEntry",
+      "explanation": "Summary of key item shard which appears in the 'Overview' tab in the summary. {0} is the item name, {1} is the number of shards required to use the item, and {2} is the total number of shards",
+      "english_text": "{0} Shard: {1}/{2} required",
+      "text": ""
+    },
+    {
+      "name": "ItemPreset_shardDescTitle",
+      "explanation": "Appears before a list of key item shards in the 'Overview' tab in key item placement summary, the same as ItemPanel_TabTypeDesc_ItemShards but with a colon in English",
+      "english_text": "Key item shards:",
       "text": ""
     },
     {
@@ -1318,8 +3827,8 @@
     },
     {
       "name": "MergeModForm_toml",
-      "explanation": "Button in 'Merge other mod' which prompts selecting a toml file, such as Mod Engine's config_eldenring.toml file, which contains a list of mods to launch. This allows merging multiple mods into randomizer.",
-      "english_text": "Select toml file (merge multiple mods)",
+      "explanation": "Button in 'Merge other mod' which prompts selecting a toml file, such as Mod Engine's config_eldenring.toml file, which contains a list of mods to launch. This previously mentioned multiple mods, which is not a common use case",
+      "english_text": "Select toml file to merge",
       "text": ""
     },
     {
@@ -1353,15 +3862,39 @@
       "text": "Wybierz"
     },
     {
+      "name": "OptionsForm_select",
+      "explanation": "Button in 'Set options from string' dialog box which sets options based on the textbox contents",
+      "english_text": "Set options",
+      "text": ""
+    },
+    {
       "name": "OptionsForm_strL",
       "explanation": "Long explanation for using 'Set options from string' dialog box. The text box shows the user's current 'option string' (all of their selected options and seed)",
       "english_text": "This text box allows you to give your options and seed to someone else (after running randomization) and to copy someone else's options.\nThis string can also be found on the first line of hint/spoiler logs in the spoiler_logs directory.\nAlso, you can set it to blank to restore all default options.",
       "text": "To pole pozwala na podzielenie się swoimi ustawieniami oraz seedem z kimś innym(po uruchomieniu losowania).\n Ten kod można również znaleść w pierwszej linijce spoiler_logs.\n Pozostaw puste aby zresetować ustawienia"
     },
     {
+      "name": "OptionsForm_strL",
+      "explanation": "Long explanation for using 'Set options from string' dialog box. The text box shows the user's current 'option string' (all of their selected options and seed)",
+      "english_text": "This text box allows you to give your options and seed to someone else (after running randomization) and to copy someone else's options. This string can also be found on the first line of hint/spoiler logs in the spoiler_logs directory. Also, you can set it to blank to restore all default options.",
+      "text": ""
+    },
+    {
       "name": "Preset_adjustSource",
       "explanation": "Summary of a Frequency Adjustment. {0} is a percent number (so 'Adjusted to 50%' means cut in half) and {1} is a list of enemies affected",
       "english_text": "Adjusted to {0}%: {1}",
+      "text": ""
+    },
+    {
+      "name": "Preset_dlcDisclaimer1",
+      "explanation": "Disclaimer for enemy randomizer so people don't expect too much",
+      "english_text": "Warning: This is an unstable alpha release of enemy randomizer for DLC. Merging boss categories is much more unstable because it requires significantly more event rewriting. Due to inconsistent scaling tiers, enemies and bosses may deal way too much or too little damage. Enemy onslaught is not supported in the DLC yet.",
+      "text": ""
+    },
+    {
+      "name": "Preset_dlcsilo",
+      "explanation": "Summary of custom enemy placement when PresetEditForm_dlcsilo is selected",
+      "english_text": "DLC bosses and enemies randomized separately",
       "text": ""
     },
     {
@@ -1419,6 +3952,12 @@
       "text": ""
     },
     {
+      "name": "Preset_poolDescDlc",
+      "explanation": "Variant of Preset_poolDesc which adds briefly that DLC enemies/bosses are randomized separately for that category in custom enemy placement, before describing placement on the next line",
+      "english_text": "Replacing {0} (DLC randomized separately):",
+      "text": ""
+    },
+    {
       "name": "Preset_poolDescInherit",
       "explanation": "Summary of customization for an enemy category, shown in {0}, where it uses the same logic as a different enemy category in {1}. This is not currently shown, since it's duplicated instead.",
       "english_text": "Replacing {0}: Same as {1}",
@@ -1428,6 +3967,12 @@
       "name": "Preset_poolDescOneLine",
       "explanation": "Summary of customization for an enemy category all on one line. You might have 'Replacing Major Bosses: Rat; Dog', which means that every major boss will turn into either a rat or a dog",
       "english_text": "Replacing {0}: {1}",
+      "text": ""
+    },
+    {
+      "name": "Preset_poolDescOneLineDlc",
+      "explanation": "Variant of Preset_poolDescOneLine which adds adds briefly that DLC enemies/bosses are randomized separately for that category",
+      "english_text": "Replacing {0}: {1} (DLC randomized separately)",
       "text": ""
     },
     {
@@ -1527,6 +4072,12 @@
       "text": ""
     },
     {
+      "name": "PresetEditForm_confirmMultiplyDlc",
+      "explanation": "Dialog text shown when trying to enable enemy onslaught in custom enemy placement (will be removed when it is supported)",
+      "english_text": "Note: Enemy Onslaught does not support DLC enemies yet",
+      "text": ""
+    },
+    {
       "name": "PresetEditForm_confirmMultiplyRandom",
       "explanation": "Yes/no prompt which is shown when switching from normal randomization to enemy onslaught (multiplied enemies). When Yes is chosen, enemy randomization is temporarily disabled, meaning that the original enemy will just be copied instead of copied *and* randomized",
       "english_text": "Disable enemy randomization with Enemy Onslaught?",
@@ -1581,9 +4132,27 @@
       "text": ""
     },
     {
+      "name": "PresetEditForm_dlcsilo",
+      "explanation": "Checkbox in custom enemy placement for DLC bosses/enemies to only be randomized with other DLC bosses/enemies, similar to other dlcsilo options, but limited to only enemy randomizer",
+      "english_text": "Randomize DLC separately for all bosses and enemies",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_dlcsiloClass",
+      "explanation": "Enemy randomizer dlcsilo option for specific categories, where {0} is an enemy category like Major Bosses or Regular Enemies",
+      "english_text": "Randomize DLC separately for {0}",
+      "text": ""
+    },
+    {
       "name": "PresetEditForm_dontRandomize",
       "explanation": "Label for enemies which are not randomized at all, and do not turn into anything else",
       "english_text": "Not randomized:",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_enemyCategory",
+      "explanation": "Grouping for all categories like Major Bosses and Regular Enemies in custom enemy placement, a list item on the left side of the dialog box",
+      "english_text": "Enemy Categories",
       "text": ""
     },
     {
@@ -1611,6 +4180,30 @@
       "text": ""
     },
     {
+      "name": "PresetEditForm_manual",
+      "explanation": "Title for custom enemy configuration where specific enemies can replace each other (like configuring Margit to be Radahn), as a list item on the left side of the dialog",
+      "english_text": "Manual Placement",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_manualDesc",
+      "explanation": "Further explanation for manual placement of enemies. This allows selecting enemy targets to replace with specific other enemies. The 'id' being referenced here can be seen in files in the spoiler_logs directory after generating a run, like Margit's id is shown as 10000850",
+      "english_text": "Manual placement replaces individual enemies by id or type. It overrides all other configuration and ignores ALL placement safety heuristics. To replace specific enemy instances, you can input their unique numerical id found in spoiler logs.",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_menuExport",
+      "explanation": "Menu option in file menu in custom enemy placement to store the current placement options in a file which can be imported later",
+      "english_text": "Export enemy preset...",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_menuImport",
+      "explanation": "Menu option in file menu in custom enemy placement to replace the current settings with the selected file",
+      "english_text": "Import enemy preset...",
+      "text": ""
+    },
+    {
       "name": "PresetEditForm_modeCustom",
       "explanation": "Normal mode for customization which is not one of the special modes",
       "english_text": "Custom",
@@ -1618,14 +4211,32 @@
     },
     {
       "name": "PresetEditForm_modeMultiply",
-      "explanation": "Dropdown label for special mode (not yet implemented) which duplicates all enemies. See Preset_enemyMultiplier",
+      "explanation": "Label for special mode in Global Settings which duplicates all enemies. See Preset_enemyMultiplier",
       "english_text": "Enemy Onslaught",
       "text": ""
     },
     {
+      "name": "PresetEditForm_modeMultiplyL",
+      "explanation": "Tooltip next to Enemy Onslaught in Global Settings with a detailed explanation, next to a control to configure the multiplier amount. The multiplier is configurable for each enemy category, so the last sentence recommends using different multipliers to reduce the total amount of enemies.",
+      "english_text": "Enemy Onslaught mode adds copies of enemies and bosses which you can fight simultaneously. 2x is double enemies. Past 3x, this is unstable and resting at some Sites of Grace may crash the game. At high enough values, enemies in crowded areas might not load in. To alleviate this, configure multipliers for individual enemy categories.",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_modeMultiplyOverride",
+      "explanation": "Checkbox shown when configuring individual enemy categories",
+      "english_text": "Override enemy multiplier",
+      "text": ""
+    },
+    {
       "name": "PresetEditForm_modeOopsall",
-      "explanation": "Dropdown label for special mode which turns all enemies into the same type. See Preset_oopsAll",
+      "explanation": "Label for special mode in Global Settings which turns all enemies into the same type. See Preset_oopsAll",
       "english_text": "Oops All",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_modeOopsallL",
+      "explanation": "Tooltip next to Oops All in Global Settings with a detailed explanation of the mode (see Preset_oopsAll), also explaining how to configure all enemies at once without it",
+      "english_text": "Oops All mode replaces all bosses and enemies in the game with a single enemy type. You can get a similar result by merging all enemy categories and then configuring the main category.",
       "text": ""
     },
     {
@@ -1638,6 +4249,30 @@
       "name": "PresetEditForm_okButton",
       "explanation": "Button which saves changes and closes the form",
       "english_text": "OK",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_poolAdd",
+      "explanation": "Tooltip on plus icon in enemy category placement in the custom mode",
+      "english_text": "Add source group",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_poolAutoBalance",
+      "explanation": "Checkbox which appears in enemy category placement next to PresetEditForm_poolPercentTotal when there are multiple source groups (press + button), checked by default. This option automatically fixes % values so they add up to 100%",
+      "english_text": "Auto-balance",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_poolByEntryOff",
+      "explanation": "Tooltip on crossed out grid icon which appears when a source group in custom enemy category placement has multiple enemies configured (add more enemies using the textbox). This is the default setting which merges all lists of enemies together, then selects one randomly among them. This means if you have Morgott and lobsters, you will get 1 Morgott for every 40 lobsters.",
+      "english_text": "Each included enemy is equally likely to be selected, so bigger groups of enemies are more likely to be selected than smaller groups.",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_poolByEntryOn",
+      "explanation": "Tooltip on grid icon which appears after clicking PresetEditForm_poolByEntryOff. With this option, if you have Morgott and lobsters, you will get 1 Morgott for every lobster. In this mode, the same enemy can be added twice into the list to make it more likely to be selected, whereas normally source groups must be used for that.",
+      "english_text": "Each entry in the list is equally likely to be selected (duplicate entries are allowed), and each included enemy is equally likely to be selected within each entry.",
       "text": ""
     },
     {
@@ -1659,6 +4294,30 @@
       "text": ""
     },
     {
+      "name": "PresetEditForm_poolPercentTotal",
+      "explanation": "Checkbox which appears in enemy category placement when there are multiple source groups (press + button). {0} is replaced by a percent number which should be 100",
+      "english_text": "Total: {0}%",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_poolRemove",
+      "explanation": "Tooltip on remove icon in enemy category placement in the custom mode",
+      "english_text": "Remove source group",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_poolSource",
+      "explanation": "The enemy which replaces another enemy in Manual Placement in custom enemy placement. This comes *after* poolTarget, so the entire thing reads as Enemy: Margit; Replacement: Radahn. This means when you enter Margit's boss arena, Radahn will be there",
+      "english_text": "Replacement:",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_poolTarget",
+      "explanation": "The enemy which gets replaced in Manual Placement in custom enemy placement. See poolSource",
+      "english_text": "Enemy:",
+      "text": ""
+    },
+    {
       "name": "PresetEditForm_PresetEditForm",
       "explanation": "Title of the customization form",
       "english_text": "Customize enemy placement",
@@ -1666,19 +4325,19 @@
     },
     {
       "name": "PresetEditForm_presetL",
-      "explanation": "Label for dropdown with different existing presets, including the 'Create new' option",
+      "explanation": "[obsolete] Label for dropdown with different existing presets, including the 'Create new' option",
       "english_text": "Preset:",
       "text": ""
     },
     {
       "name": "PresetEditForm_quickL",
-      "explanation": "Label for several links which do some customization configuration automatically. These links edit the preset and are meant to be quick/convenient for the user.",
+      "explanation": "[obsolete] Label for several links which do some customization configuration automatically. These links edit the preset and are meant to be quick/convenient for the user.",
       "english_text": "Quick edits:",
       "text": ""
     },
     {
       "name": "PresetEditForm_quickMergeAll",
-      "explanation": "Quick edit which changes all enemy categories to merge with parent, making everything randomized with each other",
+      "explanation": "[obsolete] Quick edit which changes all enemy categories to merge with parent, making everything randomized with each other",
       "english_text": "Merge all bosses and enemies",
       "text": ""
     },
@@ -1689,6 +4348,12 @@
       "text": ""
     },
     {
+      "name": "PresetEditForm_quickMergeL",
+      "explanation": "Label for buttons at the bottom of custom enemy placement, replacing the previous quick-edit list. It is a list of different ways of merging enemy groups together, and the currently selected preset is highlighted. If the user made a custom merge configuration which doesn't match a preset, nothing is highlighted.",
+      "english_text": "Merge presets:",
+      "text": ""
+    },
+    {
       "name": "PresetEditForm_quickMergeMinor",
       "explanation": "Quick edit which changes boss categories other than Major Bosses to merge with each other. This makes it so that Major Bosses are still challenging, but other bosses have more variety",
       "english_text": "Merge non-major bosses",
@@ -1696,32 +4361,44 @@
     },
     {
       "name": "PresetEditForm_quickMergeOverworld",
-      "explanation": "Quick edit which changes overworld boss categories (world minibosses, night minibosses, etc.) to merge with parent, making them randomized with each other",
+      "explanation": "[obsolete] Quick edit which changes overworld boss categories (world minibosses, night minibosses, etc.) to merge with parent, making them randomized with each other",
       "english_text": "Merge overworld boss categories",
       "text": ""
     },
     {
       "name": "PresetEditForm_quickReducePassive",
-      "explanation": "Quick edit which makes harmless enemies less common, so that more interesting and aggressive enemies can take their place",
+      "explanation": "Quick edit in Frequency Adjustments which makes harmless enemies less common, so that more interesting and aggressive enemies can take their place",
       "english_text": "Reduce passive enemy frequency",
       "text": ""
     },
     {
       "name": "PresetEditForm_quickReplace10",
-      "explanation": "Quick edit which adds 10% boss replacement to the regular enemy category, if it's not there already",
+      "explanation": "Quick edit in Regular Enemies which adds 10% boss replacement to the regular enemy category, if it's not there already",
       "english_text": "Replace 10% of regular enemies with bosses",
       "text": ""
     },
     {
       "name": "PresetEditForm_quickReplaceWildlife",
-      "explanation": "Quick edit which changes the wildlife category to be 100% regular enemies, instead of the default of other wildlife",
+      "explanation": "Quick edit in Passive Wildlife which changes the wildlife category to be 100% regular enemies, instead of the default of other wildlife",
       "english_text": "Replace wildlife with regular enemies",
       "text": ""
     },
     {
       "name": "PresetEditForm_quickSeparate",
       "explanation": "Quick edit which is the opposite of quickMerge options. It changes all categories to not merge with parent.",
-      "english_text": "Split up enemy categories (default)",
+      "english_text": "Split enemies by category",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_redundantEnemyTooltip",
+      "explanation": "Popup message in the preset form when hovering over an enemy which has been added to a source group, but is redundant to a different enemy. You can make this happen by going to custom enemy placement, resetting it, and adding a basic enemy like 'Albinauric' in the textbox which is next to 'Same category (Regular Enemies)'. After submitting 'Albinauric', it should be greyed out in the list, and hovering over it will show {0} as the redundant enemy, and {1} as the bigger category that already includes it.",
+      "english_text": "\"{0}\" can be removed from this list because it's already included in \"{1}\".",
+      "text": ""
+    },
+    {
+      "name": "PresetEditForm_redundantEnemyTooltipPool",
+      "explanation": "This message is appended to redundantEnemyTooltip in the case when a redundant enemy was just added to a source group (e.g. the textbox next to 'Same category (Regular Enemies)', but not the textbox next to 'Excluded'). Source groups define which enemies can replace other enemies in a category, and the + button allows configuring multiple source groups with different probabilities of showing up. A common misconception is that adding more enemies to a single list will give those enemies a higher chance of showing up, which is not true if those enemies were already in the list, so this line recommends using multiple source groups for actually configuring enemy replacement probability.",
+      "english_text": "Use the + button if you want to make a separate source group with this enemy.",
       "text": ""
     },
     {
@@ -1732,7 +4409,7 @@
     },
     {
       "name": "PresetEditForm_resetButton",
-      "explanation": "Button shown in preset form which can revert the custom enemy placement back to the default (that is, everything randomized in separate categories)",
+      "explanation": "Button shown in enemy preset form which can revert the custom enemy placement back to the default (that is, everything randomized in separate categories)",
       "english_text": "Reset...",
       "text": ""
     },
@@ -1746,6 +4423,84 @@
       "name": "PresetEditForm_saveFailure",
       "explanation": "Enemy customization preset save failure. {0} is the name of the preset and {1} is the full error message on the next line",
       "english_text": "Failed to save preset {0}\n{1}",
+      "text": ""
+    },
+    {
+      "name": "PresetItemForm_alphaL",
+      "explanation": "[obsolete] Disclaimer at the bottom of the custom item placement form. This has three separate comments. First is a disclaimer. Second is a reference to the log in the spoiler_logs directory. Third is that more groups of items/locations will be added, which requires classification and handling for logic.",
+      "english_text": "Custom item placement may result in failed randomizations. If that happens, spoiler logs may have more information. Other item groups, locations, silos, and additional configuration will be added in the future.",
+      "text": ""
+    },
+    {
+      "name": "PresetItemForm_applyButton",
+      "explanation": "Button which saves changes but does not close the form",
+      "english_text": "Apply",
+      "text": ""
+    },
+    {
+      "name": "PresetItemForm_listLocations",
+      "explanation": "Text for the link which can be clicked when selecting locations in custom item placement, like in Important locations. This opens a dialog showing all configured locations",
+      "english_text": "View all {0} selected locations",
+      "text": ""
+    },
+    {
+      "name": "PresetItemForm_listLocationsImportant",
+      "explanation": "Disclaimer shown when selecting locations in custom item placement, like in Important locations",
+      "english_text": "If there are significantly more items than available locations, randomization will fail.",
+      "text": ""
+    },
+    {
+      "name": "PresetItemForm_listLocationsPremium",
+      "explanation": "Disclaimer shown when selecting locations for premium locations only in custom item placement. This can be seen in the 'Premium current shop' tab for instance.",
+      "english_text": "If there not enough items for the selected locations, other items may be placed there.",
+      "text": ""
+    },
+    {
+      "name": "PresetItemForm_listLocationsRegular",
+      "explanation": "Disclaimer shown when selecting locations in custom item placement, like when Sacred Flask Upgrades use Custom placement, that locations may be ignored if not all items can fit there",
+      "english_text": "If there are significantly more items than available locations, some items may be randomly placed elsewhere.",
+      "text": ""
+    },
+    {
+      "name": "PresetItemForm_okButton",
+      "explanation": "Standard dialog confirmation button",
+      "english_text": "OK",
+      "text": ""
+    },
+    {
+      "name": "PresetItemForm_parentLocations",
+      "explanation": "List item shown on the left in custom item placement, grouping together all location groups (currently just important locations)",
+      "english_text": "Location groups",
+      "text": ""
+    },
+    {
+      "name": "PresetItemForm_parentPlacements",
+      "explanation": "List item shown on the left in custom item placement, grouping together all item placement categories",
+      "english_text": "Item placements",
+      "text": ""
+    },
+    {
+      "name": "PresetItemForm_parentPlacementsAdd",
+      "explanation": "Button in the top-level 'Item placements' tab in custom item placement which adds a completely custom rule as a new tab",
+      "english_text": "Add custom item placement rule",
+      "text": ""
+    },
+    {
+      "name": "PresetItemForm_PresetItemForm",
+      "explanation": "[obsolete] Title of the custom item placement form",
+      "english_text": "Customize item placement",
+      "text": ""
+    },
+    {
+      "name": "PresetItemForm_resetButton",
+      "explanation": "Button shown in item preset form which can revert the custom item placement back to the default, based on the current options. This shows a yes/no confirm prompt",
+      "english_text": "Reset...",
+      "text": ""
+    },
+    {
+      "name": "PresetItemForm_showAll",
+      "explanation": "Menu option in the dropdown menu for an item or location group in custom item placement, which opens up a popup with all of the members of the group. For instance, going to the 'Premium currency shop' tab and clicking one of the item groups",
+      "english_text": "Show all",
       "text": ""
     },
     {
@@ -1767,6 +4522,12 @@
       "text": "Losowanie przeciwników"
     },
     {
+      "name": "Randomizer_extractPhase",
+      "explanation": "Shown in the status bar while the randomizer is moving files from the game directory in order to load them. This only happens the first time the randomizer is used",
+      "english_text": "Extracting game data",
+      "text": ""
+    },
+    {
       "name": "Randomizer_itemPhase",
       "explanation": "Shown in the status bar while the randomizer is doing item randomization",
       "english_text": "Randomizing items",
@@ -1779,10 +4540,22 @@
       "text": "Nie udało się umieścić wszystkich fabularnych przedmiotów... Niektóre kombinacje seedów oraz opcji mogą to spowodować"
     },
     {
+      "name": "Randomizer_keyItemError",
+      "explanation": "Error message from the randomizer which indicates an internal logic error, when has to put a key item in an area and can't find any applicable locations. New in v0.12 is the phrase 'item restrictions' from custom item placement settings.",
+      "english_text": "Could not place all important items... giving up now. Try rerolling the seed, reducing the number of important items or item restrictions, or increasing the number of important locations.",
+      "text": ""
+    },
+    {
       "name": "Randomizer_loadPhase",
       "explanation": "Shown in the status bar at the start of randomization, when reading and parsing game files",
       "english_text": "Loading game data",
       "text": "Wczytywanie danych"
+    },
+    {
+      "name": "Randomizer_mergeFogError",
+      "explanation": "Error shown when 'Merge mod directory' is incorrectly set to merge a mod directory for Elden Ring Fog Gate Randomizer. 'Merge order' refers to the fact that you have to run Item/Enemy Randomizer before Fog Gate Randomizer and then merge the first into the second, not the opposite way around",
+      "english_text": "Error: Invalid merge order for Fog Gate Randomizer. Carefully follow the instructions on the Fog Gate Randomizer mod page.",
+      "text": ""
     },
     {
       "name": "Randomizer_mergeMissingError",
@@ -1807,6 +4580,18 @@
       "explanation": "Shown in the status bar at the end of randomization, when all randomized files are written out to disk",
       "english_text": "Writing game files",
       "text": "Tworzenie plików gry"
+    },
+    {
+      "name": "SearchScrollForm_act",
+      "explanation": "Standard dialog confirmation button",
+      "english_text": "OK",
+      "text": ""
+    },
+    {
+      "name": "SearchScrollForm_searchtext",
+      "explanation": "Label to enter search text, which is highlighted in the form. This can be seen by clicking any of the links like '30 checks' in item randomizer",
+      "english_text": "Search text:",
+      "text": ""
     }
   ]
 }

@@ -1,0 +1,807 @@
+
+MapAreas:
+- Map: m12_01_00_00
+  Areas:
+  - Name: Lake of Rot
+    Area: lakeofrot
+    YBelow: -285
+  - Name: Ainsel River Main
+    Area: ainsel
+    YBelow: -265
+  - Name: Ainsel River
+    Area: ainsel_start
+    ZBelow: 1
+  - Name: Ainsel River
+    Area: ainsel_start
+    YBelow: -160
+  - Name: Ainsel River Main
+    Area: ainsel
+- Map: m12_02_00_00
+  Areas:
+  - Name: Siofra River
+    Area: siofra
+    YBelow: -700
+  - Name: Nokron
+    Area: siofra_nokron
+- Map: m12_07_00_00
+  Areas:
+  - Name: Siofra River Start
+    Area: siofra
+    YBelow: -650
+  - Name: Nokron Start
+    Area: siofrabank_nokron
+- Map: m15_00_00_00
+  Areas:
+  - Name: Miquella's Haligtree
+    Area: haligtree
+    YAbove: 380  
+  - Name: Miquella's Haligtree - Elphael
+    Area: haligtree_elphael
+
+- Map: m60_33_42_00
+  Areas:
+  - Name: Liurnia of the Lakes - Southwest of Converted Tower
+    Area: liurnia
+    YBelow: 310
+  - Name: Moonlight Altar - Ringleader's Evergaol
+    Area: moonlight
+- Map: m60_34_42_00
+  Areas:
+  - Name: Liurnia of the Lakes - Village of the Albinaurics
+    Area: liurnia
+    YBelow: 310
+  - Name: Moonlight Altar - Moonfolk Ruins
+    Area: moonlight
+- Map: m60_35_42_00
+  Areas:
+  - Name: Liurnia of the Lakes - West Albinauric Village
+    Area: liurnia
+    YBelow: 310
+  - Name: Moonlight Altar - Cathedral of Manus Celes
+    Area: moonlight
+- Map: m60_36_41_00
+  Areas:
+  - Name: Liurnia of the Lakes - Slumbering Wolf's Shack, Lakeside Crystal Cave Entrance
+    Area: liurnia
+    YBelow: 310
+  - Name: Moonlight Altar - Southeast Cliffside
+    Area: moonlight
+- Map: m60_36_42_00
+  Areas:
+  - Name: Liurnia of the Lakes - West of Scenic Isle
+    Area: liurnia
+    YBelow: 310
+  - Name: Moonlight Altar - Northeast Cliffside
+    Area: moonlight
+
+- Map: m20_00_00_00
+  Areas:
+  - Name: Belurat, Tower Settlement
+    Area: belurat
+    Comment: Includes swamp southeast corner, but no items or enemies (45 degree wall with starting hallway)
+    XAbove: -104
+  - Name: Belurat, Tower Settlement
+    Area: belurat
+    Comment: Also east swamp edge
+    XAbove: -120
+    ZAbove: 95
+    ZBelow: 165
+  - Name: Belurat, Tower Settlement Swamp
+    Area: belurat_swamp
+    YBelow: 30
+  - Name: Belurat, Tower Settlement
+- Map: m21_00_00_00
+  Areas:
+  - Name: Shadow Keep - Tree-Worship Sanctum
+    Area: shadowkeep_church_lower
+    YBelow: -200
+  - Name: Shadow Keep - Drained Church District
+    Area: shadowkeep_church_lower
+    XAbove: 170
+    YBelow: 41
+  - Name: Shadow Keep - Church District
+    Area: shadowkeep_church
+    XAbove: 170
+    YBelow: 90
+  - Name: Shadow Keep
+    Area: shadowkeep
+- Map: m21_01_00_00
+  Areas:
+  - Name: Specimen Storehouse - Shadow Tower
+    XBelow: 150
+    YAbove: 335
+    ZAbove: 295
+  - Name: Specimen Storehouse - Rafters
+    Comment: There is a tenth floor, where the exit to Gaius elevator is, but nothing on it
+    YAbove: 357
+  - Name: Specimen Storehouse - Ninth Floor
+    YAbove: 347
+  - Name: Specimen Storehouse - Eighth Floor
+    YAbove: 337
+  - Name: Specimen Storehouse - Seventh Floor
+    YAbove: 327
+  - Name: Specimen Storehouse - Sixth Floor
+    YAbove: 317
+  - Name: Specimen Storehouse - Fifth Floor
+    YAbove: 307
+  - Name: Specimen Storehouse - Fourth Floor
+    YAbove: 297
+  - Name: Specimen Storehouse - Third Floor
+    YAbove: 287
+  - Name: Specimen Storehouse - Second Floor
+    Comment: Includes lower walkways
+    YAbove: 274
+  - Name: Specimen Storehouse - First Floor
+  
+
+- Map: m61_48_40_00
+  Areas:
+  - Name: Abyssal Woods - Southwest Corner
+    YBelow: -300
+    Area: abyssal
+  - Name: Gravesite Plain - South of Church of Consolation
+    YAbove: 200
+    Area: gravesite
+  - Name: Charo's Hidden Grave - Central Lake Northeast Cliffside
+    Area: charo
+    YAbove: 80
+  - Name: Gravesite Plain - Ellac River End
+    Area: ellac
+- Map: m61_51_41_00
+  Areas:
+  - Name: Abyssal Woods - South Winter-Lantern River by Woodland Trail
+    YBelow: -300
+    Area: abyssal
+  - Name: Foot of the Jagged Peak - First Spiritspring and Rope Bridge
+    Area: jaggedpeak_foot
+    YAbove: 40
+  - Name: Finger Ruins of Rhia - Far Northeast
+    Area: cerulean_rhia
+- Map: m61_49_40_00
+  Areas:
+  - Name: Abyssal Woods - Midra's Manse Entrance
+    Area: abyssal
+    YBelow: -300
+  - Name: Foot of the Jagged Peak - North of Grand Altar
+    Area: jaggedpeak_foot
+- Map: m61_49_41_00
+  Areas:
+  - Name: Abyssal Woods - North of Midra's Manse
+    Area: abyssal
+    YBelow: -300
+  - Name: Foot of the Jagged Peak - Drake Lake
+    Area: jaggedpeak_foot
+- Map: m61_52_40_00
+  Areas:
+  - Name: Abyssal Woods - Southwest of Church
+    Area: abyssal
+    YBelow: -300
+  - Name: Foot of the Jagged Peak - Foot of the Jagged Peak, Drake Duo Area
+    Area: jaggedpeak_foot
+
+- Map: m61_48_41_00
+  Areas:
+  - Name: Abyssal Woods - Southwest Edge
+    Area: abyssal
+    YBelow: -300
+  - Name: Gravesite Plain - Suppressing Pillar, Dragon's Pit Entrance
+    Area: gravesite
+    YAbove: 300
+  - Name: Gravesite Plain - Church of Consolation
+    Area: gravesite
+    YAbove: 200
+  - Name: Gravesite Plain - North of Ellac River End
+    Area: ellac
+- Map: m61_48_42_00
+  Areas:
+  - Name: Abyssal Woods - West Edge
+    Area: abyssal
+    YBelow: -300
+  - Name: Gravesite Plain - Pillar Path Waypoint, Ruined Forge Lava Intake Entrance
+    Area: gravesite
+- Map: m61_49_42_00
+  Areas:
+  - Name: Abyssal Woods - Between Divided Falls and Manse
+    Area: abyssal
+    YBelow: -300
+  - Name: Gravesite Plain - Elder's Hovel
+    Area: gravesite
+- Map: m61_48_43_00
+  Areas:
+  - Name: Abyssal Woods - Divided Falls
+    Area: abyssal
+    YBelow: -300
+  - Name: Scadu Altus - West of Moorth Highway South
+    Area: scadualtus
+    YAbove: 350
+  - Name: Gravesite Plain - Pillar Path Cross
+    Area: gravesite
+- Map: m61_49_43_00
+  Areas:
+  - Name: Abyssal Woods - East of Divided Falls
+    Area: abyssal
+    YBelow: -300
+  - Name: Scadu Altus - East of Scaduview Cross
+    Area: scadualtus_high
+    XAbove: 20
+    YAbove: 410
+  - Name: Scadu Altus - Moorth Highway South, Fort of Reprimand
+    Area: scadualtus
+    YAbove: 260
+  - Name: Gravesite Plain - Southeast Poison Swamp
+    Area: gravesite
+- Map: m61_53_40_00
+  Areas:
+  - Name: Abyssal Woods - South of Church
+    Area: abyssal
+    YBelow: -300
+  - Name: Jagged Peak - East of Drake Duo Area
+    Area: jaggedpeak
+
+- Map: m61_50_43_00
+  Areas:
+  - Name: Abyssal Woods - Alcove North of Central Woods
+    Area: abyssal
+    YBelow: -300
+  - Name: Scadu Altus - Scaduview Cross
+    Area: scadualtus_high
+    YAbove: 410
+  - Name: Scadu Altus - Fort of Reprimand
+    Area: scadualtus
+    YAbove: 410
+  - Name: Scadu Altus - Bonny Gaol Entrance
+    Area: scadualtus
+    YAbove: 250
+  - Name: Scadu Altus - Path to Village of Flies
+    Area: scadualtus_recluse
+- Map: m61_51_43_00
+  Areas:
+  - Name: Abyssal Woods - West of Forsaken Graveyard
+    Area: abyssal
+    YBelow: -300
+  - Name: Scadu Altus - Darklight Catacombs Entrance
+    Area: scadualtus_recluse
+
+- Map: m61_44_45_00
+  Areas:
+  - Name: Ancient Ruins of Rauh - South Church of the Bud, Sealing Tree
+    Area: rauhruins
+    XBelow: -1
+    YAbove: 615
+  - Name: Ancient Ruins of Rauh - West Ruins Cave Upper Levels, Grand Stairway
+    Area: rauhruins
+
+- Map: m61_47_46_00
+  Areas:
+  - Name: Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside
+    Area: rauhruins
+    YAbove: 500
+  - Name: Scadu Altus - Church of the Crusade
+    Area: scadualtus
+    YAbove: 400
+  - Name: Rauh Base - Above Fog Rift
+    Area: rauhbase
+    YAbove: 285
+  - Name: Gravesite Plain - Fog Rift Catacombs Entrance
+    Area: gravesite
+
+- Map: m61_44_46_00
+  Areas:
+  - Name: Rauh Base - Scorpion River Catacombs Entrance
+    Area: rauhbase
+    YBelow: 450
+  - Name: Ancient Ruins of Rauh - North Church of the Bud
+    Area: rauhruins
+    YAbove: 620
+    ZBelow: -38
+  - Name: Ancient Ruins of Rauh - Spiritspring Courtyard, Rot Ruins
+    Area: rauhruins
+- Map: m61_44_47_00
+  Areas:
+  - Name: Rauh Base - West Scorpion River
+    Area: rauhbase
+    YBelow: 450
+  - Name: Ancient Ruins of Rauh - West Ruins Northwest Cliffside
+    Area: rauhruins
+- Map: m61_45_45_00
+  Areas:
+  - Name: Rauh Base - West of Temple Town Ruins
+    Area: rauhbase
+    YBelow: 450
+  - Name: Ancient Ruins of Rauh - West Ruins Cave Entrance and Grace
+    Area: rauhruins
+- Map: m61_45_46_00
+  Areas:
+  - Name: Rauh Base - Rot Area
+    Area: rauhbase
+    YBelow: 450
+  - Name: Ancient Ruins of Rauh - Furnace Golem Area
+    Area: rauhruins
+- Map: m61_45_47_00
+  Areas:
+  - Name: Rauh Base - Ravine North, East Scorpion River
+    Area: rauhbase
+    YBelow: 450
+  - Name: Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit
+    Area: rauhruins
+
+- Map: m61_46_46_00
+  Areas:
+  - Name: Rauh Base - North Temple Town Ruins
+    Area: rauhbase
+    YBelow: 450
+  - Name: Ancient Ruins of Rauh - Hippo Pond
+    Area: rauhruins
+    YAbove: 550
+  - Name: Ancient Ruins of Rauh - South Belfry Area
+    Area: rauhruins_limited
+    XAbove: 10
+  - Name: Ancient Ruins of Rauh - South Belfry Area
+    Area: rauhruins_limited
+    ZAbove: 55
+  - Name: Ancient Ruins of Rauh - South Belfry Area
+    Area: rauhruins_limited
+    XAbove: -23
+    ZAbove: 32
+  - Name: Ancient Ruins of Rauh - Divine Beast Pantheon
+    Area: rauhruins
+- Map: m61_46_47_00
+  Areas:
+  - Name: Rauh Base - Fire Spritestone Cave
+    Area: rauhbase
+    YBelow: 450
+  - Name: Ancient Ruins of Rauh - East Ruins Grace and Cave Entrance, Scorpion Cave
+    Area: rauhruins
+    YAbove: 550
+  - Name: Ancient Ruins of Rauh - North Belfry Area
+    Area: rauhruins_limited
+- Map: m61_47_47_00
+  Areas:
+  - Name: Rauh Base - Bloodfiend Cave
+    Area: rauhbase
+    YBelow: 450
+  - Name: Ancient Ruins of Rauh - Shadow Keep Exit, Viaduct Minor Tower, Bloodfiend Ruins
+    Area: rauhruins
+- Map: m61_47_48_00
+  Areas:
+  - Name: Rauh Base - West Rampart Bridge Northwest Cliffside
+    Area: rauhbase
+    YBelow: 450
+  - Name: Ancient Ruins of Rauh - Viaduct Tower North Cliffside
+    Area: rauhruins
+
+- Map: m61_48_37_00
+  Areas:
+  - Name: Cerulean Coast - Cerulean Coast Cross
+    Area: cerulean
+    YAbove: 12
+  - Name: Cerulean Coast - Far Southwest Fingercreeper Beach Coast
+    Area: cerulean
+
+- Map: m61_46_39_00
+  Areas:
+  - Name: Charo's Hidden Grave - Southwest Furnace Golem Area
+    Area: charo
+    YAbove: 65
+  - Name: Cerulean Coast - Cerulean Coast West
+    Area: cerulean
+- Map: m61_47_39_00
+  Areas:
+  - Name: Charo's Hidden Grave - South Central Lake
+    Area: charo
+    YAbove: 65
+  - Name: Cerulean Coast - Ravine South
+    Area: cerulean
+- Map: m61_48_38_00
+  Areas:
+  - Name: Charo's Hidden Grave - Southeast Mariner Area
+    Area: charo
+    YAbove: 65
+  - Name: Finger Ruins of Rhia - West of Finger-Weaver's Hovel
+    Area: cerulean_rhia
+    XAbove: 75
+    ZAbove: 45
+  - Name: Cerulean Coast - Dragon Area, Beach-Facing Coffin
+    Area: cerulean
+- Map: m61_48_39_00
+  Areas:
+  - Name: Charo's Hidden Grave - Charo's Hidden Grave
+    Area: charo
+    YAbove: 65
+  - Name: Cerulean Coast - Cerulean Coast
+    Area: cerulean
+
+- Map: m61_46_40_00
+  Areas:
+  - Name: Gravesite Plain - Church of Benediction
+    Area: gravesite
+    YAbove: 250
+  - Name: Charo's Hidden Grave - Lamenter's Gaol Entrance
+    Area: charo
+    YAbove: 50
+  - Name: Cerulean Coast - Demi-Human Beach, Ravine North
+    Area: cerulean
+- Map: m61_47_40_00
+  Areas:
+  - Name: Gravesite Plain - South of Scorched Ruins, Gravesite Plain South Cliffside
+    Area: gravesite
+    YAbove: 200
+  - Name: Charo's Hidden Grave - North Central Lake
+    Area: charo
+    YAbove: 50
+  - Name: Gravesite Plain - Ellac River End Northwest Edge
+    Area: ellac
+    XAbove: 35
+    YBelow: 50
+    ZAbove: 25
+  - Name: Cerulean Coast - Ravine Northeast
+    Area: cerulean
+
+- Map: m61_49_38_00
+  Areas:
+  - Name: Cerulean Coast - Fingercreeper Beach Center
+    Area: cerulean
+    YBelow: 55
+    ZBelow: 5
+  - Name: Finger Ruins of Rhia - Finger-Weaver's Hovel
+    Area: cerulean_rhia
+    YBelow: 40
+  - Name: Charo's Hidden Grave - Far Southeast Entrance
+    Area: charo
+    XBelow: -1
+    ZBelow: 67
+  - Name: Charo's Hidden Grave - Far Southeast Entrance
+    Area: charo
+    XBelow: -100
+  - Name: Foot of the Jagged Peak - South of Grand Altar
+    Area: jaggedpeak_foot
+
+- Map: m61_49_39_00
+  Areas:
+  - Name: Finger Ruins of Rhia - Climb to Finger-Weaver's Hovel
+    Area: cerulean_rhia
+    YBelow: 40
+  - Name: Charo's Hidden Grave - Far East Cliffside
+    Area: charo
+    YAbove: 80
+    XBelow: -80
+  - Name: Foot of the Jagged Peak - Grand Altar of Dragon Communion
+    Area: jaggedpeak_foot
+
+- Map: m61_50_40_00
+  Areas:
+  - Name: Foot of the Jagged Peak - North of Grand Altar East Edge
+    Area: jaggedpeak_foot
+    YAbove: 40
+  - Name: Finger Ruins of Rhia - Northwest, Hanging Bell
+    Area: cerulean_rhia
+- Map: m61_50_41_00
+  Areas:
+  - Name: Abyssal Woods - Central Woods South Edge
+    Area: abyssal
+    YBelow: -300
+  - Name: Foot of the Jagged Peak - Northeast of Drake Lake
+    Area: jaggedpeak_foot
+    YAbove: 40
+  - Name: Finger Ruins of Rhia - Far Northwest
+    Area: cerulean_rhia
+- Map: m61_51_40_00
+  Areas:
+  - Name: Foot of the Jagged Peak - Foot of the Jagged Peak West Cliffside
+    Area: jaggedpeak_foot
+    YAbove: 40
+  - Name: Finger Ruins of Rhia - Northeast
+    Area: cerulean_rhia
+
+- Map: m61_46_43_00
+  Areas:
+  - Name: Gravesite Plain - Ellac Greatbridge
+    Area: gravesite
+    YAbove: 200
+  - Name: Gravesite Plain - Below Ellac Greatbridge
+    Area: ellac
+- Map: m61_46_44_00
+  Areas:
+  - Name: Gravesite Plain - Greatbridge North, Abandoned Ailing Village
+    Area: gravesite
+    YAbove: 200
+  - Name: Gravesite Plain - Rivermouth Cave Entrance
+    Area: ellac
+- Map: m61_47_41_00
+  Areas:
+  - Name: Gravesite Plain - Scorched Ruins
+    Area: gravesite
+    YAbove: 200
+  - Name: Gravesite Plain - Ellac River Downstream
+    Area: ellac
+- Map: m61_47_42_00
+  Areas:
+  - Name: Gravesite Plain - North of Scorched Ruins
+    Area: gravesite
+    YAbove: 200
+  - Name: Gravesite Plain - Downstream of Ellac River Cave
+    Area: ellac
+- Map: m61_47_43_00
+  Areas:
+  - Name: Gravesite Plain - East of Ensis Castle Front
+    Area: gravesite
+    YAbove: 200
+  - Name: Gravesite Plain - Ellac River Cave
+    Area: ellac
+
+- Map: m61_46_45_00
+  Areas:
+  - Name: Gravesite Plain - Northern Nameless Mausoleum
+    Area: rauhbase_high
+    YAbove: 350
+  - Name: Rauh Base - Temple Town Ruins
+    Area: rauhbase
+    YAbove: 250
+  - Name: Gravesite Plain - Ellac River Start
+    Area: ellac
+
+- Map: m61_47_44_00
+  Areas:
+  - Name: Gravesite Plain - South Fog Rift Fort
+    Area: ensis_fort
+    Comment: Upper fort. Lower fort is only in north map
+    XBelow: -10
+    YAbove: 330
+    ZAbove: 93
+  - Name: Scadu Altus - Belfry
+    Area: scadualtus
+    Comment: Z condition to exclude tower before Moonrithyll
+    ZAbove: 22
+    YAbove: 373
+  - Name: Gravesite Plain - Castle Front
+    Area: gravesite
+    XBelow: 72
+    YBelow: 330
+    ZBelow: -28
+  - Name: Gravesite Plain - Castle Front
+    Area: gravesite
+    XBelow: -19
+  - Name: Gravesite Plain - Castle Front
+    Area: gravesite
+    Comment: Bottom of waterfall
+    XBelow: 5
+    YBelow: 325
+    ZAbove: 77
+  - Name: Gravesite Plain - West Castle Ensis
+    Area: ensis
+
+- Map: m61_47_45_00
+  Areas:
+  - Name: Gravesite Plain - Northern Nameless Mausoleum East Cliffside
+    Area: rauhbase_high
+    XBelow: -75
+    YAbove: 380
+  - Name: Scadu Altus - Scadu Altus West
+    Area: scadualtus
+    YAbove: 370
+  - Name: Scadu Altus - Scadu Altus West
+    Area: scadualtus
+    XAbove: 15
+  - Name: Scadu Altus - Scadu Altus West
+    Area: scadualtus
+    Comment: Waterfall lowest level
+    XAbove: -35
+    YBelow: 315
+    ZBelow: -105
+  - Name: Scadu Altus - Scadu Altus West
+    Area: scadualtus
+    Comment: Waterfall mid level
+    XAbove: -10
+    YBelow: 348
+  - Name: Gravesite Plain - North Fog Rift Fort
+    Area: ensis_fort
+    Comment: South lower fort
+    XAbove: -70
+    YAbove: 327
+    ZBelow: -94
+  - Name: Gravesite Plain - North Fog Rift Fort
+    Area: ensis_fort
+    Comment: North lower fort, with Altus/Ensis already excluded
+    XAbove: -58
+    YAbove: 325
+  - Name: Gravesite Plain - North Fog Rift Fort
+    Area: ensis_fort
+    Comment: Upper fort
+    YAbove: 332
+  - Name: Gravesite Plain - Outside Fog Rift Fort
+    Area: gravesite
+
+
+- Map: m61_48_44_00
+  Areas:
+  - Name: Gravesite Plain - Pillar Path Northeast Cliffside
+    Area: gravesite
+    YBelow: 320
+  - Name: Scadu Altus - Castle Ensis Exit, Ruined Forge of Starfall Past Entrance
+    Area: scadualtus
+    Comment: Below east castle wall, so wall can be selected later
+    XAbove: -60
+    YBelow: 380
+  - Name: Gravesite Plain - East Castle Ensis
+    Area: ensis
+    Comment: East rampart, based on hitset_h484404
+    XAbove: -60
+    XBelow: 32
+    YAbove: 390
+    ZAbove: -64
+    ZBelow: 32
+  - Name: Gravesite Plain - East Castle Ensis
+    Area: ensis
+    Comment: After dropdown from Altus, behind waterfall
+    XBelow: -60
+    YBelow: 375
+  - Name: Gravesite Plain - East Castle Ensis
+    Area: ensis
+    Comment: Ensis wall up to moongazing grounds. It includes a tiny bit of Altus southeast of moongazing grounds, but just a barren cliffside
+    XBelow: -50
+    ZBelow: 30
+  - Name: Gravesite Plain - East Castle Ensis
+    Area: ensis
+    Comment: Moongazing grounds
+    XBelow: -23
+    XAbove: -88
+    YAbove: 425
+    ZAbove: 13
+    ZBelow: 70
+  - Name: Scadu Altus - Castle Ensis Exit, Ruined Forge of Starfall Past Entrance
+    Area: scadualtus
+
+- Map: m61_53_39_00
+  Areas:
+  - Name: Jagged Peak - Between Jagged Peak Mountainside and Summit
+    Area: jaggedpeak
+    YAbove: 630
+  - Name: Jagged Peak - Before Senessax Lake
+    Area: jaggedpeak
+- Map: m61_54_39_00
+  Areas:
+  - Name: Jagged Peak - Jagged Peak Summit, Bayle Arena
+    Area: jaggedpeak
+    YAbove: 630
+  - Name: Jagged Peak - Senessax Lake
+    Area: jaggedpeak
+
+
+- Map: m61_48_46_00
+  Areas:
+  - Name: Scadu Altus - Furnace Golem Area
+    Area: scadualtus
+    YAbove: 390
+  - Name: Rauh Base - Entrance from Poison Swamp
+    Area: rauhbase
+- Map: m61_48_47_00
+  Areas:
+  - Name: Scadu Altus - Shadow Keep Main Gate
+    Area: scadualtus
+    YAbove: 390
+  - Name: Rauh Base - Ancient Ruins Base
+    Area: rauhbase
+
+- Map: m61_49_47_00
+  Areas:
+  - Name: Scadu Altus - East of Shadow Keep Main Gate
+    Area: scadualtus
+    YAbove: 330
+  - Name: Scadu Altus - Castle Watering Hole Northwest Entrance
+    Area: scadualtus_recluse
+- Map: m61_50_46_00
+  Areas:
+  - Name: Scadu Altus - Church District Highroad West Cliffside
+    Area: scadualtus
+    YAbove: 330
+  - Name: Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte
+    Area: scadualtus_recluse
+- Map: m61_50_47_00
+  Areas:
+  - Name: Scaduview - South Hinterland
+    Area: hinterland
+    YAbove: 530
+  - Name: Scadu Altus - Above Shadow Keep East Tunnel
+    Area: scadualtus
+    YAbove: 330
+  - Name: Scadu Altus - Castle Watering Hole Northeast, North Ruins of Unte
+    Area: scadualtus_recluse
+
+- Map: m61_50_44_00
+  Areas:
+  - Name: Scadu Altus - Main Bonny Village, Whipping Hut
+    Area: scadualtus
+    YAbove: 250
+  - Name: Scadu Altus - Recluses' River Downstream, Village of Flies
+    Area: scadualtus_recluse
+- Map: m61_51_44_00
+  Areas:
+  - Name: Scadu Altus - Bridge Leading to the Village
+    Area: scadualtus
+    YAbove: 250
+  - Name: Scadu Altus - Eastern Nameless Mausoleum, Hippo Duo Pond
+    Area: scadualtus_recluse
+
+- Map: m61_49_46_00
+  Areas:
+  - Name: Scadu Altus - North Bear Woods
+    Area: scadualtus
+    YAbove: 380
+  - Name: Scadu Altus - Poison Swamp
+    Area: scadualtus
+    YAbove: 300
+  - Name: Scadu Altus - Castle Watering Hole Southwest
+    Area: scadualtus_recluse
+
+- Map: m61_50_45_00
+  Areas:
+  - Name: Scadu Altus - Manus Metyr Graveyard and West Cliffside
+    Area: scadualtus
+    YAbove: 400
+  - Name: Scadu Altus - Bonny Village North Tree and Overlook
+    Area: scadualtus
+    YAbove: 280
+  - Name: Scadu Altus - Recluses' River Upstream
+    Area: scadualtus_recluse
+    
+
+- Map: m61_51_45_00
+  Areas:
+  - Name: Scadu Altus - Recluses' River Downstream West Edge
+    Area: scadualtus_recluse
+    YBelow: 260
+  - Name: Scadu Altus - Cathedral of Manus Metyr
+    Area: scadualtus
+    YAbove: 450
+  - Name: Scadu Altus - Second Furnace Golem Area
+    Area: scadualtus
+    XAbove: -30
+  - Name: Scadu Altus - Second Furnace Golem Area
+    Area: scadualtus
+    ZBelow: -40
+  - Name: Scadu Altus - Finger Ruins of Miyr
+    Area: scadualtus_miyr
+
+- Map: m61_51_46_00
+  Areas:
+  - Name: Scadu Altus - Finger Ruins of Miyr Warp Platform
+    Area: scadualtus_miyr
+    XBelow: -35
+    YBelow: 440
+    ZBelow: -70
+  - Name: Scadu Altus - Road to Manus Metyr, Rabbath's Rise Building
+    Area: scadualtus
+
+- Map: m61_50_48_00
+  Areas:
+  - Name: Scaduview - South Scadutree Base, Lower Shadow Keep Exit
+    Area: scadutree_base
+    YBelow: 250
+  - Name: Scaduview - North Hinterland
+    Area: hinterland
+
+- Map: m61_51_47_00
+  Comment: Use y > 500 cutoff for rise items accessible only from Shaman Village, but they're in m61_51_46_00 anyway
+  Areas:
+  - Name: Scaduview - Southwest Fingerstone Hill
+    Area: hinterland
+    YBelow: 550
+    ZAbove: 80
+  - Name: Scaduview - Shaman Village
+    Area: hinterland
+    ZAbove: 80
+  - Name: Scadu Altus - Church District Highroad, Rabbath's Rise, Shadow Keep East Tunnel Entrance
+    Area: scadualtus
+    YBelow: 530
+  - Name: Scaduview - Shaman Village
+    Area: hinterland
+
+- Map: m61_52_47_00
+  Areas:
+  - Name: Scadu Altus - Church District Highroad Northast Cliffside
+    Area: scadualtus
+    ZBelow: -50
+  - Name: Scaduview - South of Fingerstone Hill Crater
+    Area: hinterland
+
+# m61_49_48_00 Scaduview - Specimen Storehouse Exit, Commander Gaius' Arena. No items or enemies in hinterland

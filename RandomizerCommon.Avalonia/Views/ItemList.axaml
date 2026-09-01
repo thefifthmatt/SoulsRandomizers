@@ -1,0 +1,109 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:RandomizerCommon.ViewModels"
+             xmlns:common="using:RandomizerCommon"
+             xmlns:converters="using:Avalonia.Controls.Converters"
+             xmlns:loc="using:RandomizerCommon.Localization"
+             xmlns:localconv="using:RandomizerCommon.Converters"
+             xmlns:views="using:RandomizerCommon.Views"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="RandomizerCommon.Views.ItemList"
+             x:DataType="vm:ItemPanelViewModel+DisplayItemList">
+    
+    <ItemsControl ItemsSource="{Binding $parent[views:ItemList].Children}">
+        <ItemsControl.Resources>
+            <localconv:ContainsItemConverter x:Key="ContainsItemConverter" />
+        </ItemsControl.Resources>
+        <ItemsControl.Styles>
+            <Style Selector=":is(AutoCompleteBox) /template/ Popup">
+                <Setter Property="OverlayDismissEventPassThrough" Value="True" />
+                <Setter Property="PlacementMode" Value="Bottom" />
+            </Style>
+            <Style Selector="Button.displayitem.group">
+                <Setter Property="Cursor" Value="Hand" />
+            </Style>
+            <Style Selector="Button.displayitem:not(.group)">
+                <Setter Property="IsHitTestVisible" Value="False" />
+            </Style>
+        </ItemsControl.Styles>
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <WrapPanel />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.DataTemplates>
+            <DataTemplate DataType="{x:Type vm:ItemPanelViewModel+DisplayItemSource}">
+                <StackPanel Orientation="Horizontal" Spacing="7">
+                    <ContentControl IsVisible="{Binding $parent[views:ItemList].Label, Converter={x:Static ObjectConverters.IsNotNull}}" VerticalAlignment="Center">
+                        <ContentPresenter Content="{Binding $parent[views:ItemList].Label}" />
+                    </ContentControl>
+                    <views:PopulateListBox ItemsSource="{Binding Items}" ValueMemberBinding="{Binding DropdownName}"
+                                           ItemFilter="{Binding ItemFilter}" FilterMode="Custom" MinimumPrefixLength="0"
+                                           ChooseItem="Box_ChooseItem"
+                                           Width="300" MaxDropDownHeight="500"
+                                           IsVisible="{Binding $parent[views:ItemList].IsEditable, TargetNullValue=True}">
+                        <views:PopulateListBox.InnerRightContent>
+                            <Button Background="Transparent" BorderThickness="0" Padding="0" Content="⨉" />
+                        </views:PopulateListBox.InnerRightContent>
+                    </views:PopulateListBox>
+                    </StackPanel>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ItemPanelViewModel+DisplayItem}">
+                <StackPanel Orientation="Horizontal">
+                    <Button VerticalAlignment="Center" Margin="7,0,0,0" Classes="imagebutton displayitem" Classes.group="{Binding IsGroup}">
+                        <Button.Flyout>
+                            <MenuFlyout Opening="ItemMenu_Opening">
+                                <MenuItem Command="{Binding $parent[views:ItemPresetView].((vm:ItemPresetViewModel)DataContext).ShowItemListCommand}" CommandParameter="{Binding .}">
+                                    <MenuItem.Header>
+                                        <loc:Message Key="PresetItemForm_showAll" Text="Show all" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem Header="-" IsVisible="{Binding ShowFilters}" />
+                                <MenuItem IsVisible="{Binding CanClearFilters}" Command="{Binding ClearFilterCommand}">
+                                    <MenuItem.Header>
+                                        <loc:Message Key="ItemPreset_ItemFilter_clear" Text="Clear filter" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem IsVisible="{Binding Filters, Converter={StaticResource ContainsItemConverter}, ConverterParameter=nodlc}"
+                                          Command="{Binding AddFilterCommand}" CommandParameter="nodlc">
+                                    <MenuItem.Header>
+                                        <loc:Message Key="ItemPreset_ItemFilter_add" Text="Add filter: {0}"
+                                                     Param="{Binding Source={x:Static common:ItemPreset.ItemFilterGroupNames}, Path=[nodlc]}" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem IsVisible="{Binding Filters, Converter={StaticResource ContainsItemConverter}, ConverterParameter=dlc}"
+                                          Command="{Binding AddFilterCommand}" CommandParameter="dlc">
+                                    <MenuItem.Header>
+                                        <loc:Message Key="ItemPreset_ItemFilter_add" Text="Add filter: {0}"
+                                                     Param="{Binding Source={x:Static common:ItemPreset.ItemFilterGroupNames}, Path=[dlc]}" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem IsVisible="{Binding Filters, Converter={StaticResource ContainsItemConverter}, ConverterParameter=rare}"
+                                          Command="{Binding AddFilterCommand}" CommandParameter="rare">
+                                    <MenuItem.Header>
+                                        <loc:Message Key="ItemPreset_ItemFilter_add" Text="Add filter: {0}"
+                                                     Param="{Binding Source={x:Static common:ItemPreset.ItemFilterGroupNames}, Path=[rare]}" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem IsVisible="{Binding Filters, Converter={StaticResource ContainsItemConverter}, ConverterParameter=legendary}"
+                                          Command="{Binding AddFilterCommand}" CommandParameter="legendary">
+                                    <MenuItem.Header>
+                                        <loc:Message Key="ItemPreset_ItemFilter_add" Text="Add filter: {0}"
+                                                     Param="{Binding Source={x:Static common:ItemPreset.ItemFilterGroupNames}, Path=[legendary]}" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                        <TextBlock Text="{Binding LocalizedText}" Classes.struckout="{Binding !Enabled}" />
+                    </Button>
+                    <Panel IsVisible="{Binding CanChangeEnabled}">
+                        <Button Background="Transparent" BorderThickness="0" Padding="1" Content="⨉" IsVisible="{Binding Enabled}" Command="{Binding RemoveCommand}" />
+                        <Button Background="Transparent" BorderThickness="0" Padding="1" Content="＋" IsVisible="{Binding !Enabled}" Command="{Binding EnableCommand}" />
+                    </Panel>
+                </StackPanel>
+            </DataTemplate>
+        </ItemsControl.DataTemplates>
+    </ItemsControl>
+</UserControl>

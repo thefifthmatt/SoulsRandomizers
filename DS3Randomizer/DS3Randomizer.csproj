@@ -11,9 +11,14 @@
     <SelfContained>false</SelfContained>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <DefineConstants>TRACE;$(DevConstants);$(GameConstants);</DefineConstants>
+  </PropertyGroup>
+    
   <ItemGroup>
     <ProjectReference Include="..\..\SoulsIds\SoulsIds\SoulsIds.csproj" />
     <ProjectReference Include="..\RandomizerCommon\RandomizerCommon.csproj" />
+    <ProjectReference Include="..\RandomizerCommon.WinForms\RandomizerCommon.WinForms.csproj" />
   </ItemGroup>
 
 </Project>

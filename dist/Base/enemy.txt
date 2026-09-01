@@ -1132,9 +1132,13 @@ Enemies:
   ESDs: 300324
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Create NPC Part; Display Boss Health Bar; Force Animation Playback; Handle Boss Defeat; IF Character Dead/Alive; IF Character Has Event Message; IF Character Has SpEffect; IF Character HP Ratio; IF NPC Part HP; Initialize Common Event; Play SE; Set Character AI State; Set Character HP Bar Display; Set Character Talk Range; Set Network Update Authority; Set Network Update Rate
   Class: Boss
-  Tags: mid excludeearly npcpart
-  FullName: Consumed King $1
-  PartName: Oceiros
+  Tags: mid npcpart
+  Important:
+    Names:
+      Key: Consumed King Oceiros
+      ProperName: Oceiros
+      PartialTemplate: Consumed $1
+      ProperTemplate: Consumed King $1
   DefeatFlag: 13000830
   StartFlag: 13005855
   MusicFlag: 13005835
@@ -1161,11 +1165,14 @@ Enemies:
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Display Boss Health Bar; Force Animation Playback; Handle Boss Defeat; IF Character Dead/Alive; IF Character Has Event Message; IF Character HP Ratio; Initialize Common Event; Issue Short Warp Request; Play SE; Set Character AI State; Set Character HP Bar Display; Set Network Update Authority; Set Network Update Rate
   Class: Boss
   Tags: early earlyreq
-  FullName: $1 of the Boreal Valley
-  PartName: Vordt
   DefeatFlag: 13000800
   StartFlag: 13005805
   MusicFlag: 13005815
+  Important:
+    Names:
+      Key: Vordt of the Boreal Valley
+      ProperName: Vordt
+      FullTemplate: $1 of the Boreal Valley
   Arena: 27.431 -25.422 24.806 -1.000 20 10 31
   ArenaRegion: 3002805
   ExtraArenas:
@@ -1196,12 +1203,15 @@ Enemies:
   DebugText: highwall - c5270_0001 - npc 527000 - think 527000 - team StrongEnemy - id 3000899 (3005701) - Dancer of the Boreal Valley
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Create NPC Part; Display Boss Health Bar; Force Animation Playback; Handle Boss Defeat; IF Character Dead/Alive; IF Character Has Event Message; IF Character HP Ratio; IF NPC Part HP; Issue Short Warp Request; Play SE; Set Character AI State; Set Character Animation State; Set Network Update Authority; Set Network Update Rate; Set NPC Part HP
   Class: Boss
-  Tags: mid excludeearly npcpart
-  FullName: $1 of the Boreal Valley
-  PartName: Dancer
+  Tags: mid excludeearly npcpart arena:1
   DefeatFlag: 13000890
   StartFlag: 13005885
   MusicFlag: 13005891  # Custom
+  Important:
+    Names:
+      Key: Dancer of the Boreal Valley
+      FullName: Dancer
+      FullTemplate: $1 of the Boreal Valley
   Arena: 27.680 -8.955 148.407 0 35 10 28
   ArenaExclude: 42.777 -8.955 143.180 0 10 10 5; 42.777 -8.955 155.193 0 10 10 5; 11.701 -8.955 143.180 0 10 10 5; 12.061 -8.955 155.193 0 10 10 5
   ArenaRegion: 3002899
@@ -1715,12 +1725,16 @@ Enemies:
   DebugText: lothric - c3160_0000 - npc 316000 - think 316000 - team StrongEnemy - id 3010800 - Dragonslayer Armour
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Display Boss Health Bar; Force Animation Playback; Handle Boss Defeat; IF Character Damaged By; IF Character Dead/Alive; IF Character HP Ratio; Play SE; Set Character AI State; Set Character Animation State; Set Character Gravity; Set Network Update Authority; Set Network Update Rate
   Class: Boss
-  Tags: late  # First late boss
-  FullName: Dragonslayer $1
-  PartName: Dragonslayer Armour
+  Tags: late arena:1  # First late boss
   DefeatFlag: 13010800
   StartFlag: 13015805
-  MusicFlag: 13015811
+  MusicFlag: 13015888  # Actual music flag is 13015811, use indirection
+  Important:
+    Names:
+      Key: Dragonslayer Armour
+      FullName: Dragonslayer Armour
+      PartialName: Armour
+      PartialTemplate: Dragonslayer $1
   # Use a height of 60.163 to reach close to the ground on arena ends, but have to exclude entire center
   Arena: -73.046 61.501 223.045 -90.000 16 10 64
   ArenaExclude: -72.912 61.501 222.618 -90.000 9 10 7
@@ -2815,13 +2829,17 @@ Enemies:
   DebugText: settlement - c5180_0000 - npc 518000 - think 518000 - team StrongEnemy - id 3100800 - Rotted Greatwood
   Events: Activate Multiplayer-dependant Buffs; Change Character DispMask; Change Character Enable State; Change Character HitMask; Clear SpEffect; Create NPC Part; Display Boss Health Bar; Force Animation Playback; Handle Boss Defeat; IF Character Dead/Alive; IF Character Has Event Message; IF Character Has SpEffect; IF Character HP Ratio; IF Entity In/Outside Radius Of Entity; IF In/Outside Area; IF NPC Part HP; Initialize Common Event; Play SE; Request Character AI Command; Set Character AI State; Set Character HP Bar Display; Set Character Invincibility; Set Lock On Point; Set Network Update Authority; Set Network Update Rate; Set NPC Part SE and SFX; Set SpEffect; Spawn Oneshot SFX
   Class: Boss
-  Tags: mid bossonlymulti npcpart
+  Tags: mid excludeearly bossonlymulti npcpart arena:3 size:2
   Groups: [3105801]
-  FullName: Curse-rotted $1
-  PartName: Greatwood
   DefeatFlag: 13100800
   StartFlag: 13105805  # Waits for invincibility disabled
-  MusicFlag: 13105881
+  MusicFlag: 13105888  # Actually 13105814, but add indirection with floor break
+  Important:
+    Names:
+      Key: Curse-rotted Greatwood
+      FullName: Curse-rotted Greatwood
+      PartialName: Greatwood
+      PartialTemplate: Curse-rotted $1
   # This isn't very comprehensive, but it's a nice size already. We can expand it and add more exclude areas if needed
   Arena: 147.466 -180.300 -925.427 161.000 35 10 69
   ArenaRegion: 3103800
@@ -3175,11 +3193,15 @@ Enemies:
   DebugText: archdragon - c3141_0000 - npc 314100 - think 314000 - team StrongEnemy - id 3200800 (3205701) - Ancient Wyvern Boss
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Display Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat; IF Character Dead/Alive; IF Character HP Ratio; Initialize Common Event; Play SE; Set Character AI State; Set Character Animation State; Set Network Update Authority; Set Network Update Rate; Warp Character and Copy Floor
   Class: Boss
-  Tags: late exclude:5100850
-  FullName: Ancient $1
-  PartName: Wyvern
+  Tags: late exclude:5100850 arena:2 size:2
   DefeatFlag: 13200800
   StartFlag: 13205805
+  Important:
+    Names:
+      Key: Ancient Wyvern
+      FullName: Ancient Wyvern
+      PartialName: Wyvern
+      PartialTemplate: Ancient $1
   # This is pretty pathetic but it does work. Expanding it would require stitching several sloped regions together
   Arena: -25.510 37.393 253.153 33.000 18 10 15
   ArenaExclude: -22.281 37.393 258.125 33.000 9 10 3
@@ -3253,12 +3275,16 @@ Enemies:
   DebugText: archdragon - c5010_0000 - npc 501000 - think 501000 - team StrongEnemy - id 3200851 (3205850,3205701) - Nameless King
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Display Boss Health Bar; Force Character Death; Handle Boss Defeat; IF Character Dead/Alive; IF Character HP Ratio; Initialize Common Event; Play SE; Set Character AI State; Set Character Animation State; Set Network Update Authority; Set Network Update Rate
   Class: Boss
-  Tags: late
+  Tags: late excludeearly arena:3
   RemoveGroup: 3205850
-  FullName: Nameless $1
-  PartName: Nameless
   DefeatFlag: 13200850
   StartFlag: 13205852
+  Important:
+    Names:
+      Key: Nameless King
+      FullName: Nameless King
+      PartialName: King
+      PartialTemplate: Nameless $1
   # Limit to not include dragon statues, as warps might not necessarily break them. This could be turned into 6 ArenaExcludes
   # todo could try with princes
   Arena: 23.054 81.463 256.992 123.000 120 10 33
@@ -3269,11 +3295,14 @@ Enemies:
   DebugText: archdragon - c5030_0000 - npc 503000 - think 503000 - team StrongEnemy - id 3200850 (3205850,3205701) - King of the Storm
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Create NPC Part; Display Boss Health Bar; Force Animation Playback; Force Character Death; IF Character Has SpEffect; IF Character HP Ratio; IF NPC Part HP; Initialize Common Event; Set Character AI State; Set Character Animation State; Set Character Immortality; Set Network Update Authority; Set Network Update Rate
   Class: Boss
-  Tags: late npcpart
+  Tags: late excludeearly npcpart arena:3 size:2
   RemoveGroup: 3205850
-  FullName: $1 of the Storm
-  PartName: Storm King
   StartFlag: 13205855
+  Important:
+    Names:
+      Key: King of the Storm
+      FullName: King of the Storm
+      FullTemplate: $1 of the Storm
   OwnedBy: 3200851  # Inherit flags
 - ID: 3300191
   Map: m33_00_00_00
@@ -4056,14 +4085,18 @@ Enemies:
   DebugText: farronkeep - c1320_0000 - npc 132000 - think 132000 - team Enemy - id 3300850 (3305850) - Crystal Sage in Farron
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Display Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat; IF Character Dead/Alive; IF Character Has Event Message; IF Character HP Ratio; Initialize Common Event; Play SE; Request Character AI Re-plan; Set Character AI State; Set Character Animation State; Set Network Update Authority; Set Network Update Rate; Shoot Bullet; Warp Character and Copy Floor
   Class: Boss
-  Tags: mid
+  Tags: mid excludeearly arena:1
   Groups: [3305850, 3305851]
   ExtraName: Crystal Sage
-  FullName: Crystal $1
-  PartName: Crystal Sage
   DefeatFlag: 13300850
   StartFlag: 13305855
   MusicFlag: 13305851
+  Important:
+    Names:
+      Key: Crystal Sage
+      FullName: Crystal Sage
+      PartialName: Sage
+      PartialTemplate: Crystal $1
   # Bumpy terrain and pillars; this one contains three pillars
   Arena: -186.434 -245.352 -420.373 84.000 25 10 25
   ArenaExclude: -176.477 -245.352 -428.034 84.000 3 10 3; -178.589 -245.352 -415.059 84.000 3 10 3; -191.797 -245.352 -413.893 84.000 6 10 2
@@ -4684,13 +4717,17 @@ Enemies:
   DebugText: farronkeep - c3040_0000 - npc 304000 - think 304005 - team Enemy - id 3300801 (3305800,3305701) - Abyss Watchers
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Clear SpEffect; Display Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat and Display Banner; IF Character Dead/Alive; IF Character Has SpEffect; IF Character HP Ratio; IF Character HP Value; Initialize Common Event; Play SE; Set Character AI ID; Set Character AI State; Set Character Animation State; Set Network Update Authority; Set Network Update Rate; Set SpEffect; Warp Character and Copy Floor
   Class: Boss
-  Tags: mid
+  Tags: mid excludeearly arena:3
   Groups: [3305800, 3305801]
-  FullName: Abyss $1
-  PartName: Abyss Watchers
   DefeatFlag: 13300800
   StartFlag: 13305805
   MusicFlag: 13305802
+  Important:
+    Names:
+      Key: Abyss Watchers
+      FullName: Abyss Watchers
+      PartialName: Watchers
+      PartialTemplate: Abyss $1
   # Fairly high up due to uneven ground
   Arena: 312.052 -247.142 -492.414 -79.000 32 10 55
   ArenaRegion: 3304801
@@ -4922,6 +4959,7 @@ Enemies:
   DebugText: archives - c0000_0011 - npc 27500 - think 27500 - team Enemy - chr 27500 - id 3410196 - Black Hand Kamui
   Events: Change Character Enable State; Force Character Treasure; IF Character Dead/Alive
   Class: HostileNPC
+  Tags: npcitem
 - ID: 3410221
   Map: m34_01_00_00
   Name: c0100_0000
@@ -5369,12 +5407,17 @@ Enemies:
   DebugText: archives - c5250_0000 - npc 525001 - think 525001 - team Enemy - id 3410830 - Twin Princes
   Events: Change Character Enable State; Display Boss Health Bar; Force Animation Playback; Handle Boss Defeat and Display Banner; IF Character Has SpEffect; IF Character HP Ratio; Play SE; Set Character AI State; Set Character Animation State; Set Character Immortality; Set Network Update Authority; Set Network Update Rate; Warp Character and Copy Floor
   Class: Boss
-  Tags: late immortal
+  Comment: Different name template for same key
+  Tags: late excludeearly immortal scalephase arena:1
   ExtraName: Lothric, Younger Prince
-  FullName: $1, Elder Prince
-  PartName: Lorian
   DefeatFlag: 13410830
   StartFlag: 13415831  # Transition event
+  Important:
+    Names:
+      Key: Lorian, Elder Prince
+      ProperName: Lorian
+      FullTemplate: $1, Younger Prince
+    NpcName: 905250
   # "allow warps" arena: 3412890. "default" warp position: 3412850. "no warp" boundaries: 3412870 up to 3412888
   Arena: 34.973 147.242 337.336 -113.000 46 10 38
   # These are just pillar regions 3412870-3412873 and 3412875-3412878 (the fifth pillars are not in our arena)
@@ -5389,21 +5432,25 @@ Enemies:
   DebugText: archives - c5250_0001 - npc 525000 - think 525000 - team Enemy - id 3410832 - Twin Princes
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Display Boss Health Bar; IF Character Has SpEffect; IF Character HP Ratio; Set Character AI State; Set Character Animation State; Set Character Immortality; Set Network Update Authority; Set Network Update Rate; Warp Character and Copy Floor
   Class: Boss
-  Tags: late
+  Tags: late scalephase arena:1
   ExtraName: Lorian, Elder Prince
-  FullName: $1, Elder Prince
-  PartName: Lorian
   StartFlag: 13415835
+  Important:
+    Names:
+      Key: Lorian, Elder Prince
+      ProperName: Lorian
+      FullTemplate: $1, Elder Prince
+    NpcName: 905250
   OwnedBy: 3410830
   Regions:
   - copy 3412890 3412891
+  - copy 3412888 3412866
+  - copy 3412888 3412867
+  - copy 3412888 3412868
+  - copy 3412888 3412869
   - copy 3412888 3412889
-  - copy 3412888 3412890
-  - copy 3412888 3412891
-  - copy 3412888 3412892
-  - copy 3412888 3412893
   - global arena 3412891
-  - global arenaexclude 3412882 3412883 3412884 3412885 3412886 3412887 3412888 3412889 3412890 3412891 3412892 3412893
+  - global arenaexclude 3412866 3412867 3412868 3412869 3412882 3412883 3412884 3412885 3412886 3412887 3412888 3412889
 - ID: 3410831
   Map: m34_01_00_00
   Name: c5251_0000
@@ -5413,8 +5460,12 @@ Enemies:
   Class: Helper
   OwnedBy: 3410830
   Tags: late
-  FullName: $1, Younger Prince
-  PartName: Lothric
+  Important:
+    Names:
+      Key: Lothric, Younger Prince
+      ProperName: Lothric
+      FullTemplate: $1, Younger Prince
+    NpcName: 905251
 - ID: 3500190
   Map: m35_00_00_00
   Name: c0000_0007
@@ -6941,14 +6992,17 @@ Enemies:
   DebugText: cathedral - c5220_0000 - npc 522000 - think 522000 - team Enemy - id 3500800 (3505800,3505701) - Archdeacon of the Deep
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Clear SpEffect; Display Boss Health Bar; Force Animation Playback; Force Character Death; GOTO IF Character Has SpEffect; Handle Boss Defeat; IF Character Dead/Alive; IF Character Has SpEffect; IF Character HP Ratio; Initialize Common Event; Set Character AI State; Set Character Event Target; Set Network Update Authority; Set SpEffect; Spawn Oneshot SFX; Warp Character and Copy Floor
   Class: Boss
-  Tags: mid bossonlymulti
+  Tags: mid excludeearly bossonlymulti
   Groups: [3505800, 3505801, 3505802, 3505803]
   ExtraName: Deacons of the Deep
-  FullName: $1 of the Deep
-  PartName: Deacons
   DefeatFlag: 13500800
   StartFlag: 13505805
   MusicFlag: 13505802
+  Important:
+    Names:
+      Key: Deacons of the Deep
+      FullName: Deacons
+      FullTemplate: $1 of the Deep
   # Within pillars. Exclude pope home using region 3502803 though
   Arena: -485.550 -196.613 -638.445 59.000 34 10 40
   ArenaExclude: -484.823 -196.613 -638.921 59.000 20.5 10 16.5
@@ -8324,12 +8378,15 @@ Enemies:
   DebugText: irithyll - c5140_0000 - npc 514000 - think 514000 - team Enemy - id 3700850 (3705850,3705701) - Pontiff Sulyvahn
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Clear SpEffect; Display Boss Health Bar; Force Character Death; Handle Boss Defeat; IF Character AI State; IF Character Dead/Alive; IF Character DrawGroup State; IF Character Has Event Message; IF Character Has SpEffect; IF Character HP Ratio; Initialize Common Event; Play SE; Request Character AI Command; Request Character AI Re-plan; Set Character AI State; Set Character Event Target; Set Network Update Authority; Set Network Update Rate; Set SpEffect; Warp Character and Copy Floor
   Class: Boss
-  Tags: mid
-  FullName: Pontiff $1
-  PartName: Sulyvahn
+  Tags: mid excludeearly
   DefeatFlag: 13700850
   StartFlag: 13705855
   MusicFlag: 13705865
+  Important:
+    Names:
+      Key: Pontiff Sulyvahn
+      ProperName: Sulyvahn
+      FullTemplate: Pontiff $1
   # A bit high for first half
   Arena: 398.962 -223.716 -1161.060 179.200 18 10 65
   ArenaRegion: 3704851
@@ -8348,11 +8405,14 @@ Enemies:
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Display Boss Health Bar; Force Character Death; Handle Boss Defeat and Display Banner; IF Character Dead/Alive; IF Character Has Event Message; IF Character HP Ratio; IF Entity In/Outside Radius Of Entity; Initialize Common Event; Play SE; Set Character AI State; Set Character HP Bar Display; Set Network Update Authority; Set Network Update Rate; Warp Character and Copy Floor
   Class: Boss
   Tags: mid excludeearly
-  FullName: $1, Devourer of Gods
-  PartName: Aldrich
   DefeatFlag: 13700800
   StartFlag: 13705805
   MusicFlag: 13705815
+  Important:
+    Names:
+      Key: Aldrich, Devourer of Gods
+      ProperName: Aldrich
+      FullTemplate: $1, Devourer of Gods
   # Slightly higher off the ground, then excluding pillars and some ground around it
   Arena: 711.079 -120.580 -1079.042 179.200 33 10 31
   ArenaExclude: 700.715 -120.580 -1071.205 179.200 4 10 4; 710.938 -120.580 -1071.308 179.200 5 10 5; 719.968 -120.580 -1070.706 179.200 4 10 4; 701.717 -120.580 -1087.418 179.200 5 10 5; 710.993 -120.580 -1087.070 179.200 5 10 5; 720.242 -120.580 -1086.547 179.200 5 10 6
@@ -9810,12 +9870,15 @@ Enemies:
   DebugText: catacombs - c3050_0000 - npc 305000 - think 305000 - team StrongEnemy - id 3800830 - Old Demon King
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Create NPC Part; Display Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat; IF Character Dead/Alive; IF Character Has SpEffect; IF Character HP Ratio; IF Damage Type; IF Entity In/Outside Radius Of Entity; IF NPC Part HP; Initialize Common Event; Initialize Event; Play SE; Set Character AI State; Set Network Update Authority; Set Network Update Rate; Set NPC Part HP; Set SpEffect
   Class: Boss
-  Tags: mid excludeearly npcpart
-  FullName: Old Demon $1
-  PartName: Demon King
+  Tags: mid excludeearly npcpart arena:3
   DefeatFlag: 13800830
   StartFlag: 13805835
   MusicFlag: 13805832
+  Important:
+    Names:
+      Key: Old Demon King
+      FullName: Demon King
+      PartialTemplate: Old Demon $1
   # It's pretty ugly but very sloped arena. Exclude two big demon piles
   Arena: 307.934 -327.923 -961.682 -15.000 49 10 45
   ArenaExclude: 325.908 -327.923 -960.976 -15.000 20 10 15; 293.520 -327.923 -960.409 -15.000 16 10 18
@@ -9985,15 +10048,20 @@ Enemies:
   DebugText: catacombs - c5160_0000 - npc 516000 - think 516000 - team StrongEnemy - id 3800800 - High Lord Wolnir
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Create NPC Part; Display Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat; IF Character Backread Status; IF Character Dead/Alive; IF Character Has Event Message; IF Character HP Ratio; IF Damage Type; IF Entity In/Outside Radius Of Entity; IF NPC Part HP; Increment Character Game Cycle; Play SE; Request Character AI Command; Request Character AI Re-plan; Set Character AI State; Set Network Update Authority; Set Network Update Rate; Set SpEffect; Warp Character and Copy Floor
   Class: Boss
-  Tags: mid bossonlymulti npcpart exclude:5100850
+  Tags: mid excludeearly bossonlymulti npcpart exclude:5100850 size:2 arena:3
   Groups: [3805800]
-  FullName: High Lord $1
-  PartName: Wolnir
   DefeatFlag: 13800800
   StartFlag: 13805805
   MusicFlag: 13805802
-  # TODO unsure about width. this may be.... too long, though. (also, sloped, make sure arena checks still work, the total height is about 35)
+  Important:
+    Names:
+      Key: High Lord Wolnir
+      ProperName: Wolnir
+      FullTemplate: High Lord $1
+  # TODO unsure about width. this may be.... too long, though. (also, sloped, so arena checks don't work)
   Arena: 841.643 -340.533 -1403.035 -14.400 33 10 130 -15.500 0.000
+  ExtraArenas:
+    check: 841.643 -365.000 -1403.035 -14.400 85 50 150
   ArenaRegion: 3804801
 - ID: 3900192
   Map: m39_00_00_00
@@ -10924,12 +10992,15 @@ Enemies:
   DebugText: dungeon - c5260_0000 - npc 526000 - think 526000 - team StrongEnemy - id 3900800 - Yhorm the Giant
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Create NPC Part; Display Boss Health Bar; Force Animation Playback; Force Character Death; GOTO IF Character Has SpEffect; Handle Boss Defeat and Display Banner; IF Character Backread Status; IF Character Dead/Alive; IF Character Has Event Message; IF Character Has SpEffect; IF Character HP Ratio; IF Damage Type; IF Entity In/Outside Radius Of Entity; IF NPC Part HP; Initialize Common Event; Issue Short Warp Request; Play SE; Set Character AI State; Set Character Event Target; Set Character Gravity; Set Character MapHit; Set Network Update Authority; Set Network Update Rate; Set SpEffect; SKIP IF Character Has SpEffect
   Class: Boss
-  Tags: mid excludeearly npcpart
-  FullName: $1 the Giant
-  PartName: Yhorm
+  Tags: mid excludeearly npcpart arena:3
   DefeatFlag: 13900800
   StartFlag: 13905805
   MusicFlag: 13905815
+  Important:
+    Names:
+      Key: Yhorm the Giant
+      ProperName: Yhorm
+      FullTemplate: $1 the Giant
   # TODO oh god... deal with pillars later. there are 10 of them
   Arena: 127.370 -424.526 -579.751 -81.300 55 10 23
   ArenaRegion: 3904801
@@ -11554,13 +11625,16 @@ Enemies:
   DebugText: firelink - c5110_0000 - npc 511000 - think 511000 - team StrongEnemy - id 4000800 - Gundyr
   Events: Activate Multiplayer-dependant Buffs; Change Character DispMask; Change Character Enable State; Change Character HitMask; Display Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat; IF Action Button in Area; IF Character Backread Status; IF Character Has Event Message; IF Character HP Ratio; Initialize Common Event; Issue Short Warp Request; Play SE; Set Character AI State; Set Character Animation State; Set Character HP Bar Display; Set Character Invincibility; Set Lock On Point; Set Network Update Authority; Set Network Update Rate; Set SpEffect
   Class: Boss
-  Tags: early earlyreq earlyscale
+  Tags: early earlyreq earlyscale arena:3
   ExtraName: Iudex Gundyr
-  FullName: Iudex $1
-  PartName: Gundyr
   DefeatFlag: 14000800
   StartFlag: 14005805
   MusicFlag: 14005802
+  Important:
+    Names:
+      Key: Iudex Gundyr
+      ProperName: Gundyr
+      FullTemplate: Iudex $1
   Arena: 143.333 -67.622 596.125 50.000 25 10 33
   ArenaRegion: 4004800
 - ID: 4000830
@@ -11569,13 +11643,16 @@ Enemies:
   DebugText: firelink - c5110_0001 - npc 511100 - think 511100 - team StrongEnemy - id 4000830 - Gundyr
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Change Character HitMask; Display Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat; IF Character Dead/Alive; IF Character HP Ratio; Initialize Common Event; Play SE; Set Character AI State; Set Character Animation State; Set Character Immortality; Set Character Invincibility; Set Lock On Point; Set Network Update Authority; Set Network Update Rate
   Class: Boss
-  Tags: mid excludeearly exclude:3000800  # TODO: Vordt doesn't wake up on first encounter somehow
+  Tags: mid arena:3
   ExtraName: Champion Gundyr
-  FullName: Champion $1
-  PartName: Gundyr
   DefeatFlag: 14000830
   StartFlag: 14005835
   MusicFlag: 14005832
+  Important:
+    Names:
+      Key: Champion Gundyr
+      ProperName: Gundyr
+      PartialTemplate: Champion $1
   Arena: 143.333 -67.622 596.125 50.000 25 10 33
   ArenaRegion: 4004830
 - ID: 4100190
@@ -11633,9 +11710,12 @@ Enemies:
   DebugText: kiln - c5280_0000 - npc 528000 - think 528000 - team StrongEnemy - id 4100800 - Lords of Cinder
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Display Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat and Display Banner; IF Character Dead/Alive; IF Character HP Ratio; IF Damage Type; IF Entity In/Outside Radius Of Entity; Initialize Common Event; Play SE; Set Character AI State; Set Character Animation State; Set Character Immortality; Set Network Update Authority; Set Network Update Rate
   Class: Boss
-  Tags: late immortal exclude:5100850
-  FullName: $1 of Cinder
-  PartName: Cinder
+  Tags: late excludeearly immortal exclude:5100850 arena:3
+  Important:
+    Names:
+      Key: Lords of Cinder
+      FullName: Cinder
+      FullTemplate: $1 of Cinder
   DefeatFlag: 14100800
   StartFlag: 14105805
   MusicFlag: 14105802
@@ -11660,14 +11740,17 @@ Enemies:
   DebugText: ariandel - c0000_0009 - npc 21300 - think 21300 - team Enemy - chr 21300 - id 4500860 (4505860) - Champion's Gravetender
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Clear SpEffect; Display Decorated Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat; IF Character AI State; IF Character Dead/Alive; IF Character HP Ratio; IF Damage Type; IF Entity In/Outside Radius Of Entity; Initialize Common Event; Rotate Character; Set Character AI State; Set Character Animation State; Set Network Update Authority; Set Network Update Rate; Set SpEffect
   Class: Boss
-  Tags: mid excludeearly
+  Tags: mid excludeearly arena:3
   Groups: [4505860]
   ExtraName: Champion's Gravetender and Gravetender Greatwolf
-  FullName: Champion's $1
-  PartName: Gravetender
   DefeatFlag: 14500860
   StartFlag: 14505865
   MusicFlag: 14505863
+  Important:
+    Names:
+      Key: Champion's Gravetender
+      FullName: Gravetender
+      PartialTemplate: Champion's $1
   # This one is just Too Big. Make a ridiculously large area with two edge exceptions and then 6 central pillars
   Arena: -79.653 -97.499 -318.604 113.598 43 10 80
   ArenaExclude: -115.158 -97.499 -318.888 113.598 20 10 20; -81.077 -97.499 -294.943 113.598 10 10 40; -98.044 -97.499 -315.561 113.598 10 10 10; -95.635 -97.499 -328.361 113.598 8 10 8; -83.244 -97.499 -333.111 113.598 9 10 9; -73.370 -97.499 -325.030 113.598 10 10 10; -74.767 -97.499 -311.549 113.598 9 10 9; -87.773 -97.499 -306.299 113.598 9 10 9
@@ -12195,8 +12278,11 @@ Enemies:
   Tags: standalone
   OwnedBy: 4500800
   RemoveGroup: 4505800
-  FullName: Father $1
-  PartName: Ariandel and Friede
+  Important:
+    Names:
+      Key: Father Ariandel and Friede
+      ProperName: Ariandel and Friede
+      FullTemplate: Father $1
 - ID: 4500803
   Map: m45_00_00_00
   Name: c6010_0001
@@ -12211,14 +12297,17 @@ Enemies:
   ESDs: 450552
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Clear SpEffect; Create Referred Damage Pair; Display Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat and Display Banner; IF Character Has Event Message; IF Character HP Ratio; Initialize Common Event; Play SE; Set Character AI State; Set Character Animation State; Set Character Event Target; Set Character HP Bar Display; Set Character Talk Range; Set Network Update Authority; Set Network Update Rate; Set SpEffect; SKIP IF Character Has SpEffect
   Class: Boss
-  Tags: late bossonlymulti
+  Tags: late excludeearly bossonlymulti arena:3
   RemoveGroup: 4505800
   ExtraName: Blackflame Friede
-  FullName: Blackflame $1
-  PartName: Friede
   DefeatFlag: 14500800
   StartFlag: 14505802
   MusicFlag: 14505804
+  Important:
+    Names:
+      Key: Blackflame Friede
+      ProperName: Friede
+      PartialTemplate: Blackflame $1
   # Expanded arena (TODO could make this the entire thing, but exclude the corners)
   Arena: -226.197 27.776 -230.320 90.000 35 10 46
   ArenaRegion: 4504801
@@ -12230,11 +12319,14 @@ Enemies:
   ESDs: 450551
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Display Boss Health Bar; Force Character Death; IF Character Dead/Alive; Initialize Common Event; Set Character AI State; Set Character Animation State; Set Character Event Target; Set Character Talk Range; Set Network Update Authority; Set Network Update Rate; Warp Character and Copy Floor
   Class: Boss
-  Tags: late
+  Tags: late scalephase arena:2
   RemoveGroup: 4505800
-  FullName: Sister $1
-  PartName: Friede
   StartFlag: 14505805
+  Important:
+    Names:
+      Key: Sister Friede
+      ProperName: Friede
+      FullTemplate: Sister $1
   OwnedBy: 4500800
   # Stop at stationary Ariandel, although he could be an exclude area
   Arena: -217.996 27.776 -230.320 90.000 13 10 48
@@ -12269,6 +12361,11 @@ Enemies:
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Display Boss Health Bar; Force Animation Playback; Force Character Death; IF Character AI State; IF Character Dead/Alive; IF Character Has SpEffect; IF Character HP Ratio; Initialize Common Event; Request Character AI Re-plan; Set Character AI State; Set Character Animation State; Set Character Gravity; Set Character HP Bar Display; Set Network Update Authority; Set Network Update Rate; Set SpEffect
   Class: Helper
   OwnedBy: 4500860
+  Important:
+    Names:
+      Key: Gravetender Greatwolf
+      FullName: Greatwolf
+      PartialTemplate: Gravetender $1
 - ID: 4500210
   Map: m45_00_00_00
   Name: c6040_0000
@@ -13989,13 +14086,16 @@ Enemies:
   DebugText: dregheap - c5020_0001 - npc 502001 - think 502000 - team Enemy - id 5000801 (5005800,5005801) - Demon Prince
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Change Character HitMask; Clear SpEffect; Create Referred Damage Pair; Display Boss Health Bar; Force Character Death; Handle Boss Defeat and Display Banner; IF Character Dead/Alive; IF Character Has SpEffect; IF Character HP Ratio; IF Character HP Value; IF Damage Type; IF Entity In/Outside Radius Of Entity; IF In/Outside Area; Initialize Common Event; Play SE; Set Character AI State; Set Character Animation State; Set Character HP Bar Display; Set Character Immortality; Set Network Update Authority; Set Network Update Rate; Set SpEffect
   Class: Boss
-  Tags: late immortal bossonlymulti
+  Tags: late excludeearly immortal bossonlymulti arena:3 size:2
   Groups: [5005800, 5005801, 5005802, 5005803]
-  FullName: Demon $1
-  PartName: Demon from Below
   DefeatFlag: 15000800
   StartFlag: 15005805
   MusicFlag: 15005802
+  Important:
+    Names:
+      Key: Demon from Below
+      FullName: Demon from Below
+      FullTemplate: Demon $1
   # Just uh ignore the objects, it's probably fine. None of them are that big. As an alternative, can make them player-breakable
   Arena: 154.129 -323.874 34.037 55.000 90 10 80
   ArenaRegion: 5004801
@@ -14007,8 +14107,11 @@ Enemies:
   Class: Helper
   Tags: immortal
   OwnedBy: 5000801
-  FullName: Demon $1
-  PartName: Demon in Pain
+  Important:
+    Names:
+      Key: Demon in Pain
+      FullName: Demon in Pain
+      FullTemplate: Demon $1
 - ID: 5000810
   Map: m50_00_00_00
   Name: c5021_0000
@@ -14701,12 +14804,15 @@ Enemies:
   DebugText: ringedcity - c0000_0010 - npc 21800 - think 21800 - team Enemy - chr 21800 - id 5100800 - Halflight, Spear of the Church
   Events: Change Character Enable State; Clear SpEffect; Display Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat and Display Banner; IF Character HP Ratio; Play SE; Set Character AI State; Set Character Animation State; Set Character Event Target; Set Character HP Bar Display; Set Network Update Authority; Set Network Update Rate; Set SpEffect; Spawn Oneshot SFX
   Class: Boss
-  Tags: late bossonlymulti
+  Tags: late excludeearly bossonlymulti
   ExtraName: Halflight, Spear of the Church
-  FullName: $1, Spear of the Church
-  PartName: Halflight
   DefeatFlag: 15100800
   StartFlag: 15105805
+  Important:
+    Names:
+      Key: Halflight, Spear of the Church
+      ProperName: Halflight
+      FullTemplate: $1, Spear of the Church
   Arena: -385.507 -55.303 -295.582 170.000 26.5 10 44
   ArenaExclude: -380.103 -55.303 -282.489 170.000 4 10 4; -378.040 -55.303 -294.188 170.000 4 10 4; -375.953 -55.303 -306.023 170.000 4 10 4; -395.215 -55.303 -285.320 170.000 4 10 4; -393.128 -55.303 -297.159 170.000 4 10 4; -391.053 -55.303 -308.929 170.000 4 10 4
   ArenaRegion: 5104801
@@ -15006,12 +15112,15 @@ Enemies:
   DebugText: ringedcity - c6211_0000 - npc 621100 - think 621100 - team StrongEnemy - id 5100850 (5105850) - Darkeater Midir
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Create NPC Part; Display Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat and Display Banner; IF Character Backread Status; IF Character Has SpEffect; IF Character HP Ratio; IF Entity In/Outside Radius Of Entity; IF NPC Part HP; Initialize Common Event; Play SE; Set Character AI State; Set Character Animation State; Set Network Update Authority; Set Network Update Rate; Set NPC Part SE and SFX
   Class: Boss
-  Tags: late npcpart ultra
-  FullName: Darkeater $1
-  PartName: Midir
+  Tags: late excludeearly npcpart ultra arena:3 size:2
   DefeatFlag: 15100850
   StartFlag: 15105855
-  # This is a pretty straightforward cylinder, but still use rectangles for quadrants etc
+  Important:
+    Names:
+      Key: Darkeater Midir
+      ProperName: Midir
+      PartialTemplate: Darkeater $1
+  # This is a pretty straightforward cylinder, but still use rectangles for quadrants etc. Region 5102880 cylinder used by AI
   Arena: -479.874 -271.915 -370.440 0.000 80 10 120
   ArenaRegion: 5104851
 - ID: 5100240
@@ -15931,13 +16040,16 @@ Enemies:
   DebugText: filianore - c6200_0000 - npc 620000 - think 620000 - team StrongEnemy - id 5110800 (5115800) - Slave Knight Gael 2
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Create Referred Damage Pair; Display Boss Health Bar; Force Animation Playback; Force Character Death; Handle Boss Defeat and Display Banner; IF Character Has SpEffect; IF Character HP Ratio; Initialize Common Event; Play SE; Set Character AI State; Set Character Animation State; Set Network Update Authority; Set Network Update Rate; Warp Character and Copy Floor
   Class: Boss
-  Tags: late exclude:5100850
+  Tags: late excludeearly exclude:5100850 arena:3
   RemoveGroup: 5115800
   SetColName: h002500  # Away from Tower
-  FullName: Slave Knight $1
-  PartName: Gael
   DefeatFlag: 15110800
   StartFlag: 15115802
+  Important:
+    Names:
+      Key: Slave Knight Gael
+      ProperName: Gael
+      PartialTemplate: Slave Knight $1
   # Also not very comprehensive, and slightly tilted. In front of the thrones
   Arena: 264.035 477.453 -16.914 1.304 28 10 38 -3.000 0.000
   ArenaRegion: 5114801
@@ -15950,12 +16062,15 @@ Enemies:
   DebugText: filianore - c6201_0000 - npc 620100 - think 620100 - team StrongEnemy - id 5110801 (5115800) - Slave Knight Gael 1
   Events: Activate Multiplayer-dependant Buffs; Change Character Enable State; Create Referred Damage Pair; Force Animation Playback; Force Character Death; IF Character HP Ratio; IF Damage Type; IF Entity In/Outside Radius Of Entity; Initialize Common Event; Set Character AI State; Set Character Animation State; Set Character HP Bar Display; Set Network Update Authority; Set Network Update Rate; Warp Character and Copy Floor
   Class: Boss
-  Tags: late exclude:5100850
+  Tags: late exclude:5100850 scalephase arena:3
   OwnedBy: 5110800
   RemoveGroup: 5115800
-  FullName: Slave Knight $1
-  PartName: Gael
   StartFlag: 15115805
+  Important:
+    Names:
+      Key: Slave Knight Gael
+      ProperName: Gael
+      PartialTemplate: Slave Knight $1
   ExtraArenas:
     primary: 263.615 476.492 -35.387 -178.696  # Edge of the custom arena
     # primary: 263.520 476.230 -37.930 164 0 0 0  # Bonfire location
@@ -15978,6 +16093,35 @@ Enemies:
   DebugText: filianore - c6310_0002 - npc 631001 - think 0 - team FriendlyNPC - id 5110200 - Filianore
   Events: Force Animation Playback; IF Character Backread Status; Set Character Gravity; Set Character MapHit
   Class: None
+CustomNames:
+  Iudex Curse-rotted Greatwood: Iudex Greatwood
+  Iudex Ancient Wyvern: Iudex Wyvern
+  King of the Storm of the Boreal Valley: Storm King of the Boreal Valley
+  King of the Storm of the Deep: Deep King of the Storm
+  High Lord King of the Storm: High Lord of the Storm
+  King of the Storm the Giant: Giant King of the Storm
+  Abyss Watchers, Devourer of Gods: Abyss Watchers, Devourers of Gods
+  Abyss Watchers, Spear of the Church: Abyss Watchers, Spears of the Church
+  Deacons, Devourer of Gods: Deacons, Devourers of Gods
+  Deacons, Spear of the Church: Deacons, Spears of the Church
+  Demon Demon King: Old Demon Prince
+  High Lord Cinder: High Lords of Cinder
+  Consumed King Ariandel and Friede: Consumed Kings Ariandel and Friede
+  Dragonslayer Ariandel and Friede: Dragonslayers Ariandel and Friede
+  Ariandel and Friede, Elder Prince: Ariandel and Friede, Elder Princes
+  Ariandel and Friede, Younger Prince: Ariandel and Friede, Younger Princes
+  Pontiff Ariandel and Friede: Pontiffs Ariandel and Friede
+  Ariandel and Friede, Devourer of Gods: Ariandel and Friede, Devourers of Gods
+  Old Demon Ariandel and Friede: Old Demons Ariandel and Friede
+  High Lord Ariandel and Friede: High Lords Ariandel and Friede
+  Ariandel and Friede the Giant: Ariandel and Friede the Giants
+  Iudex Ariandel and Friede: Iudices Ariandel and Friede
+  Champion Ariandel and Friede: Champions Ariandel and Friede
+  Gravetender Ariandel and Friede: Gravetenders Ariandel and Friede
+  Ariandel and Friede, Spear of the Church: Ariandel and Friede, Spears of the Church
+  Slave Knight Ariandel and Friede: Slave Knights Ariandel and Friede
+  Old Demon Demon from Below: Old Demon from Below
+  Old Demon Demon in Pain: Old Demon in Pain
 Objects:
 # The dragon triangles
 - ID: o009990_7000
@@ -16285,2197 +16429,3 @@ Chests:
   ClosestEnemy: 4000390  # In theory Leonhard, but he's not randomized
   ColName: h004300
   Tags: hidden exclude:large exclude:ultra
-ScalingSections:
-  2888002: 1
-  2888003: 1
-  2888004: 1
-  2888005: 1
-  2888006: 1
-  2888007: 1
-  2888008: 1
-  2888009: 1
-  2888010: 1
-  2888011: 1
-  2888012: 1
-  2888013: 1
-  2888014: 1
-  2888015: 1
-  2888026: 1
-  2888027: 1
-  2888029: 1
-  2888052: 1
-  2888053: 1
-  2888054: 1
-  2888055: 1
-  2888056: 1
-  2888057: 1
-  2888058: 1
-  2888059: 1
-  2888060: 1
-  2888061: 1
-  2888062: 1
-  2888063: 1
-  2888064: 1
-  2888065: 1
-  2888066: 1
-  2888067: 1
-  2888068: 1
-  2888069: 1
-  2888070: 1
-  2888071: 1
-  2888072: 1
-  2888073: 1
-  2888074: 1
-  2888075: 1
-  3000230: 1
-  3000232: 1
-  3000233: 1
-  3000237: 1
-  3000238: 1
-  3000240: 1
-  3000242: 1
-  3000245: 1
-  3000251: 1
-  3000252: 1
-  3000253: 1
-  3000254: 1
-  3000255: 1
-  3000351: 1
-  3000404: 1
-  3000407: 1
-  3000408: 1
-  3000409: 1
-  3000410: 1
-  3000411: 1
-  3000412: 1
-  3000418: 1
-  3000419: 1
-  3000420: 1
-  3000421: 1
-  3000423: 1
-  3000424: 1
-  3000425: 1
-  3000426: 1
-  3000427: 1
-  3000428: 1
-  3000431: 1
-  3000432: 1
-  3000433: 1
-  3000434: 1
-  3000435: 1
-  3000440: 1
-  3000441: 1
-  3000442: 1
-  3000443: 1
-  3000444: 1
-  3000450: 1
-  3000451: 1
-  3000452: 1
-  3000454: 1
-  3000456: 1
-  3000457: 1
-  3000463: 1
-  3000464: 1
-  3000471: 1
-  3000473: 1
-  3000477: 1
-  3000478: 1
-  3000482: 1
-  3000484: 1
-  3000486: 1
-  3000487: 1
-  3000488: 1
-  3000490: 1
-  3000492: 1
-  3000494: 1
-  3000495: 1
-  3000496: 1
-  3000500: 1
-  3000502: 1
-  3000504: 1
-  3000505: 1
-  3000507: 1
-  3000509: 1
-  3000511: 1
-  3000520: 1
-  3000522: 1
-  3000523: 1
-  3000525: 1
-  3000526: 1
-  3000533: 1
-  3000537: 1
-  3000538: 1
-  3000539: 1
-  3000540: 1
-  3000545: 1
-  3000551: 1
-  3000560: 1
-  3000561: 1
-  3000568: 1
-  3000580: 1
-  3000592: 1
-  3000596: 1
-  3000600: 1
-  3000601: 1
-  3000604: 1
-  3000605: 1
-  3000607: 1
-  3000611: 1
-  3000613: 1
-  3000620: 1
-  3000630: 1
-  3000660: 1
-  3000800: 1
-  3100200: 1
-  3100201: 1
-  3100203: 1
-  3100204: 1
-  3100205: 1
-  3100206: 1
-  3100207: 1
-  3100209: 1
-  3100210: 1
-  3100211: 1
-  3100212: 1
-  3100213: 1
-  3100214: 1
-  3100216: 1
-  3100225: 1
-  3100226: 1
-  3100227: 1
-  3100228: 1
-  3100231: 1
-  3100232: 1
-  3100236: 1
-  3100240: 1
-  3100241: 1
-  3100242: 1
-  3100243: 1
-  3100246: 1
-  3100247: 1
-  3100252: 1
-  3100254: 1
-  3100257: 1
-  3100258: 1
-  3100259: 1
-  3100261: 1
-  3100262: 1
-  3100264: 1
-  3100265: 1
-  3100266: 1
-  3100268: 1
-  3100269: 1
-  3100270: 1
-  3100271: 1
-  3100280: 1
-  3100281: 1
-  3100295: 1
-  3100300: 1
-  3100301: 1
-  3100302: 1
-  3100305: 1
-  3100306: 1
-  3100307: 1
-  3100308: 1
-  3100330: 1
-  3100331: 1
-  3100332: 1
-  3100333: 1
-  3100350: 1
-  3100351: 1
-  3100353: 1
-  3100356: 1
-  3100357: 1
-  3100359: 1
-  3100380: 1
-  3100381: 1
-  3100382: 1
-  3100384: 1
-  3100385: 1
-  3100386: 1
-  3100387: 1
-  3100401: 1
-  3100403: 1
-  3100404: 1
-  3100405: 1
-  3100406: 1
-  3100407: 1
-  3100411: 1
-  3100412: 1
-  3100413: 1
-  3100416: 1
-  3100417: 1
-  3100433: 1
-  3100434: 1
-  3100451: 1
-  3100453: 1
-  3100454: 1
-  3100455: 1
-  3100456: 1
-  3100457: 1
-  3100458: 1
-  3100460: 1
-  3100461: 1
-  3100462: 1
-  3100463: 1
-  3100464: 1
-  3100465: 1
-  3100466: 1
-  3100468: 1
-  3100504: 1
-  3100505: 1
-  3100506: 1
-  3100507: 1
-  3100508: 1
-  3100550: 1
-  3100551: 1
-  3100552: 1
-  3100556: 1
-  3100557: 1
-  3100559: 1
-  3100560: 1
-  3100561: 1
-  3100562: 1
-  3100570: 1
-  3100590: 1
-  3100592: 1
-  3100602: 1
-  3100603: 1
-  3100604: 1
-  3100605: 1
-  3100606: 1
-  3100610: 1
-  3100611: 1
-  3100800: 1
-  3100831: 1
-  3100860: 1
-  4000202: 1
-  4000204: 1
-  4000205: 1
-  4000206: 1
-  4000207: 1
-  4000209: 1
-  4000210: 1
-  4000211: 1
-  4000212: 1
-  4000213: 1
-  4000214: 1
-  4000215: 1
-  4000216: 1
-  4000217: 1
-  4000218: 1
-  4000219: 1
-  4000220: 1
-  4000221: 1
-  4000239: 1
-  4000240: 1
-  4000241: 1
-  4000242: 1
-  4000243: 1
-  4000244: 1
-  4000247: 1
-  4000366: 1
-  4000380: 1
-  4000390: 1
-  4000500: 1
-  4000800: 1
-  2888081: 2
-  2888082: 2
-  2888083: 2
-  2888084: 2
-  2888085: 2
-  2888086: 2
-  2888087: 2
-  2888088: 2
-  2888089: 2
-  2888090: 2
-  2888091: 2
-  2888092: 2
-  2888093: 2
-  2888094: 2
-  2888095: 2
-  2888096: 2
-  2888097: 2
-  2888098: 2
-  2888099: 2
-  2888100: 2
-  2888101: 2
-  2888102: 2
-  2888103: 2
-  2888104: 2
-  2888105: 2
-  2888106: 2
-  2888107: 2
-  2888108: 2
-  2888109: 2
-  2888110: 2
-  2888111: 2
-  2888112: 2
-  2888113: 2
-  2888114: 2
-  2888115: 2
-  2888116: 2
-  2888117: 2
-  2888118: 2
-  2888119: 2
-  2888120: 2
-  2888121: 2
-  2888122: 2
-  2888123: 2
-  2888124: 2
-  2888125: 2
-  2888126: 2
-  2888128: 2
-  2888129: 2
-  2888130: 2
-  2888131: 2
-  2888132: 2
-  2888133: 2
-  2888134: 2
-  2888135: 2
-  2888136: 2
-  2888137: 2
-  2888138: 2
-  2888139: 2
-  2888140: 2
-  2888141: 2
-  2888142: 2
-  2888143: 2
-  2888144: 2
-  2888145: 2
-  2888146: 2
-  2888147: 2
-  2888148: 2
-  2888149: 2
-  2888150: 2
-  2888151: 2
-  2888152: 2
-  2888153: 2
-  2888154: 2
-  2888155: 2
-  2888156: 2
-  2888157: 2
-  2888158: 2
-  2888159: 2
-  2888160: 2
-  2888161: 2
-  2888162: 2
-  2888163: 2
-  2888164: 2
-  2888165: 2
-  2888166: 2
-  2888167: 2
-  2888168: 2
-  2888169: 2
-  2888170: 2
-  2888171: 2
-  2888172: 2
-  2888173: 2
-  2888174: 2
-  2888175: 2
-  2888176: 2
-  2888177: 2
-  2888200: 2
-  2888201: 2
-  2888202: 2
-  3300172: 2
-  3300177: 2
-  3300178: 2
-  3300200: 2
-  3300201: 2
-  3300210: 2
-  3300211: 2
-  3300212: 2
-  3300230: 2
-  3300231: 2
-  3300234: 2
-  3300235: 2
-  3300236: 2
-  3300250: 2
-  3300252: 2
-  3300262: 2
-  3300263: 2
-  3300264: 2
-  3300265: 2
-  3300266: 2
-  3300267: 2
-  3300269: 2
-  3300270: 2
-  3300271: 2
-  3300272: 2
-  3300273: 2
-  3300274: 2
-  3300281: 2
-  3300283: 2
-  3300284: 2
-  3300285: 2
-  3300286: 2
-  3300300: 2
-  3300301: 2
-  3300302: 2
-  3300303: 2
-  3300304: 2
-  3300305: 2
-  3300306: 2
-  3300307: 2
-  3300309: 2
-  3300310: 2
-  3300311: 2
-  3300312: 2
-  3300313: 2
-  3300314: 2
-  3300330: 2
-  3300331: 2
-  3300332: 2
-  3300333: 2
-  3300340: 2
-  3300341: 2
-  3300355: 2
-  3300372: 2
-  3300373: 2
-  3300381: 2
-  3300382: 2
-  3300384: 2
-  3300385: 2
-  3300386: 2
-  3300387: 2
-  3300388: 2
-  3300389: 2
-  3300390: 2
-  3300391: 2
-  3300400: 2
-  3300401: 2
-  3300402: 2
-  3300403: 2
-  3300404: 2
-  3300405: 2
-  3300406: 2
-  3300407: 2
-  3300408: 2
-  3300410: 2
-  3300411: 2
-  3300412: 2
-  3300413: 2
-  3300414: 2
-  3300415: 2
-  3300416: 2
-  3300417: 2
-  3300418: 2
-  3300419: 2
-  3300420: 2
-  3300421: 2
-  3300422: 2
-  3300423: 2
-  3300424: 2
-  3300425: 2
-  3300426: 2
-  3300427: 2
-  3300428: 2
-  3300429: 2
-  3300430: 2
-  3300431: 2
-  3300432: 2
-  3300433: 2
-  3300434: 2
-  3300435: 2
-  3300440: 2
-  3300441: 2
-  3300442: 2
-  3300443: 2
-  3300444: 2
-  3300475: 2
-  3300476: 2
-  3300477: 2
-  3300478: 2
-  3300479: 2
-  3300481: 2
-  3300482: 2
-  3300483: 2
-  3300484: 2
-  3300485: 2
-  3300486: 2
-  3300487: 2
-  3300488: 2
-  3300489: 2
-  3300490: 2
-  3300491: 2
-  3300492: 2
-  3300493: 2
-  3300494: 2
-  3300495: 2
-  3300500: 2
-  3300501: 2
-  3300502: 2
-  3300503: 2
-  3300504: 2
-  3300505: 2
-  3300506: 2
-  3300507: 2
-  3300508: 2
-  3300510: 2
-  3300550: 2
-  3300551: 2
-  3300552: 2
-  3300553: 2
-  3300554: 2
-  3300555: 2
-  3300556: 2
-  3300560: 2
-  3300561: 2
-  3300801: 2
-  3300802: 2
-  3300803: 2
-  3300850: 2
-  3300851: 2
-  3300852: 2
-  3300853: 2
-  3500175: 2
-  3500176: 2
-  3500201: 2
-  3500202: 2
-  3500203: 2
-  3500204: 2
-  3500205: 2
-  3500206: 2
-  3500207: 2
-  3500208: 2
-  3500209: 2
-  3500210: 2
-  3500211: 2
-  3500212: 2
-  3500213: 2
-  3500214: 2
-  3500215: 2
-  3500216: 2
-  3500217: 2
-  3500218: 2
-  3500219: 2
-  3500220: 2
-  3500221: 2
-  3500226: 2
-  3500227: 2
-  3500228: 2
-  3500229: 2
-  3500230: 2
-  3500231: 2
-  3500233: 2
-  3500234: 2
-  3500235: 2
-  3500236: 2
-  3500238: 2
-  3500240: 2
-  3500241: 2
-  3500242: 2
-  3500243: 2
-  3500244: 2
-  3500248: 2
-  3500249: 2
-  3500250: 2
-  3500255: 2
-  3500257: 2
-  3500258: 2
-  3500260: 2
-  3500261: 2
-  3500262: 2
-  3500263: 2
-  3500280: 2
-  3500281: 2
-  3500282: 2
-  3500283: 2
-  3500284: 2
-  3500290: 2
-  3500291: 2
-  3500292: 2
-  3500300: 2
-  3500301: 2
-  3500310: 2
-  3500311: 2
-  3500312: 2
-  3500315: 2
-  3500316: 2
-  3500317: 2
-  3500318: 2
-  3500321: 2
-  3500325: 2
-  3500326: 2
-  3500340: 2
-  3500344: 2
-  3500349: 2
-  3500351: 2
-  3500352: 2
-  3500353: 2
-  3500354: 2
-  3500355: 2
-  3500356: 2
-  3500357: 2
-  3500358: 2
-  3500359: 2
-  3500360: 2
-  3500370: 2
-  3500372: 2
-  3500373: 2
-  3500401: 2
-  3500402: 2
-  3500404: 2
-  3500405: 2
-  3500406: 2
-  3500407: 2
-  3500409: 2
-  3500410: 2
-  3500411: 2
-  3500412: 2
-  3500413: 2
-  3500414: 2
-  3500415: 2
-  3500416: 2
-  3500417: 2
-  3500418: 2
-  3500419: 2
-  3500420: 2
-  3500421: 2
-  3500422: 2
-  3500423: 2
-  3500424: 2
-  3500426: 2
-  3500427: 2
-  3500428: 2
-  3500429: 2
-  3500430: 2
-  3500434: 2
-  3500435: 2
-  3500436: 2
-  3500437: 2
-  3500438: 2
-  3500439: 2
-  3500440: 2
-  3500441: 2
-  3500442: 2
-  3500443: 2
-  3500444: 2
-  3500447: 2
-  3500448: 2
-  3500450: 2
-  3500451: 2
-  3500452: 2
-  3500453: 2
-  3500454: 2
-  3500455: 2
-  3500456: 2
-  3500460: 2
-  3500461: 2
-  3500463: 2
-  3500464: 2
-  3500465: 2
-  3500471: 2
-  3500472: 2
-  3500473: 2
-  3500474: 2
-  3500475: 2
-  3500476: 2
-  3500477: 2
-  3500479: 2
-  3500480: 2
-  3500481: 2
-  3500482: 2
-  3500483: 2
-  3500484: 2
-  3500485: 2
-  3500487: 2
-  3500488: 2
-  3500489: 2
-  3500490: 2
-  3500491: 2
-  3500492: 2
-  3500493: 2
-  3500494: 2
-  3500495: 2
-  3500496: 2
-  3500497: 2
-  3500498: 2
-  3500499: 2
-  3500500: 2
-  3500501: 2
-  3500502: 2
-  3500503: 2
-  3500509: 2
-  3500582: 2
-  3500583: 2
-  3500584: 2
-  3500585: 2
-  3500586: 2
-  3500587: 2
-  3500588: 2
-  3500589: 2
-  3500600: 2
-  3500601: 2
-  3500604: 2
-  3500606: 2
-  3500607: 2
-  3500608: 2
-  3500609: 2
-  3500612: 2
-  3500613: 2
-  3500616: 2
-  3500617: 2
-  3500618: 2
-  3500620: 2
-  3500622: 2
-  3500623: 2
-  3500627: 2
-  3500628: 2
-  3500629: 2
-  3500633: 2
-  3500634: 2
-  3500637: 2
-  3500638: 2
-  3500639: 2
-  3500640: 2
-  3500641: 2
-  3500642: 2
-  3500650: 2
-  3500651: 2
-  3500652: 2
-  3500653: 2
-  3500654: 2
-  3500655: 2
-  3500656: 2
-  3500657: 2
-  3500658: 2
-  3500659: 2
-  3500661: 2
-  3500662: 2
-  3500663: 2
-  3500666: 2
-  3500667: 2
-  3500668: 2
-  3500669: 2
-  3500670: 2
-  3500800: 2
-  3500810: 2
-  3500811: 2
-  3500812: 2
-  3500813: 2
-  3500814: 2
-  3500815: 2
-  3500816: 2
-  3500817: 2
-  3500818: 2
-  3500819: 2
-  3500820: 2
-  3500821: 2
-  3500822: 2
-  3500823: 2
-  3500824: 2
-  3500825: 2
-  3500826: 2
-  3500827: 2
-  3500828: 2
-  3500834: 2
-  3500835: 2
-  3500836: 2
-  3500837: 2
-  3500838: 2
-  3500839: 2
-  3500840: 2
-  3500841: 2
-  3500842: 2
-  3500843: 2
-  3500844: 2
-  3500845: 2
-  3500846: 2
-  3500847: 2
-  3500848: 2
-  2888205: 3
-  2888206: 3
-  2888207: 3
-  2888208: 3
-  2888209: 3
-  2888210: 3
-  2888211: 3
-  2888212: 3
-  2888213: 3
-  2888214: 3
-  2888215: 3
-  2888216: 3
-  2888217: 3
-  2888218: 3
-  2888219: 3
-  2888220: 3
-  2888221: 3
-  2888222: 3
-  2888223: 3
-  2888224: 3
-  2888225: 3
-  2888226: 3
-  2888227: 3
-  2888228: 3
-  2888229: 3
-  2888230: 3
-  2888231: 3
-  2888232: 3
-  2888233: 3
-  2888234: 3
-  2888235: 3
-  2888236: 3
-  2888237: 3
-  2888238: 3
-  2888239: 3
-  2888240: 3
-  2888241: 3
-  2888242: 3
-  2888243: 3
-  2888244: 3
-  2888245: 3
-  2888246: 3
-  2888247: 3
-  2888248: 3
-  2888249: 3
-  2888250: 3
-  2888251: 3
-  2888252: 3
-  2888253: 3
-  2888254: 3
-  2888255: 3
-  2888256: 3
-  2888257: 3
-  2888259: 3
-  2888260: 3
-  2888261: 3
-  2888262: 3
-  2888263: 3
-  2888264: 3
-  2888265: 3
-  2888266: 3
-  2888267: 3
-  2888268: 3
-  2888269: 3
-  2888270: 3
-  2888271: 3
-  2888272: 3
-  2888273: 3
-  2888274: 3
-  2888275: 3
-  2888276: 3
-  2888277: 3
-  2888278: 3
-  2888279: 3
-  2888280: 3
-  2888281: 3
-  3700170: 3
-  3700171: 3
-  3700200: 3
-  3700201: 3
-  3700202: 3
-  3700206: 3
-  3700207: 3
-  3700211: 3
-  3700212: 3
-  3700213: 3
-  3700214: 3
-  3700215: 3
-  3700230: 3
-  3700231: 3
-  3700232: 3
-  3700233: 3
-  3700240: 3
-  3700241: 3
-  3700242: 3
-  3700252: 3
-  3700253: 3
-  3700254: 3
-  3700255: 3
-  3700256: 3
-  3700257: 3
-  3700258: 3
-  3700259: 3
-  3700260: 3
-  3700261: 3
-  3700262: 3
-  3700263: 3
-  3700264: 3
-  3700265: 3
-  3700266: 3
-  3700271: 3
-  3700273: 3
-  3700274: 3
-  3700275: 3
-  3700276: 3
-  3700277: 3
-  3700278: 3
-  3700279: 3
-  3700280: 3
-  3700281: 3
-  3700282: 3
-  3700283: 3
-  3700284: 3
-  3700285: 3
-  3700286: 3
-  3700287: 3
-  3700288: 3
-  3700289: 3
-  3700290: 3
-  3700291: 3
-  3700292: 3
-  3700293: 3
-  3700294: 3
-  3700295: 3
-  3700296: 3
-  3700297: 3
-  3700298: 3
-  3700299: 3
-  3700300: 3
-  3700301: 3
-  3700302: 3
-  3700303: 3
-  3700304: 3
-  3700325: 3
-  3700326: 3
-  3700330: 3
-  3700331: 3
-  3700332: 3
-  3700333: 3
-  3700334: 3
-  3700335: 3
-  3700336: 3
-  3700337: 3
-  3700338: 3
-  3700339: 3
-  3700340: 3
-  3700341: 3
-  3700350: 3
-  3700355: 3
-  3700360: 3
-  3700361: 3
-  3700362: 3
-  3700363: 3
-  3700365: 3
-  3700366: 3
-  3700367: 3
-  3700368: 3
-  3700369: 3
-  3700380: 3
-  3700381: 3
-  3700382: 3
-  3700390: 3
-  3700391: 3
-  3700392: 3
-  3700393: 3
-  3700394: 3
-  3700395: 3
-  3700396: 3
-  3700397: 3
-  3700398: 3
-  3700399: 3
-  3700400: 3
-  3700405: 3
-  3700800: 3
-  3700850: 3
-  3700851: 3
-  3800198: 3
-  3800200: 3
-  3800201: 3
-  3800202: 3
-  3800203: 3
-  3800204: 3
-  3800205: 3
-  3800206: 3
-  3800207: 3
-  3800208: 3
-  3800209: 3
-  3800210: 3
-  3800211: 3
-  3800212: 3
-  3800213: 3
-  3800214: 3
-  3800215: 3
-  3800216: 3
-  3800217: 3
-  3800218: 3
-  3800219: 3
-  3800220: 3
-  3800221: 3
-  3800240: 3
-  3800241: 3
-  3800242: 3
-  3800243: 3
-  3800244: 3
-  3800245: 3
-  3800246: 3
-  3800248: 3
-  3800249: 3
-  3800252: 3
-  3800253: 3
-  3800255: 3
-  3800256: 3
-  3800257: 3
-  3800258: 3
-  3800259: 3
-  3800260: 3
-  3800263: 3
-  3800264: 3
-  3800265: 3
-  3800266: 3
-  3800267: 3
-  3800268: 3
-  3800269: 3
-  3800270: 3
-  3800271: 3
-  3800272: 3
-  3800273: 3
-  3800274: 3
-  3800278: 3
-  3800279: 3
-  3800280: 3
-  3800281: 3
-  3800282: 3
-  3800283: 3
-  3800284: 3
-  3800285: 3
-  3800286: 3
-  3800287: 3
-  3800288: 3
-  3800293: 3
-  3800294: 3
-  3800295: 3
-  3800296: 3
-  3800300: 3
-  3800302: 3
-  3800305: 3
-  3800306: 3
-  3800309: 3
-  3800311: 3
-  3800312: 3
-  3800313: 3
-  3800320: 3
-  3800321: 3
-  3800322: 3
-  3800324: 3
-  3800327: 3
-  3800328: 3
-  3800340: 3
-  3800342: 3
-  3800343: 3
-  3800344: 3
-  3800350: 3
-  3800351: 3
-  3800352: 3
-  3800353: 3
-  3800354: 3
-  3800356: 3
-  3800357: 3
-  3800358: 3
-  3800359: 3
-  3800360: 3
-  3800361: 3
-  3800362: 3
-  3800363: 3
-  3800364: 3
-  3800365: 3
-  3800366: 3
-  3800367: 3
-  3800391: 3
-  3800395: 3
-  3800400: 3
-  3800401: 3
-  3800402: 3
-  3800403: 3
-  3800404: 3
-  3800405: 3
-  3800406: 3
-  3800407: 3
-  3800408: 3
-  3800409: 3
-  3800410: 3
-  3800411: 3
-  3800412: 3
-  3800420: 3
-  3800421: 3
-  3800422: 3
-  3800423: 3
-  3800424: 3
-  3800425: 3
-  3800426: 3
-  3800427: 3
-  3800428: 3
-  3800429: 3
-  3800430: 3
-  3800431: 3
-  3800432: 3
-  3800433: 3
-  3800434: 3
-  3800454: 3
-  3800455: 3
-  3800456: 3
-  3800457: 3
-  3800458: 3
-  3800462: 3
-  3800463: 3
-  3800464: 3
-  3800465: 3
-  3800466: 3
-  3800470: 3
-  3800471: 3
-  3800472: 3
-  3800473: 3
-  3800474: 3
-  3800475: 3
-  3800481: 3
-  3800483: 3
-  3800490: 3
-  3800491: 3
-  3800492: 3
-  3800493: 3
-  3800494: 3
-  3800495: 3
-  3800496: 3
-  3800498: 3
-  3800499: 3
-  3800500: 3
-  3800530: 3
-  3800531: 3
-  3800532: 3
-  3800550: 3
-  3800552: 3
-  3800553: 3
-  3800554: 3
-  3800555: 3
-  3800556: 3
-  3800800: 3
-  3800810: 3
-  3800811: 3
-  3800812: 3
-  3800813: 3
-  3800814: 3
-  3800820: 3
-  3800821: 3
-  3800822: 3
-  3800823: 3
-  3800824: 3
-  3800825: 3
-  3800830: 3
-  3900200: 3
-  3900201: 3
-  3900202: 3
-  3900203: 3
-  3900204: 3
-  3900205: 3
-  3900206: 3
-  3900207: 3
-  3900210: 3
-  3900213: 3
-  3900214: 3
-  3900215: 3
-  3900216: 3
-  3900217: 3
-  3900218: 3
-  3900219: 3
-  3900220: 3
-  3900221: 3
-  3900222: 3
-  3900223: 3
-  3900225: 3
-  3900226: 3
-  3900230: 3
-  3900231: 3
-  3900233: 3
-  3900234: 3
-  3900240: 3
-  3900241: 3
-  3900242: 3
-  3900243: 3
-  3900244: 3
-  3900250: 3
-  3900251: 3
-  3900253: 3
-  3900254: 3
-  3900255: 3
-  3900256: 3
-  3900257: 3
-  3900259: 3
-  3900262: 3
-  3900263: 3
-  3900264: 3
-  3900265: 3
-  3900267: 3
-  3900268: 3
-  3900269: 3
-  3900271: 3
-  3900272: 3
-  3900273: 3
-  3900274: 3
-  3900275: 3
-  3900276: 3
-  3900277: 3
-  3900280: 3
-  3900290: 3
-  3900291: 3
-  3900292: 3
-  3900293: 3
-  3900294: 3
-  3900295: 3
-  3900296: 3
-  3900297: 3
-  3900298: 3
-  3900299: 3
-  3900300: 3
-  3900301: 3
-  3900302: 3
-  3900303: 3
-  3900304: 3
-  3900305: 3
-  3900306: 3
-  3900307: 3
-  3900308: 3
-  3900309: 3
-  3900310: 3
-  3900311: 3
-  3900312: 3
-  3900313: 3
-  3900314: 3
-  3900315: 3
-  3900316: 3
-  3900317: 3
-  3900318: 3
-  3900321: 3
-  3900322: 3
-  3900323: 3
-  3900324: 3
-  3900325: 3
-  3900330: 3
-  3900331: 3
-  3900332: 3
-  3900333: 3
-  3900334: 3
-  3900335: 3
-  3900336: 3
-  3900337: 3
-  3900338: 3
-  3900339: 3
-  3900340: 3
-  3900341: 3
-  3900342: 3
-  3900343: 3
-  3900350: 3
-  3900351: 3
-  3900352: 3
-  3900353: 3
-  3900354: 3
-  3900355: 3
-  3900356: 3
-  3900360: 3
-  3900361: 3
-  3900362: 3
-  3900363: 3
-  3900364: 3
-  3900370: 3
-  3900371: 3
-  3900372: 3
-  3900373: 3
-  3900379: 3
-  3900380: 3
-  3900392: 3
-  3900393: 3
-  3900394: 3
-  3900395: 3
-  3900399: 3
-  3900800: 3
-  2888001: 4
-  2888016: 4
-  2888017: 4
-  2888018: 4
-  2888019: 4
-  2888020: 4
-  2888021: 4
-  2888022: 4
-  2888023: 4
-  2888024: 4
-  2888025: 4
-  2888028: 4
-  2888030: 4
-  2888031: 4
-  2888032: 4
-  2888033: 4
-  2888034: 4
-  2888035: 4
-  2888036: 4
-  2888037: 4
-  2888038: 4
-  2888039: 4
-  2888040: 4
-  2888041: 4
-  2888042: 4
-  2888043: 4
-  2888044: 4
-  2888045: 4
-  2888046: 4
-  2888047: 4
-  2888048: 4
-  2888049: 4
-  2888178: 4
-  2888179: 4
-  2888180: 4
-  2888181: 4
-  2888182: 4
-  2888183: 4
-  2888184: 4
-  2888185: 4
-  2888186: 4
-  2888187: 4
-  2888188: 4
-  2888189: 4
-  2888190: 4
-  2888191: 4
-  2888192: 4
-  2888193: 4
-  2888194: 4
-  2888195: 4
-  2888196: 4
-  2888197: 4
-  3000280: 4
-  3000281: 4
-  3000350: 4
-  3000352: 4
-  3000360: 4
-  3000361: 4
-  3000570: 4
-  3000572: 4
-  3000615: 4
-  3000616: 4
-  3000651: 4
-  3000830: 4
-  3000899: 4
-  3010300: 4
-  3010301: 4
-  3010310: 4
-  3010311: 4
-  3010414: 4
-  3010415: 4
-  3010417: 4
-  3010418: 4
-  3010419: 4
-  3010420: 4
-  3010430: 4
-  3010431: 4
-  3010432: 4
-  3010450: 4
-  3010451: 4
-  3010460: 4
-  3010501: 4
-  3010502: 4
-  3010503: 4
-  3010504: 4
-  3010505: 4
-  3010507: 4
-  3010510: 4
-  3010511: 4
-  3010512: 4
-  3010520: 4
-  3010521: 4
-  3010538: 4
-  3010551: 4
-  3010555: 4
-  3010556: 4
-  3010557: 4
-  3010558: 4
-  3010560: 4
-  3010561: 4
-  3010562: 4
-  3010563: 4
-  3010564: 4
-  3010565: 4
-  3010566: 4
-  3010567: 4
-  3010569: 4
-  3010570: 4
-  3010571: 4
-  3010572: 4
-  3010602: 4
-  3010604: 4
-  3010610: 4
-  3010800: 4
-  3010835: 4
-  3010836: 4
-  3200200: 4
-  3200201: 4
-  3200202: 4
-  3200203: 4
-  3200204: 4
-  3200205: 4
-  3200210: 4
-  3200211: 4
-  3200212: 4
-  3200220: 4
-  3200221: 4
-  3200222: 4
-  3200223: 4
-  3200224: 4
-  3200225: 4
-  3200226: 4
-  3200227: 4
-  3200228: 4
-  3200229: 4
-  3200230: 4
-  3200231: 4
-  3200232: 4
-  3200233: 4
-  3200235: 4
-  3200236: 4
-  3200237: 4
-  3200240: 4
-  3200241: 4
-  3200242: 4
-  3200243: 4
-  3200244: 4
-  3200245: 4
-  3200246: 4
-  3200255: 4
-  3200259: 4
-  3200260: 4
-  3200261: 4
-  3200262: 4
-  3200263: 4
-  3200264: 4
-  3200265: 4
-  3200266: 4
-  3200267: 4
-  3200269: 4
-  3200290: 4
-  3200291: 4
-  3200295: 4
-  3200297: 4
-  3200299: 4
-  3200300: 4
-  3200500: 4
-  3200501: 4
-  3200504: 4
-  3200505: 4
-  3200506: 4
-  3200508: 4
-  3200509: 4
-  3200510: 4
-  3200511: 4
-  3200512: 4
-  3200513: 4
-  3200800: 4
-  3200850: 4
-  3200851: 4
-  3410196: 4
-  3410197: 4
-  3410198: 4
-  3410199: 4
-  3410200: 4
-  3410210: 4
-  3410250: 4
-  3410251: 4
-  3410252: 4
-  3410253: 4
-  3410254: 4
-  3410302: 4
-  3410303: 4
-  3410304: 4
-  3410305: 4
-  3410308: 4
-  3410311: 4
-  3410313: 4
-  3410314: 4
-  3410315: 4
-  3410316: 4
-  3410370: 4
-  3410371: 4
-  3410372: 4
-  3410373: 4
-  3410374: 4
-  3410375: 4
-  3410376: 4
-  3410377: 4
-  3410400: 4
-  3410401: 4
-  3410402: 4
-  3410405: 4
-  3410407: 4
-  3410420: 4
-  3410421: 4
-  3410422: 4
-  3410423: 4
-  3410500: 4
-  3410501: 4
-  3410502: 4
-  3410550: 4
-  3410551: 4
-  3410552: 4
-  3410553: 4
-  3410554: 4
-  3410555: 4
-  3410556: 4
-  3410557: 4
-  3410558: 4
-  3410559: 4
-  3410600: 4
-  3410601: 4
-  3410602: 4
-  3410603: 4
-  3410830: 4
-  3410831: 4
-  3410832: 4
-  4000254: 4
-  4000256: 4
-  4000261: 4
-  4000262: 4
-  4000263: 4
-  4000265: 4
-  4000280: 4
-  4000281: 4
-  4000282: 4
-  4000283: 4
-  4000284: 4
-  4000285: 4
-  4000286: 4
-  4000287: 4
-  4000288: 4
-  4000289: 4
-  4000300: 4
-  4000301: 4
-  4000302: 4
-  4000303: 4
-  4000330: 4
-  4000331: 4
-  4000352: 4
-  4000355: 4
-  4000356: 4
-  4000357: 4
-  4000360: 4
-  4000361: 4
-  4000362: 4
-  4000363: 4
-  4000364: 4
-  4000365: 4
-  4000381: 4
-  4000382: 4
-  4000830: 4
-  4500176: 4
-  4500201: 4
-  4500202: 4
-  4500210: 4
-  4500211: 4
-  4500212: 4
-  4500213: 4
-  4500214: 4
-  4500215: 4
-  4500216: 4
-  4500217: 4
-  4500218: 4
-  4500219: 4
-  4500220: 4
-  4500240: 4
-  4500241: 4
-  4500242: 4
-  4500243: 4
-  4500244: 4
-  4500245: 4
-  4500246: 4
-  4500247: 4
-  4500248: 4
-  4500249: 4
-  4500250: 4
-  4500251: 4
-  4500252: 4
-  4500253: 4
-  4500254: 4
-  4500255: 4
-  4500256: 4
-  4500257: 4
-  4500258: 4
-  4500259: 4
-  4500260: 4
-  4500261: 4
-  4500262: 4
-  4500263: 4
-  4500264: 4
-  4500265: 4
-  4500320: 4
-  4500321: 4
-  4500322: 4
-  4500323: 4
-  4500324: 4
-  4500325: 4
-  4500326: 4
-  4500327: 4
-  4500328: 4
-  4500329: 4
-  4500330: 4
-  4500331: 4
-  4500334: 4
-  4500335: 4
-  4500336: 4
-  4500337: 4
-  4500338: 4
-  4500339: 4
-  4500340: 4
-  4500342: 4
-  4500344: 4
-  4500347: 4
-  4500348: 4
-  4500350: 4
-  4500352: 4
-  4500353: 4
-  4500354: 4
-  4500383: 4
-  4500384: 4
-  4500385: 4
-  4500386: 4
-  4500390: 4
-  4500391: 4
-  4500401: 4
-  4500403: 4
-  4500404: 4
-  4500405: 4
-  4500407: 4
-  4500414: 4
-  4500416: 4
-  4500417: 4
-  4500418: 4
-  4500419: 4
-  4500420: 4
-  4500421: 4
-  4500422: 4
-  4500423: 4
-  4500424: 4
-  4500425: 4
-  4500426: 4
-  4500427: 4
-  4500428: 4
-  4500429: 4
-  4500430: 4
-  4500431: 4
-  4500432: 4
-  4500433: 4
-  4500434: 4
-  4500435: 4
-  4500437: 4
-  4500438: 4
-  4500440: 4
-  4500441: 4
-  4500443: 4
-  4500444: 4
-  4500448: 4
-  4500449: 4
-  4500450: 4
-  4500451: 4
-  4500452: 4
-  4500453: 4
-  4500454: 4
-  4500455: 4
-  4500456: 4
-  4500458: 4
-  4500459: 4
-  4500460: 4
-  4500461: 4
-  4500463: 4
-  4500464: 4
-  4500465: 4
-  4500466: 4
-  4500467: 4
-  4500468: 4
-  4500469: 4
-  4500470: 4
-  4500471: 4
-  4500472: 4
-  4500474: 4
-  4500475: 4
-  4500477: 4
-  4500478: 4
-  4500481: 4
-  4500483: 4
-  4500484: 4
-  4500485: 4
-  4500486: 4
-  4500487: 4
-  4500488: 4
-  4500489: 4
-  4500490: 4
-  4500491: 4
-  4500492: 4
-  4500493: 4
-  4500494: 4
-  4500495: 4
-  4500496: 4
-  4500497: 4
-  4500500: 4
-  4500501: 4
-  4500503: 4
-  4500504: 4
-  4500506: 4
-  4500507: 4
-  4500509: 4
-  4500510: 4
-  4500511: 4
-  4500512: 4
-  4500513: 4
-  4500515: 4
-  4500516: 4
-  4500517: 4
-  4500518: 4
-  4500519: 4
-  4500520: 4
-  4500523: 4
-  4500524: 4
-  4500525: 4
-  4500526: 4
-  4500527: 4
-  4500528: 4
-  4500529: 4
-  4500530: 4
-  4500531: 4
-  4500532: 4
-  4500533: 4
-  4500534: 4
-  4500535: 4
-  4500537: 4
-  4500538: 4
-  4500539: 4
-  4500540: 4
-  4500541: 4
-  4500542: 4
-  4500543: 4
-  4500544: 4
-  4500545: 4
-  4500546: 4
-  4500547: 4
-  4500548: 4
-  4500549: 4
-  4500552: 4
-  4500553: 4
-  4500554: 4
-  4500555: 4
-  4500557: 4
-  4500558: 4
-  4500559: 4
-  4500566: 4
-  4500567: 4
-  4500568: 4
-  4500569: 4
-  4500570: 4
-  4500571: 4
-  4500572: 4
-  4500574: 4
-  4500575: 4
-  4500576: 4
-  4500577: 4
-  4500579: 4
-  4500581: 4
-  4500582: 4
-  4500585: 4
-  4500586: 4
-  4500587: 4
-  4500588: 4
-  4500589: 4
-  4500600: 4
-  4500602: 4
-  4500603: 4
-  4500604: 4
-  4500605: 4
-  4500606: 4
-  4500608: 4
-  4500609: 4
-  4500610: 4
-  4500611: 4
-  4500613: 4
-  4500614: 4
-  4500616: 4
-  4500617: 4
-  4500618: 4
-  4500619: 4
-  4500620: 4
-  4500621: 4
-  4500622: 4
-  4500623: 4
-  4500624: 4
-  4500626: 4
-  4500627: 4
-  4500628: 4
-  4500629: 4
-  4500630: 4
-  4500631: 4
-  4500632: 4
-  4500633: 4
-  4500634: 4
-  4500636: 4
-  4500637: 4
-  4500638: 4
-  4500639: 4
-  4500640: 4
-  4500641: 4
-  4500642: 4
-  4500643: 4
-  4500644: 4
-  4500645: 4
-  4500646: 4
-  4500647: 4
-  4500648: 4
-  4500649: 4
-  4500650: 4
-  4500651: 4
-  4500652: 4
-  4500653: 4
-  4500670: 4
-  4500671: 4
-  4500672: 4
-  4500680: 4
-  4500682: 4
-  4500684: 4
-  4500685: 4
-  4500687: 4
-  4500688: 4
-  4500689: 4
-  4500701: 4
-  4500800: 4
-  4500801: 4
-  4500802: 4
-  4500860: 4
-  4500861: 4
-  2888284: 5
-  2888285: 5
-  4100800: 5
-  5000180: 5
-  5000190: 5
-  5000200: 5
-  5000201: 5
-  5000202: 5
-  5000210: 5
-  5000211: 5
-  5000212: 5
-  5000222: 5
-  5000223: 5
-  5000224: 5
-  5000225: 5
-  5000226: 5
-  5000230: 5
-  5000231: 5
-  5000232: 5
-  5000233: 5
-  5000236: 5
-  5000237: 5
-  5000270: 5
-  5000271: 5
-  5000273: 5
-  5000274: 5
-  5000276: 5
-  5000279: 5
-  5000280: 5
-  5000282: 5
-  5000284: 5
-  5000286: 5
-  5000287: 5
-  5000288: 5
-  5000290: 5
-  5000291: 5
-  5000300: 5
-  5000301: 5
-  5000303: 5
-  5000310: 5
-  5000311: 5
-  5000315: 5
-  5000316: 5
-  5000317: 5
-  5000319: 5
-  5000320: 5
-  5000321: 5
-  5000322: 5
-  5000323: 5
-  5000324: 5
-  5000325: 5
-  5000326: 5
-  5000327: 5
-  5000328: 5
-  5000329: 5
-  5000330: 5
-  5000331: 5
-  5000332: 5
-  5000333: 5
-  5000335: 5
-  5000337: 5
-  5000400: 5
-  5000401: 5
-  5000402: 5
-  5000403: 5
-  5000404: 5
-  5000405: 5
-  5000406: 5
-  5000407: 5
-  5000408: 5
-  5000409: 5
-  5000410: 5
-  5000420: 5
-  5000421: 5
-  5000422: 5
-  5000423: 5
-  5000424: 5
-  5000425: 5
-  5000426: 5
-  5000427: 5
-  5000440: 5
-  5000441: 5
-  5000442: 5
-  5000443: 5
-  5000444: 5
-  5000445: 5
-  5000446: 5
-  5000447: 5
-  5000448: 5
-  5000450: 5
-  5000451: 5
-  5000452: 5
-  5000453: 5
-  5000455: 5
-  5000456: 5
-  5000457: 5
-  5000458: 5
-  5000459: 5
-  5000460: 5
-  5000461: 5
-  5000462: 5
-  5000463: 5
-  5000464: 5
-  5000470: 5
-  5000471: 5
-  5000472: 5
-  5000473: 5
-  5000474: 5
-  5000475: 5
-  5000476: 5
-  5000477: 5
-  5000478: 5
-  5000479: 5
-  5000500: 5
-  5000501: 5
-  5000502: 5
-  5000503: 5
-  5000507: 5
-  5000508: 5
-  5000509: 5
-  5000520: 5
-  5000521: 5
-  5000522: 5
-  5000523: 5
-  5000524: 5
-  5000530: 5
-  5000550: 5
-  5000551: 5
-  5000552: 5
-  5000553: 5
-  5000554: 5
-  5000555: 5
-  5000556: 5
-  5000557: 5
-  5000558: 5
-  5000559: 5
-  5000560: 5
-  5000561: 5
-  5000562: 5
-  5000563: 5
-  5000564: 5
-  5000565: 5
-  5000566: 5
-  5000567: 5
-  5000568: 5
-  5000569: 5
-  5000570: 5
-  5000571: 5
-  5000572: 5
-  5000573: 5
-  5000574: 5
-  5000575: 5
-  5000576: 5
-  5000577: 5
-  5000578: 5
-  5000579: 5
-  5000580: 5
-  5000581: 5
-  5000582: 5
-  5000583: 5
-  5000584: 5
-  5000585: 5
-  5000586: 5
-  5000587: 5
-  5000588: 5
-  5000589: 5
-  5000590: 5
-  5000800: 5
-  5000801: 5
-  5000802: 5
-  5000810: 5
-  5000811: 5
-  5000812: 5
-  5000813: 5
-  5000814: 5
-  5100170: 5
-  5100172: 5
-  5100174: 5
-  5100200: 5
-  5100201: 5
-  5100240: 5
-  5100241: 5
-  5100242: 5
-  5100243: 5
-  5100244: 5
-  5100245: 5
-  5100246: 5
-  5100247: 5
-  5100248: 5
-  5100249: 5
-  5100250: 5
-  5100251: 5
-  5100252: 5
-  5100253: 5
-  5100260: 5
-  5100261: 5
-  5100263: 5
-  5100264: 5
-  5100265: 5
-  5100266: 5
-  5100280: 5
-  5100281: 5
-  5100282: 5
-  5100285: 5
-  5100290: 5
-  5100291: 5
-  5100294: 5
-  5100296: 5
-  5100298: 5
-  5100300: 5
-  5100301: 5
-  5100302: 5
-  5100310: 5
-  5100311: 5
-  5100320: 5
-  5100321: 5
-  5100340: 5
-  5100341: 5
-  5100342: 5
-  5100343: 5
-  5100344: 5
-  5100345: 5
-  5100346: 5
-  5100347: 5
-  5100348: 5
-  5100349: 5
-  5100350: 5
-  5100351: 5
-  5100352: 5
-  5100353: 5
-  5100354: 5
-  5100355: 5
-  5100356: 5
-  5100357: 5
-  5100358: 5
-  5100359: 5
-  5100360: 5
-  5100361: 5
-  5100362: 5
-  5100363: 5
-  5100364: 5
-  5100365: 5
-  5100366: 5
-  5100367: 5
-  5100368: 5
-  5100369: 5
-  5100370: 5
-  5100371: 5
-  5100372: 5
-  5100373: 5
-  5100374: 5
-  5100375: 5
-  5100376: 5
-  5100380: 5
-  5100383: 5
-  5100384: 5
-  5100385: 5
-  5100386: 5
-  5100387: 5
-  5100388: 5
-  5100390: 5
-  5100391: 5
-  5100392: 5
-  5100393: 5
-  5100394: 5
-  5100395: 5
-  5100396: 5
-  5100397: 5
-  5100398: 5
-  5100400: 5
-  5100401: 5
-  5100402: 5
-  5100403: 5
-  5100404: 5
-  5100405: 5
-  5100406: 5
-  5100407: 5
-  5100408: 5
-  5100409: 5
-  5100410: 5
-  5100411: 5
-  5100414: 5
-  5100415: 5
-  5100416: 5
-  5100422: 5
-  5100423: 5
-  5100425: 5
-  5100426: 5
-  5100428: 5
-  5100432: 5
-  5100433: 5
-  5100434: 5
-  5100435: 5
-  5100436: 5
-  5100437: 5
-  5100438: 5
-  5100439: 5
-  5100440: 5
-  5100441: 5
-  5100449: 5
-  5100460: 5
-  5100461: 5
-  5100462: 5
-  5100463: 5
-  5100464: 5
-  5100465: 5
-  5100469: 5
-  5100501: 5
-  5100502: 5
-  5100504: 5
-  5100505: 5
-  5100506: 5
-  5100507: 5
-  5100510: 5
-  5100511: 5
-  5100512: 5
-  5100514: 5
-  5100515: 5
-  5100516: 5
-  5100517: 5
-  5100518: 5
-  5100519: 5
-  5100520: 5
-  5100521: 5
-  5100522: 5
-  5100530: 5
-  5100550: 5
-  5100551: 5
-  5100552: 5
-  5100553: 5
-  5100554: 5
-  5100555: 5
-  5100556: 5
-  5100557: 5
-  5100800: 5
-  5100801: 5
-  5100803: 5
-  5100804: 5
-  5100810: 5
-  5100811: 5
-  5100850: 5
-  5110240: 5
-  5110300: 5
-  5110800: 5
-  5110801: 5
-  5110850: 5

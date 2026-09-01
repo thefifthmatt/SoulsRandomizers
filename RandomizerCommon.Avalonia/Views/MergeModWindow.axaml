@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RandomizerCommon.ViewModels"
+        xmlns:loc="using:RandomizerCommon.Localization"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="125"
+        x:Class="RandomizerCommon.Views.MergeModWindow"
+        x:DataType="vm:MergeModViewModel"
+        WindowStartupLocation="CenterOwner"
+        Width="350" Height="{Binding Height}"
+        CanResize="False"
+        Title="{Binding Title^}">
+
+    <Design.DataContext>
+        <vm:MergeModViewModel/>
+    </Design.DataContext>
+
+    <Window.Styles>
+        <Style Selector="Button">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="Height" Value="30" />
+        </Style>
+    </Window.Styles>
+
+    <StackPanel Margin="10" Spacing="5">
+        <Button Command="{Binding DirectoryCommand}" IsVisible="{Binding ShowDirectory}">
+            <loc:Message Key="MergeModForm_dir" Text="Select mod directory to merge" />
+        </Button>
+        <Button Command="{Binding RegulationCommand}" IsVisible="{Binding ShowRegulation}">
+            <loc:Message Key="MergeModForm_reg" Text="Select regulation.bin to merge" />
+        </Button>
+        <Button Command="{Binding TomlCommand}" IsVisible="{Binding ShowModEngine2}">
+            <loc:Message Key="MergeModForm_toml" Text="Select toml file to merge" />
+        </Button>
+        <Button Command="{Binding ClearCommand}">
+            <loc:Message Key="MergeModForm_clear" Text="Clear merged mod" />
+        </Button>
+    </StackPanel>
+</Window>

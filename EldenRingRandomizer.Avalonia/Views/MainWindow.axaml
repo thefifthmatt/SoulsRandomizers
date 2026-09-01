@@ -1,0 +1,896 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:EldenRingRandomizer.ViewModels"
+        xmlns:localviews="using:EldenRingRandomizer.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:loc="using:RandomizerCommon.Localization"
+        xmlns:views="using:RandomizerCommon.Views"
+        mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="575"
+        x:Class="EldenRingRandomizer.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="avares://EldenRingRandomizer.Avalonia/Assets/elden.ico"
+        Width="1160" Height="718"
+        MinWidth="800" MinHeight="400"
+        Title="{Binding Title}">
+    
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Window.Styles>
+        <StyleInclude Source="avares://RandomizerCommon.Avalonia/Styles/MainStyles.axaml"/>
+    </Window.Styles>
+
+    <Grid ColumnDefinitions="*" RowDefinitions="Auto,*,Auto,Auto">
+        <Menu Grid.Column="0" Grid.Row="0" Classes="topmenu" Margin="5,5,0,0">
+            <MenuItem>
+                <MenuItem.Header>
+                    <loc:Message Key="EldenForm_fileToolStripMenuItem" Text="File" />
+                </MenuItem.Header>
+                <MenuItem Command="{Binding ZipCommand}" IsEnabled="{Binding CanLaunch}">
+                    <MenuItem.Header>
+                        <loc:Message Key="EldenForm_zipModFilesToolStripMenuItem" Text="Zip mod files..." />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Command="{Binding OpenCurrentDirectoryCommand}">
+                    <MenuItem.Header>
+                        <loc:Message Key="EldenForm_openDirectoryToolStripMenuItem" Text="Show randomizer directory" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Command="{Binding UninstallCommand}">
+                    <MenuItem.Header>
+                        <loc:Message Key="EldenForm_restoreUXMFileBackupsToolStripMenuItem" Text="Restore Nuxe file backups..." />
+                    </MenuItem.Header>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Command="{Binding CheckUpdatesCommand}">
+                    <MenuItem.Header>
+                        <loc:Message Key="EldenForm_updateToolStripMenuItem" Text="Check for updates on Nexus Mods" />
+                    </MenuItem.Header>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem>
+                <MenuItem.Header>
+                    <loc:Message Key="EldenForm_optionsToolStripMenuItem" Text="Options" />
+                </MenuItem.Header>
+                <MenuItem Command="{Binding ExportOptionsCommand}">
+                    <MenuItem.Header>
+                        <loc:Message Key="EldenForm_saveOptionsFileToolStripMenuItem" Text="Export options file..." />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Command="{Binding ImportOptionsCommand}">
+                    <MenuItem.Header>
+                        <loc:Message Key="EldenForm_loadOptionsFileToolStripMenuItem" Text="Import options file..." />
+                    </MenuItem.Header>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Command="{Binding ShowOptionsCommand}">
+                    <MenuItem.Header>
+                        <loc:Message Key="EldenForm_setOptionsStringToolStripMenuItem" Text="Set form options from string..." />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Command="{Binding ResetOptionsCommand}">
+                    <MenuItem.Header>
+                        <loc:Message Key="EldenForm_resetOptionsToolStripMenuItem" Text="Reset all options" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Command="{Binding ToggleDarkModeCommand}">
+                    <MenuItem.Header>
+                        <loc:Message Key="EldenForm_toggleDarkModeToolStripMenuItem" Text="Toggle dark mode" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem ItemsSource="{Binding Languages}">
+                    <MenuItem.Header>
+                        <loc:Message Key="EldenForm_languageL" Text="Language" />
+                    </MenuItem.Header>
+                    <MenuItem.ItemContainerTheme>
+                        <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}" x:DataType="vm:MainWindowViewModel+LangOption">
+                            <Setter Property="Header" Value="{Binding Name}" />
+                            <Setter Property="IsChecked" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="ToggleType" Value="Radio" />
+                            <Setter Property="GroupName" Value="Language" />
+                        </ControlTheme>
+                    </MenuItem.ItemContainerTheme>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <!-- Keyboard accessibility issue: Cannot tab backwards from tab page to strip, and related, cannot focus tab strip after the first time through -->
+        <TabControl Grid.Column="0" Grid.Row="1" Margin="5,0">
+            <TabItem Classes.disabletab="{Binding !Item}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding Item}" />
+                        <loc:Message Key="EldenForm_itemPage" Text="Item Randomizer" Classes="tabtitle" />
+                    </StackPanel>
+                </TabItem.Header>
+                <Panel>
+                <Panel IsVisible="{Binding Customitem}">
+                    <views:ItemPresetView DataContext="{Binding ItemPresetViewModel}" Margin="0,20,0,0">
+                        <views:ItemPresetView.SharedOptions>
+                            <StackPanel DataContext="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext)}">
+                                <CheckBox IsChecked="{Binding Weaponprogression}">
+                                    <loc:Message Key="EldenForm_weaponprogression" Text="Smithing Stone availability similar to vanilla" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Mats}">
+                                    <loc:Message Key="EldenForm_mats" Text="Randomize collectible materials like Rowa Fruit" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Copydrops}">
+                                    <loc:Message Key="EldenForm_copydrops" Text="Add guaranteed copies of random enemy drops" />
+                                </CheckBox>
+                            </StackPanel>
+                        </views:ItemPresetView.SharedOptions>
+                    </views:ItemPresetView>
+                </Panel>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,20,0,0" IsVisible="{Binding !Customitem}" >
+                <Grid Margin="5" ColumnDefinitions="17*,7,17*,7,18*" RowDefinitions="Auto,Auto" IsEnabled="{Binding Item}" Classes="tab">
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5">
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_biasGroup" Text="Bias" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <Slider Minimum="0" Maximum="100" Value="{Binding Bias}" TickFrequency="1" IsSnapToTickEnabled="True" />
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Right" Text="{Binding BiasLabel}" FontSize="16" />
+                                    <TextBlock Text="{Binding BiasDesc}" />
+                                </DockPanel>
+                            </StackPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                    <StackPanel Grid.Column="0" Grid.Row="1">
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Styles>
+                                <Style Selector="Button.imagebutton">
+                                    <Setter Property="Cursor" Value="Hand" />
+                                    <Setter Property="Margin" Value="0,0,3,0" />
+                                    <Setter Property="Width" Value="14" />
+                                    <Setter Property="Height" Value="14" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                                <Style Selector="Button.imagebutton > PathIcon">
+                                    <Setter Property="Width" Value="14" />
+                                    <Setter Property="Height" Value="14" />
+                                </Style>
+                            </HeaderedContentControl.Styles>
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_locationGroup" Text="Which locations are important locations?" TextWrapping="Wrap" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Default_keyloc}">
+                                    <loc:Message Key="EldenForm_default_keyloc" Text="Vanilla locations of major key items" />
+                                </CheckBox>
+                                <!-- Some boilerplate here. It would work better to use Run/InlineUIContainer but that needs SubMessage again -->
+                                <!-- Also, because of the long header title, this interacts poorly with .groupbox at smaller widths because nothing wraps -->
+                                <DockPanel Classes="moreinfo">
+                                    <Button Command="{Binding ShowLocationsCommand}" CommandParameter="default_keylocL" Classes="imagebutton">
+                                        <PathIcon Classes="info" ToolTip.Tip="{Binding RacelocTooltip^}" />
+                                    </Button>
+                                    <loc:Message Key="EldenForm_default_keylocL" Text="{}{0} checks" Param="{Binding Keyloc_count}" />
+                                </DockPanel>
+                                <CheckBox IsChecked="{Binding Default_boss}">
+                                    <loc:Message Key="EldenForm_default_boss" Text="Major bosses" />
+                                </CheckBox>
+                                <DockPanel Classes="moreinfo">
+                                    <Button Command="{Binding ShowLocationsCommand}" CommandParameter="default_bossL" Classes="imagebutton">
+                                        <PathIcon Classes="info" ToolTip.Tip="{Binding RacelocTooltip^}" />
+                                    </Button>
+                                    <loc:Message Key="EldenForm_default_bossL" Text="{}{0} checks, including all achievement bosses" Param="{Binding Boss_count}" />
+                                </DockPanel>
+                                <CheckBox IsChecked="{Binding Raceloc_altboss}">
+                                    <loc:Message Key="EldenForm_raceloc_altboss" Text="Other bosses" />
+                                </CheckBox>
+                                <DockPanel Classes="moreinfo">
+                                    <Button Command="{Binding ShowLocationsCommand}" CommandParameter="raceloc_altbossL" Classes="imagebutton">
+                                        <PathIcon Classes="info" ToolTip.Tip="{Binding RacelocTooltip^}" />
+                                    </Button>
+                                    <loc:Message Key="EldenForm_raceloc_altbossL" Text="{}{0} checks, including anything with a boss healthbar" Param="{Binding Altboss_count}" />
+                                </DockPanel>
+                                <CheckBox IsChecked="{Binding Raceloc_health}">
+                                    <loc:Message Key="EldenForm_raceloc_health" Text="Golden Seed trees and Sacred Tear Churches" />
+                                </CheckBox>
+                                <DockPanel Classes="moreinfo">
+                                    <Button Command="{Binding ShowLocationsCommand}" CommandParameter="raceloc_healthL" Classes="imagebutton">
+                                        <PathIcon Classes="info" ToolTip.Tip="{Binding RacelocTooltip^}" />
+                                    </Button>
+                                    <loc:Message Key="EldenForm_raceloc_healthL" Text="{}{0} checks" Param="{Binding Health_count}" />
+                                </DockPanel>
+                                <CheckBox IsChecked="{Binding Raceloc_shops}">
+                                    <loc:Message Key="EldenForm_raceloc_shops" Text="Merchant shops" />
+                                </CheckBox>
+                                <DockPanel Classes="moreinfo">
+                                    <Button Command="{Binding ShowLocationsCommand}" CommandParameter="raceloc_shopsL" Classes="imagebutton">
+                                        <PathIcon Classes="info" ToolTip.Tip="{Binding RacelocTooltip^}" />
+                                    </Button>
+                                    <loc:Message Key="EldenForm_raceloc_shopsL" Text="{}{0} checks, excluding spell shops" Param="{Binding Shops_count}" />
+                                </DockPanel>
+                                <CheckBox IsChecked="{Binding Raceloc_scadu}">
+                                    <loc:Message Key="EldenForm_raceloc_scadu" Text="Shadow Realm Blessing pickups" />
+                                </CheckBox>
+                                <DockPanel Classes="moreinfo">
+                                    <Button Command="{Binding ShowLocationsCommand}" CommandParameter="raceloc_scaduL" Classes="imagebutton">
+                                        <PathIcon Classes="info" ToolTip.Tip="{Binding RacelocTooltip^}" />
+                                    </Button>
+                                    <loc:Message Key="EldenForm_raceloc_scaduL" Text="{}{0} checks, excluding enemy drops" Param="{Binding Scadu_count}" />
+                                </DockPanel>
+                                <Separator Margin="0,3,0,2" />
+                                <CheckBox IsChecked="{Binding Nocaves}">
+                                    <loc:Message Key="EldenForm_nocaves" Text="Exclude mini-dungeon locations" />
+                                </CheckBox>
+                            </StackPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Grid.Row="1">
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_keyGroup" Text="Major key items randomized?" />
+                            </HeaderedContentControl.Header>
+                            <WrapPanel Classes="itemgroup">
+                                <RadioButton IsChecked="{Binding Racemode_key}">
+                                    <loc:Message Key="EldenForm_racemode_key" Text="To important locations" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Default_key_any}">
+                                    <loc:Message Key="EldenForm_default_key_any" Text="To anywhere" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Norandom}">
+                                    <loc:Message Key="EldenForm_norandom" Text="No" />
+                                </RadioButton>
+                            </WrapPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_healthGroup" Text="Flask upgrades randomized?" />
+                            </HeaderedContentControl.Header>
+                            <WrapPanel Classes="itemgroup">
+                                <RadioButton IsChecked="{Binding Racemode_health}">
+                                    <loc:Message Key="EldenForm_racemode_health" Text="To important locations" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Default_health}">
+                                    <loc:Message Key="EldenForm_default_health" Text="To anywhere" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Norandom_health}">
+                                    <loc:Message Key="EldenForm_norandom_health" Text="No" />
+                                </RadioButton>
+                            </WrapPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_upgradeGroup" Text="Upgrade Bell Bearings randomized?" />
+                            </HeaderedContentControl.Header>
+                            <WrapPanel Classes="itemgroup">
+                                <RadioButton IsChecked="{Binding Racemode_upgrades}">
+                                    <loc:Message Key="EldenForm_racemode_upgrades" Text="To important locations" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Default_upgrades}">
+                                    <loc:Message Key="EldenForm_default_upgrades" Text="To anywhere" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Norandom_upgrades}">
+                                    <loc:Message Key="EldenForm_norandom_upgrades" Text="No" />
+                                </RadioButton>
+                            </WrapPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_scaduGroup" Text="Shadow Realm Blessings randomized?" />
+                            </HeaderedContentControl.Header>
+                            <WrapPanel Classes="itemgroup">
+                                <RadioButton IsChecked="{Binding Racemode_scadu}">
+                                    <loc:Message Key="EldenForm_racemode_scadu" Text="To important locations" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Default_scadu}">
+                                    <loc:Message Key="EldenForm_default_scadu" Text="To anywhere" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Norandom_scadu}">
+                                    <loc:Message Key="EldenForm_norandom_scadu" Text="No" />
+                                </RadioButton>
+                            </WrapPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4" Grid.Row="1">
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_placementGroup" Text="Item placement" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Spellshops}">
+                                    <loc:Message Key="EldenForm_spellshops" Text="Spell shops still sell spells" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_spellshopsL" Text="Place sorceries/incantations in shops of that type" />
+                                <CheckBox IsChecked="{Binding Weaponprogression}">
+                                    <loc:Message Key="EldenForm_weaponprogression" Text="Smithing Stone availability similar to vanilla" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Mats}">
+                                    <loc:Message Key="EldenForm_mats" Text="Randomize collectible materials like Rowa Fruit" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Copydrops}">
+                                    <loc:Message Key="EldenForm_copydrops" Text="Add guaranteed copies of random enemy drops" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Dlcblessing}">
+                                    <loc:Message Key="EldenForm_dlcblessing" Text="Place Shadow Realm Blessings in DLC only" />
+                                </CheckBox>
+                            </StackPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                </Grid>
+                </ScrollViewer>
+                <!-- https://github.com/AvaloniaUI/Avalonia/discussions/15638 -->
+                <CheckBox IsChecked="{Binding Customitem}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,10,0" Classes="tab">
+                    <ToolTip.Tip>
+                        <loc:Message Key="EldenForm_customitemHelp" Text="Advanced mode for detailed configuration of items and locations. Settings configured in custom item placement won't apply anymore if this is unchecked." />
+                    </ToolTip.Tip>
+                    <loc:Message Key="EldenForm_customitem" Text="Custom item placement" />
+                </CheckBox>
+                </Panel>
+            </TabItem>
+            <TabItem Classes.disabletab="{Binding !Item}">
+                <TabItem.Header>
+                    <loc:Message Key="EldenForm_item2Page" Text="Logic" Classes="tabtitle" />
+                </TabItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <Grid Margin="5" ColumnDefinitions="19*,7,20*,7,21*" RowDefinitions="Auto" Classes="tab">
+                    <StackPanel Grid.Column="0" Grid.Row="0">
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_runesGroup" Text="Great Runes" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <DockPanel>
+                                    <NumericUpDown Value="{Binding Runes_leyndell}"
+                                                    Minimum="0" Maximum="7" FormatString="0" Width="50" />
+                                    <loc:Message Classes="postcombo" Key="EldenForm_runes_leyndellL" Text="Great Runes to enter Leyndell" />
+                                </DockPanel>
+                                <DockPanel IsEnabled="{Binding Runes_rold_default}">
+                                    <NumericUpDown Value="{Binding Runes_rold}"
+                                                    Minimum="0" Maximum="7" FormatString="0" Width="50" />
+                                    <loc:Message Classes="postcombo" Key="EldenForm_runes_roldL" Text="Great Runes to enter Mountaintops" />
+                                </DockPanel>
+                                <DockPanel>
+                                    <NumericUpDown Value="{Binding Runes_end}"
+                                                    Minimum="0" Maximum="7" FormatString="0" Width="50" />
+                                    <loc:Message Classes="postcombo" Key="EldenForm_runes_endL" Text="Great Runes to access the final boss" />
+                                </DockPanel>
+                                <CheckBox IsChecked="{Binding Runes_rold_default}">
+                                    <loc:Message Key="EldenForm_runes_rold" Text="Replace Rold Medallion with Great Runes requirement" />
+                                </CheckBox>
+                            </StackPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_hintGroup" Text="Hints" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Markareas}">
+                                    <loc:Message Key="EldenForm_markareas" Text="Purchase markers for required areas from Kalé" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Markitems}" IsEnabled="{Binding Markareas}">
+                                    <loc:Message Key="EldenForm_markitems" Text="Purchase markers for exact item locations from Kalé" />
+                                </CheckBox>
+                            </StackPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Grid.Row="0">
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_progressGroup" Text="Game progression" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Rustykey}">
+                                    <loc:Message Key="EldenForm_rustykey" Text="Require Rusty Key to enter Stormveil" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_rustykeyL" Text="Gostoc won't open the main gate without the key" />
+
+                                <CheckBox IsChecked="{Binding Liurniagate}">
+                                    <loc:Message Key="EldenForm_liurniagate" Text="Require going through Stormveil to reach Liurnia" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Latedragonbarrow}">
+                                    <loc:Message Key="EldenForm_latedragonbarrow" Text="Restrict access to Dragonbarrow until reaching Leyndell" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_latedragonbarrowL" Text="If enabled, key items must be randomized" />
+                                <CheckBox IsChecked="{Binding Altusgate}">
+                                    <loc:Message Key="EldenForm_altusgate" Text="Require Dectus Medallion to reach Altus Plateau" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_altusgateL" Text="All exits to Altus are blocked off without it" />
+                                <CheckBox IsChecked="{Binding Royalaccess}">
+                                    <loc:Message Key="EldenForm_royalaccess" Text="Keep Royal Capital accessible after Maliketh" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_royalaccessL" Text="Allow more Leyndell locations to have unmissable items" />
+                                <CheckBox IsChecked="{Binding Deathless}">
+                                    <loc:Message Key="EldenForm_deathless" Text="Deathless routing" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_deathlessL" Text="Remove Volcano Manor abduction. Otherwise, it may be required, and is possible in enemy randomizer by dying nearby the abductor replacement." />
+                            </StackPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4" Grid.Row="0">
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_logicItemGroup" Text="Key item placement" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Earlylegacy}">
+                                    <loc:Message Key="EldenForm_earlylegacy" Text="Early legacy dungeons are available early" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_earlylegacyL" Text="Place Rusty Key in Limgrave and Academy Key in Liurnia" />
+                                <CheckBox IsChecked="{Binding Earlymedal}">
+                                    <loc:Message Key="EldenForm_earlymedal" Text="Early Mohgwyn Palace" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_earlymedalL" Text="Place Pureblood Knight's Medal before Leyndell" />
+                                <CheckBox IsChecked="{Binding Moremaxslots}">
+                                    <loc:Message Key="EldenForm_moremaxslots" Text="Allow multiple key items to be randomized to a single pickup or drop" />
+                                </CheckBox>
+                            </StackPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox" IsVisible="{Binding !Customitem}">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_logicItemDlcGroup" Text="DLC key item placement" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Dlckeysilo}">
+                                    <loc:Message Key="EldenForm_dlckeysilo" Text="Randomize base game and DLC key items separately" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_dlckeysiloL" Text="Keep base game key items in the base game" />
+                                <CheckBox IsChecked="{Binding Gaolkeys}">
+                                    <loc:Message Key="EldenForm_gaolkeys" Text="Randomize Lamenter's Gaol Keys" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_gaolkeysL" Text="If enabled, other major key items may spawn there" />
+                                <CheckBox IsChecked="{Binding Messmershard_default}">
+                                    <loc:Message Key="EldenForm_messmershard_default" Text="Split up Messmer's Kindling into shards" />
+                                </CheckBox>
+                                <DockPanel IsEnabled="{Binding Messmershard_default}">
+                                    <NumericUpDown Value="{Binding Shardreq}"
+                                                    Minimum="0" Maximum="{Binding Messmershard, TargetNullValue=20}" FormatString="0" Width="60" />
+                                    <loc:Message Classes="postcombo" Key="EldenForm_shardreqL" Text="Shards needed to burn the sealing tree" />
+                                </DockPanel>
+                                <DockPanel IsEnabled="{Binding Messmershard_default}">
+                                    <NumericUpDown Value="{Binding Messmershard}"
+                                                    Minimum="1" Maximum="20" FormatString="0" Width="60" />
+                                    <loc:Message Classes="postcombo" Key="EldenForm_messmershardL" Text="Total Messmer's Kindling Shards" />
+                                </DockPanel>
+                                <loc:Message Key="EldenForm_logicItemDlcInfoL" Text="Randomization may fail if there are too many shards and too few key item locations. See the DLC tab for additional DLC options." />
+                            </StackPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox" IsVisible="{Binding Customitem}">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_logicItemDlcGroup" Text="DLC key item placement" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <loc:Message Key="EldenForm_logicItemDlcNoneL" Text="When custom item placement is active, all DLC item placement options are configured there." />
+                            </StackPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                </Grid>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Classes.disabletab="{Binding !Enemy}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding Enemy}" />
+                        <loc:Message Key="EldenForm_enemyPage" Text="Enemy Randomizer" Classes="tabtitle" />
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="5" ColumnDefinitions="*,7,2*" RowDefinitions="*" Classes="tab">
+                    <ScrollViewer Grid.Column="0" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel>
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_progressGroupEnemy" Text="Game progression" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Scale}">
+                                    <loc:Message Key="EldenForm_scale" Text="Scale up/down enemy health/damage" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Phasehp}">
+                                    <loc:Message Key="EldenForm_phasehp" Text="Scale up/down multi-phase bosses slightly" />
+                                </CheckBox>
+                            </StackPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_miscGroupEnemy" Text="Misc" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Editnames}">
+                                    <loc:Message Key="EldenForm_editnames" Text="Edit boss names" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Bossbgm}">
+                                    <loc:Message Key="EldenForm_bossbgm" Text="Randomize boss background music" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Swaprewards}">
+                                    <loc:Message Key="EldenForm_swaprewards" Text="Change boss runes when the boss changes" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Swapboss}">
+                                    <loc:Message Key="EldenForm_swapboss" Text="Swap bosses between multi-boss fights" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_swapbossL" Text="For mini-dungeon bosses only" />
+                                <CheckBox IsChecked="{Binding Nightday}">
+                                    <loc:Message Key="EldenForm_nightday" Text="Spawn night bosses at all hours" />
+                                </CheckBox>
+                            </StackPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_customGroup" Text="Enemy placement" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Customenemy}">
+                                    <loc:Message Key="EldenForm_default_custom" Text="Custom enemy placement" />
+                                </CheckBox>
+                                <!-- TODO: Merge boss option without using preset -->
+                                <CheckBox IsChecked="{Binding Ignoresize}">
+                                    <loc:Message Key="EldenForm_ignoresize" Text="Ignore arena size for boss placement" />
+                                </CheckBox>
+                                <Button Command="{Binding EditCustomEnemyCommand}">
+                                    <loc:Message Key="EldenForm_presetButton" Text="Edit custom enemy placement..." />
+                                </Button>
+                            </StackPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_enemyseedL" Text="Separate enemy seed" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <TextBox Text="{Binding Seed2}" PasswordChar="{Binding PasswordChar}" RevealPassword="{Binding !Hideseed}"
+                                         Width="200" Watermark="{Binding EnemyseedPlaceholder^}"  HorizontalAlignment="Left" />
+                                <CheckBox IsChecked="{Binding RerollSeed2}" IsEnabled="{Binding !MustRerollSeed2}">
+                                    <loc:Message Key="EldenForm_defaultRerollEnemy" Text="Reroll enemy seed seperately" />
+                                </CheckBox>
+                            </StackPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                    </ScrollViewer>
+                    <StackPanel Grid.Column="2" Grid.Row="0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel>
+                                <SelectableTextBlock TextWrapping="Wrap" Text="{Binding EnemyPresetText}" />
+                                <loc:Message Key="EldenForm_enemyWarningL" Text="Placing too many bosses and human NPCs in the game may result in crashes and frame rate drops. Also, if enemies stop making sounds, you can usually save+quit to remedy this." />
+                            </StackPanel>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding Dlc}" />
+                        <loc:Message Key="EldenForm_dlcPage" Text="DLC" Classes="tabtitle" Classes.disabletab="{Binding !Dlc}" />
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <Grid Margin="5" ColumnDefinitions="8*,7,9*,7,7*" RowDefinitions="Auto" Classes="tab">
+                    <StackPanel Grid.Column="0" Grid.Row="0">
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_dlcInstallGroup" Text="Installed DLC" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Dlc}">
+                                    <loc:Message Key="EldenForm_dlc" Text="Shadow of the Erdtree" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Tarnished}">
+                                    <loc:Message Key="EldenForm_tarnished" Text="Tarnished Pack" />
+                                </CheckBox>
+                                <loc:Message Classes="extrainfo" Key="EldenForm_dlcInstallL" Text="If a DLC option is checked, it must be purchased and enabled in Steam." />
+                            </StackPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox" IsEnabled="{Binding Dlc}">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_dlcsiloGroup" Text="Overall randomization" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <RadioButton IsChecked="{Binding Dlcsilo_default}">
+                                    <loc:Message Key="EldenForm_dlcsilo_default" Text="Randomize DLC and base game together" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Dlcsilo}">
+                                    <loc:Message Key="EldenForm_dlcsilo" Text="Randomize DLC and base game separately" />
+                                </RadioButton>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_dlcsiloL" Text="You can override whether items are placed in the DLC or not using custom item placement." />
+                            </StackPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox" IsEnabled="{Binding Dlc}">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_miscDlcGroup" Text="Misc" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Maxweapon}">
+                                    <loc:Message Key="EldenForm_maxweapon" Text="Upgrade all weapons in the DLC to max level" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Woodsfast}">
+                                        <loc:Message Key="EldenForm_woodsfast" Text="Abyssal Woods horse blinders" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_woodsfastL" Text="Prevent Torrent from getting frightened" />
+                                <CheckBox IsChecked="{Binding Nerflantern}">
+                                        <loc:Message Key="EldenForm_nerflantern" Text="Aging Touchables" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_nerflanternL" Text="Damage Aging Untouchables without parrying them" />
+                                <CheckBox IsChecked="{Binding Springseals}">
+                                        <loc:Message Key="EldenForm_springseals" Text="Randomize spiritspring seals" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_springsealsL" Text="Each stone stack unseals a random spiritspring" />
+                            </StackPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Grid.Row="0">
+                        <HeaderedContentControl Classes="groupbox" IsEnabled="{Binding Dlc}">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_dlcstartGroup" Text="DLC Start" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <RadioButton IsChecked="{Binding Dlcstart_default}">
+                                    <loc:Message Key="EldenForm_dlcstart_default" Text="Normal progression" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Dlcstart}">
+                                    <loc:Message Key="EldenForm_dlcstart" Text="DLC Start" />
+                                </RadioButton>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_dlcstartL" Text="DLC Start is a special game mode to skip the base game. You get set up in Chapel of Anticipation and then warp to the DLC. Important items are given automatically." />
+                                <RadioButton IsChecked="{Binding Quickstart}">
+                                    <loc:Message Key="EldenForm_quickstart" Text="DLC Start with base game" />
+                                </RadioButton>
+                            </StackPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.IsEnabled>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                    <Binding Path="Dlc" />
+                                    <Binding Path="!Dlcstart_default" />
+                                </MultiBinding>
+                            </HeaderedContentControl.IsEnabled>
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_dlcstartMiscGroup" Text="DLC Start extras" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Dlcshop}">
+                                    <loc:Message Key="EldenForm_dlcshop" Text="Base game shop" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_dlcshopL" Text="Add shop at grace with all base game equipment for free" />
+                                <CheckBox IsChecked="{Binding Dlcpackage}">
+                                    <loc:Message Key="EldenForm_dlcpackage" Text="Base game care package" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_dlcpackageL" Text="Start with {0} extra base game items" Param="{Binding Package_count}" />
+                                <CheckBox IsChecked="{Binding Packagelite}">
+                                    <loc:Message Key="EldenForm_packagelite" Text="Limit care package to utility items only" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Dlcroundtable}">
+                                    <loc:Message Key="EldenForm_dlcroundtable" Text="Unlock Roundtable Hold at the start" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_dlcroundtableL" Text="Otherwise, it's available after encountering a major boss or finding an overworld grace outside main Gravesite Plain" />
+                                <DockPanel>
+                                    <NumericUpDown Value="{Binding Playerlevel}"
+                                                    Minimum="0" Maximum="200" FormatString="0" Width="70" />
+                                    <loc:Message Classes="postcombo" Key="EldenForm_playerlevelL" Text="Initial Rune Level" />
+                                </DockPanel>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_playerlevelL2" Text="If selected, runes are given up to level up at the start" />
+                            </StackPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4" Grid.Row="0">
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.IsEnabled>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                    <Binding Path="Dlc" />
+                                    <Binding Path="!Dlcstart_default" />
+                                </MultiBinding>
+                            </HeaderedContentControl.IsEnabled>
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_dlcstartUpgradesGroup" Text="DLC Start upgrades" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Maxflasknum}">
+                                    <loc:Message Key="EldenForm_maxflasknum" Text="Give all Sacred Flasks" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Maxflask}">
+                                    <loc:Message Key="EldenForm_maxflask" Text="Fully upgrade Sacred Flasks" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Maxpouch}">
+                                    <loc:Message Key="EldenForm_maxpouch" Text="Give all Talisman Pouches" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Maxmemslot}">
+                                    <loc:Message Key="EldenForm_maxmemslot" Text="Give all Memory Stones" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Maxwhetblade}">
+                                    <loc:Message Key="EldenForm_maxwhetblade" Text="Give all whetblades" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Maxbb}">
+                                    <loc:Message Key="EldenForm_maxbb" Text="Activate all upgrade Bell Bearings" />
+                                </CheckBox>
+                                <loc:Message Key="EldenForm_dlcstartUpgradesL" Text="When both DLC Start and Item Randomizer are enabled, upgrade items will be removed from the game if upgrades are given automatically, and placed somewhere in the DLC otherwise." Classes="extrainfo" />
+                            </StackPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                </Grid>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <loc:Message Key="EldenForm_miscPage" Text="Misc Options" />
+                </TabItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <Grid Margin="5" ColumnDefinitions="8*,7,10*,7,8*" RowDefinitions="Auto">
+                    <StackPanel Grid.Column="0" Grid.Row="0">
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_extraRandomGroup" Text="Additional randomization" />
+                            </HeaderedContentControl.Header>
+                            <HeaderedContentControl.Styles>
+                                <Style Selector=":is(Control).indent">
+                                    <Setter Property="IsEnabled" Value="{Binding Invertstarting}" />
+                                </Style>
+                            </HeaderedContentControl.Styles>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Invertstarting}">
+                                    <loc:Message Key="EldenForm_invertstarting" Text="Randomize starting class loadouts" />
+                                </CheckBox>
+                                <RadioButton IsChecked="{Binding Default_twohand}" Classes="indent">
+                                    <loc:Message Key="EldenForm_default_twohand" Text="Allow weapons requiring two-handing" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Onehand}" Classes="indent">
+                                    <loc:Message Key="EldenForm_onehand" Text="Allow only one-handable weapons" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Nohand}" Classes="indent">
+                                    <loc:Message Key="EldenForm_nohand" Text="Allow unwieldable weapon and spells" />
+                                </RadioButton>
+                                <CheckBox IsChecked="{Binding Changestats}" Classes="indent">
+                                    <loc:Message Key="EldenForm_changestats" Text="Allow changing stats slightly for more starting weapons" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Dlconlyhand}" Classes="indent">
+                                    <loc:Message Key="EldenForm_dlconlyhand" Text="Limit starting items to DLC items only" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Invertgifts}">
+                                    <loc:Message Key="EldenForm_invertgifts" Text="Randomize starting keepsakes" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Invertoutfits}">
+                                    <loc:Message Key="EldenForm_invertoutfits" Text="Randomize NPC outfits" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Invertenvbgm}">
+                                    <loc:Message Key="EldenForm_invertenvbgm" Text="Randomize ambient music" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Invertgestures}">
+                                    <loc:Message Key="EldenForm_invertgestures" Text="Randomize gestures" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Rainbow}">
+                                    <loc:Message Key="EldenForm_rainbow" Text="Randomize enemy colors" />
+                                </CheckBox>
+                            </StackPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Grid.Row="0">
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_convenienceGroup" Text="Convenience" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Allmaps}">
+                                    <loc:Message Key="EldenForm_allmaps" Text="Unlock all map fragments and icons at the start" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Allcraft}">
+                                    <loc:Message Key="EldenForm_allcraft" Text="Unlock all craftable items in Crafting Kit from the start" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Nerfmalenia}">
+                                    <loc:Message Key="EldenForm_nerfmalenia" Text="Disable Malenia's heal-on-hit" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Nerfgargoyles}">
+                                    <loc:Message Key="EldenForm_nerfgargoyles" Text="Disable damage tick in Valiant Gargoyles' poison cloud" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Sombermode}">
+                                    <loc:Message Key="EldenForm_sombermode" Text="Reduce upgrade cost for non-somber weapons" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_sombermodeL" Text="Require only one Smithing Stone per weapon level" />
+                                <CheckBox IsChecked="{Binding Snowfast}">
+                                    <loc:Message Key="EldenForm_snowfast" Text="Add shortcuts in Mountaintops for faster traversal" />
+                                </CheckBox>
+                            </StackPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_dllGroup" Text="Built-in dll mods" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Crashfix}">
+                                    <loc:Message Key="EldenForm_crashfix" Text="Enable RandomizerCrashFix.dll" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_crashfixL" Text="Patch memory limits, regulation check, and startup logo" />
+                                <CheckBox IsChecked="{Binding Helper}">
+                                    <loc:Message Key="EldenForm_helper" Text="Enable RandomizerHelper.dll" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_helperL" Text="Add features like auto-equip and auto-upgrade" />
+                                <Button Command="{Binding EditHelperCommand}">
+                                    <loc:Message Key="EldenForm_helperButton" Text="Edit RandomizerHelper options..." />
+                                </Button>
+                                <loc:Message Key="EldenForm_dllUsageL" Text="Built-in dll mods activate automatically with the &quot;Launch Elden Ring&quot; button. Otherwise, see the mod page for instructions on activating them." Classes="extrainfo" />
+                            </StackPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4" Grid.Row="0">
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_specialGroup" Text="Special modes" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Weaponreqs}">
+                                    <loc:Message Key="EldenForm_weaponreqs" Text="Remove all weapon and spell requirements" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Fog}">
+                                    <loc:Message Key="EldenForm_fog" Text="Unrestricted item placement for Fog Gate Randomizer" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_fogL" Text="Only use this if you're installing Fog Gate Randomizer after" />
+                                <CheckBox IsChecked="{Binding Crawl}" IsEnabled="{Binding Fog}">
+                                    <loc:Message Key="EldenForm_crawl" Text="Dungeon Crawl mode in Fog Gate Randomizer" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Nerfsh}">
+                                    <loc:Message Key="EldenForm_nerfsh" Text="Disable upgrading Serpent-Hunter" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding Randomania}">
+                                    <loc:Message Key="EldenForm_randomania" Text="Alternate item placement for RandoMania" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_randomaniaL" Text="Fewer late Great Runes, more locations for Altus Bell Bearings" />
+                            </StackPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_installGroup" Text="Installation" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Uxm}">
+                                    <loc:Message Key="EldenForm_uxm" Text="Output files for Nuxe" />
+                                </CheckBox>
+                                <loc:Message Classes="moreinfo" Key="EldenForm_uxmL" Text="Installing the randomizer with Nuxe can lead to long or infinite loading screens. If you get long loading screens without Nuxe, verify integrity of installed files in Steam." />
+                            </StackPanel>
+                        </HeaderedContentControl>
+                    </StackPanel>
+                </Grid>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+        <!-- Controls after tabs -->
+        <Grid Margin="5" Grid.Column="0" Grid.Row="2" ColumnDefinitions="*,Auto,5,Auto" RowDefinitions="Auto,3,Auto,3,Auto,3,Auto,3,Auto" Classes="panel">
+            <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Exe}" Watermark="{Binding ExePlaceholder^}" />
+            <Button Grid.Row="0" Grid.Column="3" Command="{Binding SelectExeCommand}">
+                <loc:Message Key="EldenForm_exeButton" Text="Select game exe" />
+            </Button>
+            <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Mod}" Watermark="{Binding MergePlaceholder^}" />
+            <Button Grid.Row="2" Grid.Column="3" Command="{Binding MergeModsCommand}">
+                <loc:Message Key="EldenForm_mergeButton" Text="Merge other mod" />
+            </Button>
+            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding DllStr}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,2,0" />
+            <Button Grid.Row="4" Grid.Column="3" Command="{Binding AddDllCommand}">
+                <loc:Message Key="EldenForm_dllButton" Text="Add dll mod" />
+            </Button>
+            <TextBlock Grid.Row="6" Grid.Column="0" Grid.RowSpan="3" Text="{Binding Message}" Name="message" Classes.error="{Binding MessageError}" TextWrapping="WrapWithOverflow" MaxHeight="100" />
+            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Seed}" PasswordChar="{Binding PasswordChar}" RevealPassword="{Binding !Hideseed}"
+                     Width="150" Watermark="{Binding SeedPlaceholder^}">
+                <TextBox.InnerRightContent>
+                    <ToggleButton IsChecked="{Binding Hideseed}" Classes="imagebutton" Cursor="Hand">
+                        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <PathIcon Data="{StaticResource PasswordBoxHideButtonData}" Width="14" Height="14" IsVisible="{Binding !Hideseed}">
+                                <ToolTip.Tip>
+                                    <loc:Message Key="EldenForm_hideseedHide" Text="Hide seed" />
+                                </ToolTip.Tip>
+                            </PathIcon>
+                            <PathIcon Data="{StaticResource PasswordBoxRevealButtonData}" Width="14" Height="14" IsVisible="{Binding Hideseed}">
+                                <ToolTip.Tip>
+                                    <loc:Message Key="EldenForm_hideseedShow" Text="Show seed" />
+                                </ToolTip.Tip>
+                            </PathIcon>
+                        </StackPanel>
+                    </ToggleButton>
+                </TextBox.InnerRightContent>
+            </TextBox>
+            <CheckBox Grid.Row="8" Grid.Column="1" IsChecked="{Binding RerollSeed}" IsEnabled="{Binding !MustRerollSeed}">
+                <loc:Message Key="EldenForm_default_reroll" Text="Reroll seed" />
+            </CheckBox>
+            <Button Grid.Row="6" Grid.Column="3" Command="{Binding RandomizeCommand}" Classes.working="{Binding Working}" MinWidth="250">
+                <loc:Message From="{Binding RandomizeText}" />
+            </Button>
+            <Button Grid.Row="8" Grid.Column="3" Command="{Binding LaunchGameCommand}" Classes.working="{Binding Launching}">
+                <loc:Message Key="EldenForm_launchButton" Text="Launch Elden Ring" />
+            </Button>
+        </Grid>
+        <TextBlock Grid.Column="0" Grid.Row="3"
+                Name="status"
+                Classes.failure="{Binding StatusFailure}"
+                Classes.success="{Binding StatusSuccess}"
+                Padding="5"
+                Text="{Binding Status}">
+        </TextBlock>
+    </Grid>
+</Window>

@@ -1,0 +1,36 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="EldenRingRandomizer.App"
+             xmlns:local="using:EldenRingRandomizer"
+             xmlns:views="using:EldenRingRandomizer.Views"
+             xmlns:vm="using:EldenRingRandomizer.ViewModels"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://RandomizerCommon.Avalonia/Assets/MainResources.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <!-- For simple theme specifically. Maybe add to common after migrating the rest -->
+            <!-- https://github.com/AvaloniaUI/Avalonia/blob/main/src/Avalonia.Themes.Simple/Accents/Base.xaml -->
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#f3eeee</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeControlMidBrush">#e9e2e2</SolidColorBrush>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#2b2727</SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <SimpleTheme />
+    </Application.Styles>
+</Application>

@@ -702,6 +702,133 @@ Areas:
   MainBonfire: Yelough Anix Tunnel
   Parent: snowfield
   Boss: 32110800
+  Comment: End of base game!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+- Includes: gravesite
+  MainBonfire: Gravesite Plain
+  Boss: dancinglion
+- Includes: belurat belurat_swamp belurat_stairs
+  MainBonfire: Belurat, Tower Settlement
+  Boss: dancinglion
+- Includes: ellac
+  MainBonfire: Ellac River Cave
+  Comment: Ellac River isn't a name so this may be misleading
+- Includes: cerulean
+  MainBonfire: Cerulean Coast
+  Boss: 2046400800
+  BossFlag: 2046400800
+- Includes: cerulean_rhia
+  MainBonfire: Finger Ruins of Rhia
+  Boss: 25000800
+- Includes: ensis ensis_fort
+  MainBonfire: Castle Ensis Checkpoint
+  DisplayName: Castle Ensis
+  Boss: rellana
+- Includes: scadualtus scadualtus_high
+  MainBonfire: Highroad Cross
+  DisplayName: Scadu Altus
+  Boss: 21000850
+- Includes: scadualtus_recluse
+  MainBonfire: Castle Watering Hole
+  DisplayName: Scadu Altus
+  Boss: 21000850
+  Comment: No good name for this part of Scadu Altus, but at least use distinct starting grace
+- Includes: shadowkeep westrampart
+  MainBonfire: Shadow Keep Main Gate
+  DisplayName: Shadow Keep
+  Boss: 21000850
+- Includes: shadowkeep_church shadowkeep_church_lower scadutree_base
+  MainBonfire: Church District Entrance
+  DisplayName: Shadow Keep
+  Boss: 2050480800
+- Includes: storehouse storehouse_back
+  MainBonfire: Storehouse, First Floor
+  DisplayName: Specimen Storehouse
+  Boss: 21010800
+- Includes: fissure
+  MainBonfire: Stone Coffin Fissure
+  Boss: 22000800
+- Includes: rauhbase rauhbase_high
+  MainBonfire: Ancient Ruins Base
+  DisplayName: Rauh Base
+  Boss: 2044470800
+  BossFlag: 2044470800
+- Includes: rauhruins rauhruins_high rauhruins_limited
+  MainBonfire: Rauh Ancient Ruins, East
+  DisplayName: Ancient Ruins of Rauh
+  Boss: romina
+- Includes: scaduview
+  MainBonfire: Scaduview
+  Boss: 2049480800
+- Includes: abyssal
+  MainBonfire: Abyssal Woods
+  Boss: 28000800
+- Includes: midramanse
+  MainBonfire: Manse Hall
+  DisplayName: Midra's Manse
+  Boss: 28000800
+- Includes: jaggedpeak_foot jaggedpeak
+  MainBonfire: Foot of the Jagged Peak
+  Boss: 2054390800
+- Includes: charo
+  MainBonfire: Charo's Hidden Grave
+  Boss: 2047390800
+  BossFlag: 2047390800
+- Includes: hinterland
+  MainBonfire: Hinterland
+  Boss: 2049480800
+- Includes: hinterland_dheo
+  MainBonfire: Fingerstone Hill
+  DisplayName: Finger Ruins of Dheo
+  Boss: 25000800
+- Includes: scadualtus_miyr fingergrounds
+  MainBonfire: Finger Birthing Grounds
+  Boss: 25000800
+- Includes: enirilim belurat_enirilim
+  MainBonfire: First Rise
+  DisplayName: Enir-Ilim
+  Boss: 20010800
+  Comment: End of DLC regular areas!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+- Includes: gravesite_catacombs
+  MainBonfire: Fog Rift Catacombs
+  Parent: gravesite
+  Boss: 40000800
+- Includes: rauhbase_catacombs
+  MainBonfire: Scorpion River Catacombs
+  Parent: rauhbase
+  Boss: 40010800
+- Includes: scadualtus_catacombs
+  MainBonfire: Darklight Catacombs
+  Parent: scadualtus_recluse
+  Boss: 2052430800
+- Includes: gravesite_gaol
+  MainBonfire: Belurat Gaol
+  Parent: gravesite
+  Boss: 41000800
+- Includes: scadualtus_gaol
+  MainBonfire: Bonny Gaol
+  Parent: scadualtus
+  Boss: 41010800
+- Includes: charo_gaol charo_gaol_lower charo_gaol_boss
+  MainBonfire: Lamenter's Gaol
+  Parent: charo
+  Boss: 41020800
+- Includes: gravesite_forge
+  MainBonfire: Ruined Forge Lava Intake
+  Parent: gravesite
+- Includes: scadualtus_forge
+  MainBonfire: Ruined Forge of Starfall Past
+  Parent: scadualtus
+- Includes: rauhbase_forge
+  MainBonfire: Taylew's Ruined Forge
+  Parent: rauhbase
+- Includes: ellac_cave
+  MainBonfire: Rivermouth Cave
+  Parent: ellac
+  Boss: 43000800
+- Includes: gravesite_dragonpit
+  MainBonfire: Dragon's Pit
+  Parent: gravesite
+  Boss: 43010800
 Items:
 - Name: academyglintstonekey
   UnexploredCheck: academy
@@ -754,7 +881,7 @@ Items:
 - Name: runegodrick runerennala
   UnexploredCheck: leyndell
   DisplayName: 2 Great Runes
-  Comment: Any two will do for the first pass, though be more comprehensive after
+  Comment: Any two will do for the first pass, though be more comprehensive after. TODO this conditions is wrong with alternate count
   Reqs:
   - PassCondition: first
     CheckFlag: 182
@@ -762,6 +889,20 @@ Items:
     CheckItem: self
 - Name: runemalenia runemohg runemorgott runeradahn runerykard
   Comment: Only needed if all runes are required, accounted for in requiredItem logic
+- Name: omother
+  UnexploredCheck: hinterland
+- Name: holeladennecklace
+  UnexploredCheck: fingergrounds
+- Name: welldepthskey
+- Name: gaolupperlevelkey
+- Name: gaollowerlevelkey
+- Name: messmerskindling
+  MultiName: messmerskindling1
+  Reqs:
+  - PassCondition: first
+    CheckFlag: 330
+  - PassCondition: second
+    CheckItem: self
 UpgradeItems:
 - Names:
   - Smithing-Stone Miner's Bell Bearing [1]

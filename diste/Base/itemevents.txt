@@ -1,7 +1,7 @@
 ItemTalks:
 - ID: 1000
   Comment: Bonfire, checks for Rold Medallion for Melina purposes, and Mini Ranni for dialogue purposes
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400001
     Machine: x28
@@ -30,29 +30,37 @@ ItemTalks:
     EventFlag: 400001
     Machine: x67
   DebugInfo:
-  - This info is out of date
-  - t000001000_x29 - f15(400001) == 0 - Rold Medallion (400001)
-  - t000001000_x31 - f15(11009260) == 1 && f15(400001) == 0 - Rold Medallion (400001)
-  - t000001000_x44 - f15(11009260) == 1 && f15(400001) == 0 - Rold Medallion (400001)
-  - t000001000_x51 - f15(11009260) == 1 && f15(400001) == 0 - Rold Medallion (400001)
-  - t000001000_x53 - SetREG0(f15(400394)) == 1 && f15(12019280) == 0 && (f15(12012710) == 1 || f15(12012711) == 1 || f15(12012712) == 1) - Miniature Ranni (400394)
-  - t000001000_x58 - f15(1037519201) == 0 && f15(11009260) == 0 && f15(400001) == 0 && (f15(1037512700) == 1 || f15(1038512700) == 1 || f15(1038502711) == 1 || f15(1039512711) == 1 || f15(1037522700) == 1) - Rold Medallion (400001)
-  - t000001000_x61 - f15(11009260) == 0 && f15(400001) == 0 && SetREG7(f15(9104)) == 0 && (f15(11002741) == 1 || f15(11002742) == 1 || f15(11002743) == 1 || f15(11002744) == 1) - Rold Medallion (400001)
-  - t000001000_x61 - GetREG7() == 1 && f15(400001) == 0 - Rold Medallion (400001)
-  - t000001000_x62 - f15(9104) == 1 && f15(400001) == 0 - Rold Medallion (400001)
-  - t000001000_x68 - f15(400001) == 1 && f15(108) == 0 && f15(11002745) == 0 - Rold Medallion (400001)
+  - t000001000_x28 - f15(400001) == 0 - Rold Medallion (400001)
+  - t000001000_x30 - f15(11009260) == 1 && f15(400001) == 0 - Rold Medallion (400001)
+  - t000001000_x43 - f15(11009260) == 1 && f15(400001) == 0 - Rold Medallion (400001)
+  - t000001000_x50 - f15(11009260) == 1 && f15(400001) == 0 - Rold Medallion (400001)
+  - t000001000_x52 - SetREG0(f15(400394)) == 1 && f15(12019280) == 0 && (f15(12012710) == 1 || f15(12012711) == 1 || f15(12012712) == 1) - Miniature Ranni (400394)
+  - t000001000_x57 - f15(1037519201) == 0 && f15(11009260) == 0 && f15(400001) == 0 && (f15(1037512700) == 1 || f15(1038512700) == 1 || f15(1038502711) == 1 || f15(1039512711) == 1 || f15(1037522700) == 1) - Rold Medallion (400001)
+  - t000001000_x60 - f15(11009260) == 0 && f15(400001) == 0 && SetREG7(f15(9104)) == 0 && (f15(11002741) == 1 || f15(11002742) == 1 || f15(11002743) == 1 || f15(11002744) == 1) - Rold Medallion (400001)
+  - t000001000_x60 - GetREG7() == 1 && f15(400001) == 0 - Rold Medallion (400001)
+  - t000001000_x61 - f15(9104) == 1 && f15(400001) == 0 - Rold Medallion (400001)
+  - t000001000_x67 - f15(400001) == 1 && f15(108) == 0 && f15(11002745) == 0 - Rold Medallion (400001)
 - ID: 2000
   Comment: Unknown ESD, but checks fixed item anyway
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 60110
     Machine: 1
   DebugInfo:
-  - t000002000_1 - ((f15(f206()) || f234() || f213() || (f207() >= 0 && f214() == 0) || f60(9531) || (f15(2002) == 0 && f15(60110) == 0)) == 0) == 1 - Spirit Calling Bell (60110)
-  - t000002000_1 - ((f15(f206()) || f234() || f213() || (f207() >= 0 && f214() == 0) || f60(9531) || (f15(2002) == 0 && f15(60110) == 0)) == 0) == 0 - Spirit Calling Bell (60110)
+  - 't000002000_1 - ((f15(f206()) || f234() || f213() || (f207() #> 0 && f214() == 0) || f60(9531) || (f15(2002) == 0 && f15(60110) == 0)) == 0) == 1 - Spirit Calling Bell (60110)'
+  - 't000002000_1 - ((f15(f206()) || f234() || f213() || (f207() #> 0 && f214() == 0) || f60(9531) || (f15(2002) == 0 && f15(60110) == 0)) == 0) == 0 - Spirit Calling Bell (60110)'
+- ID: 2100
+  Comment: ESD actually used by summon monument
+  FlagTemplate:
+  - Type: fixeditem
+    EventFlag: 60110
+    Machine: 1
+  DebugInfo:
+  - t000002100_1 - f15(f206()) == 1 || (f15(2002) == 1 || f15(60110) == 1) == 0 - Spirit Calling Bell (60110)
+  - t000002100_1 - f15(f206()) == 0 && (f15(2002) == 1 || f15(60110) == 1) == 1 - Spirit Calling Bell (60110)
 - ID: 3000
   Comment: Melina ESD, also checks a bunch for Rold Medallion.
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400001
     Machine: 1
@@ -77,7 +85,7 @@ ItemTalks:
   - t000003000_x74 - f15(9104) == 1 && f15(400001) == 0 - Rold Medallion (400001)
 - ID: 101206000
   Comment: Finger reader
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 1046367500 1051397900
     Machine: x37
@@ -86,7 +94,7 @@ ItemTalks:
   - t101206000_x37 - f15(1046367500) == 1 && f15(1051397900) == 1 - Dectus Medallion (Right) (1051397900)
 - ID: 110003111
   Comment: Lusat
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400430
     Machine: 1
@@ -95,7 +103,7 @@ ItemTalks:
   - t110003111_1 - f15(400430) == 1 && f58(0) == 0 - Stars of Ruin (400430)
 - ID: 111006000
   Comment: Azur
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400440
     Machine: 1
@@ -104,7 +112,7 @@ ItemTalks:
   - t111006000_1 - f15(400440) == 1 && f58(0) == 0 - Comet Azur (400440)
 - ID: 221006000
   Comment: Great-Jar
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400470
     Machine: x5
@@ -114,7 +122,7 @@ ItemTalks:
   - t221006000_x5 - f15(400470) == 0 - Great-Jar's Arsenal (400470)
 - ID: 228006000
   Comment: Choice to show Medallion to Latenna
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 400130
     Machine: x43
@@ -122,7 +130,7 @@ ItemTalks:
   - t228006000_x43 - f15(400130) == 1 - Haligtree Secret Medallion (Right) (400130)
 - ID: 301006000
   Comment: Gift from Varre
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 60270
     Machine: x59
@@ -130,7 +138,7 @@ ItemTalks:
   - t301006000_x59 - f15(60270) == 0 - Bloody Finger (60270)
 - ID: 313001600
   Comment: Gift of necklace to Rya
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 400300
     Machine: x15
@@ -138,7 +146,7 @@ ItemTalks:
   - t313001600_x15 - c5_19(f15(400300) == 1, 1, 23131010, -1) - Rya's Necklace (400300)
 - ID: 313006000
   Comment: Gift of necklace to Rya
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 400300
     Machine: x15
@@ -146,7 +154,7 @@ ItemTalks:
   - t313006000_x15 - c5_19(f15(400300) == 1, 1, 23131010, -1) - Rya's Necklace (400300)
 - ID: 316006000
   Comment: Sellen's quest checks
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400430 400440
     Machine: x48
@@ -156,7 +164,7 @@ ItemTalks:
   - t316006000_x48 - f15(1044369227) == 1 && f15(400430) == 0 - Stars of Ruin (400430)
 - ID: 316206000
   Comment: Sellen's quest check
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400430
     Machine: x49
@@ -164,19 +172,19 @@ ItemTalks:
   - t316206000_x49 - GetREG0() == 1 && f15(400430) == 1 && f15(14009263) == 0 - Stars of Ruin (400430)
 - ID: 316211400
   Comment: Sellen's quest check
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400430
     Machine: x48
   DebugInfo:
   - t316211400_x48 - GetREG0() == 1 && f15(400430) == 1 && f15(14009263) == 0 - Stars of Ruin (400430)
 - ID: 324001110
-  Comment: Guidance from Gideon
-  ItemTemplate:
-  - Type: item
+  Comment: Guidance from Gideon, maybe responsible for his gifts? This can use gate conditions with shard etc options
+  FlagTemplate:
+  - Type: itemflag
     EventFlag: 400001 400130 1051587800
     Machine: x43
-  - Type: item
+  - Type: itemflag
     EventFlag: 400130 1051587800
     Machine: x47
   DebugInfo:
@@ -185,15 +193,61 @@ ItemTalks:
   - t324001110_x43 - SetREG0(f15(11109687)) == 0 && f15(400001) == 1 && GetREG0() == 0 - Rold Medallion (400001)
   - t324001110_x47 - SetREG0(f15(400130)) == 1 && SetREG1(f15(1051587800)) == 0 - Haligtree Secret Medallion (Right) (400130)
   - t324001110_x47 - SetREG0(f15(400130)) == 1 && SetREG1(f15(1051587800)) == 0 - Haligtree Secret Medallion (Left) (1051587800)
+- ID: 325001000
+  Comment: Rogier giving the Black Knifeprint back to you, not randomized since giving it to him consumes it. This flag is on by default at the start of his quest
+  FlagTemplate:
+  - Type: default
+    EventFlag: 400357
+    Machine: x49
+  DebugInfo:
+  - t325001000_x49 - c1_11(400357, 0) - Black Knifeprint (400357)
+- ID: 325001110
+  Comment: Rogier's regift, Roundtable version
+  FlagTemplate:
+  - Type: default
+    EventFlag: 400357
+    Machine: x49
+  DebugInfo:
+  - t325001110_x49 - c1_11(400357, 0) - Black Knifeprint (400357)
 - ID: 331006000
   Comment: Blackguard. If have not done something in the shop (10364392​10), and have shop flag set OR Rya's Necklace (quantity == 1), count it as having made the purchase and skip initial dialog. If this were an item template type, it would amount to an item check only. Probably preserve location-based behavior here, since all items are through the shop anyway, so it does not hurt to access it earlier. The release flag 1036439209 is set either way upon entering the main menu.
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400300
     Machine: x40
+  DebugInfo:
+  - t331006000_x40 - f15(400300) == 0 && f47(3, 8136, 1, 1, 0) == 1 - Rya's Necklace (400300)
+- ID: 402002000
+  Comment: Turned on when talking to the Hornsent Grandam with the armor, turned off right before her gift of the item. Maybe cut NPC drop management
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400721
+    Machine: x41
+  - Type: loc
+    EventFlag: 400721
+    Machine: x44
+  DebugInfo:
+  - t402002000_x41 - c1_11(400721, 1) - Watchful Spirit (400721)
+  - t402002000_x44 - c1_11(400721, 0) - Watchful Spirit (400721)
+- ID: 414002101
+  Comment: Managing Hornsent's Furnace Visage drop. Turned on by default (at Highroad Cross only), off after taking the soup
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400612
+    Machine: x48
+  DebugInfo:
+  - t414002101_x48 - c1_11(400612, 0) - Furnace Visage (400612)
+- ID: 414006100
+  Comment: Hornsent in overworld
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400612
+    Machine: x48
+  DebugInfo:
+  - t414006100_x48 - c1_11(400612, 0) - Furnace Visage (400612)
 - ID: 607001900
   Comment: Ending choice
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 9500 9502 9504
     Machine: x5
@@ -203,20 +257,96 @@ ItemTalks:
   - t607001900_x5 - c5_19(f15(9504) == 1, 4, 26071003, -1) - Mending Rune of the Fell Curse (9504)
 - ID: 751006000
   Comment: Finger reader
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 1046367500 1051397900
     Machine: x37
   DebugInfo:
   - t751006000_x37 - f15(1046367500) == 1 && f15(1051397900) == 1 - Dectus Medallion (Left) (1046367500)
   - t751006000_x37 - f15(1046367500) == 1 && f15(1051397900) == 1 - Dectus Medallion (Right) (1051397900)
+- ID: 322001110
+  Comment: Cursemark interaction (in roundtable, not used)
+  FlagTemplate:
+  - Type: itemgate
+    UseItem: 8191
+    Machine: x41
+  - Type: itemgate
+    UseItem: 8191
+    Machine: x47
+  DebugInfo:
+  - t322001110_x41 - c1_52(3, 8191, -1) - Cursemark of Death
+  - t322001110_x47 - f47(3, 8191, 4, 1, 0) == 1 || f15(12039161) == 1 - Cursemark of Death
+- ID: 322001203
+  Comment: Cursemark interaction
+  FlagTemplate:
+  - Type: itemgate
+    UseItem: 8191
+    Machine: x41
+  - Type: itemgate
+    UseItem: 8191
+    Machine: x47
+  DebugInfo:
+  - t322001203_x41 - c1_52(3, 8191, -1) - Cursemark of Death
+  - t322001203_x47 - f47(3, 8191, 4, 1, 0) == 1 || f15(12039161) == 1 - Cursemark of Death
+- ID: 322011203
+  Comment: Cursemark interaction
+  FlagTemplate:
+  - Type: itemgate
+    UseItem: 8191
+    Machine: x41
+  - Type: itemgate
+    UseItem: 8191
+    Machine: x47
+  DebugInfo:
+  - t322011203_x41 - c1_52(3, 8191, -1) - Cursemark of Death
+  - t322011203_x47 - f47(3, 8191, 4, 1, 0) == 1 || f15(12039161) == 1 - Cursemark of Death
+- ID: 333006000
+  Comment: Used by Thops for dialogue
+  FlagTemplate:
+  - Type: itemgate
+    UseItem: 8109
+    Machine: x45
+  - Type: itemgate
+    UseItem: 8109
+    Machine: x50
+  DebugInfo:
+  - t333006000_x45 - GetREG0() == 1 && f47(3, 8109, 0, 1, 0) == 1 && f15(1039399216) == 0 && GetREG1() == 0 - Academy Glintstone Key
+  - t333006000_x50 - f47(3, 8109, 0, 1, 0) == 1 && f47(3, 8174, 0, 0, 0) == 1 - Academy Glintstone Key
+- ID: 419002200
+  Comment: Thiollier looks at this for some reason? Sure
+  FlagTemplate:
+  - Type: itemgate
+    UseItem: 2160
+    Machine: x46
+  DebugInfo:
+  - t419002200_x46 - c5_19(f15(2048439223) == 0 && f47(3, 2160, 2, 0, 0) == 1, 3, 99991000, -1) - Pureblood Knight's Medal
+- ID: 610006000
+  Comment: Dual Rold lift, many edits
+  FlagTemplate:
+  - Type: itemgate
+    UseItem: 8107
+    Machine: x2
+  - Type: itemgate
+    UseItem: 8175
+    Machine: x2
+  - Type: itemgate
+    UseItem: 8176
+    Machine: x2
+  DebugInfo:
+  - t610006000_x2 - f47(3, 8107, 4, 1, 0) == 1 - Rold Medallion
+  - t610006000_x2 - f47(3, 8175, 4, 1, 0) == 1 && f47(3, 8176, 4, 1, 0) == 1 - Haligtree Secret Medallion (Left)
+  - t610006000_x2 - f47(3, 8175, 4, 1, 0) == 1 && f47(3, 8176, 4, 1, 0) == 1 - Haligtree Secret Medallion (Right)
+  - t610006000_x2 - f47(3, 8107, 0, 0, 0) == 1 - Rold Medallion
+  - t610006000_x2 - f47(3, 8175, 0, 0, 0) == 1 || f47(3, 8176, 0, 0, 0) == 1 - Haligtree Secret Medallion (Left)
+  - t610006000_x2 - f47(3, 8175, 0, 0, 0) == 1 || f47(3, 8176, 0, 0, 0) == 1 - Haligtree Secret Medallion (Right)
 ItemEvents:
 - ID: 700
   Comment: Only set if 2000 and 2001 off
-  ItemTemplate:
+  FlagTemplate:
   - Type: default
     EventFlag: 60120 60210 60220 60240 60250 60260 60270 60280 60290 60300 60310 65610 65640 65660 65680 65720
   DebugInfo:
+  - EventFlags 60120 60210 60220 60240 60250 60260 60270 60280 60290 60300 60310 65610 65640 65660 65680 65720
   - common - SetEventFlag(60210) - Tarnished's Wizened Finger
   - common - SetEventFlag(60220) - Tarnished's Furled Finger
   - common - SetEventFlag(60240) - Duelist's Furled Finger
@@ -235,10 +365,11 @@ ItemEvents:
   - common - SetEventFlag(60120) - Crafting Kit
 - ID: 720
   Comment: Used for powering up the rune. These are not randomized.
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 191 192 193 194 195 196 197
   DebugInfo:
+  - EventFlags 191 192 193 194 195 196 197
   - common - IfCountEventFlags(190, 199) - Godrick's Great Rune (191)
   - common - IfCountEventFlags(190, 199) - Radahn's Great Rune (192)
   - common - IfCountEventFlags(190, 199) - Morgott's Great Rune (193)
@@ -248,10 +379,11 @@ ItemEvents:
   - common - IfCountEventFlags(190, 199) - Remembrance of the Full Moon Queen (197)
 - ID: 730
   Comment: Awarding the unpowered rune. Used for various story activation things, so it should be kept with the item itself, unless we fully rewrite this
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 171 172 173 174 175 176 177
   DebugInfo:
+  - EventFlags 171 172 173 174 175 176 177
   - common - IfCountEventFlags(170, 179) - Godrick's Great Rune (171)
   - common - IfCountEventFlags(170, 179) - Radahn's Great Rune (172)
   - common - IfCountEventFlags(170, 179) - Morgott's Great Rune (173)
@@ -259,17 +391,143 @@ ItemEvents:
   - common - IfCountEventFlags(170, 179) - Mohg's Great Rune (175)
   - common - IfCountEventFlags(170, 179) - Malenia's Great Rune (176)
   - common - IfCountEventFlags(170, 179) - Great Rune of the Unborn (177)
+- ID: 916
+  Comment: Using Messmer's Kindling. This switches between action buttons so flag is necessary without merging them, and necessary in other cases anyway
+  Template:
+  - Type: loc
+    Filter:
+      Gate: messmerskindling
+    ItemUse:
+    - IfPlayerHasdoesntHaveItem(AND_05, ItemType.Goods, 2008021, OwnershipState.DoesntOwn)
+    - IfPlayerHasdoesntHaveItem(OR_07, ItemType.Goods, 2008021, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItem(OR_08, ItemType.Goods, 2008021, OwnershipState.Owns)
+    Removes:
+    - RemoveItemFromPlayer
+    CondOrder: 5->1 -7->-1 -8->6
+    CondIdentity:
+    - EndIfConditionGroupStateUncompiled(EventEndType.Restart, PASS, OR_08)
+  DebugInfo:
+  - common - IfPlayerHasdoesntHaveItem(2008021) - Messmer's Kindling
+  - common - RemoveItemFromPlayer(2008021) - Messmer's Kindling
+  DebugCommands:
+  - SetNetworkSyncState(Disabled)
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 330)
+  - GotoIfEventFlag(Label.Label0, ON, TargetEventFlagType.EventFlag, 20010196)
+  - IfPlayerHasdoesntHaveItem(AND_05, ItemType.Goods, 2008021, OwnershipState.DoesntOwn)
+  - GotoIfConditionGroupStateUncompiled(Label.Label5, PASS, AND_05)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfMultiplayerState(AND_02, MultiplayerState.Multiplayer)
+  - IfConditionGroup(AND_01, FAIL, AND_02)
+  - IfActionButtonInArea(AND_01, 209610, 2044451500)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - DisplayGenericDialogAndSetEventFlags(2030000, PromptType.YESNO, NumberofOptions.TwoButtons, 2044451500, 5, 2044452501, 2044452502, 2044452502)
+  - EndIfEventFlag(EventEndType.Restart, OFF, TargetEventFlagType.EventFlag, 2044452501)
+  - WaitFixedTimeSeconds(0.1)
+  - Label0()
+  - SetEventFlag(TargetEventFlagType.EventFlag, 9021, ON)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 20010196, ON)
+  - SetPlayerRespawnPoint(20012020)
+  - SaveRequest(0)
+  - ShowTextOnLoadingScreen(Disabled)
+  - PlayCutsceneToPlayerAndWarp(61440000, CutscenePlayMode.Skippable, 20012020, 20010000, 10000, 60444500, true)
+  - WaitFixedTimeRealFrames(1)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 330, ON)
+  - RemoveItemFromPlayer(ItemType.Goods, 2008021, 1)
+  - WaitFixedTimeSeconds(1)
+  - EndUnconditionally(EventEndType.End)
+  - Label5()
+  - IfPlayerIsInWorldType(AND_06, WorldType.OwnWorld)
+  - IfMultiplayerState(AND_07, MultiplayerState.Multiplayer)
+  - IfConditionGroup(AND_06, FAIL, AND_07)
+  - IfActionButtonInArea(AND_06, 209610, 2044451500)
+  - IfConditionGroup(OR_07, PASS, AND_06)
+  - IfPlayerHasdoesntHaveItem(OR_07, ItemType.Goods, 2008021, OwnershipState.Owns)
+  - IfConditionGroup(MAIN, PASS, OR_07)
+  - IfPlayerHasdoesntHaveItem(OR_08, ItemType.Goods, 2008021, OwnershipState.Owns)
+  - EndIfConditionGroupStateUncompiled(EventEndType.Restart, PASS, OR_08)
+  - DisplayGenericDialog(2030001, PromptType.OKCANCEL, NumberofOptions.NoButtons, 0, 5)
+  - WaitFixedTimeSeconds(1)
+  - EndUnconditionally(EventEndType.Restart)
+- ID: 922
+  Comment: Pureblood Knight's Medal warp to Mohgwyn
+  Template:
+  - Type: loc
+    Filter:
+      Gate: purebloodknightsmedal
+    ItemUse:
+    - start
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfCharacterHasSpEffect(AND_01, 10000, 502160, true, ComparisonType.Equal, 1)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - WarpPlayer(12, 5, 0, 0, 12052021, 0)
+- ID: 930
+  Comment: Using lift medallion, aside from Rold dual spot. Add custom thing that goes from item->flag, unlike most of FlagTemplate. It just so happens that all of these are tracked items, or else they would need to be added to tracking separately. Additionally, this edit is a bit inconvenient (it prevents spawning in items to progress), so make it optional. It may be better to make copies of the event but ensure this doesn't break fog rando.
+  Template:
+  - Type: loc
+    Filter:
+      Gates: dectusmedallionleft dectusmedallionright roldmedallion haligtreesecretmedallionleft haligtreesecretmedallionright
+    ItemUse:
+    - IfPlayerHasdoesntHaveItem(AND_01, ItemType.Goods, X16_4, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItem(AND_01, ItemType.Goods, X20_4, OwnershipState.Owns)
+  - Type: arg
+    Filter:
+      Gates: dectusmedallionleft dectusmedallionright roldmedallion haligtreesecretmedallionleft haligtreesecretmedallionright
+    ItemArg: X16_4 X20_4
+  DebugInfo:
+  - common - IfPlayerHasdoesntHaveItem(X16_4 = 8105) - Dectus Medallion (Left)
+  - common - IfPlayerHasdoesntHaveItem(X20_4 = 8106) - Dectus Medallion (Right)
+  - common - IfPlayerHasdoesntHaveItem(X16_4 = 8107) - Rold Medallion
+  - common - IfPlayerHasdoesntHaveItem(X16_4 = 8175) - Haligtree Secret Medallion (Left)
+  - common - IfPlayerHasdoesntHaveItem(X20_4 = 8176) - Haligtree Secret Medallion (Right)
+  DebugCommands:
+  - IfMultiplayerState(OR_01, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_01, MultiplayerState.MultiplayerPending)
+  - IfConditionGroup(AND_01, FAIL, OR_01)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - SkipIfComparison(1, ComparisonType.Equal, X16_4, 0)
+  - IfPlayerHasdoesntHaveItem(AND_01, ItemType.Goods, X16_4, OwnershipState.Owns)
+  - SkipIfComparison(1, ComparisonType.Equal, X20_4, 0)
+  - IfPlayerHasdoesntHaveItem(AND_01, ItemType.Goods, X20_4, OwnershipState.Owns)
+  - IfActionButtonInArea(AND_01, X12_4, X8_4)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 9021, ON)
+  - PlayCutsceneToPlayerAndWarp(X0_4, CutscenePlayMode.Skippable, X28_4, X24_4, 10000, X36_4, false)
+  - WaitFixedTimeRealFrames(1)
+  - PlayCutsceneToPlayer(X4_4, CutscenePlayMode.SkippableWithFadeOutSkip, 10000)
+  - WaitFixedTimeRealFrames(1)
+  - EndUnconditionally(EventEndType.Restart)
+  - SkipIfPlayerIsInWorldType(2, WorldType.OtherWorld)
+  - PlayCutsceneToPlayerAndWarp(X0_4, CutscenePlayMode.Skippable, X28_4, X24_4, 10000, 0, false)
+  - SkipUnconditionally(4)
+  - SkipIfUnsignedComparison(2, ComparisonType.Equal, X32_4, 0)
+  - PlayCutsceneToPlayerAndWarp(X0_4, CutscenePlayMode.Skippable, X32_4, X24_4, 10000, 0, false)
+  - SkipUnconditionally(1)
+  - PlayCutsceneToPlayerAndWarp(X0_4, CutscenePlayMode.Skippable, X28_4, X24_4, 10000, 0, false)
+  - WaitFixedTimeRealFrames(1)
+  - SkipIfPlayerIsInWorldType(2, WorldType.OtherWorld)
+  - PlayCutsceneToPlayerAndWarp(X4_4, CutscenePlayMode.SkippableWithFadeOutSkip, X28_4, X24_4, 10000, 0, false)
+  - SkipUnconditionally(4)
+  - SkipIfUnsignedComparison(2, ComparisonType.Equal, X32_4, 0)
+  - PlayCutsceneToPlayerAndWarp(X4_4, CutscenePlayMode.SkippableWithFadeOutSkip, X32_4, X24_4, 10000, 0, false)
+  - SkipUnconditionally(1)
+  - PlayCutsceneToPlayerAndWarp(X4_4, CutscenePlayMode.SkippableWithFadeOutSkip, X28_4, X24_4, 10000, 0, false)
+  - WaitFixedTimeRealFrames(1)
+  - EndUnconditionally(EventEndType.Restart)
 - ID: 1100
   Comment: Boss drop
-  ItemTemplate:
+  FlagTemplate:
   - Type: singleton
   - Type: removecheck
     EventFlagArg: X12
   - Type: locarg
     Comment: This can run into issues when the flag was already set, and other drops won't be rewarded. For instance, Radahn Remembrance (510300) getting replaced by Godrick's Great Rune (171), but the GR has already been acquired somehow. Maybe remove the event flag check? This should not affect normal playthroughs.
-    EventFlag: 197 60440 60510 60520 510010 510030 510040 510060 510070 510080 510090 510100 510110 510120 510140 510150 510160 510190 510200 510210 510220 510230 510250 510260 510280 510290 510300 510310 510320 510330 510340 510350 510730 510740 510800 510810 510820 510830 510840
+    EventFlag: 197 60440 60510 60520 510010 510030 510040 510060 510070 510080 510090 510100 510110 510120 510140 510150 510160 510190 510200 510210 510220 510230 510250 510260 510280 510290 510300 510310 510320 510330 510340 510350 510400 510430 510440 510460 510480 510550 510560 510600 510610 510620 510630 510640 510730 510740 510800 510810 510820 510830 510840 510900
     EventFlagArg: X12
   DebugInfo:
+  - EventFlags 197 60440 60510 60520 510010 510030 510040 510060 510070 510080 510090 510100 510110 510120 510140 510150 510160 510190 510200 510210 510220 510230 510250 510260 510280 510290 510300 510310 510320 510330 510340 510350 510400 510430 510440 510460 510480 510550 510560 510600 510610 510620 510630 510640 510730 510740 510800 510810 510820 510830 510840 510900
   - common - EndIfEventFlag(X12_4 = 60510) - Talisman Pouch
   - common - EndIfEventFlag(X12_4 = 510010) - Remembrance of the Grafted
   - common - EndIfEventFlag(X12_4 = 510030) - Ornamental Straight Sword, Golden Beast Crest Shield
@@ -302,6 +560,18 @@ ItemEvents:
   - common - EndIfEventFlag(X12_4 = 510330) - Remembrance of the Regal Ancestor
   - common - EndIfEventFlag(X12_4 = 510340) - Silver Tear Mask, Larval Tear
   - common - EndIfEventFlag(X12_4 = 510350) - Fia's Mist
+  - common - EndIfEventFlag(X12_4 = 510400) - Remembrance of the Dancing Lion
+  - common - EndIfEventFlag(X12_4 = 510430) - Remembrance of a God and a Lord
+  - 'common - EndIfEventFlag(X12_4 = 510440) - Aspects of the Crucible: Thorns, Scadutree Fragment'
+  - common - EndIfEventFlag(X12_4 = 510460) - Remembrance of the Impaler, Messmer's Kindling
+  - common - EndIfEventFlag(X12_4 = 510480) - Remembrance of Putrescence
+  - common - EndIfEventFlag(X12_4 = 510550) - Remembrance of the Mother of Fingers
+  - common - EndIfEventFlag(X12_4 = 510560) - Remembrance of the Lord of Frenzied Flame
+  - common - EndIfEventFlag(X12_4 = 510600) - Remembrance of the Saint of the Bud
+  - common - EndIfEventFlag(X12_4 = 510610) - Barbed Staff-Spear
+  - common - EndIfEventFlag(X12_4 = 510620) - Remembrance of the Shadow Sunflower, Miquella's Great Rune
+  - common - EndIfEventFlag(X12_4 = 510630) - Heart of Bayle
+  - common - EndIfEventFlag(X12_4 = 510640) - Remembrance of the Wild Boar Rider
   - common - EndIfEventFlag(X12_4 = 510730) - Godskin Apostle Hood, Godskin Apostle Robe, Godskin Apostle Bracelets, Godskin Apostle Trousers
   - common - EndIfEventFlag(X12_4 = 510740) - Omenkiller Rollo
   - common - EndIfEventFlag(X12_4 = 510800) - Grafted Blade Greatsword
@@ -309,16 +579,18 @@ ItemEvents:
   - common - EndIfEventFlag(X12_4 = 510820) - Marais Executioner's Sword, Briar Greatshield
   - common - EndIfEventFlag(X12_4 = 510830) - Ruins Greatsword
   - common - EndIfEventFlag(X12_4 = 510840) - Veteran's Prosthesis
+  - common - EndIfEventFlag(X12_4 = 510900) - Remembrance of the Twin Moon Knight
 - ID: 1200
   Comment: Alt boss drop
-  ItemTemplate:
+  FlagTemplate:
   - Type: singleton
   - Type: removecheck
     EventFlagArg: X12
   - Type: locarg
-    EventFlag: 520000 520010 520020 520030 520040 520050 520060 520070 520080 520090 520100 520110 520120 520130 520140 520150 520160 520170 520180 520190 520200 520210 520220 520300 520310 520330 520340 520350 520360 520370 520380 520390 520400 520410 520420 520430 520440 520450 520460 520470 520480 520490 520600 520610 520620 520630 520640 520650 520660 520670 520680
+    EventFlag: 520000 520010 520020 520030 520040 520050 520060 520070 520080 520090 520100 520110 520120 520130 520140 520150 520160 520170 520180 520190 520200 520210 520220 520300 520310 520330 520340 520350 520360 520370 520380 520390 520400 520410 520420 520430 520440 520450 520460 520470 520480 520490 520600 520610 520620 520630 520640 520650 520660 520670 520680 520700 520710 520750 520760 520770 520800 520810
     EventFlagArg: X12
   DebugInfo:
+  - EventFlags 520000 520010 520020 520030 520040 520050 520060 520070 520080 520090 520100 520110 520120 520130 520140 520150 520160 520170 520180 520190 520200 520210 520220 520300 520310 520330 520340 520350 520360 520370 520380 520390 520400 520410 520420 520430 520440 520450 520460 520470 520480 520490 520600 520610 520620 520630 520640 520650 520660 520670 520680 520700 520710 520750 520760 520770 520800 520810
   - common - EndIfEventFlag(X12_4 = 520000) - Lhutel the Headless
   - common - EndIfEventFlag(X12_4 = 520010) - Demi-Human Ashes
   - common - EndIfEventFlag(X12_4 = 520020) - Noble Sorcerer Ashes
@@ -370,12 +642,20 @@ ItemEvents:
   - common - EndIfEventFlag(X12_4 = 520660) - Moonveil, Dragon Heart
   - common - EndIfEventFlag(X12_4 = 520670) - Gravity Stone Chunk, Somberstone Miner's Bell Bearing [1], Smithing Stone [7], Somber Smithing Stone [6]
   - common - EndIfEventFlag(X12_4 = 520680) - Meteorite of Astel
+  - common - EndIfEventFlag(X12_4 = 520700) - Death Knight's Twin Axes, Crimson Amber Medallion +3
+  - common - EndIfEventFlag(X12_4 = 520710) - Death Knight's Longhaft Axe, Cerulean Amber Medallion +3
+  - common - EndIfEventFlag(X12_4 = 520750) - Demi-Human Swordsman Yosh
+  - common - EndIfEventFlag(X12_4 = 520760) - Curseblade Meera
+  - common - EndIfEventFlag(X12_4 = 520770) - Lamenter's Mask
+  - common - EndIfEventFlag(X12_4 = 520800) - Bloodfiend Hexer's Ashes
+  - common - EndIfEventFlag(X12_4 = 520810) - Dragon-Hunter's Great Katana
 - ID: 1450
   Comment: Sets auxiliary flags associated with whetblades when it's acquired
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 65610 65640 65660 65680 65720
   DebugInfo:
+  - EventFlags 65610 65640 65660 65680 65720
   - common - IfEventFlag(X0_4 = 65610) - Iron Whetblade
   - common - IfEventFlag(X0_4 = 65640) - Red-Hot Whetblade
   - common - IfEventFlag(X0_4 = 65660) - Sanctified Whetblade
@@ -383,10 +663,11 @@ ItemEvents:
   - common - IfEventFlag(X0_4 = 65720) - Black Whetblade
 - ID: 1460
   Comment: Manages permanent cracked pots
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 66000 66010 66020 66030 66060 66070 66080 66090 66100 66110 66120 66130 66140 66150 66160 66170 66180 66190
   DebugInfo:
+  - EventFlags 66000 66010 66020 66030 66060 66070 66080 66090 66100 66110 66120 66130 66140 66150 66160 66170 66180 66190
   - common - IfEventFlag(66000) - Cracked Pot
   - common - IfEventFlag(66010) - Cracked Pot
   - common - IfEventFlag(66020) - Cracked Pot
@@ -407,10 +688,11 @@ ItemEvents:
   - common - IfEventFlag(66190) - Cracked Pot
 - ID: 1461
   Comment: Manages permanent ritual pots
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 66400 66410 66420 66430 66440 66450 66460 66470 66480 66490
   DebugInfo:
+  - EventFlags 66400 66410 66420 66430 66440 66450 66460 66470 66480 66490
   - common - IfEventFlag(66400) - Ritual Pot
   - common - IfEventFlag(66410) - Ritual Pot
   - common - IfEventFlag(66420) - Ritual Pot
@@ -423,10 +705,11 @@ ItemEvents:
   - common - IfEventFlag(66490) - Ritual Pot
 - ID: 1462
   Comment: Manages permanent bottles
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 66700 66710 66720 66730 66740 66750 66760 66770 66780 66790
   DebugInfo:
+  - EventFlags 66700 66710 66720 66730 66740 66750 66760 66770 66780 66790
   - common - IfEventFlag(66700) - Perfume Bottle
   - common - IfEventFlag(66710) - Perfume Bottle
   - common - IfEventFlag(66720) - Perfume Bottle
@@ -439,10 +722,11 @@ ItemEvents:
   - common - IfEventFlag(66790) - Perfume Bottle
 - ID: 1600
   Comment: Unlock map when get item
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
-    EventFlag: 62010 62011 62012 62020 62021 62022 62030 62031 62032 62040 62041 62050 62051 62052 62060 62061 62062 62063 62064
+    EventFlag: 62010 62011 62012 62020 62021 62022 62030 62031 62032 62040 62041 62050 62051 62052 62060 62061 62062 62063 62064 62080 62081 62082 62083 62084
   DebugInfo:
+  - EventFlags 62010 62011 62012 62020 62021 62022 62030 62031 62032 62040 62041 62050 62051 62052 62060 62061 62062 62063 62064 62080 62081 62082 62083 62084
   - 'common - GotoIfEventFlag(X0_4 = 62010) - Map: Limgrave, West'
   - 'common - IfEventFlag(X0_4 = 62010) - Map: Limgrave, West'
   - 'common - GotoIfEventFlag(X0_4 = 62011) - Map: Weeping Peninsula'
@@ -481,12 +765,23 @@ ItemEvents:
   - 'common - IfEventFlag(X0_4 = 62062) - Map: Mohgwyn Palace'
   - 'common - GotoIfEventFlag(X0_4 = 62064) - Map: Deeproot Depths'
   - 'common - IfEventFlag(X0_4 = 62064) - Map: Deeproot Depths'
+  - 'common - GotoIfEventFlag(X0_4 = 62080) - Map: Gravesite Plain'
+  - 'common - IfEventFlag(X0_4 = 62080) - Map: Gravesite Plain'
+  - 'common - GotoIfEventFlag(X0_4 = 62081) - Map: Scadu Altus'
+  - 'common - IfEventFlag(X0_4 = 62081) - Map: Scadu Altus'
+  - 'common - GotoIfEventFlag(X0_4 = 62082) - Map: Southern Shore'
+  - 'common - IfEventFlag(X0_4 = 62082) - Map: Southern Shore'
+  - 'common - GotoIfEventFlag(X0_4 = 62083) - Map: Rauh Ruins'
+  - 'common - IfEventFlag(X0_4 = 62083) - Map: Rauh Ruins'
+  - 'common - GotoIfEventFlag(X0_4 = 62084) - Map: Abyss'
+  - 'common - IfEventFlag(X0_4 = 62084) - Map: Abyss'
 - ID: 1630
   Comment: Probably filling in region name based on map item flags (WorldMapPieceParam)
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 62010 62011 62012 62020 62022 62030 62031 62032 62040 62041 62050 62051 62052
   DebugInfo:
+  - EventFlags 62010 62011 62012 62020 62022 62030 62031 62032 62040 62041 62050 62051 62052
   - 'common - IfEventFlag(X4_4 = 62010) - Map: Limgrave, West'
   - 'common - IfEventFlag(X8_4 = 62012) - Map: Limgrave, East'
   - 'common - IfEventFlag(X12_4 = 62020) - Map: Liurnia, East'
@@ -506,43 +801,103 @@ ItemEvents:
   - 'common - IfEventFlag(X8_4 = 62052) - Map: Consecrated Snowfield'
 - ID: 1702
   Comment: Tutorial pop-up
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 60110
   DebugInfo:
+  - EventFlags 60110
   - common - IfEventFlag(60110) - Spirit Calling Bell
 - ID: 1703
   Comment: Tutorial pop-up
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 60120
   DebugInfo:
+  - EventFlags 60120
   - common - IfEventFlag(60120) - Crafting Kit
 - ID: 1704
   Comment: Tutorial pop-up
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 60120
   DebugInfo:
+  - EventFlags 60120
   - common - IfEventFlag(60120) - Crafting Kit
 - ID: 1752
   Comment: Tutorial pop-up
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 60110
   DebugInfo:
+  - EventFlags 60110
   - common - IfEventFlag(60110) - Spirit Calling Bell
+- ID: 3040
+  Comment: Radahn festival activation. For now, put Nokron outside Dectus regionlock by also preventing festival from starting
+  Template:
+  - Type: loc
+    Filter:
+      Gate: altus
+    Removes:
+    - IfEventFlag(OR_01, ON, TargetEventFlagType.EventFlag, 1044369223)
+    - IfEventFlag(OR_01, ON, TargetEventFlagType.EventFlag, 1034499224)
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 9413)
+  - GotoIfEventFlag(Label.Label2, ON, TargetEventFlagType.EventFlag, 9412)
+  - GotoIfEventFlag(Label.Label20, OFF, TargetEventFlagType.EventFlag, 9411)
+  - GotoIfEventFlag(Label.Label20, ON, TargetEventFlagType.EventFlag, 9130)
+  - GotoIfInoutsideArea(Label.Label20, InsideOutsideState.Inside, 10000, 1051362220, 1)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 9411, OFF)
+  - FreezeTime(false)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 1051362702, OFF)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 3618, ON)
+  - Label20()
+  - GotoIfEventFlag(Label.Label1, ON, TargetEventFlagType.EventFlag, 9411)
+  - GotoIfEventFlag(Label.Label0, ON, TargetEventFlagType.EventFlag, 9410)
+  - IfEventFlag(OR_01, ON, TargetEventFlagType.EventFlag, 1044369223)
+  - IfEventFlag(OR_01, ON, TargetEventFlagType.EventFlag, 1034499224)
+  - IfEventFlag(OR_01, ON, TargetEventFlagType.EventFlag, 3063)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfConditionGroup(AND_01, PASS, OR_01)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - GotoIfPlayerIsInWorldType(Label.Label0, WorldType.OtherWorld)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 9410, ON)
+  - Label0()
+  - IfPlayerIsInWorldType(AND_02, WorldType.OwnWorld)
+  - IfEventFlag(AND_02, ON, TargetEventFlagType.EventFlag, 1051362702)
+  - IfConditionGroup(MAIN, PASS, AND_02)
+  - GotoIfPlayerIsInWorldType(Label.Label1, WorldType.OtherWorld)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 9411, ON)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 3618, ON)
+  - Label1()
+  - FreezeTime(true)
+  - IfPlayerIsInWorldType(AND_03, WorldType.OwnWorld)
+  - IfEventFlag(AND_03, ON, TargetEventFlagType.EventFlag, 310)
+  - IfConditionGroup(MAIN, PASS, AND_03)
+  - FreezeTime(false)
+  - GotoIfPlayerIsInWorldType(Label.Label2, WorldType.OtherWorld)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 9411, ON)
+  - Label2()
+  - IfEventFlag(AND_04, ON, TargetEventFlagType.EventFlag, 9130)
+  - IfEventFlag(AND_04, OFF, TargetEventFlagType.EventFlag, 1051369360)
+  - IfPlayerIsInWorldType(AND_04, WorldType.OwnWorld)
+  - IfInoutsideArea(AND_05, InsideOutsideState.Inside, 10000, 1051362220, 1)
+  - IfConditionGroup(OR_04, PASS, AND_04)
+  - IfConditionGroup(OR_04, PASS, AND_05)
+  - IfConditionGroup(MAIN, PASS, OR_04)
+  - EndIfConditionGroupStateCompiled(EventEndType.End, PASS, AND_05)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 9413, ON)
 - ID: 3050
-  Comment: Swaps out mini rannis once Baleful Shadow is defeated
-  ItemTemplate:
-  - Type: singleton
+  Comment: Swaps out mini rannis once Baleful Shadow is defeated. This requires 12019280 (12010715 dead or HP 0) and not 12012716 (set right after). Not singleton since it's unreliable
+  FlagTemplate:
   - Type: loc
     EventFlag: 400159
   DebugInfo:
+  - EventFlags 400159
   - common - EndIfEventFlag(400159) - Discarded Palace Key
 - ID: 3051
   Comment: Swaps out the Favors from Hyetta
-  ItemTemplate:
+  FlagTemplate:
   - Type: singleton
   - Type: item
     EventFlag: 400031
@@ -550,31 +905,35 @@ ItemEvents:
     Comment: For awarded item lot 100330 (also given in other places)
     EventFlag: 400033
   DebugInfo:
+  - EventFlags 400031 400033
   - common - EndIfEventFlag(400033) - Lord of Blood's Favor
   - common - IfEventFlag(400031) - Lord of Blood's Favor
 - ID: 3052
   Comment: For awarded lot
-  ItemTemplate:
+  FlagTemplate:
   - Type: singleton
   - Type: loc
     EventFlag: 400410
   DebugInfo:
+  - EventFlags 400410
   - common - EndIfEventFlag(400410) - Latenna the Albinauric
 - ID: 3056
   Comment: If have either Haligtree half, and not yet entered Farum Azula (flag 110), makes Ensha angry in Roundtable
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 400130 1051587800
   DebugInfo:
+  - EventFlags 400130 1051587800
   - common - IfEventFlag(1051587800) - Haligtree Secret Medallion (Left)
   - common - IfEventFlag(400130) - Haligtree Secret Medallion (Right)
 - ID: 3080
   Comment: Sets 9433 (event 1800, changes character state?) when you've purchased 4 dragon items
-  ItemTemplate:
+  FlagTemplate:
   - Type: default
     Comment: Still make it tied to shop slot, although these won't be quite as useful
-    EventFlag: 290500 290510 290520 290530 290540 290550 290560 290570 290750 290760 290770 290780 290790
+    EventFlag: 290500 290510 290520 290530 290540 290550 290560 290570 290650 290660 290670 290750 290760 290770 290780 290790
   DebugInfo:
+  - EventFlags 290500 290510 290520 290530 290540 290550 290560 290570 290650 290660 290670 290750 290760 290770 290780 290790
   - common - IfCountEventFlags(290500, 290999) - Dragonfire (290500)
   - common - IfCountEventFlags(290500, 290999) - Dragonice (290510)
   - common - IfCountEventFlags(290500, 290999) - Glintstone Breath (290520)
@@ -583,6 +942,9 @@ ItemEvents:
   - common - IfCountEventFlags(290500, 290999) - Borealis's Mist (290550)
   - common - IfCountEventFlags(290500, 290999) - Smarag's Glintstone Breath (290560)
   - common - IfCountEventFlags(290500, 290999) - Ekzykes's Decay (290570)
+  - common - IfCountEventFlags(290500, 290999) - Bayle's Tyranny (290650)
+  - common - IfCountEventFlags(290500, 290999) - Bayle's Flame Lightning (290660)
+  - common - IfCountEventFlags(290500, 290999) - Ghostflame Breath (290670)
   - common - IfCountEventFlags(290500, 290999) - Dragonclaw (290750)
   - common - IfCountEventFlags(290500, 290999) - Dragonmaw (290760)
   - common - IfCountEventFlags(290500, 290999) - Magma Breath (290770)
@@ -590,137 +952,400 @@ ItemEvents:
   - common - IfCountEventFlags(290500, 290999) - Greyoll's Roar (290790)
 - ID: 3081
   Comment: Flag management of Zorayas map marker
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400091
   DebugInfo:
+  - EventFlags 400091
   - common - IfEventFlag(400091) - Daedicar's Woe, Zorayas's Letter
 - ID: 3082
   Comment: Flag management of Varre map marker
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400036 400037
   DebugInfo:
+  - EventFlags 400036 400037
   - common - IfEventFlag(400036) - Festering Bloody Finger
   - common - IfEventFlag(400037) - Varré's Bouquet
 - ID: 3084
   Comment: Flag management of Latenna map marker
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400412
   DebugInfo:
+  - EventFlags 400412
   - common - IfEventFlag(400412) - Blue Silver Mail Hood, Blue Silver Mail Armor, Blue Silver Bracelets, Blue Silver Mail Skirt
 - ID: 3085
   Comment: Flag management of Patches map marker
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400181 400189
   DebugInfo:
+  - EventFlags 400181 400189
   - common - IfEventFlag(400181) - Dancer's Castanets
   - common - IfEventFlag(400189) - Spear +7, Leather Armor, Leather Gloves, Leather Boots, Patches' Bell Bearing
 - ID: 3087
   Comment: Flag management of Bernahl map marker
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400293 400294 400299
   DebugInfo:
+  - EventFlags 400293 400294 400299
   - common - IfEventFlag(400293) - Devourer's Scepter
   - common - IfEventFlag(400294) - Beast Champion Helm, Beast Champion Gauntlets, Beast Champion Greaves, Beast Champion Armor (Altered)
   - common - IfEventFlag(400299) - Bernahl's Bell Bearing
 - ID: 3088
   Comment: Flag management of Blackguard map marker
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400300 400308 400309
   DebugInfo:
+  - EventFlags 400300 400308 400309
   - common - IfEventFlag(400300) - Rya's Necklace
-  - common - IfEventFlag(400309) - Blackguard's Iron Mask, Blackguard's Bell Bearing, ?ITEM? (6:5040)
+  - common - IfEventFlag(400309) - Blackguard's Iron Mask, Blackguard's Bell Bearing, Iron Ball
   - common - IfEventFlag(400308) - Seedbed Curse
 - ID: 3090
   Comment: Sets unknown flags. If Liurnia and 3409, set 1034449200. If Leyndell and 118, set 11059400.
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 62022 62031
   DebugInfo:
+  - EventFlags 62022 62031
   - 'common - IfEventFlag(62022) - Map: Liurnia, West'
   - 'common - IfEventFlag(62031) - Map: Leyndell, Royal Capital'
 - ID: 3119
   Comment: Tanith quest flags
-  ItemTemplate:
+  FlagTemplate:
   - Type: volcanoreq
   - Type: item
     EventFlag: 400073
   DebugInfo:
+  - EventFlags 400073
   - common - SkipIfEventFlag(400073) - Letter from Volcano Manor
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 3118, OFF)
+  - SkipIfBatchEventFlags(2, LogicalOperationType.NotAllOFF, TargetEventFlagType.EventFlag, 3100, 3104)
+  - BatchSetNetworkconnectedEventFlags(3100, 3104, OFF)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 3100, ON)
+  - IfEventFlag(AND_10, ON, TargetEventFlagType.EventFlag, 3101)
+  - IfEventFlag(AND_10, ON, TargetEventFlagType.EventFlag, 3000)
+  - SkipIfConditionGroupStateUncompiled(2, FAIL, AND_10)
+  - BatchSetNetworkconnectedEventFlags(3100, 3104, OFF)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 3100, ON)
+  - SkipIfBatchEventFlags(2, LogicalOperationType.NotAllOFF, TargetEventFlagType.EventFlag, 3105, 3119)
+  - BatchSetNetworkconnectedEventFlags(3105, 3119, OFF)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 3105, ON)
+  - GotoIfEventFlag(Label.Label0, OFF, TargetEventFlagType.EventFlag, 3100)
+  - SkipIfEventFlag(2, OFF, TargetEventFlagType.EventFlag, 400073)
+  - BatchSetNetworkconnectedEventFlags(3105, 3119, OFF)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 3106, ON)
+  - IfEventValue(AND_01, 16009260, 4, ComparisonType.GreaterOrEqual, 3)
+  - SkipIfConditionGroupStateUncompiled(2, FAIL, AND_01)
+  - BatchSetNetworkconnectedEventFlags(3105, 3119, OFF)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 3107, ON)
+  - IfEventFlag(AND_02, ON, TargetEventFlagType.EventFlag, 16000800)
+  - IfEventFlag(AND_02, ON, TargetEventFlagType.EventFlag, 16009208)
+  - SkipIfConditionGroupStateUncompiled(2, FAIL, AND_02)
+  - BatchSetNetworkconnectedEventFlags(3105, 3119, OFF)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 3108, ON)
+  - IfEventFlag(AND_03, ON, TargetEventFlagType.EventFlag, 16000800)
+  - IfEventFlag(AND_03, OFF, TargetEventFlagType.EventFlag, 16009208)
+  - IfConditionGroup(OR_03, PASS, AND_03)
+  - IfEventFlag(OR_03, ON, TargetEventFlagType.EventFlag, 16009246)
+  - SkipIfConditionGroupStateUncompiled(2, FAIL, OR_03)
+  - BatchSetNetworkconnectedEventFlags(3105, 3119, OFF)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 3109, ON)
+  - SkipIfEventFlag(2, OFF, TargetEventFlagType.EventFlag, 16009265)
+  - BatchSetNetworkconnectedEventFlags(3105, 3119, OFF)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 3110, ON)
+  - SkipIfEventFlag(2, OFF, TargetEventFlagType.EventFlag, 16009264)
+  - BatchSetNetworkconnectedEventFlags(3105, 3119, OFF)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 3111, ON)
+  - Label0()
+  - IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, 3118)
+  - EndUnconditionally(EventEndType.Restart)
 - ID: 3199
   Comment: Varre quest flags
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 400033
   DebugInfo:
+  - EventFlags 400033
   - common - SkipIfEventFlag(400033) - Lord of Blood's Favor
 - ID: 3619
   Comment: Blaidd quest
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 114 12027080
   DebugInfo:
+  - EventFlags 114 12027080
   - common - IfEventFlag(12027080) - Fingerslayer Blade, Great Ghost Glovewort
   - common - GotoIfEventFlag(114) - Dark Moon Ring
 - ID: 3719
   Comment: Roderika's quest (is unset in a different event)
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 10007452
   DebugInfo:
+  - EventFlags 10007452
   - common - SetEventFlag(10007452) - Crimson Hood
 - ID: 3899
   Comment: Bernahl quest. Equivalent event to 400291
-  ItemTemplate:
+  FlagTemplate:
   - Type: default
     EventFlag: 400295
   DebugInfo:
+  - EventFlags 400295
   - common - SetEventFlag(400295) - Gelmir's Fury
 - ID: 3919
-  Comment: Rogier quest. This is set as soon as the quest is initialized, but basically doesn't seem to be unset anywhere TODO
-  ItemTemplate:
+  Comment: Rogier quest. This is set as soon as the quest is initialized, unset in his ESD
+  FlagTemplate:
   - Type: default
     EventFlag: 400357
   DebugInfo:
+  - EventFlags 400357
   - common - SetEventFlag(400357) - Black Knifeprint
 - ID: 4079
   Comment: D's brother's quest
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 9502
   DebugInfo:
+  - EventFlags 9502
   - common - IfEventFlag(9502) - Mending Rune of the Death-Prince
 - ID: 4139
   Comment: Fia's quest (her body appearing)
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 9502
   DebugInfo:
+  - EventFlags 9502
   - common - IfEventFlag(9502) - Mending Rune of the Death-Prince
 - ID: 4607
   Comment: Flag management of Alexander map marker
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     Comment: These are his drops so probably marker depends on those
     EventFlag: 400174 400175
   DebugInfo:
+  - EventFlags 400174 400175
   - common - IfEventFlag(400174) - Shard of Alexander, Alexander's Innards
   - common - IfEventFlag(400175) - Warrior Jar Shard
+- ID: 4613
+  Comment: Flag management of Grandam's marker when getting betrayal scorpion stew, sets 20009253
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400720
+  DebugInfo:
+  - EventFlags 400720
+  - common - IfEventFlag(400720) - Scorpion Stew
+- ID: 4614
+  Comment: Marker management for Igon, sets a few different flags including 2052409203
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400710 400711 400712 400714
+  DebugInfo:
+  - EventFlags 400710 400711 400712 400714
+  - common - IfEventFlag(400711) - Igon's Greatbow, Igon's Helm, Igon's Armor, Igon's Gauntlets, Igon's Loincloth, Igon's Bell Bearing, Igon's Greatbow
+  - common - IfEventFlag(400712) - Igon's Greatbow, Igon's Helm, Igon's Armor, Igon's Gauntlets, Igon's Loincloth, Igon's Bell Bearing, Igon's Greatbow
+  - common - IfEventFlag(400714) - Igon's Greatbow, Igon's Helm, Igon's Armor, Igon's Gauntlets, Igon's Loincloth, Igon's Bell Bearing, Igon's Greatbow
+  - common - IfEventFlag(400710) - Igon's Furled Finger
+- ID: 4615
+  Comment: Marker management for St. Trina
+  FlagTemplate:
+  - Type: default item loc
+    EventFlag: 400740
+  DebugInfo:
+  - EventFlags 400740
+  - common - IfEventFlag(400740) - St. Trina's Blossom
+- ID: 4617
+  Comment: Marker management for Jolan
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400670 400671
+  DebugInfo:
+  - EventFlags 400670 400671
+  - common - IfEventFlag(400670) - Swordhand of Night Jolán
+  - common - IfEventFlag(400671) - Sword of Night
+- ID: 4619
+  Comment: Marker management for Queelign
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400690 400692
+  DebugInfo:
+  - EventFlags 400690 400692
+  - common - IfEventFlag(400690) - Fire Knight Queelign
+  - common - IfEventFlag(400692) - Queelign's Greatsword
+- ID: 4620
+  Comment: Marker management for Hornsent
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400611 400612
+  DebugInfo:
+  - EventFlags 400611 400612
+  - common - IfEventFlag(400611) - New Cross Map
+  - common - IfEventFlag(400612) - Furnace Visage
+- ID: 4621
+  Comment: Marker management for Moore
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400644
+  DebugInfo:
+  - EventFlags 400644
+  - common - IfEventFlag(400644) - Moore's Bell Bearing
+- ID: 4622
+  Comment: Marker management for Ansbach
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400620 400622 400624 400625
+  DebugInfo:
+  - EventFlags 400620 400622 400624 400625
+  - common - IfEventFlag(400620) - Letter for Freyja
+  - common - IfEventFlag(400622) - Obsidian Lamina, Ansbach's Longbow, Wise Man's Mask, Ansbach's Attire, Ansbach's Manchettes, Ansbach's Boots, Furious Blade of Ansbach, Letter for Freyja
+  - common - IfEventFlag(400625) - Obsidian Lamina, Ansbach's Longbow, Wise Man's Mask, Ansbach's Attire, Ansbach's Manchettes, Ansbach's Boots, Furious Blade of Ansbach, Letter for Freyja
+  - common - IfEventFlag(400624) - Obsidian Lamina, Ansbach's Longbow, Wise Man's Mask, Ansbach's Attire, Ansbach's Manchettes, Ansbach's Boots, Furious Blade of Ansbach, Letter for Freyja
+- ID: 4623
+  Comment: Marker management for Freyja
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400602
+  DebugInfo:
+  - EventFlags 400602
+  - common - IfEventFlag(400602) - Freyja's Greatsword, Freyja's Helm, Freyja's Armor, Freyja's Gauntlets, Freyja's Greaves
+- ID: 4625
+  Comment: Marker management for Thiollier
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400634
+  DebugInfo:
+  - EventFlags 400634
+  - common - IfEventFlag(400634) - Thiollier's Hidden Needle, Thiollier's Mask, Thiollier's Garb, Thiollier's Gloves, Thiollier's Trousers
+- ID: 4627
+  Comment: Marker management for Dane
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400730
+  DebugInfo:
+  - EventFlags 400730
+  - common - IfEventFlag(400730) - Dane's Hat, Dryleaf Arts
+- ID: 4857
+  Comment: Boss drop for Ymir
+  FlagTemplate:
+  - Type: singleton
+  - Type: removecheck
+    EventFlagArg: X12
+  - Type: locarg
+    EventFlag: 400664
+    EventFlagArg: X12
+  DebugInfo:
+  - EventFlags 400664
+  - common - EndIfEventFlag(X12_4 = 400664) - Maternal Staff, High Priest Hat, High Priest Robe, High Priest Gloves, High Priest Undergarments, Ymir's Bell Bearing
+- ID: 4858
+  Comment: Drop for Florissax, ends if already acquired. Probably fine to have possible false negative
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 400700
+    EventFlagArg: X0
+  DebugInfo:
+  - EventFlags 400700
+  - common - EndIfEventFlag(X0_4 = 400700) - Ancient Dragon Florissax
+- ID: 4930
+  Comment: Drop for Jolan, ends if already acquired (not on corpse like Queelign's)
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 400670
+    EventFlagArg: X0
+  DebugInfo:
+  - EventFlags 400670
+  - common - EndIfEventFlag(X0_4 = 400670) - Swordhand of Night Jolán
+- ID: 4933
+  Comment: X0 stock flag, X4 previously bought or has item (69920), X8 item id. This makes it unavailable on NG+ cycles, and also ties the item with the location, so it should go
+  FlagTemplate:
+  - Type: remove
+    EventFlag: 320550
+  DebugInfo:
+  - EventFlags 320550
+  - 'common - GotoIfEventFlag(X0_4 = 320550) - Note: Sealed Spiritsprings'
+  - 'common - IfEventFlag(X0_4 = 320550) - Note: Sealed Spiritsprings'
+  - 'common - SetEventFlag(X0_4 = 320550) - Note: Sealed Spiritsprings'
 - ID: 6800
   Comment: Give Crystal Tear if acquired flag on. These items have fixed flags. Probably harmless.
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
+  DebugInfo:
+  - EventFlags 65000 65010 65020 65030 65040 65050 65060 65070 65080 65090 65100 65110 65120 65130 65140 65150 65160 65170 65180 65190 65200 65210 65220 65230 65240 65250 65260 65270 65280 65290 65300 65310
+  - common - IfEventFlag(X4_4 = 65000) - Crimsonspill Crystal Tear
+  - common - SetEventFlag(X4_4 = 65000) - Crimsonspill Crystal Tear
+  - common - IfEventFlag(X4_4 = 65010) - Greenspill Crystal Tear
+  - common - SetEventFlag(X4_4 = 65010) - Greenspill Crystal Tear
+  - common - IfEventFlag(X4_4 = 65020) - Crimson Crystal Tear
+  - common - SetEventFlag(X4_4 = 65020) - Crimson Crystal Tear
+  - common - IfEventFlag(X4_4 = 65030) - Crimson Crystal Tear
+  - common - SetEventFlag(X4_4 = 65030) - Crimson Crystal Tear
+  - common - IfEventFlag(X4_4 = 65040) - Cerulean Crystal Tear
+  - common - SetEventFlag(X4_4 = 65040) - Cerulean Crystal Tear
+  - common - IfEventFlag(X4_4 = 65050) - Cerulean Crystal Tear
+  - common - SetEventFlag(X4_4 = 65050) - Cerulean Crystal Tear
+  - common - IfEventFlag(X4_4 = 65060) - Speckled Hardtear
+  - common - SetEventFlag(X4_4 = 65060) - Speckled Hardtear
+  - common - IfEventFlag(X4_4 = 65070) - Crimson Bubbletear
+  - common - SetEventFlag(X4_4 = 65070) - Crimson Bubbletear
+  - common - IfEventFlag(X4_4 = 65080) - Opaline Bubbletear
+  - common - SetEventFlag(X4_4 = 65080) - Opaline Bubbletear
+  - common - IfEventFlag(X4_4 = 65090) - Crimsonburst Crystal Tear
+  - common - SetEventFlag(X4_4 = 65090) - Crimsonburst Crystal Tear
+  - common - IfEventFlag(X4_4 = 65100) - Greenburst Crystal Tear
+  - common - SetEventFlag(X4_4 = 65100) - Greenburst Crystal Tear
+  - common - IfEventFlag(X4_4 = 65110) - Opaline Hardtear
+  - common - SetEventFlag(X4_4 = 65110) - Opaline Hardtear
+  - common - IfEventFlag(X4_4 = 65120) - Winged Crystal Tear
+  - common - SetEventFlag(X4_4 = 65120) - Winged Crystal Tear
+  - common - IfEventFlag(X4_4 = 65130) - Thorny Cracked Tear
+  - common - SetEventFlag(X4_4 = 65130) - Thorny Cracked Tear
+  - common - IfEventFlag(X4_4 = 65140) - Spiked Cracked Tear
+  - common - SetEventFlag(X4_4 = 65140) - Spiked Cracked Tear
+  - common - IfEventFlag(X4_4 = 65150) - Windy Crystal Tear
+  - common - SetEventFlag(X4_4 = 65150) - Windy Crystal Tear
+  - common - IfEventFlag(X4_4 = 65160) - Ruptured Crystal Tear
+  - common - SetEventFlag(X4_4 = 65160) - Ruptured Crystal Tear
+  - common - IfEventFlag(X4_4 = 65170) - Ruptured Crystal Tear
+  - common - SetEventFlag(X4_4 = 65170) - Ruptured Crystal Tear
+  - common - IfEventFlag(X4_4 = 65180) - Leaden Hardtear
+  - common - SetEventFlag(X4_4 = 65180) - Leaden Hardtear
+  - common - IfEventFlag(X4_4 = 65190) - Twiggy Cracked Tear
+  - common - SetEventFlag(X4_4 = 65190) - Twiggy Cracked Tear
+  - common - IfEventFlag(X4_4 = 65200) - Crimsonwhorl Bubbletear
+  - common - SetEventFlag(X4_4 = 65200) - Crimsonwhorl Bubbletear
+  - common - IfEventFlag(X4_4 = 65210) - Strength-knot Crystal Tear
+  - common - SetEventFlag(X4_4 = 65210) - Strength-knot Crystal Tear
+  - common - IfEventFlag(X4_4 = 65220) - Dexterity-knot Crystal Tear
+  - common - SetEventFlag(X4_4 = 65220) - Dexterity-knot Crystal Tear
+  - common - IfEventFlag(X4_4 = 65230) - Intelligence-knot Crystal Tear
+  - common - SetEventFlag(X4_4 = 65230) - Intelligence-knot Crystal Tear
+  - common - IfEventFlag(X4_4 = 65240) - Faith-knot Crystal Tear
+  - common - SetEventFlag(X4_4 = 65240) - Faith-knot Crystal Tear
+  - common - IfEventFlag(X4_4 = 65250) - Cerulean Hidden Tear
+  - common - SetEventFlag(X4_4 = 65250) - Cerulean Hidden Tear
+  - common - IfEventFlag(X4_4 = 65260) - Stonebarb Cracked Tear
+  - common - SetEventFlag(X4_4 = 65260) - Stonebarb Cracked Tear
+  - common - IfEventFlag(X4_4 = 65270) - Purifying Crystal Tear
+  - common - SetEventFlag(X4_4 = 65270) - Purifying Crystal Tear
+  - common - IfEventFlag(X4_4 = 65280) - Flame-Shrouding Cracked Tear
+  - common - SetEventFlag(X4_4 = 65280) - Flame-Shrouding Cracked Tear
+  - common - IfEventFlag(X4_4 = 65290) - Magic-Shrouding Cracked Tear
+  - common - SetEventFlag(X4_4 = 65290) - Magic-Shrouding Cracked Tear
+  - common - IfEventFlag(X4_4 = 65300) - Lightning-Shrouding Cracked Tear
+  - common - SetEventFlag(X4_4 = 65300) - Lightning-Shrouding Cracked Tear
+  - common - IfEventFlag(X4_4 = 65310) - Holy-Shrouding Cracked Tear
+  - common - SetEventFlag(X4_4 = 65310) - Holy-Shrouding Cracked Tear
 - ID: 6901
   Comment: Lots of item update things, running only once (per NG?)
-  ItemTemplate:
+  FlagTemplate:
   - Type: remove
     EventFlag: 66000 66080 66100 66130 66150 66160 66170 66180 66400 66410 66420 66470 66480 66710 66730 66750 66760 66780 68000 68020 10007450 10007452 15001270 15001280 1036487400 1038547100 1043527500 1044327410
   DebugInfo:
+  - EventFlags 66000 66080 66100 66130 66150 66160 66170 66180 66400 66410 66420 66470 66480 66710 66730 66750 66760 66780 68000 68020 10007450 10007452 15001270 15001280 1036487400 1038547100 1043527500 1044327410
   - common - IfEventFlag(68000) - Ancient Dragon Apostle's Cookbook [1]
   - common - IfEventFlag(68020) - Ancient Dragon Apostle's Cookbook [4]
   - common - SetEventFlag(66000) - Cracked Pot
@@ -755,10 +1380,11 @@ ItemEvents:
   - common - SetEventFlag(10007450) - Chrysalids' Memento
 - ID: 6902
   Comment: Manages cracked pots
-  ItemTemplate:
+  FlagTemplate:
   - Type: remove
     EventFlag: 66000 66010 66020 66030 66060 66070 66080 66090 66100 66110 66120 66130 66140 66150 66160 66170 66180 66190
   DebugInfo:
+  - EventFlags 66000 66010 66020 66030 66060 66070 66080 66090 66100 66110 66120 66130 66140 66150 66160 66170 66180 66190
   - common - SetEventFlag(66000) - Cracked Pot
   - common - SetEventFlag(66010) - Cracked Pot
   - common - SetEventFlag(66020) - Cracked Pot
@@ -779,10 +1405,11 @@ ItemEvents:
   - common - SetEventFlag(66190) - Cracked Pot
 - ID: 6903
   Comment: Manages ritual pots
-  ItemTemplate:
+  FlagTemplate:
   - Type: remove
     EventFlag: 66400 66410 66420 66430 66440 66450 66460 66470 66480 66490
   DebugInfo:
+  - EventFlags 66400 66410 66420 66430 66440 66450 66460 66470 66480 66490
   - common - SetEventFlag(66400) - Ritual Pot
   - common - SetEventFlag(66410) - Ritual Pot
   - common - SetEventFlag(66420) - Ritual Pot
@@ -795,10 +1422,11 @@ ItemEvents:
   - common - SetEventFlag(66490) - Ritual Pot
 - ID: 6904
   Comment: Manages bottles
-  ItemTemplate:
+  FlagTemplate:
   - Type: remove
     EventFlag: 66700 66710 66720 66730 66740 66750 66760 66770 66780 66790
   DebugInfo:
+  - EventFlags 66700 66710 66720 66730 66740 66750 66760 66770 66780 66790
   - common - SetEventFlag(66700) - Perfume Bottle
   - common - SetEventFlag(66710) - Perfume Bottle
   - common - SetEventFlag(66720) - Perfume Bottle
@@ -810,11 +1438,12 @@ ItemEvents:
   - common - SetEventFlag(66780) - Perfume Bottle
   - common - SetEventFlag(66790) - Perfume Bottle
 - ID: 6905
-  Comment: One-time event for setting rune get flags (and making them unavailable) based on boss defeat flags. 177 is from flag hack in scraper. TODO delete this?
-  ItemTemplate:
+  Comment: One-time event for setting rune get flags (and making them unavailable) based on boss defeat flags. 177 is from flag hack in scraper. Probably fine to delete
+  FlagTemplate:
   - Type: remove
     EventFlag: 171 172 173 174 175 176 177 197 510010 510040 510120 510200 510220 510300
   DebugInfo:
+  - EventFlags 171 172 173 174 175 176 177 197 510010 510040 510120 510200 510220 510300
   - common - SkipIfEventFlag(510010) - Remembrance of the Grafted
   - common - SetEventFlag(171) - Godrick's Great Rune
   - common - SkipIfEventFlag(510300) - Remembrance of the Starscourge
@@ -830,23 +1459,25 @@ ItemEvents:
   - common - SkipIfEventFlag(197) - Remembrance of the Full Moon Queen
   - common - SetEventFlag(177) - Great Rune of the Unborn
 - ID: 6906
-  Comment: Another default-giving event, also maanges object states (spirit springs?) and gives the player an unused item and the knight item
-  ItemTemplate:
+  Comment: Another default-giving event, also manages object states (spirit springs?) and gives the player an unused item and the knight item
+  FlagTemplate:
   - Type: remove
     EventFlag: 520040
   DebugInfo:
+  - EventFlags 520040
   - common - SkipIfEventFlag(520040) - Banished Knight Engvall
 - ID: 65810
-  Comment: Ash of War dupe flags
-  ItemTemplate:
+  Comment: Ash of War dupe flags. X8_4 could be used if there's both an AoW and custom weapon but that seems to be not the case
+  FlagTemplate:
   - Type: ashdupe
     Comment: Requires a direct event edit to make sure we observe transition from off->on
   - Type: itemarg
     EventFlag: 100750 100760 100770 100780 100790 100800 100810 100820 100830 100840 100850 100860 120000 120010 120020 130340 290150 290290 400061 400163 400235 400309 400358 510100 510140 510810 540100 540104 540108 540112 540116 540118 540120 540140 540170 540172 540200 540202 540204 540206 540208 540210 540224 540238 540272 540300 540302 540304 540306 540308 540310 540314 540316 540318 540332 540334 540372 540402 540404 540406 540408 540410 540412 540414 540418 540510 540516 540524 540630 540646 540660 540686 580360 16007020 30107100 1035467700 1035507090 1036487400 1039437400 1039517200 1042377110 1043357500 1043377400 1043397500 1044327410 1046367700 1047387700 1048517700 1049377100 1051537600 1052417100
     EventFlagArg: X4
   DebugInfo:
+  - EventFlags 100750 100760 100770 100780 100790 100800 100810 100820 100830 100840 100850 100860 120000 120010 120020 130340 290150 290290 400061 400163 400235 400309 400358 510100 510140 510810 540100 540104 540108 540112 540116 540118 540120 540140 540170 540172 540200 540202 540204 540206 540208 540210 540224 540238 540272 540300 540302 540304 540306 540308 540310 540314 540316 540318 540332 540334 540372 540402 540404 540406 540408 540410 540412 540414 540418 540510 540516 540524 540630 540646 540660 540686 580360 16007020 30107100 1035467700 1035507090 1036487400 1039437400 1039517200 1042377110 1043357500 1043377400 1043397500 1044327410 1046367700 1047387700 1048517700 1049377100 1051537600 1052417100
   - 'common - IfEventFlag(X4_4 = 100750) - Ash of War: Impaling Thrust'
-  - common - IfEventFlag(X4_4 = 400163) - ?ITEM? (6:5030)
+  - common - IfEventFlag(X4_4 = 400163) - Nagakiba
   - 'common - IfEventFlag(X4_4 = 100760) - Ash of War: Spinning Slash'
   - 'common - IfEventFlag(X4_4 = 1043377400) - Ash of War: Repeating Thrust'
   - 'common - IfEventFlag(X4_4 = 540418) - Ash of War: Double Slash'
@@ -865,12 +1496,12 @@ ItemEvents:
   - 'common - IfEventFlag(X4_4 = 540224) - Ash of War: Barbaric Roar'
   - 'common - IfEventFlag(X4_4 = 100800) - Ash of War: War Cry'
   - "common - IfEventFlag(X4_4 = 1051537600) - Ash of War: Troll's Roar"
-  - common - IfEventFlag(X4_4 = 400309) - Blackguard's Iron Mask, Blackguard's Bell Bearing, ?ITEM? (6:5040)
+  - common - IfEventFlag(X4_4 = 400309) - Blackguard's Iron Mask, Blackguard's Bell Bearing, Iron Ball
   - 'common - IfEventFlag(X4_4 = 100810) - Ash of War: Endure'
   - 'common - IfEventFlag(X4_4 = 540202) - Ash of War: Charge Forth'
   - 'common - IfEventFlag(X4_4 = 540630) - Ash of War: Square Off'
   - 'common - IfEventFlag(X4_4 = 1036487400) - Nightrider Glaive, Ash of War: Giant Hunt'
-  - common - IfEventFlag(X4_4 = 400061) - Raw Meat Dumpling, Shabriri Grape, ?ITEM? (6:5000)
+  - common - IfEventFlag(X4_4 = 400061) - Raw Meat Dumpling, Shabriri Grape, Banished Knight's Halberd +8
   - 'common - IfEventFlag(X4_4 = 540170) - Ash of War: Storm Assault'
   - 'common - IfEventFlag(X4_4 = 540172) - Ash of War: Stormcaller'
   - 'common - IfEventFlag(X4_4 = 100830) - Ash of War: Storm Blade'
@@ -888,7 +1519,7 @@ ItemEvents:
   - 'common - IfEventFlag(X4_4 = 540310) - Ash of War: Lightning Ram'
   - "common - IfEventFlag(X4_4 = 510810) - Loretta's Greatbow, Ash of War: Loretta's Slash"
   - 'common - IfEventFlag(X4_4 = 120000) - Ash of War: Spinning Weapon'
-  - common - IfEventFlag(X4_4 = 400358) - ?ITEM? (6:5010)
+  - common - IfEventFlag(X4_4 = 400358) - Rogier's Rapier +8
   - 'common - IfEventFlag(X4_4 = 120010) - Ash of War: Glintstone Pebble'
   - 'common - IfEventFlag(X4_4 = 1043357500) - Ash of War: Gravitas'
   - 'common - IfEventFlag(X4_4 = 1035507090) - Ash of War: Carian Grandeur'
@@ -936,89 +1567,133 @@ ItemEvents:
   - 'common - IfEventFlag(X4_4 = 540334) - Ash of War: Through and Through'
   - 'common - IfEventFlag(X4_4 = 540646) - Ash of War: Enchanted Shot'
   - 'common - IfEventFlag(X4_4 = 580360) - Ash of War: Rain of Arrows'
+- ID: 65910
+  Comment: Ash of War dupe flags from DLC, it's the same event
+  FlagTemplate:
+  - Type: ashdupe
+  - Type: itemargdlc
+    EventFlag: 280990 290320 400594 400696 400712 400730 530855 530965 540900 540902 540904 540906 540910 540916 20007410 21017150 21017991 21027020 40007900 2045437700 2045447010 2046477150 2047407980 2047427700 2048447810
+    EventFlagArg: X4
+  DebugInfo:
+  - EventFlags 280990 290320 400594 400696 400712 400730 530855 530965 540900 540902 540904 540906 540910 540916 20007410 21017150 21017991 21027020 40007900 2045437700 2045447010 2046477150 2047407980 2047427700 2048447810
+  - 'common - IfEventFlag(X4_4 = 2046477150) - Ash of War: Dryleaf Whirlwind'
+  - 'common - IfEventFlag(X4_4 = 530965) - Ash of War: Aspects of the Crucible: Wings'
+  - common - IfEventFlag(X4_4 = 290320) - Sword Lance
+  - common - IfEventFlag(X4_4 = 400730) - Dane's Hat, Dryleaf Arts
+  - 'common - IfEventFlag(X4_4 = 540902) - Ash of War: Piercing Throw'
+  - 'common - IfEventFlag(X4_4 = 540910) - Ash of War: Scattershot Throw'
+  - 'common - IfEventFlag(X4_4 = 21027020) - Ash of War: Wall of Sparks'
+  - 'common - IfEventFlag(X4_4 = 540904) - Ash of War: Rolling Sparks'
+  - 'common - IfEventFlag(X4_4 = 540906) - Ash of War: Raging Beast'
+  - common - IfEventFlag(X4_4 = 2047407980) - Beast Claw
+  - common - IfEventFlag(X4_4 = 2047427700) - Backhand Blade
+  - "common - IfEventFlag(X4_4 = 400594) - Leda's Rune, Ash of War: Swift Slash"
+  - common - IfEventFlag(X4_4 = 2045447010) - Great Katana
+  - 'common - IfEventFlag(X4_4 = 2048447810) - Ash of War: Wing Stance'
+  - 'common - IfEventFlag(X4_4 = 40007900) - Ash of War: Blinkbolt'
+  - 'common - IfEventFlag(X4_4 = 400696) - Prayer Room Key, Ash of War: Flame Skewer'
+  - "common - IfEventFlag(X4_4 = 2045437700) - Ash of War: Savage Lion's Claw"
+  - 'common - IfEventFlag(X4_4 = 280990) - Ash of War: Divine Beast Frost Stomp'
+  - 'common - IfEventFlag(X4_4 = 21017991) - Winged Serpent Helm, Ash of War: Flame Spear'
+  - 'common - IfEventFlag(X4_4 = 540900) - Ash of War: Carian Sovereignty'
+  - 'common - IfEventFlag(X4_4 = 20007410) - Ash of War: Shriek of Sorrow'
+  - 'common - IfEventFlag(X4_4 = 530855) - Ash of War: Ghostflame Call'
+  - 'common - IfEventFlag(X4_4 = 540916) - Ash of War: The Poison Flower Blooms Twice'
+  - common - IfEventFlag(X4_4 = 400712) - Igon's Greatbow, Igon's Helm, Igon's Armor, Igon's Gauntlets, Igon's Loincloth, Igon's Bell Bearing, Igon's Greatbow
+  - common - IfEventFlag(X4_4 = 21017150) - Dueling Shield
 - ID: 10010791
   Comment: Exchanging favor item at Chapel
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     Comment: For awarded item lot 100330 (also given in other places)
     EventFlag: 400033
   DebugInfo:
+  - EventFlags 400031 400033
   - m10_01_00_00 (Chapel of Anticipation) - EndIfEventFlag(400033) - Lord of Blood's Favor
   - m10_01_00_00 (Chapel of Anticipation) - EndIfEventFlag(400031) - Lord of Blood's Favor
 - ID: 10010792
   Comment: Makes world pots inaccessible if picked as a starting item
-  ItemTemplate:
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 66150 66170 66180
   DebugInfo:
+  - EventFlags 66150 66170 66180
   - m10_01_00_00 (Chapel of Anticipation) - SetEventFlag(66150) - Cracked Pot
   - m10_01_00_00 (Chapel of Anticipation) - SetEventFlag(66170) - Cracked Pot
   - m10_01_00_00 (Chapel of Anticipation) - SetEventFlag(66180) - Cracked Pot
 - ID: 10012504
   Comment: Unused event
-  ItemTemplate:
+  FlagTemplate:
   - Type: default
     EventFlag: 60210
   DebugInfo:
+  - EventFlags 60210
   - m10_01_00_00 (Chapel of Anticipation) - EndIfEventFlag(60210) - Tarnished's Wizened Finger
   - m10_01_00_00 (Chapel of Anticipation) - IfEventFlag(60210) - Tarnished's Wizened Finger
 - ID: 11002696
   Comment: Unused event that only gives Sanctified Whetblade if mask not gotten
-  ItemTemplate:
+  FlagTemplate:
   - Type: default
     EventFlag: 11007992
   DebugInfo:
+  - EventFlags 11007992
   - m11_00_00_00 (Leyndell, Royal Capital) - EndIfEventFlag(11007992) - Omensmirk Mask
 - ID: 11053707
   Comment: If player has collected Mending Rune but not armor, set a flag used for character enable/treasure state
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 9500 400500
   DebugInfo:
+  - EventFlags 9500 400500
   - m11_05_00_00 (Leyndell, Ashen Capital) - EndIfEventFlag(400500) - Goldmask's Rags, Gold Bracelets, Gold Waistwrap
   - m11_05_00_00 (Leyndell, Ashen Capital) - EndIfEventFlag(9500) - Mending Rune of Perfect Order
 - ID: 11053708
   Comment: Treasure for Corhyn item lot
-  ItemTemplate:
+  FlagTemplate:
   - Type: locarg
     EventFlag: 400370
     EventFlagArg: X12 X16
   DebugInfo:
+  - EventFlags 400370
   - m11_05_00_00 (Leyndell, Ashen Capital) - IfBatchEventFlags(X12_4 = 400370, X16_4 = 400370) - Flail, Corhyn's Robe, Corhyn's Bell Bearing
 - ID: 11100704
   Comment: Makes memento inaccessible and hood accessible (both in Stormveil). This might mean memento spot could be inaccessible if you give it elsewhere
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 10007450 10007452
   DebugInfo:
+  - EventFlags 10007450 10007452
   - m11_10_00_00 (Roundtable Hold) - SetEventFlag(10007450) - Chrysalids' Memento
   - m11_10_00_00 (Roundtable Hold) - SetEventFlag(10007452) - Crimson Hood
 - ID: 11100731
   Comment: Enable character/objects based on having drop items
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400349
   DebugInfo:
+  - EventFlags 400349
   - m11_10_00_00 (Roundtable Hold) - GotoIfBatchEventFlags(400349, 400349) - Twinned Helm, Twinned Armor, Twinned Gauntlets, Twinned Greaves, D's Bell Bearing
 - ID: 11100750
   Comment: Rogier states at roundable. Makes letter inaccessible if not 11109522 ("so you've met D"), and shows treasure based on having his items or not.
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     Comment: This is a range so it should be collapsed. 400356 400357 400358 are not listed as second one takes precedence
     EventFlag: 400359
   DebugInfo:
+  - EventFlags 400356 400357 400358 400359
   - m11_10_00_00 (Roundtable Hold) - SetEventFlag(400356) - Rogier's Letter
   - m11_10_00_00 (Roundtable Hold) - GotoIfBatchEventFlags(400356, 400359) - Rogier's Letter (400356)
   - m11_10_00_00 (Roundtable Hold) - GotoIfBatchEventFlags(400356, 400359) - Black Knifeprint (400357)
-  - m11_10_00_00 (Roundtable Hold) - GotoIfBatchEventFlags(400356, 400359) - ?ITEM? (6:5010) (400358)
+  - m11_10_00_00 (Roundtable Hold) - GotoIfBatchEventFlags(400356, 400359) - Rogier's Rapier +8 (400358)
   - m11_10_00_00 (Roundtable Hold) - GotoIfBatchEventFlags(400356, 400359) - Spellblade's Pointed Hat, Spellblade's Traveling Attire, Spellblade's Gloves, Spellblade's Trousers, Rogier's Bell Bearing (400359)
 - ID: 11100791
   Comment: Sets maiden shop QWC flags after Maliketh
-  ItemTemplate:
+  FlagTemplate:
   - Type: locarg
     EventFlag: 68210 400282 400283 400285
     EventFlagArg: X0
   DebugInfo:
+  - EventFlags 68210 400282 400283 400285
   - m11_10_00_00 (Roundtable Hold) - EndIfEventFlag(X0_4 = 400282) - Black Flame's Protection
   - m11_10_00_00 (Roundtable Hold) - IfEventFlag(X0_4 = 400282) - Black Flame's Protection
   - m11_10_00_00 (Roundtable Hold) - SkipIfEventFlag(X0_4 = 400282) - Black Flame's Protection
@@ -1033,103 +1708,234 @@ ItemEvents:
   - m11_10_00_00 (Roundtable Hold) - SkipIfEventFlag(X0_4 = 400285) - Law of Causality
 - ID: 11100796
   Comment: Makes items available after two Great Runes if not already acquired
-  ItemTemplate:
-  - Type: fixeditem
+  FlagTemplate:
+  - Type: loc
     EventFlag: 60020 60120 60130
   DebugInfo:
+  - EventFlags 60020 60120 60130
   - m11_10_00_00 (Roundtable Hold) - IfEventFlag(60020) - Flask of Wondrous Physick
   - m11_10_00_00 (Roundtable Hold) - IfEventFlag(60120) - Crafting Kit
   - m11_10_00_00 (Roundtable Hold) - IfEventFlag(60130) - Whetstone Knife
 - ID: 11100797
   Comment: Makes items available (after Maliketh?) if not already acquired. This is one from Enia.
-  ItemTemplate:
-  - Type: fixeditem
+  FlagTemplate:
+  - Type: loc
     EventFlag: 60500
   DebugInfo:
+  - EventFlags 60500
   - m11_10_00_00 (Roundtable Hold) - IfEventFlag(60500) - Talisman Pouch
 - ID: 12032500
   Comment: Depths to Leyndell entry
-  ItemTemplate:
-  - Type: leyndell
-- ID: 1045522500
-  Comment: Outskirts to Leyndell entry. Occurs in both _00 and _10 maps, but we only edit the initialized one.
-  ItemTemplate:
-  - Type: leyndell
+  Template:
+  - Type: loc
+    Filter:
+      Gate: leyndell
+    CondFlag: 182
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 12032501, OFF)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 12032502, OFF)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 12032504, OFF)
+  - SkipIfEventFlag(3, ON, TargetEventFlagType.EventIDSlotNumber, 0)
+  - DeleteAssetfollowingSFX(12031500, true)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 12032503, OFF)
+  - WaitFixedTimeFrames(1)
+  - IfMultiplayerState(OR_11, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_11, MultiplayerState.MultiplayerPending)
+  - SkipIfConditionGroupStateUncompiled(1, FAIL, OR_11)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 12032504, ON)
+  - IfMultiplayerState(OR_10, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_10, MultiplayerState.MultiplayerPending)
+  - IfEventFlag(OR_10, OFF, TargetEventFlagType.EventFlag, 182)
+  - IfEventFlag(OR_10, OFF, TargetEventFlagType.EventFlag, 105)
+  - IfEventFlag(OR_10, ON, TargetEventFlagType.EventFlag, 300)
+  - IfEventFlag(OR_10, OFF, TargetEventFlagType.EventFlag, 12030800)
+  - IfEventFlag(OR_10, ON, TargetEventFlagType.EventFlag, 12032870)
+  - GotoIfConditionGroupStateUncompiled(Label.Label1, PASS, OR_10)
+  - GotoIfEventFlag(Label.Label1, ON, TargetEventFlagType.EventFlag, 12032503)
+  - CreateAssetfollowingSFX(12031500, 200, 806870)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 12032503, ON)
+  - Label1()
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfMultiplayerState(OR_01, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_01, MultiplayerState.MultiplayerPending)
+  - IfConditionGroup(AND_01, FAIL, OR_01)
+  - IfActionButtonInArea(AND_01, 9140, 12031500)
+  - IfMultiplayerState(OR_04, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_04, MultiplayerState.MultiplayerPending)
+  - IfEventFlag(OR_04, OFF, TargetEventFlagType.EventFlag, 182)
+  - IfEventFlag(OR_04, OFF, TargetEventFlagType.EventFlag, 105)
+  - IfEventFlag(OR_04, ON, TargetEventFlagType.EventFlag, 300)
+  - IfConditionGroup(AND_04, PASS, OR_04)
+  - IfEventFlag(AND_04, ON, TargetEventFlagType.EventFlag, 12032503)
+  - IfEventFlag(AND_07, ON, TargetEventFlagType.EventFlag, 12032504)
+  - IfMultiplayerState(OR_08, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_08, MultiplayerState.MultiplayerPending)
+  - IfConditionGroup(AND_07, FAIL, OR_08)
+  - IfEventFlag(AND_07, OFF, TargetEventFlagType.EventFlag, 12032503)
+  - IfEventFlag(OR_09, CHANGE, TargetEventFlagType.EventFlag, 182)
+  - IfEventFlag(OR_09, CHANGE, TargetEventFlagType.EventFlag, 105)
+  - IfEventFlag(OR_09, CHANGE, TargetEventFlagType.EventFlag, 300)
+  - IfEventFlag(OR_09, CHANGE, TargetEventFlagType.EventFlag, 12032870)
+  - IfEventFlag(OR_09, CHANGE, TargetEventFlagType.EventFlag, 12030800)
+  - IfConditionGroup(AND_09, PASS, OR_09)
+  - IfConditionGroup(OR_14, PASS, AND_01)
+  - IfConditionGroup(OR_14, PASS, AND_04)
+  - IfConditionGroup(OR_14, PASS, AND_07)
+  - IfConditionGroup(OR_14, PASS, AND_09)
+  - IfConditionGroup(MAIN, PASS, OR_14)
+  - GotoIfConditionGroupStateCompiled(Label.Label3, PASS, AND_01)
+  - GotoIfConditionGroupStateCompiled(Label.Label2, FAIL, AND_04)
+  - DeleteAssetfollowingSFX(12031500, true)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 12032503, OFF)
+  - Label2()
+  - WaitFixedTimeSeconds(0.033)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label3()
+  - GotoIfEventFlag(Label.Label10, OFF, TargetEventFlagType.EventFlag, 12030800)
+  - GotoIfEventFlag(Label.Label10, ON, TargetEventFlagType.EventFlag, 12032870)
+  - GotoIfEventFlag(Label.Label10, ON, TargetEventFlagType.EventFlag, 300)
+  - GotoIfEventFlag(Label.Label4, OFF, TargetEventFlagType.EventFlag, 182)
+  - GotoIfEventFlag(Label.Label5, ON, TargetEventFlagType.EventFlag, 105)
+  - Label4()
+  - DisplayGenericDialog(20004, PromptType.YESNO, NumberofOptions.NoButtons, 12031500, 3)
+  - WaitFixedTimeSeconds(1)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label10()
+  - DisplayGenericDialog(30040, PromptType.YESNO, NumberofOptions.NoButtons, 12031500, 3)
+  - WaitFixedTimeSeconds(1)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label5()
+  - DisplayGenericDialogAndSetEventFlags(4300, PromptType.YESNO, NumberofOptions.TwoButtons, 12031500, 3, 12032501, 12032502, 12032502)
+  - GotoIfEventFlag(Label.Label6, ON, TargetEventFlagType.EventFlag, 12032501)
+  - WaitFixedTimeSeconds(1)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label6()
+  - IfMultiplayerState(OR_15, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_15, MultiplayerState.MultiplayerPending)
+  - EndIfConditionGroupStateUncompiled(EventEndType.Restart, PASS, OR_15)
+  - RotateCharacter(10000, 12031500, -1, true)
+  - ForceAnimationPlayback(10000, 60490, false, false, false, ComparisonType.Equal, 1)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 11000600, ON)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 11000603, ON)
+  - WaitFixedTimeSeconds(3)
+  - WarpPlayer(11, 0, 0, 0, 11002500, 0)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label16()
+  - IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, 12030800)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label18()
+  - DeleteAssetfollowingSFX(12031500, true)
+  - IfEventFlag(MAIN, OFF, TargetEventFlagType.EventFlag, 12032870)
+  - EndUnconditionally(EventEndType.Restart)
 - ID: 12042400
-  Comment: Allows player to pass to Moonlight Altar. This can't use item id since you give it to Ranni.
-  ItemTemplate:
+  Comment: Allows player to pass to Moonlight Altar. This can't use item id since you give it to Ranni. This is also the only key item use of flags.
+  FlagTemplate:
   - Type: itemflag
     EventFlag: 114
     ItemCond: 5
   DebugInfo:
+  - EventFlags 114
   - m12_04_00_00 (Ainsel River - Boss) - GotoIfEventFlag(114) - Dark Moon Ring
   - m12_04_00_00 (Ainsel River - Boss) - IfEventFlag(114) - Dark Moon Ring
 - ID: 13003711
   Comment: Once fighting Alexander, makes Warrior Jar Shard inaccessible. Then if not already gotten, make his innards etc accessible via treasure
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400174 400175
   DebugInfo:
+  - EventFlags 400174 400175
   - m13_00_00_00 (Crumbling Farum Azula) - SetEventFlag(400175) - Warrior Jar Shard
   - m13_00_00_00 (Crumbling Farum Azula) - SkipIfEventFlag(400174) - Shard of Alexander, Alexander's Innards
 - ID: 14000712
   Comment: Item lot for Jerren
-  ItemTemplate:
+  FlagTemplate:
   - Type: singleton
   - Type: loc
     EventFlag: 400401
   DebugInfo:
+  - EventFlags 400401
   - m14_00_00_00 (Academy of Raya Lucaria) - EndIfEventFlag(400401) - Eccentric's Hood, Eccentric's Armor, Eccentric's Manchettes, Eccentric's Breeches
 - ID: 14000731
   Comment: Item lot for Sellen
-  ItemTemplate:
+  FlagTemplate:
   - Type: singleton
   - Type: loc
     EventFlag: 400106
   DebugInfo:
+  - EventFlags 400106
   - m14_00_00_00 (Academy of Raya Lucaria) - EndIfEventFlag(400106) - Sellen's Bell Bearing
+- ID: 14002080
+  Comment: Volcano Manor abduction
+  Template:
+  - Type: remove
+    Filter:
+      Gate: deathless
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfInoutsideArea(AND_01, InsideOutsideState.Inside, 10000, 14002080, 1)
+  - IfCharacterHasSpEffect(AND_01, 10000, 14307, true, ComparisonType.Equal, 1)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - SetPlayerRespawnPoint(16002080)
+  - SaveRequest(0)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 16000540, ON)
 - ID: 15000713
   Comment: Item lot for Miquella's Needle, if you also have 8196 version of Unalloyed Gold Needle, and action button
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400324
   DebugInfo:
+  - EventFlags 400324
   - m15_00_00_00 (Miquella's Haligtree) - EndIfEventFlag(400324) - Miquella's Needle
   - m15_00_00_00 (Miquella's Haligtree) - IfEventFlag(400324) - Miquella's Needle
 - ID: 15000714
   Comment: Awards Milicent's Prosthesis after 7611
-  ItemTemplate:
+  FlagTemplate:
   - Type: singleton
   - Type: loc
     EventFlag: 400323
   DebugInfo:
+  - EventFlags 400323
   - m15_00_00_00 (Miquella's Haligtree) - EndIfEventFlag(400323) - Millicent's Prosthesis
 - ID: 16002690
   Comment: Unsets Serpent-Hunter get flag when showing the treasure (flag 16002696, also used by checked item award event, checks for weapon). TODO don't randomize
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 16007690
   DebugInfo:
+  - EventFlags 16007690
   - m16_00_00_00 (Volcano Manor) - SetEventFlag(16007690) - Serpent-Hunter
 - ID: 16002855
   Comment: Enabling treasure if flag not set
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 16007710
   DebugInfo:
+  - EventFlags 16007710
   - m16_00_00_00 (Volcano Manor) - SkipIfEventFlag(16007710) - Serpent's Amnion
 - ID: 16003702
   Comment: Upon receiving, sets 3118 if in initial state (3105), for Tanith quest. This re-loops the common event (3119)
-  ItemTemplate:
+  FlagTemplate:
   - Type: itemarg
     Comment: Same as 3119
     EventFlag: 400073
     EventFlagArg: X0
   DebugInfo:
+  - EventFlags 400073
   - m16_00_00_00 (Volcano Manor) - IfEventFlag(X0_4 = 400073) - Letter from Volcano Manor
+- ID: 16003707
+  Comment: Unsets 16000700 when both items are acquired, used in separate event for giving lot 100725, which has these items in Tanith's chair
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400070 400072
+  DebugInfo:
+  - EventFlags 400070 400072
+  - m16_00_00_00 (Volcano Manor) - IfEventFlag(400070) - Tonic of Forgetfulness
+  - m16_00_00_00 (Volcano Manor) - IfEventFlag(400072) - Drawing-Room Key
 - ID: 16003709
   Comment: Sets 16009267-16009269 if you have the the letter, and done the quest, but not the reward.
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     Comment: Letters
     EventFlag: 400073 400074 400075
@@ -1137,6 +1943,7 @@ ItemEvents:
     Comment: Rewards
     EventFlag: 400076 400077 400078
   DebugInfo:
+  - EventFlags 400073 400074 400075 400076 400077 400078
   - m16_00_00_00 (Volcano Manor) - EndIfEventFlag(400078) - Taker's Cameo
   - m16_00_00_00 (Volcano Manor) - IfEventFlag(400075) - Red Letter
   - m16_00_00_00 (Volcano Manor) - IfEventFlag(400078) - Taker's Cameo
@@ -1146,95 +1953,329 @@ ItemEvents:
   - m16_00_00_00 (Volcano Manor) - IfEventFlag(400076) - Magma Shot
 - ID: 16003743
   Comment: Enables treasure interaction for Bernahl stand-in 16001712 if flag not set
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400291
   DebugInfo:
+  - EventFlags 400291
   - m16_00_00_00 (Volcano Manor) - IfEventFlag(400291) - Gelmir's Fury
 - ID: 18000020
-  Comment: Awards flask in Graveyard
-  ItemTemplate:
+  Comment: Awards flask in Graveyard. Difficult to randomize since the flag is explicitly set after the lot, and used as a condition for not repeating the event
+  FlagTemplate:
   - Type: fixeditem
     EventFlag: 60000
   DebugInfo:
+  - EventFlags 60000
   - m18_00_00_00 (Stranded Graveyard) - IfEventFlag(60000) - Flask of Crimson Tears, Flask of Cerulean Tears
   - m18_00_00_00 (Stranded Graveyard) - SetEventFlag(60000) - Flask of Crimson Tears, Flask of Cerulean Tears
+- ID: 20000732
+  Comment: Treasure SFX and award on action button for Grandam
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 400720 400721
+    EventFlagArg: X12 X16
+  - Type: locarg
+    EventFlag: 400721
+    EventFlagArg: X32_4
+  DebugInfo:
+  - EventFlags 400720 400721
+  - m20_00_00_00 (Belurat, Tower Settlement) - IfBatchEventFlags(X12_4 = 400720, X16_4 = 400721) - Scorpion Stew (400720)
+  - m20_00_00_00 (Belurat, Tower Settlement) - IfBatchEventFlags(X12_4 = 400720, X16_4 = 400721) - Watchful Spirit (400721)
+  - m20_00_00_00 (Belurat, Tower Settlement) - SkipIfEventFlag(X32_4 = 400721) - Watchful Spirit
+- ID: 20010197
+  Comment: Arriving in Enir-Ilim
+  Template:
+  - Type: loc
+    Filter:
+      Gate: messmerskindling
+    Removes:
+    - RemoveItemFromPlayer
+  DebugInfo:
+  - m20_01_00_00 (Enir-Ilim) - RemoveItemFromPlayer(2008021) - Messmer's Kindling
+  DebugCommands:
+  - SetNetworkSyncState(Disabled)
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 20010197)
+  - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 20010196)
+  - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 330)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - ForceAnimationPlayback(10000, 63010, false, false, false, ComparisonType.Equal, 1)
+  - SpawnOneshotSFX(TargetEntityType.Character, 10000, 900, 820685)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 20010197, ON)
+  - RemoveItemFromPlayer(ItemType.Goods, 2008021, 1)
+  - EndUnconditionally(EventEndType.End)
+- ID: 21002600
+  Comment: Getting painting object, copy of 90005632
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 580120
+    EventFlagArg: X0
+  DebugInfo:
+  - EventFlags 580120
+  - m21_00_00_00 (Shadow Keep) - EndIfEventFlag(X0_4 = 580120) - "Domain of Dragons" Painting
 - ID: 30102490
   Comment: Awards chariot crash lot
-  ItemTemplate:
+  FlagTemplate:
   - Type: singleton
   - Type: loc
     EventFlag: 30107100
   DebugInfo:
+  - EventFlags 30107100
   - "m30_10_00_00 (Auriza Hero's Grave) - EndIfEventFlag(30107100) - Tree Sentinel Helm, Tree Sentinel Armor, Tree Sentinel Gauntlets, Tree Sentinel Greaves, Ash of War: Holy Ground"
 - ID: 31113700
   Comment: Enables treasure on 31110700 if flag not set
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400431
   DebugInfo:
+  - EventFlags 400431
   - m31_11_00_00 (Sellia Hideaway) - EndIfEventFlag(400431) - Lusat's Glintstone Crown, Lusat's Robe, Lusat's Manchettes, Old Sorcerer's Legwraps
+- ID: 34112150
+  Comment: Swapping Carian Study Hall
+  Template:
+  - Type: loc
+    Filter:
+      Gate: carianinvertedstatue
+    ItemUse:
+    - IfPlayerHasdoesntHaveItem(AND_09, ItemType.Goods, 8111, OwnershipState.Owns)
+    Removes:
+    - RemoveItemFromPlayer(ItemType.Goods, 8111, 1)
+  DebugInfo:
+  - m34_11_00_00 (Divine Tower of Liurnia) - IfPlayerHasdoesntHaveItem(8111) - Carian Inverted Statue
+  - m34_11_00_00 (Divine Tower of Liurnia) - RemoveItemFromPlayer(8111) - Carian Inverted Statue
+  DebugCommands:
+  - GotoIfEventFlag(Label.Label0, ON, TargetEventFlagType.EventFlag, 370)
+  - ChangeCharacterEnableState(34115150, Enabled)
+  - ChangeCharacterCollisionState(34115150, Enabled)
+  - ChangeCharacterEnableState(34115160, Disabled)
+  - ChangeCharacterCollisionState(34115160, Disabled)
+  - ChangeAssetEnableState(34116150, Enabled)
+  - ChangeAssetEnableState(34116160, Disabled)
+  - ActivateHit(34114150, Enabled)
+  - ActivateHit(34114151, Enabled)
+  - ActivateHit(34114152, Enabled)
+  - ActivateHit(34114153, Enabled)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfActionButtonInArea(AND_01, 9720, 34111150)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - IfPlayerIsInWorldType(AND_09, WorldType.OwnWorld)
+  - IfPlayerHasdoesntHaveItem(AND_09, ItemType.Goods, 8111, OwnershipState.Owns)
+  - GotoIfConditionGroupStateUncompiled(Label.Label1, PASS, AND_09)
+  - WaitFixedTimeSeconds(0.1)
+  - SkipIfPlayerIsInWorldType(1, WorldType.OtherWorld)
+  - DisplayGenericDialog(20040, PromptType.OKCANCEL, NumberofOptions.OneButton, 34111150, 3)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label1()
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 370, ON)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 9021, ON)
+  - SkipIfPlayerIsInWorldType(2, WorldType.OtherWorld)
+  - PlayCutsceneToPlayer(34110000, CutscenePlayMode.Skippable, 10000)
+  - SkipUnconditionally(1)
+  - PlayCutsceneToPlayerAndWarp(34110000, CutscenePlayMode.Skippable, 34112505, 34110000, 10000, 0, false)
+  - WaitFixedTimeRealFrames(1)
+  - ReproduceAssetAnimation(34111505, 1)
+  - RemoveItemFromPlayer(ItemType.Goods, 8111, 1)
+  - ChangeCharacterEnableState(34115150, Disabled)
+  - ChangeCharacterCollisionState(34115150, Disabled)
+  - ChangeCharacterEnableState(34115160, Enabled)
+  - ChangeCharacterCollisionState(34115160, Enabled)
+  - ChangeAssetEnableState(34116150, Disabled)
+  - ChangeAssetEnableState(34116160, Enabled)
+  - ActivateHit(34114150, Disabled)
+  - ActivateHit(34114151, Disabled)
+  - ActivateHit(34114152, Disabled)
+  - ActivateHit(34114153, Disabled)
+  - SkipIfEventFlag(1, OFF, TargetEventFlagType.EventFlag, 34110510)
+  - SetObjactState(34111512, 27002, Disabled)
+  - SkipIfEventFlag(1, OFF, TargetEventFlagType.EventFlag, 34110510)
+  - ForceAnimationPlayback(34111610, 10, false, false, false, ComparisonType.Equal, 1)
+  - SkipIfEventFlag(1, OFF, TargetEventFlagType.EventFlag, 34110515)
+  - ForceAnimationPlayback(34111615, 10, false, false, false, ComparisonType.Equal, 1)
+  - WaitFixedTimeFrames(1)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label0()
+  - ChangeCharacterEnableState(34115150, Disabled)
+  - ChangeCharacterCollisionState(34115150, Disabled)
+  - ChangeCharacterEnableState(34115160, Enabled)
+  - ChangeCharacterCollisionState(34115160, Enabled)
+  - ChangeAssetEnableState(34116150, Disabled)
+  - ChangeAssetEnableState(34116160, Enabled)
+  - ActivateHit(34114150, Disabled)
+  - ActivateHit(34114151, Disabled)
+  - ActivateHit(34114152, Disabled)
+  - ActivateHit(34114153, Disabled)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfActionButtonInArea(AND_01, 9721, 34111150)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 370, OFF)
+  - ChangeAssetEnableState(34116150, Enabled)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 9021, ON)
+  - SkipIfPlayerIsInWorldType(2, WorldType.OtherWorld)
+  - PlayCutsceneToPlayer(34110001, CutscenePlayMode.Skippable, 10000)
+  - SkipUnconditionally(1)
+  - PlayCutsceneToPlayerAndWarp(34110001, CutscenePlayMode.Skippable, 34112505, 34110000, 10000, 0, false)
+  - WaitFixedTimeRealFrames(1)
+  - ReproduceAssetAnimation(34111505, 0)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 34112155, ON)
+  - DirectlyGivePlayerItem(ItemType.Goods, 8111, 34112155, 1)
+  - ChangeCharacterEnableState(34115150, Enabled)
+  - ChangeCharacterCollisionState(34115150, Enabled)
+  - ChangeCharacterEnableState(34115160, Disabled)
+  - ChangeCharacterCollisionState(34115160, Disabled)
+  - ChangeAssetEnableState(34116150, Enabled)
+  - ChangeAssetEnableState(34116160, Disabled)
+  - ActivateHit(34114150, Enabled)
+  - ActivateHit(34114151, Enabled)
+  - ActivateHit(34114152, Enabled)
+  - ActivateHit(34114153, Enabled)
+  - SkipIfEventFlag(1, OFF, TargetEventFlagType.EventFlag, 34110510)
+  - SetObjactState(34111512, 27002, Enabled)
+  - WaitFixedTimeFrames(1)
+  - EndUnconditionally(EventEndType.Restart)
 - ID: 34142550
   Comment: Path to Forbidden Lands, shows "Sealed by Morgott the Grace-Given" if no medallion. (We can try to patch this out?)
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400001
   DebugInfo:
+  - EventFlags 400001
   - m34_14_00_00 (Divine Tower of East Altus) - IfEventFlag(400001) - Rold Medallion
 - ID: 35002504
   Comment: Shows "Sealed by Morgott the Grace-Given" if no medallion
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     Comment: The main purpose is to prevent Melina getting angry at you, so wait for the gift itself
     EventFlag: 400001
   DebugInfo:
+  - EventFlags 400001
   - m35_00_00_00 (Subterranean Shunning-Grounds) - IfEventFlag(400001) - Rold Medallion
 - ID: 35003723
   Comment: Enable Omen Set treasure if not gotten and Mending Rune gotten
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 9504 400382
   DebugInfo:
+  - EventFlags 9504 400382
   - m35_00_00_00 (Subterranean Shunning-Grounds) - EndIfEventFlag(400382) - Omen Helm, Omen Armor, Omen Gauntlets, Omen Greaves
   - m35_00_00_00 (Subterranean Shunning-Grounds) - EndIfEventFlag(9504) - Mending Rune of the Fell Curse
 - ID: 35003724
   Comment: Gives Mending Rune if not already gotten and if 35009333, set on giving all Seedbed Curses (35002726)
-  ItemTemplate:
+  FlagTemplate:
   - Type: locarg
     EventFlag: 9504
     EventFlagArg: X12 X16
   DebugInfo:
+  - EventFlags 9504
   - m35_00_00_00 (Subterranean Shunning-Grounds) - IfBatchEventFlags(X12_4 = 9504, X16_4 = 9504) - Mending Rune of the Fell Curse
 - ID: 35003725
   Comment: Dung Eater armor treasure if flag unset
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400382
   DebugInfo:
+  - EventFlags 400382
   - m35_00_00_00 (Subterranean Shunning-Grounds) - EndIfEventFlag(400382) - Omen Helm, Omen Armor, Omen Gauntlets, Omen Greaves
 - ID: 39203700
   Comment: Invasion for Great Horned Tragoth if letter in possession
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 400180
   DebugInfo:
+  - EventFlags 400180
   - m39_20_00_00 (Ruin-Strewn Precipice) - EndIfEventFlag(400180) - Letter to Patches
 - ID: 39203701
   Comment: Invasion for Great Horned Tragoth if letter in possession? Maybe unused
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 400180
   DebugInfo:
+  - EventFlags 400180
   - m39_20_00_00 (Ruin-Strewn Precipice) - EndIfEventFlag(400180) - Letter to Patches
+- ID: 40002690
+  Comment: Sword quest, not randomizzed
+  FlagTemplate:
+  - Type: default
+    EventFlag: 2045477700 2045477710 2045477720 2045477730 2045477740 2045477750 2045477760 2045477770 2045477780 2045477790 2045477800
+  DebugInfo:
+  - EventFlags 2045477700 2045477710 2045477720 2045477730 2045477740 2045477750 2045477760 2045477770 2045477780 2045477790 2045477800
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477800) - Sword of Darkness +10
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477790) - Sword of Darkness +9
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477780) - Sword of Darkness +8
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477770) - Sword of Darkness +7
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477760) - Sword of Darkness +6
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477750) - Sword of Darkness +5
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477740) - Sword of Darkness +4
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477730) - Sword of Darkness +3
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477720) - Sword of Darkness +2
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477710) - Sword of Darkness +1
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477700) - Sword of Darkness
+- ID: 40002695
+  Comment: Sword quest, not randomized
+  FlagTemplate:
+  - Type: default
+    EventFlag: 2045477700 2045477710 2045477720 2045477730 2045477740 2045477750 2045477760 2045477770 2045477780 2045477790 2045477800
+  DebugInfo:
+  - EventFlags 2045477700 2045477710 2045477720 2045477730 2045477740 2045477750 2045477760 2045477770 2045477780 2045477790 2045477800
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477800) - Sword of Darkness +10
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477790) - Sword of Darkness +9
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477780) - Sword of Darkness +8
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477770) - Sword of Darkness +7
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477760) - Sword of Darkness +6
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477750) - Sword of Darkness +5
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477740) - Sword of Darkness +4
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477730) - Sword of Darkness +3
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477720) - Sword of Darkness +2
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477710) - Sword of Darkness +1
+  - m40_00_00_00 (Fog Rift Catacombs) - SetEventFlag(2045477700) - Sword of Darkness
+- ID: 41022240
+  Comment: Enemy trigger event from pickup
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 41027320
+    EventFlagArg: X40
+  DebugInfo:
+  - EventFlags 41027320
+  - m41_02_00_00 (Lamenter's Gaol) - IfEventFlag(X40_4 = 41027320) - Gaol Lower Level Key
+- ID: 42002610
+  Comment: Unused
+  FlagTemplate:
+  - Type: default
+    EventFlag: 42007000
+  DebugInfo:
+  - EventFlags 42007000
+  - m42_00_00_00 (Ruined Forge Lava Intake) - EndIfEventFlag(42007000) - Anvil Hammer, Ancient Dragon Smithing Stone
+- ID: 42022620
+  Comment: Unused
+  FlagTemplate:
+  - Type: default
+    EventFlag: 42027000
+  DebugInfo:
+  - EventFlags 42027000
+  - m42_02_00_00 (Ruined Forge of Starfall Past) - EndIfEventFlag(42027000) - Ancient Meteoric Ore Greatsword, Ancient Dragon Smithing Stone
+- ID: 42032600
+  Comment: Unused
+  FlagTemplate:
+  - Type: default
+    EventFlag: 42037000
+  DebugInfo:
+  - EventFlags 42037000
+  - m42_03_00_00 (Taylew's Ruined Forge) - EndIfEventFlag(42037000) - Ancient Dragon Smithing Stone, Taylew the Golem Smith
 - ID: 90005110
   Comment: Exchanging Great Runes. These aren't randomized at present, but dependence on boss flag should be removed
-  ItemTemplate:
+  FlagTemplate:
   - Type: locarg
     EventFlag: 191 192 193 194 195 196
     EventFlagArg: X0
   - Type: runearg
     EventFlagArg: X0 X4
   DebugInfo:
+  - m34_10_00_00 (Divine Tower of Limgrave) - RemoveItemFromPlayer(X16_4 = 8148) - Godrick's Great Rune
+  - m34_12_00_00 (Divine Tower of West Altus) - RemoveItemFromPlayer(X16_4 = 8151) - Rykard's Great Rune
+  - m34_13_00_00 (Divine Tower of Caelid) - RemoveItemFromPlayer(X16_4 = 8149) - Radahn's Great Rune
+  - m34_14_00_00 (Divine Tower of East Altus) - RemoveItemFromPlayer(X16_4 = 8150) - Morgott's Great Rune
+  - m34_14_00_00 (Divine Tower of East Altus) - RemoveItemFromPlayer(X16_4 = 8152) - Mohg's Great Rune
+  - m34_15_00_00 (Isolated Divine Tower) - RemoveItemFromPlayer(X16_4 = 8153) - Malenia's Great Rune
+  - EventFlags 191 192 193 194 195 196
   - m34_10_00_00 (Divine Tower of Limgrave) - EndIfEventFlag(X0_4 = 191) - Godrick's Great Rune
   - m34_10_00_00 (Divine Tower of Limgrave) - SetEventFlag(X0_4 = 191) - Godrick's Great Rune
   - m34_12_00_00 (Divine Tower of West Altus) - EndIfEventFlag(X0_4 = 194) - Rykard's Great Rune
@@ -1247,15 +2288,63 @@ ItemEvents:
   - m34_14_00_00 (Divine Tower of East Altus) - SetEventFlag(X0_4 = 195) - Mohg's Great Rune
   - m34_15_00_00 (Isolated Divine Tower) - EndIfEventFlag(X0_4 = 196) - Malenia's Great Rune
   - m34_15_00_00 (Isolated Divine Tower) - SetEventFlag(X0_4 = 196) - Malenia's Great Rune
+- ID: 90005555
+  Comment: Common event for forge awards. We need to set the flag since it's used for warp trap, so don't change the flag here, and actually set it
+  FlagTemplate:
+  - Type: forge
+    EventFlag: 42007000 42027000 42037000
+    EventFlagArg: X0_4
+  DebugInfo:
+  - EventFlags 42007000 42027000 42037000
+  - m42_00_00_00 (Ruined Forge Lava Intake) - EndIfEventFlag(X0_4 = 42007000) - Anvil Hammer, Ancient Dragon Smithing Stone
+  - m42_02_00_00 (Ruined Forge of Starfall Past) - EndIfEventFlag(X0_4 = 42027000) - Ancient Meteoric Ore Greatsword, Ancient Dragon Smithing Stone
+  - m42_03_00_00 (Taylew's Ruined Forge) - EndIfEventFlag(X0_4 = 42037000) - Ancient Dragon Smithing Stone, Taylew the Golem Smith
+- ID: 90005556
+  Comment: Common event for DLC larval tears (only at night)
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 2044477900 2045417900 2046447900 2046467800 2047407900 2047457800 2048427900 2049467900 2050467800
+    EventFlagArg: X4_4
+  DebugInfo:
+  - EventFlags 2044477900 2045417900 2046447900 2046467800 2047407900 2047457800 2048427900 2049467900 2050467800
+  - m61_44_47_00 (Rauh Base - West Scorpion River; Ancient Ruins of Rauh - West Ruins Northwest Cliffside) - EndIfEventFlag(X4_4 = 2044477900) - Larval Tear
+  - m61_44_47_00 (Rauh Base - West Scorpion River; Ancient Ruins of Rauh - West Ruins Northwest Cliffside) - IfEventFlag(X4_4 = 2044477900) - Larval Tear
+  - m61_45_41_00 (Gravesite Plain - Cliffroad Terminus, Prospect Town) - EndIfEventFlag(X4_4 = 2045417900) - Larval Tear
+  - m61_45_41_00 (Gravesite Plain - Cliffroad Terminus, Prospect Town) - IfEventFlag(X4_4 = 2045417900) - Larval Tear
+  - m61_46_44_00 (Gravesite Plain - Greatbridge North, Abandoned Ailing Village, Rivermouth Cave Entrance) - EndIfEventFlag(X4_4 = 2046447900) - Larval Tear
+  - m61_46_44_00 (Gravesite Plain - Greatbridge North, Abandoned Ailing Village, Rivermouth Cave Entrance) - IfEventFlag(X4_4 = 2046447900) - Larval Tear
+  - m61_46_46_00 (Rauh Base - North Temple Town Ruins; Ancient Ruins of Rauh - South Belfry Area, Hippo Pond, Divine Beast Pantheon) - EndIfEventFlag(X4_4 = 2046467800) - Larval Tear
+  - m61_46_46_00 (Rauh Base - North Temple Town Ruins; Ancient Ruins of Rauh - South Belfry Area, Hippo Pond, Divine Beast Pantheon) - IfEventFlag(X4_4 = 2046467800) - Larval Tear
+  - m61_47_40_00 (Gravesite Plain - South of Scorched Ruins, Gravesite Plain South Cliffside; Cerulean Coast - Ravine Northeast; Charo's Hidden Grave - North Central Lake) - EndIfEventFlag(X4_4 = 2047407900) - Larval Tear
+  - m61_47_40_00 (Gravesite Plain - South of Scorched Ruins, Gravesite Plain South Cliffside; Cerulean Coast - Ravine Northeast; Charo's Hidden Grave - North Central Lake) - IfEventFlag(X4_4 = 2047407900) - Larval Tear
+  - m61_47_45_00 (Gravesite Plain - North Fog Rift Fort, Northern Nameless Mausoleum East Cliffside; Scadu Altus - Scadu Altus West) - EndIfEventFlag(X4_4 = 2047457800) - Larval Tear
+  - m61_47_45_00 (Gravesite Plain - North Fog Rift Fort, Northern Nameless Mausoleum East Cliffside; Scadu Altus - Scadu Altus West) - IfEventFlag(X4_4 = 2047457800) - Larval Tear
+  - m61_48_42_00 (Gravesite Plain - Pillar Path Waypoint, Ruined Forge Lava Intake Entrance; Abyssal Woods - West Edge) - EndIfEventFlag(X4_4 = 2048427900) - Larval Tear
+  - m61_48_42_00 (Gravesite Plain - Pillar Path Waypoint, Ruined Forge Lava Intake Entrance; Abyssal Woods - West Edge) - IfEventFlag(X4_4 = 2048427900) - Larval Tear
+  - m61_49_46_00 (Scadu Altus - Poison Swamp, North Bear Woods, Castle Watering Hole Southwest) - EndIfEventFlag(X4_4 = 2049467900) - Larval Tear
+  - m61_49_46_00 (Scadu Altus - Poison Swamp, North Bear Woods, Castle Watering Hole Southwest) - IfEventFlag(X4_4 = 2049467900) - Larval Tear
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - EndIfEventFlag(X4_4 = 2050467800) - Larval Tear
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - IfEventFlag(X4_4 = 2050467800) - Larval Tear
+- ID: 90005570
+  Comment: Item pickup to gesture, only for O Mother
+  Template:
+  - Type: remove
+    Filter:
+      Content: dlc
+      Args:
+        X0_4: 60864
+  FlagTemplate:
+  - Type: removegesture
 - ID: 90005616
   Comment: Beast eye quivers
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 400239
   - Type: locarg
     EventFlag: 530170 530240 530385 30057030 30097000 30117000 30187900 30207910 1051577720
     EventFlagArg: X0
   DebugInfo:
+  - EventFlags 400239 530170 530240 530385 30057030 30097000 30117000 30187900 30207910 1051577720
   - common_func - IfEventFlag(400239) - Beast Eye
   - m30_05_00_00 (Black Knife Catacombs) - EndIfEventFlag(X0_4 = 30057030) - Deathroot
   - m30_05_00_00 (Black Knife Catacombs) - IfEventFlag(X0_4 = 30057030) - Deathroot
@@ -1277,21 +2366,22 @@ ItemEvents:
   - m60_51_57_00 (Mountaintops of the Giants - South Castle Sol, Snow Valley Ruins Overlook) - IfEventFlag(X0_4 = 1051577720) - Helphen's Steeple, Deathroot
 - ID: 90005632
   Comment: Getting painting objects on action button
-  ItemTemplate:
+  FlagTemplate:
   - Type: locarg
     EventFlag: 580000 580010 580020 580030 580040 580050 580060
     EventFlagArg: X0
   DebugInfo:
+  - EventFlags 580000 580010 580020 580030 580040 580050 580060
   - m10_00_00_00 (Stormveil Castle) - EndIfEventFlag(X0_4 = 580040) - "Prophecy" Painting
   - m11_00_00_00 (Leyndell, Royal Capital) - EndIfEventFlag(X0_4 = 580050) - "Flightless Bird" Painting
   - m60_38_45_00 (Liurnia of the Lakes - Artist's Shack, Eastern Liurnia Lake Shore) - EndIfEventFlag(X0_4 = 580010) - "Resurrection" Painting
   - m60_39_54_00 (Altus Plateau - Shaded Castle) - EndIfEventFlag(X0_4 = 580020) - "Champion's Song" Painting
   - m60_44_38_00 (Limgrave - Artist's Shack) - EndIfEventFlag(X0_4 = 580000) - "Homing Instinct" Painting
-  - m60_50_39_00 (Caelid - East Sellia, Church of the Plague) - EndIfEventFlag(X0_4 = 580060) - "Redmane" Painting
+  - m60_50_39_00 (Caelid - East Sellia, Church of the Plague, Sellia Hideaway Entrance) - EndIfEventFlag(X0_4 = 580060) - "Redmane" Painting
   - m60_51_57_00 (Mountaintops of the Giants - South Castle Sol, Snow Valley Ruins Overlook) - EndIfEventFlag(X0_4 = 580030) - "Sorcerer" Painting
 - ID: 90005633
   Comment: Makes painter object appear if you have the painting and not the item
-  ItemTemplate:
+  FlagTemplate:
   - Type: itemarg
     EventFlag: 580000 580010 580020 580030 580040 580050 580060
     EventFlagArg: X4
@@ -1299,6 +2389,7 @@ ItemEvents:
     EventFlag: 580300 580310 580320 580330 580340 580350 580360
     EventFlagArg: X0
   DebugInfo:
+  - EventFlags 580000 580010 580020 580030 580040 580050 580060 580300 580310 580320 580330 580340 580350 580360
   - m60_36_50_00 (Liurnia of the Lakes - Behind Caria Manor, Royal Grave Evergaol, Part of Ravine) - EndIfEventFlag(X0_4 = 580310) - Juvenile Scholar Cap, Juvenile Scholar Robe, Larval Tear
   - m60_36_50_00 (Liurnia of the Lakes - Behind Caria Manor, Royal Grave Evergaol, Part of Ravine) - IfEventFlag(X4_4 = 580010) - "Resurrection" Painting
   - m60_41_52_00 (Altus Plateau - Rampartside Path, Altus Tunnel Entrance) - EndIfEventFlag(X0_4 = 580320) - Harp Bow
@@ -1307,30 +2398,41 @@ ItemEvents:
   - m60_42_35_00 (Limgrave - South of Stranded Graveyard Exit) - IfEventFlag(X4_4 = 580040) - "Prophecy" Painting
   - m60_42_54_00 (Altus Plateau - East Windmill Village, Highway Lookout Tower) - EndIfEventFlag(X0_4 = 580350) - Fire's Deadly Sin
   - m60_42_54_00 (Altus Plateau - East Windmill Village, Highway Lookout Tower) - IfEventFlag(X4_4 = 580050) - "Flightless Bird" Painting
-  - m60_43_36_00 (Limgrave - Dragon-Burnt Ruins) - EndIfEventFlag(X0_4 = 580300) - Incantation Scarab
-  - m60_43_36_00 (Limgrave - Dragon-Burnt Ruins) - IfEventFlag(X4_4 = 580000) - "Homing Instinct" Painting
+  - m60_43_36_00 (Limgrave - Agheel Lake, Dragon-Burnt Ruins) - EndIfEventFlag(X0_4 = 580300) - Incantation Scarab
+  - m60_43_36_00 (Limgrave - Agheel Lake, Dragon-Burnt Ruins) - IfEventFlag(X4_4 = 580000) - "Homing Instinct" Painting
   - m60_50_56_00 (Mountaintops of the Giants - Shack of the Lofty; Consecrated Snowfield - Minor Erdtree, Albinauric Rise, Cave of the Forlorn Entrance) - EndIfEventFlag(X0_4 = 580330) - Greathood
   - m60_50_56_00 (Mountaintops of the Giants - Shack of the Lofty; Consecrated Snowfield - Minor Erdtree, Albinauric Rise, Cave of the Forlorn Entrance) - IfEventFlag(X4_4 = 580030) - "Sorcerer" Painting
   - "m60_51_40_00 (Greyoll's Dragonbarrow - Minor Erdtree, Dragonbarrow Cave Entrance) - EndIfEventFlag(X0_4 = 580360) - Ash of War: Rain of Arrows"
   - m60_51_40_00 (Greyoll's Dragonbarrow - Minor Erdtree, Dragonbarrow Cave Entrance) - IfEventFlag(X4_4 = 580060) - "Redmane" Painting
+- ID: 90005646
+  Comment: Warp portal after forge. Because flag is always set, this can stay as-is
+  FlagTemplate:
+  - Type: default
+    EventFlag: 42007000 42027000 42037000
+  DebugInfo:
+  - EventFlags 42007000 42027000 42037000
+  - m42_00_00_00 (Ruined Forge Lava Intake) - IfEventFlag(X0_4 = 42007000) - Anvil Hammer, Ancient Dragon Smithing Stone
+  - m42_02_00_00 (Ruined Forge of Starfall Past) - IfEventFlag(X0_4 = 42027000) - Ancient Meteoric Ore Greatsword, Ancient Dragon Smithing Stone
+  - m42_03_00_00 (Taylew's Ruined Forge) - IfEventFlag(X0_4 = 42037000) - Ancient Dragon Smithing Stone, Taylew the Golem Smith
 - ID: 90005750
   Comment: Makes a treasure SFX and awards an item on action button
-  ItemTemplate:
+  FlagTemplate:
   - Type: locarg
-    EventFlag: 9500 9502 400036 400037 400061 400071 400072 400073 400074 400075 400076 400077 400078 400089 400091 400107 400148 400149 400163 400174 400191 400240 400241 400291 400308 400309 400312 400321 400339 400348 400349 400356 400357 400358 400359 400360 400361 400362 400382 400390 400393 400394 400410 400411 400460 400490 400500
+    EventFlag: 9500 9502 400036 400037 400061 400070 400071 400072 400073 400074 400075 400076 400077 400078 400089 400091 400107 400148 400149 400163 400174 400191 400240 400241 400291 400308 400309 400312 400321 400339 400348 400349 400356 400357 400358 400359 400360 400361 400362 400381 400382 400390 400393 400394 400410 400411 400460 400490 400500 400598 400602 400614 400620 400622 400623 400624 400625 400634 400644 400645 400666 400671 400692 400704 400712 400714 400723 400730 400732 400740
     EventFlagArg: X12 X16
   - Type: locarg
     Comment: Somehow this is used as a dependency for another drop
     EventFlag: 400359
     EventFlagArg: X20
   DebugInfo:
+  - EventFlags 9500 9502 400036 400037 400061 400070 400071 400072 400073 400074 400075 400076 400077 400078 400089 400091 400107 400148 400149 400163 400174 400191 400240 400241 400291 400308 400309 400312 400321 400339 400348 400349 400356 400357 400358 400359 400360 400361 400362 400381 400382 400390 400393 400394 400410 400411 400460 400490 400500 400598 400602 400614 400620 400622 400623 400624 400625 400634 400644 400645 400666 400671 400692 400704 400712 400714 400723 400730 400732 400740
   - m11_05_00_00 (Leyndell, Ashen Capital) - IfBatchEventFlags(X12_4 = 9500, X16_4 = 9500) - Mending Rune of Perfect Order
   - m11_05_00_00 (Leyndell, Ashen Capital) - IfBatchEventFlags(X12_4 = 400500, X16_4 = 400500) - Goldmask's Rags, Gold Bracelets, Gold Waistwrap
   - m11_10_00_00 (Roundtable Hold) - IfBatchEventFlags(X12_4 = 400349, X16_4 = 400349) - Twinned Helm, Twinned Armor, Twinned Gauntlets, Twinned Greaves, D's Bell Bearing
   - m11_10_00_00 (Roundtable Hold) - IfBatchEventFlags(X12_4 = 400359, X16_4 = 400359) - Spellblade's Pointed Hat, Spellblade's Traveling Attire, Spellblade's Gloves, Spellblade's Trousers, Rogier's Bell Bearing
   - m11_10_00_00 (Roundtable Hold) - IfBatchEventFlags(X12_4 = 400356, X16_4 = 400358) - Rogier's Letter (400356)
   - m11_10_00_00 (Roundtable Hold) - IfBatchEventFlags(X12_4 = 400356, X16_4 = 400358) - Black Knifeprint (400357)
-  - m11_10_00_00 (Roundtable Hold) - IfBatchEventFlags(X12_4 = 400356, X16_4 = 400358) - ?ITEM? (6:5010) (400358)
+  - m11_10_00_00 (Roundtable Hold) - IfBatchEventFlags(X12_4 = 400356, X16_4 = 400358) - Rogier's Rapier +8 (400358)
   - m11_10_00_00 (Roundtable Hold) - IfEventFlag(X20_4 = 400359) - Spellblade's Pointed Hat, Spellblade's Traveling Attire, Spellblade's Gloves, Spellblade's Trousers, Rogier's Bell Bearing
   - m11_10_00_00 (Roundtable Hold) - IfBatchEventFlags(X12_4 = 400490, X16_4 = 400490) - Royal Remains Helm, Royal Remains Armor, Royal Remains Gauntlets, Royal Remains Greaves
   - m12_01_00_00 (Ainsel River) - IfBatchEventFlags(X12_4 = 400394, X16_4 = 400394) - Miniature Ranni
@@ -1348,56 +2450,109 @@ ItemEvents:
   - m16_00_00_00 (Volcano Manor) - IfBatchEventFlags(X12_4 = 400073, X16_4 = 400073) - Letter from Volcano Manor
   - m16_00_00_00 (Volcano Manor) - IfBatchEventFlags(X12_4 = 400074, X16_4 = 400074) - Letter from Volcano Manor
   - m16_00_00_00 (Volcano Manor) - IfBatchEventFlags(X12_4 = 400075, X16_4 = 400075) - Red Letter
-  - m16_00_00_00 (Volcano Manor) - IfBatchEventFlags(X12_4 = 400072, X16_4 = 400072) - Drawing-Room Key
+  - m16_00_00_00 (Volcano Manor) - IfBatchEventFlags(X12_4 = 400070, X16_4 = 400072) - Tonic of Forgetfulness (400070)
+  - m16_00_00_00 (Volcano Manor) - IfBatchEventFlags(X12_4 = 400070, X16_4 = 400072) - Consort's Mask, Consort's Robe, Consort's Trousers (400071)
+  - m16_00_00_00 (Volcano Manor) - IfBatchEventFlags(X12_4 = 400070, X16_4 = 400072) - Drawing-Room Key (400072)
   - m16_00_00_00 (Volcano Manor) - IfBatchEventFlags(X12_4 = 400071, X16_4 = 400071) - Consort's Mask, Consort's Robe, Consort's Trousers
   - m16_00_00_00 (Volcano Manor) - IfBatchEventFlags(X12_4 = 400076, X16_4 = 400076) - Magma Shot
   - m16_00_00_00 (Volcano Manor) - IfBatchEventFlags(X12_4 = 400077, X16_4 = 400077) - Serpentbone Blade
   - m16_00_00_00 (Volcano Manor) - IfBatchEventFlags(X12_4 = 400078, X16_4 = 400078) - Taker's Cameo
   - m16_00_00_00 (Volcano Manor) - IfBatchEventFlags(X12_4 = 400091, X16_4 = 400091) - Daedicar's Woe, Zorayas's Letter
   - m16_00_00_00 (Volcano Manor) - IfBatchEventFlags(X12_4 = 400291, X16_4 = 400291) - Gelmir's Fury
+  - m20_00_00_00 (Belurat, Tower Settlement) - IfBatchEventFlags(X12_4 = 400723, X16_4 = 400723) - Gourmet Scorpion Stew
+  - m20_01_00_00 (Enir-Ilim) - IfBatchEventFlags(X12_4 = 400598, X16_4 = 400598) - Leda's Armor
+  - m20_01_00_00 (Enir-Ilim) - IfBatchEventFlags(X12_4 = 400602, X16_4 = 400602) - Freyja's Greatsword, Freyja's Helm, Freyja's Armor, Freyja's Gauntlets, Freyja's Greaves
+  - m20_01_00_00 (Enir-Ilim) - IfBatchEventFlags(X12_4 = 400614, X16_4 = 400614) - Falx, Caterpillar Mask, Braided Cord Robe, Braided Arm Wraps, Soiled Loincloth
+  - m20_01_00_00 (Enir-Ilim) - IfBatchEventFlags(X12_4 = 400634, X16_4 = 400634) - Thiollier's Hidden Needle, Thiollier's Mask, Thiollier's Garb, Thiollier's Gloves, Thiollier's Trousers
+  - m20_01_00_00 (Enir-Ilim) - IfBatchEventFlags(X12_4 = 400644, X16_4 = 400645) - Moore's Bell Bearing (400644)
+  - m20_01_00_00 (Enir-Ilim) - IfBatchEventFlags(X12_4 = 400644, X16_4 = 400645) - Verdigris Greatshield, Verdigris Helm, Verdigris Armor, Verdigris Gauntlets, Verdigris Greaves (400645)
+  - m20_01_00_00 (Enir-Ilim) - IfBatchEventFlags(X12_4 = 400732, X16_4 = 400732) - Dane's Footwork
+  - m20_01_00_00 (Enir-Ilim) - IfBatchEventFlags(X12_4 = 400624, X16_4 = 400624) - Obsidian Lamina, Ansbach's Longbow, Wise Man's Mask, Ansbach's Attire, Ansbach's Manchettes, Ansbach's Boots, Furious Blade of Ansbach, Letter for Freyja
+  - m21_00_00_00 (Shadow Keep) - IfBatchEventFlags(X12_4 = 400692, X16_4 = 400692) - Queelign's Greatsword
+  - m21_01_00_00 (Specimen Storehouse) - IfBatchEventFlags(X12_4 = 400620, X16_4 = 400620) - Letter for Freyja
+  - m21_01_00_00 (Specimen Storehouse) - IfBatchEventFlags(X12_4 = 400622, X16_4 = 400623) - Obsidian Lamina, Ansbach's Longbow, Wise Man's Mask, Ansbach's Attire, Ansbach's Manchettes, Ansbach's Boots, Furious Blade of Ansbach, Letter for Freyja (400622)
+  - m21_01_00_00 (Specimen Storehouse) - IfBatchEventFlags(X12_4 = 400622, X16_4 = 400623) - Obsidian Lamina, Ansbach's Longbow, Wise Man's Mask, Ansbach's Attire, Ansbach's Manchettes, Ansbach's Boots, Furious Blade of Ansbach, Letter for Freyja (400623)
+  - m21_01_00_00 (Specimen Storehouse) - IfBatchEventFlags(X12_4 = 400625, X16_4 = 400625) - Obsidian Lamina, Ansbach's Longbow, Wise Man's Mask, Ansbach's Attire, Ansbach's Manchettes, Ansbach's Boots, Furious Blade of Ansbach, Letter for Freyja
+  - m22_00_00_00 (Stone Coffin Fissure) - IfBatchEventFlags(X12_4 = 400740, X16_4 = 400740) - St. Trina's Blossom
   - m35_00_00_00 (Subterranean Shunning-Grounds) - IfBatchEventFlags(X12_4 = 400089, X16_4 = 400089) - Frenzied Flame Seal, Frenzyflame Stone
+  - m35_00_00_00 (Subterranean Shunning-Grounds) - IfBatchEventFlags(X12_4 = 400381, X16_4 = 400382) - Sword of Milos (400381)
+  - m35_00_00_00 (Subterranean Shunning-Grounds) - IfBatchEventFlags(X12_4 = 400381, X16_4 = 400382) - Omen Helm, Omen Armor, Omen Gauntlets, Omen Greaves (400382)
   - m35_00_00_00 (Subterranean Shunning-Grounds) - IfBatchEventFlags(X12_4 = 400382, X16_4 = 400382) - Omen Helm, Omen Armor, Omen Gauntlets, Omen Greaves
   - m60_34_49_00 (Liurnia of the Lakes - Road to the Manor) - IfBatchEventFlags(X12_4 = 400240, X16_4 = 400241) - Iji's Bell Bearing (400240)
   - m60_34_49_00 (Liurnia of the Lakes - Road to the Manor) - IfBatchEventFlags(X12_4 = 400240, X16_4 = 400241) - Iji's Mirrorhelm (400241)
   - m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise) - IfBatchEventFlags(X12_4 = 400148, X16_4 = 400148) - Preceptor's Big Hat, Preceptor's Long Gown, Preceptor's Gloves, Preceptor's Trousers, Seluvis's Bell Bearing
-  - m60_35_42_00 (Moonlight Altar - Cathedral of Manus Celes) - IfBatchEventFlags(X12_4 = 400393, X16_4 = 400393) - Dark Moon Greatsword
+  - m60_35_42_00 (Liurnia of the Lakes - West Albinauric Village; Moonlight Altar - Cathedral of Manus Celes) - IfBatchEventFlags(X12_4 = 400393, X16_4 = 400393) - Dark Moon Greatsword
   - m60_35_50_00 (Liurnia of the Lakes - Caria Manor) - IfBatchEventFlags(X12_4 = 400149, X16_4 = 400149) - Pidia's Bell Bearing, Nepheli Loux Puppet, Dolores the Sleeping Arrow Puppet
   - m60_36_41_00 (Liurnia of the Lakes - Slumbering Wolf's Shack, Lakeside Crystal Cave Entrance) - IfBatchEventFlags(X12_4 = 400410, X16_4 = 400410) - Latenna the Albinauric
   - m60_39_44_00 (Liurnia of the Lakes - Jarburg, Divine Tower of Liurnia Entrance) - IfBatchEventFlags(X12_4 = 400460, X16_4 = 400460) - Companion Jar
-  - m60_39_52_00 (Altus Plateau - Second Church of Marika) - IfBatchEventFlags(X12_4 = 400163, X16_4 = 400163) - ?ITEM? (6:5030)
+  - m60_39_52_00 (Altus Plateau - Second Church of Marika) - IfBatchEventFlags(X12_4 = 400163, X16_4 = 400163) - Nagakiba
   - m60_41_38_00 (Stormhill - Stormhill Shack, Stormveil Castle Entrance) - IfBatchEventFlags(X12_4 = 400191, X16_4 = 400191) - Golden Seed
   - m60_42_36_00 (Limgrave - Church of Elleh, Stranded Graveyard Exit) - IfBatchEventFlags(X12_4 = 400390, X16_4 = 400390) - Lone Wolf Ashes
-  - m60_43_31_00 (Weeping Peninsula - Castle Morne) - IfBatchEventFlags(X12_4 = 400061, X16_4 = 400061) - Raw Meat Dumpling, Shabriri Grape, ?ITEM? (6:5000)
+  - m60_43_31_00 (Weeping Peninsula - Castle Morne) - IfBatchEventFlags(X12_4 = 400061, X16_4 = 400061) - Raw Meat Dumpling, Shabriri Grape, Banished Knight's Halberd +8
   - m60_44_52_00 (Capital Outskirts - South of Minor Erdtree) - IfBatchEventFlags(X12_4 = 400308, X16_4 = 400309) - Seedbed Curse (400308)
-  - m60_44_52_00 (Capital Outskirts - South of Minor Erdtree) - IfBatchEventFlags(X12_4 = 400308, X16_4 = 400309) - Blackguard's Iron Mask, Blackguard's Bell Bearing, ?ITEM? (6:5040) (400309)
-  - m60_45_34_00 (Weeping Peninsula - Impaler's Catacombs Entrance) - IfBatchEventFlags(X12_4 = 400061, X16_4 = 400061) - Raw Meat Dumpling, Shabriri Grape, ?ITEM? (6:5000)
+  - m60_44_52_00 (Capital Outskirts - South of Minor Erdtree) - IfBatchEventFlags(X12_4 = 400308, X16_4 = 400309) - Blackguard's Iron Mask, Blackguard's Bell Bearing, Iron Ball (400309)
+  - m60_45_34_00 (Weeping Peninsula - Impaler's Catacombs Entrance) - IfBatchEventFlags(X12_4 = 400061, X16_4 = 400061) - Raw Meat Dumpling, Shabriri Grape, Banished Knight's Halberd +8
   - m60_47_58_00 (Consecrated Snowfield - Apostate Derelict) - IfBatchEventFlags(X12_4 = 400411, X16_4 = 400411) - Somber Ancient Dragon Smithing Stone
   - m60_50_38_00 (Caelid - Gowry's Shack) - IfBatchEventFlags(X12_4 = 400312, X16_4 = 400312) - Flock's Canvas Talisman, Gowry's Bell Bearing
+  - m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross) - IfBatchEventFlags(X12_4 = 400644, X16_4 = 400644) - Moore's Bell Bearing
+  - m61_46_42_00 (Gravesite Plain - Three-Path Cross) - IfBatchEventFlags(X12_4 = 400602, X16_4 = 400602) - Freyja's Greatsword, Freyja's Helm, Freyja's Armor, Freyja's Gauntlets, Freyja's Greaves
+  - m61_47_46_00 (Scadu Altus - Church of the Crusade; Gravesite Plain - Fog Rift Catacombs Entrance; Rauh Base - Above Fog Rift; Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside) - IfBatchEventFlags(X12_4 = 400644, X16_4 = 400645) - Moore's Bell Bearing (400644)
+  - m61_47_46_00 (Scadu Altus - Church of the Crusade; Gravesite Plain - Fog Rift Catacombs Entrance; Rauh Base - Above Fog Rift; Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside) - IfBatchEventFlags(X12_4 = 400644, X16_4 = 400645) - Verdigris Greatshield, Verdigris Helm, Verdigris Armor, Verdigris Gauntlets, Verdigris Greaves (400645)
+  - m61_49_39_00 (Finger Ruins of Rhia - Climb to Finger-Weaver's Hovel; Charo's Hidden Grave - Far East Cliffside; Foot of the Jagged Peak - Grand Altar of Dragon Communion) - IfBatchEventFlags(X12_4 = 400704, X16_4 = 400704) - Flowerstone Gavel, Priestess Heart
+  - m61_49_44_00 (Scadu Altus - Moorth Ruins, Bonny Village West Entrance) - IfBatchEventFlags(X12_4 = 400730, X16_4 = 400730) - Dane's Hat, Dryleaf Arts
+  - m61_50_45_00 (Scadu Altus - Bonny Village North Tree and Overlook, Recluses' River Upstream, Manus Metyr Graveyard and West Cliffside) - IfBatchEventFlags(X12_4 = 400666, X16_4 = 400666) - Cherishing Fingers
+  - m61_51_45_00 (Scadu Altus - Cathedral of Manus Metyr, Finger Ruins of Miyr, Second Furnace Golem Area, Recluses' River Downstream West Edge) - IfBatchEventFlags(X12_4 = 400671, X16_4 = 400671) - Sword of Night
+  - m61_52_40_00 (Foot of the Jagged Peak - Foot of the Jagged Peak, Drake Duo Area; Abyssal Woods - Southwest of Church) - IfBatchEventFlags(X12_4 = 400712, X16_4 = 400712) - Igon's Greatbow, Igon's Helm, Igon's Armor, Igon's Gauntlets, Igon's Loincloth, Igon's Bell Bearing, Igon's Greatbow
+  - m61_52_40_00 (Foot of the Jagged Peak - Foot of the Jagged Peak, Drake Duo Area; Abyssal Woods - Southwest of Church) - IfBatchEventFlags(X12_4 = 400714, X16_4 = 400714) - Igon's Greatbow, Igon's Helm, Igon's Armor, Igon's Gauntlets, Igon's Loincloth, Igon's Bell Bearing, Igon's Greatbow
+- ID: 90005768
+  Comment: Gives whichever of the drops hasn't been acquired yet
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 400694 400696
+    EventFlagArg: X8 X16
+  DebugInfo:
+  - EventFlags 400694 400696
+  - m20_00_00_00 (Belurat, Tower Settlement) - IfEventFlag(X8_4 = 400694) - Crusade Insignia
+  - 'm20_00_00_00 (Belurat, Tower Settlement) - IfEventFlag(X16_4 = 400696) - Prayer Room Key, Ash of War: Flame Skewer'
+  - m61_47_46_00 (Scadu Altus - Church of the Crusade; Gravesite Plain - Fog Rift Catacombs Entrance; Rauh Base - Above Fog Rift; Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside) - IfEventFlag(X8_4 = 400694) - Crusade Insignia
+  - 'm61_47_46_00 (Scadu Altus - Church of the Crusade; Gravesite Plain - Fog Rift Catacombs Entrance; Rauh Base - Above Fog Rift; Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside) - IfEventFlag(X16_4 = 400696) - Prayer Room Key, Ash of War: Flame Skewer'
 - ID: 90005774
   Comment: Award item based on other separate event flag
-  ItemTemplate:
+  FlagTemplate:
   - Type: singleton
     Comment: This probably works, for a common event?
   - Type: locarg
-    EventFlag: 400323 400480 11107900 39207500 1035467700 1039537700 1042377700 1042397500 1050567700
+    EventFlag: 400323 400480 400510 400614 400632 400645 400672 11107900 39207500 1035467700 1039537700 1042377700 1042397500 1050567700
     EventFlagArg: X8
   DebugInfo:
+  - EventFlags 400323 400480 400510 400614 400632 400645 400672 11107900 39207500 1035467700 1039537700 1042377700 1042397500 1050567700
   - m11_10_00_00 (Roundtable Hold) - EndIfEventFlag(X8_4 = 11107900) - Clinging Bone
   - m15_00_00_00 (Miquella's Haligtree) - EndIfEventFlag(X8_4 = 400323) - Millicent's Prosthesis
   - m15_00_00_00 (Miquella's Haligtree) - EndIfEventFlag(X8_4 = 400480) - Rotten Winged Sword Insignia
+  - m22_00_00_00 (Stone Coffin Fissure) - EndIfEventFlag(X8_4 = 400632) - St. Trina's Smile
   - m39_20_00_00 (Ruin-Strewn Precipice) - EndIfEventFlag(X8_4 = 39207500) - Bull-Goat Helm, Bull-Goat Armor, Bull-Goat Gauntlets, Bull-Goat Greaves
   - 'm60_35_46_00 (Liurnia of the Lakes - Main Academy Gate, Academy of Raya Lucaria Entrance) - EndIfEventFlag(X8_4 = 1035467700) - Ash of War: Raptor of the Mists'
   - m60_39_53_00 (Altus Plateau - Mirage Rise; Mt. Gelmir - Bridge of Iniquity) - EndIfEventFlag(X8_4 = 1039537700) - Black-Key Bolt, Crepus's Vial
+  - m60_40_53_00 (Altus Plateau - Bower of Bounty, Writheblood Ruins) - EndIfEventFlag(X8_4 = 400510) - Great Stars, Somber Smithing Stone [6]
   - m60_42_39_00 (Stormhill - North of Warmaster's Shack) - EndIfEventFlag(X8_4 = 1042397500) - Scaled Helm, Scaled Armor, Scaled Gauntlets, Scaled Greaves
   - m60_43_37_00 (Limgrave - Agheel Lake North, Murkwater Cave Entrance) - EndIfEventFlag(X8_4 = 1042377700) - Reduvia
   - m60_50_56_00 (Mountaintops of the Giants - Shack of the Lofty; Consecrated Snowfield - Minor Erdtree, Albinauric Rise, Cave of the Forlorn Entrance) - EndIfEventFlag(X8_4 = 1050567700) - Hoslow's Petal Whip, Hoslow's Helm, Hoslow's Armor, Hoslow's Gauntlets, Hoslow's Greaves
+  - m61_44_46_00 (Rauh Base - Scorpion River Catacombs Entrance; Ancient Ruins of Rauh - Spiritspring Courtyard, Rot Ruins, North Church of the Bud) - EndIfEventFlag(X8_4 = 400614) - Falx, Caterpillar Mask, Braided Cord Robe, Braided Arm Wraps, Soiled Loincloth
+  - m61_45_41_00 (Gravesite Plain - Cliffroad Terminus, Prospect Town) - EndIfEventFlag(X8_4 = 400645) - Verdigris Greatshield, Verdigris Helm, Verdigris Armor, Verdigris Gauntlets, Verdigris Greaves
+  - m61_47_46_00 (Scadu Altus - Church of the Crusade; Gravesite Plain - Fog Rift Catacombs Entrance; Rauh Base - Above Fog Rift; Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside) - EndIfEventFlag(X8_4 = 400645) - Verdigris Greatshield, Verdigris Helm, Verdigris Armor, Verdigris Gauntlets, Verdigris Greaves
+  - m61_48_40_00 (Gravesite Plain - South of Church of Consolation, Ellac River End; Charo's Hidden Grave - Central Lake Northeast Cliffside; Abyssal Woods - Southwest Corner) - EndIfEventFlag(X8_4 = 400645) - Verdigris Greatshield, Verdigris Helm, Verdigris Armor, Verdigris Gauntlets, Verdigris Greaves
+  - m61_48_44_00 (Gravesite Plain - East Castle Ensis, Exit to Scadu Altus; Scadu Altus - Ruined Forge of Starfall Past Entrance) - EndIfEventFlag(X8_4 = 400645) - Verdigris Greatshield, Verdigris Helm, Verdigris Armor, Verdigris Gauntlets, Verdigris Greaves
+  - m61_49_46_00 (Scadu Altus - Poison Swamp, North Bear Woods, Castle Watering Hole Southwest) - EndIfEventFlag(X8_4 = 400645) - Verdigris Greatshield, Verdigris Helm, Verdigris Armor, Verdigris Gauntlets, Verdigris Greaves
+  - m61_50_47_00 (Scadu Altus - Castle Watering Hole Northeast, North Ruins of Unte, Above Shadow Keep East Tunnel) - EndIfEventFlag(X8_4 = 400645) - Verdigris Greatshield, Verdigris Helm, Verdigris Armor, Verdigris Gauntlets, Verdigris Greaves
+  - m61_51_45_00 (Scadu Altus - Cathedral of Manus Metyr, Finger Ruins of Miyr, Second Furnace Golem Area, Recluses' River Downstream West Edge) - EndIfEventFlag(X8_4 = 400672) - Claws of Night
 - ID: 90005775
   Comment: Something related to having invasion letters
-  ItemTemplate:
+  FlagTemplate:
   - Type: itemarg
     EventFlag: 400073 400074 400075 400180 400290
     EventFlagArg: X4
   DebugInfo:
+  - EventFlags 400073 400074 400075 400180 400290
   - m16_00_00_00 (Volcano Manor) - EndIfEventFlag(X4_4 = 400290) - Letter to Bernahl
   - m16_00_00_00 (Volcano Manor) - IfEventFlag(X4_4 = 400290) - Letter to Bernahl
   - m16_00_00_00 (Volcano Manor) - EndIfEventFlag(X4_4 = 400180) - Letter to Patches
@@ -1408,27 +2563,120 @@ ItemEvents:
   - m16_00_00_00 (Volcano Manor) - IfEventFlag(X4_4 = 400074) - Letter from Volcano Manor
   - m16_00_00_00 (Volcano Manor) - EndIfEventFlag(X4_4 = 400075) - Red Letter
   - m16_00_00_00 (Volcano Manor) - IfEventFlag(X4_4 = 400075) - Red Letter
+- ID: 90005776
+  Comment: Award item lot based on other flag, used for invasion rewards
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 400594 400595 400614 400622
+    EventFlagArg: X0_4
+  DebugInfo:
+  - EventFlags 400594 400595 400614 400622
+  - m21_00_00_00 (Shadow Keep) - EndIfEventFlag(X0_4 = 400614) - Falx, Caterpillar Mask, Braided Cord Robe, Braided Arm Wraps, Soiled Loincloth
+  - "m21_00_00_00 (Shadow Keep) - EndIfEventFlag(X0_4 = 400594) - Leda's Rune, Ash of War: Swift Slash"
+  - m21_01_00_00 (Specimen Storehouse) - EndIfEventFlag(X0_4 = 400622) - Obsidian Lamina, Ansbach's Longbow, Wise Man's Mask, Ansbach's Attire, Ansbach's Manchettes, Ansbach's Boots, Furious Blade of Ansbach, Letter for Freyja
+  - m21_01_00_00 (Specimen Storehouse) - EndIfEventFlag(X0_4 = 400595) - Ansbach's Longbow, Leda's Rune
+- ID: 90005778
+  Comment: Forager brood quest flags, X0 set based on whether you have their gift
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 400750 400751 400752 400753 400754
+    EventFlagArg: X8
+  DebugInfo:
+  - EventFlags 400750 400751 400752 400753 400754
+  - m61_45_41_00 (Gravesite Plain - Cliffroad Terminus, Prospect Town) - EndIfEventFlag(X8_4 = 400753) - Black Pyrefly
+  - m61_45_41_00 (Gravesite Plain - Cliffroad Terminus, Prospect Town) - IfEventFlag(X8_4 = 400753) - Black Pyrefly
+  - m61_48_40_00 (Gravesite Plain - South of Church of Consolation, Ellac River End; Charo's Hidden Grave - Central Lake Northeast Cliffside; Abyssal Woods - Southwest Corner) - EndIfEventFlag(X8_4 = 400754) - Yellow Fulgurbloom
+  - m61_48_40_00 (Gravesite Plain - South of Church of Consolation, Ellac River End; Charo's Hidden Grave - Central Lake Northeast Cliffside; Abyssal Woods - Southwest Corner) - IfEventFlag(X8_4 = 400754) - Yellow Fulgurbloom
+  - m61_48_44_00 (Gravesite Plain - East Castle Ensis, Exit to Scadu Altus; Scadu Altus - Ruined Forge of Starfall Past Entrance) - EndIfEventFlag(X8_4 = 400750) - Glintslab Firefly
+  - m61_48_44_00 (Gravesite Plain - East Castle Ensis, Exit to Scadu Altus; Scadu Altus - Ruined Forge of Starfall Past Entrance) - IfEventFlag(X8_4 = 400750) - Glintslab Firefly
+  - m61_49_46_00 (Scadu Altus - Poison Swamp, North Bear Woods, Castle Watering Hole Southwest) - EndIfEventFlag(X8_4 = 400751) - Pearlescent Scale
+  - m61_49_46_00 (Scadu Altus - Poison Swamp, North Bear Woods, Castle Watering Hole Southwest) - IfEventFlag(X8_4 = 400751) - Pearlescent Scale
+  - m61_50_47_00 (Scadu Altus - Castle Watering Hole Northeast, North Ruins of Unte, Above Shadow Keep East Tunnel) - EndIfEventFlag(X8_4 = 400752) - Dewgem
+  - m61_50_47_00 (Scadu Altus - Castle Watering Hole Northeast, North Ruins of Unte, Above Shadow Keep East Tunnel) - IfEventFlag(X8_4 = 400752) - Dewgem
 - ID: 90005860
-  Comment: Manual addition here, for item lot award event. (TODO make sure it doesn't get wiped out on regeneration)
-  ItemTemplate:
+  Comment: Manual addition here, for item lot award event
+  FlagTemplate:
   - Type: singleton
+- ID: 900005571
+  Comment: Award gesture based on picking up item
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 2048457510
+    EventFlagArg: X8
+  DebugInfo:
+  - EventFlags 2048457510
+  - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - IfEventFlag(X8_4 = 2048457510) - Monk's Missive
+- ID: 900005580
+  Comment: Shows Leda's message at any grace after defeating Messmer
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 580600
+    EventFlagArg: X0
+  DebugInfo:
+  - EventFlags 580600
+  - m20_00_00_00 (Belurat, Tower Settlement) - EndIfEventFlag(X0_4 = 580600) - Message from Leda
+  - m20_00_00_00 (Belurat, Tower Settlement) - IfEventFlag(X0_4 = 580600) - Message from Leda
+  - m21_01_00_00 (Specimen Storehouse) - EndIfEventFlag(X0_4 = 580600) - Message from Leda
+  - m21_01_00_00 (Specimen Storehouse) - IfEventFlag(X0_4 = 580600) - Message from Leda
+  - m22_00_00_00 (Stone Coffin Fissure) - EndIfEventFlag(X0_4 = 580600) - Message from Leda
+  - m22_00_00_00 (Stone Coffin Fissure) - IfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross) - EndIfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross) - IfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_46_42_00 (Gravesite Plain - Three-Path Cross) - EndIfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_46_42_00 (Gravesite Plain - Three-Path Cross) - IfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_46_47_00 (Rauh Base - Fire Spritestone Cave; Ancient Ruins of Rauh - North Belfry Area, East Ruins Grace and Cave Entrance, Scorpion Cave) - EndIfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_46_47_00 (Rauh Base - Fire Spritestone Cave; Ancient Ruins of Rauh - North Belfry Area, East Ruins Grace and Cave Entrance, Scorpion Cave) - IfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_47_44_00 (Gravesite Plain - West Castle Ensis, South Fog Rift Fort; Scadu Altus - Belfry) - EndIfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_47_44_00 (Gravesite Plain - West Castle Ensis, South Fog Rift Fort; Scadu Altus - Belfry) - IfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_48_37_00 (Cerulean Coast - Cerulean Coast Cross, Far Southwest Fingercreeper Beach Coast) - EndIfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_48_37_00 (Cerulean Coast - Cerulean Coast Cross, Far Southwest Fingercreeper Beach Coast) - IfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_48_43_00 (Gravesite Plain - Pillar Path Cross; Abyssal Woods - Divided Falls; Scadu Altus - West of Moorth Highway South) - EndIfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_48_43_00 (Gravesite Plain - Pillar Path Cross; Abyssal Woods - Divided Falls; Scadu Altus - West of Moorth Highway South) - IfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - EndIfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - IfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_49_44_00 (Scadu Altus - Moorth Ruins, Bonny Village West Entrance) - EndIfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_49_44_00 (Scadu Altus - Moorth Ruins, Bonny Village West Entrance) - IfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_50_43_00 (Scadu Altus - Scaduview Cross, Bonny Gaol Entrance, Path to Village of Flies; Abyssal Woods - Alcove North of Central Woods) - EndIfEventFlag(X0_4 = 580600) - Message from Leda
+  - m61_50_43_00 (Scadu Altus - Scaduview Cross, Bonny Gaol Entrance, Path to Village of Flies; Abyssal Woods - Alcove North of Central Woods) - IfEventFlag(X0_4 = 580600) - Message from Leda
+- ID: 1033462611
+  Comment: Using Imbued Sword Key
+  DebugInfo:
+  - m60_33_46_00 (Liurnia of the Lakes - Foot of the Four Belfries) - IfPlayerHasdoesntHaveItem(8186) - Imbued Sword Key
+  - m60_33_46_00 (Liurnia of the Lakes - Foot of the Four Belfries) - RemoveItemFromPlayer(8186) - Imbued Sword Key
+- ID: 1033472610
+  Comment: Using Imbued Sword Key
+  DebugInfo:
+  - m60_33_47_00 (Liurnia of the Lakes - The Four Belfries, Giant's Caravan Below) - IfPlayerHasdoesntHaveItem(8186) - Imbued Sword Key
+  - m60_33_47_00 (Liurnia of the Lakes - The Four Belfries, Giant's Caravan Below) - RemoveItemFromPlayer(8186) - Imbued Sword Key
+- ID: 1033472611
+  Comment: Using Imbued Sword Key
+  DebugInfo:
+  - m60_33_47_00 (Liurnia of the Lakes - The Four Belfries, Giant's Caravan Below) - IfPlayerHasdoesntHaveItem(8186) - Imbued Sword Key
+  - m60_33_47_00 (Liurnia of the Lakes - The Four Belfries, Giant's Caravan Below) - RemoveItemFromPlayer(8186) - Imbued Sword Key
+- ID: 1034472611
+  Comment: Using Imbued Sword Key
+  DebugInfo:
+  - m60_34_47_00 (Liurnia of the Lakes - Sorcerer's Isle West, East Belfry) - IfPlayerHasdoesntHaveItem(8186) - Imbued Sword Key
+  - m60_34_47_00 (Liurnia of the Lakes - Sorcerer's Isle West, East Belfry) - RemoveItemFromPlayer(8186) - Imbued Sword Key
 - ID: 1034500718
   Comment: Sets a flag when 2 puppets have been bought
-  ItemTemplate:
+  FlagTemplate:
   - Type: default
     Comment: Range counting is used, so needs manual replacement for more detail
     EventFlag: 130000 130010 130020 130100
   DebugInfo:
+  - EventFlags 130000 130010 130020 130100
   - m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise) - IfCountEventFlags(130000, 130100) - Finger Maiden Therolina Puppet (130000)
   - m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise) - IfCountEventFlags(130000, 130100) - Dolores the Sleeping Arrow Puppet (130010)
   - m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise) - IfCountEventFlags(130000, 130100) - Jarwight Puppet (130020)
   - m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise) - IfCountEventFlags(130000, 130100) - Dung Eater Puppet (130100)
 - ID: 1034500719
   Comment: Sets a flag when a scroll sorcery has been purchased from Selivus
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 120790 120800 120810 120820 120830 120840
   DebugInfo:
+  - EventFlags 120790 120800 120810 120820 120830 120840
   - m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise) - SkipIfEventFlag(120790) - Glintstone Cometshard
   - m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise) - IfEventFlag(120790) - Glintstone Cometshard
   - m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise) - SkipIfEventFlag(120800) - Star Shower
@@ -1441,22 +2689,179 @@ ItemEvents:
   - m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise) - IfEventFlag(120830) - Glintblade Phalanx
   - m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise) - SkipIfEventFlag(120840) - Carian Slicer
   - m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise) - IfEventFlag(120840) - Carian Slicer
+- ID: 1035422150
+  Comment: Giving Ranni the Dark Moon Ring
+  Template:
+  - Type: loc
+    Filter:
+      Gate: darkmoonring
+    Removes:
+    - RemoveItemFromPlayer
+  DebugInfo:
+  - m60_35_42_00 (Liurnia of the Lakes - West Albinauric Village; Moonlight Altar - Cathedral of Manus Celes) - RemoveItemFromPlayer(8121) - Dark Moon Ring
 - ID: 1035452500
   Comment: Picking up the map, it says "You found a simple map. Check in inventory."
-  ItemTemplate:
+  FlagTemplate:
   - Type: remove
     Comment: Could be item but it's only in this map. It's annoying to clear so remove it
     EventFlag: 1035457100
   DebugInfo:
+  - EventFlags 1035457100
   - m60_35_45_00 (Liurnia of the Lakes - South Raya Lucaria Gate) - EndIfEventFlag(1035457100) - Meeting Place Map
   - m60_35_45_00 (Liurnia of the Lakes - South Raya Lucaria Gate) - IfEventFlag(1035457100) - Meeting Place Map
+- ID: 1035452600
+  Comment: Academy south entrance
+  Template:
+  - Type: loc
+    Filter:
+      Gate: academyglintstonekey
+    ItemUse:
+    - IfPlayerHasdoesntHaveItem(AND_09, ItemType.Goods, 8109, OwnershipState.Owns)
+  DebugInfo:
+  - m60_35_45_00 (Liurnia of the Lakes - South Raya Lucaria Gate) - IfPlayerHasdoesntHaveItem(8109) - Academy Glintstone Key
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - IfMultiplayerState(OR_01, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_01, MultiplayerState.MultiplayerPending)
+  - IfConditionGroup(AND_01, FAIL, OR_01)
+  - SkipIfConditionGroupStateUncompiled(7, PASS, OR_01)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfActionButtonInArea(AND_01, X24_4, X0_4)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - IfPlayerHasdoesntHaveItem(AND_09, ItemType.Goods, 8109, OwnershipState.Owns)
+  - GotoIfConditionGroupStateUncompiled(Label.Label1, PASS, AND_09)
+  - WaitFixedTimeSeconds(0.1)
+  - DisplayGenericDialog(20030, PromptType.OKCANCEL, NumberofOptions.OneButton, X0_4, 3)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label1()
+  - RotateCharacter(10000, X16_4, -1, true)
+  - ForceAnimationPlayback(10000, X20_4, false, false, false, ComparisonType.Equal, 1)
+  - WaitFixedTimeSeconds(2.5)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X12_4, ON)
+  - WarpPlayer(X4_1, X5_1, X6_1, X7_1, X8_4, 0)
+- ID: 1035462600
+  Comment: Academy main entrance
+  Template:
+  - Type: loc
+    Filter:
+      Gate: academyglintstonekey
+    ItemUse:
+    - IfPlayerHasdoesntHaveItem(AND_09, ItemType.Goods, 8109, OwnershipState.Owns)
+  DebugInfo:
+  - m60_35_46_00 (Liurnia of the Lakes - Main Academy Gate, Academy of Raya Lucaria Entrance) - IfPlayerHasdoesntHaveItem(8109) - Academy Glintstone Key
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - IfMultiplayerState(OR_01, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_01, MultiplayerState.MultiplayerPending)
+  - IfConditionGroup(AND_01, FAIL, OR_01)
+  - SkipIfConditionGroupStateUncompiled(7, PASS, OR_01)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfActionButtonInArea(AND_01, X24_4, X0_4)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - IfPlayerHasdoesntHaveItem(AND_09, ItemType.Goods, 8109, OwnershipState.Owns)
+  - GotoIfConditionGroupStateUncompiled(Label.Label1, PASS, AND_09)
+  - WaitFixedTimeSeconds(0.1)
+  - DisplayGenericDialog(20030, PromptType.OKCANCEL, NumberofOptions.OneButton, X0_4, 3)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label1()
+  - RotateCharacter(10000, X16_4, -1, true)
+  - ForceAnimationPlayback(10000, X20_4, false, false, false, ComparisonType.Equal, 1)
+  - WaitFixedTimeSeconds(2.5)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X12_4, ON)
+  - WarpPlayer(X4_1, X5_1, X6_1, X7_1, X8_4, 0)
+- ID: 1035472200
+  Comment: Sending gate to Dragonbarrow. (Event id ambiguous, should use Map. Be careful about arg offsets until then)
+  Template:
+  - Type: arg
+    Filter:
+      Gate: dragonbarrow
+    SetArg: X28_4 gate
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X20_4, OFF)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X24_4, OFF)
+  - SkipIfEventFlag(3, ON, TargetEventFlagType.EventIDSlotNumber, 0)
+  - DeleteAssetfollowingSFX(X0_4, true)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X16_4, OFF)
+  - WaitFixedTimeFrames(1)
+  - IfMultiplayerState(OR_10, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_10, MultiplayerState.MultiplayerPending)
+  - SkipIfUnsignedComparison(1, ComparisonType.Equal, X28_4, 0)
+  - IfEventFlag(OR_10, OFF, TargetEventFlagType.EventFlag, X28_4)
+  - GotoIfConditionGroupStateUncompiled(Label.Label1, PASS, OR_10)
+  - GotoIfEventFlag(Label.Label1, ON, TargetEventFlagType.EventFlag, X16_4)
+  - DeleteAssetfollowingSFX(X0_4, true)
+  - CreateAssetfollowingSFX(X0_4, 200, 806870)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X16_4, ON)
+  - Label1()
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfMultiplayerState(OR_01, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_01, MultiplayerState.MultiplayerPending)
+  - IfConditionGroup(AND_01, FAIL, OR_01)
+  - SkipIfUnsignedComparison(3, ComparisonType.Equal, X28_4, 0)
+  - SkipIfComparison(2, ComparisonType.NotEqual, X32_4, 0)
+  - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, X28_4)
+  - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, X16_4)
+  - IfActionButtonInArea(AND_01, 9140, X0_4)
+  - IfMultiplayerState(OR_04, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_04, MultiplayerState.MultiplayerPending)
+  - SkipIfUnsignedComparison(1, ComparisonType.Equal, X28_4, 0)
+  - IfEventFlag(OR_04, OFF, TargetEventFlagType.EventFlag, X28_4)
+  - IfConditionGroup(AND_04, PASS, OR_04)
+  - IfEventFlag(AND_04, ON, TargetEventFlagType.EventFlag, X16_4)
+  - IfMultiplayerState(OR_07, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_07, MultiplayerState.MultiplayerPending)
+  - SkipIfUnsignedComparison(1, ComparisonType.Equal, X28_4, 0)
+  - IfEventFlag(OR_07, OFF, TargetEventFlagType.EventFlag, X28_4)
+  - IfConditionGroup(AND_07, FAIL, OR_07)
+  - IfEventFlag(AND_07, OFF, TargetEventFlagType.EventFlag, X16_4)
+  - IfEventFlag(AND_09, CHANGE, TargetEventFlagType.EventFlag, X28_4)
+  - IfConditionGroup(OR_14, PASS, AND_01)
+  - IfConditionGroup(OR_14, PASS, AND_04)
+  - IfConditionGroup(OR_14, PASS, AND_07)
+  - SkipIfUnsignedComparison(1, ComparisonType.Equal, X28_4, 0)
+  - IfConditionGroup(OR_14, PASS, AND_09)
+  - IfConditionGroup(MAIN, PASS, OR_14)
+  - GotoIfConditionGroupStateCompiled(Label.Label3, PASS, AND_01)
+  - GotoIfConditionGroupStateCompiled(Label.Label2, FAIL, AND_04)
+  - DeleteAssetfollowingSFX(X0_4, true)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X16_4, OFF)
+  - Label2()
+  - WaitFixedTimeSeconds(0.033)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label3()
+  - IfUnsignedParameterComparison(OR_13, ComparisonType.Equal, X28_4, 0)
+  - IfParameterComparison(OR_13, ComparisonType.Equal, X32_4, 0)
+  - GotoIfConditionGroupStateUncompiled(Label.Label4, PASS, OR_13)
+  - GotoIfEventFlag(Label.Label4, ON, TargetEventFlagType.EventFlag, X28_4)
+  - DisplayGenericDialog(X32_4, PromptType.YESNO, NumberofOptions.NoButtons, X0_4, 3)
+  - WaitFixedTimeSeconds(1)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label4()
+  - DisplayGenericDialogAndSetEventFlags(4300, PromptType.YESNO, NumberofOptions.TwoButtons, X0_4, 3, X20_4, X24_4, X24_4)
+  - GotoIfEventFlag(Label.Label6, ON, TargetEventFlagType.EventFlag, X20_4)
+  - WaitFixedTimeSeconds(1)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label6()
+  - IfMultiplayerState(OR_15, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_15, MultiplayerState.MultiplayerPending)
+  - EndIfConditionGroupStateUncompiled(EventEndType.Restart, PASS, OR_15)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 1051430210, ON)
+  - RotateCharacter(10000, X0_4, -1, true)
+  - ForceAnimationPlayback(10000, 60490, false, false, false, ComparisonType.Equal, 1)
+  - WaitFixedTimeSeconds(3)
+  - WarpPlayer(X4_1, X5_1, X6_1, X7_1, X8_4, X12_4)
+  - EndUnconditionally(EventEndType.Restart)
+  - WaitFixedTimeSeconds(X36_4)
+  - WaitFixedTimeSeconds(X40_4)
 - ID: 1035500702
   Comment: If you buy everything from the pitiful Caria manor guy, you get special dialogue
-  ItemTemplate:
+  FlagTemplate:
   - Type: default
     Comment: Meh
     EventFlag: 66450 67470 69900 130290 130300 130340 130350 130360 130370 130380 130390
   DebugInfo:
+  - EventFlags 66450 67470 69900 130290 130300 130340 130350 130360 130370 130380 130390
   - m60_35_50_00 (Liurnia of the Lakes - Caria Manor) - IfEventValue(67470) - Glintstone Craftsman's Cookbook [7]
   - m60_35_50_00 (Liurnia of the Lakes - Caria Manor) - IfEventValue(66450) - Ritual Pot
   - m60_35_50_00 (Liurnia of the Lakes - Caria Manor) - IfEventValue(130290) - Old Fang
@@ -1470,109 +2875,151 @@ ItemEvents:
   - m60_35_50_00 (Liurnia of the Lakes - Caria Manor) - IfEventValue(69900) - Weathered Map
 - ID: 1036413700
   Comment: Latenna quest, disabled her when you get the left piece
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 1051587800
   DebugInfo:
+  - EventFlags 1051587800
   - m60_36_41_00 (Liurnia of the Lakes - Slumbering Wolf's Shack, Lakeside Crystal Cave Entrance) - SkipIfEventFlag(1051587800) - Haligtree Secret Medallion (Left)
+- ID: 1036472600
+  Comment: Academy east entrance
+  Template:
+  - Type: loc
+    Filter:
+      Gate: academyglintstonekey
+    ItemUse:
+    - IfPlayerHasdoesntHaveItem(AND_09, ItemType.Goods, 8109, OwnershipState.Owns)
+  DebugInfo:
+  - m60_36_47_00 (Liurnia of the Lakes - West of Raya Lucaria Crystal Tunnel; Bellum Highway - South of East Raya Lucaria Gate) - IfPlayerHasdoesntHaveItem(8109) - Academy Glintstone Key
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - IfMultiplayerState(OR_01, MultiplayerState.Multiplayer)
+  - IfMultiplayerState(OR_01, MultiplayerState.MultiplayerPending)
+  - IfConditionGroup(AND_01, FAIL, OR_01)
+  - SkipIfConditionGroupStateUncompiled(7, PASS, OR_01)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfActionButtonInArea(AND_01, X24_4, X0_4)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - IfPlayerHasdoesntHaveItem(AND_09, ItemType.Goods, 8109, OwnershipState.Owns)
+  - GotoIfConditionGroupStateUncompiled(Label.Label1, PASS, AND_09)
+  - WaitFixedTimeSeconds(0.1)
+  - DisplayGenericDialog(20030, PromptType.OKCANCEL, NumberofOptions.OneButton, X0_4, 3)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label1()
+  - RotateCharacter(10000, X16_4, X20_4, false)
+  - WaitFixedTimeSeconds(2.5)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X12_4, ON)
+  - WarpPlayer(X4_1, X5_1, X6_1, X7_1, X8_4, 0)
 - ID: 1037493700
   Comment: Exchanging favor item in Bellum
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     Comment: For awarded item lot 100330 (also given in other places), on action button
     EventFlag: 400033
   DebugInfo:
+  - EventFlags 400031 400033
   - m60_37_49_00 (Bellum Highway - Church of Inhibition, Southwest of Grand Lift of Dectus) - EndIfEventFlag(400033) - Lord of Blood's Favor
   - m60_37_49_00 (Bellum Highway - Church of Inhibition, Southwest of Grand Lift of Dectus) - EndIfEventFlag(400031) - Lord of Blood's Favor
 - ID: 1037533700
   Comment: Disables Azur if you have his item drop. At some point shows treasure, related to Jerren quest
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400441
   DebugInfo:
+  - EventFlags 400441
   - m60_37_53_00 (Mt. Gelmir - Primeval Sorcerer Azur, Gelmir Hero's Grave Entrance) - EndIfEventFlag(400441) - Azur's Glintstone Crown, Azur's Glintstone Robe, Azur's Manchettes
 - ID: 1037542351
   Comment: Sets flag when collecting items. The other flag prevents the item from appearing extra shiny while the player's in 1037542225, presumably for Patches kick
-  ItemTemplate:
+  FlagTemplate:
   - Type: locarg
     EventFlag: 1037547060 1037547070 1037547080 1037547090
     EventFlagArg: X0
   DebugInfo:
+  - EventFlags 1037547060 1037547070 1037547080 1037547090
   - m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance) - IfEventFlag(X0_4 = 1037547060) - Glass Shard
   - m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance) - IfEventFlag(X0_4 = 1037547080) - Rejuvenating Boluses
   - m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance) - IfEventFlag(X0_4 = 1037547090) - Hefty Beast Bone
   - m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance) - IfEventFlag(X0_4 = 1037547070) - Nascent Butterfly
 - ID: 1038502400
   Comment: Some kind of behavior for golems around the lift, dependent on having either item
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 1046367500 1051397900
   DebugInfo:
+  - EventFlags 1046367500 1051397900
   - m60_38_50_00 (Liurnia of the Lakes - Ravine-Veiled Village; Bellum Highway - Grand Lift of Dectus; Altus Plateau - Altus Plateau; Ruin-Strewn Precipice Entrance) - IfEventFlag(1046367500) - Dectus Medallion (Left)
   - m60_38_50_00 (Liurnia of the Lakes - Ravine-Veiled Village; Bellum Highway - Grand Lift of Dectus; Altus Plateau - Altus Plateau; Ruin-Strewn Precipice Entrance) - IfEventFlag(1051397900) - Dectus Medallion (Right)
 - ID: 1039393701
   Comment: When you buy all 3 sorcereries from Thops
-  ItemTemplate:
+  FlagTemplate:
   - Type: default
     EventFlag: 120500 120510 120520
   DebugInfo:
+  - EventFlags 120500 120510 120520
   - m60_39_39_00 (Liurnia of the Lakes - Church of Irith) - IfCountEventFlags(120500, 120749) - Glintstone Pebble (120500)
   - m60_39_39_00 (Liurnia of the Lakes - Church of Irith) - IfCountEventFlags(120500, 120749) - Glintstone Arc (120510)
   - m60_39_39_00 (Liurnia of the Lakes - Church of Irith) - IfCountEventFlags(120500, 120749) - Starlight (120520)
 - ID: 1039532600
   Comment: Gives the riddle item lot on action button
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 1039537080
   DebugInfo:
+  - EventFlags 1039537080
   - m60_39_53_00 (Altus Plateau - Mirage Rise; Mt. Gelmir - Bridge of Iniquity) - SkipIfEventFlag(1039537080) - Mirage Riddle
 - ID: 1039532610
   Comment: Notification for "You found a simple map" but also location-specific
-  ItemTemplate:
+  FlagTemplate:
   - Type: remove
     Comment: Also just remove
     EventFlag: 1039537080
   DebugInfo:
+  - EventFlags 1039537080
   - m60_39_53_00 (Altus Plateau - Mirage Rise; Mt. Gelmir - Bridge of Iniquity) - EndIfEventFlag(1039537080) - Mirage Riddle
   - m60_39_53_00 (Altus Plateau - Mirage Rise; Mt. Gelmir - Bridge of Iniquity) - IfEventFlag(1039537080) - Mirage Riddle
 - ID: 1039533700
   Comment: Enable invasion for Rileigh the Idle
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 400074
   DebugInfo:
+  - EventFlags 400074
   - m60_39_53_00 (Altus Plateau - Mirage Rise; Mt. Gelmir - Bridge of Iniquity) - EndIfEventFlag(400074) - Letter from Volcano Manor
 - ID: 1040522240
   Comment: Give an SFX to the map pillar until you get the map
-  ItemTemplate:
+  FlagTemplate:
   - Type: locarg
     EventFlag: 62030
     EventFlagArg: X8
   DebugInfo:
+  - EventFlags 62030
   - "m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance) - GotoIfEventFlag(X8_4 = 62030) - Map: Altus Plateau"
   - "m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance) - IfEventFlag(X8_4 = 62030) - Map: Altus Plateau"
 - ID: 1042393710
   Comment: Enable invasion for Old Knight Istvan. TODO check other items
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 400073
   DebugInfo:
+  - EventFlags 400073
   - m60_42_39_00 (Stormhill - North of Warmaster's Shack) - EndIfEventFlag(400073) - Letter from Volcano Manor
 - ID: 1042512240
   Comment: Map pillar SFX
-  ItemTemplate:
+  FlagTemplate:
   - Type: locarg
     EventFlag: 62031
     EventFlagArg: X8
   DebugInfo:
+  - EventFlags 62031
   - 'm60_42_51_00 (Capital Outskirts - Outer Wall Phantom Tree) - GotoIfEventFlag(X8_4 = 62031) - Map: Leyndell, Royal Capital'
   - 'm60_42_51_00 (Capital Outskirts - Outer Wall Phantom Tree) - IfEventFlag(X8_4 = 62031) - Map: Leyndell, Royal Capital'
 - ID: 1044363713
   Comment: Flags when purchasing 3 and then 6 of Sellen's sorceries
-  ItemTemplate:
+  FlagTemplate:
   - Type: default
     EventFlag: 100500 100510 100520 100530 100540 100550 100560 100570 100580 100590 100600 100610 100620
   DebugInfo:
+  - EventFlags 100500 100510 100520 100530 100540 100550 100560 100570 100580 100590 100600 100610 100620
   - m60_44_36_00 (Limgrave - Waypoint Ruins) - IfCountEventFlags(100500, 100749) - Glintstone Pebble (100500)
   - m60_44_36_00 (Limgrave - Waypoint Ruins) - IfCountEventFlags(100500, 100749) - Scholar's Armament (100510)
   - m60_44_36_00 (Limgrave - Waypoint Ruins) - IfCountEventFlags(100500, 100749) - Scholar's Shield (100520)
@@ -1586,25 +3033,405 @@ ItemEvents:
   - m60_44_36_00 (Limgrave - Waypoint Ruins) - IfCountEventFlags(100500, 100749) - Swift Glintstone Shard (100600)
   - m60_44_36_00 (Limgrave - Waypoint Ruins) - IfCountEventFlags(100500, 100749) - Glintblade Phalanx (100610)
   - m60_44_36_00 (Limgrave - Waypoint Ruins) - IfCountEventFlags(100500, 100749) - Carian Slicer (100620)
+- ID: 1045522500
+  Comment: Outskirts to Leyndell entry. Occurs in both _00 and _10 maps, but we only edit the initialized one.
+  Template:
+  - Type: loc
+    Filter:
+      Gate: leyndell
+    CondFlag: 182
+  DebugCommands:
+  - GotoIfEventFlag(Label.Label0, OFF, TargetEventFlagType.EventFlag, 1045520500)
+  - ChangeAssetEnableState(1045521500, Disabled)
+  - EndUnconditionally(EventEndType.End)
+  - Label0()
+  - GotoIfPlayerIsInWorldType(Label.Label1, WorldType.OtherWorld)
+  - GotoIfEventFlag(Label.Label2, ON, TargetEventFlagType.EventFlag, 1045522550)
+  - DeleteAssetfollowingSFX(1045521500, true)
+  - CreateAssetfollowingSFX(1045521500, 101, 1540)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 1045522550, ON)
+  - Label2()
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfActionButtonInArea(AND_01, 9503, 1045521500)
+  - IfEventFlag(AND_02, ON, TargetEventFlagType.EventFlag, 182)
+  - IfEventFlag(AND_02, ON, TargetEventFlagType.EventFlag, 105)
+  - IfConditionGroup(OR_03, PASS, AND_01)
+  - IfConditionGroup(OR_03, PASS, AND_02)
+  - IfConditionGroup(MAIN, PASS, OR_03)
+  - GotoIfConditionGroupStateCompiled(Label.Label3, PASS, AND_02)
+  - DisplayGenericDialog(20003, PromptType.YESNO, NumberofOptions.NoButtons, 1045521500, 3)
+  - WaitFixedTimeSeconds(1)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label3()
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 1045520500, ON)
+  - DeleteAssetfollowingSFX(1045521500, true)
+  - ChangeAssetEnableState(1045521500, Disabled)
+  - EndUnconditionally(EventEndType.End)
+  - Label1()
+  - DeleteAssetfollowingSFX(1045521500, true)
+  - CreateAssetfollowingSFX(1045521500, 101, 1540)
+  - EndUnconditionally(EventEndType.End)
 - ID: 1047410701
   Comment: Calls unknown 2004[80](1) when getting the item. Also called with (0) when being held by Fia? (and then restart)
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 400470
   DebugInfo:
+  - EventFlags 400470
   - m60_47_41_00 (Caelid - South Great-Jar Area) - EndIfEventFlag(400470) - Great-Jar's Arsenal
   - m60_47_41_00 (Caelid - South Great-Jar Area) - IfEventFlag(400470) - Great-Jar's Arsenal
 - ID: 1050383702
   Comment: Gives lore dialogue after purchasing the Pest Threads item
-  ItemTemplate:
+  FlagTemplate:
   - Type: loc
     EventFlag: 110850
   DebugInfo:
+  - EventFlags 110850
   - m60_50_38_00 (Caelid - Gowry's Shack) - WaitForEventFlag(110850) - Pest Threads
 - ID: 1050563700
   Comment: Enable invasion for Juno Hoslow
-  ItemTemplate:
+  FlagTemplate:
   - Type: item
     EventFlag: 400075
   DebugInfo:
+  - EventFlags 400075
   - m60_50_56_00 (Mountaintops of the Giants - Shack of the Lofty; Consecrated Snowfield - Minor Erdtree, Albinauric Rise, Cave of the Forlorn Entrance) - EndIfEventFlag(400075) - Red Letter
+- ID: 2045432550
+  Comment: Painting reward
+  FlagTemplate:
+  - Type: itemarg
+    EventFlag: 580100
+    EventFlagArg: X4
+  - Type: locarg
+    EventFlag: 580400
+    EventFlagArg: X0
+  DebugInfo:
+  - EventFlags 580100 580400
+  - m61_45_43_00 (Gravesite Plain - South of Dragon Lake) - EndIfEventFlag(X0_4 = 580400) - Serpent Crest Shield
+  - m61_45_43_00 (Gravesite Plain - South of Dragon Lake) - IfEventFlag(X4_4 = 580100) - "Incursion" Painting
+- ID: 2045472690
+  Comment: Sword quest, not randomized
+  FlagTemplate:
+  - Type: default
+    EventFlag: 2045477500 2045477510 2045477520 2045477530 2045477540 2045477550 2045477560 2045477570 2045477580 2045477590 2045477600
+  DebugInfo:
+  - EventFlags 2045477500 2045477510 2045477520 2045477530 2045477540 2045477550 2045477560 2045477570 2045477580 2045477590 2045477600
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477600) - Sword of Light +10
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477590) - Sword of Light +9
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477580) - Sword of Light +8
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477570) - Sword of Light +7
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477560) - Sword of Light +6
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477550) - Sword of Light +5
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477540) - Sword of Light +4
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477530) - Sword of Light +3
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477520) - Sword of Light +2
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477510) - Sword of Light +1
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477500) - Sword of Light
+- ID: 2045472695
+  Comment: Sword quest, not randomized
+  FlagTemplate:
+  - Type: default
+    EventFlag: 2045477500 2045477510 2045477520 2045477530 2045477540 2045477550 2045477560 2045477570 2045477580 2045477590 2045477600
+  DebugInfo:
+  - EventFlags 2045477500 2045477510 2045477520 2045477530 2045477540 2045477550 2045477560 2045477570 2045477580 2045477590 2045477600
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477600) - Sword of Light +10
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477590) - Sword of Light +9
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477580) - Sword of Light +8
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477570) - Sword of Light +7
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477560) - Sword of Light +6
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477550) - Sword of Light +5
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477540) - Sword of Light +4
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477530) - Sword of Light +3
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477520) - Sword of Light +2
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477510) - Sword of Light +1
+  - m61_45_47_00 (Rauh Base - Ravine North, East Scorpion River; Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit) - SetEventFlag(2045477500) - Sword of Light
+- ID: 2046402550
+  Comment: Getting painting object, copy of 90005632
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 580100
+    EventFlagArg: X0
+  DebugInfo:
+  - EventFlags 580100
+  - m61_46_40_00 (Gravesite Plain - Church of Benediction; Cerulean Coast - Demi-Human Beach, Ravine North; Charo's Hidden Grave - Lamenter's Gaol Entrance) - EndIfEventFlag(X0_4 = 580100) - "Incursion" Painting
+- ID: 2046452550
+  Comment: Painting reward
+  FlagTemplate:
+  - Type: itemarg
+    EventFlag: 580110
+    EventFlagArg: X4
+  - Type: locarg
+    EventFlag: 580410
+    EventFlagArg: X0
+  DebugInfo:
+  - EventFlags 580110 580410
+  - m61_46_45_00 (Rauh Base - Temple Town Ruins; Gravesite Plain - Northern Nameless Mausoleum, Ellac River Start) - EndIfEventFlag(X0_4 = 580410) - Spiraltree Seal
+  - m61_46_45_00 (Rauh Base - Temple Town Ruins; Gravesite Plain - Northern Nameless Mausoleum, Ellac River Start) - IfEventFlag(X4_4 = 580110) - "The Sacred Tower" Painting
+- ID: 2047422550
+  Comment: Getting painting object, copy of 90005632
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 580110
+    EventFlagArg: X0
+  DebugInfo:
+  - EventFlags 580110
+  - m61_47_42_00 (Gravesite Plain - North of Scorched Ruins, Downstream of Ellac River Cave) - EndIfEventFlag(X0_4 = 580110) - "The Sacred Tower" Painting
+- ID: 2047442611
+  Comment: Using Imbued Sword Key
+  DebugInfo:
+  - m61_47_44_00 (Gravesite Plain - West Castle Ensis, South Fog Rift Fort; Scadu Altus - Belfry) - IfPlayerHasdoesntHaveItem(8186) - Imbued Sword Key
+  - m61_47_44_00 (Gravesite Plain - West Castle Ensis, South Fog Rift Fort; Scadu Altus - Belfry) - RemoveItemFromPlayer(8186) - Imbued Sword Key
+- ID: 2047460707
+  Comment: Forager brood quest state for sick one
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 400755
+    EventFlagArg: X8
+  DebugInfo:
+  - EventFlags 400755
+  - m61_47_46_00 (Scadu Altus - Church of the Crusade; Gravesite Plain - Fog Rift Catacombs Entrance; Rauh Base - Above Fog Rift; Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside) - EndIfEventFlag(X8_4 = 400755) - Shadow Sunflower
+  - m61_47_46_00 (Scadu Altus - Church of the Crusade; Gravesite Plain - Fog Rift Catacombs Entrance; Rauh Base - Above Fog Rift; Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside) - IfEventFlag(X8_4 = 400755) - Shadow Sunflower
+- ID: 2048450704
+  Comment: Default state for Hornsent's drop
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400612
+  DebugInfo:
+  - EventFlags 400612
+  - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - SetEventFlag(X4_4 = 400612) - Furnace Visage
+- ID: 2048450708
+  Comment: Awards invasion reward items if the invasions were completed and items not yet acquired, but apparently she's gone
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 400590 400592
+  DebugInfo:
+  - EventFlags 400590 400592
+  - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - IfEventFlag(400590) - Lacerating Crossed-Tree
+  - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - IfEventFlag(400592) - Retaliatory Crossed-Tree
+- ID: 2048450710
+  Comment: Hornsent pickup, hopefully this works
+  FlagTemplate:
+  - Type: locarg
+    EventFlag: 400610 400611 400612
+    EventFlagArg: X12_4 X16_4 X32_4 X36_4
+  DebugInfo:
+  - EventFlags 400610 400611 400612
+  - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - IfBatchEventFlags(X12_4 = 400610, X16_4 = 400612) - Cross Map (400610)
+  - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - IfBatchEventFlags(X12_4 = 400610, X16_4 = 400612) - New Cross Map (400611)
+  - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - IfBatchEventFlags(X12_4 = 400610, X16_4 = 400612) - Furnace Visage (400612)
+  - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - IfEventFlag(X32_4 = 400610) - Cross Map
+  - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - IfEventFlag(X36_4 = 400611) - New Cross Map
+- ID: 2050402600
+  Comment: Using Hole-Laden Necklace in Rhia
+  Template:
+  - Type: loc
+    Filter:
+      Gate: holeladennecklace
+    ItemUse:
+    - IfPlayerHasdoesntHaveItem(AND_10, ItemType.Goods, 2008008, OwnershipState.DoesntOwn)
+  DebugInfo:
+  - m61_50_40_00 (Finger Ruins of Rhia - Northwest, Hanging Bell; Foot of the Jagged Peak - North of Grand Altar East Edge) - IfPlayerHasdoesntHaveItem(2008008) - Hole-Laden Necklace
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - SkipIfEventFlag(4, OFF, TargetEventFlagType.EventFlag, 2050400600)
+  - SetObjactState(2050401600, 52407, Disabled)
+  - WaitFixedTimeSeconds(1)
+  - AwardItemsIncludingClients(2050400000)
+  - EndUnconditionally(EventEndType.End)
+  - IfPlayerHasdoesntHaveItem(AND_10, ItemType.Goods, 2008008, OwnershipState.DoesntOwn)
+  - GotoIfConditionGroupStateUncompiled(Label.Label10, PASS, AND_10)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfPlayerHasdoesntHaveItem(AND_01, ItemType.Goods, 2008008, OwnershipState.Owns)
+  - IfObjactEventFlag(AND_01, 2050403600)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 2050400600, ON)
+  - WaitFixedTimeSeconds(10)
+  - AwardItemsIncludingClients(2050400000)
+  - EndUnconditionally(EventEndType.End)
+  - Label10()
+  - SetObjactState(2050401600, 52407, Disabled)
+  - IfPlayerHasdoesntHaveItem(MAIN, ItemType.Goods, 2008008, OwnershipState.Owns)
+  - SetObjactState(2050401600, 52407, Enabled)
+  - WaitFixedTimeSeconds(0.1)
+  - EndUnconditionally(EventEndType.Restart)
+- ID: 2050462690
+  Comment: Sword quest, not randomized
+  FlagTemplate:
+  - Type: default
+    EventFlag: 2045477500 2045477510 2045477520 2045477530 2045477540 2045477550 2045477560 2045477570 2045477580 2045477590 2045477600 2045477700 2045477710 2045477720 2045477730 2045477740 2045477750 2045477760 2045477770 2045477780 2045477790 2045477800
+  DebugInfo:
+  - EventFlags 2045477500 2045477510 2045477520 2045477530 2045477540 2045477550 2045477560 2045477570 2045477580 2045477590 2045477600 2045477700 2045477710 2045477720 2045477730 2045477740 2045477750 2045477760 2045477770 2045477780 2045477790 2045477800
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477600) - Sword of Light +10
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477590) - Sword of Light +9
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477580) - Sword of Light +8
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477570) - Sword of Light +7
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477560) - Sword of Light +6
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477550) - Sword of Light +5
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477540) - Sword of Light +4
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477530) - Sword of Light +3
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477520) - Sword of Light +2
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477510) - Sword of Light +1
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477500) - Sword of Light
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477800) - Sword of Darkness +10
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477790) - Sword of Darkness +9
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477780) - Sword of Darkness +8
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477770) - Sword of Darkness +7
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477760) - Sword of Darkness +6
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477750) - Sword of Darkness +5
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477740) - Sword of Darkness +4
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477730) - Sword of Darkness +3
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477720) - Sword of Darkness +2
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477710) - Sword of Darkness +1
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477700) - Sword of Darkness
+- ID: 2050462695
+  Comment: Sword quest, not randomized
+  FlagTemplate:
+  - Type: default
+    EventFlag: 2045477500 2045477510 2045477520 2045477530 2045477540 2045477550 2045477560 2045477570 2045477580 2045477590 2045477600 2045477700 2045477710 2045477720 2045477730 2045477740 2045477750 2045477760 2045477770 2045477780 2045477790 2045477800
+  DebugInfo:
+  - EventFlags 2045477500 2045477510 2045477520 2045477530 2045477540 2045477550 2045477560 2045477570 2045477580 2045477590 2045477600 2045477700 2045477710 2045477720 2045477730 2045477740 2045477750 2045477760 2045477770 2045477780 2045477790 2045477800
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477600) - Sword of Light +10
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477590) - Sword of Light +9
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477580) - Sword of Light +8
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477570) - Sword of Light +7
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477560) - Sword of Light +6
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477550) - Sword of Light +5
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477540) - Sword of Light +4
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477530) - Sword of Light +3
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477520) - Sword of Light +2
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477510) - Sword of Light +1
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477500) - Sword of Light
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477800) - Sword of Darkness +10
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477790) - Sword of Darkness +9
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477780) - Sword of Darkness +8
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477770) - Sword of Darkness +7
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477760) - Sword of Darkness +6
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477750) - Sword of Darkness +5
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477740) - Sword of Darkness +4
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477730) - Sword of Darkness +3
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477720) - Sword of Darkness +2
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477710) - Sword of Darkness +1
+  - m61_50_46_00 (Scadu Altus - Castle Watering Hole Southeast, South Ruins of Unte, Church District Highroad West Cliffside) - SetEventFlag(2045477700) - Sword of Darkness
+- ID: 2053392300
+  Comment: Painting reward
+  FlagTemplate:
+  - Type: itemarg
+    EventFlag: 580120
+    EventFlagArg: X4
+  - Type: locarg
+    EventFlag: 580420
+    EventFlagArg: X0
+  DebugInfo:
+  - EventFlags 580120 580420
+  - m61_53_39_00 (Jagged Peak - Between Jagged Peak Mountainside and Summit, Before Senessax Lake) - EndIfEventFlag(X0_4 = 580420) - Rock Heart
+  - m61_53_39_00 (Jagged Peak - Between Jagged Peak Mountainside and Summit, Before Senessax Lake) - IfEventFlag(X4_4 = 580120) - "Domain of Dragons" Painting
+- ID: 2053462600
+  Comment: Using Hole-Laden Necklace in Dheo
+  Template:
+  - Type: loc
+    Filter:
+      Gate: holeladennecklace
+    ItemUse:
+    - IfPlayerHasdoesntHaveItem(AND_10, ItemType.Goods, 2008008, OwnershipState.DoesntOwn)
+  DebugInfo:
+  - m61_53_46_00 (Finger Ruins of Dheo - West, Hanging Bell) - IfPlayerHasdoesntHaveItem(2008008) - Hole-Laden Necklace
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - SkipIfEventFlag(4, OFF, TargetEventFlagType.EventFlag, 2053460600)
+  - SetObjactState(2053461600, 52407, Disabled)
+  - WaitFixedTimeSeconds(1)
+  - AwardItemsIncludingClients(2053460600)
+  - EndUnconditionally(EventEndType.End)
+  - IfPlayerHasdoesntHaveItem(AND_10, ItemType.Goods, 2008008, OwnershipState.DoesntOwn)
+  - GotoIfConditionGroupStateUncompiled(Label.Label10, PASS, AND_10)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfPlayerHasdoesntHaveItem(AND_01, ItemType.Goods, 2008008, OwnershipState.Owns)
+  - IfObjactEventFlag(AND_01, 2053463600)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 2053460600, ON)
+  - WaitFixedTimeSeconds(10)
+  - AwardItemsIncludingClients(2053460600)
+  - EndUnconditionally(EventEndType.End)
+  - Label10()
+  - SetObjactState(2053461600, 52407, Disabled)
+  - IfPlayerHasdoesntHaveItem(MAIN, ItemType.Goods, 2008008, OwnershipState.Owns)
+  - SetObjactState(2053461600, 52407, Enabled)
+  - WaitFixedTimeSeconds(0.1)
+  - EndUnconditionally(EventEndType.Restart)
+LogicFlags:
+- Name: academyglintstonekey
+  Index: 0
+- Name: carianinvertedstatue
+  Index: 1
+- Name: cursemarkofdeath
+  Index: 2
+- Name: darkmoonring
+  Index: 3
+- Name: dectusmedallionleft
+  Index: 4
+- Name: dectusmedallionright
+  Index: 5
+- Name: discardedpalacekey
+  Index: 6
+- Name: drawingroomkey
+  Index: 7
+- Name: gaollowerlevelkey
+  Index: 8
+- Name: gaolupperlevelkey
+  Index: 9
+- Name: haligtreesecretmedallionleft
+  Index: 10
+- Name: haligtreesecretmedallionright
+  Index: 11
+- Name: holeladennecklace
+  Index: 12
+- Name: messmerskindling
+  Index: 13
+- Name: omother
+  Index: 14
+- Name: purebloodknightsmedal
+  Index: 15
+- Name: roldmedallion
+  Index: 16
+- Name: rustykey
+  Index: 17
+- Name: welldepthskey
+  Index: 18
+- Name: altus
+  Index: 19
+LogicGates:
+- Name: altus
+  Cond: custom
+  Block:
+  - m16_00_00_00 AEG270_328 AEG270_613_2000 285.186 -129.523 -261.656 -59.392 -72.231 6.762
+  - m39_20_00_00 AEG021_163 AEG021_162_8000 -135.800 369.770 -1263.600 -122.500
+- Name: deathless
+  Cond: none
+- Name: dragonbarrow
+  Comment: Condition could be configurable. For now use Leyndell/sewers grace flag set in event 11103770. Also needs message and spiritspring edit. Wall from m60_47_41_00 (also add reverse dir?)
+  Cond: 11109558
+  Block:
+  - m60_48_40_00 AEG099_029 AEG004_043_1008 29.765 169.235 1.571 0
+- Name: leyndell
+  Cond: custom
+- Name: liurnia
+  Comment: Unblock after Godrick
+  Cond: 10008540
+  Block:
+  - m60_10_09_02 AEG004_161 m60_40_39_00-AEG004_161_1029 -323.622 254.341 384.099 76.268
+  - m60_40_39_00 AEG099_028 AEG001_290_7124 -9.655 296.437 110.195 0
+- Name: roldmedallion
+  Comment: Same as item name, applies GR requirement when no item shard
+  Cond: custom
+- Name: discardedpalacekey
+  ObjAct: true
+- Name: drawingroomkey
+  ObjAct: true
+- Name: gaollowerlevelkey
+  ObjAct: true
+- Name: gaolupperlevelkey
+  ObjAct: true
+- Name: rustykey
+  ObjAct: true
+- Name: welldepthskey
+  ObjAct: true

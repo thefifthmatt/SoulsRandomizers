@@ -1,0 +1,87 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RandomizerCommon.ViewModels"
+        xmlns:loc="using:RandomizerCommon.Localization"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:idd="clr-namespace:Avalonia.Xaml.Interactions.DragAndDrop;assembly=Avalonia.Xaml.Interactions.DragAndDrop"
+        xmlns:b="using:RandomizerCommon.Behaviors"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="RandomizerCommon.Views.DllWindow"
+        x:DataType="vm:DllViewModel"
+        WindowStartupLocation="CenterOwner"
+        Width="1000" Height="400"
+        MinWidth="500" MinHeight="250"
+        Title="{Binding Title^}">
+    <!-- If it comes time to migrate: Assemblies changed to Xaml.Behaviors.Interactivity and Xaml.Behaviors.Interactions.DragAndDrop -->
+
+    <Design.DataContext>
+        <vm:DllViewModel/>
+    </Design.DataContext>
+
+    <Window.Resources>
+        <!-- IconGrabber, MIT License, author: Primer, taken from: https://www.svgrepo.com/svg/347759/grabber -->
+        <PathGeometry x:Key="IconGrabberGeometry">M15 18a1 1 0 100-2 1 1 0 000 2zm1-6a1 1 0 11-2 0 1 1 0 012 0zm-7 6a1 1 0 100-2 1 1 0 000 2zm0-5a1 1 0 100-2 1 1 0 000 2zm7-6a1 1 0 11-2 0 1 1 0 012 0zM9 8a1 1 0 100-2 1 1 0 000 2z</PathGeometry>
+        <GeometryDrawing x:Key="IconGrabber" Brush="Black" Geometry="{StaticResource IconGrabberGeometry}" />
+    </Window.Resources>
+
+    <!-- https://github.com/AvaloniaUI/Avalonia.Xaml.Behaviors/tree/master/samples/DragAndDropSample -->
+    <Window.Styles>
+        <Style Selector="ListBox.ItemsDragAndDrop">
+            <Style.Resources>
+                <b:DllDropHandler x:Key="DllDropHandler" />
+            </Style.Resources>
+            <Setter Property="(i:Interaction.Behaviors)">
+                <i:BehaviorCollectionTemplate>
+                    <i:BehaviorCollection>
+                        <idd:ContextDropBehavior Handler="{StaticResource DllDropHandler}" />
+                    </i:BehaviorCollection>
+                </i:BehaviorCollectionTemplate>
+            </Setter>
+        </Style>
+
+        <Style Selector="ListBox.ItemsDragAndDrop ListBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="(i:Interaction.Behaviors)">
+                <i:BehaviorCollectionTemplate>
+                    <i:BehaviorCollection>
+                        <idd:ContextDragBehavior HorizontalDragThreshold="3" VerticalDragThreshold="3" />
+                    </i:BehaviorCollection>
+                </i:BehaviorCollectionTemplate>
+            </Setter>
+        </Style>
+    </Window.Styles>
+
+    <Grid ColumnDefinitions="*" RowDefinitions="Auto,*,Auto" Margin="10">
+        <loc:Message Grid.Column="0" Grid.Row="0" TextWrapping="Wrap"
+                     From="{Binding LaunchText}" IsVisible="{Binding LaunchText, Converter={x:Static ObjectConverters.IsNotNull}}" />
+        <ListBox Margin="0 10" Grid.Column="0" Grid.Row="1" MinHeight="100"
+                 ItemsSource="{Binding Dlls}" SelectedItem="{Binding Item}" Classes="ItemsDragAndDrop">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Panel>
+                        <Image Margin="0,0,0,0" Width="12" Height="12" VerticalAlignment="Center" HorizontalAlignment="Left">
+                            <Image.Source>
+                                <DrawingImage Drawing="{StaticResource IconGrabber}" />
+                            </Image.Source>
+                        </Image>
+                        <TextBlock Margin="20,0,0,0" Text="{Binding}" />
+                    </Panel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <DockPanel Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch">
+            <Button DockPanel.Dock="Left" Command="{Binding AddCommand}" HorizontalContentAlignment="Center" Width="100" Margin="0,0,5,0">
+                <loc:Message Key="DllForm_addButton" Text="Add..." />
+            </Button>
+            <Button DockPanel.Dock="Left" Command="{Binding RemoveCommand}" HorizontalContentAlignment="Center" Width="100" Margin="0,0,5,0" IsEnabled="{Binding CanRemove}">
+                <loc:Message Key="DllForm_removeButton" Text="Remove" />
+            </Button>
+            <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Command="{Binding OkCommand}" IsDefault="True" HorizontalContentAlignment="Center" Width="100">
+                <loc:Message Key="DllForm_saveButton" Text="Save" />
+            </Button>
+        </DockPanel>
+    </Grid>
+
+</Window>

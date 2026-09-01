@@ -1,48 +1,72 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
+    <PropertyGroup>
+        <!-- Do not upgrade until Winforms is no longer used -->
+        <TargetFramework>net6.0</TargetFramework>
+        <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE,DEV,DEV_RELEASE</DefineConstants>
-  </PropertyGroup>
+    <!-- Minimize binary size and enforce modular code organization. For publishing, set e.g. -p:GameConstants=ER -->
+    <PropertyGroup>
+        <GameConstants Condition="'$(GameConstants)' == ''">DS3;SDT;ER</GameConstants>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE,DEV_RELEASE</DefineConstants>
-  </PropertyGroup>
+    <!-- Surround properties with semicolons for infix checks below -->
+    <PropertyGroup>
+        <DefineConstants>TRACE;$(DevConstants);$(GameConstants);</DefineConstants>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\*.png" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="LightInject" Version="7.0.1" />
+        <PackageReference Include="LightInject.Annotation" Version="1.1.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Pidgin" Version="3.2.0" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.6" />
+        <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+        <PackageReference Include="System.IO.Hashing" Version="8.0.0" />
+        <PackageReference Include="YamlDotNet" Version="12.0.2" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
-    <PackageReference Include="Pidgin" Version="3.2.0" />
-    <PackageReference Include="YamlDotNet" Version="12.0.2" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\SoulsFormatsNEXT\SoulsFormats\SoulsFormats.csproj" />
+        <ProjectReference Include="..\..\SoulsIds\SoulsIds\SoulsIds.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\SoulsFormats\SoulsFormats\SoulsFormats.csproj" />
-    <ProjectReference Include="..\..\SoulsIds\SoulsIds\SoulsIds.csproj" />
-    <ProjectReference Include="..\..\yet-another-tab-control\GrayIris.Utilities.csproj" />
-  </ItemGroup>
+    <ItemGroup Condition="!$(DefineConstants.Contains(';AC6;'))">
+        <Compile Remove="AC6/**/*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition="!$(DefineConstants.Contains(';DEV;'))">
+        <Compile Remove="Dev/**/*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition="!$(DefineConstants.Contains(';DS1;'))">
+        <Compile Remove="DS1/**/*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition="!$(DefineConstants.Contains(';DS3;'))">
+        <Compile Remove="DS3/**/*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition="!$(DefineConstants.Contains(';ER;'))">
+        <Compile Remove="Elden/**/*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition="!$(DefineConstants.Contains(';NR;'))">
+        <Compile Remove="Nightreign/**/*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition="!$(DefineConstants.Contains(';SDT;'))">
+        <Compile Remove="Sekiro/**/*.cs" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Properties\Settings.Designer.cs">
+            <DesignTimeSharedInput>True</DesignTimeSharedInput>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Settings.settings</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
+    <ItemGroup>
+        <None Update="Properties\Settings.settings">
+            <Generator>SettingsSingleFileGenerator</Generator>
+            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+        </None>
+    </ItemGroup>
 
 </Project>
