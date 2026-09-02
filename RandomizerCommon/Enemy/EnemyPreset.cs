@@ -1199,8 +1199,14 @@ namespace RandomizerCommon
                 else
                 {
                     string findId = "";
-                    if (uint.TryParse(name.Split(' ').Last(), out uint id))
+                    int lastSpace = name.LastIndexOf(' ');
+                    if (lastSpace != -1 && uint.TryParse(name.Substring(lastSpace + 1), out uint id))
                     {
+                        if (eligibleNames.Contains(name.Substring(0, lastSpace)))
+                        {
+                            // Similar to above case but for combined syntax for filtered DLC enemies in DS3
+                            return new();
+                        }
                         if (primaryName.TryGetValue(id, out string name2))
                         {
                             findId = $". Did you mean {name2} {id}?";

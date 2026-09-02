@@ -954,9 +954,30 @@ namespace RandomizerCommon
             {
                 string key = slot.Key.Substring(slot.Key.IndexOf(',') + 1);
                 strSlots[key] = slot;
-                if (game.EldenRing && !opt["dlc"] && Areas.TryGetValue(slot.Area, out AreaAnnotation areaAnn) && areaAnn.HasTag("dlc"))
+                // Special case for DLC, just to avoid spamming unused slots from scraper missing maps
+                bool excluded(string tag)
                 {
-                    // Special case for DLC, just to avoid spamming unused slots from scraper missing maps
+                    if (opt[tag])
+                    {
+                        return false;
+                    }
+                    if (slot.Area != null && Areas.TryGetValue(slot.Area, out AreaAnnotation areaAnn) && areaAnn.HasTag(tag))
+                    {
+                        return true;
+                    }
+                    // TagList not initialized yet
+                    if (slot.Tags != null && slot.Tags.Contains(tag))
+                    {
+                        return true;
+                    }
+                    return false;
+                };
+                if (game.EldenRing && excluded("dlc"))
+                {
+                    okayMissingSlots.Add(key);
+                }
+                else if (game.DS3 && (excluded("dlc1") || excluded("dlc2")))
+                {
                     okayMissingSlots.Add(key);
                 }
             }

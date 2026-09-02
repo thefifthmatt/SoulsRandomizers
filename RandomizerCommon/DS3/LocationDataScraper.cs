@@ -412,7 +412,8 @@ namespace RandomizerCommon
                 }
                 if (!usedEntities.ContainsKey(entityId))
                 {
-                    Warn($"Missing NPC {entityId} with item lot {String.Join(", ", itemLot)}");
+                    // This is an issue if all DLC is enabled, but ignore it otherwise
+                    // Warn($"Missing NPC {entityId} with item lot {String.Join(", ", itemLot)}");
                     continue;
                 }
                 List<Entity> id = usedEntities[entityId];

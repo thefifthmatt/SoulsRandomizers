@@ -12,7 +12,7 @@ namespace RandomizerCommon
 {
     public class RandomizerOptions
     {
-        private FromGame Game { get; set; }
+        public FromGame Game { get; init; }
 
         public uint Seed { get; set; }
         public uint Seed2 { get; set; }

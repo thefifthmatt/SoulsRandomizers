@@ -207,8 +207,30 @@ namespace RandomizerCommon
                 return entityGroupBase++;
             }
 
-            bool eldenExcludeDlc = game.EldenRing && !opt["dlc"];
             Dictionary<string, EMEVD> emevds = game.Emevds;
+
+            // Ignoring DLC is a bit tricky because of how many systems there are.
+            // Try to leave out both maps and infos in both DS3 and Elden Ring. DS3 explicitly list maps, Elden Ring only has regex filter.
+            HashSet<string> ignoredMaps = new HashSet<string>();
+            if (game.DS3)
+            {
+                if (!opt["dlc1"])
+                {
+                    ignoredMaps.UnionWith(new[] { "m45_00_00_00" });
+                }
+                if (!opt["dlc2"])
+                {
+                    ignoredMaps.UnionWith(new[] { "m50_00_00_00", "m51_00_00_00", "m51_01_00_00" });
+                }
+                foreach (string map in ignoredMaps.ToList())
+                {
+                    // Still needed?
+                    ignoredMaps.Add(game.Locations[map]);
+                }
+                maps = new Dictionary<string, TMap>(maps.Where(e => !ignoredMaps.Contains(e.Key)));
+                emevds = new(emevds.Where(e => !ignoredMaps.Contains(e.Key)));
+            }
+            bool eldenExcludeDlc = game.EldenRing && !opt["dlc"];
             if (eldenExcludeDlc)
             {
                 maps = new Dictionary<string, TMap>(maps.Where(e => !game.IsEldenDlcMap(e.Key)));
@@ -497,6 +519,11 @@ namespace RandomizerCommon
                     info.DLC = game.IsEldenDlcMap(info.Map);
                     if (eldenExcludeDlc && info.DLC) continue;
                 }
+                else if (game.DS3)
+                {
+                    // DLC tag is not used, and probably shouldn't be a boolean
+                    if (ignoredMaps.Contains(info.Map)) continue;
+                }
                 if (infos.ContainsKey(info.ID)) throw new Exception($"Duplicate config entity {info.ID}");
                 infos[info.ID] = info;
                 if (isFakeId(info.ID))
@@ -571,26 +598,6 @@ namespace RandomizerCommon
             // ---
 
             enemyEditor.InitialMapPass(opt);
-
-            // Ignoring DLC is a bit tricky because of how many systems there are.
-            // For the most part, try to randomize DLC enemies to themselves, rather than totally ignoring them, in DS3.
-            // In Elden Ring, try to leave out both maps and infos.
-            HashSet<string> ignoredMaps = new HashSet<string>();
-            if (game.DS3)
-            {
-                if (!opt["dlc1"])
-                {
-                    ignoredMaps.UnionWith(new[] { "m45_00_00_00" });
-                }
-                if (!opt["dlc2"])
-                {
-                    ignoredMaps.UnionWith(new[] { "m50_00_00_00", "m51_00_00_00", "m51_01_00_00" });
-                }
-                foreach (string map in ignoredMaps.ToList())
-                {
-                    ignoredMaps.Add(game.Locations[map]);
-                }
-            }
 
             Vector3 getDupeOffset(Vector3 rotation, uint target, int index)
             {
@@ -1341,18 +1348,6 @@ namespace RandomizerCommon
             Dictionary<uint, uint> forceMap = new();
             HashSet<uint> autoForce = new();
 
-            // Use forcemap to disable DLC randomization in DS3. In Elden Ring, map filters happen at the very start.
-            if (ignoredMaps.Count > 0)
-            {
-                foreach (EnemyInfo info in infos.Values)
-                {
-                    if (ignoredMaps.Contains(info.Map))
-                    {
-                        forceMap[info.ID] = info.ID;
-                        autoForce.Add(info.ID);
-                    }
-                }
-            }
             bool ignoreTarnished = !opt["tarnished"];
             if (game.EldenRing && (preset == null || ignoreTarnished))
             {

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YamlDotNet.Core.Tokens;
 using static RandomizerCommon.AnnotationData;
-using static RandomizerCommon.EnemyAnnotations;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.Util;
+using static SoulsIds.GameSpec;
 
 namespace RandomizerCommon
 {
@@ -802,7 +801,11 @@ namespace RandomizerCommon
                     // Special check for base game locations which only exist in DLC, mainly Roundtable Hold shops with DLC dependencies.
                     // Otherwise, it can get added as a quest item and setVanillaArea will fail.
                     // This may need a general exclusion mechanism to work across games.
-                    if (tags.Contains("dlc") && !opt["dlc"])
+                    if (opt.Game == FromGame.ER && tags.Contains("dlc") && !opt["dlc"])
+                    {
+                        continue;
+                    }
+                    if (opt.Game == FromGame.DS3 && (tags.Contains("dlc1") && !opt["dlc1"] || tags.Contains("dlc2") && !opt["dlc2"]))
                     {
                         continue;
                     }

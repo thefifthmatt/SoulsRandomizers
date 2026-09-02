@@ -531,28 +531,25 @@ namespace RandomizerCommon
             return hash;
         }
 
-        private static readonly MD5 MD5 = MD5.Create();
-
         private static string FormatHash(byte[] hash) => string.Join("", hash.Select(x => $"{x:x2}"));
 
-        public static string GetMD5BytesHash(byte[] data)
-        {
-            byte[] hash = MD5.ComputeHash(data);
-            return FormatHash(hash);
-        }
+        private static readonly MD5 MD5 = MD5.Create();
+        private static readonly SHA1 SHA1 = SHA1.Create();
 
-        public static string GetMD5TextHash(string text)
-        {
-            byte[] hash = MD5.ComputeHash(new MemoryStream(Encoding.UTF8.GetBytes(text)));
-            return FormatHash(hash);
-        }
-
+        public static string GetMD5BytesHash(byte[] data) => FormatHash(MD5.ComputeHash(data));
+        public static string GetMD5TextHash(string text) => FormatHash(MD5.ComputeHash(new MemoryStream(Encoding.UTF8.GetBytes(text))));
         public static string GetMD5FileHash(string path)
+        {
+            using FileStream stream = File.OpenRead(path);
+            return FormatHash(MD5.ComputeHash(stream));
+        }
+        public static string GetSHA1BytesHash(byte[] data) => FormatHash(SHA1.ComputeHash(data));
+        public static string GetSHA1TextHash(string text) => FormatHash(SHA1.ComputeHash(new MemoryStream(Encoding.UTF8.GetBytes(text))));
+        public static string GetSHA1FileHash(string path)
         {
             using (FileStream stream = File.OpenRead(path))
             {
-                byte[] hash = MD5.ComputeHash(stream);
-                return FormatHash(hash);
+                return FormatHash(SHA1.ComputeHash(stream));
             }
         }
 

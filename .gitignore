@@ -7,10 +7,7 @@
 /Directory.build.props
 /presets*/
 *.netbak
-*.dcx
 Vanilla/
-Data0.bdt
-AI/
 ModEngine*/
 dll/
 

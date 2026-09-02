@@ -494,16 +494,16 @@ Areas:
 - Name: ariandel
   Text: pre-Contraption Ariandel
   Req: dlc1 AND cathedral AND (earlydlc OR irithyll)
-  Tags: dlc
+  Tags: dlc dlc1
 - Name: ariandel_vilhelm
   Text: post-Contraption Ariandel
   Req: dlc1 AND ariandel AND (contraptionkey OR vilhelmskip)
-  Tags: dlc
+  Tags: dlc dlc1
 - Name: dregheap
   Text: Dreg Heap
   # Make sure that DLC2 coming from cinder at least includes all of main lothric, to avoid cutting off most of the game
   Req: dlc2 AND ((dlc2fromkiln AND irithyll AND lothric AND cinder1 AND cinder2 AND cinder3 AND cinder4) OR (dlc1 AND dlc2fromdlc1 AND ariandel_vilhelm AND friede))
-  Tags: dlc
+  Tags: dlc dlc2
 - Name: ringedcity
   Text: Ringed City
   Req: dlc2 AND dregheap AND smallenvoybanner AND demonprince
@@ -514,11 +514,11 @@ Areas:
   - filianore early
   - filianore mid
   - filianore late
-  Tags: dlc
+  Tags: dlc dlc2
 - Name: filianore
   Text: Filianore's Rest
   Req: dlc2 AND ringedcity AND halflight
-  Tags: dlc
+  Tags: dlc dlc2
 - Name: kiln
   Text: Kiln of the First Flame
   Req: settlement AND cinder1 AND cinder2 AND cinder3 AND cinder4
@@ -8118,6 +8118,11 @@ Slots:
   QuestReqs: catacombs
   # TODO: Should be possible to restrict like this? What is the point?
   # QuestReqs: catacombs
+- Key: '99,0:-1:1818,110000:'
+  Text: Lapp's Armor when DLC is not installed
+  Comment: Slot format is inferred differently when DLC files do not exist
+  Area: firelink
+  Tags: dlc2 norandom ignore
 - Key: '99,0:-1:40000,110000,70000107,70000116:'
   DebugText:
   - Ring of Sacrifice - 40002[Yuria (3)], 110402[Shrine Handmaid after giving Hollow's Ashes (3)], 112002[Shrine Handmaid after giving Yuria's Ashes (3)]
@@ -8729,7 +8734,7 @@ Slots:
   - Rose of Ariandel - 30221[Ludleth after defeating Sister Friede (1)]
   Text: Boss weapon for Sister Friede
   Area: firelink
-  Tags: missable premium exclusive
+  Tags: dlc1 missable premium exclusive
   QuestReqs: transposingkiln soulofsisterfriede  # ariandel_vilhelm
 - Key: '99,2:-1:6324,30000:'
   DebugText:
@@ -8737,7 +8742,7 @@ Slots:
   - Seething Chaos - 30241[Ludleth after defeating Demon Prince (1)]
   Text: Boss weapon for Demon Prince
   Area: firelink
-  Tags: missable premium exclusive
+  Tags: dlc2 missable premium exclusive
   QuestReqs: transposingkiln soulofthedemonprince  # dregheap
 - Key: '99,2:-1:6326,30000:'
   DebugText:
@@ -8745,7 +8750,7 @@ Slots:
   - Old Moonlight - 30251[Ludleth after defeating Darkeater Midir (1)]
   Text: Boss weapon for Darkeater Midir
   Area: firelink
-  Tags: missable premium exclusive deadend
+  Tags: dlc2 missable premium exclusive deadend
   QuestReqs: transposingkiln soulofdarkeatermidir  # ringedcity
 - Key: '99,2:-1:6327,30000:'
   DebugText:
@@ -8753,7 +8758,7 @@ Slots:
   - Repeating Crossbow - 30231[Ludleth after defeating Slave Knight Gael (1)]
   Text: Boss weapon for Slave Knight Gael
   Area: firelink
-  Tags: missable premium exclusive
+  Tags: dlc2 missable premium exclusive
   QuestReqs: transposingkiln soulofslaveknightgael  # filianore
 - Key: '99,2:-1:6330,30000:'
   DebugText:

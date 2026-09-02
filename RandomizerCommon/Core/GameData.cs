@@ -532,6 +532,7 @@ namespace RandomizerCommon
         };
 
         // TODO: Should probably be static if possible
+        // Ideally there should be a generic mechanism for excluding content that doesn't require a ton of checks everywhere
         private static readonly Regex dlcMap = new Regex(@"^(m2|m4[0-3]|m61)");
         public bool IsEldenDlcMap(string map) => dlcMap.IsMatch(map);
 
@@ -566,7 +567,6 @@ namespace RandomizerCommon
         }
         public bool IsEldenDlcModel(int modelID) => (modelID >= 5000 && modelID < 6000) || (modelID >= 6200 && modelID < 7000);
         public bool IsEldenDlcModel(string model) => model.StartsWith('c') && int.TryParse(model.Substring(1), out int modelID) && IsEldenDlcModel(modelID);
-
         public bool IsEldenArrow(ItemKey item) => item.Type == ItemType.Weapon && item.ID >= 50000000 && item.ID < 60000000;
 
         private HashSet<int> regularWeapons;
@@ -1778,8 +1778,6 @@ namespace RandomizerCommon
             {
                 DS3Maps = Editor.Load("Vanilla", path => MSB3.Read(path), "*.msb.dcx");
                 DS3Maps = OverriddenFilesFromModDir(DS3Maps, name => $@"map\MapStudio\{name}.msb.dcx", path => MSB3.Read(path));
-                List<string> missing = Locations.Keys.Except(DS3Maps.Keys).ToList();
-                if (missing.Count != 0) throw new Exception($@"Missing msbs in dist\Vanilla: {string.Join(", ", missing)}");
             }
             else if (AC6)
             {
@@ -1956,7 +1954,16 @@ namespace RandomizerCommon
         // (or just keep full hierarchy in Vanilla directory)
         private string GetVanillaPath(string bhdPath)
         {
-            bhdPath = bhdPath.Contains("msgbnd") ? bhdPath.TrimStart('/') : Path.GetFileName(bhdPath);
+            if (bhdPath.Contains("msgbnd") || bhdPath.Contains("luabnd"))
+            {
+                // Keep structure in this cases
+                bhdPath = bhdPath.TrimStart('/');
+            }
+            else
+            {
+                // Otherwise flatten
+                bhdPath = Path.GetFileName(bhdPath);
+            }
             return Path.Combine($@"{Dir}\Vanilla", bhdPath);
         }
 
@@ -1964,99 +1971,148 @@ namespace RandomizerCommon
         private static List<string> mismatchedFiles = new();
         public static IReadOnlyList<string> GetMismatchedFiles() => mismatchedFiles;
 
+        private record VanillaFile(string Path, string Archive, long Length, string Hash);
+
         public void UnpackVanillaFiles(string gameDir, RandomizerOptions opt, Action notifyExtract = null)
         {
             mismatchedFiles.Clear();
-            if (!(EldenRing && !DS3 && !Sekiro))
+            if (!EldenRing && !DS3 && !Sekiro)
             {
                 return;
             }
             if (gameDir == null) throw new ArgumentNullException(nameof(gameDir));
-            bool hasDlc = true;
-            List<string> dlcArchives = new();
+            List<string> missingDlc = new();
+            void checkDlc(string archive, string optName)
+            {
+                FileInfo dlcBdt = new FileInfo(Path.Combine(gameDir, archive + ".bdt"));
+                bool exists = dlcBdt.Exists && dlcBdt.Length > 1000;
+                if (!exists)
+                {
+                    if (opt[optName])
+                    {
+                        // Preempt this error from extractor
+                        throw new Exception($"{optName} option is enabled, but no content found at {dlcBdt.FullName}");
+                    }
+                    missingDlc.Add(archive);
+                }
+            }
             if (EldenRing)
             {
-                FileInfo dlcBdt = new FileInfo(Path.Combine(gameDir, "DLC.bdt"));
-                hasDlc = dlcBdt.Exists && dlcBdt.Length > 1000;
-                if (opt["dlc"] && !hasDlc)
-                {
-                    // Preempt this error from extractor
-                    throw new Exception($"DLC tab is checked, but DLC content not found installed at {dlcBdt.FullName}");
-                }
-                dlcArchives = new() { "DLC" };
+                checkDlc("DLC", "dlc");
             }
-            Dictionary<string, string> allPaths = new();
-            // For now, just use lengths to verify file contents.
-            // MD5 hash could be checked, but that's a lot of file IO the way things are currently set up.
-            // TODO also: Use SHA hash that bdt uses? The main migration issue is local files, though.
-            Dictionary<string, long> expectedLengths = new();
-            SortedSet<string> badLengths = new();
-            string fileList = $@"{Dir}\Vanilla\files.txt";
+            if (DS3)
+            {
+                checkDlc("DLC1", "dlc1");
+                checkDlc("DLC2", "dlc2");
+            }
+            Dictionary<string, VanillaFile> allPaths = new();
+            SortedSet<string> mismatchFiles = new();
+            string fileList = $@"{Dir}\Base\files.txt";
             foreach (var line in File.ReadLines(fileList))
             {
                 string[] parts = line.Split(' ');
-                if (parts.Length < 3)
+                if (parts.Length < 4)
                 {
                     throw new Exception($"Bad line {line} in {fileList}");
                 }
-                allPaths[parts[0]] = parts[1];
-                expectedLengths[parts[0]] = long.Parse(parts[2]);
+                string path = parts[0];
+                string archive = parts[1] == "None" ? null : parts[1];
+                long length = long.Parse(parts[2]);
+                string hash = parts[3];
+                allPaths[parts[0]] = new VanillaFile(path, archive, length, hash);
             }
             // One possible edge case is if files go away and randomizer was updated in-place, and the continued existence of these files causes problems.
             // In this case it will be necessary to do additional tracking like adding a version.txt, or just use the file list to filter bad files out.
-            bool fileRequired(string path, string archive)
+            bool fileRequired(VanillaFile file)
             {
-                return hasDlc || !dlcArchives.Contains(archive);
+                return !missingDlc.Contains(file.Archive);
             }
-            bool fileOkay(string path, string archive)
+            bool fileOkay(VanillaFile file)
             {
-                FileInfo file = new FileInfo(GetVanillaPath(path));
-                if (!file.Exists)
+                FileInfo localFile = new FileInfo(GetVanillaPath(file.Path));
+                if (!localFile.Exists)
                 {
-                    return !fileRequired(path, archive);
+                    return !fileRequired(file);
                 }
-                if (expectedLengths.TryGetValue(path, out long length) && length != file.Length)
+                // Use lengths to verify file contents.
+                // Hash could be checked for all files, but that's a lot of I/O the way things are currently set up.
+                if (file.Length != localFile.Length)
                 {
-                    badLengths.Add(path);
+                    mismatchFiles.Add(file.Path);
                     return false;
                 }
                 return true;
             }
             unpackPaths = allPaths.Keys.ToList();
-            Dictionary<string, string> extractPaths = new(allPaths.Where(e => !fileOkay(e.Key, e.Value)));
-            if (extractPaths.Count == 0)
+            Dictionary<string, VanillaFile> fixPaths = new(allPaths.Where(e => !fileOkay(e.Value)));
+            if (fixPaths.Count == 0)
             {
                 return;
             }
-            // For now, do full extract on any issues, since as of ER 1.17 there are some identical file lengths (albeit still compatible) and this system is unproven
-            // We may need to check hashes after all
-            extractPaths = new(allPaths.Where(e => fileRequired(e.Key, e.Value)));
             notifyExtract?.Invoke();
 #if DEBUG
-            if (!opt["extract"])
+            // Avoid mutating during development unless it's the first time setting it up
+            if (Directory.Exists($@"{Dir}\Vanilla"))
             {
-                return;
+                throw new Exception(
+                    "Incorrect or incomplete files were found in Vanilla directory!"
+                    + " Won't overwrite them in development build - delete the Vanilla directory so they can be regenerated."
+                    + $"\nFiles: {string.Join(", ", fixPaths.Keys)}");
             }
 #endif
-            // This throws an error if any of the files could not be found
-            foreach ((string path, byte[] data) in BhdExtractor.EnumerateBdtFiles(Type, gameDir, extractPaths))
+            Dictionary<string, VanillaFile> copyPaths = new(fixPaths.Where(e => e.Value.Archive == null));
+            // For now, do full extract on any issues, since as of ER 1.17 there are some identical file lengths (albeit still compatible) and this system is unproven.
+            // We may need to check Vanilla file hashes after all.
+            Dictionary<string, string> extractPaths = allPaths.Where(e => e.Value.Archive != null && fileRequired(e.Value)).ToDictionary(e => e.Key, e => e.Value.Archive);
+            foreach (VanillaFile file in copyPaths.Values)
             {
-                if (badLengths.Contains(path) && expectedLengths.TryGetValue(path, out long length) && data.Length == length)
+                FileInfo gameFile = new FileInfo(Path.Combine(gameDir, file.Path.TrimStart('/')));
+                // Because it's easy for users to replace these files with modded ones, don't copy to Vanilla unless checks succeed.
+                if (gameFile.Exists)
                 {
-                    badLengths.Remove(path);
+                    if (gameFile.Length == file.Length && GetSHA1FileHash(gameFile.FullName) == file.Hash)
+                    {
+                        mismatchFiles.Remove(file.Path);
+                        string outPath = GetVanillaPath(file.Path);
+                        Directory.CreateDirectory(Path.GetDirectoryName(outPath));
+                        gameFile.CopyTo(outPath, overwrite: true);
+                    }
+                    else
+                    {
+                        // In the case of regulations, we can also check version for extra info
+                        throw new Exception(
+                            $"Error: {gameFile.FullName} is not compatible with this version of randomizer."
+                            + " Make sure the randomizer version and game version are compatible. If they are, verify integrity of installed files in Steam."
+                            + $" (expected {file.Hash}, got {GetSHA1FileHash(gameFile.FullName)})");
+                    }
                 }
-                string outPath = GetVanillaPath(path);
-                Directory.CreateDirectory(Path.GetDirectoryName(outPath));
-                File.WriteAllBytes(outPath, data);
+                else
+                {
+                    throw new Exception($"Error: {gameFile.FullName} not found");
+                }
             }
-            mismatchedFiles = badLengths.Select(s => s.TrimStart('/')).ToList();
+            if (extractPaths.Count > 0)
+            {
+                // This throws an error if any of the files could not be found
+                foreach ((string path, byte[] data) in BhdExtractor.EnumerateBdtFiles(Type, gameDir, extractPaths))
+                {
+                    if (mismatchFiles.Contains(path) && allPaths.TryGetValue(path, out VanillaFile file) && data.Length == file.Length)
+                    {
+                        mismatchFiles.Remove(path);
+                    }
+                    string outPath = GetVanillaPath(path);
+                    Directory.CreateDirectory(Path.GetDirectoryName(outPath));
+                    File.WriteAllBytes(outPath, data);
+                }
+            }
+            mismatchedFiles = mismatchFiles.Select(s => s.TrimStart('/')).ToList();
             if (mismatchedFiles.Count == 0)
             {
-                Console.WriteLine($"Extracted {extractPaths.Count} game files");
+                Console.WriteLine($"Extracted {fixPaths.Count} game files");
             }
             else
             {
-                Console.WriteLine($"Extracted {extractPaths.Count} game files, but at least {mismatchedFiles.Count} files have unexpected contents. This could indicate this version of the randomizer may be incompatible with the installed game version.");
+                Console.WriteLine($"Extracted {fixPaths.Count} game files, but at least {mismatchedFiles.Count} files have unexpected contents. This could indicate this version of the randomizer may be incompatible with the installed game version.");
                 Console.WriteLine($"Mismatched files in Vanilla directory: {string.Join(", ", mismatchedFiles)}");
             }
             // This can be slightly memory-intensive, around 50 MB, so try this if it does anything.
