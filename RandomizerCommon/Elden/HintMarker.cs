@@ -440,7 +440,12 @@ namespace RandomizerCommon
                 bool present = false;
                 foreach (string include in includes)
                 {
-                    if (!ann.Areas.TryGetValue(include, out AreaAnnotation areaAnn)) throw new Exception($"Bad hint area {include}");
+                    if (!ann.Areas.TryGetValue(include, out AreaAnnotation areaAnn))
+                    {
+                        // This is fine for now, as hint configs don't have _stable versions, and unstable versions can add areas.
+                        // Full area coverage is checked below too.
+                        continue;
+                    }
                     // Special condition to avoid missing ItemLocs for bosses by id
                     if (opt["dlc"] || !areaAnn.HasTag("dlc"))
                     {

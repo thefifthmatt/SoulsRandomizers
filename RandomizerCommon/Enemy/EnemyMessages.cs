@@ -11,7 +11,7 @@ using System.Text;
 
 namespace RandomizerCommon
 {
-    public class EnemyMessages
+    public static class EnemyMessages
     {
         public class EnemyNamesConfig
         {
@@ -27,6 +27,32 @@ namespace RandomizerCommon
             public List<CustomCleverName> SpecialReplacements { get; set; } = new();
             [JsonPropertyName("enemy_config_names")]
             public List<EnemyPresetName> EnemyConfigNames { get; set; } = new();
+
+            [JsonIgnore]
+            public CustomCleverNames CleverNames { get; set; }
+        }
+
+        // Slightly awkward interface in advance of proper integration
+        public static bool TryReadCurrentConfig(GameData game, string lang, out string gameLang, out EnemyNamesConfig config)
+        {
+            gameLang = MiscSetup.Langs.Where(e => e.Value == lang).Select(e => e.Key).FirstOrDefault();
+            string configPath = $"{game.Dir}/Messages/{lang}.enemy.json";
+            if (gameLang != null && File.Exists(configPath))
+            {
+                try
+                {
+                    config = JsonSerializer.Deserialize<EnemyNamesConfig>(File.ReadAllText(configPath));
+                    Console.WriteLine($"Using enemy names config from {configPath}");
+                    Console.WriteLine();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Couldn't read {configPath}: {ex}");
+                }
+            }
+            config = null;
+            return false;
         }
 
         public class EnemyPresetName
@@ -52,6 +78,8 @@ namespace RandomizerCommon
             // Just for preview, for the time being
             internal List<NameTemplates> AllBase() => new() { Base };
             internal List<NameTemplates> AllTranslated() => new[] { Translated }.Concat(OtherTranslated ?? new()).ToList();
+
+            public bool IsFilledIn() => Translated != null && Translated.IsFilledIn();
         }
 
 #if DEV
@@ -64,26 +92,26 @@ namespace RandomizerCommon
             }
             foreach (string lang in langs)
             {
-                // if (!opt["outjson"])
-                {
-                    Console.WriteLine("// -- " + lang);
-                }
+                string langFile = $@"diste\Messages\{MiscSetup.Langs[lang]}.enemy.json";
+                EnemyNamesConfig exist = JsonSerializer.Deserialize<EnemyNamesConfig>(File.ReadAllText(langFile));
+                Console.WriteLine("// -- " + lang);
                 if (opt["print"])
                 {
-                    WriteConfig(lang, game, ann, opt, Console.Out);
+                    WriteConfig(lang, game, ann, opt, Console.Out, exist);
                 }
                 else if (opt["write"])
                 {
-                    // TODO: Need reprocessing with existing config, diff, etc
-                    using (TextWriter w = File.CreateText($@"diste\Messages\{MiscSetup.Langs[lang]}.enemy.json"))
+                    string outFile = opt["overwrite"] ? langFile : "diff.json";
+                    Console.WriteLine($"Writing {outFile}");
+                    using (TextWriter w = File.CreateText(outFile))
                     {
-                        WriteConfig(lang, game, ann, opt, w);
+                        WriteConfig(lang, game, ann, opt, w, exist);
                     }
                 }
                 else if (opt["validate"])
                 {
                     string input = opt["example"] ? "Godskin Noble" : "*";
-                    string result = Validate($@"diste\Messages\{MiscSetup.Langs[lang]}.enemy.json", ann, input, opt["english"]);
+                    string result = Validate(langFile, ann, input, opt["english"]);
                     Console.WriteLine(result);
                 }
                 else if (opt["generate"])
@@ -160,6 +188,7 @@ namespace RandomizerCommon
             List<NameTemplatesMessage> targets = new();
             static string emptyToNull(string s) => string.IsNullOrEmpty(s) ? null : s;
             static bool namesFilledIn(params string[] names) => names.All(n => n == null || n != "");
+
             void countConfigName(EnemyPresetName name)
             {
                 translatedConfigNames.Add((emptyToNull(name?.EnglishText), emptyToNull(name?.Text)));
@@ -416,7 +445,7 @@ namespace RandomizerCommon
 #if DEV
         private record NameBase(string Key, string OtherKey, NameTemplates Base, bool IsMain);
 
-        public static void WriteConfig(string lang, GameData game, EnemyAnnotations ann, RandomizerOptions opt, TextWriter writer)
+        public static void WriteConfig(string lang, GameData game, EnemyAnnotations ann, RandomizerOptions opt, TextWriter writer, EnemyNamesConfig exist)
         {
             // TODO
             // DONE: Maybe sort by English name for consistency
@@ -594,6 +623,16 @@ namespace RandomizerCommon
                 bossesByParent.Add(mainName, bossesMap);
             }
 
+            // By English key
+            Dictionary<string, EnemyPresetName> existNames = new();
+            Dictionary<string, NameTemplatesMessage> existTemplates = new();
+            if (exist != null)
+            {
+                existNames = exist.EnemyConfigNames.Concat(exist.BossNames.SelectMany(b => b.EnemyConfigNames ?? new()))
+                    .ToDictionary(n => n.EnglishText, n => n);
+                existTemplates = exist.BossNames.ToDictionary(b => b.Base.Key, b => b);
+            }
+
             EnemyNamesConfig config = new();
             HashSet<string> addedPresetNames = new();
             Dictionary<string, EnemyCategory> cats = allCats.ToDictionary(c => c.Name, c => c);
@@ -603,7 +642,15 @@ namespace RandomizerCommon
             string getClassName(EnemyClass cl) => ClassNames[cl].Str;
             EnemyPresetName getPresetName(string name)
             {
-                bossKeyTranslations.TryGetValue(name, out string translatedName);
+                string translatedName = null;
+                if (existNames.TryGetValue(name, out EnemyPresetName existName) && !string.IsNullOrEmpty(existName.Text))
+                {
+                    translatedName = existName.Text;
+                }
+                else
+                {
+                    bossKeyTranslations.TryGetValue(name, out translatedName);
+                }
                 if (!cats.TryGetValue(name, out EnemyCategory cat)) throw new Exception($"Unknown {name}");
                 if (cat.ParentClasses == null) throw new Exception($"No ParentClasses for {name}");
                 nameParents.TryGetValue(name, out string parent);
@@ -622,12 +669,10 @@ namespace RandomizerCommon
             {
                 foreach ((string key, NameBase nameBase) in nameGroup.OrderBy(e => e.Value.IsMain ? 0 : 1))
                 {
+                    existTemplates.TryGetValue(key, out NameTemplatesMessage existOther);
                     NameTemplates names = nameBase.Base;
                     string otherKey = nameBase.OtherKey;
-                    NameTemplates otherNames = new()
-                    {
-                        Key = otherKey,
-                    };
+                    NameTemplates otherNames = existOther?.Translated ?? new() { Key = otherKey };
                     if (string.IsNullOrEmpty(otherNames.MainTemplate))
                     {
                         if (names.FullName != null)
@@ -654,6 +699,7 @@ namespace RandomizerCommon
                     {
                         Base = names,
                         Translated = otherNames,
+                        OtherTranslated = existOther?.OtherTranslated,
                         EnemyConfigNames = configNames.Select(getPresetName).ToList(),
                     });
                 }
@@ -672,6 +718,11 @@ namespace RandomizerCommon
             });
             config.EnemyConfigNames.ForEach(countConfigName);
             config.Status = $"{templateStatus.Count(x => x)}/{templateStatus.Count} custom names complete, {configNameStatus.Count(x => x)}/{configNameStatus.Count} config names complete";
+            if (exist != null)
+            {
+                config.SpecialReplacements = exist.SpecialReplacements;
+                config.CapitalizeCustomName = exist.CapitalizeCustomName;
+            }
             if (!opt["outjson"] && !opt["write"])
             {
                 return;

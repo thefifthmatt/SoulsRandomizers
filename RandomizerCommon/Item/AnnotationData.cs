@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using YamlDotNet.Core.Tokens;
 using YamlDotNet.Serialization;
 using static Pidgin.Parser;
 using static RandomizerCommon.LocationData;
@@ -49,6 +50,8 @@ namespace RandomizerCommon
         public readonly Dictionary<string, ItemKey> Items = new();
         // All items with names in their LocationScopes, ideally one scope per name, to distinguish between them for key item placement.
         public readonly Dictionary<ItemKey, MultiItem> MultiItems = new();
+        // All new key items
+        public readonly Dictionary<string, NewItemAnnotation> NewItems = new();
         // Contents of item groups by names, used for various purposes
         // Required ones: keyitems, questitems, remove
         public readonly Dictionary<string, List<ItemKey>> ItemGroups = new();
@@ -144,14 +147,24 @@ namespace RandomizerCommon
 
         public void Load(RandomizerOptions opt, ItemPreset itemPreset = null, bool processSlots = true, MergeModManifest merge = null)
         {
+            // Maintain stable(r) copy of config to allow feature development while game updates are still ongoing.
+            // If it becomes too much to maintain both at once then scrap it
+            bool stable = true;
+            if (opt["stoneswordregion"] || opt["stoneswordall"] || opt["unstable"])
+            {
+                stable = false;
+            }
+
             Annotations ann;
             IDeserializer deserializer = new DeserializerBuilder().Build();
-            string annPath = $@"{game.Dir}\Base\annotations.txt";
+
+            string stableSuffix = stable ? "_stable" : "";
+            string annPath = $@"{game.Dir}\Base\annotations{stableSuffix}.txt";
             using (var reader = File.OpenText(annPath))
             {
                 ann = deserializer.Deserialize<Annotations>(reader);
             }
-            string slotPath = $@"{game.Dir}\Base\itemslots.txt";
+            string slotPath = $@"{game.Dir}\Base\itemslots{stableSuffix}.txt";
             if (processSlots && File.Exists(slotPath))
             {
                 if (ann.Slots.Count > 0) throw new Exception($"Internal error: Item slots defined in {annPath}:");
@@ -243,15 +256,37 @@ namespace RandomizerCommon
                 }
                 return ret;
             }
+            if (ann.NewItems != null)
+            {
+                List<ItemAnnotation> items = new();
+                foreach (NewItemAnnotation newItem in ann.NewItems)
+                {
+                    newItem.ConfigName = newItem.OverrideConfigName ?? toConfigName(newItem.Name);
+                    // TODO: Check uniqueness
+                    newItem.Key = new ItemKey(ItemType.Goods, newItem.BaseID);
+                    if (newItem.Switch != null && opt[newItem.Switch])
+                    {
+                        items.Add(new ItemAnnotation
+                        {
+                            Name = newItem.Name,
+                            ConfigName = newItem.ConfigName,
+                            ID = $"{game.ShopTypeItems[newItem.Key.Type]}:{newItem.Key.ID}"
+                        });
+                        NewItems.Add(newItem.ConfigName, newItem);
+                    }
+                }
+                ann.ConfigItems.Add(new ConfigItemAnnotation { GroupName = "newitems", Items = items });
+            }
             List<string> hints = new List<string>();
+            static string toConfigName(string properName) => Regex.Replace(properName.ToLowerInvariant(), @"[^a-z0-9]", "");
             foreach (ConfigItemAnnotation configItems in ann.ConfigItems)
             {
-                ItemGroups[configItems.GroupName] = new List<ItemKey>();
+                ItemGroups.Add(configItems.GroupName, new());
                 foreach (ItemAnnotation item in configItems.Items)
                 {
                     if (item.ConfigName == null && item.Name != null)
                     {
-                        item.ConfigName = Regex.Replace(item.Name.ToLowerInvariant(), @"[^a-z0-9]", "");
+                        item.ConfigName = toConfigName(item.Name);
                     }
                     item.Keys = itemsForAnnotation(item);
                     // Add to Items and MultiItems in second pass, because MultiItems itself requires the multikey group
@@ -288,6 +323,22 @@ namespace RandomizerCommon
                         }
                     }
                 }
+                if (ItemGroups.ContainsKey("stonesword"))
+                {
+                    if (opt["stoneswordregion"] || opt["stoneswordall"])
+                    {
+                        ItemGroups["remove"].AddRange(ItemGroups["stonesword"]);
+                    }
+                    else
+                    {
+                        ItemGroups["norandomshop"].AddRange(ItemGroups["stonesword"]);
+                    }
+                }
+            }
+            if (ItemGroups.ContainsKey("newitems"))
+            {
+                // New key items could potentially be placed anywhere
+                ItemGroups["keyitems"].AddRange(ItemGroups["newitems"]);
             }
 
             // Dynamic filter groups, computed here based on live data
@@ -846,6 +897,44 @@ namespace RandomizerCommon
             }
 
             // Areas
+            // TODO: Verify all blockExprs used
+            Dictionary<string, Expr> blockExprs = new();
+            if (ann.NewItems != null)
+            {
+                foreach (NewItemAnnotation newItem in ann.NewItems)
+                {
+                    bool selfPresent = NewItems.ContainsKey(newItem.ConfigName);
+                    bool parentPresent = newItem.Parent != null && NewItems.ContainsKey(newItem.Parent);
+                    if (newItem.Logic == null || !(selfPresent || parentPresent))
+                    {
+                        continue;
+                    }
+                    Expr newExpr;
+                    if (selfPresent && parentPresent)
+                    {
+                        newExpr = Expr.Or(Expr.Named(newItem.ConfigName), Expr.Named(newItem.Parent));
+                    }
+                    else
+                    {
+                        newExpr = Expr.Named(parentPresent ? newItem.Parent : newItem.ConfigName);
+                    }
+                    foreach (NewItemLogic logic in newItem.Logic)
+                    {
+                        if (logic.BlockArea == null)
+                        {
+                            continue;
+                        }
+                        if (blockExprs.TryGetValue(logic.BlockArea, out Expr existExpr))
+                        {
+                            blockExprs[logic.BlockArea] = Expr.And(existExpr, newExpr).Simplify();
+                        }
+                        else
+                        {
+                            blockExprs[logic.BlockArea] = newExpr;
+                        }
+                    }
+                }
+            }
             Parser<char, Expr> parser = ExprParser();
             string start = null;
             void parseReq(AreaAnnotation area)
@@ -866,6 +955,11 @@ namespace RandomizerCommon
                     {
                         area.ReqExpr = Expr.And(Expr.Named("dlc"), area.ReqExpr);
                     }
+                }
+                if (blockExprs.TryGetValue(area.Name, out Expr blockExpr))
+                {
+                    area.ReqExpr = Expr.And(area.ReqExpr, blockExpr).Simplify();
+                    area.BlockExpr = blockExpr;
                 }
             }
             foreach (AreaAnnotation area in ann.Areas)
@@ -916,6 +1010,22 @@ namespace RandomizerCommon
                 foreach ((string name, string req) in ann.ConfigVars)
                 {
                     DefaultConfigExprs[name] = parser.ParseOrThrow(req).Simplify();
+                }
+            }
+            // Infer 'vanilla' areas for new key items
+            // TODO make areas explicit maybe
+            // TODO validate the areas actually exist for AddSpecialItems etc
+            foreach (NewItemAnnotation newItem in NewItems.Values)
+            {
+                newItem.InferredArea ??= newItem.Area ?? newItem.NewLocation?.Area;
+                if (newItem.InferredArea == null)
+                {
+                    NewItemLogic logic = newItem.Logic?.Where(l => l.BlockArea != null).FirstOrDefault();
+                    if (logic == null) throw new Exception($"Cannot infer area for silos for new item {newItem.Name}");
+                    AreaAnnotation area = Areas[logic.BlockArea];
+                    string reqArea = area.ReqExpr.FreeVars().Where(a => Areas.ContainsKey(a)).FirstOrDefault();
+                    if (reqArea == null) throw new Exception($"No areas found in area {logic.BlockArea} blocked by new item {newItem.Name}: {area.ReqExpr}");
+                    newItem.InferredArea = reqArea;
                 }
             }
             if (ann.StartingGroups != null)
@@ -1280,6 +1390,13 @@ namespace RandomizerCommon
                 // TODO: This is a bad heuristic for O Mother so eliminate this from Elden Ring for now
                 // TODO: Support region lock here
                 itemLoc.DLC = game.IsEldenDlcItem(addItem);
+                SetAreaSilo(itemLoc, null);
+            }
+            foreach (NewItemAnnotation newItem in NewItems.Values)
+            {
+                game.AddItemName(newItem.Key, newItem.Name);
+                ItemLocation itemLoc = data.AddLocationlessItem(newItem.Key);
+                itemLoc.DLC = Areas[newItem.InferredArea].HasTag("dlc");
                 SetAreaSilo(itemLoc, null);
             }
             if (ItemGroups.TryGetValue("multikey", out List<ItemKey> multiKeys))
@@ -1725,6 +1842,14 @@ namespace RandomizerCommon
             return ItemSilo.Default;
         }
 
+        // Combines all requirements for accessing area
+        public bool GetAreaBlock(string areaName, out Expr blockExpr)
+        {
+            Areas.TryGetValue(areaName, out AreaAnnotation area);
+            blockExpr = area?.BlockExpr;
+            return blockExpr != null;
+        }
+
         // -- Hints and heuristics
         public SlotAnnotation Slot(LocationScope scope)
         {
@@ -2038,6 +2163,7 @@ namespace RandomizerCommon
             public Dictionary<string, string> ConfigVars { get; set; }
             public List<AreaAnnotation> Events { get; set; }
             public List<AreaAnnotation> Areas { get; set; } = new();
+            public List<NewItemAnnotation> NewItems { get; set; }
             public List<PlacementRestrictionAnnotation> PlacementRestrictions { get; set; }
             public List<SpecialModeAnnotation> SpecialModes { get; set; }
             public ItemPreset DefaultPreset { get; set; }
@@ -2302,6 +2428,43 @@ namespace RandomizerCommon
             public List<ItemKey> Keys { get; set; }
         }
 
+        public class NewItemAnnotation
+        {
+            public string Name { get; set; }
+            public string Comment { get; set; }
+            // Derived from Name if not set
+            public string OverrideConfigName { get; set; }
+            public string Switch { get; set; }
+            // ConfigName for item which includes this one. The parent includes the logic conditions of all children recursively.
+            public string Parent { get; set; }
+            public int BaseID { get; set; }
+            public string Area { get; set; }
+            public NewLocation NewLocation { get; set; }
+            public List<NewItemLogic> Logic { get; set; }
+
+            [YamlIgnore]
+            public string ConfigName { get; set; }
+            [YamlIgnore]
+            public string InferredArea { get; set; }
+            [YamlIgnore]
+            public ItemKey Key { get; set; }
+        }
+
+        public class NewItemLogic
+        {
+            public string BlockArea { get; set; }
+            // TODO: Progression config with switches
+        }
+
+        public class NewLocation
+        {
+            public string Map { get; set; }
+            // Entity id, or part name if necessary
+            public string Location { get; set; }
+            public string Text { get; set; }
+            public string Area { get; set; }
+        }
+
         public class SlotAnnotation
         {
             public string Key { get; set; }
@@ -2445,8 +2608,10 @@ namespace RandomizerCommon
         {
             // Internal name
             public string Name { get; set; }
-            // Display name
+            // Display name for hint logs and spoiler logs
             public string Text { get; set; }
+            // Name which may be too detailed for hints
+            public string FullText { get; set; }
             // Info
             public string Comment { get; set; }
             // Requirements expression
@@ -2456,6 +2621,8 @@ namespace RandomizerCommon
             public string Until { get; set; }
             // Combined weight area for item ordering
             public string WeightBase { get; set; }
+            // Temporary, incorporate more granular key item areas without changing balance of KeyItemsPermutation for now. Should not be used with WeightBase!
+            public string KeyBase { get; set; }
             // Events which always precede other events, for directly calculating all dependent items (?)
             public string AlwaysBefore { get; set; }
             // If there is no name<->map mapping above, space-separated map ids for this area. May overlap with other areas.
@@ -2471,6 +2638,8 @@ namespace RandomizerCommon
             public bool BoringKeyItem { get; set; }
             [YamlIgnore]
             public Expr ReqExpr { get; set; }
+            [YamlIgnore]
+            public Expr BlockExpr { get; set; }
             [YamlIgnore]
             public bool HasProgression { get; set; }
         }
@@ -2556,12 +2725,11 @@ namespace RandomizerCommon
 
         public class Expr
         {
-            public static readonly Expr True = new Expr(new List<Expr>(), true, null);
-            public static readonly Expr False = new Expr(new List<Expr>(), false, null);
             private readonly List<Expr> exprs;
             private readonly bool every;
             private readonly string name;
 
+            // TOIDO: Private constructor
             public Expr(List<Expr> exprs, bool every = true, string name = null)
             {
                 if (exprs.Count() > 0 && name != null) throw new Exception("Incorrect construction");
@@ -2569,6 +2737,9 @@ namespace RandomizerCommon
                 this.every = every;
                 this.name = name;
             }
+
+            public static readonly Expr True = new Expr(new List<Expr>(), true, null);
+            public static readonly Expr False = new Expr(new List<Expr>(), false, null);
 
             public static Expr Named(string name)
             {
@@ -2717,6 +2888,29 @@ namespace RandomizerCommon
                 else
                 {
                     return "(" + string.Join(" OR ", exprs) + ")";
+                }
+            }
+
+            // New methods for external recursion on Expr for putting it in game scripts
+            // All key item logic uses the above routines which are more of a black box
+            public bool GetName(out string name)
+            {
+                name = this.name;
+                return name != null;
+            }
+
+            public bool GetChildren(out List<Expr> children, out bool isAnd)
+            {
+                isAnd = every;
+                if (exprs.Count == 0)
+                {
+                    children = null;
+                    return false;
+                }
+                else
+                {
+                    children = exprs;
+                    return true;
                 }
             }
         }

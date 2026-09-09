@@ -51,6 +51,8 @@ namespace RandomizerCommon
             // Options: liurnia, dragonbarrow, altus, leyndell. Can also add royal
             // Items: Anything which can be split into shards. In this case, it also prevents removing the item if present (may require custom handling in the future)
             public string Gate { get; set; }
+            // Area to block, taking combined conditions from all active blocks for that area
+            public string BlockArea { get; set; }
 
             // -- These are only used for filtering, not by templates
             // Space-separated list of gates. If any are enabled, run the template.
@@ -67,7 +69,7 @@ namespace RandomizerCommon
             public string Type { get; set; }
             public string Comment { get; set; }
             // Condition for the edit. If needed this could be a list to allow any condition.
-            public TemplateFilter Filter { get; set; }
+            public List<TemplateFilter> Filter { get; set; }
 
             // -- Arg edits
             // String-separated lists of item args to unconditionally turn into flag args.
@@ -82,6 +84,8 @@ namespace RandomizerCommon
             // List of item accesses to replace with flag accesses. If they are params, also add a loc event with ItemArg.
             public List<string> ItemUse { get; set; }
 
+            // Dynamic commands to add
+            public List<DynamicEdit> Edits { get; set; }
             // Commands to add
             public List<EventAddCommand> Add { get; set; }
             // Commands to unconditionally remove.
@@ -91,6 +95,16 @@ namespace RandomizerCommon
             // Metadata and passively registered commands for detecting condition group rewriting.
             public string CondOrder { get; set; }
             public List<string> CondIdentity { get; set; }
+        }
+
+        public class DynamicEdit
+        {
+            public List<string> BeforeCmds { get; set; }
+            public int ItemCond { get; set; }
+            public List<string> AfterCmds { get; set; }
+            public string Before { get; set; }
+            public string After { get; set; }
+            public string Replace { get; set; }
         }
 
         public class LogicFlag

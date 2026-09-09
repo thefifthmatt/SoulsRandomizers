@@ -18,6 +18,10 @@ namespace RandomizerCommon
         private SortedSet<string> areas = new();
         // Mapping from areas to equivalent other areas. TODO still look into if these should be different
         private Dictionary<string, HashSet<string>> combinedWeights = new();
+        // Mapping from areas to equivalent areas for the purpose of logic selection
+        // This was added in advance of making many little areas in Elden Ring, but only for certain options
+        // At some point, this routine should select individual locations, and locations should be allowed to have individual rules.
+        private Dictionary<string, HashSet<string>> combinedKeyAreas = new();
         // Mapping from areas to other areas in the same silo
         private Dictionary<string, List<string>> areaSilos = new();
         private HashSet<string> unusedAreas = new();
@@ -168,8 +172,10 @@ namespace RandomizerCommon
             }
             if (explain) Console.WriteLine($"Using special config {string.Join(", ", configExprs)}");
 
-            Dictionary<string, List<string>> combinedAreas = new();
-            Dictionary<string, string> equivalentGraph = new Dictionary<string, string>();
+            List<string> allAreas = new();
+            Dictionary<string, string> equivalentGraph = new();
+            Dictionary<string, string> keyBaseGraph = new();
+            Dictionary<string, string> weightBaseGraph = new();
             void processDependencies(AreaAnnotation area, ISet<string> frees, bool assignItems)
             {
                 string name = area.Name;
@@ -209,18 +215,19 @@ namespace RandomizerCommon
                     }
                     else throw new Exception($"Internal error: Unknown dependency {free} in requirements for {area.Name}");
                 }
+                allAreas.Add(name);
                 if (dependentAreas.Count == 1 && !other)
                 {
                     equivalentGraph[name] = dependentAreas.First();
                     if (explain) Console.WriteLine($"Collapsed events for key item generation: {name} -> {frees.First()} (all: {string.Join(" ", frees)})");
                 }
-                // This is used for equivalence graph things. Should probably use this information in weight groups instead of actually combining the areas
-                AddMulti(combinedAreas, name, name);
-                // Weight base is used to specify that a key item, if placed in the base area, should also apply to this other area.
-                AddMulti(combinedWeights, name, name);
                 if (area.WeightBase != null)
                 {
-                    AddMulti(combinedWeights, area.WeightBase, name);
+                    weightBaseGraph[name] = area.WeightBase;
+                }
+                if (area.KeyBase != null)
+                {
+                    keyBaseGraph[name] = area.KeyBase;
                 }
             }
             foreach (AreaAnnotation ev in ann.Events.Values)
@@ -288,18 +295,17 @@ namespace RandomizerCommon
                 equivalentGraph["volcano_town"] = "volcano";
             }
             // Quick collapse of equivalence graph
-            Dictionary<string, string> equivalent = new Dictionary<string, string>();
-            string getBaseName(string name)
+            Dictionary<string, string> rootNode = new Dictionary<string, string>();
+            string getRootArea(string name)
             {
-                if (equivalent.ContainsKey(name))
+                if (rootNode.ContainsKey(name))
                 {
-                    return equivalent[name];
+                    return rootNode[name];
                 }
                 else if (equivalentGraph.ContainsKey(name))
                 {
-                    string root = getBaseName(equivalentGraph[name]);
-                    equivalent[name] = root;
-                    AddMulti(combinedAreas, root, name);
+                    string root = getRootArea(equivalentGraph[name]);
+                    rootNode[name] = root;
                     return root;
                 }
                 else
@@ -309,42 +315,68 @@ namespace RandomizerCommon
             };
             foreach (KeyValuePair<string, string> equivalence in equivalentGraph)
             {
-                getBaseName(equivalence.Key);
+                getRootArea(equivalence.Key);
             }
-            // TODO: Can equivalent be done on combinedWeights directly, instead of adding a relation on combinedAreas and a disjoint set union step after?
-            foreach (KeyValuePair<string, List<string>> entry in combinedAreas)
+            Dictionary<string, HashSet<string>> quadraticDisjointSets(Dictionary<string, string> rootGraph, Dictionary<string, string> extraParentGraph = null)
             {
-                foreach (string alias in entry.Value)
+                // TODO: Use actual disjoint set structure. For now, this is a bit messier and potentially quadratic, not that n is too high.
+                // Invariant: All sets are either non-overlapping or the exact same instance.
+                Dictionary<string, HashSet<string>> sets = new();
+                Dictionary<string, List<string>> nodeDescendents = rootGraph.GroupBy(e => e.Value).ToDictionary(g => g.Key, g => g.Select(e => e.Key).ToList());
+                foreach (string area in allAreas)
                 {
-                    if (alias != entry.Key)
+                    if (rootGraph.ContainsKey(area))
                     {
-                        AddMulti(combinedWeights, entry.Key, alias);
+                        continue;
+                    }
+                    HashSet<string> shared = sets[area] = new() { area };
+                    if (nodeDescendents.TryGetValue(area, out List<string> descendents))
+                    {
+                        shared.UnionWith(descendents);
+                        foreach (string desc in descendents)
+                        {
+                            sets[desc] = shared;
+                        }
                     }
                 }
-            }
-            foreach (KeyValuePair<string, HashSet<string>> entry in combinedWeights.Where(e => e.Value.Count > 1).ToList())
-            {
-                foreach (string sharedArea in entry.Value.ToList())
+                if (extraParentGraph != null)
                 {
-                    entry.Value.UnionWith(combinedWeights[sharedArea]);
-                    combinedWeights[sharedArea] = entry.Value;
+                    // This is from node to base node (not validated up to this point), but it is a symmetric merge operation
+                    foreach ((string area1, string area2) in extraParentGraph)
+                    {
+                        if (!sets.TryGetValue(area2, out HashSet<string> shared))
+                        {
+                            throw new Exception($"Internal error: Unknown area {area2} configured in area {area1}");
+                        }
+                        shared.UnionWith(sets[area1]);
+                        foreach (string area in shared)
+                        {
+                            sets[area] = shared;
+                        }
+                    }
                 }
+                return sets;
             }
-            if (explain)
+            void explainDisjointSet(string name, Dictionary<string, HashSet<string>> sets)
             {
                 HashSet<string> explained = new HashSet<string>();
-                foreach (KeyValuePair<string, HashSet<string>> entry in combinedWeights)
+                foreach (KeyValuePair<string, HashSet<string>> entry in sets)
                 {
-                    if (explained.Contains(entry.Key)) continue;
-                    Console.WriteLine($"Combined weights: [{string.Join(",", entry.Value)}]");
+                    if (explained.Contains(entry.Key) || entry.Value.Count == 1) continue;
+                    Console.WriteLine($"{name}: [{string.Join(",", entry.Value)}]");
                     explained.UnionWith(entry.Value);
                 }
             }
-
-            // I don't think we need combinedAreas anymore? Only combinedWeights
-            // Maybe this is needed in cases where there is additional weight combination where areas aren't mutually reachable (see comment below).
-            // TODO audit how both are used.
-            combinedAreas = combinedWeights.ToDictionary(e => e.Key, e => e.Value.ToList());
+            combinedWeights = quadraticDisjointSets(rootNode, weightBaseGraph);
+            if (explain) explainDisjointSet("Combined weights", combinedWeights);
+            if (keyBaseGraph.Count > 0)
+            {
+                // Do first disjoint set calc for mutual accessibility, which is a condition for KeyBase to apply
+                Dictionary<string, HashSet<string>> combinedAreas = quadraticDisjointSets(rootNode);
+                keyBaseGraph = new(keyBaseGraph.Where(e => combinedAreas[e.Key].Contains(e.Value)));
+                combinedKeyAreas = quadraticDisjointSets(keyBaseGraph);
+                if (explain) explainDisjointSet("Combined key areas", combinedKeyAreas);
+            }
 
             // Last step - calculate rough measures of area difficulty, in terms of minimal number of items required for the area
             // In Elden Ring, this step encounters recursion with leyndell -> sewer -> sewer_flame -> deeproot -> leyndell
@@ -446,7 +478,15 @@ namespace RandomizerCommon
                         keyArea = sn.Area;
                     }
                 }
-                if (keyArea == null) throw new Exception($"Error randomizing {item}: vanilla location was not found in game data");
+                // TODO: Handle sharding for new items
+                if (keyArea == null && ann.NewItems.TryGetValue(item, out NewItemAnnotation newItem))
+                {
+                    keyArea = newItem.InferredArea;
+                }
+                if (keyArea == null)
+                {
+                    throw new Exception($"Error randomizing {item}: vanilla location was not found in game data");
+                }
                 vanillaAreas[item] = keyArea;
                 // Console.WriteLine($"- Name: {item}\n  ID: {(int)itemKey.Type}:{itemKey.ID}\n  Area: {keyArea}");
             }
@@ -629,15 +669,23 @@ namespace RandomizerCommon
                 AddItem(item, selected, forced != null);
 
                 ret.Priority.Add(itemKey);
-                ret.Assign[item] = new HashSet<string> { selected };
+                HashSet<string> selectedAreas = new() { selected };
                 // Areas should include events there. Except for bell charm being dropped by chained ogre, if that option is enabled
                 // todo: check this works okay with racemode key items, and nothing else randomized.
                 if (!(item == "younglordsbellcharm" && opt["earlyhirata"]))
                 {
-                    if (ann.AreaEvents.TryGetValue(selected, out List<string> events)) ret.Assign[item].UnionWith(events);
+                    if (ann.AreaEvents.TryGetValue(selected, out List<string> events))
+                    {
+                        selectedAreas.UnionWith(events);
+                    }
                 }
+                if (combinedKeyAreas.TryGetValue(selected, out HashSet<string> keyBased))
+                {
+                    selectedAreas.UnionWith(keyBased);
+                }
+                ret.Assign[item] = selectedAreas;
 #if DEBUG
-                if (explain || debugChoices || opt["keychoice"]) Console.WriteLine($"Adding {item} to {string.Join(",", ret.Assign[item])}");
+                if (explain || debugChoices || opt["keychoice"]) Console.WriteLine($"Adding {item} to {string.Join(",", selectedAreas)}");
 #endif
 
                 // Update weights

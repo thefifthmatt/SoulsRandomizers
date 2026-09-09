@@ -17,6 +17,7 @@ public partial class MergeModWindow : ReactiveWindow<MergeModViewModel>
         if (Design.IsDesignMode) return;
 
         this.WhenActivated(action => action(ViewModel!.DirectoryCommand.Subscribe(Close)));
+        this.WhenActivated(action => action(ViewModel!.RegulationCommand.Subscribe(Close)));
         this.WhenActivated(action => action(ViewModel!.TomlCommand.Subscribe(Close)));
         this.WhenActivated(action => action(ViewModel!.ClearCommand.Subscribe(Close)));
     }

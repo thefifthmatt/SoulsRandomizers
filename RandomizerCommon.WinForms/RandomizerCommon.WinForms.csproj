@@ -42,4 +42,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup Condition="!$(DefineConstants.Contains(';DEV_RELEASE;'))">
+    <EmbeddedResource Remove="Properties/Resources.resx" />
+    <Compile Remove="Properties/Resources.Designer.cs" />
+  </ItemGroup>
+
 </Project>

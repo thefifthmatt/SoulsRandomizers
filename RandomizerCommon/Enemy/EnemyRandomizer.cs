@@ -14,6 +14,7 @@ using static RandomizerCommon.EnemyPermutation;
 using static RandomizerCommon.EnemyPreset;
 using static RandomizerCommon.Util;
 using static SoulsIds.Events;
+using static RandomizerCommon.EnemyMessages;
 
 namespace RandomizerCommon
 {
@@ -780,13 +781,30 @@ namespace RandomizerCommon
             // ---
 
             EnemyPlacement places = null;
-            if (game.EldenRing)
+            if (game.EldenRing || game.DS1)
             {
-                places = EnemyPlacement.ReadLazy("diste/Base/places.bin");
+                places = EnemyPlacement.ReadLazy($"{game.Dir}/Base/places.bin");
             }
-            else if (game.DS1)
+
+            // For now, load at most one config until it's integrated into the main config. Map from English key name
+            Dictionary<string, EnemyNamesConfig> translatedNameConfigs = new();
+            // Per key, per language
+            Dictionary<string, Dictionary<string, NameTemplatesMessage>> translatedNames = new();
+            if (!opt.GetStr("lang", out string cultureLang))
             {
-                places = EnemyPlacement.ReadLazy("dist1/Base/places.bin");
+                cultureLang = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            }
+            if (game.EldenRing && EnemyMessages.TryReadCurrentConfig(game, cultureLang, out string gameLang, out EnemyNamesConfig currentNames))
+            {
+                currentNames.CleverNames = CustomCleverNames.FromConfig(currentNames.SpecialReplacements);
+                translatedNameConfigs[gameLang] = currentNames;
+                foreach (NameTemplatesMessage message in currentNames.BossNames)
+                {
+                    if (message.IsFilledIn() && message.Base?.Key != null)
+                    {
+                        AddMulti(translatedNames, message.Base.Key, gameLang, message);
+                    }
+                }
             }
 
             // Map from fake boss to actual occurrence of it
@@ -872,6 +890,12 @@ namespace RandomizerCommon
                     if (info.NpcName == 0)
                     {
                         info.NpcName = info.Important.NpcName;
+                    }
+                    // Also fill this in dynamically (TODO: copy statically)
+                    string nameKey = info.Important.Names?.Key;
+                    if (nameKey != null && translatedNames.TryGetValue(nameKey, out Dictionary<string, NameTemplatesMessage> nameMessages))
+                    {
+                        info.Important.Translated = nameMessages;
                     }
                 }
                 if (info.OwnedBy != 0)
@@ -4837,26 +4861,40 @@ namespace RandomizerCommon
                     // For other languages, use the NPC name directly if it exists
                     if (id != nameId)
                     {
-                        foreach (KeyValuePair<string, FMGDictionary> lang in game.AllItemFMGs)
+                        foreach ((string lang, FMGDictionary itemFmgs) in game.AllItemFMGs)
                         {
-                            if (lang.Key == game.EnglishName) continue;
+                            if (lang == game.EnglishName) continue;
                             string backupName = null;
-                            if (sourceInfo.NpcName > 0)
+                            if (string.IsNullOrEmpty(backupName) && sourceInfo.NpcName > 0)
                             {
-                                backupName = getName(lang.Value, infos[source].NpcName);
+                                backupName = getName(itemFmgs, infos[source].NpcName);
                             }
                             if (string.IsNullOrWhiteSpace(backupName))
                             {
-                                backupName = getName(lang.Value, id);
+                                backupName = getName(itemFmgs, id);
                             }
                             if (string.IsNullOrWhiteSpace(backupName))
                             {
                                 backupName = "???";
                             }
-                            setName(lang.Value, nameId, backupName);
-                            if (opt["debugnames"] && opt["allnames"])
+                            bool isCustom = false;
+                            if (sourceInfo.Important != null && targetInfo.Important != null
+                                && sourceInfo.Important.GetMessage(lang, out NameTemplatesMessage sourceMessage)
+                                && targetInfo.Important.GetMessage(lang, out NameTemplatesMessage targetMessage))
                             {
-                                Console.WriteLine($"  {lang.Key} replacement for {id} -> {nameId}: {backupName}");
+                                isCustom = true;
+                                // TODO: Categories when that is required
+                                backupName = CalculateCleverName(sourceMessage.Translated, targetMessage.Translated, backupName);
+                                if (translatedNameConfigs.TryGetValue(lang, out EnemyNamesConfig namesConfig) && namesConfig.CleverNames != null
+                                    && namesConfig.CleverNames.GetReplacement(sourceMessage.Translated, targetMessage.Translated, backupName, out customName))
+                                {
+                                    backupName = customName;
+                                }
+                            }
+                            setName(itemFmgs, nameId, backupName);
+                            if (opt["debugnames"] && (opt["allnames"] || isCustom))
+                            {
+                                Console.WriteLine($"  {lang} replacement for {id} -> {nameId}: {backupName}");
                             }
                         }
                     }

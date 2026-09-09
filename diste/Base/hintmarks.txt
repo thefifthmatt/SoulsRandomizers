@@ -145,10 +145,10 @@ DebugInfo:
 - 73422 - Liurnia of the Lakes - Divine Tower of Liurnia - in m34_11_00_00 (Divine Tower of Liurnia)
 - 73430 - Capital Outskirts - Divine Tower of West Altus - in m34_12_00_00 (Divine Tower of West Altus)
 - 73431 - Capital Outskirts - Sealed Tunnel - in m60_43_50_00 (Capital Outskirts - Minor Erdtree Church, Sealed Tunnel Entrance)
-- "73432 - Capital Outskirts - Divine Tower of West Altus: Gate - in m34_12_00_00 (Divine Tower of West Altus)"
+- '73432 - Capital Outskirts - Divine Tower of West Altus: Gate - in m34_12_00_00 (Divine Tower of West Altus)'
 - "73440 - Greyoll's Dragonbarrow - Divine Tower of Caelid: Basement - in m34_13_00_00 (Divine Tower of Caelid)"
 - "73441 - Greyoll's Dragonbarrow - Divine Tower of Caelid: Center - in m34_13_00_00 (Divine Tower of Caelid)"
-- "73450 - Forbidden Lands - Divine Tower of East Altus: Gate - in m34_14_00_00 (Divine Tower of East Altus)"
+- '73450 - Forbidden Lands - Divine Tower of East Altus: Gate - in m34_14_00_00 (Divine Tower of East Altus)'
 - 73451 - Forbidden Lands - Divine Tower of East Altus - in m34_14_00_00 (Divine Tower of East Altus)
 - 73460 - Greyoll's Dragonbarrow - Isolated Divine Tower - in m34_15_00_00 (Isolated Divine Tower)
 - 73500 - Subterranean Shunning-Grounds - Cathedral of the Forsaken - in m35_00_00_00 (Subterranean Shunning-Grounds)
@@ -325,40 +325,40 @@ DebugInfo:
 - graveyard graveyard_grave limgrave stormhill roundtable limgrave_coastalcave limgrave_dragonchurch stormveil_start stormveil stormveil_throne limgrave_tower limgrave_tower_inner peninsula liurnia bellum academy academy_courtyard academy_library academy_chest siofra ainsel_start liurnia_studyhall caelid caelid_greatjar dragonbarrow precipice altus outskirts leyndell leyndell_divinebridge leyndell_throne leyndell_erdtree leyndell_tower leyndell_tower_inner sewer sewer_flame sewer_catacombs deeproot_start liurnia_postmanor caelid_radahn caelid_postradahn caelid_tower caelid_tower_inner siofrabank_nokron siofra_nokron deeproot deeproot_dream liurnia_tower gelmir volcano volcano_drawingroom volcano_town volcano_temple outskirts_sealedtunnel altus_tower_inner ainsel lakeofrot ainsel_boss moonlight mountaintops_start mountaintops mountaintops_sol flamepeak farumazula_start farumazula chapel farumazula_limited siofra_limited snowfield_hiddenpath snowfield haligtree haligtree_elphael isolated_tower_inner mohgwyn leyndell2 leyndell2_throne erdtree
 EnableFlag: 3063
 Areas:
-- Includes: graveyard
+- Includes: graveyard graveyard_cave
   MainBonfire: Stranded Graveyard
-- Includes: graveyard_grave
+- Includes: graveyard_grave graveyard_grave_boss
   MainBonfire: Stranded Graveyard
   Boss: 18000800
-- Includes: limgrave
+- Includes: limgrave limgrave_summonwater_seal
   MainBonfire: The First Step
   Bonfires: Limgrave
   Boss: margit
-- Includes: stormhill
+- Includes: stormhill stormveil_margit
   MainBonfire: Stormhill Shack
   Bonfires: Stormhill
   Boss: margit
-- Includes: roundtable
+- Includes: roundtable roundtable_seal roundtable_balcony
   MainBonfire: Table of Lost Grace
   Bonfires: Roundtable Hold
-- Includes: limgrave_coastalcave limgrave_dragonchurch
+- Includes: limgrave_coastalcave limgrave_coastalcave_boss limgrave_dragonchurch
   MainBonfire: Coastal Cave
   Parent: limgrave
   Boss: demihumanchief
 - Includes: stormveil_start
   MainBonfire: Stormveil Main Gate
   Bonfires: Stormveil Castle
-- Includes: stormveil limgrave_tower limgrave_tower_inner
+- Includes: stormveil stormveil_pantry_seal stormveil_armory_seal stormveil_godrick limgrave_tower limgrave_tower2 limgrave_tower_inner
   MainBonfire: Stormveil Main Gate
   Bonfires: Stormveil Castle; !Stormveil Cliffside; !Stormveil Main Gate
   Boss: godrick
 - Includes: stormveil_throne
   MainBonfire: Stormveil Main Gate
-- Includes: peninsula
+- Includes: peninsula peninsula_evergaol peninsula_morne peninsula_postmorne peninsula_leonine
   MainBonfire: Bridge of Sacrifice
   Bonfires: Weeping Peninsula
   Boss: 1043300800
-- Includes: liurnia liurnia_postmanor
+- Includes: liurnia liurnia_slumbering liurnia_manor liurnia_loretta liurnia_kingsrealm_chest liurnia_postmanor
   MainBonfire: Lake-Facing Cliffs
   Bonfires: Liurnia of the Lakes
   Boss: loretta
@@ -366,35 +366,35 @@ Areas:
   MainBonfire: Bellum Church
   Bonfires: Bellum Highway
   Boss: loretta
-- Includes: academy academy_courtyard academy_library academy_chest
+- Includes: academy academy_entrance academy_redwolf academy_courtyard academy_rooftops academy_library academy_chest
   MainBonfire: Main Academy Gate
   Bonfires: Academy of Raya Lucaria; Main Academy Gate
   Boss: rennala
-- Includes: siofra
+- Includes: siofra siofra_dragonkin siofra_boss
   MainBonfire: Siofra River Well Depths
   Bonfires: Siofra River
   Boss: ancestor
-- Includes: ainsel_start
+- Includes: ainsel_start ainsel_dragonkin ainsel_postdragonkin
   MainBonfire: Ainsel River Well Depths
   Bonfires: Ainsel River; !Astel, Naturalborn of the Void
   Boss: 12010800
-- Includes: liurnia_studyhall liurnia_tower
+- Includes: liurnia_studyhall liurnia_tower liurnia_tower_inner
   MainBonfire: Study Hall Entrance
   Bonfires: Study Hall Entrance; Liurnia Tower Bridge; Divine Tower of Liurnia
-- Includes: caelid caelid_greatjar caelid_radahn caelid_postradahn
+- Includes: caelid caelid_forsaken_seal caelid_redmane caelid_redmane_postboss caelid_crypt_boss caelid_crypt_chest caelid_caelem_chest caelid_greatjar caelid_radahn caelid_postradahn caelid_redmane_boss
   MainBonfire: Smoldering Church
   Bonfires: Caelid; Swamp of Aeonia
   Boss: radahn
-- Includes: dragonbarrow caelid_tower caelid_tower_inner
+- Includes: dragonbarrow caelid_tower caelid_tower_boss caelid_tower_postboss caelid_tower_inner
   MainBonfire: Dragonbarrow West
   Bonfires: Greyoll's Dragonbarrow
   Boss: 34130800
   Comment: Godskin
-- Includes: precipice
+- Includes: precipice precipice_boss
   MainBonfire: Ruin-Strewn Precipice
   Bonfires: Ruin-Strewn Precipice
   Boss: makar
-- Includes: altus
+- Includes: altus altus_wyndhamruins_seal altus_evergaol altus_shaded altus_elemer altus_writheblood_chest altus_lux_chest
   MainBonfire: Altus Plateau
   Bonfires: Altus Plateau
   Boss: 1039540800
@@ -406,29 +406,29 @@ Areas:
   Boss: 1045520800
   BossFlag: 1045520800
   Comment: Draconic
-- Includes: leyndell leyndell_throne leyndell_erdtree
+- Includes: leyndell leyndell_sanctuary leyndell_pretower leyndell_throne leyndell_sanctuaryback leyndell_sanctuaryleft leyndell_bedchamber leyndell_sanctuaryfront leyndell_erdtree
   MainBonfire: Capital Rampart
   Bonfires: Leyndell, Royal Capital; !Divine Bridge
   Boss: morgott
 - Includes: leyndell_divinebridge isolated_tower_inner
   DisplayName: Divine Bridge
   Comment: This bonfire changes over time so just use direct item hints
-- Includes: leyndell_tower leyndell_tower_inner
+- Includes: leyndell_tower leyndell_tower_start leyndell_tower_inner
   MainBonfire: 'Divine Tower of East Altus: Gate'
   Bonfires: Divine Tower of East Altus; Forbidden Lands
-- Includes: sewer sewer_flame
+- Includes: sewer sewer_royal sewer_mohg sewer_flame
   MainBonfire: Forsaken Depths
   Bonfires: Subterranean Shunning-Grounds
   Boss: mohg
-- Includes: sewer_catacombs
+- Includes: sewer_catacombs sewer_catacombs_boss
   MainBonfire: Leyndell Catacombs
   Parent: sewer
   Boss: 35000850
-- Includes: deeproot_start deeproot deeproot_dream
+- Includes: deeproot_start deeproot deeproot_boss deeproot_dream
   MainBonfire: Great Waterfall Crest
   Bonfires: Deeproot Depths
   Boss: fiaschampions
-- Includes: siofrabank_nokron siofra_nokron
+- Includes: siofrabank_nokron siofrabank_prenokron siofra_nokron_mimic siofra_nokron siofra_nokron_grounds_seal siofra_nokron_boss siofra_nokron_aqueduct siofra_nokron_gargoyles siofra_nokron_grounds
   MainBonfire: Nokron, Eternal City
   Bonfires: Nokron, Eternal City
   Boss: ancestor2
@@ -442,19 +442,19 @@ Areas:
   Bonfires: Mt. Gelmir
   DisplayName: Volcano Manor
   Comment: Don't use a boss requirement for this limited location. Beast is ambiguous, Rykard may be unreachable
-- Includes: volcano_drawingroom volcano_town volcano_temple
+- Includes: volcano_drawingroom volcano_town volcano_town_seal volcano_abductors volcano_temple volcano_posttemple volcano_sendinggate volcano_hallway volcano_rykard
   MainBonfire: Volcano Manor
   Bonfires: Volcano Manor; !Volcano Manor
   Boss: rykard
-- Includes: outskirts_sealedtunnel
+- Includes: outskirts_sealedtunnel outskirts_sealedtunnel_preboss outskirts_sealedtunnel_boss
   MainBonfire: Sealed Tunnel
   Parent: outskirts
   Boss: onyxlord
 - Includes: altus_tower_inner
   MainBonfire: 'Divine Tower of West Altus: Gate'
-  DisplayName: Divine Tower of West Altus
   Parent: outskirts
-- Includes: ainsel
+  DisplayName: Divine Tower of West Altus
+- Includes: ainsel ainsel_seal ainsel_abovestart
   MainBonfire: Ainsel River Main
   Bonfires: Ainsel River Main
   Boss: astel
@@ -463,7 +463,7 @@ Areas:
   MainBonfire: Lake of Rot Shoreside
   Bonfires: Lake of Rot
   Boss: astel
-- Includes: moonlight
+- Includes: moonlight moonlight_seal
   MainBonfire: Moonlight Altar
   Bonfires: Moonlight Altar
   Boss: 1034420800
@@ -473,25 +473,25 @@ Areas:
   Bonfires: Forbidden Lands
   Boss: 1049520800
   BossFlag: 1049520800
-- Includes: mountaintops mountaintops_sol
+- Includes: mountaintops mountaintops_sol_boss mountaintops_sol mountaintops_sol_postboss
   MainBonfire: Zamor Ruins
   Bonfires: Mountaintops of the Giants
   Boss: niall
-- Includes: flamepeak
+- Includes: flamepeak flamepeak_firegiant
   MainBonfire: Giants' Gravepost
   Bonfires: Flame Peak
   Boss: firegiant
-- Includes: farumazula_start farumazula
+- Includes: farumazula_start farumazula_prestart farumazula_temple farumazula_transept farumazula_godskinduo farumazula farumazula_lift farumazula_maliketh farumazula_placidusax
   MainBonfire: Crumbling Beast Grave
   Bonfires: Crumbling Farum Azula
   Boss: maliketh
-- Includes: chapel chapel_start
+- Includes: chapel chapel_boss chapel_start
   DisplayName: Chapel of Anticipation
 - Includes: farumazula_limited
   DisplayName: Crumbling Farum Azula
 - Includes: siofra_limited
   DisplayName: Nokron, Eternal City
-- Includes: snowfield_hiddenpath
+- Includes: snowfield_hiddenpath snowfield_hiddenpath_boss
   MainBonfire: Hidden Path to the Haligtree
   Bonfires: Hidden Path to the Haligtree; Consecrated Snowfield
   Boss: 30200800
@@ -500,15 +500,15 @@ Areas:
   Bonfires: Consecrated Snowfield
   Boss: 1050560800
   BossFlag: 1050560800
-- Includes: haligtree haligtree_elphael
+- Includes: haligtree haligtree_loretta haligtree_elphael haligtree_elphael_seal_upper haligtree_elphael_seal_lower haligtree_postloretta haligtree_malenia
   MainBonfire: Haligtree Canopy
   Bonfires: Miquella's Haligtree; Elphael, Brace of the Haligtree
   Boss: malenia
-- Includes: mohgwyn
+- Includes: mohgwyn mohgwyn_boss
   MainBonfire: Palace Approach Ledge-Road
   Bonfires: Mohgwyn Palace
   Boss: mohg2
-- Includes: leyndell2 leyndell2_throne
+- Includes: leyndell2 sewer_ashen leyndell2_pretower leyndell2_sanctuary leyndell2_bedchamber leyndell2_throne
   MainBonfire: Leyndell, Capital of Ash
   Bonfires: Leyndell, Ashen Capital; !Divine Bridge
   Boss: godfrey2
@@ -516,257 +516,257 @@ Areas:
   MainBonfire: Fractured Marika
   DisplayName: Stone Platform
   Comment: End of regular areas!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-- Includes: peninsula_tombswardcatacombs
+- Includes: peninsula_tombswardcatacombs peninsula_tombswardcatacombs_seal peninsula_tombswardcatacombs_boss
   MainBonfire: Tombsward Catacombs
   Parent: peninsula
   Boss: 30000800
-- Includes: peninsula_impalerscatacombs
+- Includes: peninsula_impalerscatacombs peninsula_impalerscatacombs_boss
   MainBonfire: Impaler's Catacombs
   Parent: peninsula
   Boss: 30010800
-- Includes: limgrave_stormfootcatacombs
+- Includes: limgrave_stormfootcatacombs limgrave_stormfootcatacombs_boss
   MainBonfire: Stormfoot Catacombs
   Parent: limgrave
   Boss: 30020800
-- Includes: liurnia_roadsendcatacombs
+- Includes: liurnia_roadsendcatacombs liurnia_roadsendcatacombs_boss
   MainBonfire: Road's End Catacombs
   Parent: liurnia
   Boss: 30030800
-- Includes: limgrave_murkwatercatacombs
+- Includes: limgrave_murkwatercatacombs limgrave_murkwatercatacombs_boss
   MainBonfire: Murkwater Catacombs
   Parent: limgrave
   Boss: 30040800
-- Includes: liurnia_blackknifecatacombs
+- Includes: liurnia_blackknifecatacombs liurnia_blackknifecatacombs_seal liurnia_blackknifecatacombs_boss2 liurnia_blackknifecatacombs_boss
   MainBonfire: Black Knife Catacombs
   Parent: liurnia
   Boss: 30050800
   Comment: 30050800 is Cemetery Shade, 30050850 is Black Knight Assassin
-- Includes: liurnia_cliffbottomcatacombs
+- Includes: liurnia_cliffbottomcatacombs liurnia_cliffbottomcatacombs_seal liurnia_cliffbottomcatacombs_boss
   MainBonfire: Cliffbottom Catacombs
   Parent: liurnia
   Boss: 30060800
-- Includes: gelmir_wyndhamcatacombs
+- Includes: gelmir_wyndhamcatacombs gelmir_wyndhamcatacombs_seal gelmir_wyndhamcatacombs_boss
   MainBonfire: Wyndham Catacombs
   Parent: gelmir
   Boss: 30070800
-- Includes: altus_grave
+- Includes: altus_grave altus_grave_seal_other altus_grave_seal_start altus_grave_boss
   MainBonfire: Sainted Hero's Grave
   Parent: altus
   Boss: 30080800
-- Includes: gelmir_grave
+- Includes: gelmir_grave gelmir_grave_boss
   MainBonfire: Gelmir Hero's Grave
   Parent: gelmir
   Boss: 30090800
-- Includes: outskirts_grave
+- Includes: outskirts_grave outskirts_grave_seal outskirts_grave_boss
   MainBonfire: Auriza Hero's Grave
   Parent: outskirts
   Boss: 30100800
-- Includes: stormhill_catacombs
+- Includes: stormhill_catacombs stormhill_catacombs_boss
   MainBonfire: Deathtouched Catacombs
   Parent: stormhill
   Boss: 30110800
-- Includes: altus_catacombs
+- Includes: altus_catacombs altus_catacombs_boss
   MainBonfire: Unsightly Catacombs
   Parent: altus
   Boss: 30120800
-- Includes: outskirts_sidetomb
+- Includes: outskirts_sidetomb outskirts_sidetomb_dupeupper outskirts_sidetomb_boss outskirts_sidetomb_dupeentrance outskirts_sidetomb_dupehallway outskirts_sidetomb_jail outskirts_sidetomb_dupejail
   MainBonfire: Auriza Side Tomb
   Parent: outskirts
   Boss: 30130800
-- Includes: caelid_erdtreecatacombs
+- Includes: caelid_erdtreecatacombs caelid_erdtreecatacombs_boss
   MainBonfire: Minor Erdtree Catacombs
   Parent: caelid
   Boss: 30140800
-- Includes: caelid_catacombs
+- Includes: caelid_catacombs caelid_catacombs_boss
   MainBonfire: Caelid Catacombs
   Parent: caelid
   Boss: 30150800
-- Includes: caelid_wardead
+- Includes: caelid_wardead caelid_wardead_boss
   MainBonfire: War-Dead Catacombs
   Parent: caelid_postradahn
   Boss: 30160800
-- Includes: flamepeak_grave
+- Includes: flamepeak_grave flamepeak_grave_seal_other flamepeak_grave_seal_start flamepeak_grave_boss
   MainBonfire: Giant-Conquering Hero's Grave
   Parent: flamepeak
   Boss: 30170800
-- Includes: mountaintops_catacombs
+- Includes: mountaintops_catacombs mountaintops_catacombs_boss
   MainBonfire: Giants' Mountaintop Catacombs
   Parent: mountaintops
   Boss: 30180800
-- Includes: snowfield_catacombs
+- Includes: snowfield_catacombs snowfield_catacombs_boss
   MainBonfire: Consecrated Snowfield Catacombs
   Parent: snowfield
   Boss: 30190800
-- Includes: limgrave_murkwatercave
+- Includes: limgrave_murkwatercave limgrave_murkwatercave_boss
   MainBonfire: Murkwater Cave
   Parent: limgrave
   Comment: Patches
-- Includes: peninsula_earthborecave
+- Includes: peninsula_earthborecave peninsula_earthborecave_boss
   MainBonfire: Earthbore Cave
   Parent: peninsula
   Boss: 31010800
-- Includes: peninsula_tombswardcave
+- Includes: peninsula_tombswardcave peninsula_tombswardcave_boss
   MainBonfire: Tombsward Cave
   Parent: peninsula
   Boss: 31020800
-- Includes: limgrave_grovesidecave
+- Includes: limgrave_grovesidecave limgrave_grovesidecave_boss
   MainBonfire: Groveside Cave
   Parent: limgrave
   Boss: 31030800
-- Includes: liurnia_stillwatercave
+- Includes: liurnia_stillwatercave liurnia_stillwatercave_boss
   MainBonfire: Stillwater Cave
   Parent: liurnia
   Boss: 31040800
-- Includes: liurnia_lakesidecave
+- Includes: liurnia_lakesidecave liurnia_lakesidecave_boss
   MainBonfire: Lakeside Crystal Cave
   Parent: liurnia
   Boss: 31050800
-- Includes: liurnia_academycave
+- Includes: liurnia_academycave liurnia_academycave_boss academy_cavetower
   MainBonfire: Academy Crystal Cave
   Parent: liurnia
   Boss: 31060800
-- Includes: gelmir_seethewatercave
+- Includes: gelmir_seethewatercave gelmir_seethewatercave_boss
   MainBonfire: Seethewater Cave
   Parent: gelmir
   Boss: 31070800
-- Includes: gelmir_volcanocave
+- Includes: gelmir_volcanocave gelmir_volcanocave_boss
   MainBonfire: Volcano Cave
   Parent: gelmir
   Boss: 31090800
-- Includes: dragonbarrow_cave
+- Includes: dragonbarrow_cave dragonbarrow_cave_boss
   MainBonfire: Dragonbarrow Cave
   Parent: dragonbarrow
   Boss: 31100800
-- Includes: dragonbarrow_selliahideaway
+- Includes: dragonbarrow_selliahideaway dragonbarrow_selliahideaway_boss
   MainBonfire: Sellia Hideaway
   Parent: dragonbarrow
   Boss: 31110800
-- Includes: snowfield_cave
+- Includes: snowfield_cave snowfield_cave_boss
   MainBonfire: Cave of the Forlorn
   Parent: snowfield
   Boss: 31120800
-- Includes: limgrave_highroadcave
+- Includes: limgrave_highroadcave limgrave_highroadcave_boss
   MainBonfire: Highroad Cave
   Parent: limgrave
   Boss: 31170800
-- Includes: altus_grotto
+- Includes: altus_grotto altus_grotto_boss
   MainBonfire: Perfumer's Grotto
   Parent: altus
   Boss: 31180800
-- Includes: altus_sagescave
+- Includes: altus_sagescave altus_sagescave_boss2 altus_sagescave_boss
   MainBonfire: Sage's Cave
   Parent: altus
   Boss: 31190850
   Comment: 31190800 is Black Knight Assassin, 31190850 is Necromancer Garris
-- Includes: caelid_abandonedcave
+- Includes: caelid_abandonedcave caelid_abandonedcave_boss
   MainBonfire: Abandoned Cave
   Parent: caelid
   Boss: 31200800
-- Includes: caelid_gaolcave
+- Includes: caelid_gaolcave caelid_gaolcave_boss
   MainBonfire: Gaol Cave
   Parent: caelid
   Boss: 31210800
-- Includes: mountaintops_cave
+- Includes: mountaintops_cave mountaintops_cave_boss
   MainBonfire: Spiritcaller Cave
   Parent: mountaintops
   Boss: 31220800
-- Includes: peninsula_tunnel
+- Includes: peninsula_tunnel peninsula_tunnel_boss
   MainBonfire: Morne Tunnel
   Parent: peninsula
   Boss: 32000800
-- Includes: limgrave_tunnels
+- Includes: limgrave_tunnels limgrave_tunnels_boss
   MainBonfire: Limgrave Tunnels
   Parent: limgrave
   Boss: 32010800
-- Includes: liurnia_tunnel
+- Includes: liurnia_tunnel liurnia_tunnel_boss
   MainBonfire: Raya Lucaria Crystal Tunnel
   Parent: liurnia
   Boss: 32020800
-- Includes: altus_oldtunnel
+- Includes: altus_oldtunnel altus_oldtunnel_boss
   MainBonfire: Old Altus Tunnel
   Parent: altus
   Boss: 32040800
-- Includes: altus_tunnel
+- Includes: altus_tunnel altus_tunnel_boss
   MainBonfire: Altus Tunnel
   Parent: altus
   Boss: 32050800
-- Includes: caelid_gaeltunnel
+- Includes: caelid_gaeltunnel caelid_gaeltunnel_start caelid_gaeltunnel_boss
   MainBonfire: Gael Tunnel
   Parent: caelid
   Boss: 32070800
-- Includes: caelid_selliatunnel
+- Includes: caelid_selliatunnel caelid_selliatunnel_boss
   MainBonfire: Sellia Crystal Tunnel
   Parent: caelid
   Boss: 32080800
-- Includes: snowfield_tunnel
+- Includes: snowfield_tunnel snowfield_tunnel_boss
   MainBonfire: Yelough Anix Tunnel
   Parent: snowfield
   Boss: 32110800
   Comment: End of base game!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-- Includes: gravesite
+- Includes: gravesite ensis_room gravesite_mausoleum_boss
   MainBonfire: Gravesite Plain
   Boss: dancinglion
-- Includes: belurat belurat_swamp belurat_stairs
+- Includes: belurat belurat_boss belurat_swamp belurat_stairs
   MainBonfire: Belurat, Tower Settlement
   Boss: dancinglion
 - Includes: ellac
   MainBonfire: Ellac River Cave
   Comment: Ellac River isn't a name so this may be misleading
-- Includes: cerulean
+- Includes: cerulean cerulean_mausoleum_boss
   MainBonfire: Cerulean Coast
   Boss: 2046400800
   BossFlag: 2046400800
 - Includes: cerulean_rhia
   MainBonfire: Finger Ruins of Rhia
   Boss: 25000800
-- Includes: ensis ensis_fort
+- Includes: ensis ensis_boss ensis_fort
   MainBonfire: Castle Ensis Checkpoint
   DisplayName: Castle Ensis
   Boss: rellana
-- Includes: scadualtus scadualtus_high
+- Includes: scadualtus scadualtus_lower scadualtus_ymir scadualtus_high
   MainBonfire: Highroad Cross
   DisplayName: Scadu Altus
   Boss: 21000850
-- Includes: scadualtus_recluse
+- Includes: scadualtus_recluse scadualtus_mausoleum_boss
   MainBonfire: Castle Watering Hole
   DisplayName: Scadu Altus
   Boss: 21000850
   Comment: No good name for this part of Scadu Altus, but at least use distinct starting grace
-- Includes: shadowkeep westrampart
+- Includes: shadowkeep shadowkeep_boss westrampart
   MainBonfire: Shadow Keep Main Gate
   DisplayName: Shadow Keep
   Boss: 21000850
-- Includes: shadowkeep_church shadowkeep_church_lower scadutree_base
+- Includes: shadowkeep_church shadowkeep_church_lower shadowkeep_sanctum scadutree_base
   MainBonfire: Church District Entrance
   DisplayName: Shadow Keep
   Boss: 2050480800
-- Includes: storehouse storehouse_back
+- Includes: storehouse storehouse_premessmer storehouse_messmer storehouse_back
   MainBonfire: Storehouse, First Floor
   DisplayName: Specimen Storehouse
   Boss: 21010800
-- Includes: fissure
+- Includes: fissure fissure_depths fissure_boss fissure_postboss
   MainBonfire: Stone Coffin Fissure
   Boss: 22000800
-- Includes: rauhbase rauhbase_high
+- Includes: rauhbase rauhbase_high rauhbase_mausoleum_boss
   MainBonfire: Ancient Ruins Base
   DisplayName: Rauh Base
   Boss: 2044470800
   BossFlag: 2044470800
-- Includes: rauhruins rauhruins_high rauhruins_limited
+- Includes: rauhruins rauhruins_east rauhruins_romina rauhruins_west rauhruins_high rauhruins_limited
   MainBonfire: Rauh Ancient Ruins, East
   DisplayName: Ancient Ruins of Rauh
   Boss: romina
-- Includes: scaduview
+- Includes: scaduview scaduview_gaius scaduview_chalice
   MainBonfire: Scaduview
   Boss: 2049480800
 - Includes: abyssal
   MainBonfire: Abyssal Woods
   Boss: 28000800
-- Includes: midramanse
+- Includes: midramanse midramanse_boss
   MainBonfire: Manse Hall
   DisplayName: Midra's Manse
   Boss: 28000800
-- Includes: jaggedpeak_foot jaggedpeak
+- Includes: jaggedpeak_foot jaggedpeak jaggedpeak_bayle
   MainBonfire: Foot of the Jagged Peak
   Boss: 2054390800
 - Includes: charo
@@ -783,28 +783,28 @@ Areas:
 - Includes: scadualtus_miyr fingergrounds
   MainBonfire: Finger Birthing Grounds
   Boss: 25000800
-- Includes: enirilim belurat_enirilim
+- Includes: enirilim enirilim_stairs enirilim_radahn belurat_enirilim
   MainBonfire: First Rise
   DisplayName: Enir-Ilim
   Boss: 20010800
   Comment: End of DLC regular areas!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-- Includes: gravesite_catacombs
+- Includes: gravesite_catacombs gravesite_catacombs_boss
   MainBonfire: Fog Rift Catacombs
   Parent: gravesite
   Boss: 40000800
-- Includes: rauhbase_catacombs
+- Includes: rauhbase_catacombs rauhbase_catacombs_boss
   MainBonfire: Scorpion River Catacombs
   Parent: rauhbase
   Boss: 40010800
-- Includes: scadualtus_catacombs
+- Includes: scadualtus_catacombs scadualtus_catacombs_boss
   MainBonfire: Darklight Catacombs
   Parent: scadualtus_recluse
   Boss: 2052430800
-- Includes: gravesite_gaol
+- Includes: gravesite_gaol gravesite_gaol_boss
   MainBonfire: Belurat Gaol
   Parent: gravesite
   Boss: 41000800
-- Includes: scadualtus_gaol
+- Includes: scadualtus_gaol scadualtus_gaol_boss
   MainBonfire: Bonny Gaol
   Parent: scadualtus
   Boss: 41010800
@@ -821,11 +821,11 @@ Areas:
 - Includes: rauhbase_forge
   MainBonfire: Taylew's Ruined Forge
   Parent: rauhbase
-- Includes: ellac_cave
+- Includes: ellac_cave ellac_cave_boss
   MainBonfire: Rivermouth Cave
   Parent: ellac
   Boss: 43000800
-- Includes: gravesite_dragonpit
+- Includes: gravesite_dragonpit gravesite_dragonpit_boss
   MainBonfire: Dragon's Pit
   Parent: gravesite
   Boss: 43010800
@@ -838,15 +838,15 @@ Items:
 - Name: darkmoonring
   UnexploredCheck: moonlight
 - Name: dectusmedallionleft dectusmedallionright
-  UnexploredCheck: altus
   Comment: Altus overworld bonfires as an alternate condition
+  UnexploredCheck: altus
   Reqs:
   - CheckItem: self
   - AltFlag: 3063
 - Name: discardedpalacekey
 - Name: drawingroomkey
-  UnexploredCheck: volcano_town
   Comment: Acamdey Glintstone Key will suffice here, assuming the Drawing Room itself is not required
+  UnexploredCheck: volcano_town
   Reqs:
   - CheckItem: self
   - NotAreaCondition: volcano_drawingroom
@@ -864,8 +864,8 @@ Items:
   - AreaCondition: chapel
     CheckFlag: 1034470610
 - Name: purebloodknightsmedal
-  UnexploredCheck: mohgwyn
   Comment: Getting there is also possible when you have Snowfield access
+  UnexploredCheck: mohgwyn
   Reqs:
   - CheckItem: self
   - AltItem: haligtreesecretmedallionleft
@@ -873,15 +873,15 @@ Items:
 - Name: roldmedallion
   UnexploredCheck: mountaintops
 - Name: rustykey
-  UnexploredCheck: stormveil
   Comment: Not needed when Gostoc opened the gate (10009355 dialogue flag; 10009354 or 10000501 is you opening the gate)
+  UnexploredCheck: stormveil
   Reqs:
   - CheckItem: self
   - AltFlag: 10000500
 - Name: runegodrick runerennala
-  UnexploredCheck: leyndell
   DisplayName: 2 Great Runes
   Comment: Any two will do for the first pass, though be more comprehensive after. TODO this conditions is wrong with alternate count
+  UnexploredCheck: leyndell
   Reqs:
   - PassCondition: first
     CheckFlag: 182

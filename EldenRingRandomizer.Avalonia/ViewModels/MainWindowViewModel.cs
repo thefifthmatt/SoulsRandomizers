@@ -458,6 +458,7 @@ namespace EldenRingRandomizer.ViewModels
             // Language pref was already loaded before app initialization
             string language = messages.GetCurrentLanguageName();
             Languages = new(messages.GetLanguageList().Select(l => new LangOption(l.Item1, l.Item2, language)));
+            Translators = messages.GetCurrentLanguage()?.Translators;
 
             // Note ToPropety and ObservableAsProperty appear to be broken in this setup, so just do manual subscriptions for everything
             // All variables which feed into MakeOptions aside from presets, which may require loading things to enable

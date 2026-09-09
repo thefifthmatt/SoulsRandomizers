@@ -1,6 +1,6 @@
 {
   "instructions": "https://docs.google.com/document/d/1KTB5vIQIkYo65fMJr3pvKbL1dovn8cB2-CD_02YGDZI/edit",
-  "status": "0/172 custom names complete, 139/484 config names complete",
+  "status": "172/172 custom names complete, 484/484 config names complete",
   "capitalize_first_letter_in_custom_name": false,
   "boss_names": [
     {
@@ -12,23 +12,24 @@
       "translated": {
         "key": "人さらいの乙女人形：振り子鎌",
         "full_name": "人さらいの乙女人形：振り子鎌",
-        "partial_template": ""
+        "partial_name": "乙女人形：振り子鎌",
+        "partial_template": "人さらいの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Abductor Virgin",
-          "text": "",
+          "text": "人さらいの乙女人形",
           "info": "22x in Regular Enemies + Minor Bosses"
         },
         {
           "english_text": "Abductor Virgin Duo",
-          "text": "",
+          "text": "人さらいの乙女人形 x2",
           "info": "1x in Minor Bosses, part of Abductor Virgin"
         },
         {
           "english_text": "Basic Abductor Virgin",
-          "text": "",
+          "text": "人さらいの乙女人形 - 通常敵",
           "info": "21x in Regular Enemies, part of Abductor Virgin"
         }
       ]
@@ -42,7 +43,8 @@
       "translated": {
         "key": "人さらいの乙女人形：車輪",
         "full_name": "人さらいの乙女人形：車輪",
-        "partial_template": ""
+        "partial_name": "乙女人形：車輪",
+        "partial_template": "人さらいの$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -55,8 +57,8 @@
       },
       "translated": {
         "key": "火を盗んだアダン",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "アダン",
+        "partial_template": "火を盗んだ$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -76,7 +78,8 @@
       "translated": {
         "key": "祖霊",
         "full_name": "祖霊",
-        "full_template": ""
+        "full_template": "祖霊、$1",
+        "proper_template": "祖霊$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -96,9 +99,9 @@
       },
       "translated": {
         "key": "古竜ランサクス",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "ランサクス",
+        "full_template": "古竜、$1",
+        "proper_template": "古竜$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -109,12 +112,12 @@
         },
         {
           "english_text": "Ancient Dragon",
-          "text": "",
+          "text": "古竜",
           "info": "8x in Regular Enemies + Dragon Minibosses"
         },
         {
           "english_text": "Basic Ancient Dragon",
-          "text": "",
+          "text": "古竜 - 通常敵",
           "info": "6x in Regular Enemies, part of Ancient Dragon"
         }
       ]
@@ -128,9 +131,9 @@
       },
       "translated": {
         "key": "古竜セネサクス",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "セネサクス",
+        "full_template": "古竜、$1",
+        "proper_template": "古竜$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -151,8 +154,8 @@
       "translated": {
         "key": "古竜人",
         "full_name": "古竜人",
-        "partial_name": "",
-        "partial_template": ""
+        "full_template": "古竜人、$1",
+        "proper_template": "古竜人$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -171,8 +174,9 @@
       },
       "translated": {
         "key": "ザミェルの古英雄",
-        "full_name": "",
-        "full_template": ""
+        "full_name": "古英雄",
+        "partial_template": "ザミェルの$1",
+        "proper_template": "ザミェルの古英雄、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -183,12 +187,12 @@
         },
         {
           "english_text": "Ancient Hero of Zamor Boss",
-          "text": "",
+          "text": "ザミェルの古英雄 - ボス",
           "info": "3x in Minor Bosses + Evergaol Minibosses, part of Ancient Hero of Zamor"
         },
         {
           "english_text": "Basic Ancient Hero of Zamor",
-          "text": "",
+          "text": "ザミェルの古英雄 - 通常敵",
           "info": "8x in Regular Enemies, part of Ancient Hero of Zamor"
         }
       ]
@@ -201,8 +205,8 @@
       },
       "translated": {
         "key": "暗黒の星々、アステール",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "アステール",
+        "full_template": "暗黒の星々、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -213,12 +217,12 @@
         },
         {
           "english_text": "Astel",
-          "text": "",
+          "text": "アステール",
           "info": "4x in Regular Enemies + Major Bosses + Minor Bosses"
         },
         {
           "english_text": "Withered Astel",
-          "text": "",
+          "text": "アステール(枯れ)",
           "info": "2x in Regular Enemies, part of Astel"
         }
       ]
@@ -231,8 +235,8 @@
       },
       "translated": {
         "key": "暗黒の落とし子、アステール",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "アステール",
+        "full_template": "暗黒の落とし子、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -252,7 +256,7 @@
       "translated": {
         "key": "災いの影",
         "full_name": "災いの影",
-        "full_template": ""
+        "full_template": "災いの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -271,8 +275,9 @@
       },
       "translated": {
         "key": "戦魔術師ユーグ",
-        "proper_name": "",
-        "partial_template": ""
+        "proper_name": "ユーグ",
+        "full_template": "戦魔術師、$1",
+        "proper_template": "戦魔術師$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -283,12 +288,12 @@
         },
         {
           "english_text": "Battlemage",
-          "text": "",
+          "text": "戦魔術師",
           "info": "6x in Regular Enemies + Evergaol Minibosses"
         },
         {
           "english_text": "Basic Battlemage",
-          "text": "",
+          "text": "戦魔術師 - 通常敵",
           "info": "5x in Regular Enemies, part of Battlemage"
         }
       ]
@@ -301,8 +306,9 @@
       },
       "translated": {
         "key": "暴竜ベール",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ベール",
+        "full_template": "暴竜、$1",
+        "proper_template": "暴竜$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -324,9 +330,9 @@
       "translated": {
         "key": "獣の司祭",
         "full_name": "獣の司祭",
-        "partial_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "partial_name": "司祭",
+        "partial_template": "獣の$1",
+        "proper_template": "獣の司祭、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -345,8 +351,9 @@
       },
       "translated": {
         "key": "ファルム・アズラの獣人",
-        "full_name": "",
-        "full_template": ""
+        "full_name": "ファルム・アズラの獣人",
+        "partial_name": "獣人",
+        "partial_template": "ファルム・アズラの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -357,12 +364,12 @@
         },
         {
           "english_text": "Beastman of Farum Azula Boss",
-          "text": "",
+          "text": "ファルム・アズラの獣人 - ボス",
           "info": "1x in Minor Bosses, part of Beastman of Farum Azula"
         },
         {
           "english_text": "Basic Beastman of Farum Azula",
-          "text": "",
+          "text": "ファルム・アズラの獣人 - 通常敵",
           "info": "55x in Regular Enemies, part of Beastman of Farum Azula"
         }
       ]
@@ -375,14 +382,15 @@
       },
       "translated": {
         "key": "ファルム・アズラの獣人：大刀",
-        "full_name": "",
-        "full_template": ""
+        "full_name": "ファルム・アズラの獣人：大刀",
+        "partial_name": "獣人：大刀",
+        "partial_template": "ファルム・アズラの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Beastman of Farum Azula Duo",
-          "text": "",
+          "text": "ファルム・アズラの獣人 x2",
           "info": "1x in Minor Bosses, part of Beastman of Farum Azula"
         }
       ]
@@ -395,8 +403,9 @@
       },
       "translated": {
         "key": "ファルム・アズラの獣人：投擲刀",
-        "full_name": "",
-        "full_template": ""
+        "full_name": "ファルム・アズラの獣人：投擲刀",
+        "partial_name": "獣人：投擲刀",
+        "partial_template": "ファルム・アズラの$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -411,8 +420,7 @@
       "translated": {
         "key": "鈴玉狩り",
         "full_name": "鈴玉狩り",
-        "partial_name": "",
-        "partial_template": ""
+        "full_template": "鈴玉狩り、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -431,8 +439,8 @@
       },
       "translated": {
         "key": "鉄茨のエレメール",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "エレメール",
+        "partial_template": "鉄茨の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -453,8 +461,8 @@
       "translated": {
         "key": "黒き刃の刺客",
         "full_name": "黒き刃の刺客",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "刺客",
+        "partial_template": "黒き刃の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -465,22 +473,22 @@
         },
         {
           "english_text": "Black Knife Assassin Boss",
-          "text": "",
+          "text": "黒き刃の刺客 - ボス",
           "info": "3x in Minor Bosses + World Minibosses, part of Black Knife Assassin"
         },
         {
           "english_text": "Basic Black Knife Assassin",
-          "text": "",
+          "text": "黒き刃の刺客 - 通常敵",
           "info": "5x in Regular Enemies, part of Black Knife Assassin"
         },
         {
           "english_text": "All Black Knife Assassin Bosses",
-          "text": "",
+          "text": "黒き刃の刺客 - ボス(全種)",
           "info": "5x in Minor Bosses + Evergaol Minibosses + World Minibosses, part of Black Knife Assassin"
         },
         {
           "english_text": "Invisible Black Knife Assassin Boss",
-          "text": "",
+          "text": "黒き刃の刺客 - ボス(透明)",
           "info": "1x in Minor Bosses, part of Black Knife Assassin"
         }
       ]
@@ -493,8 +501,8 @@
       },
       "translated": {
         "key": "黒き刃の長、アレクトー",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "アレクトー",
+        "full_template": "黒き刃の長、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -513,8 +521,9 @@
       },
       "translated": {
         "key": "黒騎士エドレッド",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "エドレッド",
+        "full_template": "黒騎士、$1",
+        "proper_template": "黒騎士$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -525,17 +534,17 @@
         },
         {
           "english_text": "All Black Knight Bosses",
-          "text": "",
+          "text": "黒騎士 - ボス(全種)",
           "info": "2x in World Minibosses, part of Black Knight"
         },
         {
           "english_text": "Black Knight",
-          "text": "",
+          "text": "黒騎士",
           "info": "28x in Regular Enemies + World Minibosses"
         },
         {
           "english_text": "Basic Black Knight",
-          "text": "",
+          "text": "黒騎士 - 通常敵",
           "info": "26x in Regular Enemies, part of Black Knight"
         }
       ]
@@ -548,8 +557,9 @@
       },
       "translated": {
         "key": "黒騎士ガルー",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ガルー",
+        "full_template": "黒騎士、$1",
+        "proper_template": "黒騎士$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -570,8 +580,8 @@
       "translated": {
         "key": "猟犬騎士",
         "full_name": "猟犬騎士",
-        "partial_template": "",
-        "proper_template": ""
+        "full_template": "猟犬騎士、$1",
+        "proper_template": "猟犬騎士$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -582,12 +592,12 @@
         },
         {
           "english_text": "Bloodhound Knight Boss",
-          "text": "",
+          "text": "猟犬騎士 - ボス",
           "info": "1x in Minor Bosses, part of Bloodhound Knight"
         },
         {
           "english_text": "Basic Bloodhound Knight",
-          "text": "",
+          "text": "猟犬騎士 - 通常敵",
           "info": "4x in Regular Enemies, part of Bloodhound Knight"
         }
       ]
@@ -601,9 +611,9 @@
       },
       "translated": {
         "key": "猟犬騎士ダリウィル",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "ダリウィル",
+        "full_template": "猟犬騎士、$1",
+        "proper_template": "猟犬騎士$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -622,8 +632,9 @@
       },
       "translated": {
         "key": "カーリア騎士、ボルス",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ボルス",
+        "full_template": "カーリア騎士、$1",
+        "proper_template": "カーリア騎士、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -634,12 +645,12 @@
         },
         {
           "english_text": "Troll Knight",
-          "text": "",
+          "text": "騎士トロル",
           "info": "9x in Regular Enemies + Evergaol Minibosses"
         },
         {
           "english_text": "Basic Troll Knight",
-          "text": "",
+          "text": "騎士トロル - 通常敵",
           "info": "8x in Regular Enemies, part of Troll Knight"
         }
       ]
@@ -652,8 +663,8 @@
       },
       "translated": {
         "key": "凍てつく霧、ボレアリス",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ボレアリス",
+        "full_template": "凍てつく霧、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -674,8 +685,7 @@
       "translated": {
         "key": "墓所影",
         "full_name": "墓所影",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_template": "墓所$1影"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -686,17 +696,17 @@
         },
         {
           "english_text": "Cemetery Shade and Skeletons",
-          "text": "",
+          "text": "墓所影とスケルトンたち",
           "info": "1x in Minor Bosses, part of Cemetery Shade"
         },
         {
           "english_text": "Cemetery Shade Boss",
-          "text": "",
+          "text": "墓所影 - ボス",
           "info": "2x in Minor Bosses, part of Cemetery Shade"
         },
         {
           "english_text": "Basic Cemetery Shade",
-          "text": "",
+          "text": "墓所影 - 通常敵",
           "info": "4x in Regular Enemies, part of Cemetery Shade"
         }
       ]
@@ -711,8 +721,7 @@
       "translated": {
         "key": "血鬼の長",
         "full_name": "血鬼の長",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_template": "血鬼の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -723,12 +732,12 @@
         },
         {
           "english_text": "Chief Bloodfiend Boss",
-          "text": "",
+          "text": "血鬼の長 - ボス",
           "info": "1x in Minor Bosses, part of Chief Bloodfiend"
         },
         {
           "english_text": "Basic Chief Bloodfiend",
-          "text": "",
+          "text": "血鬼の長 - 通常敵",
           "info": "2x in Regular Enemies, part of Chief Bloodfiend"
         }
       ]
@@ -743,8 +752,9 @@
       "translated": {
         "key": "マレニアの貴腐騎士",
         "full_name": "マレニアの貴腐騎士",
-        "partial_template": "",
-        "proper_template": ""
+        "partial_name": "貴腐騎士",
+        "partial_template": "マレニアの$1",
+        "proper_template": "マレニアの貴腐騎士、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -755,12 +765,12 @@
         },
         {
           "english_text": "Cleanrot Knight Boss",
-          "text": "",
+          "text": "マレニアの貴腐騎士 - ボス",
           "info": "1x in Minor Bosses, part of Cleanrot Knight"
         },
         {
           "english_text": "Basic Cleanrot Knight",
-          "text": "",
+          "text": "貴腐騎士 - 通常敵",
           "info": "36x in Regular Enemies, part of Cleanrot Knight"
         }
       ]
@@ -775,8 +785,9 @@
       "translated": {
         "key": "マレニアの貴腐騎士：鎌",
         "full_name": "マレニアの貴腐騎士：鎌",
-        "partial_template": "",
-        "proper_template": ""
+        "partial_name": "貴腐騎士：鎌",
+        "partial_template": "マレニアの$1",
+        "proper_template": "マレニアの貴腐騎士、$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -791,14 +802,15 @@
       "translated": {
         "key": "マレニアの貴腐騎士：槍",
         "full_name": "マレニアの貴腐騎士：槍",
-        "partial_template": "",
-        "proper_template": ""
+        "partial_name": "貴腐騎士：槍",
+        "partial_template": "マレニアの$1",
+        "proper_template": "マレニアの貴腐騎士、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Cleanrot Knight Duo",
-          "text": "",
+          "text": "マレニアの貴腐騎士 x2",
           "info": "1x in Minor Bosses, part of Cleanrot Knight"
         }
       ]
@@ -811,8 +823,9 @@
       },
       "translated": {
         "key": "宿将ガイウス",
-        "proper_name": "",
-        "partial_template": ""
+        "proper_name": "ガイウス",
+        "full_template": "宿将、$1",
+        "proper_template": "宿将$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -831,8 +844,9 @@
       },
       "translated": {
         "key": "宿将ニアール",
-        "proper_name": "",
-        "partial_template": ""
+        "proper_name": "ニアール",
+        "full_template": "宿将、$1",
+        "proper_template": "宿将$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -843,7 +857,7 @@
         },
         {
           "english_text": "Commander",
-          "text": "",
+          "text": "宿将",
           "info": "2x in World Minibosses + Major Bosses"
         }
       ]
@@ -856,8 +870,9 @@
       },
       "translated": {
         "key": "宿将オニール",
-        "proper_name": "",
-        "partial_template": ""
+        "proper_name": "オニール",
+        "full_template": "宿将、$1",
+        "proper_template": "宿将$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -876,8 +891,8 @@
       },
       "translated": {
         "key": "指の母、ユミル卿",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ユミル卿",
+        "full_template": "指の母、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -898,8 +913,8 @@
       "translated": {
         "key": "坩堝の騎士",
         "full_name": "坩堝の騎士",
-        "partial_template": "",
-        "proper_template": ""
+        "partial_template": "坩堝の$1",
+        "proper_template": "坩堝の騎士、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -910,27 +925,27 @@
         },
         {
           "english_text": "Crucible Knight Boss",
-          "text": "",
+          "text": "坩堝の騎士 - ボス",
           "info": "1x in Evergaol Minibosses, part of Crucible Knight"
         },
         {
           "english_text": "Crucible Knight Devonia",
-          "text": "",
+          "text": "坩堝の騎士、デボニア",
           "info": "1x in Regular Enemies, part of Crucible Knight"
         },
         {
           "english_text": "Basic Crucible Knight",
-          "text": "",
+          "text": "坩堝の騎士 - 通常敵",
           "info": "9x in Regular Enemies, part of Crucible Knight"
         },
         {
           "english_text": "All Crucible Knight Bosses",
-          "text": "",
+          "text": "坩堝の騎士 - ボス(全種)",
           "info": "4x in World Minibosses + Minor Bosses + Evergaol Minibosses, part of Crucible Knight"
         },
         {
           "english_text": "Crucible Misbegotten Duo",
-          "text": "",
+          "text": "坩堝の騎士と混種",
           "info": "1x in Minor Bosses, part of Crucible Knight"
         }
       ]
@@ -944,15 +959,14 @@
       },
       "translated": {
         "key": "坩堝の騎士、オルドビス",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "オルドビス",
+        "full_template": "坩堝の騎士、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Crucible Knight Duo",
-          "text": "",
+          "text": "坩堝の騎士 x2",
           "info": "1x in Minor Bosses, part of Crucible Knight"
         }
       ]
@@ -966,9 +980,8 @@
       },
       "translated": {
         "key": "坩堝の騎士、シルリア",
-        "full_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "シルリア",
+        "full_template": "坩堝の騎士、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -989,29 +1002,29 @@
       "translated": {
         "key": "霊喚びつむり",
         "full_name": "霊喚びつむり",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "つむり",
+        "partial_template": "霊喚び$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Crucible Spiritcaller Snail",
-          "text": "",
+          "text": "霊喚びつむり (坩堝の騎士)",
           "info": "1x in Minor Bosses, part of Snail"
         },
         {
           "english_text": "Godskin Spiritcaller Snail",
-          "text": "",
+          "text": "霊喚びつむり (神肌)",
           "info": "1x in Minor Bosses, part of Snail"
         },
         {
           "english_text": "Snail",
-          "text": "",
+          "text": "つむり",
           "info": "152x in Regular Enemies + Minor Bosses"
         },
         {
           "english_text": "Basic Snail",
-          "text": "",
+          "text": "つむり - 通常敵",
           "info": "150x in Regular Enemies, part of Snail"
         }
       ]
@@ -1025,13 +1038,13 @@
       "translated": {
         "key": "結晶人：杖",
         "full_name": "結晶人：杖",
-        "partial_template": ""
+        "partial_template": "結晶$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "All Crystalian Bosses",
-          "text": "",
+          "text": "結晶人 - ボス(全種)",
           "info": "4x in Minor Bosses, part of Crystalian"
         },
         {
@@ -1041,12 +1054,12 @@
         },
         {
           "english_text": "Crystalian Staff Spear Duo",
-          "text": "",
+          "text": "結晶人：杖と槍",
           "info": "1x in Minor Bosses, part of Crystalian"
         },
         {
           "english_text": "Basic Crystalian",
-          "text": "",
+          "text": "結晶人 - 通常敵",
           "info": "16x in Regular Enemies, part of Crystalian"
         }
       ]
@@ -1060,13 +1073,13 @@
       "translated": {
         "key": "結晶人",
         "full_name": "結晶人",
-        "partial_template": ""
+        "partial_template": "結晶$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Ringblade Crystalian Boss",
-          "text": "",
+          "text": "結晶人：輪刃 - ボス",
           "info": "1x in Minor Bosses, part of Crystalian"
         }
       ]
@@ -1080,13 +1093,13 @@
       "translated": {
         "key": "結晶人：輪刃",
         "full_name": "結晶人：輪刃",
-        "partial_template": ""
+        "partial_template": "結晶$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Crystalian Ringblade Spear Duo",
-          "text": "",
+          "text": "結晶人：槍と輪刃",
           "info": "1x in Minor Bosses, part of Crystalian"
         }
       ]
@@ -1100,7 +1113,7 @@
       "translated": {
         "key": "結晶人：槍",
         "full_name": "結晶人：槍",
-        "partial_template": ""
+        "partial_template": "結晶$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -1113,8 +1126,8 @@
       },
       "translated": {
         "key": "腐敗した結晶人：輪刃",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "結晶人：輪刃",
+        "partial_template": "腐敗した結晶$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -1127,14 +1140,14 @@
       },
       "translated": {
         "key": "腐敗した結晶人：槍",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "結晶人：槍",
+        "partial_template": "腐敗した結晶$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Putrid Crystalian Trio",
-          "text": "",
+          "text": "腐敗した結晶人 x3",
           "info": "1x in Minor Bosses, part of Crystalian"
         }
       ]
@@ -1147,8 +1160,8 @@
       },
       "translated": {
         "key": "腐敗した結晶人：杖",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "結晶人：杖",
+        "partial_template": "腐敗した結晶$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -1161,8 +1174,9 @@
       },
       "translated": {
         "key": "呪剣士ラビリス",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ラビリス",
+        "full_template": "呪剣士、$1",
+        "proper_template": "呪剣士$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1173,12 +1187,12 @@
         },
         {
           "english_text": "Curseblade",
-          "text": "",
+          "text": "呪剣士",
           "info": "12x in Regular Enemies + Minor Bosses"
         },
         {
           "english_text": "Basic Curseblade",
-          "text": "",
+          "text": "呪剣士 - 通常敵",
           "info": "11x in Regular Enemies, part of Curseblade"
         }
       ]
@@ -1193,8 +1207,8 @@
       "translated": {
         "key": "ラーナの踊り子",
         "full_name": "ラーナの踊り子",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "踊り子",
+        "partial_template": "ラーナの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1215,8 +1229,7 @@
       "translated": {
         "key": "死儀礼の鳥",
         "full_name": "死儀礼の鳥",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_template": "死儀礼の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1236,7 +1249,7 @@
       "translated": {
         "key": "死の鳥",
         "full_name": "死の鳥",
-        "partial_template": ""
+        "partial_template": "死の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1255,8 +1268,8 @@
       },
       "translated": {
         "key": "腐りゆくエグズキス",
-        "proper_name": "",
-        "partial_template": ""
+        "proper_name": "エグズキス",
+        "partial_template": "腐りゆく$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1277,8 +1290,8 @@
       "translated": {
         "key": "亜人の親分",
         "full_name": "亜人の親分",
-        "partial_template": "",
-        "proper_template": ""
+        "partial_name": "親分",
+        "full_template": "亜人の親分、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1289,52 +1302,52 @@
         },
         {
           "english_text": "Demi-Human Chief Duo",
-          "text": "",
+          "text": "亜人の親分 x2",
           "info": "1x in Minor Bosses, part of Demi-Humans"
         },
         {
           "english_text": "Basic Demi-Human Chief",
-          "text": "",
+          "text": "亜人の親分 - 通常敵",
           "info": "12x in Regular Enemies, part of Demi-Humans"
         },
         {
           "english_text": "Demi-Human",
-          "text": "",
+          "text": "亜人",
           "info": "246x in Regular Enemies, part of Demi-Humans"
         },
         {
           "english_text": "Demi-Human Queen",
-          "text": "",
+          "text": "亜人の女王",
           "info": "5x in Minor Bosses + World Minibosses + Regular Enemies, part of Demi-Humans"
         },
         {
           "english_text": "Basic Demi-Human Queen",
-          "text": "",
+          "text": "亜人の女王 - 通常敵",
           "info": "1x in Regular Enemies, part of Demi-Humans"
         },
         {
           "english_text": "Demi-Human Shaman",
-          "text": "",
+          "text": "亜人の司祭",
           "info": "33x in Regular Enemies, part of Demi-Humans"
         },
         {
           "english_text": "Demi-Human Swordmaster",
-          "text": "",
+          "text": "亜人の剣聖",
           "info": "2x in Minor Bosses + Regular Enemies, part of Demi-Humans"
         },
         {
           "english_text": "Basic Demi-Human Swordmaster",
-          "text": "",
+          "text": "亜人の剣聖 - 通常敵",
           "info": "1x in Regular Enemies, part of Demi-Humans"
         },
         {
           "english_text": "Demi-Humans",
-          "text": "",
+          "text": "全ての亜人",
           "info": "330x in Minor Bosses + World Minibosses + Regular Enemies"
         },
         {
           "english_text": "Large Demi-Human",
-          "text": "",
+          "text": "屈強な亜人",
           "info": "31x in Regular Enemies, part of Demi-Humans"
         }
       ]
@@ -1348,9 +1361,9 @@
       },
       "translated": {
         "key": "亜人の女王ギリカ",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "ギリカ",
+        "full_template": "亜人の女王、$1",
+        "proper_template": "亜人の女王$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1370,9 +1383,9 @@
       },
       "translated": {
         "key": "亜人の女王マギ",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "マギ",
+        "full_template": "亜人の女王、$1",
+        "proper_template": "亜人の女王$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1392,9 +1405,9 @@
       },
       "translated": {
         "key": "亜人の女王マーゴ",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "マーゴ",
+        "full_template": "亜人の女王、$1",
+        "proper_template": "亜人の女王$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1414,9 +1427,9 @@
       },
       "translated": {
         "key": "亜人の女王マルガ",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "マルガ",
+        "full_template": "亜人の女王、$1",
+        "proper_template": "亜人の女王$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1436,9 +1449,8 @@
       },
       "translated": {
         "key": "亜人の剣聖、オンジ",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "オンジ",
+        "full_template": "亜人の剣聖、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1457,8 +1469,9 @@
       },
       "translated": {
         "key": "神獣獅子舞",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "神獣獅子舞",
+        "partial_template": "神獣$1",
+        "proper_template": "神獣獅子舞、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1469,7 +1482,7 @@
         },
         {
           "english_text": "Divine Beast Dancing Lion and Basilisks",
-          "text": "",
+          "text": "神獣獅子舞とバジリスク",
           "info": "1x in World Minibosses"
         }
       ]
@@ -1484,8 +1497,8 @@
       "translated": {
         "key": "竜のツリーガード",
         "full_name": "竜のツリーガード",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "ツリーガード",
+        "partial_template": "竜の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1496,12 +1509,12 @@
         },
         {
           "english_text": "Draconic Tree Sentinel Boss",
-          "text": "",
+          "text": "竜のツリーガード - ボス",
           "info": "1x in World Minibosses, part of Draconic Tree Sentinel"
         },
         {
           "english_text": "Basic Draconic Tree Sentinel",
-          "text": "",
+          "text": "竜のツリーガード - 通常敵",
           "info": "1x in Regular Enemies, part of Draconic Tree Sentinel"
         }
       ]
@@ -1515,7 +1528,8 @@
       "translated": {
         "key": "竜人兵",
         "full_name": "竜人兵",
-        "partial_template": ""
+        "partial_template": "竜人$1",
+        "proper_template": "竜人兵$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1526,12 +1540,12 @@
         },
         {
           "english_text": "Dragonkin Soldier Boss",
-          "text": "",
+          "text": "竜人兵 - ボス",
           "info": "2x in World Minibosses, part of Dragonkin Soldier"
         },
         {
           "english_text": "Basic Dragonkin Soldier",
-          "text": "",
+          "text": "竜人兵 - 通常敵",
           "info": "6x in Regular Enemies, part of Dragonkin Soldier"
         }
       ]
@@ -1544,8 +1558,9 @@
       },
       "translated": {
         "key": "ノクステラの竜人兵",
-        "full_name": "",
-        "full_template": ""
+        "full_name": "ノクステラの竜人兵",
+        "partial_name": "竜人兵",
+        "partial_template": "ノクステラの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1564,8 +1579,9 @@
       },
       "translated": {
         "key": "竜王プラキドサクス",
-        "proper_name": "",
-        "partial_template": ""
+        "proper_name": "プラキドサクス",
+        "full_template": "竜王、$1",
+        "proper_template": "竜王$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1584,8 +1600,8 @@
       },
       "translated": {
         "key": "落葉のダン",
-        "proper_name": "",
-        "partial_template": ""
+        "proper_name": "ダン",
+        "partial_template": "落葉の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1605,7 +1621,7 @@
       "translated": {
         "key": "エルデの獣",
         "full_name": "エルデの獣",
-        "partial_template": ""
+        "partial_template": "エルデの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1626,8 +1642,8 @@
       "translated": {
         "key": "黄金樹の化身",
         "full_name": "黄金樹の化身",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "化身",
+        "partial_template": "黄金樹の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1638,17 +1654,17 @@
         },
         {
           "english_text": "Erdtree Avatar Boss",
-          "text": "",
+          "text": "黄金樹の化身 - ボス",
           "info": "3x in World Minibosses, part of Erdtree Avatar"
         },
         {
           "english_text": "Erdtree Avatar Duo",
-          "text": "",
+          "text": "黄金樹の化身 x2",
           "info": "1x in World Minibosses, part of Erdtree Avatar"
         },
         {
           "english_text": "Basic Erdtree Avatar",
-          "text": "",
+          "text": "黄金樹の化身 - 通常敵",
           "info": "2x in Regular Enemies, part of Erdtree Avatar"
         }
       ]
@@ -1661,14 +1677,15 @@
       },
       "translated": {
         "key": "還樹の番犬：剣",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "還樹の番犬：剣",
+        "partial_name": "番犬：剣",
+        "partial_template": "還樹の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "All Erdtree Burial Watchdog Bosses",
-          "text": "",
+          "text": "還樹の番犬 - ボス(全種)",
           "info": "5x in Minor Bosses, part of Erdtree Burial Watchdog"
         },
         {
@@ -1678,27 +1695,27 @@
         },
         {
           "english_text": "Erdtree Burial Watchdog Duo",
-          "text": "",
+          "text": "還樹の番犬 x2",
           "info": "1x in Minor Bosses, part of Erdtree Burial Watchdog"
         },
         {
           "english_text": "Basic Erdtree Burial Watchdog",
-          "text": "",
+          "text": "還樹の番犬 - 通常敵",
           "info": "8x in Regular Enemies, part of Erdtree Burial Watchdog"
         },
         {
           "english_text": "Fire Erdtree Burial Watchdog Boss",
-          "text": "",
+          "text": "還樹の番犬：炎 - ボス",
           "info": "1x in Minor Bosses, part of Erdtree Burial Watchdog"
         },
         {
           "english_text": "Lightning Erdtree Burial Watchdog Boss",
-          "text": "",
+          "text": "還樹の番犬：雷撃 - ボス",
           "info": "1x in Minor Bosses, part of Erdtree Burial Watchdog"
         },
         {
           "english_text": "Scepter Erdtree Burial Watchdog Boss",
-          "text": "",
+          "text": "還樹の番犬：笏 - ボス",
           "info": "1x in Minor Bosses, part of Erdtree Burial Watchdog"
         }
       ]
@@ -1711,14 +1728,15 @@
       },
       "translated": {
         "key": "還樹の番犬",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "還樹の番犬",
+        "partial_name": "番犬",
+        "partial_template": "還樹の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Erdtree Burial Watchdog and Imps",
-          "text": "",
+          "text": "還樹の番犬とインプたち",
           "info": "1x in Minor Bosses, part of Erdtree Burial Watchdog"
         }
       ]
@@ -1731,8 +1749,9 @@
       },
       "translated": {
         "key": "還樹の番犬：笏",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "還樹の番犬：笏",
+        "partial_name": "番犬：笏",
+        "partial_template": "還樹の$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -1745,8 +1764,8 @@
       },
       "translated": {
         "key": "血の司祭、エスガー",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "エスガー",
+        "full_template": "血の司祭、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1766,23 +1785,23 @@
       "translated": {
         "key": "忌み双子",
         "full_name": "忌み双子",
-        "partial_template": ""
+        "partial_template": "忌み$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Fell Twin Duo",
-          "text": "",
+          "text": "忌み双子 x2",
           "info": "1x in Minor Bosses, part of Omen"
         },
         {
           "english_text": "Omen",
-          "text": "",
+          "text": "忌み子",
           "info": "33x in Regular Enemies + Minor Bosses"
         },
         {
           "english_text": "Basic Omen",
-          "text": "",
+          "text": "忌み子 - 通常敵",
           "info": "32x in Regular Enemies, part of Omen"
         }
       ]
@@ -1797,14 +1816,14 @@
       "translated": {
         "key": "フィアの英雄",
         "full_name": "フィアの英雄",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "英雄",
+        "partial_template": "フィアの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Fia's Champions",
-          "text": "",
+          "text": "フィアの英雄",
           "info": "1x in Major Bosses"
         }
       ]
@@ -1817,8 +1836,9 @@
       },
       "translated": {
         "key": "豪胆ライオネル",
-        "full_name": "",
-        "full_template": ""
+        "proper_name": "ライオネル",
+        "partial_template": "豪胆な$1",
+        "proper_template": "豪胆$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -1831,8 +1851,9 @@
       },
       "translated": {
         "key": "魔術師ロジェール",
-        "full_name": "",
-        "full_template": ""
+        "proper_name": "ロジェール",
+        "partial_template": "魔術師の$1",
+        "proper_template": "魔術師$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -1846,7 +1867,9 @@
       "translated": {
         "key": "火の巨人",
         "full_name": "火の巨人",
-        "partial_template": ""
+        "partial_name": "巨人",
+        "partial_template": "火の$1",
+        "proper_template": "火の巨人、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1857,12 +1880,12 @@
         },
         {
           "english_text": "Fire Giant 1",
-          "text": "",
+          "text": "火の巨人1",
           "info": "1x in Major Bosses, part of Fire Giant"
         },
         {
           "english_text": "Fire Giant 2",
-          "text": "",
+          "text": "火の巨人2",
           "info": "1x in Major Bosses, part of Fire Giant"
         }
       ]
@@ -1876,9 +1899,9 @@
       },
       "translated": {
         "key": "飛竜アギール",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "アギール",
+        "partial_template": "飛竜$1",
+        "proper_template": "飛竜$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1889,7 +1912,7 @@
         },
         {
           "english_text": "Flying Dragon",
-          "text": "",
+          "text": "飛竜",
           "info": "2x in Dragon Minibosses"
         }
       ]
@@ -1903,9 +1926,9 @@
       },
       "translated": {
         "key": "飛竜グレイル",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "グレイル",
+        "partial_template": "飛竜$1",
+        "proper_template": "飛竜$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1925,7 +1948,7 @@
       "translated": {
         "key": "霊炎竜",
         "full_name": "霊炎竜",
-        "partial_template": ""
+        "partial_template": "霊炎$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1936,12 +1959,12 @@
         },
         {
           "english_text": "Ghostflame Dragon and Skeletons",
-          "text": "",
+          "text": "霊炎竜とスケルトンたち",
           "info": "1x in Dragon Minibosses, part of Ghostflame Dragon"
         },
         {
           "english_text": "Ghostflame Dragon Boss",
-          "text": "",
+          "text": "霊炎竜 - ボス",
           "info": "2x in Dragon Minibosses, part of Ghostflame Dragon"
         }
       ]
@@ -1955,9 +1978,9 @@
       },
       "translated": {
         "key": "輝石竜アデューラ",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "アデューラ",
+        "full_template": "輝石竜、$1",
+        "proper_template": "輝石竜$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -1968,12 +1991,12 @@
         },
         {
           "english_text": "Glintstone Dragon",
-          "text": "",
+          "text": "輝石竜",
           "info": "5x in Regular Enemies + Dragon Minibosses"
         },
         {
           "english_text": "Basic Glintstone Dragon",
-          "text": "",
+          "text": "輝石竜 - 通常敵",
           "info": "3x in Regular Enemies, part of Glintstone Dragon"
         }
       ]
@@ -1987,9 +2010,9 @@
       },
       "translated": {
         "key": "輝石竜スマラグ",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "スマラグ",
+        "full_template": "輝石竜、$1",
+        "proper_template": "輝石竜$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2009,9 +2032,9 @@
       },
       "translated": {
         "key": "神喰らいの大蛇",
-        "full_name": "",
-        "partial_template": "",
-        "source_template": ""
+        "full_name": "大蛇",
+        "partial_template": "神喰らいの$1",
+        "source_template": "$1喰らいの大蛇"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2030,8 +2053,8 @@
       },
       "translated": {
         "key": "接ぎ木のゴドフロア",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ゴドフロア",
+        "partial_template": "接ぎ木の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2050,8 +2073,8 @@
       },
       "translated": {
         "key": "接ぎ木のゴドリック",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ゴドリック",
+        "partial_template": "接ぎ木の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2072,8 +2095,8 @@
       "translated": {
         "key": "神肌の使徒",
         "full_name": "神肌の使徒",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "使徒",
+        "full_template": "神肌の使徒、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2094,8 +2117,8 @@
       "translated": {
         "key": "神肌のふたり",
         "full_name": "神肌のふたり",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "ふたり",
+        "partial_template": "神肌の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2116,8 +2139,8 @@
       "translated": {
         "key": "神肌の貴種",
         "full_name": "神肌の貴種",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "貴種",
+        "full_template": "神肌の貴種、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2128,12 +2151,12 @@
         },
         {
           "english_text": "Godskin Noble Boss",
-          "text": "",
+          "text": "神肌の貴種 - ボス",
           "info": "1x in Major Bosses, part of Godskin Noble"
         },
         {
           "english_text": "Basic Godskin Noble",
-          "text": "",
+          "text": "神肌の貴種 - 通常敵",
           "info": "1x in Regular Enemies, part of Godskin Noble"
         }
       ]
@@ -2148,8 +2171,8 @@
       "translated": {
         "key": "黄金カバ",
         "full_name": "黄金カバ",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "カバ",
+        "partial_template": "黄金$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2168,8 +2191,8 @@
       },
       "translated": {
         "key": "最初の王、ゴッドフレイ",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ゴッドフレイ",
+        "full_template": "最初の王、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2180,12 +2203,12 @@
         },
         {
           "english_text": "Godfrey",
-          "text": "",
+          "text": "ゴッドフレイ",
           "info": "2x in Major Bosses"
         },
         {
           "english_text": "Goldfrey, First Elden Lord",
-          "text": "",
+          "text": "最初の王、ゴッドフレイ\\(霊体\\)",
           "info": "1x in Major Bosses, part of Godfrey"
         }
       ]
@@ -2200,8 +2223,8 @@
       "translated": {
         "key": "接ぎ木の貴公子",
         "full_name": "接ぎ木の貴公子",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "貴公子",
+        "partial_template": "接ぎ木の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2212,12 +2235,12 @@
         },
         {
           "english_text": "Grafted Scion Boss",
-          "text": "",
+          "text": "接ぎ木の貴公子 - ボス",
           "info": "1x in Minor Bosses, part of Grafted Scion"
         },
         {
           "english_text": "Basic Grafted Scion",
-          "text": "",
+          "text": "接ぎ木の貴公子 - 通常敵",
           "info": "5x in Regular Enemies, part of Grafted Scion"
         }
       ]
@@ -2230,8 +2253,9 @@
       },
       "translated": {
         "key": "墓守闘士",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "墓守闘士",
+        "partial_name": "闘士",
+        "partial_template": "墓守$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2242,17 +2266,17 @@
         },
         {
           "english_text": "Grave Warden Duelist Boss",
-          "text": "",
+          "text": "墓守闘士 - ボス",
           "info": "2x in Minor Bosses, part of Grave Warden Duelist"
         },
         {
           "english_text": "Basic Grave Warden Duelist",
-          "text": "",
+          "text": "墓守闘士 - 通常敵",
           "info": "4x in Regular Enemies, part of Grave Warden Duelist"
         },
         {
           "english_text": "All Grave Warden Duelist Bosses",
-          "text": "",
+          "text": "墓守闘士 - ボス(全種)",
           "info": "4x in Minor Bosses, part of Grave Warden Duelist"
         }
       ]
@@ -2265,8 +2289,9 @@
       },
       "translated": {
         "key": "狂った闘士",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "狂った闘士",
+        "partial_name": "闘士",
+        "partial_template": "狂った$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2285,8 +2310,9 @@
       },
       "translated": {
         "key": "腐敗した墓守闘士",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "腐敗した墓守闘士",
+        "partial_name": "闘士",
+        "partial_template": "腐敗した墓守$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2307,8 +2333,8 @@
       "translated": {
         "key": "ガーディアン・ゴーレム",
         "full_name": "ガーディアン・ゴーレム",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "ゴーレム",
+        "partial_template": "ガーディアン・$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2319,12 +2345,12 @@
         },
         {
           "english_text": "Guardian Golem Boss",
-          "text": "",
+          "text": "ガーディアン・ゴーレム - ボス",
           "info": "1x in Minor Bosses, part of Guardian Golem"
         },
         {
           "english_text": "Basic Guardian Golem",
-          "text": "",
+          "text": "ガーディアン・ゴーレム - 通常敵",
           "info": "25x in Regular Enemies, part of Guardian Golem"
         }
       ]
@@ -2337,8 +2363,8 @@
       },
       "translated": {
         "key": "戦士、ホーラ・ルー",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ホーラ・ルー",
+        "full_template": "戦士、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2359,8 +2385,8 @@
       "translated": {
         "key": "ギザ山の飛竜",
         "full_name": "ギザ山の飛竜",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "飛竜",
+        "partial_template": "ギザ山の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2371,12 +2397,12 @@
         },
         {
           "english_text": "Jagged Peak Drake Boss",
-          "text": "",
+          "text": "ギザ山の飛竜 - ボス",
           "info": "2x in Dragon Minibosses, part of Jagged Peak Drake"
         },
         {
           "english_text": "Basic Jagged Peak Drake",
-          "text": "",
+          "text": "ギザ山の飛竜 - 通常敵",
           "info": "1x in Regular Enemies, part of Jagged Peak Drake"
         }
       ]
@@ -2389,8 +2415,8 @@
       },
       "translated": {
         "key": "責問の古老、イオリ",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "イオリ",
+        "full_template": "責問の古老、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2410,7 +2436,8 @@
       "translated": {
         "key": "腐敗の眷属",
         "full_name": "腐敗の眷属",
-        "full_template": ""
+        "partial_name": "眷属",
+        "full_template": "腐敗の眷属、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2421,12 +2448,12 @@
         },
         {
           "english_text": "Kindred of Rot Duo",
-          "text": "",
+          "text": "腐敗の眷属 x2",
           "info": "1x in Minor Bosses, part of Kindred of Rot"
         },
         {
           "english_text": "Basic Kindred of Rot",
-          "text": "",
+          "text": "腐敗の眷属 - 通常敵",
           "info": "76x in Regular Enemies, part of Kindred of Rot"
         }
       ]
@@ -2439,8 +2466,8 @@
       },
       "translated": {
         "key": "孤牢の騎士",
-        "full_name": "",
-        "full_template": ""
+        "full_name": "孤牢の騎士",
+        "partial_template": "孤牢の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2460,7 +2487,7 @@
       "translated": {
         "key": "嘆き人",
         "full_name": "嘆き人",
-        "partial_template": ""
+        "partial_template": "嘆き$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2481,8 +2508,8 @@
       "translated": {
         "key": "獅子の混種",
         "full_name": "獅子の混種",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "混種",
+        "partial_template": "獅子の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2493,12 +2520,12 @@
         },
         {
           "english_text": "Leonine Misbegotten Boss",
-          "text": "",
+          "text": "獅子の混種 - ボス",
           "info": "1x in Major Bosses, part of Leonine Misbegotten"
         },
         {
           "english_text": "Basic Leonine Misbegotten",
-          "text": "",
+          "text": "獅子の混種 - 通常敵",
           "info": "5x in Regular Enemies, part of Leonine Misbegotten"
         }
       ]
@@ -2513,8 +2540,8 @@
       "translated": {
         "key": "混種の聖騎士",
         "full_name": "混種の聖騎士",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "聖騎士",
+        "partial_template": "混種の聖$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2535,14 +2562,14 @@
       "translated": {
         "key": "混種の戦士",
         "full_name": "混種の戦士",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "混種",
+        "partial_template": "混種の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Misbegotten Perfumer Duo",
-          "text": "",
+          "text": "混種と調香師",
           "info": "1x in Minor Bosses, part of Leonine Misbegotten"
         }
       ]
@@ -2555,8 +2582,9 @@
       },
       "translated": {
         "key": "調香師トリシャ",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "トリシャ",
+        "partial_template": "調香師、$1",
+        "proper_template": "調香師$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -2569,8 +2597,8 @@
       },
       "translated": {
         "key": "死竜フォルサクス",
-        "proper_name": "",
-        "partial_template": ""
+        "proper_name": "フォルサクス",
+        "partial_template": "死竜$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2589,8 +2617,9 @@
       },
       "translated": {
         "key": "聖樹の騎士、ローレッタ",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ローレッタ",
+        "partial_template": "聖樹の$1",
+        "proper_template": "聖樹の騎士、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2601,7 +2630,7 @@
         },
         {
           "english_text": "Loretta",
-          "text": "",
+          "text": "ローレッタ",
           "info": "2x in Major Bosses"
         }
       ]
@@ -2615,9 +2644,9 @@
       },
       "translated": {
         "key": "親衛騎士ローレッタ",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "ローレッタ",
+        "full_template": "親衛騎士、$1",
+        "proper_template": "親衛騎士$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2638,8 +2667,8 @@
       "translated": {
         "key": "かぼちゃ兜の狂兵",
         "full_name": "かぼちゃ兜の狂兵",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "狂兵",
+        "partial_template": "かぼちゃ兜の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2650,12 +2679,12 @@
         },
         {
           "english_text": "Mad Pumpkin Head Boss",
-          "text": "",
+          "text": "かぼちゃ兜の狂兵 - ボス",
           "info": "1x in Minor Bosses, part of Mad Pumpkin Head"
         },
         {
           "english_text": "Basic Mad Pumpkin Head",
-          "text": "",
+          "text": "かぼちゃ兜の狂兵 - 通常敵",
           "info": "12x in Regular Enemies, part of Mad Pumpkin Head"
         }
       ]
@@ -2670,8 +2699,8 @@
       "translated": {
         "key": "かぼちゃ兜の狂兵：フレイル",
         "full_name": "かぼちゃ兜の狂兵：フレイル",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "狂兵：フレイル",
+        "partial_template": "かぼちゃ兜の$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -2686,14 +2715,14 @@
       "translated": {
         "key": "かぼちゃ兜の狂兵：ハンマー",
         "full_name": "かぼちゃ兜の狂兵：ハンマー",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "狂兵：ハンマー",
+        "partial_template": "かぼちゃ兜の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Mad Pumpkin Head Duo",
-          "text": "",
+          "text": "かぼちゃ兜の狂兵 x2",
           "info": "1x in Minor Bosses, part of Mad Pumpkin Head"
         }
       ]
@@ -2709,9 +2738,9 @@
       "translated": {
         "key": "溶岩土竜",
         "full_name": "溶岩土竜",
-        "partial_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "partial_name": "土竜",
+        "partial_template": "溶岩$1",
+        "proper_template": "溶岩土竜、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2722,12 +2751,12 @@
         },
         {
           "english_text": "Magma Wyrm Boss",
-          "text": "",
+          "text": "溶岩土竜 - ボス",
           "info": "2x in Minor Bosses + World Minibosses, part of Magma Wyrm"
         },
         {
           "english_text": "Basic Magma Wyrm",
-          "text": "",
+          "text": "溶岩土竜 - 通常敵",
           "info": "2x in Regular Enemies, part of Magma Wyrm"
         }
       ]
@@ -2740,8 +2769,8 @@
       },
       "translated": {
         "key": "大土竜、テオドリックス",
-        "proper_name": "",
-        "partial_template": ""
+        "proper_name": "テオドリックス",
+        "full_template": "大土竜、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2761,9 +2790,8 @@
       },
       "translated": {
         "key": "溶岩土竜、マカール",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "マカール",
+        "full_template": "溶岩土竜、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2782,8 +2810,9 @@
       },
       "translated": {
         "key": "ミケラの刃、マレニア",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "マレニア",
+        "full_template": "ミケラの刃、$1",
+        "proper_template": "ミケラの刃、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2802,8 +2831,8 @@
       },
       "translated": {
         "key": "黒き剣のマリケス",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "マリケス",
+        "partial_template": "黒き剣の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2822,8 +2851,8 @@
       },
       "translated": {
         "key": "串刺し公、メスメル",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "メスメル",
+        "full_template": "串刺し公、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2834,7 +2863,7 @@
         },
         {
           "english_text": "Messmer",
-          "text": "",
+          "text": "メスメル",
           "info": "2x in Major Bosses"
         }
       ]
@@ -2847,8 +2876,8 @@
       },
       "translated": {
         "key": "邪な蛇、メスメル",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "メスメル",
+        "full_template": "邪な蛇、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2867,8 +2896,8 @@
       },
       "translated": {
         "key": "指の母、メーテール",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "メーテール",
+        "full_template": "指の母、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2887,8 +2916,8 @@
       },
       "translated": {
         "key": "狂い火の王、ミドラー",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ミドラー",
+        "full_template": "狂い火の王、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2908,7 +2937,8 @@
       "translated": {
         "key": "写し身の雫",
         "full_name": "写し身の雫",
-        "partial_template": ""
+        "partial_name": "雫",
+        "partial_template": "写し身の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2927,8 +2957,9 @@
       },
       "translated": {
         "key": "ミランダフラワー",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ミランダ",
+        "partial_template": "ミランダ$1",
+        "proper_template": "$1フラワー"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2939,12 +2970,12 @@
         },
         {
           "english_text": "Miranda Blossom and Sprouts",
-          "text": "",
+          "text": "ミランダフラワーと小ミランダたち",
           "info": "1x in Minor Bosses, part of Miranda Blossom"
         },
         {
           "english_text": "Basic Miranda Blossom",
-          "text": "",
+          "text": "ミランダフラワー - 通常敵",
           "info": "62x in Regular Enemies, part of Miranda Blossom"
         }
       ]
@@ -2957,14 +2988,14 @@
       },
       "translated": {
         "key": "病み花、ミランダ",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ミランダ",
+        "full_template": "病み花、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Miranda Omenkiller Duo",
-          "text": "",
+          "text": "ミランダフラワーと忌み潰し",
           "info": "1x in Minor Bosses, part of Miranda Blossom"
         }
       ]
@@ -2977,8 +3008,8 @@
       },
       "translated": {
         "key": "忌み子、モーグ",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "モーグ",
+        "full_template": "忌み子、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -2989,7 +3020,7 @@
         },
         {
           "english_text": "Mohg",
-          "text": "",
+          "text": "モーグ",
           "info": "2x in Major Bosses"
         }
       ]
@@ -3002,8 +3033,8 @@
       },
       "translated": {
         "key": "血の君主、モーグ",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "モーグ",
+        "full_template": "血の君主、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3022,8 +3053,8 @@
       },
       "translated": {
         "key": "忌み王、モーゴット",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "モーゴット",
+        "full_template": "忌み王、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3034,12 +3065,12 @@
         },
         {
           "english_text": "Capital Outskirts Margit",
-          "text": "",
+          "text": "王都外廓のマルギット",
           "info": "1x in Regular Enemies, part of Morgott"
         },
         {
           "english_text": "Morgott",
-          "text": "",
+          "text": "モーゴット",
           "info": "3x in Major Bosses + Regular Enemies"
         }
       ]
@@ -3052,8 +3083,8 @@
       },
       "translated": {
         "key": "忌み鬼、マルギット",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "マルギット",
+        "full_template": "忌み鬼、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3072,8 +3103,8 @@
       },
       "translated": {
         "key": "死術師ガレス",
-        "proper_name": "",
-        "partial_template": ""
+        "proper_name": "ガレス",
+        "partial_template": "死術師$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3094,8 +3125,8 @@
       "translated": {
         "key": "夜の騎兵",
         "full_name": "夜の騎兵",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "騎兵",
+        "partial_template": "夜の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3116,8 +3147,8 @@
       "translated": {
         "key": "夜の騎兵：フレイル",
         "full_name": "夜の騎兵：フレイル",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "騎兵",
+        "partial_template": "夜の$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -3132,8 +3163,8 @@
       "translated": {
         "key": "夜の騎兵：グレイブ",
         "full_name": "夜の騎兵：グレイブ",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "騎兵",
+        "partial_template": "夜の$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -3148,29 +3179,29 @@
       "translated": {
         "key": "ノクスの僧",
         "full_name": "ノクスの僧",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "僧",
+        "partial_template": "ノクスの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Ant-Riding Nox Swordstress",
-          "text": "",
+          "text": "ノクスの蟻剣士",
           "info": "5x in Regular Enemies, part of Nox Fighter"
         },
         {
           "english_text": "Nox Duo",
-          "text": "",
+          "text": "ノクスの僧",
           "info": "1x in Minor Bosses, part of Nox Fighter"
         },
         {
           "english_text": "Nox Fighter",
-          "text": "",
+          "text": "ノクスの戦士",
           "info": "19x in Regular Enemies + Minor Bosses"
         },
         {
           "english_text": "Basic Nox Fighter",
-          "text": "",
+          "text": "ノクスの戦士 - 通常敵",
           "info": "18x in Regular Enemies, part of Nox Fighter"
         }
       ]
@@ -3185,8 +3216,8 @@
       "translated": {
         "key": "ノクスの剣士",
         "full_name": "ノクスの剣士",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "剣士",
+        "partial_template": "ノクスの$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -3200,7 +3231,7 @@
       "translated": {
         "key": "忌み潰し",
         "full_name": "忌み潰し",
-        "partial_template": ""
+        "full_template": "忌み潰し、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3211,12 +3242,12 @@
         },
         {
           "english_text": "Omenkiller Boss",
-          "text": "",
+          "text": "忌み潰し - ボス",
           "info": "1x in World Minibosses, part of Omenkiller"
         },
         {
           "english_text": "Basic Omenkiller",
-          "text": "",
+          "text": "忌み潰し - 通常敵",
           "info": "7x in Regular Enemies, part of Omenkiller"
         }
       ]
@@ -3230,7 +3261,7 @@
       "translated": {
         "key": "石肌の黒王",
         "full_name": "石肌の黒王",
-        "partial_template": ""
+        "partial_template": "石肌の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3241,12 +3272,12 @@
         },
         {
           "english_text": "Onyx Lord Boss",
-          "text": "",
+          "text": "石肌の黒王 - ボス",
           "info": "2x in Minor Bosses + Evergaol Minibosses, part of Onyx Lord"
         },
         {
           "english_text": "Basic Onyx Lord",
-          "text": "",
+          "text": "石肌の黒王 - 通常敵",
           "info": "6x in Regular Enemies, part of Onyx Lord"
         }
       ]
@@ -3259,8 +3290,8 @@
       },
       "translated": {
         "key": "パッチ",
-        "proper_name": "",
-        "partial_template": ""
+        "proper_name": "パッチ",
+        "partial_template": "フーテンの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3279,8 +3310,8 @@
       },
       "translated": {
         "key": "約束の王、ラダーン",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ラダーン",
+        "full_template": "約束の王、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3300,7 +3331,7 @@
       "translated": {
         "key": "泥濘の騎士",
         "full_name": "泥濘の騎士",
-        "partial_template": ""
+        "partial_template": "泥濘の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3321,8 +3352,7 @@
       "translated": {
         "key": "腐敗した化身",
         "full_name": "腐敗した化身",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_template": "腐敗した$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3333,12 +3363,12 @@
         },
         {
           "english_text": "Putrid Avatar Boss",
-          "text": "",
+          "text": "腐敗した化身 - ボス",
           "info": "3x in World Minibosses, part of Putrid Avatar"
         },
         {
           "english_text": "Basic Putrid Avatar",
-          "text": "",
+          "text": "腐敗した化身 - 通常敵",
           "info": "2x in Regular Enemies, part of Putrid Avatar"
         }
       ]
@@ -3351,8 +3381,8 @@
       },
       "translated": {
         "key": "黄金律、ラダゴン",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ラダゴン",
+        "full_template": "黄金律、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3371,8 +3401,8 @@
       },
       "translated": {
         "key": "ミケラの王、ラダーン",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ラダーン",
+        "full_template": "ミケラの王、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3393,8 +3423,7 @@
       "translated": {
         "key": "羅刹",
         "full_name": "羅刹",
-        "partial_template": "",
-        "proper_template": ""
+        "full_template": "羅刹、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3413,8 +3442,9 @@
       },
       "translated": {
         "key": "大赤熊ラルバ",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ラルバ",
+        "full_template": "大赤熊、$1",
+        "proper_template": "大赤熊$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3425,7 +3455,7 @@
         },
         {
           "english_text": "Great Red Bear",
-          "text": "",
+          "text": "大赤熊",
           "info": "2x in World Minibosses"
         }
       ]
@@ -3438,8 +3468,9 @@
       },
       "translated": {
         "key": "大赤熊ルガリア",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ルガリア",
+        "full_template": "大赤熊、$1",
+        "proper_template": "大赤熊$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3459,7 +3490,8 @@
       "translated": {
         "key": "赤熊",
         "full_name": "赤熊",
-        "partial_template": ""
+        "partial_template": "赤熊の$1",
+        "proper_template": "赤熊$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3478,8 +3510,9 @@
       },
       "translated": {
         "key": "ラダゴンの赤狼",
-        "full_name": "",
-        "full_template": ""
+        "full_name": "ラダゴンの赤狼",
+        "partial_name": "赤狼",
+        "partial_template": "ラダゴンの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3490,12 +3523,12 @@
         },
         {
           "english_text": "Red Wolf",
-          "text": "",
+          "text": "赤狼",
           "info": "6x in Regular Enemies + Major Bosses + Minor Bosses"
         },
         {
           "english_text": "Basic Red Wolf",
-          "text": "",
+          "text": "赤狼 - 通常敵",
           "info": "4x in Regular Enemies, part of Red Wolf"
         }
       ]
@@ -3508,8 +3541,9 @@
       },
       "translated": {
         "key": "英雄の赤狼",
-        "full_name": "",
-        "full_template": ""
+        "full_name": "英雄の赤狼",
+        "partial_name": "赤狼",
+        "full_template": "英雄の赤狼、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3528,8 +3562,8 @@
       },
       "translated": {
         "key": "祖霊の王",
-        "full_name": "",
-        "full_template": ""
+        "full_name": "祖霊の王",
+        "full_template": "祖霊の王、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3549,7 +3583,8 @@
       "translated": {
         "key": "降る星の獣",
         "full_name": "降る星の獣",
-        "partial_template": ""
+        "partial_name": "獣",
+        "partial_template": "降る星の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3560,7 +3595,7 @@
         },
         {
           "english_text": "Regular Fallingstar Beast",
-          "text": "",
+          "text": "降る星の獣 (通常)",
           "info": "3x in Minor Bosses + World Minibosses, part of Fallingstar Beast"
         }
       ]
@@ -3573,8 +3608,9 @@
       },
       "translated": {
         "key": "降る星の成獣",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "降る星の成獣",
+        "partial_name": "成獣",
+        "partial_template": "$1の成獣"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3593,8 +3629,8 @@
       },
       "translated": {
         "key": "双月の騎士、レラーナ",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "レラーナ",
+        "full_template": "双月の騎士、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3613,24 +3649,24 @@
       },
       "translated": {
         "key": "満月の女王、レナラ",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "レナラ",
+        "full_template": "満月の女王、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Rennala",
-          "text": "",
+          "text": "レナラ",
           "info": "2x in Major Bosses"
         },
         {
           "english_text": "Rennala 1",
-          "text": "",
+          "text": "レナラ1",
           "info": "1x in Major Bosses, part of Rennala"
         },
         {
           "english_text": "Rennala 2",
-          "text": "",
+          "text": "レナラ2",
           "info": "1x in Major Bosses, part of Rennala"
         }
       ]
@@ -3643,8 +3679,8 @@
       },
       "translated": {
         "key": "蕾の聖女、ロミナ",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ロミナ",
+        "full_template": "蕾の聖女、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3664,9 +3700,9 @@
       },
       "translated": {
         "key": "円卓の騎士、ヴァイク",
-        "proper_name": "",
-        "partial_template": "",
-        "proper_template": ""
+        "proper_name": "ヴァイク",
+        "partial_template": "円卓の$1",
+        "proper_template": "円卓の騎士、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3687,8 +3723,8 @@
       "translated": {
         "key": "王族の幽鬼",
         "full_name": "王族の幽鬼",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "幽鬼",
+        "partial_template": "王族の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3699,12 +3735,12 @@
         },
         {
           "english_text": "Royal Revenant Boss",
-          "text": "",
+          "text": "王族の幽鬼 - ボス",
           "info": "1x in Minor Bosses, part of Royal Revenant"
         },
         {
           "english_text": "Basic Royal Revenant",
-          "text": "",
+          "text": "王族の幽鬼 - 通常敵",
           "info": "15x in Regular Enemies, part of Royal Revenant"
         }
       ]
@@ -3717,8 +3753,8 @@
       },
       "translated": {
         "key": "ルーンベア",
-        "full_name": "ルーンベア",
-        "full_template": ""
+        "proper_name": "ルーンベア",
+        "partial_template": "ルーン$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3729,12 +3765,12 @@
         },
         {
           "english_text": "Runebear Boss",
-          "text": "",
+          "text": "ルーンベア - ボス",
           "info": "1x in Minor Bosses, part of Runebear"
         },
         {
           "english_text": "Basic Runebear",
-          "text": "",
+          "text": "ルーンベア - 通常敵",
           "info": "31x in Regular Enemies, part of Runebear"
         }
       ]
@@ -3747,8 +3783,8 @@
       },
       "translated": {
         "key": "冒涜の君主、ライカード",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ライカード",
+        "full_template": "冒涜の君主、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3769,8 +3805,8 @@
       "translated": {
         "key": "血の貴族",
         "full_name": "血の貴族",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "貴族",
+        "partial_template": "血の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3781,12 +3817,12 @@
         },
         {
           "english_text": "Sanguine Noble Boss",
-          "text": "",
+          "text": "血の貴族 - ボス",
           "info": "1x in Minor Bosses, part of Sanguine Noble"
         },
         {
           "english_text": "Basic Sanguine Noble",
-          "text": "",
+          "text": "血の貴族 - 通常敵",
           "info": "7x in Regular Enemies, part of Sanguine Noble"
         }
       ]
@@ -3801,8 +3837,8 @@
       "translated": {
         "key": "影樹の化身",
         "full_name": "影樹の化身",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "化身",
+        "partial_template": "影樹の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3823,8 +3859,8 @@
       "translated": {
         "key": "ウロコの混種",
         "full_name": "ウロコの混種",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "混種",
+        "partial_template": "ウロコの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3835,12 +3871,12 @@
         },
         {
           "english_text": "Scaly Misbegotten Boss",
-          "text": "",
+          "text": "ウロコの混種 - ボス",
           "info": "1x in Minor Bosses, part of Scaly Misbegotten"
         },
         {
           "english_text": "Basic Scaly Misbegotten",
-          "text": "",
+          "text": "ウロコの混種 - 通常敵",
           "info": "24x in Regular Enemies, part of Scaly Misbegotten"
         }
       ]
@@ -3853,8 +3889,8 @@
       },
       "translated": {
         "key": "百智卿、ギデオン＝オーフニール",
-        "proper_name": "",
-        "full_template": ""
+        "proper_name": "ギデオン＝オーフニール",
+        "full_template": "百智卿、$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3873,8 +3909,9 @@
       },
       "translated": {
         "key": "ゴドリックの軍兵",
-        "proper_name": "",
-        "full_template": ""
+        "full_name": "ゴドリックの軍兵",
+        "partial_name": "軍兵",
+        "partial_template": "ゴドリックの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3885,12 +3922,12 @@
         },
         {
           "english_text": "Godrick Soldier",
-          "text": "",
+          "text": "ゴドリック兵",
           "info": "81x in Regular Enemies + Minor Bosses"
         },
         {
           "english_text": "Basic Godrick Soldier",
-          "text": "",
+          "text": "ゴドリック兵 - 通常敵",
           "info": "80x in Regular Enemies, part of Godrick Soldier"
         }
       ]
@@ -3903,8 +3940,8 @@
       },
       "translated": {
         "key": "星砕きのラダーン",
-        "proper_name": "",
-        "partial_template": ""
+        "proper_name": "ラダーン",
+        "partial_template": "星砕きの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3925,8 +3962,8 @@
       "translated": {
         "key": "石掘りトロル",
         "full_name": "石掘りトロル",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "トロル",
+        "partial_template": "石掘り$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3945,8 +3982,9 @@
       },
       "translated": {
         "key": "はぐれ写し身",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "はぐれ写し身",
+        "partial_name": "写し身",
+        "partial_template": "はぐれ$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3967,8 +4005,8 @@
       "translated": {
         "key": "ティビアの呼び舟",
         "full_name": "ティビアの呼び舟",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "呼び舟",
+        "partial_template": "ティビアの$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -3979,12 +4017,12 @@
         },
         {
           "english_text": "Tibia Mariner Boss",
-          "text": "",
+          "text": "ティビアの呼び舟 - ボス",
           "info": "3x in World Minibosses, part of Tibia Mariner"
         },
         {
           "english_text": "Basic Tibia Mariner",
-          "text": "",
+          "text": "ティビアの呼び舟 - 通常敵",
           "info": "2x in Regular Enemies, part of Tibia Mariner"
         }
       ]
@@ -3998,7 +4036,7 @@
       "translated": {
         "key": "ツリーガード",
         "full_name": "ツリーガード",
-        "full_template": ""
+        "partial_template": "ツリー$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -4018,7 +4056,7 @@
       "translated": {
         "key": "死の騎士",
         "full_name": "死の騎士",
-        "partial_template": ""
+        "partial_template": "死の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -4029,12 +4067,12 @@
         },
         {
           "english_text": "Longhaft Death Knight",
-          "text": "",
+          "text": "死の騎士：長柄鉈",
           "info": "1x in Minor Bosses, part of Death Knight"
         },
         {
           "english_text": "Twin Axe Death Knight",
-          "text": "",
+          "text": "死の騎士：双斧",
           "info": "1x in Minor Bosses, part of Death Knight"
         }
       ]
@@ -4047,8 +4085,9 @@
       },
       "translated": {
         "key": "爛れた樹霊",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "爛れた樹霊",
+        "partial_name": "樹霊",
+        "partial_template": "爛れた$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -4059,12 +4098,12 @@
         },
         {
           "english_text": "Ulcerated Tree Spirit Boss",
-          "text": "",
+          "text": "爛れた樹霊 - ボス",
           "info": "3x in Minor Bosses + World Minibosses, part of Ulcerated Tree Spirit"
         },
         {
           "english_text": "Basic Ulcerated Tree Spirit",
-          "text": "",
+          "text": "爛れた樹霊 - 通常敵",
           "info": "12x in Regular Enemies, part of Ulcerated Tree Spirit"
         }
       ]
@@ -4077,14 +4116,15 @@
       },
       "translated": {
         "key": "腐敗した樹霊",
-        "full_name": "",
-        "partial_template": ""
+        "full_name": "腐敗した樹霊",
+        "partial_name": "樹霊",
+        "partial_template": "腐敗した$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Putrid Tree Spirit Boss",
-          "text": "",
+          "text": "腐敗した樹霊 - ボス",
           "info": "1x in Minor Bosses, part of Ulcerated Tree Spirit"
         }
       ]
@@ -4099,24 +4139,24 @@
       "translated": {
         "key": "英雄のガーゴイル",
         "full_name": "英雄のガーゴイル",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "ガーゴイル",
+        "partial_template": "英雄の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
         {
           "english_text": "Valiant Gargoyles",
-          "text": "",
+          "text": "英雄のガーゴイルたち",
           "info": "1x in Major Bosses, part of Gargoyle"
         },
         {
           "english_text": "Gargoyle",
-          "text": "",
+          "text": "ガーゴイル",
           "info": "16x in Regular Enemies + Major Bosses + World Minibosses"
         },
         {
           "english_text": "Basic Gargoyle",
-          "text": "",
+          "text": "ガーゴイル - 通常敵",
           "info": "13x in Regular Enemies, part of Gargoyle"
         }
       ]
@@ -4131,8 +4171,8 @@
       "translated": {
         "key": "黒き剣の眷属",
         "full_name": "黒き剣の眷属",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "眷属",
+        "partial_template": "黒き剣の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -4153,8 +4193,8 @@
       "translated": {
         "key": "英雄のガーゴイル：両刃剣",
         "full_name": "英雄のガーゴイル：両刃剣",
-        "partial_name": "",
-        "partial_template": ""
+        "partial_name": "ガーゴイル：両刃剣",
+        "partial_template": "英雄の$1"
       },
       "other_translated": [],
       "enemy_config_names": []
@@ -4168,7 +4208,7 @@
       "translated": {
         "key": "ミミズ顔",
         "full_name": "ミミズ顔",
-        "full_template": ""
+        "partial_template": "ミミズ顔の$1"
       },
       "other_translated": [],
       "enemy_config_names": [
@@ -4179,952 +4219,965 @@
         },
         {
           "english_text": "Wormface Boss",
-          "text": "",
+          "text": "ミミズ顔 - ボス",
           "info": "1x in World Minibosses, part of Wormfaces"
         },
         {
           "english_text": "Wormfaces",
-          "text": "",
+          "text": "全てのミミズ顔",
           "info": "48x in World Minibosses + Regular Enemies"
         },
         {
           "english_text": "Large Wormface",
-          "text": "",
+          "text": "ミミズ顔(大)",
           "info": "3x in Regular Enemies + World Minibosses, part of Wormfaces"
         },
         {
           "english_text": "Basic Large Wormface",
-          "text": "",
+          "text": "ミミズ顔(大) - 通常敵",
           "info": "2x in Regular Enemies, part of Wormfaces"
         }
       ]
     }
   ],
-  "special_replacements": [],
+  "special_replacements": [
+    {
+      "old": "結晶結晶人：輪刃",
+      "new": "腐敗した結晶人：輪刃"
+    },
+    {
+      "old": "結晶結晶人：槍",
+      "new": "腐敗した結晶人：槍"
+    },
+    {
+      "old": "結晶結晶人：杖",
+      "new": "腐敗した結晶人：杖"
+    }
+  ],
   "enemy_config_names": [
     {
       "english_text": "Aging Untouchable",
-      "text": "",
+      "text": "触れ得ざる翁",
       "info": "6x in Regular Enemies"
     },
     {
       "english_text": "Albinauric",
-      "text": "",
+      "text": "しろがね人",
       "info": "169x in Regular Enemies"
     },
     {
       "english_text": "Albinauric Archer",
-      "text": "",
+      "text": "しろがねの射手",
       "info": "22x in Regular Enemies"
     },
     {
       "english_text": "Ancestral Follower",
-      "text": "",
+      "text": "祖霊の民",
       "info": "89x in Regular Enemies"
     },
     {
       "english_text": "Ancestral Follower Shaman",
-      "text": "",
+      "text": "祖霊の民の祭司",
       "info": "6x in Regular Enemies"
     },
     {
       "english_text": "Avionette Soldier",
-      "text": "",
+      "text": "鳥人形兵",
       "info": "34x in Regular Enemies"
     },
     {
       "english_text": "Banished Knight",
-      "text": "",
+      "text": "失地騎士",
       "info": "31x in Regular Enemies"
     },
     {
       "english_text": "Basilisk",
-      "text": "",
+      "text": "バジリスク",
       "info": "140x in Regular Enemies"
     },
     {
       "english_text": "Bear",
-      "text": "",
+      "text": "熊",
       "info": "59x in Regular Enemies"
     },
     {
       "english_text": "Blackflame Monk",
-      "text": "",
+      "text": "黒炎僧兵",
       "info": "3x in Regular Enemies"
     },
     {
       "english_text": "Bloodbane Giant Crow",
-      "text": "",
+      "text": "血病の著大鴉",
       "info": "4x in Regular Enemies"
     },
     {
       "english_text": "Bloodfiend",
-      "text": "",
+      "text": "血鬼",
       "info": "94x in Regular Enemies"
     },
     {
       "english_text": "Boar",
-      "text": "",
+      "text": "猪",
       "info": "147x in Passive Wildlife"
     },
     {
       "english_text": "Catacombs Sorcerer",
-      "text": "",
+      "text": "地下墓の魔術師",
       "info": "12x in Regular Enemies"
     },
     {
       "english_text": "Clayman",
-      "text": "",
+      "text": "泥人",
       "info": "128x in Regular Enemies"
     },
     {
       "english_text": "Commoner",
-      "text": "",
+      "text": "市民",
       "info": "156x in Regular Enemies"
     },
     {
       "english_text": "Crabs",
-      "text": "",
+      "text": "全ての子蟹",
       "info": "479x in Regular Enemies + Passive Wildlife"
     },
     {
       "english_text": "Albinauric Crab",
-      "text": "",
+      "text": "白い子蟹",
       "info": "197x in Passive Wildlife, part of Crabs"
     },
     {
       "english_text": "Black Crab",
-      "text": "",
+      "text": "黒い子蟹",
       "info": "15x in Passive Wildlife, part of Crabs"
     },
     {
       "english_text": "Crab",
-      "text": "",
+      "text": "子蟹",
       "info": "198x in Passive Wildlife, part of Crabs"
     },
     {
       "english_text": "Death Crab",
-      "text": "",
+      "text": "死の子蟹",
       "info": "12x in Passive Wildlife, part of Crabs"
     },
     {
       "english_text": "Giant Albinauric Crab",
-      "text": "",
+      "text": "白い大蟹",
       "info": "21x in Regular Enemies, part of Crabs"
     },
     {
       "english_text": "Giant Black Crab",
-      "text": "",
+      "text": "黒い大蟹",
       "info": "3x in Regular Enemies, part of Crabs"
     },
     {
       "english_text": "Giant Crab",
-      "text": "",
+      "text": "大蟹",
       "info": "31x in Regular Enemies, part of Crabs"
     },
     {
       "english_text": "Giant Death Crab",
-      "text": "",
+      "text": "死の大蟹",
       "info": "2x in Regular Enemies, part of Crabs"
     },
     {
       "english_text": "Cuckoo Knight",
-      "text": "",
+      "text": "カッコウ騎士",
       "info": "12x in Regular Enemies"
     },
     {
       "english_text": "Deer",
-      "text": "",
+      "text": "鹿",
       "info": "1341x in Passive Wildlife"
     },
     {
       "english_text": "Depraved Perfumer",
-      "text": "",
+      "text": "堕落した調香師",
       "info": "9x in Regular Enemies"
     },
     {
       "english_text": "Disciple of Rot",
-      "text": "",
+      "text": "腐敗の信徒",
       "info": "88x in Regular Enemies"
     },
     {
       "english_text": "Divine Bird Warrior",
-      "text": "",
+      "text": "神鳥の戦士",
       "info": "16x in Regular Enemies"
     },
     {
       "english_text": "Dogs",
-      "text": "",
+      "text": "犬",
       "info": "340x in Regular Enemies"
     },
     {
       "english_text": "Bloodbane Stray",
-      "text": "",
+      "text": "血病の野犬",
       "info": "48x in Regular Enemies, part of Dogs"
     },
     {
       "english_text": "Farum Azula Stray",
-      "text": "",
+      "text": "ファルム・アズラの野犬",
       "info": "9x in Regular Enemies, part of Dogs"
     },
     {
       "english_text": "Giant Dog",
-      "text": "",
+      "text": "著大犬",
       "info": "48x in Regular Enemies, part of Dogs"
     },
     {
       "english_text": "Large Bloodbane Stray",
-      "text": "",
+      "text": "血病の野犬(大)",
       "info": "3x in Regular Enemies, part of Dogs"
     },
     {
       "english_text": "Large Farum Azula Stray",
-      "text": "",
+      "text": "ファルム・アズラの野犬(大)",
       "info": "1x in Regular Enemies, part of Dogs"
     },
     {
       "english_text": "Large Messmerfire Stray",
-      "text": "",
+      "text": "燃える野犬(大)",
       "info": "1x in Regular Enemies, part of Dogs"
     },
     {
       "english_text": "Large Rotten Stray",
-      "text": "",
+      "text": "腐った野犬(大)",
       "info": "7x in Regular Enemies, part of Dogs"
     },
     {
       "english_text": "Large Shadow Stray",
-      "text": "",
+      "text": "影の野犬(大)",
       "info": "8x in Regular Enemies, part of Dogs"
     },
     {
       "english_text": "Large Stray",
-      "text": "",
+      "text": "野犬(大)",
       "info": "13x in Regular Enemies, part of Dogs"
     },
     {
       "english_text": "Messmerfire Stray",
-      "text": "",
+      "text": "燃える野犬",
       "info": "11x in Regular Enemies, part of Dogs"
     },
     {
       "english_text": "Rotten Stray",
-      "text": "",
+      "text": "腐った野犬",
       "info": "13x in Regular Enemies, part of Dogs"
     },
     {
       "english_text": "Shadow Stray",
-      "text": "",
+      "text": "影の野犬",
       "info": "54x in Regular Enemies, part of Dogs"
     },
     {
       "english_text": "Stray",
-      "text": "",
+      "text": "野犬",
       "info": "124x in Regular Enemies, part of Dogs"
     },
     {
       "english_text": "Dominula Celebrant",
-      "text": "",
+      "text": "ドミヌラの踊り子",
       "info": "39x in Regular Enemies"
     },
     {
       "english_text": "Dragonflies",
-      "text": "",
+      "text": "全ての大トンボ",
       "info": "272x in Passive Wildlife"
     },
     {
       "english_text": "Dragonfly",
-      "text": "",
+      "text": "大トンボ",
       "info": "209x in Passive Wildlife, part of Dragonflies"
     },
     {
       "english_text": "Great Dragonfly",
-      "text": "",
+      "text": "大トンボ(特大)",
       "info": "14x in Passive Wildlife, part of Dragonflies"
     },
     {
       "english_text": "Yellow Dragonfly",
-      "text": "",
+      "text": "黄色大トンボ",
       "info": "49x in Passive Wildlife, part of Dragonflies"
     },
     {
       "english_text": "Eagle",
-      "text": "",
+      "text": "鷹",
       "info": "1788x in Passive Wildlife"
     },
     {
       "english_text": "Elder Albinauric",
-      "text": "",
+      "text": "しろがねの長老",
       "info": "72x in Regular Enemies"
     },
     {
       "english_text": "Elder Lion",
-      "text": "",
+      "text": "老獅子",
       "info": "9x in Regular Enemies"
     },
     {
       "english_text": "Exile Soldier",
-      "text": "",
+      "text": "失地兵",
       "info": "105x in Regular Enemies"
     },
     {
       "english_text": "Fallen Hawks Soldier",
-      "text": "",
+      "text": "落ちる鷹の兵団",
       "info": "39x in Regular Enemies"
     },
     {
       "english_text": "Fat Hornsent Inquisitor",
-      "text": "",
+      "text": "太った責問官",
       "info": "3x in Regular Enemies"
     },
     {
       "english_text": "Fingercreepers",
-      "text": "",
+      "text": "全てのユビムシ",
       "info": "324x in Regular Enemies"
     },
     {
       "english_text": "Colossal Fingercreeper",
-      "text": "",
+      "text": "ユビムシ(特大)",
       "info": "5x in Regular Enemies, part of Fingercreepers"
     },
     {
       "english_text": "Fingercreeper",
-      "text": "",
+      "text": "ユビムシ",
       "info": "61x in Regular Enemies, part of Fingercreepers"
     },
     {
       "english_text": "Small Fingercreeper",
-      "text": "",
+      "text": "ユビムシ(小)",
       "info": "258x in Regular Enemies, part of Fingercreepers"
     },
     {
       "english_text": "Fire Knight",
-      "text": "",
+      "text": "火の騎士",
       "info": "21x in Regular Enemies"
     },
     {
       "english_text": "Fire Monk",
-      "text": "",
+      "text": "火の僧兵",
       "info": "15x in Regular Enemies"
     },
     {
       "english_text": "Fire Prelate",
-      "text": "",
+      "text": "火の司教",
       "info": "4x in Regular Enemies"
     },
     {
       "english_text": "Flame Chariot",
-      "text": "",
+      "text": "火の戦車、ガンメン",
       "info": "12x in Regular Enemies"
     },
     {
       "english_text": "Frenzied Merchant",
-      "text": "",
+      "text": "狂い火の商人",
       "info": "8x in Regular Enemies"
     },
     {
       "english_text": "Giant Ant",
-      "text": "",
+      "text": "大蟻",
       "info": "110x in Regular Enemies"
     },
     {
       "english_text": "Giant Ball",
-      "text": "",
+      "text": "鉄球",
       "info": "4x in Regular Enemies"
     },
     {
       "english_text": "Giant Crayfish",
-      "text": "",
+      "text": "大ザリガニ",
       "info": "39x in Regular Enemies"
     },
     {
       "english_text": "Giant Crow",
-      "text": "",
+      "text": "著大鴉",
       "info": "25x in Regular Enemies"
     },
     {
       "english_text": "Giant Ram",
-      "text": "",
+      "text": "大羊",
       "info": "10x in Regular Enemies"
     },
     {
       "english_text": "Glintstone Miner",
-      "text": "",
+      "text": "結晶鉱夫",
       "info": "52x in Regular Enemies"
     },
     {
       "english_text": "Glintstone Sorcerer",
-      "text": "",
+      "text": "輝石魔術師",
       "info": "76x in Regular Enemies"
     },
     {
       "english_text": "Godrick Foot Soldier",
-      "text": "",
+      "text": "ゴドリックの雑兵",
       "info": "53x in Regular Enemies"
     },
     {
       "english_text": "Godrick Knight",
-      "text": "",
+      "text": "ゴドリック騎士",
       "info": "5x in Regular Enemies"
     },
     {
       "english_text": "Gravebird",
-      "text": "",
+      "text": "墓守鳥",
       "info": "120x in Regular Enemies"
     },
     {
       "english_text": "Graven School",
-      "text": "",
+      "text": "魔術師塊",
       "info": "14x in Regular Enemies"
     },
     {
       "english_text": "Guardian",
-      "text": "",
+      "text": "守人",
       "info": "99x in Regular Enemies"
     },
     {
       "english_text": "Guillemot",
-      "text": "",
+      "text": "海烏",
       "info": "273x in Passive Wildlife"
     },
     {
       "english_text": "Guilty",
-      "text": "",
+      "text": "咎人",
       "info": "60x in Regular Enemies"
     },
     {
       "english_text": "Haligtree Foot Soldier",
-      "text": "",
+      "text": "聖樹の雑兵",
       "info": "9x in Regular Enemies"
     },
     {
       "english_text": "Haligtree Knight",
-      "text": "",
+      "text": "聖樹騎士",
       "info": "7x in Regular Enemies"
     },
     {
       "english_text": "Haligtree Soldier",
-      "text": "",
+      "text": "聖樹の軍兵",
       "info": "45x in Regular Enemies"
     },
     {
       "english_text": "Highwayman",
-      "text": "",
+      "text": "追い剥ぎ",
       "info": "7x in Regular Enemies"
     },
     {
       "english_text": "Hippopotamus",
-      "text": "",
+      "text": "カバ",
       "info": "4x in Regular Enemies"
     },
     {
       "english_text": "Hornsent Inquisitor",
-      "text": "",
+      "text": "責問官",
       "info": "74x in Regular Enemies"
     },
     {
       "english_text": "Hornsent Shaman",
-      "text": "",
+      "text": "角人の呪術師",
       "info": "2x in Regular Enemies"
     },
     {
       "english_text": "Human Bosses",
-      "text": "",
+      "text": "人型ボス",
       "info": "16x in Evergaol Minibosses + Minor Bosses + Major Bosses"
     },
     {
       "english_text": "Imp",
-      "text": "",
+      "text": "インプ",
       "info": "241x in Regular Enemies"
     },
     {
       "english_text": "Jar Innards",
-      "text": "",
+      "text": "壺の中身",
       "info": "43x in Regular Enemies"
     },
     {
       "english_text": "Kaiden Sellsword",
-      "text": "",
+      "text": "カイデン傭兵",
       "info": "21x in Regular Enemies"
     },
     {
       "english_text": "Lamprey",
-      "text": "",
+      "text": "ヤツメ",
       "info": "101x in Regular Enemies"
     },
     {
       "english_text": "Land Octopus",
-      "text": "",
+      "text": "陸ダコ",
       "info": "43x in Regular Enemies"
     },
     {
       "english_text": "Land Squirts",
-      "text": "",
+      "text": "全ての陸ほや",
       "info": "162x in Regular Enemies"
     },
     {
       "english_text": "Giant Land Squirt",
-      "text": "",
+      "text": "陸ほや(大)",
       "info": "12x in Regular Enemies, part of Land Squirts"
     },
     {
       "english_text": "Giant Rotten Land Squirt",
-      "text": "",
+      "text": "腐った陸ほや(大)",
       "info": "11x in Regular Enemies, part of Land Squirts"
     },
     {
       "english_text": "Land Squirt",
-      "text": "",
+      "text": "陸ほや",
       "info": "139x in Regular Enemies, part of Land Squirts"
     },
     {
       "english_text": "Large Albinauric",
-      "text": "",
+      "text": "大しろがね人",
       "info": "20x in Regular Enemies"
     },
     {
       "english_text": "Large Bigmouth Imp",
-      "text": "",
+      "text": "大口インプ",
       "info": "1x in Regular Enemies"
     },
     {
       "english_text": "Large Exile Soldier",
-      "text": "",
+      "text": "失地兵(大)",
       "info": "12x in Regular Enemies"
     },
     {
       "english_text": "Large Glintstone Miner",
-      "text": "",
+      "text": "結晶鉱夫(大)",
       "info": "3x in Regular Enemies"
     },
     {
       "english_text": "Large Jar Innards",
-      "text": "",
+      "text": "壺の中身(大)",
       "info": "4x in Regular Enemies"
     },
     {
       "english_text": "Large Lamprey",
-      "text": "",
+      "text": "ヤツメ(大)",
       "info": "3x in Regular Enemies"
     },
     {
       "english_text": "Large Putrid Corpse",
-      "text": "",
+      "text": "腐った亡者(大)",
       "info": "30x in Regular Enemies"
     },
     {
       "english_text": "Large Putrid Flesh",
-      "text": "",
+      "text": "蠢く腐肉(大)",
       "info": "3x in Regular Enemies"
     },
     {
       "english_text": "Large Shadow Commoner",
-      "text": "",
+      "text": "影の貴人(大)",
       "info": "19x in Regular Enemies"
     },
     {
       "english_text": "Larva of Rot",
-      "text": "",
+      "text": "腐敗の幼生",
       "info": "38x in Regular Enemies"
     },
     {
       "english_text": "Larval Land Octopus",
-      "text": "",
+      "text": "子ダコ",
       "info": "145x in Regular Enemies"
     },
     {
       "english_text": "Leyndell Foot Soldier",
-      "text": "",
+      "text": "ローデイル雑兵",
       "info": "143x in Regular Enemies"
     },
     {
       "english_text": "Leyndell Knight",
-      "text": "",
+      "text": "ローデイル騎士",
       "info": "36x in Regular Enemies"
     },
     {
       "english_text": "Leyndell Soldier",
-      "text": "",
+      "text": "ローデイル兵",
       "info": "107x in Regular Enemies"
     },
     {
       "english_text": "Lightning Ball",
-      "text": "",
+      "text": "球電",
       "info": "43x in Regular Enemies"
     },
     {
       "english_text": "Living Jar",
-      "text": "",
+      "text": "生きている小壺",
       "info": "115x in Regular Enemies"
     },
     {
       "english_text": "Living Jar Warrior",
-      "text": "",
+      "text": "生きている壺",
       "info": "26x in Regular Enemies"
     },
     {
       "english_text": "Living Magma",
-      "text": "",
+      "text": "溶鉱雫",
       "info": "40x in Regular Enemies"
     },
     {
       "english_text": "Man-Bat",
-      "text": "",
+      "text": "人蝙蝠",
       "info": "324x in Regular Enemies"
     },
     {
       "english_text": "Man-Fly",
-      "text": "",
+      "text": "人蠅",
       "info": "168x in Regular Enemies"
     },
     {
       "english_text": "Man-Serpent",
-      "text": "",
+      "text": "蛇人",
       "info": "16x in Regular Enemies"
     },
     {
       "english_text": "Marionette Soldier",
-      "text": "",
+      "text": "人形兵",
       "info": "199x in Regular Enemies"
     },
     {
       "english_text": "Massive Bigmouth Imp",
-      "text": "",
+      "text": "大口インプ(特大)",
       "info": "1x in Regular Enemies"
     },
     {
       "english_text": "Mausoleum Foot Soldier",
-      "text": "",
+      "text": "霊廟の雑兵",
       "info": "3x in Regular Enemies"
     },
     {
       "english_text": "Mausoleum Knight",
-      "text": "",
+      "text": "霊廟騎士",
       "info": "12x in Regular Enemies"
     },
     {
       "english_text": "Mausoleum Soldier",
-      "text": "",
+      "text": "霊廟兵",
       "info": "88x in Regular Enemies"
     },
     {
       "english_text": "Messmer Foot Soldier",
-      "text": "",
+      "text": "兵卒",
       "info": "49x in Regular Enemies"
     },
     {
       "english_text": "Messmer Soldier",
-      "text": "",
+      "text": "メスメル兵",
       "info": "153x in Regular Enemies"
     },
     {
       "english_text": "Miner",
-      "text": "",
+      "text": "鉱夫",
       "info": "68x in Regular Enemies"
     },
     {
       "english_text": "Mini Midra",
-      "text": "",
+      "text": "卑小なミドラー",
       "info": "1x in Regular Enemies"
     },
     {
       "english_text": "Miranda Sprout",
-      "text": "",
+      "text": "ミランダフラワー(小)",
       "info": "338x in Regular Enemies"
     },
     {
       "english_text": "Misbegotten",
-      "text": "",
+      "text": "混種",
       "info": "146x in Regular Enemies"
     },
     {
       "english_text": "Operatic Bat",
-      "text": "",
+      "text": "老婆蝙蝠",
       "info": "17x in Regular Enemies"
     },
     {
       "english_text": "Oracle Envoys",
-      "text": "",
+      "text": "全ての神託の使者",
       "info": "47x in Regular Enemies"
     },
     {
       "english_text": "Fat Oracle Envoy",
-      "text": "",
+      "text": "神託の使者：大",
       "info": "3x in Regular Enemies, part of Oracle Envoys"
     },
     {
       "english_text": "Small Oracle Envoy",
-      "text": "",
+      "text": "神託の使者：小",
       "info": "37x in Regular Enemies, part of Oracle Envoys"
     },
     {
       "english_text": "Tall Oracle Envoy",
-      "text": "",
+      "text": "神託の使者：長身",
       "info": "7x in Regular Enemies, part of Oracle Envoys"
     },
     {
       "english_text": "Owl",
-      "text": "",
+      "text": "梟",
       "info": "88x in Passive Wildlife"
     },
     {
       "english_text": "Page",
-      "text": "",
+      "text": "小姓",
       "info": "26x in Regular Enemies"
     },
     {
       "english_text": "Perfumer",
-      "text": "",
+      "text": "調香師",
       "info": "36x in Regular Enemies"
     },
     {
       "english_text": "Putrid Corpse",
-      "text": "",
+      "text": "腐った亡者",
       "info": "550x in Regular Enemies"
     },
     {
       "english_text": "Putrid Flesh",
-      "text": "",
+      "text": "蠢く腐肉",
       "info": "271x in Regular Enemies"
     },
     {
       "english_text": "Radahn Foot Soldier",
-      "text": "",
+      "text": "ラダーンの雑兵",
       "info": "44x in Regular Enemies"
     },
     {
       "english_text": "Radahn Soldier",
-      "text": "",
+      "text": "ラダーン兵",
       "info": "88x in Regular Enemies"
     },
     {
       "english_text": "Ram",
-      "text": "",
+      "text": "羊",
       "info": "1724x in Passive Wildlife"
     },
     {
       "english_text": "Rats",
-      "text": "",
+      "text": "全てのネズミ",
       "info": "328x in Regular Enemies"
     },
     {
       "english_text": "Giant Rat",
-      "text": "",
+      "text": "巨大ネズミ",
       "info": "39x in Regular Enemies, part of Rats"
     },
     {
       "english_text": "Rat",
-      "text": "",
+      "text": "大ネズミ",
       "info": "289x in Regular Enemies, part of Rats"
     },
     {
       "english_text": "Raya Lucaria Foot Soldier",
-      "text": "",
+      "text": "レアルカリア雑兵",
       "info": "72x in Regular Enemies"
     },
     {
       "english_text": "Raya Lucaria Soldier",
-      "text": "",
+      "text": "レアルカリア兵",
       "info": "81x in Regular Enemies"
     },
     {
       "english_text": "Redmane Knight",
-      "text": "",
+      "text": "赤獅子騎士",
       "info": "13x in Regular Enemies"
     },
     {
       "english_text": "Revenant Follower",
-      "text": "",
+      "text": "幽鬼",
       "info": "153x in Regular Enemies"
     },
     {
       "english_text": "Rotten Miranda Blossom",
-      "text": "",
+      "text": "腐ったミランダフラワー",
       "info": "17x in Regular Enemies"
     },
     {
       "english_text": "Rotten Miranda Sprout",
-      "text": "",
+      "text": "腐ったミランダフラワー(小)",
       "info": "139x in Regular Enemies"
     },
     {
       "english_text": "Scarab",
-      "text": "",
+      "text": "スカラベ",
       "info": "11x in Scarabs"
     },
     {
       "english_text": "Extra Large Scarab",
-      "text": "",
+      "text": "特大スカラベ",
       "info": "8x in Scarabs, part of Scarab"
     },
     {
       "english_text": "Large Scarab",
-      "text": "",
+      "text": "大スカラベ",
       "info": "4x in Scarabs, part of Scarab"
     },
     {
       "english_text": "Small Scarab",
-      "text": "",
+      "text": "小スカラベ",
       "info": "178x in Scarabs, part of Scarab"
     },
     {
       "english_text": "Sentry Stone",
-      "text": "",
+      "text": "見張り石",
       "info": "76x in Regular Enemies"
     },
     {
       "english_text": "Shadow Commoner",
-      "text": "",
+      "text": "影の貴人",
       "info": "719x in Regular Enemies"
     },
     {
       "english_text": "Shadow Militia",
-      "text": "",
+      "text": "影卑兵",
       "info": "53x in Regular Enemies"
     },
     {
       "english_text": "Silver Tear",
-      "text": "",
+      "text": "銀の雫",
       "info": "100x in Regular Enemies"
     },
     {
       "english_text": "Skeletons",
-      "text": "",
+      "text": "全てのスケルトン",
       "info": "449x in Regular Enemies"
     },
     {
       "english_text": "Catacombs Skeleton",
-      "text": "",
+      "text": "地下墓のスケルトン",
       "info": "81x in Regular Enemies, part of Skeletons"
     },
     {
       "english_text": "Giant Beast Skeleton",
-      "text": "",
+      "text": "ファルム・アズラの獣人(骨)",
       "info": "14x in Regular Enemies, part of Skeletons"
     },
     {
       "english_text": "Giant Skeleton",
-      "text": "",
+      "text": "大スケルトン",
       "info": "17x in Regular Enemies, part of Skeletons"
     },
     {
       "english_text": "Giant Skeleton Torso",
-      "text": "",
+      "text": "大スケルトン(胴)",
       "info": "11x in Regular Enemies, part of Skeletons"
     },
     {
       "english_text": "Skeleton",
-      "text": "",
+      "text": "スケルトン",
       "info": "326x in Regular Enemies, part of Skeletons"
     },
     {
       "english_text": "Skull Plate Giant Ant",
-      "text": "",
+      "text": "盾蟻",
       "info": "6x in Regular Enemies"
     },
     {
       "english_text": "Slug",
-      "text": "",
+      "text": "ナメクジ",
       "info": "198x in Regular Enemies"
     },
     {
       "english_text": "Small Flying Dragon",
-      "text": "",
+      "text": "小飛竜",
       "info": "13x in Regular Enemies"
     },
     {
       "english_text": "Smith Golem",
-      "text": "",
+      "text": "鍛冶ゴーレム",
       "info": "16x in Regular Enemies"
     },
     {
       "english_text": "Snowfield Troll",
-      "text": "",
+      "text": "雪原トロル",
       "info": "11x in Regular Enemies"
     },
     {
       "english_text": "Spider Scorpions",
-      "text": "",
+      "text": "全ての蜘蛛サソリ",
       "info": "77x in Regular Enemies"
     },
     {
       "english_text": "Large Spider Scorpion",
-      "text": "",
+      "text": "蜘蛛サソリ(大)",
       "info": "4x in Regular Enemies, part of Spider Scorpions"
     },
     {
       "english_text": "Small Spider Scorpion",
-      "text": "",
+      "text": "蜘蛛サソリ(小)",
       "info": "42x in Regular Enemies, part of Spider Scorpions"
     },
     {
       "english_text": "Spider Scorpion",
-      "text": "",
+      "text": "蜘蛛サソリ",
       "info": "31x in Regular Enemies, part of Spider Scorpions"
     },
     {
       "english_text": "Spirit Eel",
-      "text": "",
+      "text": "霊チンアナゴ",
       "info": "257x in Regular Enemies"
     },
     {
       "english_text": "Spirit Jellyfish",
-      "text": "",
+      "text": "霊クラゲ",
       "info": "199x in Regular Enemies"
     },
     {
       "english_text": "Springhare",
-      "text": "",
+      "text": "跳兎",
       "info": "1714x in Passive Wildlife"
     },
     {
       "english_text": "Starcaller",
-      "text": "",
+      "text": "隕石漁り",
       "info": "20x in Regular Enemies"
     },
     {
       "english_text": "Troll",
-      "text": "",
+      "text": "トロル",
       "info": "29x in Regular Enemies"
     },
     {
       "english_text": "Turtle",
-      "text": "",
+      "text": "亀",
       "info": "150x in Passive Wildlife"
     },
     {
       "english_text": "Vulgar Militia",
-      "text": "",
+      "text": "卑兵",
       "info": "143x in Regular Enemies"
     },
     {
       "english_text": "Wandering Noble",
-      "text": "",
+      "text": "さまよえる貴人",
       "info": "466x in Regular Enemies"
     },
     {
       "english_text": "Warhawk",
-      "text": "",
+      "text": "戦鷹",
       "info": "45x in Regular Enemies"
     },
     {
       "english_text": "Wolves",
-      "text": "",
+      "text": "全ての狼",
       "info": "520x in Regular Enemies"
     },
     {
       "english_text": "Archer's Wolf",
-      "text": "",
+      "text": "射手の狼",
       "info": "6x in Regular Enemies, part of Wolves"
     },
     {
       "english_text": "White Wolf",
-      "text": "",
+      "text": "白狼",
       "info": "88x in Regular Enemies, part of Wolves"
     },
     {
       "english_text": "Wolf",
-      "text": "",
+      "text": "狼",
       "info": "426x in Regular Enemies, part of Wolves"
     }
   ]

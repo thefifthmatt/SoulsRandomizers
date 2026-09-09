@@ -53,7 +53,7 @@ namespace RandomizerCommon
 #endif
         };
 
-        public static readonly string EldenVersion = "v0.12.1";
+        public static readonly string EldenVersion = "v0.12.2";
         public static readonly string DS1Version = "v0.1.3";
         public static readonly string DS3Version = "v0.4.1";
         public static readonly string NightreignVersion = "v0.1.6";

@@ -37,7 +37,7 @@
       "name": "DllForm_saveButton",
       "explanation": "Button to save changes made to the dll file list in the 'Add dll mod' dialog box and close it",
       "english_text": "Save",
-      "text": ""
+      "text": "保存"
     },
     {
       "name": "EldenForm_allcraft",
@@ -79,13 +79,13 @@
       "name": "EldenForm_altusgate",
       "explanation": "Checkbox for logic option which requires Dectus Medallion (デクタスの割符（左） and デクタスの割符（右）) to reach アルター高原, as normally you can circumvent it via Makar in the Precipice or through Volcano Manor",
       "english_text": "Require Dectus Medallion to reach Altus Plateau",
-      "text": ""
+      "text": "アルター高原に到達するにはデクタスの割符が必要"
     },
     {
       "name": "EldenForm_altusgateL",
       "explanation": "Further explanation for altusgate explaining how the option is implemented",
       "english_text": "All exits to Altus are blocked off without it",
-      "text": ""
+      "text": "割符がない場合、アルター高原へ通じる道はすべて封鎖されます"
     },
     {
       "name": "EldenForm_biasGroup",
@@ -175,7 +175,7 @@
       "name": "EldenForm_customGroup",
       "explanation": "Group box in enemy randomizer for options related to how enemies are placed (previously 'Customization')",
       "english_text": "Enemy placement",
-      "text": ""
+      "text": "敵の配置"
     },
     {
       "name": "EldenForm_customitem",
@@ -187,7 +187,7 @@
       "name": "EldenForm_customitemHelp",
       "explanation": "Tooltip text which appears when hovering over the custom item placement checkbox in item randomizer. This switches the UI from the basic view to a much more complicated view, which switches back when unchecked. This has some overlap with ItemPanel_TabTypeExplain_Overview",
       "english_text": "Advanced mode for detailed configuration of items and locations. Settings configured in custom item placement won't apply anymore if this is unchecked.",
-      "text": ""
+      "text": "アイテムとその配置先を細かく決めることができる詳細モードです。チェックを外すと、アイテム配置カスタマイズにおける設定は適用されなくなります。"
     },
     {
       "name": "EldenForm_deathless",
@@ -205,7 +205,7 @@
       "name": "EldenForm_deathlessL",
       "explanation": "Further explanation for deathless option (see above), for reaching Volcano Manor (火山館). Also has a note for an enemy randomizer change, described on the mod page, where the Abductor Virgin (人さらいの乙女人形) at the bottom of the Raya Lucaria elevator is no longer required to do the warp. You just have to die from it or die nearby it (e.g. by falling to your death). This changed in v0.12 to remove the abduction mechanic, not just make it optional.",
       "english_text": "Remove Volcano Manor abduction. Otherwise, it may be required, and is possible in enemy randomizer by dying nearby the abductor replacement.",
-      "text": ""
+      "text": "火山館までさらわれなくなります。無効にした場合、さらわれなければルートが進行しないことがあります。なお、敵をランダム化していても乙女人形の代わりの敵の近くで死ねば、さらわれます"
     },
     {
       "name": "EldenForm_default_boss",
@@ -229,7 +229,7 @@
       "name": "EldenForm_default_bossL",
       "explanation": "Explanation for default_boss. {0} is replaced with a number like 40. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
       "english_text": "{0} checks, including all achievement bosses",
-      "text": ""
+      "text": "{0} - 実績付きの全ボス"
     },
     {
       "name": "EldenForm_default_custom",
@@ -265,7 +265,7 @@
       "name": "EldenForm_default_keylocL",
       "explanation": "Explanation for default_keyloc. {0} is replaced with a number like 40. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
       "english_text": "{0} checks",
-      "text": ""
+      "text": "{0} をチェック"
     },
     {
       "name": "EldenForm_default_reroll",
@@ -301,7 +301,7 @@
       "name": "EldenForm_dlc",
       "explanation": "Checkbox in the DLC tab to enable randomizing the Shadow of the Erdtree DLC",
       "english_text": "Shadow of the Erdtree",
-      "text": ""
+      "text": "Shadow of the Erdtree"
     },
     {
       "name": "EldenForm_dlcblessing",
@@ -313,13 +313,13 @@
       "name": "EldenForm_dlcInstallGroup",
       "explanation": "Group label for DLC to randomize which the player has installed",
       "english_text": "Installed DLC",
-      "text": ""
+      "text": "インストール済み DLC"
     },
     {
       "name": "EldenForm_dlcInstallL",
       "explanation": "Further explanation for Installed DLC",
       "english_text": "If a DLC option is checked, it must be purchased and enabled in Steam.",
-      "text": ""
+      "text": "DLC オプションにチェックを入れた場合、その DLC を購入し、Steam で有効化しておく必要があります。"
     },
     {
       "name": "EldenForm_dlckeysilo",
@@ -553,7 +553,7 @@
       "name": "EldenForm_enemyWarningL",
       "explanation": "Note in enemy tab about stability of the randomizer. This advice may change over time. Quitting to main menu does usually make sounds load in better. In v0.12 this added 'human NPCs' and removed the 'Warning' in front.",
       "english_text": "Placing too many bosses and human NPCs in the game may result in crashes and frame rate drops. Also, if enemies stop making sounds, you can usually save+quit to remedy this.",
-      "text": ""
+      "text": "ボスや人間 NPC を大量に配置すると強制終了したり、FPS が低下してしまう場合があります。敵が音を出さなくなった場合、終了して保存すると直るでしょう。"
     },
     {
       "name": "EldenForm_exeButton",
@@ -565,7 +565,7 @@
       "name": "EldenForm_exePlaceholder",
       "explanation": "Placeholder text for exe path textbox when it's empty",
       "english_text": "eldenring.exe path",
-      "text": ""
+      "text": "eldenring.exe のパス"
     },
     {
       "name": "EldenForm_extraRandomGroup",
@@ -577,7 +577,7 @@
       "name": "EldenForm_fileCopyOodleError",
       "explanation": "Error message when a dll in the game directory cannot be found and the user must locate it themselves. This dll is needed to unpack game files, and randomizer needs it, but for copyright reasons it's not distributed inside the randomizer zip",
       "english_text": "Error: Oodle not found\nCopy oo2core_6_win64.dll from your game directory into the randomizer directory",
-      "text": "エラー: Oodle が見つかりません\nゲームディレクトリから randomizer のディレクトリに oo2core_6_win64.dll をコピーしてください"
+      "text": "エラー: Oodle が見つかりません\nゲームディレクトリから randomizer ディレクトリに oo2core_6_win64.dll をコピーしてください"
     },
     {
       "name": "EldenForm_fileExeEmptyError",
@@ -613,7 +613,7 @@
       "name": "EldenForm_fileUnpackError",
       "explanation": "Error usually encountered when the randomizer exe is run from 7zip etc, without unpacking it. (In the future, this message may be copied inside the program itself, because messages are themselves in metadata files)",
       "english_text": "Error: Can't find required metadata files.\nFor the randomizer to work, you must unpack it to disk and keep all of the files together",
-      "text": "エラー: 必要なメタデータファイルが見つかりません。\nrandomizer を動作させるには必ずディスク上にファイルを展開し、同じディレクトリにまとめてください。"
+      "text": "エラー: 必要なメタデータファイルが見つかりません。\nRandomizer を動作させるには必ずディスク上にファイルを展開し、同じディレクトリにまとめてください。"
     },
     {
       "name": "EldenForm_fileUnpackError",
@@ -631,7 +631,7 @@
       "name": "EldenForm_fileUxmPatchWarning",
       "explanation": "Validation warning for game exe textbox. This file usually indicates that the user did Nuxe Patch (previously known as UXM Patch)",
       "english_text": "Warning: Nuxe output is selected, but the game is not patched (_backup\\eldenring.exe not found)",
-      "text": ""
+      "text": "警告: Nuxe 用の出力が選択されていますが、ゲームにパッチが適用されていない可能性があります（_backup\\eldenring.exe が見つかりません）"
     },
     {
       "name": "EldenForm_fileUxmUnpackError",
@@ -643,7 +643,7 @@
       "name": "EldenForm_fileUxmUnpackError",
       "explanation": "Validation error for the game exe textbox. When the user does Nuxe Unpack, it adds directories with game data which must exist (previously known as UXM Unpack)",
       "english_text": "Error: Nuxe output is selected, but the game is not unpacked (event subdirectory not found)",
-      "text": ""
+      "text": "エラー: Nuxe 用に出力するよう選択されていますが、ゲームが未展開です（event ディレクトリが見つかりません）"
     },
     {
       "name": "EldenForm_fixedseedL",
@@ -721,13 +721,13 @@
       "name": "EldenForm_hideseedHide",
       "explanation": "Tooltip on eye icon next to overall seed to make it hide the seed number by making it look like a password, for people who are screen-sharing and want to avoid spoilers",
       "english_text": "Hide seed",
-      "text": ""
+      "text": "シードを隠す"
     },
     {
       "name": "EldenForm_hideseedShow",
       "explanation": "Tooltip on eye icon next to overall seed to make it show the seed number when it is currently hidden",
       "english_text": "Show seed",
-      "text": ""
+      "text": "シードを表示"
     },
     {
       "name": "EldenForm_hintGroup",
@@ -757,7 +757,7 @@
       "name": "EldenForm_installGroup",
       "explanation": "Label for misc options related to how mod files are installed",
       "english_text": "Installation",
-      "text": ""
+      "text": "インストール"
     },
     {
       "name": "EldenForm_invertenvbgm",
@@ -853,13 +853,13 @@
       "name": "EldenForm_latedragonbarrow",
       "explanation": "Checkbox for logic option to block off Dragonbarrow (use abbreviation of Greyoll's Dragonbarrow, グレイオールの竜塚), which is north of Caelid but very highly scaled",
       "english_text": "Restrict access to Dragonbarrow until reaching Leyndell",
-      "text": ""
+      "text": "竜塚はローデイル到達まで進入不可"
     },
     {
       "name": "EldenForm_latedragonbarrowL",
       "explanation": "Further explanation for latedragonbarrow about compatibility with other options",
       "english_text": "If enabled, key items must be randomized",
-      "text": ""
+      "text": "有効にした場合、キーアイテムをランダム化しなければなりません"
     },
     {
       "name": "EldenForm_launchButton",
@@ -877,7 +877,7 @@
       "name": "EldenForm_launchFailed",
       "explanation": "Long error essage for debugging 'Launch Elden Ring' failing. It suggests basic prerequisites for using Mod Engine, and otherwise, suggests using the two other installation options, manual Mod Engine or Nuxe (previously UXM).",
       "english_text": "Automatic Mod Engine launcher appeared to fail.\n\nMake sure Steam is running. If the game is currently running, close it and wait until it is fully shut down.\n\nCheck Troubleshooting on https://www.nexusmods.com/eldenring/mods/428/ to see when Mod Engine might fail. You may need to try using a manual Mod Engine launcher or Nuxe installation.",
-      "text": ""
+      "text": "Mod Engine の自動起動に失敗したようです。\n\nSteam は起動されていますか？ゲームが起動中の場合、まずは終了し、完全に落ちるまで待ってみてください。\n\nそれでも失敗するなら、https://www.nexusmods.com/eldenring/mods/428/ に記載されている Mod Engine のトラブルシューティングを確認しましょう。場合によっては Mod Engine を手動で起動するか、Nuxe をインストールする必要があります。"
     },
     {
       "name": "EldenForm_launchFailedTitle",
@@ -913,7 +913,7 @@
       "name": "EldenForm_liurniagate",
       "explanation": "Checkbox for logic option which blocks off the side path next to Stormveil Castle (ストームヴィル城) which is an alternate way to reach Liurnia (full name 湖のリエーニエ)",
       "english_text": "Require going through Stormveil to reach Liurnia",
-      "text": ""
+      "text": "リエーニエに到達するにはストームヴィル城の踏破が必要"
     },
     {
       "name": "EldenForm_loadOptionsFileToolStripMenuItem",
@@ -955,13 +955,13 @@
       "name": "EldenForm_logicItemDlcNoneL",
       "explanation": "Alternate text shown in the DLC key item placement groupbox when custom item placement is enabled, because all options in DLC key item placement are redundant to custom item placement configuration.",
       "english_text": "When custom item placement is active, all DLC item placement options are configured there.",
-      "text": ""
+      "text": "アイテム配置カスタマイズが有効の場合、DLC のアイテム配置オプションはすべてそちらで設定します。"
     },
     {
       "name": "EldenForm_logicItemGroup",
       "explanation": "Group by in the logic tab containing options for where overall key items are randomized",
       "english_text": "Key item placement",
-      "text": "キーアイテムの配置"
+      "text": "キーアイテム配置"
     },
     {
       "name": "EldenForm_markareas",
@@ -1057,13 +1057,13 @@
       "name": "EldenForm_mergePlaceholder",
       "explanation": "Placeholder for mod merge textbox when it is empty. 'Other' means other than randomizer",
       "english_text": "Other mod path (optional)",
-      "text": ""
+      "text": "他の Mod のパス（任意）"
     },
     {
       "name": "EldenForm_messmershard_default",
       "explanation": "Checkbox to enable splitting up Messmer's Kindling (メスメルの種火) into multiple shards. When checked, the messmershard and shardreq options may be configured. See their descriptions for more information.",
       "english_text": "Split up Messmer's Kindling into shards",
-      "text": ""
+      "text": "メスメルの種火を欠片に分割する"
     },
     {
       "name": "EldenForm_messmershardL",
@@ -1105,7 +1105,7 @@
       "name": "EldenForm_moremaxslots",
       "explanation": "Checkbox for logic option to change how key items are placed into locations. By default, only one key item can appear at each check.",
       "english_text": "Allow multiple key items to be randomized to a single pickup or drop",
-      "text": ""
+      "text": "一つの配置先に複数のキーアイテムを配置可能にする"
     },
     {
       "name": "EldenForm_multcolor",
@@ -1141,7 +1141,7 @@
       "name": "EldenForm_nerflanternEnemy",
       "explanation": "Standalone name for Aging Untouchable in enemy preset description when custom enemy placement is disabled (will eventually come from enemy.json file)",
       "english_text": "Aging Untouchable",
-      "text": ""
+      "text": "触れ得ざる翁"
     },
     {
       "name": "EldenForm_nerflanternL",
@@ -1249,7 +1249,7 @@
       "name": "EldenForm_openDirectoryToolStripMenuItem",
       "explanation": "Menu option in the file menu which opens file browsing for wherever the randomizer exe is located",
       "english_text": "Show randomizer directory",
-      "text": ""
+      "text": "randomizer のディレクトリを開く"
     },
     {
       "name": "EldenForm_optionsToolStripMenuItem",
@@ -1375,7 +1375,7 @@
       "name": "EldenForm_raceloc_altbossL",
       "explanation": "Further explanation for raceloc_altboss. {0} is replaced with a number like 100. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
       "english_text": "{0} checks, including anything with a boss healthbar",
-      "text": ""
+      "text": "{0} - ボスの HP ゲージが出る敵"
     },
     {
       "name": "EldenForm_raceloc_health",
@@ -1393,7 +1393,7 @@
       "name": "EldenForm_raceloc_healthL",
       "explanation": "Further explanation for raceloc_health. {0} is replaced with a number like 40. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
       "english_text": "{0} checks",
-      "text": ""
+      "text": "{0} をチェック"
     },
     {
       "name": "EldenForm_raceloc_scadu",
@@ -1411,7 +1411,7 @@
       "name": "EldenForm_raceloc_scaduL",
       "explanation": "Further explanation for raceloc_scadu, specifying that it doesn't include drops from shiny pot enemies, hippos, etc. {0} is replaced with a number like 100. A 'check' is randomizer terminology for an item to pick up, boss to defeat, etc.",
       "english_text": "{0} checks, excluding enemy drops",
-      "text": ""
+      "text": "{0} - 敵ドロップは除外"
     },
     {
       "name": "EldenForm_raceloc_shops",
@@ -1435,7 +1435,7 @@
       "name": "EldenForm_raceloc_shopsL",
       "explanation": "Further explanation for raceloc_shops. {0} is replaced with a number like 30. This option does not include shops which only sell sorceries or incantations",
       "english_text": "{0} checks, excluding spell shops",
-      "text": ""
+      "text": "{0} - 術屋は除外"
     },
     {
       "name": "EldenForm_raceloc_talisman",
@@ -1453,7 +1453,7 @@
       "name": "EldenForm_racelocShow",
       "explanation": "Tooltip on (i) icon next to the check count when selecting important locations in basic item randomizer settings, which opens a dialog box showing a list of location descriptions",
       "english_text": "Show location list",
-      "text": ""
+      "text": "場所リストを表示"
     },
     {
       "name": "EldenForm_racemode",
@@ -1507,7 +1507,7 @@
       "name": "EldenForm_randomaniaL",
       "explanation": "Further explanation for RandoMania item placement, listing 2 changes in the option. First, RandoMania mode avoids placing Great Runes past Mountaintops in some circumstances, so there's more opportunity to find them earlier. Second, it adds more possible locations for Bell Bearings which normally appear in Altus Plateau. Normally, the randomizer will always keep all Bell Bearings in their vanilla areas, and Smithing-Stone Miner's Bell Bearing [2] and Somberstone Miner's Bell Bearing [2] will always be placed in Altus Plateau, usually dropping from Elemer. This second option allows these Bell Bearings to appear in Volcano Manor for balance reasons. It's not necessary to write any detail about this since the event competitors already know what it means.",
       "english_text": "Fewer late Great Runes, more locations for Altus Bell Bearings",
-      "text": "大ルーンの配置先が終盤になることが少なくなり、アルター高原の鈴玉の配置先が増えます"
+      "text": "大ルーンの配置先が後半になることが少なくなり、アルター高原の鈴玉の配置先が増えます"
     },
     {
       "name": "EldenForm_randomize",
@@ -1633,19 +1633,19 @@
       "name": "EldenForm_restoreUXMFileBackupsToolStripMenuItem",
       "explanation": "Action in File menu to open 'restore backups' dialog box",
       "english_text": "Restore Nuxe file backups...",
-      "text": ""
+      "text": "Nuxe のバックアップを復元..."
     },
     {
       "name": "EldenForm_royalaccess",
       "explanation": "Checkbox in item logic which doesn't remove the graces from Leyndell, Royal Capital (王都ローデイル) after defeating Maliketh (黒き剣のマリケス), allowing Royal Capital and Ashen Capital to coexist",
       "english_text": "Keep Royal Capital accessible after Maliketh",
-      "text": ""
+      "text": "マリケス撃破後も王都ローデイルに入れるようにする"
     },
     {
       "name": "EldenForm_royalaccessL",
       "explanation": "Further explanation for royalaccess which explains the randomizer logic change. An unmissable item is an item, like a key item or bell bearing, which is not allowed to be placed in a missable location. Because Royal Capital graces don't disappear, they are no longer missable locations.",
       "english_text": "Allow more Leyndell locations to have unmissable items",
-      "text": ""
+      "text": "取り逃し不可の必須アイテムが、ローデイルのより多くの場所に配置されます"
     },
     {
       "name": "EldenForm_runereq",
@@ -1693,7 +1693,7 @@
       "name": "EldenForm_runes_rold",
       "explanation": "Checkbox to enable the 'Great Runes to enter Mountaintops' input. Normally you must find the medallion (ロルドの割符) to enter Mountaintops. With this option, you must instead find 0-7 Great Runes according to configuration.",
       "english_text": "Replace Rold Medallion with Great Runes requirement",
-      "text": ""
+      "text": "ロルドの割符の代わりに大ルーンを必須にする"
     },
     {
       "name": "EldenForm_runes_roldL",
@@ -1711,19 +1711,19 @@
       "name": "EldenForm_runesGroup",
       "explanation": "Label for logic settings to change the number of Great Runes required to pass certain points in the game (大ルーン)",
       "english_text": "Great Runes",
-      "text": ""
+      "text": "大ルーン"
     },
     {
       "name": "EldenForm_runExtractWarning",
       "explanation": "Warning message that shows up as a popup after clicking Randomize and it completes. This happens in a niche case where the version of the game from the exe textbox is not the version that randomizer was built for, and randomizer knows this happens because it has some info on the data files which it expects to extract from the game directory",
       "english_text": "Randomization succeeded, but the following files extracted from the game directory have unexpected contents. This version of the randomizer might be incompatible with the installed game version and might not function correctly.",
-      "text": ""
+      "text": "ランダム化には成功しましたが、ゲームディレクトリから展開した以下のファイルの内容が想定と異なっています。このバージョンの Randomizer は、インストールされているゲームのバージョンと互換性がなく、正しく動作しない恐れがあります。"
     },
     {
       "name": "EldenForm_runExtractWarningTitle",
       "explanation": "Title for runeExtractWarning popup message",
       "english_text": "Unexpected game files",
-      "text": ""
+      "text": "想定外のゲームファイル"
     },
     {
       "name": "EldenForm_running",
@@ -1741,13 +1741,13 @@
       "name": "EldenForm_rustykey",
       "explanation": "Checkbox in item logic which makes getting and using the Rusty Key (錆びた鍵) required to enter Stormveil (ストームヴィル城) as normally Gostoc allows skipping it if he's still alive",
       "english_text": "Require Rusty Key to enter Stormveil",
-      "text": ""
+      "text": "ストームヴィル城へ入るには錆びた鍵が必要"
     },
     {
       "name": "EldenForm_rustykeyL",
       "explanation": "Further explanation for rustykey, as NPC Gostoc (門衛ゴストーク) won't show the dialogue option (正門から入りたい) without Rusty Key in inventory",
       "english_text": "Gostoc won't open the main gate without the key",
-      "text": ""
+      "text": "錆びた鍵がなければゴストークは正門を開けません"
     },
     {
       "name": "EldenForm_saveOptionsFileToolStripMenuItem",
@@ -1801,7 +1801,7 @@
       "name": "EldenForm_shardreqL",
       "explanation": "Label for numeric input for a Meessmer Kindling Shard requirement. See messmershard for more details. This corresponds to the in-game prompt, 封印の木を焼きますか？",
       "english_text": "Shards needed to burn the sealing tree",
-      "text": ""
+      "text": "封印の木を焼くのに必要な欠片数"
     },
     {
       "name": "EldenForm_shardreqL2",
@@ -1903,13 +1903,13 @@
       "name": "EldenForm_tarnished",
       "explanation": "Checkbox in the DLC tab to enable randomizing the Tarnished Pack DLC",
       "english_text": "Tarnished Pack",
-      "text": ""
+      "text": "Tarnished Pack"
     },
     {
       "name": "EldenForm_toggleDarkModeToolStripMenuItem",
       "explanation": "Menu option to enable or disable dark mode as the visual theme",
       "english_text": "Toggle dark mode",
-      "text": ""
+      "text": "ダークモードの切り替え"
     },
     {
       "name": "EldenForm_updateButton",
@@ -1945,13 +1945,13 @@
       "name": "EldenForm_uxm",
       "explanation": "Checkbox to write randomized files to Nuxe (previously UXM) in misc options. If unchecked, it assumes Mod Engine installation",
       "english_text": "Output files for Nuxe",
-      "text": ""
+      "text": "Nuxe 用に出力する"
     },
     {
       "name": "EldenForm_uxmL",
       "explanation": "Further description for Nuxe file output which has a disclaimer from installation instructions. The issues can arise without Nuxe too, so there are further instructions to go use 'Verify integrity of game files' under 'Installed Files' in the game's properties in Steam",
       "english_text": "Installing the randomizer with Nuxe can lead to long or infinite loading screens. If you get long loading screens without Nuxe, verify integrity of installed files in Steam.",
-      "text": ""
+      "text": "Nuxe で Randomizer をインストールした場合、ロード時間が長くなったり、無限ロードが発生することがあります。Nuxe を使用していないのにロードが長引く場合は、Steam の「ゲームファイルの整合性を確認」を実行してください。"
     },
     {
       "name": "EldenForm_versionMismatch",
@@ -2251,13 +2251,13 @@
       "name": "EnemyPanel_TabTypeDesc_GlobalSettings",
       "explanation": "Default tab in custom enemy placement which contains placement settings which apply to the entire game, as opposed to individual enemy categories",
       "english_text": "Global Settings",
-      "text": ""
+      "text": "全体設定"
     },
     {
       "name": "EnemyPanel_TabTypeDesc_MiscOptions",
       "explanation": "Tab in custom enemy placement for options which don't correspond to any placement rules, and can be the same as EldenForm_miscPage",
       "english_text": "Misc Options",
-      "text": ""
+      "text": "その他のオプション"
     },
     {
       "name": "FormText_confirmReset",
@@ -2275,19 +2275,19 @@
       "name": "GameMenu_ashenGrace",
       "explanation": "Changes the name of Ashen Capital (灰都ローデイル) graces when royalaccess option is enabled, because the option allows Royal and Ashen graces with the same names to coexist. {0} is replaced with the name of the grace, so in English, this renames: Erdtree Sanctuary -> Erdtree Sanctuary (Ashen)",
       "english_text": "{0} (Ashen)",
-      "text": ""
+      "text": "{0}（灰都）"
     },
     {
       "name": "GameMenu_dlcMissingSote",
       "explanation": "In-game popup shown when the main DLC option is enabled but it's not detected in-game",
       "english_text": "Error: Shadow of the Erdtree was enabled in randomizer but your game doesn't have it.\nEnable it on Steam or else uncheck it in the DLC tab.",
-      "text": ""
+      "text": "エラー: Randomizer側でShadow of the Erdtreeが有効にされていますが、ゲームにはインストールされていません。\nSteamから有効にするか、DLCタブのチェックを外してください。"
     },
     {
       "name": "GameMenu_dlcMissingTarnished",
       "explanation": "In-game popup shown when the Tarnished Pack DLC option is enabled but it's not detected in-game",
       "english_text": "Error: Tarnished Pack was enabled in randomizer but your game doesn't have it.\nEnable it on Steam or else uncheck it in the DLC tab.",
-      "text": ""
+      "text": "エラー: Randomizer側でTarnished Packが有効にされていますが、ゲームにはインストールされていません。\nSteamから有効にするか、DLCタブのチェックを外してください。"
     },
     {
       "name": "GameMenu_dlcStart_door",
@@ -2437,7 +2437,7 @@
       "name": "GameMenu_oMotherDesc",
       "explanation": "In-game one-line description for O Mother which only appears when it is broken up into item shards. It's mostly nonsense flavor text hinting that the gesture is used in front of the Marika statue before Hinterland. Because it's combined with shardDesc, it should be short. The phrasing is based on Stonesword Key's 'Use to break one imp statue seal' (インプ像の封印を解くが、使用すると失われる)",
       "english_text": "Use to entreat Marika",
-      "text": ""
+      "text": "マリカへの懇願に使用する"
     },
     {
       "name": "GameMenu_receiveBellBearing",
@@ -2449,25 +2449,25 @@
       "name": "GameMenu_restart",
       "explanation": "Error message shown in-game when the randomizer can load all required files. It normally happens if someone re-runs randomizer without restarting the game, but it can also happen after game updates if the regulation.bin becomes invalid and no longer loads.",
       "english_text": "Error: Mismatch between regulation.bin and other randomizer files.\nRestart the game and make sure the game and randomizer versions are compatible.",
-      "text": "エラー: regulation.binおよびrandomizerの各ファイルが不一致です\nゲームを再起動し、randomizerが現在のバージョンに\n対応しているかどうかを確認してください"
+      "text": "エラー: regulation.binおよびRandomizerの各ファイルが不一致です\nゲームを再起動し、Randomizerが現在のバージョンに\n対応しているかどうかを確認してください"
     },
     {
       "name": "GameMenu_restart",
       "explanation": "Error message shown in-game when the randomizer can load all required files. The \n corresponds to a line change. This normally happens if someone re-runs randomizer without restarting the game, but it can also happen after game updates if the regulation.bin becomes invalid and no longer loads. Finally, it can happen if the randomizer is incorrectly installed, and some critical files are detected as missing.",
       "english_text": "Error: Mismatch between regulation.bin and other randomizer files.\nMake sure all randomizer files are present, the game has been restarted\nafter randomization, and the game and regulation.bin versions are compatible.",
-      "text": "エラー: regulation.binおよびrandomizerの各ファイルが不一致です\nrandomizerのファイルが欠落していないことを確かめた上でランダム化を実行\nし、ゲームを再起動してregulation.binに互換性があるか確認してください"
+      "text": "エラー: regulation.binおよびRandomizerの各ファイルが不一致です\nRandomizerのファイルが欠落していないことを確かめた上でランダム化を実行\nし、ゲームを再起動してregulation.binに互換性があるか確認してください"
     },
     {
       "name": "GameMenu_shardDesc",
       "explanation": "In-game one-line description for every item shard, which adds the number of shards required to use the key item. {0} gets replaced by the original one-line description of the item (for example: 封印の木を焼くことができる for Messmer's Kindling, 学院の２つの門を閉ざす封印の鍵 for Academy Key). {1} will get replaced with the number of shards required",
       "english_text": "{0}, with {1} required",
-      "text": ""
+      "text": "{0}（{1}個の欠片が必要）"
     },
     {
       "name": "GameMenu_shardName",
       "explanation": "Generic name any key item shard, where {0} is the name of the key item. This literally replaces the item name in-game, and also appears when configuring item shards in custom item placement.",
       "english_text": "{0} Shard",
-      "text": ""
+      "text": "{0}の欠片"
     },
     {
       "name": "GameMenu_ShopCat_Armor",
@@ -2551,7 +2551,7 @@
       "name": "GameMenu_thopsKey",
       "explanation": "Changes the name of the key used for the Thops NPC quest (魔術師トープス) by adding his name to distinguish it from the base item. Just add the name, not the full NPC title, to avoid the text getting cut off. {0} is automatically replaced by the key item name, which is Academy Glintstone Key (学院の輝石鍵)",
       "english_text": "{0} (Thops)",
-      "text": ""
+      "text": "{0}（トープス）"
     },
     {
       "name": "GameMenu_upgradeScadu",
@@ -2629,7 +2629,7 @@
       "name": "HelperOptions_autoUpgradeEquipped",
       "explanation": "RandomizerHelper option to enable changing the upgrade level of items (weapons/spirit ashes/etc) after they've been acquired normally by having the item actively equipped. The item can change upon being equipped or upon changing the highest level",
       "english_text": "Auto-upgrade items in equipment slots to match the highest level achieved so far",
-      "text": ""
+      "text": "装備スロットのアイテムを、これまでに到達した最高強化段階に合わせて自動強化"
     },
     {
       "name": "HelperOptions_autoUpgradeSpiritAshes",
@@ -2713,85 +2713,85 @@
       "name": "ItemPanel_TabTypeDesc_AreaSilo",
       "explanation": "Tab name for area-based silos in custom item placement, which currently allows randomizing the base game and DLC separately for some types of items. See an explanation for silos overall under TabTypeDesc_Silos.",
       "english_text": "DLC silos",
-      "text": ""
+      "text": "DLC の配置割り"
     },
     {
       "name": "ItemPanel_TabTypeDesc_Bias",
       "explanation": "Tab name for bias controls in custom item placement, same as EldenForm_biasGroup",
       "english_text": "Bias",
-      "text": ""
+      "text": "バイアス"
     },
     {
       "name": "ItemPanel_TabTypeDesc_ItemShards",
       "explanation": "Tab name for splitting up key items into shards in custom item placement.",
       "english_text": "Key item shards",
-      "text": ""
+      "text": "キーアイテムの欠片"
     },
     {
       "name": "ItemPanel_TabTypeDesc_Overview",
       "explanation": "Tab name for the default tab in custom item placement which has top-level controls and a summary of other configuration options",
       "english_text": "Overview",
-      "text": ""
+      "text": "概要"
     },
     {
       "name": "ItemPanel_TabTypeDesc_PremiumGroups",
       "explanation": "Tab name for the top-level tab for premium locations, containing an explanation of how they work and a button to add a custom rule. This is a mechanism for requiring a set of locations to pick from a set of selected items and no other items. This is usually to ensure these locations always have good rewards, which is why they're called premium, though it doesn't have to be used for that.",
       "english_text": "Premium locations",
-      "text": ""
+      "text": "目ぼしい場所"
     },
     {
       "name": "ItemPanel_TabTypeDesc_SharedOptions",
       "explanation": "Tab name for options in custom item placement which don't correspond to any placement rules, which can be the same as EldenForm_miscPage, though it is not capitalized here",
       "english_text": "Misc options",
-      "text": ""
+      "text": "その他のオプション"
     },
     {
       "name": "ItemPanel_TabTypeDesc_Silos",
       "explanation": "Tab name for the top-level tab in item placement for configuring both area silos and item silos, which contains an explanation and a button to add a new item silo. A silo is an isolated group of items/locations which are randomized among themselves. An item silo specifically has a list of items, and whatever items are defined there can only replace each other. A silo can be also called a partition, division, etc.",
       "english_text": "Silos",
-      "text": ""
+      "text": "配置割り"
     },
     {
       "name": "ItemPanel_TabTypeExplain_AreaSilo",
       "explanation": "Detailed explanation for the DLC silos tab in custom item placement. This references other settings in the DLC tab, where if those settings are used, the custom item placement settings will be ignored. Normally items are placed in silos based on their original location, but BaseOnlyItems and DlcOnlyItems allows switching an item's DLC silo (not allowed for major key items)",
       "english_text": "DLC silos allow randomizing base game and DLC items separately. Note that selecting \"Randomize base game and DLC separately\" in the DLC tab or disabling the DLC tab altogether takes priority over these settings. You can override the DLC silo for non-key items with item placement rules.",
-      "text": ""
+      "text": "DLC の配置割りでは、本編と DLC のアイテムを分けてランダム化できます。なお、DLC タブで \"DLC と本編を分けてランダム化\" を選んでいる場合や、DLC タブ自体を無効にしている場合は、そちらの設定が優先されます。キーアイテムを含まない DLC の配置割りはアイテム配置ルールで上書きできます。"
     },
     {
       "name": "ItemPanel_TabTypeExplain_ItemShards",
       "explanation": "Detailed explanation for key item shards tab in custom item placement. This contains shared text with EldenForm_logicItemDlcInfoL, and recommends using the moremaxslots option in that case.",
       "english_text": "When key items are split into shards, you need to acquire shards to use the key. Randomization may fail if there are too many shards and too few key item locations. If that happens, consider allowing multiple key items per location in the Logic tab. If you set 0 required shards, the item is no longer needed.",
-      "text": ""
+      "text": "欠片に分割すると、キーアイテムを使用するにはその欠片をすべて集めなければなりません。欠片が多すぎる、かつキーアイテムの配置先が少なすぎる場合、ランダム化に失敗してしまう恐れがあります。そのような場合は Rules タブで、一つの配置先に複数のキーアイテムを配置可能にするといいでしょう。必要数を 0 にした場合、そのアイテムは不要になります。"
     },
     {
       "name": "ItemPanel_TabTypeExplain_ItemSilo",
       "explanation": "Detailed explanation for an item silo tab in custom item placement, which can be seen only by adding a custom item silo. A few things here: this contains an explation for ItemSiloType modes, then an explanation for possible failure cases. It references the copydrops setting as causing failures sometimes. A junk item is a low-value item that's unrelated to the silo, replacing a different item in the silo because *something* has to go there.",
       "english_text": "Within item silos, individual items replace each other. By-type groups add many smaller silos for every weapon type or armor slot in the game. Normally all items are both sources and targets, but randomization will fail if there are more sources than targets in a silo, which can happen with the option to add guaranteed copies of random enemy drops. If there are more targets than sources, junk items may replace some target items. If items or item locations in a silo have placement restrictions, randomization may fail.",
-      "text": ""
+      "text": "アイテム配置割りの中では、個々のアイテムが互いに入れ替わります。種類別グループを選ぶと、ゲーム内のすべての武器種・防具スロットごとに、小さな配置割りがたくさん追加されます。通常、すべてのアイテムは配置元かつ配置先となりますが、1つの配置割りにおいて配置元が配置先より多いとランダム化に失敗してしまいます。これは、敵のランダムドロップを確定入手アイテムとして追加するオプションによって発生し得ます。逆に配置先が配置元より多い場合、一部の配置先にゴミアイテムが置かれることがあります。配置割り内のアイテムや置き場所に配置制限がある場合も、ランダム化に失敗することがあります。"
     },
     {
       "name": "ItemPanel_TabTypeExplain_Overview",
       "explanation": "Detailed explanation for custom item placement in the default Overview tab. This references the left sidebar which allows switching to different settings to configure, some of which are rules which are applied during randomization. Some settings are arranged in a hierarchy or tree, so this also points out that you can click on those to configure settings and add new rules. This text has some overlap with EldenForm_customitemHelp.",
       "english_text": "Custom item placement is an advanced mode for detailed configuration of items and locations. Settings configured in custom item placement won't apply anymore if it's disabled. Select any category on the left to configure placement rules. In some cases, you can add new custom rules under root categories.",
-      "text": ""
+      "text": "アイテム配置カスタマイズは、アイテムとその配置先を細かく決めることができる詳細モードです。チェックを外して無効にすると、ここで設定した内容は適用されなくなります。左側のカテゴリから配置ルールを設定できます。一部のカテゴリでは、親カテゴリの下に新しいカスタムルールを追加できます。"
     },
     {
       "name": "ItemPanel_TabTypeExplain_Placements",
       "explanation": "Detailed explanation for the top-level 'Item placements' tab in custom item placement. This is mainly a summary of other item placement text, but talks about interactions between different placement rules or placement groups. 'All constraints' for an item can refer to settings that an item must be placed somewhere or cannot be placed there. 'Region constraints' are additional constraints added by randomizer logic, like enforcing that enough Sacred Tears are available before Leyndell or that a particular key item must be placed in a particular dungeon.",
       "english_text": "Item placement rules control where individual items can or cannot be placed. If an item is configured in multiple rules, all constraints apply to it at once. It is easily possible to create impossible combinations of rules where there are not enough locations to fit the items, or vice versa, especially if items have separate region constraints. In those cases, the rules may be ignored or cause randomization failures.",
-      "text": ""
+      "text": "個々のアイテムをどこに配置可/不可にするかのルールです。あるアイテムが複数のルールで定義されている場合、すべての制限が同時に適用されます。とりわけアイテムに個別の地域制限がある場合、それらのアイテムに対して配置先が足りない（あるいはその逆）といった、実現不可能なルールの組み合わせが容易に生じてしまいます。このような場合、ルールが無視されたり、ランダム化に失敗する原因となるでしょう。"
     },
     {
       "name": "ItemPanel_TabTypeExplain_PremiumGroups",
       "explanation": "Very detailed explanation for the top-level 'Premium groups' tab in custom item placement. Unlike item placements which can add constraints for which locations an item must appear in, premium locations add constraints for which items a location must have. The last part of this talks about the interaction between item placement rules and premium location rules.",
       "english_text": "Premium location rules control which items can be placed in particular locations. Ideally there are many more items than locations per rule. If a location is configured in multiple rules, the only allowed items come from the intersection of those rules. If this leaves no valid items for a location, the rule is ignored and a warning is added to spoiler logs. If there are not enough items for a location, the rules may be ignored. Note that item placement rules take priority over premium locations, so any items which can only appear at specific locations can always be placed there. If an item is already forbidden from appearing in a location, like unmissable items in missable locations or farmable items in guaranteed locations, putting it in a premium rule won't change that.",
-      "text": ""
+      "text": "特別なポイントにどのアイテムを配置させるかのルールです。1つのルールごとに、場所の数よりもアイテムの数が沢山あると理想的です。同じ場所が複数のルールで定義されている場合、配置されるのは互いのルールで共通しているアイテムのみとなります。それによって有効なアイテムが1つも残らなかった場合、ルールは無視され、spoiler_logs に警告が出力されます。場所に対してアイテムが足りない場合も、ルールが無視されることがあります。なお、アイテム配置ルールはこのルールよりも優先されるため、特定の場所にしか配置されないアイテムは必ずそこに配置されます。ある場所への配置がすでに禁止されているアイテムについて、たとえば取り逃し可能な場所に配置させた必須アイテムや、確定入手できる場所に配置させた繰り返し入手アイテムは、このルールに追加しても禁止されたままです。"
     },
     {
       "name": "ItemPanel_TabTypeExplain_Silos",
       "explanation": "Detailed explanation for the top-level Silos tab in custom item placement, which summarizes DLC silos and item silos and their interaction. See LocationGroup_enemyinf for the main use of farmable enemy drops as a location category.",
       "english_text": "Silos change which groups of locations are randomized among themselves. Note some locations are always randomized separately, like item pickups and farmable enemy drops. Within that, locations can be further split up by region with DLC silos. At the same time, locations can be split up based on groups of items. If an item is configured in multiple item silos, it is added to the first applicable silo only.",
-      "text": ""
+      "text": "配置割り（Silo）は、どの場所グループを相互にランダム化するのかを決める仕組みです（アイテムを拾える場所・繰り返し入手できる敵ドロップのように、常に独立してランダム化される場所もあります）。その枠組みの中で、DLC の配置割りによってさらに地域単位で分けることができます。また、アイテムのグループに基づいて分けることも可能です。もしも1つのアイテムが複数のアイテム配置割りで定義されている場合、最初に該当した配置割りにのみ追加されます。"
     },
     {
       "name": "ItemPreset_AreaSiloType_DLC",
@@ -2809,55 +2809,55 @@
       "name": "ItemPreset_biasItemSpread",
       "explanation": "Label for a number in the Bias tab in custom item placement which goes from 0 to 15. The thing being spread is the probability range of desirable items being placed in difficult locations, and the higher it is, the more the probability is skewed.",
       "english_text": "Item spread",
-      "text": ""
+      "text": "アイテムの分散値"
     },
     {
       "name": "ItemPreset_biasItemSpreadHelp",
       "explanation": "Detailed explanation for item spread which appears as a tooltip for the question mark icon. The expression 2^spread is exponentiation where spread is the number being configured, so this is basically a logarithmic setting. This setting does not apply to key items or important items, only to normal items. Key item spread is the version of this which applies to key items.",
       "english_text": "Item spread defines the weight of the most difficult and late location in the game, for placing normal items. The lowest location weight is 1 and highest weight is 2^spread, and other weights are gradually spaced in between them. If this is 0, all locations have the same weight. If it's 1, the most desirable location is at most twice as likely for whichever item is eligible to go there first.",
-      "text": ""
+      "text": "通常アイテムの配置における、ゲーム内で最も難しくなる後半ロケーションの重みを決めます。重みが最も低い場所は 1、最も高い場所は 2^分散値 となり、それ以外の重みはその間に段階的に割かれます。0 にすると、すべての場所が同じ重みになります。1 にした場合、最初にその場所へ配置可能となるアイテムにとって、最も望ましい場所が選ばれる確率は最大 2 倍になります。"
     },
     {
       "name": "ItemPreset_biasKeyItemChainWeight",
       "explanation": "Label for a number in the Bias tab in custom item placement which goes from 1 to 100. Key item chaining is when a key item is locked behind another key item which is locked behind another key item, and so on, also described in EldenForm_keyitem2.",
       "english_text": "Key item chain weight",
-      "text": ""
+      "text": "キーアイテムチェーンの重み"
     },
     {
       "name": "ItemPreset_biasKeyItemChainWeightHelp",
       "explanation": "Detailed explanation for key item chain weight, or chain multiplier, which appears as a tooltip for the question mark icon. This is a fairly low-level explanation about the key item logic algorithm, where a group of locations (an area) can have special weights which get increased and decreased (multiplied and divided) as more key items are assigned.",
       "english_text": "When assigning a major key item to an area, the desirability of areas blocked by the item is multiplied by the key item chain weight, leading to key item chains. The desirability for an area is also divided by this value when an item is placed there, cancelling out the chain multiplier and overall spreading out key items. For key item placement, an \"area\" is a group of locations which are mutually accessible without needing any key items.",
-      "text": ""
+      "text": "あるエリアに主要キーアイテムが割り当てられると、そのアイテムが鍵となるエリア群の選ばれやすさにこの値が乗算され、キーアイテムのチェーン（流れ）が構築されます。また、そのエリアにアイテムが配置されると、エリアの選ばれやすさがこの値で除算されるため、チェーンの乗数を打ち消し、全体としてキーアイテムを分散させることになります。キーアイテムの配置における「エリア」とは、キーアイテムを一切必要とせずに行き来できる場所の集まりのことです。"
     },
     {
       "name": "ItemPreset_biasKeyItemRegionSpread",
       "explanation": "Label for a number in the Bias tab in custom item placement which goes from 1 to 100. Unlike 'key item spread', which is a spread in location probabilities, this is literally spreading items across different game regions.",
       "english_text": "Key item region spread",
-      "text": ""
+      "text": "キーアイテムの地域分散値"
     },
     {
       "name": "ItemPreset_biasKeyItemRegionSpreadHelp",
       "explanation": "Detailed explanation for key item region spread which appears as a tooltip for the question mark icon. This has a lot of the same explanation as key item chain weight. The main new thing is an explanation that the two settings interact by stacking multiplicatively, which means that the weight for an area is divided by region spread times chain weight when both are set.",
       "english_text": "Key item region spread is an alternative to chain weight which can spread out key items across areas without forcing chains. The weight for areas is divided by this value when an item is placed there. This stacks multiplicatively with chain weight if both are present. For key item placement, an \"area\" is a group of locations which are mutually accessible without needing any key items.",
-      "text": ""
+      "text": "チェーンの重みの代わりとなる設定値で、チェーンを強要することなくキーアイテムを各エリアに分散させることができます。アイテムが配置されると、そのエリアの重みはこの値で除算されます。チェーンの重みと両方設定されている場合は、乗算的に重なり合います。キーアイテムの配置における「エリア」とは、キーアイテムを一切必要とせずに行き来できる場所の集まりのことです。"
     },
     {
       "name": "ItemPreset_biasKeyItemSpread",
       "explanation": "Label for a number in the Bias tab in custom item placement which goes from 0 to 20, and is a companion to regular 'Item spread' weight except it applies to key items only",
       "english_text": "Key item spread",
-      "text": ""
+      "text": "キーアイテムの分散値"
     },
     {
       "name": "ItemPreset_biasKeyItemSpreadHelp",
       "explanation": "Detailed explanation for key item spread which appears as a tooltip for the question mark icon. It references 'Item spread' which applies to non-key items. The main important effect described is placing key items at bosses rather than item pickups.",
       "english_text": "Key item spread defines the weight of the most difficult and late location in the game, for placing important items. It makes major key items more likely to be placed at bosses. It works the same way as normal item spread, but is usually higher because major key items are limited to specific areas by logic, and locations within specific areas have closer weights.",
-      "text": ""
+      "text": "重要なアイテムの配置における、ゲーム内で最も難しくなる後半ロケーションの重みを決めます。この重みによって、主要キーアイテムがボス地点に配置されやすくなります。通常アイテムの分散と同じように働きますが、主要キーアイテムはロジック上特定エリアに限定され、特定エリア内のロケーションは重みの差が小さくなるため、通常はより高い値を指定します。"
     },
     {
       "name": "ItemPreset_biasManual",
       "explanation": "Checkbox in the Bias tab in custom item placement which changes whether the bias% slider is editable or the individual weights (e.g. item spread) are manually editable. If the slider is editable, the weights change automatically and are not editable individually. If the weights are editable, the bias% slider number is completely ignored.",
       "english_text": "Configure individual weights",
-      "text": ""
+      "text": "個別に重みを設定"
     },
     {
       "name": "ItemPreset_descEntry",
@@ -2881,7 +2881,7 @@
       "name": "ItemPreset_descLine",
       "explanation": "In a description of custom item placement, this is a multi-purpose template for formatting a bulleted list. The hyphen is indenting the line, with one line per entry. {0} is replaced with the list entry, whatever it is.",
       "english_text": "- {0}",
-      "text": ""
+      "text": "- {0}"
     },
     {
       "name": "ItemPreset_descNone",
@@ -2911,55 +2911,55 @@
       "name": "ItemPreset_disable",
       "explanation": "Label for checkbox shown in custom item placement rule, including premium groups and custom item silos. When checked, the rule does not apply during randomization, but it is kept around for later if needed. 'Core mechanics' is an example of a rule that can be disabled, but not all rules can be disabled.",
       "english_text": "Disable rule",
-      "text": ""
+      "text": "ルールを無効化"
     },
     {
       "name": "ItemPreset_ItemFilter_add",
       "explanation": "Menu option in the dropdown menu for an item group in custom item placement, which changes the group to add a filter. For instance, after clicking 'Add filter: DLC' to 'Sorceries', the item group will change to 'Sorceries (DLC)'. You can see this in the 'Premium currency shop' tab by clicking one of the item groups",
       "english_text": "Add filter: {0}",
-      "text": ""
+      "text": "フィルターを追加: {0}"
     },
     {
       "name": "ItemPreset_ItemFilter_clear",
       "explanation": "Menu option in the dropdown menu for an item group with a filter. For instance, after adding a filter to make 'Sorceries (DLC)', click 'Clear filter' to change it back to 'Sorceries'. You can see this in the 'Premium currency shop' tab by clicking one of the item groups",
       "english_text": "Clear filter",
-      "text": ""
+      "text": "フィルターを解除"
     },
     {
       "name": "ItemPreset_ItemFilterGroup_dlc",
       "explanation": "Filter name for an item group which selects only items which were added in the DLC. This is a filter because it changes an existing group like 'Weapons' to 'Weapons (DLC)', for instance",
       "english_text": "DLC",
-      "text": ""
+      "text": "DLC"
     },
     {
       "name": "ItemPreset_ItemFilterGroup_legendary",
       "explanation": "Filter name for an item group which selects only items which have big golden shiny pickups on the ground. For example, 'Weapons (Legendary)' includes Eclipse Shotel and Starscourge Greatsword.",
       "english_text": "Legendary",
-      "text": ""
+      "text": "伝説"
     },
     {
       "name": "ItemPreset_ItemFilterGroup_nodlc",
       "explanation": "Filter name for an item group which selects items which were *not* added in the DLC. For example, you can create a filtered group called 'Cookbooks (Base game)'",
       "english_text": "Base game",
-      "text": ""
+      "text": "本編"
     },
     {
       "name": "ItemPreset_ItemFilterGroup_rare",
       "explanation": "Filter name for an item group which selects only items which have purple shiny pickups on the ground. For example, 'Weapons (Rare)' includes Golden Halberd and Bloodhound's Fang",
       "english_text": "Rare",
-      "text": ""
+      "text": "レア"
     },
     {
       "name": "ItemPreset_ItemFilterGroupDesc",
       "explanation": "This is the name of the filtered item group. {0} gets replaced by the item group name (see ItemGroup), and {1} gets replaced by the filter name (see ItemFilterGroup)",
       "english_text": "{0} ({1})",
-      "text": ""
+      "text": "{0} ({1})"
     },
     {
       "name": "ItemPreset_ItemFilterMultiDesc",
       "explanation": "This is the name of a filter group which contains multiple filters. {0} is the first filter and {1} is the second filter. So a filter for DLC legendary weapons will become 'DLC & Legendary' which then applies to an item group like 'Weapon (DLC & Legendary)'. Note this may end up supporting 3 or more filters in the future by getting chained together.",
       "english_text": "{0} & {1}",
-      "text": ""
+      "text": "{0} & {1}"
     },
     {
       "name": "ItemPreset_ItemGroup_accessories",
@@ -3097,7 +3097,7 @@
       "name": "ItemPreset_ItemGroup_tarnished",
       "explanation": "Custom item group for all items from the Tarnished Pack DLC",
       "english_text": "Tarnished Pack Items",
-      "text": ""
+      "text": "Tarnished Pack のアイテム"
     },
     {
       "name": "ItemPreset_ItemGroup_upgradeashes",
@@ -3127,61 +3127,61 @@
       "name": "ItemPreset_itemShard2",
       "explanation": "See ItemPreset_itemShard1",
       "english_text": "/",
-      "text": ""
+      "text": "/"
     },
     {
       "name": "ItemPreset_itemShard3",
       "explanation": "See ItemPreset_itemShard1",
       "english_text": "required",
-      "text": ""
+      "text": "個 必要"
     },
     {
       "name": "ItemPreset_itemShardLabel",
       "explanation": "Label in key item shard configuration. When an item is selected from the dropdown, it is added to the list as a key item shard which is split up into multiple pieces",
       "english_text": "Item to split:",
-      "text": ""
+      "text": "分割するアイテム:"
     },
     {
       "name": "ItemPreset_itemSilo",
       "explanation": "Label for a list of item silos shown in the 'Overview' text summarizing custom item placement. There are no item silos by default, as they are added by clicking a buttom in the 'Silos' tab. A silo is an isolated group of items/locations which are randomized among themselves. An item silo specifically has a list of items, and whatever items are defined there can only replace each other. A silo can be also called a partition, division, etc.",
       "english_text": "Item silos:",
-      "text": ""
+      "text": "アイテムの配置割り:"
     },
     {
       "name": "ItemPreset_itemSiloAdd",
       "explanation": "Button in 'Silos' tab in custom item placement to add a new item silo",
       "english_text": "Add custom item silo",
-      "text": ""
+      "text": "配置割りを追加"
     },
     {
       "name": "ItemPreset_itemSiloMode",
       "explanation": "Label for selecting an ItemSiloType in a custom item silo, which defines how to select the item",
       "english_text": "Item silo group:",
-      "text": ""
+      "text": "配置割りグループ:"
     },
     {
       "name": "ItemPreset_itemSiloName",
       "explanation": "Default name for a silo which is added using 'Add custom item silo'",
       "english_text": "Custom item silo",
-      "text": ""
+      "text": "カスタム配置割り"
     },
     {
       "name": "ItemPreset_ItemSiloType_ArmorType",
       "explanation": "This is a type of custom item silo which adds an item silo for every 'type' of armor, which means head armor, body armor, leg armor, etc",
       "english_text": "Armor by type",
-      "text": ""
+      "text": "種類ごとの防具"
     },
     {
       "name": "ItemPreset_ItemSiloType_Manual",
       "explanation": "This is a type of custom item silo which is associated with a list of items which can be manually edited",
       "english_text": "Listed items",
-      "text": ""
+      "text": "リストで指定したアイテム"
     },
     {
       "name": "ItemPreset_ItemSiloType_WeaponType",
       "explanation": "This is a type of custom item silo which adds an item silo for every weapon type. A weapon's type is determined by the weapon category shown in the game menu, such as Straight Sword, Greataxe, or Bow",
       "english_text": "Weapons by type",
-      "text": ""
+      "text": "種類ごとの武器"
     },
     {
       "name": "ItemPreset_keyItemSilo",
@@ -3217,13 +3217,13 @@
       "name": "ItemPreset_LocationGroup_bossarmorshop",
       "explanation": "Description of custom item placement for the special shop which lets you buy boss armor after defeating the boss. It can be acccessed from Enia in Roundtable Hold after you get a Great Rune and defeat a boss with purchasable armor, under the menu 英雄の防具を得る",
       "english_text": "Boss armor shop",
-      "text": ""
+      "text": "ボス防具の店"
     },
     {
       "name": "ItemPreset_LocationGroup_bosssoulshop",
       "explanation": "Description of custom item placement for the special shop which lets you exchange a boss remembrance (such as 火の巨人の追憶 and エルデの追憶) for legendary weapons and spells based on the boss. It can be accessed from Enia in Roundtable Hold after you get a Great Rune, under the menu 追憶から力を得る",
       "english_text": "Remembrance shop",
-      "text": ""
+      "text": "追憶の店"
     },
     {
       "name": "ItemPreset_LocationGroup_catacomb",
@@ -3301,13 +3301,13 @@
       "name": "ItemPreset_LocationGroup_dragonshop",
       "explanation": "Description of custom item placement for shops which let you trade Dragon Hearts for incantations, which shows the menu text 竜餐",
       "english_text": "Dragon Communion shops",
-      "text": ""
+      "text": "竜餐の店"
     },
     {
       "name": "ItemPreset_LocationGroup_enemy",
       "explanation": "Description of custom item placement for all guaranteed unique one-time enemy drops, which includes a few other categories",
       "english_text": "One-time enemy drops",
-      "text": ""
+      "text": "1回限りの敵ドロップ"
     },
     {
       "name": "ItemPreset_LocationGroup_enemyfragment",
@@ -3319,19 +3319,19 @@
       "name": "ItemPreset_LocationGroup_enemygem",
       "explanation": "Description of custom item placement for all enemy drops which give Ashes of War in the vanilla game",
       "english_text": "Ash of War enemy drops",
-      "text": ""
+      "text": "戦灰（敵ドロップ）"
     },
     {
       "name": "ItemPreset_LocationGroup_enemyincantation",
       "explanation": "Description of custom item placement for all enemy drops which give incantations in the vanilla game",
       "english_text": "Incantation enemy drops",
-      "text": ""
+      "text": "祈祷（敵ドロップ）"
     },
     {
       "name": "ItemPreset_LocationGroup_enemyinf",
       "explanation": "Special group for custom item placement which only appears to select it as a non-randomized location in the 'Item placements' tab. This refers to items you can get infinite amounts of by repeatedly killing the same enemy, including item drops which drop based on a percent probability.",
       "english_text": "Farmable enemy drops",
-      "text": ""
+      "text": "繰り返し入手できる敵ドロップ"
     },
     {
       "name": "ItemPreset_LocationGroup_enemyrevered",
@@ -3343,7 +3343,7 @@
       "name": "ItemPreset_LocationGroup_enemysorcery",
       "explanation": "Description of custom item placement for all enemy drops which give sorceries in the vanilla game",
       "english_text": "Sorcery enemy drops",
-      "text": ""
+      "text": "魔術（敵ドロップ）"
     },
     {
       "name": "ItemPreset_LocationGroup_enemytalisman",
@@ -3355,7 +3355,7 @@
       "name": "ItemPreset_LocationGroup_enemyweapon",
       "explanation": "Description of custom item placement for all enemy drops are guaranteed to give weapons in the vanilla game, but only the first time. 'One-time' is added to distinguish it from farmable drops. For instance, Carian Knight Shield is dropped by Moongrum before the Rennala fight",
       "english_text": "One-time weapon enemy drops",
-      "text": ""
+      "text": "武器（1回限りの敵ドロップ）"
     },
     {
       "name": "ItemPreset_LocationGroup_evergaol",
@@ -3403,13 +3403,13 @@
       "name": "ItemPreset_LocationGroup_gem",
       "explanation": "Description of custom item placement for places where an Ash of War can be found as a pickup on the ground in the vanilla game (for instance, 戦灰「岩石剣」 and 戦灰「猛獅子斬り」)",
       "english_text": "Ash of War pickups",
-      "text": ""
+      "text": "戦灰（拾える場所）"
     },
     {
       "name": "ItemPreset_LocationGroup_gemshop",
       "explanation": "Description of custom item placement for shops containing only Ashes of War in the vanilla game, like from Bernahl",
       "english_text": "Ash of War shops",
-      "text": ""
+      "text": "戦灰の店"
     },
     {
       "name": "ItemPreset_LocationGroup_grave",
@@ -3433,19 +3433,19 @@
       "name": "ItemPreset_LocationGroup_incantation",
       "explanation": "Description of custom item placement for places where an incantation can be found as a pickup on the ground in the vanilla game",
       "english_text": "Incantation pickups",
-      "text": ""
+      "text": "祈祷（拾える場所）"
     },
     {
       "name": "ItemPreset_LocationGroup_incantationshop",
       "explanation": "Description of custom item placement for shops containing only incantations in the vanilla game, like from Corhyn or Dragon Communion sites",
       "english_text": "Incantation shops",
-      "text": ""
+      "text": "祈祷の店"
     },
     {
       "name": "ItemPreset_LocationGroup_legendary",
       "explanation": "Descruption of custom item placement for locations containing legendary items in the vanilla game, meaning items that have golden shiny pickups or make the big boom sound when acquiring them",
       "english_text": "Legendary item pickups",
-      "text": ""
+      "text": "伝説のアイテム（拾える場所）"
     },
     {
       "name": "ItemPreset_LocationGroup_minidungeon",
@@ -3499,19 +3499,19 @@
       "name": "ItemPreset_LocationGroup_paintingreward",
       "explanation": "Descriptions of custom item placement for items which are dropped by artists when you find them while holding their painting, solving their puzzle",
       "english_text": "Painting rewards",
-      "text": ""
+      "text": "絵画の報酬"
     },
     {
       "name": "ItemPreset_LocationGroup_prayerbook",
       "explanation": "Description of custom item placement for all locations containing a prayerbook in the original game (黄金樹の祈祷書 and 神肌の祈祷書)",
       "english_text": "Prayerbook locations",
-      "text": ""
+      "text": "祈祷書がある場所"
     },
     {
       "name": "ItemPreset_LocationGroup_questreward",
       "explanation": "Description of custom item placement for items given by or dropped by NPCs by following their quest. Some of these are the vanilla locations of quest items, which are items which progress quests even further, but many are the vanilla locations of unique items like weapons or talismans you can only get by doing the quest.",
       "english_text": "Quest rewards",
-      "text": ""
+      "text": "クエストの報酬"
     },
     {
       "name": "ItemPreset_LocationGroup_racemode",
@@ -3529,7 +3529,7 @@
       "name": "ItemPreset_LocationGroup_remembranceboss",
       "explanation": "Description of custom item placement for bosses which drop remembrances (such as 火の巨人の追憶 and エルデの追憶) in the vanilla game. All remembrance bosses are also major bosses",
       "english_text": "Remembrance bosses",
-      "text": ""
+      "text": "追憶を持つボス"
     },
     {
       "name": "ItemPreset_LocationGroup_revered",
@@ -3547,13 +3547,13 @@
       "name": "ItemPreset_LocationGroup_scarab",
       "explanation": "Description of custom item placement for all items dropped by scarabs, referenced with in-game text like 戦灰スカラベ and 雫スカラベ",
       "english_text": "Scarab drops",
-      "text": ""
+      "text": "スカラベ（ドロップ）"
     },
     {
       "name": "ItemPreset_LocationGroup_scroll",
       "explanation": "Description of custom item placement for locations containing a scroll in the vanilla game (学院のスクロール and 教室のスクロール)",
       "english_text": "Scroll locations",
-      "text": ""
+      "text": "スクロールがある場所"
     },
     {
       "name": "ItemPreset_LocationGroup_seedtree",
@@ -3565,19 +3565,19 @@
       "name": "ItemPreset_LocationGroup_sorcery",
       "explanation": "Description of custom item placement for places where a sorcery can be found as a pickup on the ground in the vanilla game",
       "english_text": "Sorcery pickups",
-      "text": ""
+      "text": "魔術（拾える場所）"
     },
     {
       "name": "ItemPreset_LocationGroup_sorceryshop",
       "explanation": "Description of custom item placement for shops containing only sorceries in the vanilla game, like from Sellen",
       "english_text": "Sorcery shops",
-      "text": ""
+      "text": "魔術の店"
     },
     {
       "name": "ItemPreset_LocationGroup_statue",
       "explanation": "Description of custom item placement for all items inside glowing statues which must be broken by a nearby powerful enemy, such as a Troll",
       "english_text": "Glowing statues",
-      "text": ""
+      "text": "光る石像"
     },
     {
       "name": "ItemPreset_LocationGroup_talisman",
@@ -3589,7 +3589,7 @@
       "name": "ItemPreset_LocationGroup_tarnished",
       "explanation": "Description of custom item placement for all items added in the Tarnished Pack DLC",
       "english_text": "Tarnished Pack locations",
-      "text": ""
+      "text": "Tarnished Pack の場所"
     },
     {
       "name": "ItemPreset_LocationGroup_tunnel",
@@ -3613,25 +3613,25 @@
       "name": "ItemPreset_LocationGroup_weapon",
       "explanation": "Description of custom item placement for places where a weapon can be found as a pickup on the ground in the vanilla game",
       "english_text": "Weapon pickups",
-      "text": ""
+      "text": "武器（拾える場所）"
     },
     {
       "name": "ItemPreset_menuAdd",
       "explanation": "Context menu option which appears in custom item placement when right-clicking on a top-level rule in the left sidebar. For instance, right-clicking on 'Item placements' or 'Premium locations' in the left sidebar will show this, and this does the same thing as the Add button inside of those tabs",
       "english_text": "Add new",
-      "text": ""
+      "text": "新規追加"
     },
     {
       "name": "ItemPreset_menuRemove",
       "explanation": "Context menu option which appears in custom item placement when right-clicking on a custom rule in the left sidebar. None of the default rules are removable, so to make this appear, you have to add a rule first, then right-click on it to remove it.",
       "english_text": "Remove",
-      "text": ""
+      "text": "削除"
     },
     {
       "name": "ItemPreset_menuRemoveConfirm",
       "explanation": "Confirmation text which appears after clicking the trash icon in a custom rule, or by right-clicking on the custom rule. This can only be done after adding a custom rule or group or silo first. {0} gets replaced with the name of the rule, and in English \" is an escaped quotation mark which surrounds it",
       "english_text": "Remove \"{0}\"?",
-      "text": ""
+      "text": "\"{0}\" を削除しますか？"
     },
     {
       "name": "ItemPreset_norandomItems",
@@ -3643,13 +3643,13 @@
       "name": "ItemPreset_norandomItemsItems",
       "explanation": "Label in custom item placement to configure which items are never randomized, in the 'Item placements' tab",
       "english_text": "Not randomized (items):",
-      "text": ""
+      "text": "ランダム化を無効 (アイテム):"
     },
     {
       "name": "ItemPreset_norandomLocations",
       "explanation": "Label in custom item placement to configure which locations are never randomized, in the 'Item placements' tab",
       "english_text": "Not randomized (locations):",
-      "text": ""
+      "text": "ランダム化を無効 (場所):"
     },
     {
       "name": "ItemPreset_overallSilo",
@@ -3727,7 +3727,7 @@
       "name": "ItemPreset_PlacementType_CoreMechanics",
       "explanation": "Description for custom item placement rules to place certain critical items like Talisman Pouches, Physick Flask, etc either in important locations or custom configuration",
       "english_text": "Core mechanics",
-      "text": "システム面の重要アイテム"
+      "text": "システム系の重要アイテム"
     },
     {
       "name": "ItemPreset_PlacementType_Custom",
@@ -3739,7 +3739,7 @@
       "name": "ItemPreset_PlacementType_Custom",
       "explanation": "Description for custom item placement rules for user-selected items and locations. This is the default user-editable name of a new rule created using 'Add custom item placement rule'",
       "english_text": "Custom item placement",
-      "text": ""
+      "text": "カスタムアイテム配置"
     },
     {
       "name": "ItemPreset_PlacementType_DlcOnlyItems",
@@ -3769,7 +3769,7 @@
       "name": "ItemPreset_PlacementType_SecondaryMechanics",
       "explanation": "Description for custom item placement rule for items which are not allowed to be missable by default, because Crystal Tears and Cookbooks etc should always be accessible if someone wants to find a particular one. This is in contrast to 'Core mechanics' which are much more important and placed in important locations by default.",
       "english_text": "Secondary mechanics",
-      "text": ""
+      "text": "システム系のその他アイテム"
     },
     {
       "name": "ItemPreset_PlacementType_ShadowRealmBlessings",
@@ -3811,31 +3811,31 @@
       "name": "ItemPreset_premiumGroupsAdd",
       "explanation": "Button in 'Premium locations' tab in custom item placement to add a user-configurable premium location",
       "english_text": "Add custom premium location rule",
-      "text": ""
+      "text": "目ぼしい場所のルールを追加"
     },
     {
       "name": "ItemPreset_PremiumGroupType_Custom",
       "explanation": "Description for a premium location rule for user-selected items and locations. This is the default user-editable name of a new rule created using 'Add custom premium location rule'",
       "english_text": "Custom location",
-      "text": ""
+      "text": "カスタムロケーション"
     },
     {
       "name": "ItemPreset_PremiumGroupType_MiracleShop",
       "explanation": "Name of a default premium location rule for shops which only sell incantations in the vanilla game. It appears as a tab in custom item placement. When the rule is enabled, those shops sell random incantations",
       "english_text": "Incantation shop",
-      "text": ""
+      "text": "祈祷の店"
     },
     {
       "name": "ItemPreset_PremiumGroupType_PremiumShop",
       "explanation": "Name of a default premium location rule for shops which sell items by trading unique and hard-to-find items which act as currency, sometimes in addition to runes. In Elden Ring, these premium currencies are remembrances and Dragon Hearts. This rule appears as a tab in custom item placement.",
       "english_text": "Premium currency shop",
-      "text": ""
+      "text": "貴重な交換アイテムの店"
     },
     {
       "name": "ItemPreset_PremiumGroupType_SorceryShop",
       "explanation": "Name of a default premium location rule for shops which only sell sorceries in the vanilla game. It appears as a tab in custom item placement. When the rule is enabled, those shops sell random sorceries",
       "english_text": "Sorcery shop",
-      "text": ""
+      "text": "魔術の店"
     },
     {
       "name": "ItemPreset_randomItems",
@@ -3847,43 +3847,43 @@
       "name": "ItemPreset_removeItems",
       "explanation": "Label in custom item placement shown in the 'Overview' tab to represent items removed from the game, which can be configured in the 'Item placements' tab. This always includes at least Furcalling Finger Remedy",
       "english_text": "Removed:",
-      "text": ""
+      "text": "削除:"
     },
     {
       "name": "ItemPreset_removeItemsHelp",
       "explanation": "Tooltip shown when hovering over the question mark in the 'Item placements' tab in custom item placement, to configure items to remove from the game. This explains important edge cases in whether items will actually be removed or not. Items are 'excluded from missable locations' in item placement rules, like for instance, Quest items always have 'Never placed in: Missable'. It is possible to remove so many items that no items remain for a pickup location, but *something* has to go there, so a low-value item called a junk item is placed in those spots.",
       "english_text": "Removed items are not available anywhere in the game, but other items can be randomized to their spot. If a removed item is also not randomized, it may not be removed. If a removed item is excluded from missable locations in any item placement rule, it will never be removed and a warning will be added to spoiler logs. If too many items are removed, junk items will be added in their place.",
-      "text": ""
+      "text": "削除させたアイテムはゲーム内のどこにも出現しなくなり、別のアイテムで置き換えられることになります。ランダム化を無効にしたアイテムであれば、実際には削除されないでしょう。削除させるアイテムがいずれかのアイテム配置ルールにおいて、取り逃し可能な場所から除外されている場合、そのアイテムは決して削除されず、spoiler_logs に警告が出力されます。削除させるアイテムが多すぎる場合、配置先にはゴミアイテムが追加されます。"
     },
     {
       "name": "ItemPreset_removeItemsLabel",
       "explanation": "Label for a list of items to be removed from the game during item randomization, in the 'Item placements' tab in custom item placement",
       "english_text": "Removed from the game:",
-      "text": ""
+      "text": "ゲームから削除させるアイテム:"
     },
     {
       "name": "ItemPreset_reset",
       "explanation": "Reset button in the 'Overview' tab in custom item placement",
       "english_text": "Reset custom placement settings",
-      "text": ""
+      "text": "カスタム配置の設定を初期化"
     },
     {
       "name": "ItemPreset_resetConfirm",
       "explanation": "Message that appears after pressing the reset button in the 'Overview' tab in custom item placement, in an OK/Cancel dialog box. This warns that reset cannot be undone. The suggestion at the end is to use the 'Export options file' menu item.",
       "english_text": "Reset all custom item placement settings to their original values?\nThis erases all existing configuration. Export an options file first to restore it later.",
-      "text": ""
+      "text": "すべてのカスタム配置設定を、初期値にリセットしますか？\n現在の設定はすべて消去されます。後で復元できるよう、先にオプション登録ファイルをエクスポートすることをお勧めします。"
     },
     {
       "name": "ItemPreset_shardDescEntry",
       "explanation": "Summary of key item shard which appears in the 'Overview' tab in the summary. {0} is the item name, {1} is the number of shards required to use the item, and {2} is the total number of shards",
       "english_text": "{0} Shard: {1}/{2} required",
-      "text": ""
+      "text": "{0}の欠片: {1}/{2} が必要"
     },
     {
       "name": "ItemPreset_shardDescTitle",
       "explanation": "Appears before a list of key item shards in the 'Overview' tab in key item placement summary, the same as ItemPanel_TabTypeDesc_ItemShards but with a colon in English",
       "english_text": "Key item shards:",
-      "text": ""
+      "text": "キーアイテムの欠片:"
     },
     {
       "name": "MergeModForm_clear",
@@ -3919,7 +3919,7 @@
       "name": "MergeModForm_toml",
       "explanation": "Button in 'Merge other mod' which prompts selecting a toml file, such as Mod Engine's config_eldenring.toml file, which contains a list of mods to launch. This previously mentioned multiple mods, which is not a common use case",
       "english_text": "Select toml file to merge",
-      "text": ""
+      "text": "統合する toml ファイルを選択"
     },
     {
       "name": "OptionsForm_errorInternal",
@@ -3955,7 +3955,7 @@
       "name": "OptionsForm_select",
       "explanation": "Button in 'Set options from string' dialog box which sets options based on the textbox contents",
       "english_text": "Set options",
-      "text": ""
+      "text": "オプションを設定"
     },
     {
       "name": "OptionsForm_strL",
@@ -3967,7 +3967,7 @@
       "name": "OptionsForm_strL",
       "explanation": "Long explanation for using 'Set options from string' dialog box. The text box shows the user's current 'option string' (all of their selected options and seed)",
       "english_text": "This text box allows you to give your options and seed to someone else (after running randomization) and to copy someone else's options. This string can also be found on the first line of hint/spoiler logs in the spoiler_logs directory. Also, you can set it to blank to restore all default options.",
-      "text": ""
+      "text": "このテキストボックスは、自分のオプションとシードを（ランダム化を実行した後で）他人に共有したり、他人のオプションをコピーしたりするためのものです。この文字列は、spoiler_logs ディレクトリにあるヒント・ネタバレログの一行目にも記録されています。また、空欄にするとすべてのオプションをデフォルトに戻せます。"
     },
     {
       "name": "Preset_adjustSource",
@@ -4291,13 +4291,13 @@
       "name": "PresetEditForm_menuExport",
       "explanation": "Menu option in file menu in custom enemy placement to store the current placement options in a file which can be imported later",
       "english_text": "Export enemy preset...",
-      "text": ""
+      "text": "敵プリセットをエクスポート..."
     },
     {
       "name": "PresetEditForm_menuImport",
       "explanation": "Menu option in file menu in custom enemy placement to replace the current settings with the selected file",
       "english_text": "Import enemy preset...",
-      "text": ""
+      "text": "敵プリセットをインポート..."
     },
     {
       "name": "PresetEditForm_modeCustom",
@@ -4315,13 +4315,13 @@
       "name": "PresetEditForm_modeMultiplyL",
       "explanation": "Tooltip next to Enemy Onslaught in Global Settings with a detailed explanation, next to a control to configure the multiplier amount. The multiplier is configurable for each enemy category, so the last sentence recommends using different multipliers to reduce the total amount of enemies.",
       "english_text": "Enemy Onslaught mode adds copies of enemies and bosses which you can fight simultaneously. 2x is double enemies. Past 3x, this is unstable and resting at some Sites of Grace may crash the game. At high enough values, enemies in crowded areas might not load in. To alleviate this, configure multipliers for individual enemy categories.",
-      "text": ""
+      "text": "敵の倍化モードは、同時に戦える敵やボスのクローンを追加します。2 倍なら敵が 2 倍になります。3 倍を超えると不安定になり、一部の祝福で休んだ際にゲームが強制終了する場合があります。倍率が一定以上になると、敵の密集地帯で敵が読み込まれなくなることがあります。この問題を緩和するには、敵カテゴリごとに倍率を個別設定してください。"
     },
     {
       "name": "PresetEditForm_modeMultiplyOverride",
       "explanation": "Checkbox shown when configuring individual enemy categories",
       "english_text": "Override enemy multiplier",
-      "text": ""
+      "text": "敵の倍率を上書き"
     },
     {
       "name": "PresetEditForm_modeOopsall",
@@ -4333,7 +4333,7 @@
       "name": "PresetEditForm_modeOopsallL",
       "explanation": "Tooltip next to Oops All in Global Settings with a detailed explanation of the mode (see Preset_oopsAll), also explaining how to configure all enemies at once without it",
       "english_text": "Oops All mode replaces all bosses and enemies in the game with a single enemy type. You can get a similar result by merging all enemy categories and then configuring the main category.",
-      "text": ""
+      "text": "このモードでは、ゲーム内のすべてのボスと敵が 1 種類の敵に置き換わります。すべての敵カテゴリを統合してから親カテゴリを設定すれば、同様の結果を得ることもできます。"
     },
     {
       "name": "PresetEditForm_multiplyOption",
@@ -4351,25 +4351,25 @@
       "name": "PresetEditForm_poolAdd",
       "explanation": "Tooltip on plus icon in enemy category placement in the custom mode",
       "english_text": "Add source group",
-      "text": ""
+      "text": "敵グループを追加"
     },
     {
       "name": "PresetEditForm_poolAutoBalance",
       "explanation": "Checkbox which appears in enemy category placement next to PresetEditForm_poolPercentTotal when there are multiple source groups (press + button), checked by default. This option automatically fixes % values so they add up to 100%",
       "english_text": "Auto-balance",
-      "text": ""
+      "text": "割合を自動調整"
     },
     {
       "name": "PresetEditForm_poolByEntryOff",
       "explanation": "Tooltip on crossed out grid icon which appears when a source group in custom enemy category placement has multiple enemies configured (add more enemies using the textbox). This is the default setting which merges all lists of enemies together, then selects one randomly among them. This means if you have Morgott and lobsters, you will get 1 Morgott for every 40 lobsters.",
       "english_text": "Each included enemy is equally likely to be selected, so bigger groups of enemies are more likely to be selected than smaller groups.",
-      "text": ""
+      "text": "グループに含まれる全ての敵から等確率で選ばれるため、総数が大きい項目の敵ほど選ばれやすくなります。クリックでモードを切り替えます。"
     },
     {
       "name": "PresetEditForm_poolByEntryOn",
       "explanation": "Tooltip on grid icon which appears after clicking PresetEditForm_poolByEntryOff. With this option, if you have Morgott and lobsters, you will get 1 Morgott for every lobster. In this mode, the same enemy can be added twice into the list to make it more likely to be selected, whereas normally source groups must be used for that.",
       "english_text": "Each entry in the list is equally likely to be selected (duplicate entries are allowed), and each included enemy is equally likely to be selected within each entry.",
-      "text": ""
+      "text": "グループの項目1つが等確率で選ばれ（重複項目も許可）、それからその項目内に含まれる敵を等確率で選びます。クリックでモードを切り替えます。"
     },
     {
       "name": "PresetEditForm_poolDefault",
@@ -4393,13 +4393,13 @@
       "name": "PresetEditForm_poolPercentTotal",
       "explanation": "Checkbox which appears in enemy category placement when there are multiple source groups (press + button). {0} is replaced by a percent number which should be 100",
       "english_text": "Total: {0}%",
-      "text": ""
+      "text": "合計: {0}%"
     },
     {
       "name": "PresetEditForm_poolRemove",
       "explanation": "Tooltip on remove icon in enemy category placement in the custom mode",
       "english_text": "Remove source group",
-      "text": ""
+      "text": "再配置先グループを削除"
     },
     {
       "name": "PresetEditForm_poolSource",
@@ -4459,7 +4459,7 @@
       "name": "PresetEditForm_quickMergeL",
       "explanation": "Label for buttons at the bottom of custom enemy placement, replacing the previous quick-edit list. It is a list of different ways of merging enemy groups together, and the currently selected preset is highlighted. If the user made a custom merge configuration which doesn't match a preset, nothing is highlighted.",
       "english_text": "Merge presets:",
-      "text": ""
+      "text": "統合プリセット:"
     },
     {
       "name": "PresetEditForm_quickMergeMinor",
@@ -4501,7 +4501,7 @@
       "name": "PresetEditForm_quickSeparate",
       "explanation": "Quick edit which is the opposite of quickMerge options. It changes all categories to not merge with parent.",
       "english_text": "Split enemies by category",
-      "text": ""
+      "text": "敵をカテゴリごとに分割"
     },
     {
       "name": "PresetEditForm_redundantEnemyTooltip",
@@ -4543,13 +4543,13 @@
       "name": "PresetItemForm_alphaL",
       "explanation": "Disclaimer at the bottom of the custom item placement form. This has three separate comments. First is a disclaimer. Second is that more groups of items/locations will be added, which requires classification and handling for logic. Third, another disclaimer that missable locations are inaccurate, where 'base game' means non-DLC in this context.",
       "english_text": "Custom item placement is in alpha and may result in failed randomizations. Other item groups, locations, and silos will be added in the future. Also note that many unmissable base game locations are considered missable since they're not yet documented.",
-      "text": "アイテム配置のカスタマイズは現在アルファ版であり、ランダム化に失敗してしまう場合があります。今後さらなるアイテムグループ、場所、配置割りが追加される予定です。また、必須であるはずの本編の場所の多くが、現時点では未登録のため \"取り逃し可\" とされてしまう場合があります。ご注意ください。"
+      "text": "アイテム配置カスタマイズは現在アルファ版であり、ランダム化に失敗してしまう場合があります。今後さらなるアイテムグループ、場所、配置割りが追加される予定です。また、必須であるはずの本編の場所の多くが、現時点では未登録のため \"取り逃し可\" とされてしまう場合があります。ご注意ください。"
     },
     {
       "name": "PresetItemForm_alphaL",
       "explanation": "[obsolete] Disclaimer at the bottom of the custom item placement form. This has three separate comments. First is a disclaimer. Second is a reference to the log in the spoiler_logs directory. Third is that more groups of items/locations will be added, which requires classification and handling for logic.",
       "english_text": "Custom item placement may result in failed randomizations. If that happens, spoiler logs may have more information. Other item groups, locations, silos, and additional configuration will be added in the future.",
-      "text": ""
+      "text": "アイテム配置カスタマイズではランダム化に失敗することがあります。そのような場合は spoiler_logs に詳細が記録されているでしょう。今後、他のアイテムグループ・場所・配置割り・追加設定が実装される予定です。"
     },
     {
       "name": "PresetItemForm_applyButton",
@@ -4567,13 +4567,13 @@
       "name": "PresetItemForm_listLocationsImportant",
       "explanation": "Disclaimer shown when selecting locations in custom item placement, like in Important locations",
       "english_text": "If there are significantly more items than available locations, randomization will fail.",
-      "text": "利用可能な場所よりもアイテムの数が多すぎる場合、ランダム化に失敗してしまうため注意ください。"
+      "text": "利用可能な場所よりもアイテムの数が多すぎる場合、ランダム化に失敗するためご注意ください。"
     },
     {
       "name": "PresetItemForm_listLocationsPremium",
       "explanation": "Disclaimer shown when selecting locations for premium locations only in custom item placement. This can be seen in the 'Premium current shop' tab for instance.",
       "english_text": "If there not enough items for the selected locations, other items may be placed there.",
-      "text": ""
+      "text": "選択されている場所に置くためのアイテムが足りない場合、他のアイテムが配置されることがあります。"
     },
     {
       "name": "PresetItemForm_listLocationsRegular",
@@ -4603,7 +4603,7 @@
       "name": "PresetItemForm_parentPlacementsAdd",
       "explanation": "Button in the top-level 'Item placements' tab in custom item placement which adds a completely custom rule as a new tab",
       "english_text": "Add custom item placement rule",
-      "text": ""
+      "text": "アイテム配置ルールを追加"
     },
     {
       "name": "PresetItemForm_PresetItemForm",
@@ -4621,13 +4621,13 @@
       "name": "PresetItemForm_showAll",
       "explanation": "Menu option in the dropdown menu for an item or location group in custom item placement, which opens up a popup with all of the members of the group. For instance, going to the 'Premium currency shop' tab and clicking one of the item groups",
       "english_text": "Show all",
-      "text": ""
+      "text": "すべて表示"
     },
     {
       "name": "Randomizer_createFileError",
       "explanation": "Long explanation of why file creation might fail. First it gives the same advice as EldenForm_fileUnpackError, then mentions that Antivirus can stop the randomizer from writing files, then explains that the randomizer is 'safe' (does not modify files unless it needs to).",
       "english_text": "Error: Failed to create file. Make sure the randomizer is unpacked to disk with all of the files kept together, and make sure no Antivirus programs are interfering. The randomizer will only modify files in its own directory or in the game directory.\n{0}",
-      "text": "エラー: ファイルの作成に失敗しました。randomizer の各ファイルがディスク上の同じ場所に展開されているか、アンチウイルスプログラムが干渉していないかを確認してください。randomizer が変更を加えるファイルは EldenRingRandomizer.exe 以下のファイルか、ゲームディレクトリ内のファイルのみとなります。"
+      "text": "エラー: ファイルの作成に失敗しました。Randomizer の各ファイルがディスク上の同じ場所に展開されているか、アンチウイルスプログラムが干渉していないかを確認してください。Randomizer が変更を加えるファイルは EldenRingRandomizer.exe 以下のファイルか、ゲームディレクトリ内のファイルのみとなります。"
     },
     {
       "name": "Randomizer_editPhase",
@@ -4645,7 +4645,7 @@
       "name": "Randomizer_extractPhase",
       "explanation": "Shown in the status bar while the randomizer is moving files from the game directory in order to load them. This only happens the first time the randomizer is used",
       "english_text": "Extracting game data",
-      "text": ""
+      "text": "ゲームデータを展開しています..."
     },
     {
       "name": "Randomizer_itemPhase",
@@ -4669,7 +4669,7 @@
       "name": "Randomizer_keyItemError",
       "explanation": "Error message from the randomizer which indicates an internal logic error, when has to put a key item in an area and can't find any applicable locations. New in v0.12 is the phrase 'item restrictions' from custom item placement settings.",
       "english_text": "Could not place all important items... giving up now. Try rerolling the seed, reducing the number of important items or item restrictions, or increasing the number of important locations.",
-      "text": ""
+      "text": "重要なアイテムをすべて配置できませんでした。中断します。シードを振り直したり、重要なアイテムの数やアイテム制限を減らしたり、重要な場所の数を増やしてみてください。"
     },
     {
       "name": "Randomizer_loadPhase",

@@ -2006,7 +2006,6 @@ namespace RandomizerCommon
                 checkDlc("DLC2", "dlc2");
             }
             Dictionary<string, VanillaFile> allPaths = new();
-            SortedSet<string> mismatchFiles = new();
             string fileList = $@"{Dir}\Base\files.txt";
             foreach (var line in File.ReadLines(fileList))
             {
@@ -2038,7 +2037,6 @@ namespace RandomizerCommon
                 // Hash could be checked for all files, but that's a lot of I/O the way things are currently set up.
                 if (file.Length != localFile.Length)
                 {
-                    mismatchFiles.Add(file.Path);
                     return false;
                 }
                 return true;
@@ -2054,6 +2052,10 @@ namespace RandomizerCommon
             // Avoid mutating during development unless it's the first time setting it up
             if (Directory.Exists($@"{Dir}\Vanilla"))
             {
+                if (opt["runbad"])
+                {
+                    return;
+                }
                 throw new Exception(
                     "Incorrect or incomplete files were found in Vanilla directory!"
                     + " Won't overwrite them in development build - delete the Vanilla directory so they can be regenerated."
@@ -2064,6 +2066,7 @@ namespace RandomizerCommon
             // For now, do full extract on any issues, since as of ER 1.17 there are some identical file lengths (albeit still compatible) and this system is unproven.
             // We may need to check Vanilla file hashes after all.
             Dictionary<string, string> extractPaths = allPaths.Where(e => e.Value.Archive != null && fileRequired(e.Value)).ToDictionary(e => e.Key, e => e.Value.Archive);
+            SortedSet<string> mismatchFiles = new();
             foreach (VanillaFile file in copyPaths.Values)
             {
                 FileInfo gameFile = new FileInfo(Path.Combine(gameDir, file.Path.TrimStart('/')));
@@ -2072,7 +2075,6 @@ namespace RandomizerCommon
                 {
                     if (gameFile.Length == file.Length && GetSHA1FileHash(gameFile.FullName) == file.Hash)
                     {
-                        mismatchFiles.Remove(file.Path);
                         string outPath = GetVanillaPath(file.Path);
                         Directory.CreateDirectory(Path.GetDirectoryName(outPath));
                         gameFile.CopyTo(outPath, overwrite: true);
@@ -2096,9 +2098,9 @@ namespace RandomizerCommon
                 // This throws an error if any of the files could not be found
                 foreach ((string path, byte[] data) in BhdExtractor.EnumerateBdtFiles(Type, gameDir, extractPaths))
                 {
-                    if (mismatchFiles.Contains(path) && allPaths.TryGetValue(path, out VanillaFile file) && data.Length == file.Length)
+                    if (allPaths.TryGetValue(path, out VanillaFile file) && data.Length != file.Length)
                     {
-                        mismatchFiles.Remove(path);
+                        mismatchFiles.Add(path);
                     }
                     string outPath = GetVanillaPath(path);
                     Directory.CreateDirectory(Path.GetDirectoryName(outPath));

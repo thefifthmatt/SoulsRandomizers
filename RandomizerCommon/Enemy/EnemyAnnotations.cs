@@ -325,13 +325,22 @@ namespace RandomizerCommon
         {
             // Name things
             // Full name for enemies (mainly bosses) when there is ambiguity vs the model, for spoiler log and presets
-            // Actually, don't put this here, it's not just bosses, especially in Elden Ring
+            // TODO: Remove, it's not just bosses, especially in Elden Ring
             public string ExtraName { get; set; }
 
             public NameTemplates Names { get; set; }
+            // TODO: Actually bake into config, and support OtherTranslated
+            [YamlIgnore]
+            public Dictionary<string, EnemyMessages.NameTemplatesMessage> Translated { get; set; }
 
             // Npc name id for non-mashup substitutions
             public int NpcName { get; set; }
+
+            public bool GetMessage(string gameLang, out EnemyMessages.NameTemplatesMessage message)
+            {
+                message = null;
+                return Translated != null && Translated.TryGetValue(gameLang, out message);
+            }
         }
 
         public class NameTemplates
@@ -383,13 +392,17 @@ namespace RandomizerCommon
             public string UniqueTemplate => ProperTemplate ?? FullTemplate ?? PartialTemplate;
 
             // Additional tag. Sources have a fixed case, targets can select cases.
-            // TODO: Implement
             [JsonPropertyName("category")]
             public string Category { get; set; }
 
-            // TODO: Should return "" values here, for verification? Should validate it at least
-            internal List<string> GetConfigValues() => new[] { FullName, PartialName, ProperName, FullTemplate, PartialTemplate, ProperTemplate, SourceTemplate }
-                .Where(n => !string.IsNullOrEmpty(n)).ToList();
+            public bool IsFilledIn()
+            {
+                static bool namesFilledIn(params string[] names) => names.All(n => n == null || n != "");
+                return !string.IsNullOrEmpty(SourceFullName)
+                    && namesFilledIn(FullName, PartialName, ProperName)
+                    && !string.IsNullOrEmpty(MainTemplate)
+                    && namesFilledIn(FullTemplate, PartialTemplate, ProperTemplate, SourceTemplate);
+            }
         }
 
         public class CustomCleverName

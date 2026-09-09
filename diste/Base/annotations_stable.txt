@@ -189,13 +189,9 @@ ConfigItems:
   NoConfigNames: true
   Items:
   - Name: Rune Arc
+  - Name: Stonesword Key
   - Name: Fan Daggers
     Comment: Mixed limited/unlimited
-- GroupName: stonesword
-  Comment: Gets added to remove or norandomshop based on options
-  NoConfigNames: true
-  Items:
-  - Name: Stonesword Key
 - GroupName: bosssouls
   NoConfigNames: true
   Items:
@@ -806,97 +802,97 @@ Events:
   Req: caelid_postradahn
 - Name: ashen
   Text: Capital Destroyed
-  Req: farumazula_maliketh AND maliketh AND runes_rold_event
+  Req: farumazula AND maliketh AND runes_rold_event
 - Name: unsealed
   Text: Sealing Tree Burned
-  Req: dlc AND rauhruins_romina AND romina AND messmerskindling
+  Req: dlc AND rauhruins AND romina AND messmerskindling
 - Name: dlcopen
   Text: DLC Start
   Req: dlc AND dlcopen_event
 - Name: margit
-  Req: stormveil_margit
+  Req: stormhill
 - Name: godrick
-  Req: stormveil_godrick
+  Req: stormveil
 - Name: redwolf
-  Req: academy_redwolf
+  Req: academy
 - Name: rennala
-  Req: academy_library
+  Req: academy_courtyard
 - Name: radahn
   Req: caelid_radahn
 - Name: draconic
   Req: outskirts
 - Name: godfrey
-  Req: leyndell_sanctuary
+  Req: leyndell
 - Name: morgott
   Req: leyndell_throne
 - Name: godskinnoble
-  Req: volcano_temple
+  Req: volcano_town
 - Name: rykard
-  Req: volcano_rykard
+  Req: volcano_temple
 - Name: firegiant
-  Req: flamepeak_firegiant
+  Req: flamepeak
 - Name: darriwil
   Req: limgrave
 - Name: demihumanchief
-  Req: limgrave_coastalcave_boss
+  Req: limgrave_coastalcave
 - Name: felltwins
   Req: leyndell_tower
 - Name: onyxlord
-  Req: outskirts_sealedtunnel_boss
+  Req: outskirts_sealedtunnel
 - Name: godskinapostle
-  Req: caelid_tower_boss
+  Req: caelid_tower
 - Name: ancestor
-  Req: siofra_boss
+  Req: siofra
 - Name: mimictear
   Req: siofrabank_nokron
 - Name: ancestor2
-  Req: siofra_nokron_boss
+  Req: siofra_nokron
 - Name: gargoyles
-  Req: siofra_nokron_gargoyles
+  Req: siofra_nokron
 - Name: loretta
-  Req: liurnia_loretta
+  Req: liurnia
 - Name: makar
-  Req: precipice_boss
+  Req: precipice
 - Name: abductors
-  Req: volcano_abductors
+  Req: volcano_town
 - Name: elemer
-  Req: altus_elemer
+  Req: altus
 - Name: oneil
   Req: caelid
 - Name: fiaschampions
-  Req: deeproot_boss
+  Req: deeproot
 - Name: mohg
-  Req: sewer_mohg
+  Req: sewer
 - Name: mohg2
-  Req: mohgwyn_boss
+  Req: mohgwyn
 - Name: astel
   Req: ainsel_boss
 - Name: niall
-  Req: mountaintops_sol_boss
+  Req: mountaintops
 - Name: loretta2
-  Req: haligtree_loretta
+  Req: haligtree
 - Name: malenia
-  Req: haligtree_malenia
+  Req: haligtree_elphael
 - Name: godskinduo
-  Req: farumazula_godskinduo
+  Req: farumazula_start
 - Name: maliketh
-  Req: farumazula_maliketh
+  Req: farumazula
 - Name: gideon
-  Req: leyndell2_sanctuary
+  Req: leyndell2
 - Name: godfrey2
   Req: leyndell2_throne
 - Name: radagon
   Req: erdtree
 - Name: dancinglion
-  Req: dlc AND belurat_boss
+  Req: dlc AND belurat
 - Name: rellana
-  Req: dlc AND ensis_boss
+  Req: dlc AND ensis
 - Name: jori
-  Req: dlc AND scadualtus_catacombs_boss
+  Req: dlc AND scadualtus_catacombs
 - Name: ancientdragonman
-  Req: dlc AND gravesite_dragonpit_boss
+  Req: dlc AND gravesite_dragonpit
 - Name: romina
-  Req: dlc AND rauhruins_romina
+  Req: dlc AND rauhruins
 Areas:
 - Name: chapel_start
   Text: Chapel of Anticipation
@@ -906,24 +902,12 @@ Areas:
   Req: chapel_start
   Maps: m18_00_00_00
   Tags: minidungeon cave
-- Name: graveyard_cave
-  Text: Stranded Graveyard
-  FullText: Cave of Knowledge
-  Req: graveyard
-  KeyBase: graveyard
-  Maps: m18_00_00_00
 - Name: graveyard_grave
   Text: Limgrave - Fringefolk Hero's Grave
   Req: graveyard AND limgrave
   Maps: m18_00_00_00
   MainMaps: m18_00_00_00
   Tags: minidungeon grave
-- Name: graveyard_grave_boss
-  Text: Limgrave - Fringefolk Hero's Grave
-  FullText: Limgrave - Fringefolk Hero's Grave - Ulcerated Tree Spirit
-  Req: graveyard_grave
-  KeyBase: graveyard_grave
-  Maps: m18_00_00_00
 - Name: limgrave
   Text: Limgrave
   Req: graveyard
@@ -933,48 +917,18 @@ Areas:
   Comment: Stormveil Castle area message shows up right after Margit
   Req: limgrave
   Maps: m10_00_00_00 m60_40_38_00 m60_40_39_00 m60_41_37_00 m60_41_38_00 m60_41_39_00 m60_42_37_00 m60_42_38_00 m60_42_39_00 m60_42_40_00 m60_43_38_00 m60_43_39_00 m60_43_40_00
-- Name: limgrave_summonwater_seal
-  Text: Limgrave
-  FullText: Limgrave - Summonwater Village - Imp Seal
-  Req: limgrave
-  KeyBase: limgrave
-  Maps: m60_45_39_00
-- Name: stormveil_margit
-  Text: Stormhill
-  FullText: Margit, the Fell Omen
-  Req: stormhill
-  KeyBase: stormhill
-  Maps: m10_00_00_00
 - Name: roundtable
   Text: Roundtable Hold
   Req: stormhill
-  Maps: m11_10_00_00
-- Name: roundtable_seal
-  Text: Roundtable Hold
-  FullText: Roundtable Hold - Imp Seal
-  Req: roundtable
-  KeyBase: roundtable
-  Maps: m11_10_00_00
-- Name: roundtable_balcony
-  Text: Roundtable Hold
-  FullText: Roundtable Hold Balcony
-  Req: roundtable
-  KeyBase: roundtable
   Maps: m11_10_00_00
 - Name: limgrave_coastalcave
   Text: Limgrave - Coastal Cave
   Req: limgrave
   Maps: m31_15_00_00
   Tags: minidungeon cave
-- Name: limgrave_coastalcave_boss
-  Text: Limgrave - Coastal Cave
-  FullText: Limgrave - Coastal Cave - Demi-Human Chiefs
-  Req: limgrave_coastalcave
-  KeyBase: limgrave_coastalcave
-  Maps: m31_15_00_00
 - Name: limgrave_dragonchurch
   Text: Limgrave - Church of Dragon Communion
-  Req: limgrave_coastalcave_boss AND demihumanchief
+  Req: limgrave_coastalcave AND demihumanchief
   Maps: m60_41_35_00
 - Name: stormveil_start
   Text: Stormveil Castle
@@ -985,37 +939,13 @@ Areas:
   Req: stormveil_start AND rustykey
   Maps: m10_00_00_00
   MainMaps: m10_00_00_00
-- Name: stormveil_pantry_seal
-  Text: Stormveil Castle
-  FullText: Stormveil Castle - Pantry Imp Seal
-  Req: stormveil
-  KeyBase: stormveil
-  Maps: m10_00_00_00
-- Name: stormveil_armory_seal
-  Text: Stormveil Castle
-  FullText: Stormveil Castle - Armory Imp Seal
-  Req: stormveil
-  KeyBase: stormveil
-  Maps: m10_00_00_00
-- Name: stormveil_godrick
-  Text: Stormveil Castle
-  FullText: Godrick the Grafted
-  Req: stormveil
-  KeyBase: stormveil
-  Maps: m10_00_00_00
 - Name: stormveil_throne
   Text: Stormveil Castle
-  Req: (stormveil_godrick AND godrick) OR (liurnia AND noliurniagate)
+  Req: (stormveil AND godrick) OR (liurnia AND noliurniagate)
   Maps: m10_00_00_00
 - Name: limgrave_tower
   Text: Divine Tower of Limgrave
   Req: stormveil
-  Maps: m34_10_00_00
-- Name: limgrave_tower2
-  Text: Divine Tower of Limgrave
-  FullText: Divine Tower of Limgrave after Sending Gate
-  Req: limgrave_tower
-  KeyBase: limgrave_tower
   Maps: m34_10_00_00
 - Name: limgrave_tower_inner
   Text: Divine Tower of Limgrave
@@ -1025,127 +955,37 @@ Areas:
   Text: Weeping Peninsula
   Req: limgrave
   Maps: m60_40_33_00 m60_41_32_00 m60_41_33_00 m60_41_34_00 m60_42_32_00 m60_42_33_00 m60_42_34_00 m60_42_35_00 m60_43_30_00 m60_43_31_00 m60_43_32_00 m60_43_33_00 m60_43_34_00 m60_43_35_00 m60_44_31_00 m60_44_32_00 m60_44_33_00 m60_44_34_00 m60_45_32_00 m60_45_33_00 m60_45_34_00
-- Name: peninsula_evergaol
-  Text: Weeping Peninsula
-  FullText: Weeping Peninsula - Weeping Evergaol
-  Req: peninsula
-  KeyBase: peninsula
-  Maps: m60_42_33_00
-- Name: peninsula_morne
-  Text: Weeping Peninsula
-  FullText: Weeping Peninsula - Castle Morne
-  Req: peninsula
-  KeyBase: peninsula
-  Maps: m60_43_31_00
-- Name: peninsula_postmorne
-  Text: Weeping Peninsula
-  FullText: Weeping Peninsula - Beside the Rampart Gaol
-  Req: peninsula_morne
-  KeyBase: peninsula
-  Maps: m60_43_30_00
-- Name: peninsula_leonine
-  Text: Weeping Peninsula
-  FullText: Leonine Misbegotten
-  Req: peninsula_postmorne
-  KeyBase: peninsula
-  Maps: m60_43_30_00
 - Name: liurnia
   Text: Liurnia
   Req: (stormhill AND noliurniagate) OR (stormveil_throne AND liurniagate)
   Maps: m60_33_42_00 m60_33_43_00 m60_33_44_00 m60_33_45_00 m60_33_46_00 m60_33_47_00 m60_34_42_00 m60_34_43_00 m60_34_44_00 m60_34_45_00 m60_34_46_00 m60_34_47_00 m60_34_48_00 m60_34_49_00 m60_34_50_00 m60_35_42_00 m60_35_43_00 m60_35_44_00 m60_35_45_00 m60_35_46_00 m60_35_47_00 m60_35_48_00 m60_35_49_00 m60_35_50_00 m60_36_41_00 m60_36_42_00 m60_36_43_00 m60_36_44_00 m60_36_45_00 m60_36_46_00 m60_36_47_00 m60_36_48_00 m60_36_49_00 m60_36_50_00 m60_37_41_00 m60_37_42_00 m60_37_43_00 m60_37_44_00 m60_37_45_00 m60_37_46_00 m60_37_47_00 m60_37_48_00 m60_37_50_00 m60_38_39_00 m60_38_40_00 m60_38_41_00 m60_38_42_00 m60_38_43_00 m60_38_44_00 m60_38_45_00 m60_38_46_00 m60_38_47_00 m60_38_48_00 m60_38_50_00 m60_39_39_00 m60_39_40_00 m60_39_41_00 m60_39_42_00 m60_39_43_00 m60_39_44_00 m60_39_45_00 m60_39_46_00 m60_39_48_00 m60_40_39_00 m60_40_40_00
-- Name: liurnia_slumbering
-  Text: Liurnia
-  FullText: Liurnia - Slumbering Wolf's Shack
-  Req: liurnia_lakesidecave
-  KeyBase: liurnia
-  Maps: m60_36_41_00
-- Name: liurnia_manor
-  Text: Liurnia
-  FullText: Liurnia - Caria Manor
-  Req: liurnia
-  KeyBase: liurnia
-  Maps: m60_35_50_00
-- Name: liurnia_loretta
-  Text: Liurnia
-  FullText: Royal Knight Loretta
-  Req: liurnia_manor
-  KeyBase: liurnia
-  Maps: m60_35_50_00
-- Name: liurnia_kingsrealm_chest
-  Text: Liurnia
-  FullText: Liurnia - Kingsrealm Ruins - After Boss
-  Req: liurnia
-  KeyBase: liurnia
-  Maps: m60_34_48_00
 - Name: bellum
   Text: Bellum Highway
   Req: liurnia
   Maps: m60_36_47_00 m60_36_48_00 m60_36_49_00 m60_37_48_00 m60_37_49_00 m60_37_50_00 m60_38_48_00 m60_38_49_00 m60_38_50_00 m60_39_48_00 m60_39_49_00
-- Name: academy_entrance
-  Text: Academy of Raya Lucaria
-  FullText: Academy of Raya Lucaria Main Entrance
-  Req: liurnia AND academyglintstonekey
-  KeyBase: academy
-  Maps: m14_00_00_00
 - Name: academy
   Text: Academy of Raya Lucaria
-  Req: academy_entrance
-  Maps: m14_00_00_00
-- Name: academy_redwolf
-  Text: Academy of Raya Lucaria
-  FullText: Red Wolf of Radagon
-  Req: academy
-  KeyBase: academy
+  Req: liurnia AND academyglintstonekey
   Maps: m14_00_00_00
 - Name: academy_courtyard
   Text: Academy of Raya Lucaria
-  Req: academy_redwolf AND redwolf
-  Maps: m14_00_00_00
-- Name: academy_rooftops
-  Text: Academy of Raya Lucaria
-  FullText: Academy of Raya Lucaria Rooftops
-  Req: academy_courtyard
-  KeyBase: academy_courtyard
+  Req: academy AND redwolf
   Maps: m14_00_00_00
 - Name: academy_library
   Text: Academy of Raya Lucaria
-  Req: academy_courtyard
+  Req: academy_courtyard AND rennala
   Maps: m14_00_00_00
 - Name: academy_chest
   Text: Academy of Raya Lucaria
-  Req: academy_library AND rennala AND discardedpalacekey
+  Req: academy_library AND discardedpalacekey
   Maps: m14_00_00_00
 - Name: siofra
   Text: Siofra River
   Req: limgrave
   Maps: m12_07_00_00 m12_02_00_00 m12_08_00_00
-- Name: siofra_dragonkin
-  Text: Siofra River
-  FullText: Nokron to Siofra Path
-  Req: siofra
-  KeyBase: siofra
-  Maps: m12_02_00_00
-- Name: siofra_boss
-  Text: Siofra River
-  FullText: Ancestor Spirit
-  Req: siofra
-  KeyBase: siofra
-  Maps: m12_08_00_00
 - Name: ainsel_start
   Text: Ainsel River Downstream
   Req: liurnia
-  Maps: m12_01_00_00
-- Name: ainsel_dragonkin
-  Text: Ainsel River Downstream
-  FullText: Dragonkin Soldier of Nokstella
-  Req: ainsel_start
-  KeyBase: ainsel_start
-  Maps: m12_01_00_00
-- Name: ainsel_postdragonkin
-  Text: Ainsel River Downstream
-  FullText: After Dragonkin Soldier of Nokstella
-  Req: ainsel_dragonkin
-  KeyBase: ainsel_start
   Maps: m12_01_00_00
 - Name: liurnia_studyhall
   Text: Carian Study Hall
@@ -1155,45 +995,8 @@ Areas:
   Text: Caelid
   Req: limgrave
   Maps: m60_48_40_00 m60_46_38_00 m60_46_39_00 m60_46_40_00 m60_47_37_00 m60_47_38_00 m60_47_39_00 m60_47_40_00 m60_48_36_00 m60_48_37_00 m60_48_38_00 m60_48_39_00 m60_49_36_00 m60_49_37_00 m60_49_38_00 m60_49_39_00 m60_50_36_00 m60_50_37_00 m60_50_38_00 m60_50_39_00 m60_51_35_00 m60_51_36_00
-- Name: caelid_forsaken_seal
-  Text: Caelid
-  FullText: Caelid - Forsaken Ruins - Imp Seal
-  Req: caelid
-  KeyBase: caelid
-  Maps: m60_47_40_00
-- Name: caelid_redmane
-  Text: Caelid
-  FullText: Redmane Castle
-  Req: caelid
-  KeyBase: caelid
-  Maps: m60_51_35_00 m60_51_36_00
-- Name: caelid_redmane_postboss
-  Text: Caelid
-  FullText: After Redmane Castle Boss
-  Req: caelid
-  KeyBase: caelid
-  Maps: m60_51_36_00
-- Name: caelid_crypt_boss
-  Text: Caelid
-  FullText: Caelid - Sellia Chair-Crypt - Nox Duo
-  Req: caelid
-  KeyBase: caelid
-  Maps: m60_49_39_00
-- Name: caelid_crypt_chest
-  Text: Caelid
-  FullText: Caelid - Sellia Chair-Crypt - After Boss
-  Req: caelid_crypt_boss
-  KeyBase: caelid
-  Maps: m60_49_39_00
-- Name: caelid_caelem_chest
-  Text: Caelid
-  FullText: Caelid - Caelem Ruins - After Boss
-  Req: caelid
-  KeyBase: caelid
-  Maps: m60_48_40_00
 - Name: caelid_greatjar
   Text: Caelid
-  FullText: Caelid - Great-Jar Area
   Req: siofra
   Maps: m60_47_41_00 m60_47_42_00 m60_48_40_00 m60_49_40_00
 - Name: dragonbarrow
@@ -1204,53 +1007,11 @@ Areas:
   Text: Ruin-Strewn Precipice
   Req: liurnia
   Maps: m39_20_00_00
-- Name: precipice_boss
-  Text: Ruin-Strewn Precipice
-  FullText: Magma Wrym Makar
-  Req: precipice
-  KeyBase: precipice
-  Maps: m39_20_00_00
 - Name: altus
   Text: Altus Plateau
   Comment: More complex is (nodectus AND precipice AND makar) OR (nodectus AND volcano_inquisition) OR (bellum AND dectusmedallionleft AND dectusmedallionright). But force Dectus before Altus this way
   Req: bellum AND dectusmedallionleft AND dectusmedallionright
   Maps: m60_36_51_00 m60_36_52_00 m60_37_51_00 m60_37_52_00 m60_38_50_00 m60_38_51_00 m60_38_52_00 m60_38_53_00 m60_38_54_00 m60_39_50_00 m60_39_51_00 m60_39_52_00 m60_39_53_00 m60_39_54_00 m60_40_50_00 m60_40_51_00 m60_40_52_00 m60_40_53_00 m60_40_54_00 m60_40_55_00 m60_41_50_00 m60_41_51_00 m60_41_52_00 m60_41_53_00 m60_41_54_00 m60_41_55_00 m60_42_52_00 m60_42_53_00 m60_42_54_00 m60_42_55_00 m60_43_53_00 m60_43_54_00
-- Name: altus_wyndhamruins_seal
-  Text: Altus Plateau
-  FullText: Altus Plateau - Wyndham Ruins - Imp Seal
-  Req: altus
-  KeyBase: altus
-  Maps: m60_38_52_00
-- Name: altus_evergaol
-  Text: Altus Plateau
-  FullText: Altus Plateau - Golden Lineage Evergaol
-  Req: altus
-  KeyBase: altus
-  Maps: m60_39_50_00
-- Name: altus_shaded
-  Text: Altus Plateau
-  FullText: Shaded Castle
-  Req: altus
-  KeyBase: altus
-  Maps: m60_39_54_00
-- Name: altus_elemer
-  Text: Altus Plateau
-  FullText: Shaded Castle - Elemer of the Briar
-  Req: altus_shaded
-  KeyBase: altus
-  Maps: m60_39_54_00
-- Name: altus_writheblood_chest
-  Text: Altus Plateau
-  FullText: Altus Plateau - Writheblood Ruins - After Boss
-  Req: altus
-  KeyBase: altus
-  Maps: m60_40_53_00
-- Name: altus_lux_chest
-  Text: Altus Plateau
-  FullText: Altus Plateau - Lux Ruins - After Boss
-  Req: altus
-  KeyBase: altus
-  Maps: m60_38_51_00
 - Name: outskirts
   Text: Capital Outskirts
   Req: altus
@@ -1260,12 +1021,6 @@ Areas:
   Req: runes_leyndell AND ((outskirts AND draconic) OR (deeproot AND fiaschampions)) AND (noearlymedal OR purebloodknightsmedal)
   Until: ashen
   Maps: m11_00_00_00 m60_45_52_00
-- Name: leyndell_sanctuary
-  Text: Leyndell
-  FullText: Leyndell - Erdtree Sanctuary
-  Req: leyndell
-  KeyBase: leyndell
-  Maps: m11_00_00_00
 - Name: leyndell_divinebridge
   Text: Leyndell Divine Bridge
   Comment: For the sake of easier logic, discount the conditional Leyndell access
@@ -1275,50 +1030,14 @@ Areas:
   Text: Leyndell
   Req: leyndell AND godfrey
   Maps: m11_00_00_00
-- Name: leyndell_sanctuaryback
-  Text: Leyndell
-  FullText: Leyndell - Behind Erdtree Sanctuary
-  Req: leyndell_throne
-  KeyBase: leyndell_throne
-  Maps: m11_00_00_00
-- Name: leyndell_sanctuaryleft
-  Text: Leyndell
-  FullText: Leyndell - Erdtree Sanctuary Treasure
-  Req: leyndell_throne
-  KeyBase: leyndell_throne
-  Maps: m11_00_00_00
-- Name: leyndell_bedchamber
-  Text: Leyndell
-  FullText: Leyndell - Queen's Bedchamber
-  Req: leyndell_throne
-  KeyBase: leyndell_throne
-  Maps: m11_00_00_00
-- Name: leyndell_sanctuaryfront
-  Text: Leyndell
-  FullText: Leyndell - Erdtree Sanctuary Stairs
-  Req: leyndell_throne
-  KeyBase: leyndell_throne
-  Maps: m11_00_00_00
 - Name: leyndell_erdtree
   Text: Leyndell
   Comment: Could be Until ashen, but ignore glitches which skip Morgott
   Req: leyndell_throne AND morgott
   Maps: m11_00_00_00
-- Name: leyndell_pretower
-  Text: Leyndell
-  FullText: Leyndell - before Divine Tower
-  Req: leyndell
-  KeyBase: leyndell
-  Maps: m11_00_00_00
-- Name: leyndell_tower_start
-  Text: Divine Tower of East Altus
-  FullText: Divine Tower of East Altus Start
-  Req: leyndell_pretower
-  KeyBase: leyndell_tower
-  Maps: m34_14_00_00
 - Name: leyndell_tower
   Text: Divine Tower of East Altus
-  Req: leyndell_tower_start AND leyndell_erdtree
+  Req: leyndell AND leyndell_erdtree
   Maps: m34_14_00_00
 - Name: leyndell_tower_inner
   Text: Divine Tower of East Altus
@@ -1327,18 +1046,6 @@ Areas:
 - Name: sewer
   Text: Subterranean Shunning-Grounds
   Req: leyndell
-  Maps: m35_00_00_00
-- Name: sewer_royal
-  Text: Subterranean Shunning-Grounds
-  FullText: Subterranean Shunning-Grounds - From Royal Capital
-  Req: sewer
-  KeyBase: sewer
-  Maps: m35_00_00_00
-- Name: sewer_mohg
-  Text: Subterranean Shunning-Grounds
-  FullText: Mohg, the Omen
-  Req: sewer
-  KeyBase: sewer
   Maps: m35_00_00_00
 - Name: sewer_flame
   Text: Subterranean Shunning-Grounds
@@ -1349,12 +1056,6 @@ Areas:
   Req: sewer
   Maps: m35_00_00_00
   Tags: minidungeon catacomb
-- Name: sewer_catacombs_boss
-  Text: Leyndell Catacombs
-  FullText: Leyndell Catacombs - Esgar, Priest of Blood
-  Req: sewer_catacombs
-  KeyBase: sewer_catacombs
-  Maps: m35_00_00_00
 - Name: deeproot_start
   Text: Deeproot Depths
   Req: sewer_flame
@@ -1373,110 +1074,38 @@ Areas:
 - Name: caelid_postradahn
   Text: Caelid
   Req: caelid_radahn AND radahn
-- Name: caelid_redmane_boss
-  Text: Caelid
-  FullText: Redmane Castle Boss
-  Req: caelid_postradahn
-  KeyBase: caelid_postradahn
-  Maps: m60_51_36_00
 - Name: caelid_tower
   Text: Divine Tower of Caelid
   Req: dragonbarrow
-  Maps: m34_13_00_00
-- Name: caelid_tower_boss
-  Text: Divine Tower of Caelid
-  FullText: Divine Tower of Caelid - Godskin Apostle
-  Req: caelid_tower
-  KeyBase: caelid_tower
-  Maps: m34_13_00_00
-- Name: caelid_tower_postboss
-  Text: Divine Tower of Caelid
-  FullText: Divine Tower of Caelid - After Godskin Apostle
-  Req: caelid_tower_boss
-  KeyBase: caelid_tower
   Maps: m34_13_00_00
 - Name: caelid_tower_inner
   Text: Divine Tower of Caelid
   Req: caelid_tower AND runeradahn
   Maps: m34_13_00_00
-- Name: siofrabank_prenokron
-  Text: Nokron, Eternal City
-  FullText: Nokron from Limgrave
-  Req: limgrave AND meteor
-  KeyBase: siofrabank_nokron
-  Maps: m12_07_00_00
 - Name: siofrabank_nokron
   Text: Nokron, Eternal City
-  Req: siofrabank_prenokron
+  Req: limgrave AND meteor
   Maps: m12_07_00_00 m12_02_00_00
   MainMaps: m12_07_00_00
-- Name: siofra_nokron_mimic
-  Text: Nokron, Eternal City
-  FullText: Mimic Tear
-  Req: siofrabank_nokron
-  KeyBase: siofrabank_nokron
-  Maps: m12_02_00_00
 - Name: siofra_nokron
   Text: Nokron, Eternal City
-  Req: siofra_nokron_mimic AND mimictear
+  Req: siofrabank_nokron AND mimictear
   Maps: m12_02_00_00 m12_09_00_00
   MainMaps: m12_02_00_00
-- Name: siofra_nokron_boss
-  Text: Nokron, Eternal City
-  FullText: Regal Ancestor Spirit
-  Req: siofra_nokron
-  KeyBase: siofra_nokron
-  Maps: m12_09_00_00
-- Name: siofra_nokron_aqueduct
-  Text: Nokron, Eternal City
-  FullText: Nokron - Aqueduct-Facing Cliffs
-  Req: siofra_nokron
-  KeyBase: siofra_nokron
-  Maps: m12_02_00_00
-- Name: siofra_nokron_gargoyles
-  Text: Nokron, Eternal City
-  FullText: Valiant Gargoyles
-  Req: siofra_nokron_aqueduct
-  KeyBase: siofra_nokron
-  Maps: m12_02_00_00
-- Name: siofra_nokron_grounds
-  Text: Nokron, Eternal City
-  FullText: Nokron - Night's Sacred Grounds
-  Req: siofra_nokron
-  KeyBase: siofra_nokron
-  Maps: m12_02_00_00
-- Name: siofra_nokron_grounds_seal
-  Text: Nokron, Eternal City
-  FullText: Nokron, Eternal City - Imp Seal
-  Req: siofra_nokron_grounds
-  KeyBase: siofra_nokron
-  Maps: m12_02_00_00
 - Name: deeproot
   Text: Deeproot Depths
-  Req: deeproot_start OR (siofra_nokron_gargoyles AND gargoyles)
+  Req: deeproot_start OR (siofra_nokron AND gargoyles)
   Maps: m12_03_00_00
   MainMaps: m12_03_00_00
-- Name: deeproot_boss
-  Text: Deeproot Depths
-  FullText: Deeproot Depths - Fia's Champions
-  Req: deeproot
-  KeyBase: deeproot
-  Maps: m12_03_00_00
 - Name: deeproot_dream
   Text: Deeproot Depths
-  Req: deeproot_boss AND cursemarkofdeath
+  Req: deeproot AND cursemarkofdeath
   Maps: m12_03_00_00
 - Name: liurnia_tower
   Text: Divine Tower of Liurnia
   Req: liurnia_studyhall AND carianinvertedstatue
   Maps: m34_11_00_00
   MainMaps: m34_11_00_00
-- Name: liurnia_tower_inner
-  Text: Divine Tower of Liurnia
-  FullText: Divine Tower of Liurnia Interior
-  Req: liurnia_tower
-  KeyBase: liurnia_tower
-  Maps: m34_11_00_00
 - Name: gelmir
   Text: Mt. Gelmir
   Comment: End Ranni quest, back to Altus
@@ -1496,67 +1125,18 @@ Areas:
   Req: volcano_drawingroom OR (nodeathless AND academy AND altus)
   Maps: m16_00_00_00
   MainMaps: m16_00_00_00
-- Name: volcano_town_seal
-  Text: Volcano Manor
-  FullText: Volcano Manor - Town Imp Seal
-  Req: volcano_town
-  KeyBase: volcano_town
-  Maps: m16_00_00_00
-- Name: volcano_abductors
-  Text: Volcano Manor
-  FullText: Volcano Manor - Abductor Virgins
-  Req: volcano_town
-  KeyBase: volcano_town
-  Maps: m16_00_00_00
 - Name: volcano_temple
   Text: Volcano Manor
-  Req: volcano_town
-  Maps: m16_00_00_00
-- Name: volcano_posttemple
-  Text: Volcano Manor
-  FullText: Volcano Manor after Temple of Eiglay
-  Req: volcano_temple AND godskinnoble
-  KeyBase: volcano_temple
-  Maps: m16_00_00_00
-- Name: volcano_sendinggate
-  Text: Volcano Manor
-  FullText: Volcano Manor - Room Before Sending Gate
-  Req: volcano_posttemple
-  KeyBase: volcano_temple
-  Maps: m16_00_00_00
-- Name: volcano_hallway
-  Text: Volcano Manor
-  FullText: Volcano Manor - Hallway Opposite Sending Gate
-  Comment: And after Stonesword Key
-  Req: volcano_sendinggate
-  KeyBase: volcano_temple
-  Maps: m16_00_00_00
-- Name: volcano_rykard
-  Text: Volcano Manor
-  FullText: Rykard, Lord of Blasphemy
-  Req: volcano_sendinggate
-  KeyBase: volcano_temple
+  Req: volcano_town AND godskinnoble
   Maps: m16_00_00_00
 - Name: outskirts_sealedtunnel
   Text: Capital Outskirts - Sealed Tunnel
   Req: altus
   Maps: m34_12_00_00
   Tags: minidungeon tunnel
-- Name: outskirts_sealedtunnel_preboss
-  Text: Capital Outskirts - Sealed Tunnel
-  FullText: Capital Outskirts - Sealed Tunnel Before Boss
-  Req: outskirts_sealedtunnel
-  KeyBase: outskirts_sealedtunnel
-  Maps: m34_12_00_00
-- Name: outskirts_sealedtunnel_boss
-  Text: Capital Outskirts - Sealed Tunnel
-  FullText: Capital Outskirts - Sealed Tunnel - Onyx Lord
-  Req: outskirts_sealedtunnel_preboss
-  KeyBase: outskirts_sealedtunnel
-  Maps: m34_12_00_00
 - Name: altus_tower_inner
   Text: Divine Tower of West Altus
-  Req: outskirts_sealedtunnel_boss AND onyxlord AND runerykard
+  Req: outskirts_sealedtunnel AND onyxlord AND runerykard
   Maps: m34_12_00_00
 - Name: ainsel
   Text: Ainsel River
@@ -1564,18 +1144,6 @@ Areas:
   Req: deeproot
   Maps: m12_01_00_00
   MainMaps: m12_01_00_00
-- Name: ainsel_seal
-  Text: Ainsel River
-  FullText: Ainsel River - Nokstella Imp Seal
-  Req: ainsel
-  KeyBase: ainsel
-  Maps: m12_01_00_00
-- Name: ainsel_abovestart
-  Text: Ainsel River
-  FullText: Above Ainsel River Downstream
-  Req: ainsel
-  KeyBase: ainsel
-  Maps: m12_01_00_00
 - Name: lakeofrot
   Text: Lake of Rot
   Req: ainsel
@@ -1589,12 +1157,6 @@ Areas:
   Req: ainsel_boss AND astel AND darkmoonring
   Maps: m60_33_40_00 m60_33_41_00 m60_33_42_00 m60_34_41_00 m60_34_42_00 m60_35_41_00 m60_35_42_00 m60_36_41_00 m60_36_42_00
   MainMaps: m60_33_40_00 m60_33_41_00 m60_33_42_00 m60_34_41_00 m60_34_42_00 m60_35_41_00 m60_35_42_00 m60_36_41_00 m60_36_42_00
-- Name: moonlight_seal
-  Text: Moonlight Altar
-  FullText: Moonlight Altar - Imp Seal
-  Req: moonlight
-  KeyBase: moonlight
-  Maps: m60_35_41_00
 - Name: mountaintops_start
   Text: Forbidden Lands
   Req: leyndell_tower AND runes_randomania
@@ -1606,93 +1168,27 @@ Areas:
   MainMaps: m60_49_53_00
 - Name: mountaintops_sol
   Text: Mountaintops of the Giants
-  Req: mountaintops
+  Req: mountaintops AND niall
   Maps: m60_51_58_00
   MainMaps: m60_51_58_00
-- Name: mountaintops_sol_boss
-  Text: Mountaintops of the Giants
-  FullText: Commander Niall
-  Req: mountaintops_sol
-  KeyBase: mountaintops
-  Maps: m60_51_57_00
-- Name: mountaintops_sol_postboss
-  Text: Mountaintops of the Giants
-  FullText: After Commander Niall
-  Req: mountaintops_sol_boss AND niall
-  KeyBase: mountaintops_sol
-  Maps: m60_51_57_00
 - Name: flamepeak
   Text: Flame Peak
   Req: mountaintops
   Maps: m60_50_53_00 m60_50_54_00 m60_51_52_00 m60_51_53_00 m60_51_54_00 m60_52_52_00 m60_52_53_00 m60_52_54_00 m60_53_52_00 m60_53_53_00 m60_53_54_00 m60_54_53_00
-- Name: flamepeak_firegiant
-  Text: Flame Peak
-  FullText: Fire Giant
-  Req: flamepeak
-  KeyBase: flamepeak
-  Maps: m60_52_52_00 m60_52_53_00 m60_53_52_00 m60_53_53_00 m60_54_53_00
-- Name: farumazula_prestart
-  Text: Farum Azula
-  FullText: Farum Azula - Crumbling Beast Grave
-  Req: flamepeak_firegiant AND firegiant
-  KeyBase: farumazula_start
-  Maps: m13_00_00_00
 - Name: farumazula_start
   Text: Farum Azula
   Comment: Either with Melina or Frenzied Flame (canceling the flame requires farumazula)
-  Req: farumazula_prestart
-  Maps: m13_00_00_00
-- Name: farumazula_temple
-  Text: Farum Azula
-  FullText: Farum Azula - Dragon Temple
-  Req: farumazula_start
-  KeyBase: farumazula_start
-  Maps: m13_00_00_00
-- Name: farumazula_transept
-  Text: Farum Azula
-  FullText: Farum Azula - Dragon Temple Transept
-  Req: farumazula_temple
-  KeyBase: farumazula_start
-  Maps: m13_00_00_00
-- Name: farumazula_godskinduo
-  Text: Farum Azula
-  FullText: Godskin Duo
-  Req: farumazula_temple
-  KeyBase: farumazula_start
+  Req: flamepeak AND firegiant
   Maps: m13_00_00_00
 - Name: farumazula
   Text: Farum Azula
-  Req: farumazula_godskinduo AND godskinduo
-  Maps: m13_00_00_00
-- Name: farumazula_lift
-  Text: Farum Azula
-  FullText: Farum Azula - Dragon Temple Lift
-  Req: farumazula
-  KeyBase: farumazula
-  Maps: m13_00_00_00
-- Name: farumazula_maliketh
-  Text: Farum Azula
-  FullText: Maliketh the Black Blade
-  Req: farumazula
-  KeyBase: farumazula
-  Maps: m13_00_00_00
-- Name: farumazula_placidusax
-  Text: Farum Azula
-  FullText: Dragonlord Placidusax
-  Req: farumazula
-  KeyBase: farumazula
+  Req: farumazula_start AND godskinduo
   Maps: m13_00_00_00
 - Name: chapel
   Text: Chapel of Anticipation
   Req: liurnia AND imbued_base
   Maps: m10_01_00_00
   MainMaps: m10_01_00_00
-- Name: chapel_boss
-  Text: Chapel of Anticipation
-  FullText: Chapel of Anticipation - Grafted Scion
-  Req: chapel
-  KeyBase: chapel
-  Maps: m10_01_00_00
 - Name: farumazula_limited
   Text: Farum Azula via Belfries
   Comment: Pearldrake Talisman
@@ -1708,12 +1204,6 @@ Areas:
   Req: mountaintops_start AND haligtreesecretmedallionleft AND haligtreesecretmedallionright
   Maps: m30_20_00_00
   Tags: minidungeon catacomb
-- Name: snowfield_hiddenpath_boss
-  Text: Hidden Path to the Haligtree
-  FullText: Hidden Path to the Haligtree - Stray Mimic Tear
-  Req: snowfield_hiddenpath
-  KeyBase: snowfield_hiddenpath
-  Maps: m30_20_00_00
 - Name: snowfield
   Text: Consecrated Snowfield
   Req: snowfield_hiddenpath
@@ -1722,40 +1212,9 @@ Areas:
   Text: Haligtree
   Req: snowfield
   Maps: m15_00_00_00
-- Name: haligtree_loretta
-  Text: Haligtree
-  FullText: Loretta, Knight of the Haligtree
-  Req: haligtree
-  KeyBase: haligtree
-  Maps: m15_00_00_00
-- Name: haligtree_postloretta
-  Text: Haligtree
-  FullText: After Loretta, Knight of the Haligtree
-  Comment: Only exists because of multiplayer fog gate
-  Req: haligtree_loretta AND loretta2
-  KeyBase: haligtree_elphael
-  Maps: m15_00_00_00
 - Name: haligtree_elphael
   Text: Haligtree
-  Req: haligtree_postloretta
-  Maps: m15_00_00_00
-- Name: haligtree_elphael_seal_upper
-  Text: Haligtree
-  FullText: Haligtree - Upper Imp Seal
-  Req: haligtree_elphael
-  KeyBase: haligtree_elphael
-  Maps: m15_00_00_00
-- Name: haligtree_elphael_seal_lower
-  Text: Haligtree
-  FullText: Haligtree - Lower Imp Seal
-  Req: haligtree_elphael
-  KeyBase: haligtree_elphael
-  Maps: m15_00_00_00
-- Name: haligtree_malenia
-  Text: Haligtree
-  FullText: Malenia, Blade of Miquella
-  Req: haligtree_elphael
-  KeyBase: haligtree_elphael
+  Req: haligtree AND loretta2
   Maps: m15_00_00_00
 - Name: isolated_tower_inner
   Text: Isolated Divine Tower
@@ -1764,47 +1223,16 @@ Areas:
   Maps: m34_15_00_00
 - Name: mohgwyn
   Text: Mohgwyn
-  Comment: Medal is unreliable to get to without key item rando
+  Comment: Unreliable to get to without key item rando
   Req: snowfield OR (altus AND purebloodknightsmedal)
-  Maps: m12_05_00_00
-- Name: mohgwyn_boss
-  Text: Mohgwyn
-  FullText: Mohg, Lord of Blood
-  Req: mohgwyn
-  KeyBase: mohgwyn
   Maps: m12_05_00_00
 - Name: leyndell2
   Text: Ashen Leyndell
   Req: farumazula AND ashen
   Maps: m11_05_00_00
-- Name: sewer_ashen
-  Text: Ashen Leyndell
-  FullText: Subterranean Shunning-Grounds - Ashen Capital Dropdown
-  Req: leyndell2
-  KeyBase: leyndell2
-  Maps: m35_00_00_00
-- Name: leyndell2_pretower
-  Text: Ashen Leyndell
-  FullText: Ashen Leyndell - before Divine Tower
-  Comment: Have to go from Mountaintops
-  Req: leyndell2
-  KeyBase: leyndell2
-  Maps: m11_05_00_00
-- Name: leyndell2_sanctuary
-  Text: Ashen Leyndell
-  FullText: Ashen Leyndell - Erdtree Sanctuary
-  Req: leyndell2
-  KeyBase: leyndell2
-  Maps: m11_05_00_00
-- Name: leyndell2_bedchamber
-  Text: Ashen Leyndell
-  FullText: Ashen Leyndell - Queen's Bedchamber
-  Req: leyndell2_sanctuary AND gideon
-  KeyBase: leyndell2
-  Maps: m11_05_00_00
 - Name: leyndell2_throne
   Text: Ashen Leyndell
-  Req: leyndell2_bedchamber
+  Req: leyndell2 AND gideon
   Maps: m11_05_00_00
 - Name: erdtree
   Text: Stone Platform
@@ -1816,626 +1244,232 @@ Areas:
   Req: peninsula
   Maps: m30_00_00_00
   Tags: minidungeon catacomb
-- Name: peninsula_tombswardcatacombs_seal
-  Text: Weeping Peninsula - Tombsward Catacombs
-  FullText: Weeping Peninsula - Tombsward Catacombs - Imp Seal
-  Req: peninsula_tombswardcatacombs
-  KeyBase: peninsula_tombswardcatacombs
-  Maps: m30_00_00_00
-  Tags: minidungeon catacomb
-- Name: peninsula_tombswardcatacombs_boss
-  Text: Weeping Peninsula - Tombsward Catacombs
-  FullText: Weeping Peninsula - Tombsward Catacombs - Cemetery Shade
-  Req: peninsula_tombswardcatacombs
-  KeyBase: peninsula_tombswardcatacombs
-  Maps: m30_00_00_00
 - Name: peninsula_impalerscatacombs
   Text: Weeping Peninsula - Impaler's Catacombs
   Req: peninsula
   Maps: m30_01_00_00
   Tags: minidungeon catacomb
-- Name: peninsula_impalerscatacombs_boss
-  Text: Weeping Peninsula - Impaler's Catacombs
-  FullText: Weeping Peninsula - Impaler's Catacombs - Erdtree Burial Watchdog
-  Req: peninsula_impalerscatacombs
-  KeyBase: peninsula_impalerscatacombs
-  Maps: m30_01_00_00
 - Name: limgrave_stormfootcatacombs
   Text: Limgrave - Stormfoot Catacombs
   Req: limgrave
   Maps: m30_02_00_00
   Tags: minidungeon catacomb
-- Name: limgrave_stormfootcatacombs_boss
-  Text: Limgrave - Stormfoot Catacombs
-  FullText: Limgrave - Stormfoot Catacombs - Erdtree Burial Watchdog
-  Req: limgrave_stormfootcatacombs
-  KeyBase: limgrave_stormfootcatacombs
-  Maps: m30_02_00_00
 - Name: liurnia_roadsendcatacombs
   Text: Liurnia - Road's End Catacombs
   Req: liurnia
   Maps: m30_03_00_00
   Tags: minidungeon catacomb
-- Name: liurnia_roadsendcatacombs_boss
-  Text: Liurnia - Road's End Catacombs
-  FullText: Liurnia - Road's End Catacombs - Spiritcaller Snail
-  Req: liurnia_roadsendcatacombs
-  KeyBase: liurnia_roadsendcatacombs
-  Maps: m30_03_00_00
 - Name: limgrave_murkwatercatacombs
   Text: Limgrave - Murkwater Catacombs
   Req: limgrave
   Maps: m30_04_00_00
   Tags: minidungeon catacomb
-- Name: limgrave_murkwatercatacombs_boss
-  Text: Limgrave - Murkwater Catacombs
-  FullText: Limgrave - Murkwater Catacombs - Grave Warden Duelist
-  Req: limgrave_murkwatercatacombs
-  KeyBase: limgrave_murkwatercatacombs
-  Maps: m30_04_00_00
 - Name: liurnia_blackknifecatacombs
   Text: Liurnia - Black Knife Catacombs
   Req: liurnia
   Maps: m30_05_00_00
   Tags: minidungeon catacomb
-- Name: liurnia_blackknifecatacombs_seal
-  Text: Liurnia - Black Knife Catacombs
-  FullText: Liurnia - Black Knife Catacombs - Imp Seal
-  Req: liurnia_blackknifecatacombs
-  KeyBase: liurnia_blackknifecatacombs
-  Maps: m30_05_00_00
-  Tags: minidungeon catacomb
-- Name: liurnia_blackknifecatacombs_boss
-  Text: Liurnia - Black Knife Catacombs
-  FullText: Liurnia - Black Knife Catacombs - Cemetery Shade
-  Req: liurnia_blackknifecatacombs
-  KeyBase: liurnia_blackknifecatacombs
-  Maps: m30_05_00_00
-- Name: liurnia_blackknifecatacombs_boss2
-  Text: Liurnia - Black Knife Catacombs
-  FullText: Liurnia - Black Knife Catacombs - Black Knife Assassin
-  Req: liurnia_blackknifecatacombs
-  KeyBase: liurnia_blackknifecatacombs
-  Maps: m30_05_00_00
 - Name: liurnia_cliffbottomcatacombs
   Text: Liurnia - Cliffbottom Catacombs
   Req: liurnia
   Maps: m30_06_00_00
   Tags: minidungeon catacomb
-- Name: liurnia_cliffbottomcatacombs_seal
-  Text: Liurnia - Cliffbottom Catacombs
-  FullText: Liurnia - Cliffbottom Catacombs - Imp Seal
-  Req: liurnia_cliffbottomcatacombs
-  KeyBase: liurnia_cliffbottomcatacombs
-  Maps: m30_06_00_00
-  Tags: minidungeon catacomb
-- Name: liurnia_cliffbottomcatacombs_boss
-  Text: Liurnia - Cliffbottom Catacombs
-  FullText: Liurnia - Cliffbottom Catacombs - Erdtree Burial Watchdog
-  Req: liurnia_cliffbottomcatacombs
-  KeyBase: liurnia_cliffbottomcatacombs
-  Maps: m30_06_00_00
 - Name: gelmir_wyndhamcatacombs
   Text: Mt. Gelmir - Wyndham Catacombs
   Req: gelmir
   Maps: m30_07_00_00
   Tags: minidungeon catacomb
-- Name: gelmir_wyndhamcatacombs_seal
-  Text: Mt. Gelmir - Wyndham Catacombs
-  FullText: Mt. Gelmir - Wyndham Catacombs - Imp Seal
-  Req: gelmir_wyndhamcatacombs
-  KeyBase: gelmir_wyndhamcatacombs
-  Maps: m30_07_00_00
-  Tags: minidungeon catacomb
-- Name: gelmir_wyndhamcatacombs_boss
-  Text: Mt. Gelmir - Wyndham Catacombs
-  FullText: Mt. Gelmir - Wyndham Catacombs - Erdtree Burial Watchdog
-  Req: gelmir_wyndhamcatacombs
-  KeyBase: gelmir_wyndhamcatacombs
-  Maps: m30_07_00_00
 - Name: altus_grave
   Text: Altus Plateau - Sainted Hero's Grave
   Req: altus
   Maps: m30_08_00_00
   Tags: minidungeon grave
-- Name: altus_grave_seal_start
-  Text: Altus Plateau - Sainted Hero's Grave
-  FullText: Altus Plateau - Sainted Hero's Grave - First Imp Seal
-  Req: altus_grave
-  KeyBase: altus_grave
-  Maps: m30_08_00_00
-  Tags: minidungeon grave
-- Name: altus_grave_seal_other
-  Text: Altus Plateau - Sainted Hero's Grave
-  FullText: Altus Plateau - Sainted Hero's Grave - Second Imp Seal
-  Req: altus_grave
-  KeyBase: altus_grave
-  Maps: m30_08_00_00
-  Tags: minidungeon grave
-- Name: altus_grave_boss
-  Text: Altus Plateau - Sainted Hero's Grave
-  FullText: Altus Plateau - Sainted Hero's Grave - Ancient Hero of Zamor
-  Req: altus_grave
-  KeyBase: altus_grave
-  Maps: m30_08_00_00
 - Name: gelmir_grave
   Text: Mt. Gelmir - Gelmir Hero's Grave
   Req: gelmir
   Maps: m30_09_00_00
   Tags: minidungeon grave
-- Name: gelmir_grave_boss
-  Text: Mt. Gelmir - Gelmir Hero's Grave
-  FullText: Mt. Gelmir - Gelmir Hero's Grave - Red Wolf of the Champion
-  Req: gelmir_grave
-  KeyBase: gelmir_grave
-  Maps: m30_09_00_00
 - Name: outskirts_grave
   Text: Capital Outskirts - Auriza Hero's Grave
   Req: outskirts
   Maps: m30_10_00_00
   Tags: minidungeon grave
-- Name: outskirts_grave_seal
-  Text: Capital Outskirts - Auriza Hero's Grave
-  FullText: Capital Outskirts - Auriza Hero's Grave - Imp Seal
-  Req: outskirts_grave
-  KeyBase: outskirts_grave
-  Maps: m30_10_00_00
-  Tags: minidungeon grave
-- Name: outskirts_grave_boss
-  Text: Capital Outskirts - Auriza Hero's Grave
-  FullText: Capital Outskirts - Auriza Hero's Grave - Crucible Knight Ordovis
-  Req: outskirts_grave
-  KeyBase: outskirts_grave
-  Maps: m30_10_00_00
 - Name: stormhill_catacombs
   Text: Stormhill - Deathtouched Catacombs
   Req: stormhill
   Maps: m30_11_00_00
   Tags: minidungeon catacomb
-- Name: stormhill_catacombs_boss
-  Text: Stormhill - Deathtouched Catacombs
-  FullText: Stormhill - Deathtouched Catacombs - Black Knife Assassin
-  Req: stormhill_catacombs
-  KeyBase: stormhill_catacombs
-  Maps: m30_11_00_00
 - Name: altus_catacombs
   Text: Altus Plateau - Unsightly Catacombs
   Req: altus
   Maps: m30_12_00_00
   Tags: minidungeon catacomb
-- Name: altus_catacombs_boss
-  Text: Altus Plateau - Unsightly Catacombs
-  FullText: Altus Plateau - Unsightly Catacombs - Perfumer Tricia and Misbegotten Warrior
-  Req: altus_catacombs
-  KeyBase: altus_catacombs
-  Maps: m30_12_00_00
 - Name: outskirts_sidetomb
   Text: Capital Outskirts - Auriza Side Tomb
-  Comment: For now treat all tomb subareas as flat dependencies. This gets much more complicated with logic changes
   Req: outskirts
   Maps: m30_13_00_00
   Tags: minidungeon catacomb
-- Name: outskirts_sidetomb_dupeupper
-  Text: Capital Outskirts - Auriza Side Tomb
-  FullText: Capital Outskirts - Auriza Side Tomb - Dupe Second Floor
-  Req: outskirts_sidetomb
-  KeyBase: outskirts_sidetomb
-  Maps: m30_13_00_00
-- Name: outskirts_sidetomb_boss
-  Text: Capital Outskirts - Auriza Side Tomb
-  FullText: Capital Outskirts - Auriza Side Tomb - Grave Warden Duelist
-  Req: outskirts_sidetomb
-  KeyBase: outskirts_sidetomb
-  Maps: m30_13_00_00
-- Name: outskirts_sidetomb_dupeentrance
-  Text: Capital Outskirts - Auriza Side Tomb
-  FullText: Capital Outskirts - Auriza Side Tomb - Dupe Entrance
-  Req: outskirts_sidetomb
-  KeyBase: outskirts_sidetomb
-  Maps: m30_13_00_00
-- Name: outskirts_sidetomb_dupehallway
-  Text: Capital Outskirts - Auriza Side Tomb
-  FullText: Capital Outskirts - Auriza Side Tomb - Dupe First Floor
-  Req: outskirts_sidetomb
-  KeyBase: outskirts_sidetomb
-  Maps: m30_13_00_00
-- Name: outskirts_sidetomb_jail
-  Text: Capital Outskirts - Auriza Side Tomb
-  FullText: Capital Outskirts - Auriza Side Tomb - Main Jail
-  Req: outskirts_sidetomb
-  KeyBase: outskirts_sidetomb
-  Maps: m30_13_00_00
-- Name: outskirts_sidetomb_dupejail
-  Text: Capital Outskirts - Auriza Side Tomb
-  FullText: Capital Outskirts - Auriza Side Tomb - Dupe Jail and Lever
-  Req: outskirts_sidetomb
-  KeyBase: outskirts_sidetomb
-  Maps: m30_13_00_00
 - Name: caelid_erdtreecatacombs
   Text: Caelid - Minor Erdtree Catacombs
   Req: caelid
   Maps: m30_14_00_00
   Tags: minidungeon catacomb
-- Name: caelid_erdtreecatacombs_boss
-  Text: Caelid - Minor Erdtree Catacombs
-  FullText: Caelid - Minor Erdtree Catacombs - Erdtree Burial Watchdogs
-  Req: caelid_erdtreecatacombs
-  KeyBase: caelid_erdtreecatacombs
-  Maps: m30_14_00_00
 - Name: caelid_catacombs
   Text: Caelid Catacombs
   Req: caelid
   Maps: m30_15_00_00
   Tags: minidungeon catacomb
-- Name: caelid_catacombs_boss
-  Text: Caelid Catacombs
-  FullText: Caelid Catacombs - Cemetery Shade
-  Req: caelid_catacombs
-  KeyBase: caelid_catacombs
-  Maps: m30_15_00_00
 - Name: caelid_wardead
   Text: Caelid - War-Dead Catacombs
   Req: caelid_postradahn
   Maps: m30_16_00_00
   Tags: minidungeon catacomb
-- Name: caelid_wardead_boss
-  Text: Caelid - War-Dead Catacombs
-  FullText: Caelid - War-Dead Catacombs - Putrid Tree Spirit
-  Req: caelid_wardead
-  KeyBase: caelid_wardead
-  Maps: m30_16_00_00
 - Name: flamepeak_grave
   Text: Flame Peak - Giant-Conquering Hero's Grave
   Req: flamepeak
   Maps: m30_17_00_00
   Tags: minidungeon grave
-- Name: flamepeak_grave_seal_start
-  Text: Flame Peak - Giant-Conquering Hero's Grave
-  FullText: Flame Peak - Giant-Conquering Hero's Grave - First Imp Seal
-  Req: flamepeak_grave
-  KeyBase: flamepeak_grave
-  Maps: m30_17_00_00
-  Tags: minidungeon grave
-- Name: flamepeak_grave_seal_other
-  Text: Flame Peak - Giant-Conquering Hero's Grave
-  FullText: Flame Peak - Giant-Conquering Hero's Grave - Second Imp Seal
-  Req: flamepeak_grave
-  KeyBase: flamepeak_grave
-  Maps: m30_17_00_00
-  Tags: minidungeon grave
-- Name: flamepeak_grave_boss
-  Text: Flame Peak - Giant-Conquering Hero's Grave
-  FullText: Flame Peak - Giant-Conquering Hero's Grave - Ancient Hero of Zamor
-  Req: flamepeak_grave
-  KeyBase: flamepeak_grave
-  Maps: m30_17_00_00
 - Name: mountaintops_catacombs
   Text: Flame Peak - Giants' Mountaintop Catacombs
   Comment: Technically not accessible with the rest of Flame Peak
   Req: mountaintops
   Maps: m30_18_00_00
   Tags: minidungeon catacomb
-- Name: mountaintops_catacombs_boss
-  Text: Flame Peak - Giants' Mountaintop Catacombs
-  FullText: Flame Peak - Giants' Mountaintop Catacombs - Ulcerated Tree Spirit
-  Req: mountaintops_catacombs
-  KeyBase: mountaintops_catacombs
-  Maps: m30_18_00_00
 - Name: snowfield_catacombs
   Text: Consecrated Snowfield Catacombs
   Req: snowfield
   Maps: m30_19_00_00
   Tags: minidungeon catacomb
-- Name: snowfield_catacombs_boss
-  Text: Consecrated Snowfield Catacombs
-  FullText: Consecrated Snowfield Catacombs - Putrid Grave Warden Duelist
-  Req: snowfield_catacombs
-  KeyBase: snowfield_catacombs
-  Maps: m30_19_00_00
 - Name: limgrave_murkwatercave
   Text: Limgrave - Murkwater Cave
   Req: limgrave
   Maps: m31_00_00_00
   Tags: minidungeon cave
-- Name: limgrave_murkwatercave_boss
-  Text: Limgrave - Murkwater Cave
-  FullText: Limgrave - Murkwater Cave - Patches
-  Req: limgrave_murkwatercave
-  KeyBase: limgrave_murkwatercave
-  Maps: m31_00_00_00
 - Name: peninsula_earthborecave
   Text: Weeping Peninsula - Earthbore Cave
   Req: peninsula
   Maps: m31_01_00_00
   Tags: minidungeon cave
-- Name: peninsula_earthborecave_boss
-  Text: Weeping Peninsula - Earthbore Cave
-  FullText: Weeping Peninsula - Earthbore Cave - Runebear
-  Req: peninsula_earthborecave
-  KeyBase: peninsula_earthborecave
-  Maps: m31_01_00_00
 - Name: peninsula_tombswardcave
   Text: Weeping Peninsula - Tombsward Cave
   Req: peninsula
   Maps: m31_02_00_00
   Tags: minidungeon cave
-- Name: peninsula_tombswardcave_boss
-  Text: Weeping Peninsula - Tombsward Cave
-  FullText: Weeping Peninsula - Tombsward Cave - Miranda Blossom
-  Req: peninsula_tombswardcave
-  KeyBase: peninsula_tombswardcave
-  Maps: m31_02_00_00
 - Name: limgrave_grovesidecave
   Text: Limgrave - Groveside Cave
   Req: limgrave
   Maps: m31_03_00_00
   Tags: minidungeon cave
-- Name: limgrave_grovesidecave_boss
-  Text: Limgrave - Groveside Cave
-  FullText: Limgrave - Groveside Cave - Beastman of Farum Azula
-  Req: limgrave_grovesidecave
-  KeyBase: limgrave_grovesidecave
-  Maps: m31_03_00_00
 - Name: liurnia_stillwatercave
   Text: Liurnia - Stillwater Cave
   Req: liurnia
   Maps: m31_04_00_00
   Tags: minidungeon cave
-- Name: liurnia_stillwatercave_boss
-  Text: Liurnia - Stillwater Cave
-  FullText: Liurnia - Stillwater Cave - Cleanrot Knight
-  Req: liurnia_stillwatercave
-  KeyBase: liurnia_stillwatercave
-  Maps: m31_04_00_00
 - Name: liurnia_lakesidecave
   Text: Liurnia - Lakeside Crystal Cave
   Req: liurnia
   Maps: m31_05_00_00
   Tags: minidungeon cave
-- Name: liurnia_lakesidecave_boss
-  Text: Liurnia - Lakeside Crystal Cave
-  FullText: Liurnia - Lakeside Crystal Cave - Bloodhound Knight
-  Req: liurnia_lakesidecave
-  KeyBase: liurnia_lakesidecave
-  Maps: m31_05_00_00
 - Name: liurnia_academycave
   Text: Liurnia - Academy Crystal Cave
   Req: liurnia
   Maps: m31_06_00_00
   Tags: minidungeon cave
-- Name: liurnia_academycave_boss
-  Text: Liurnia - Academy Crystal Cave
-  FullText: Liurnia - Academy Crystal Cave - Crystalian Duo
-  Req: liurnia_academycave
-  KeyBase: liurnia_academycave
-  Maps: m31_06_00_00
-- Name: academy_cavetower
-  Text: Liurnia - Academy Crystal Cave
-  FullText: Academy of Raya Lucaria - After Academy Crystal Cave
-  Req: liurnia_academycave
-  KeyBase: liurnia_academycave
-  Maps: m14_00_00_00
 - Name: gelmir_seethewatercave
   Text: Mt. Gelmir - Seethewater Cave
   Req: gelmir
   Maps: m31_07_00_00
   Tags: minidungeon cave
-- Name: gelmir_seethewatercave_boss
-  Text: Mt. Gelmir - Seethewater Cave
-  FullText: Mt. Gelmir - Seethewater Cave - Kindred of Rot Duo
-  Req: gelmir_seethewatercave
-  KeyBase: gelmir_seethewatercave
-  Maps: m31_07_00_00
 - Name: gelmir_volcanocave
   Text: Mt. Gelmir - Volcano Cave
   Req: gelmir
   Maps: m31_09_00_00
   Tags: minidungeon cave
-- Name: gelmir_volcanocave_boss
-  Text: Mt. Gelmir - Volcano Cave
-  FullText: Mt. Gelmir - Volcano Cave - Demi-Human Queen Margot
-  Req: gelmir_volcanocave
-  KeyBase: gelmir_volcanocave
-  Maps: m31_09_00_00
 - Name: dragonbarrow_cave
   Text: Dragonbarrow Cave
   Req: dragonbarrow
   Maps: m31_10_00_00
   Tags: minidungeon cave
-- Name: dragonbarrow_cave_boss
-  Text: Dragonbarrow Cave
-  FullText: Dragonbarrow Cave - Beastmen of Farum Azula
-  Req: dragonbarrow_cave
-  KeyBase: dragonbarrow_cave
-  Maps: m31_10_00_00
 - Name: dragonbarrow_selliahideaway
   Text: Dragonbarrow - Sellia Hideaway
   Req: dragonbarrow
   Maps: m31_11_00_00
   Tags: minidungeon cave
-- Name: dragonbarrow_selliahideaway_boss
-  Text: Dragonbarrow - Sellia Hideaway
-  FullText: Dragonbarrow - Sellia Hideaway - Putrid Crystalians
-  Req: dragonbarrow_selliahideaway
-  KeyBase: dragonbarrow_selliahideaway
-  Maps: m31_11_00_00
 - Name: snowfield_cave
   Text: Consecrated Snowfield - Cave of the Forlorn
   Req: snowfield
   Maps: m31_12_00_00
   Tags: minidungeon cave
-- Name: snowfield_cave_boss
-  Text: Consecrated Snowfield - Cave of the Forlorn
-  FullText: Consecrated Snowfield - Cave of the Forlorn - Misbegotten Crusader
-  Req: snowfield_cave
-  KeyBase: snowfield_cave
-  Maps: m31_12_00_00
 - Name: limgrave_highroadcave
   Text: Limgrave - Highroad Cave
   Req: limgrave
   Maps: m31_17_00_00
   Tags: minidungeon cave
-- Name: limgrave_highroadcave_boss
-  Text: Limgrave - Highroad Cave
-  FullText: Limgrave - Highroad Cave - Guardian Golem
-  Req: limgrave_highroadcave
-  KeyBase: limgrave_highroadcave
-  Maps: m31_17_00_00
 - Name: altus_grotto
   Text: Altus Plateau - Perfumer's Grotto
   Req: altus
   Maps: m31_18_00_00
   Tags: minidungeon cave
-- Name: altus_grotto_boss
-  Text: Altus Plateau - Perfumer's Grotto
-  FullText: Altus Plateau - Perfumer's Grotto - Omenkiller and Miranda the Blighted Bloom
-  Req: altus_grotto
-  KeyBase: altus_grotto
-  Maps: m31_18_00_00
 - Name: altus_sagescave
   Text: Altus Plateau - Sage's Cave
   Req: altus
   Maps: m31_19_00_00
   Tags: minidungeon cave
-- Name: altus_sagescave_boss2
-  Text: Altus Plateau - Sage's Cave
-  FullText: Altus Plateau - Sage's Cave - Necromancer Garris
-  Req: altus_sagescave
-  KeyBase: altus_sagescave
-  Maps: m31_19_00_00
-- Name: altus_sagescave_boss
-  Text: Altus Plateau - Sage's Cave
-  FullText: Altus Plateau - Sage's Cave - Black Knife Assassin
-  Req: altus_sagescave
-  KeyBase: altus_sagescave
-  Maps: m31_19_00_00
 - Name: caelid_abandonedcave
   Text: Caelid - Abandoned Cave
   Req: caelid
   Maps: m31_20_00_00
   Tags: minidungeon cave
-- Name: caelid_abandonedcave_boss
-  Text: Caelid - Abandoned Cave
-  FullText: Caelid - Abandoned Cave - Cleanrot Knights
-  Req: caelid_abandonedcave
-  KeyBase: caelid_abandonedcave
-  Maps: m31_20_00_00
 - Name: caelid_gaolcave
   Text: Caelid - Gaol Cave
   Req: caelid
   Maps: m31_21_00_00
   Tags: minidungeon cave
-- Name: caelid_gaolcave_boss
-  Text: Caelid - Gaol Cave
-  FullText: Caelid - Gaol Cave - Frenzied Duelist
-  Req: caelid_gaolcave
-  KeyBase: caelid_gaolcave
-  Maps: m31_21_00_00
 - Name: mountaintops_cave
   Text: Mountaintops - Spiritcaller Cave
   Req: mountaintops
   Maps: m31_22_00_00
   Tags: minidungeon cave
-- Name: mountaintops_cave_boss
-  Text: Mountaintops - Spiritcaller Cave
-  FullText: Mountaintops - Spiritcaller Cave - Spiritcaller Snail
-  Req: mountaintops_cave
-  KeyBase: mountaintops_cave
-  Maps: m31_22_00_00
 - Name: peninsula_tunnel
   Text: Weeping Peninsula - Morne Tunnel
   Req: peninsula
   Maps: m32_00_00_00
   Tags: minidungeon tunnel
-- Name: peninsula_tunnel_boss
-  Text: Weeping Peninsula - Morne Tunnel
-  FullText: Weeping Peninsula - Morne Tunnel - Scaly Misbegotten
-  Req: peninsula_tunnel
-  KeyBase: peninsula_tunnel
-  Maps: m32_00_00_00
 - Name: limgrave_tunnels
   Text: Limgrave Tunnels
   Req: limgrave
   Maps: m32_01_00_00
   Tags: minidungeon tunnel
-- Name: limgrave_tunnels_boss
-  Text: Limgrave Tunnels
-  FullText: Limgrave Tunnels - Stonedigger Troll
-  Req: limgrave_tunnels
-  KeyBase: limgrave_tunnels
-  Maps: m32_01_00_00
 - Name: liurnia_tunnel
   Text: Liurnia - Raya Lucaria Crystal Tunnel
   Req: liurnia
   Maps: m32_02_00_00
   Tags: minidungeon tunnel
-- Name: liurnia_tunnel_boss
-  Text: Liurnia - Raya Lucaria Crystal Tunnel
-  FullText: Liurnia - Raya Lucaria Crystal Tunnel - Crystalian
-  Req: liurnia_tunnel
-  KeyBase: liurnia_tunnel
-  Maps: m32_02_00_00
 - Name: altus_oldtunnel
   Text: Old Altus Tunnel
   Req: altus
   Maps: m32_04_00_00
   Tags: minidungeon tunnel
-- Name: altus_oldtunnel_boss
-  Text: Old Altus Tunnel
-  FullText: Old Altus Tunnel - Stonedigger Troll
-  Req: altus_oldtunnel
-  KeyBase: altus_oldtunnel
-  Maps: m32_04_00_00
 - Name: altus_tunnel
   Text: Altus Tunnel
   Req: altus
   Maps: m32_05_00_00
   Tags: minidungeon tunnel
-- Name: altus_tunnel_boss
-  Text: Altus Tunnel
-  FullText: Altus Tunnel - Crystalian Duo
-  Req: altus_tunnel
-  KeyBase: altus_tunnel
-  Maps: m32_05_00_00
 - Name: caelid_gaeltunnel
   Text: Caelid - Gael Tunnel
   Req: caelid
   Maps: m32_07_00_00
   Tags: minidungeon tunnel
-- Name: caelid_gaeltunnel_start
-  Text: Caelid - Gael Tunnel
-  FullText: Caelid - Gael Tunnel Start
-  Req: caelid_gaeltunnel
-  KeyBase: caelid_gaeltunnel
-  Maps: m32_07_00_00
-- Name: caelid_gaeltunnel_boss
-  Text: Caelid - Gael Tunnel
-  FullText: Caelid - Gael Tunnel - Magma Wyrm
-  Req: caelid_gaeltunnel
-  KeyBase: caelid_gaeltunnel
-  Maps: m32_07_00_00
 - Name: caelid_selliatunnel
   Text: Caelid - Sellia Crystal Tunnel
   Req: caelid
   Maps: m32_08_00_00
   Tags: minidungeon tunnel
-- Name: caelid_selliatunnel_boss
-  Text: Caelid - Sellia Crystal Tunnel
-  FullText: Caelid - Sellia Crystal Tunnel - Fallingstar Beast
-  Req: caelid_selliatunnel
-  KeyBase: caelid_selliatunnel
-  Maps: m32_08_00_00
 - Name: snowfield_tunnel
   Text: Consecrated Snowfield - Yelough Anix Tunnel
   Req: snowfield
   Maps: m32_11_00_00
   Tags: minidungeon tunnel
-- Name: snowfield_tunnel_boss
-  Text: Consecrated Snowfield - Yelough Anix Tunnel
-  FullText: Consecrated Snowfield - Yelough Anix Tunnel - Astel, Stars of Darkness
-  Req: snowfield_tunnel
-  KeyBase: snowfield_tunnel
-  Maps: m32_11_00_00
 - Name: gravesite
   Text: Gravesite Plain
   Req: dlcopen
@@ -2467,33 +1501,12 @@ Areas:
   - m61_49_42_00 Gravesite Plain - Elder's Hovel
   - m61_49_43_00 Gravesite Plain - Southeast Poison Swamp
   Tags: dlc
-- Name: ensis_room
-  Text: Gravesite Plain
-  FullText: Castle Ensis - Spelldrake Talisman Room
-  Req: gravesite
-  KeyBase: gravesite
-  Maps: m61_47_44_00
-  Tags: dlc
-- Name: gravesite_mausoleum_boss
-  Text: Gravesite Plain
-  FullText: Gravesite Plain - Knight of the Solitary Gaol
-  Req: gravesite
-  KeyBase: gravesite
-  Maps: m61_46_41_00
-  Tags: dlc
 - Name: belurat
   Text: Belurat
   Req: gravesite
   Maps: m20_00_00_00
   MapNames:
   - m20_00_00_00 Belurat, Tower Settlement
-  Tags: dlc
-- Name: belurat_boss
-  Text: Belurat
-  FullText: Belurat - Divine Beast Dancing Lion
-  Req: belurat
-  KeyBase: belurat
-  Maps: m20_00_00_00
   Tags: dlc
 - Name: belurat_swamp
   Text: Belurat Swamp
@@ -2506,7 +1519,7 @@ Areas:
 - Name: belurat_stairs
   Text: Belurat
   Comment: Also probably accessible by Enir-Ilim, but Belurat itself has no item reqs in the base game
-  Req: belurat_boss AND dancinglion
+  Req: belurat AND dancinglion
   Maps: m20_00_00_00
   MapNames:
   - m20_00_00_00 Belurat, Tower Settlement
@@ -2547,13 +1560,6 @@ Areas:
   - m61_49_38_00 Cerulean Coast - Fingercreeper Beach Center
   - m61_50_37_00 Cerulean Coast - Far Southeast Fingercreeper Beach Coast
   Tags: dlc
-- Name: cerulean_mausoleum_boss
-  Text: Cerulean Coast
-  FullText: Cerulean Coast - Dancer of Ranah
-  Req: cerulean
-  KeyBase: cerulean
-  Maps: m61_46_38_00
-  Tags: dlc
 - Name: cerulean_rhia
   Text: Finger Ruins of Rhia
   Req: cerulean
@@ -2578,13 +1584,6 @@ Areas:
   MapNames:
   - m61_47_44_00 Gravesite Plain - West Castle Ensis, South Fog Rift Fort
   - m61_48_44_00 Gravesite Plain - East Castle Ensis, Exit to Scadu Altus
-  Tags: dlc
-- Name: ensis_boss
-  Text: Castle Ensis
-  FullText: Castle Ensis - Rellana, Twin Moon Knight
-  Req: ensis
-  KeyBase: ensis
-  Maps: m61_48_44_00
   Tags: dlc
 - Name: ensis_fort
   Text: Fog Rift Fort
@@ -2625,20 +1624,6 @@ Areas:
   - m61_52_46_00 Scadu Altus - Church District Highroad East Cliffside
   - m61_52_47_00 Scadu Altus - Church District Highroad Northast Cliffside
   Tags: dlc
-- Name: scadualtus_lower
-  Text: Scadu Altus
-  FullText: East Scadu Altus
-  Req: scadualtus
-  KeyBase: scadualtus
-  Maps: m61_49_44_00 m61_50_43_00 m61_50_44_00 m61_50_45_00 m61_50_46_00 m61_50_47_00 m61_51_44_00 m61_51_45_00 m61_51_46_00 m61_51_47_00 m61_52_45_00 m61_52_46_00 m61_52_47_00
-  Tags: dlc
-- Name: scadualtus_ymir
-  Text: Scadu Altus
-  FullText: Scadu Altus - Manus Metyr
-  Req: scadualtus_lower
-  KeyBase: scadualtus
-  Maps: m61_51_45_00
-  Tags: dlc
 - Name: scadualtus_high
   Text: Scadu Altus
   Req: scadualtus
@@ -2663,30 +1648,16 @@ Areas:
   - m61_51_44_00 Scadu Altus - Bridge Leading to the Village, Eastern Nameless Mausoleum, Hippo Duo Pond
   - m61_51_45_00 Scadu Altus - Cathedral of Manus Metyr, Finger Ruins of Miyr, Second Furnace Golem Area, Recluses' River Downstream West Edge
   Tags: dlc
-- Name: scadualtus_mausoleum_boss
-  Text: Lower Scadu Altus
-  FullText: Lower Scadu Altus - Rakshasa
-  Req: scadualtus_recluse
-  KeyBase: scadualtus_recluse
-  Maps: m61_51_44_00
-  Tags: dlc
-- Name: shadowkeep_boss
-  Text: Shadow Keep
-  FullText: Shadow Keep - Golden Hippopotamus
-  Req: scadualtus
-  KeyBase: shadowkeep
-  Maps: m21_00_00_00
-  Tags: dlc
 - Name: shadowkeep
   Text: Shadow Keep
-  Req: shadowkeep_boss
+  Req: scadualtus
   Maps: m21_00_00_00
   MapNames:
   - m21_00_00_00 Shadow Keep
   Tags: dlc
 - Name: shadowkeep_church
   Text: Shadow Keep - Church District
-  Req: scadualtus_lower
+  Req: scadualtus
   Maps: m21_00_00_00
   MapNames:
   - m21_00_00_00 Shadow Keep
@@ -2698,33 +1669,12 @@ Areas:
   MapNames:
   - m21_00_00_00 Shadow Keep
   Tags: dlc
-- Name: shadowkeep_sanctum
-  Text: Shadow Keep - Church District
-  FullText: Shadow Keep - Tree-Worship Sanctum
-  Req: shadowkeep_church_lower
-  KeyBase: shadowkeep_church_lower
-  Maps: m21_00_00_00
-  Tags: dlc
 - Name: storehouse
   Text: Specimen Storehouse
   Req: shadowkeep OR storehouse_back
   Maps: m21_01_00_00
   MapNames:
   - m21_01_00_00 Specimen Storehouse
-  Tags: dlc
-- Name: storehouse_premessmer
-  Text: Specimen Storehouse
-  FullText: Specimen Storehouse - Before Messmer
-  Req: storehouse
-  KeyBase: storehouse
-  Maps: m21_01_00_00
-  Tags: dlc
-- Name: storehouse_messmer
-  Text: Specimen Storehouse
-  FullText: Specimen Storehouse - Messmer the Impaler
-  Req: storehouse_premessmer
-  KeyBase: storehouse
-  Maps: m21_01_00_00
   Tags: dlc
 - Name: storehouse_back
   Text: Specimen Storehouse - Back Section
@@ -2747,27 +1697,6 @@ Areas:
   Maps: m22_00_00_00
   MapNames:
   - m22_00_00_00 Stone Coffin Fissure
-  Tags: dlc
-- Name: fissure_depths
-  Text: Stone Coffin Fissure
-  FullText: Stone Coffin Fissure - After Waypoint
-  Req: fissure
-  KeyBase: fissure
-  Maps: m22_00_00_00
-  Tags: dlc
-- Name: fissure_boss
-  Text: Stone Coffin Fissure
-  FullText: Stone Coffin Fissure - Putrescent Knight
-  Req: fissure_depths
-  KeyBase: fissure
-  Maps: m22_00_00_00
-  Tags: dlc
-- Name: fissure_postboss
-  Text: Stone Coffin Fissure
-  FullText: Stone Coffin Fissure - After Putrescent Knight
-  Req: fissure_boss
-  KeyBase: fissure
-  Maps: m22_00_00_00
   Tags: dlc
 - Name: rauhbase
   Text: Rauh Base
@@ -2800,13 +1729,6 @@ Areas:
   - m61_46_45_00 Gravesite Plain - Northern Nameless Mausoleum
   - m61_47_45_00 Gravesite Plain - North Fog Rift Fort, Northern Nameless Mausoleum East Cliffside
   Tags: dlc exclude:spectralsteedwhistle
-- Name: rauhbase_mausoleum_boss
-  Text: Rauh Base
-  FullText: Upper Gravesite Plain - Red Bear
-  Req: rauhbase_high
-  KeyBase: rauhbase_high
-  Maps: m61_46_45_00
-  Tags: dlc exclude:spectralsteedwhistle
 - Name: westrampart
   Text: Shadow Keep - West Rampart
   Req: storehouse
@@ -2814,59 +1736,54 @@ Areas:
   MapNames:
   - m21_02_00_00 Shadow Keep - West Rampart
   Tags: dlc
-- Name: rauhruins_east
+- Name: rauhruins
   Text: Ancient Ruins of Rauh
-  FullText: Ancient Ruins of Rauh - East
   Comment: Extra _10 for Furnace Golem
   Req: storehouse
-  Maps: m61_45_46_00 m61_45_46_10 m61_45_47_00 m61_46_46_00 m61_46_47_00 m61_46_48_00 m61_47_46_00 m61_47_46_10 m61_47_47_00 m61_47_48_00
-  Tags: dlc
-- Name: rauhruins_west
-  Text: Ancient Ruins of Rauh
-  FullText: Ancient Ruins of Rauh - West
-  Req: rauhruins_east
-  KeyBase: rauhruins_east
-  Maps: m61_44_45_00 m61_44_45_10 m61_44_46_00 m61_44_47_00 m61_45_45_00 m61_45_46_00 m61_45_46_10 m61_45_47_00 m61_46_46_00
-  Tags: dlc
-- Name: rauhruins_romina
-  Text: Ancient Ruins of Rauh
-  FullText: Ancient Ruins of Rauh - Romina, Saint of the Bud
-  Req: rauhruins_east
-  KeyBase: rauhruins_east
-  Maps: m61_44_45_00
+  Maps: m61_44_45_00 m61_44_45_10 m61_44_46_00 m61_44_47_00 m61_45_45_00 m61_45_46_00 m61_45_46_10 m61_45_47_00 m61_46_46_00 m61_46_47_00 m61_46_48_00 m61_47_46_00 m61_47_47_00 m61_47_48_00
+  MapNames:
+  - m61_44_45_00 Ancient Ruins of Rauh - South Church of the Bud, Sealing Tree, Grand Stairway, West Ruins Cave Upper Levels
+  - m61_44_45_10 Ancient Ruins of Rauh - Church of the Bud, Sealing Tree, Grand Stairway (Unsealed)
+  - m61_44_46_00 Ancient Ruins of Rauh - Spirit Spring Courtyard, Rot Ruins, North Church of the Bud
+  - m61_44_47_00 Ancient Ruins of Rauh - West Ruins Northwest Cliffside
+  - m61_45_45_00 Ancient Ruins of Rauh - West Ruins Cave Entrance and Grace
+  - m61_45_46_00 Ancient Ruins of Rauh - Furnace Golem Area
+  - m61_45_46_10
+  - m61_45_47_00 Ancient Ruins of Rauh - West Ruins Northeast Cliffside, East Ruins Cave Exit
+  - m61_46_46_00 Ancient Ruins of Rauh - South Belfry Area, Divine Beast Pantheon
+  - m61_46_47_00 Ancient Ruins of Rauh - North Belfry Area, East Ruins Grace and Cave Entrance, Scorpion Cave
+  - m61_46_48_00 Ancient Ruins of Rauh - East Ruins North Pit and Tunnels
+  - m61_47_46_00 Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside
+  - m61_47_47_00 Ancient Ruins of Rauh - Shadow Keep Exit, Viaduct Minor Tower, Bloodfiend Ruins
+  - m61_47_48_00 Ancient Ruins of Rauh - Viaduct Tower North Cliffside
   Tags: dlc
 - Name: rauhruins_high
   Text: Ancient Ruins of Rauh
-  Req: rauhruins_west
+  Req: rauhruins
   Maps: m61_45_46_00
   MapNames:
   - m61_45_46_00 Ancient Ruins of Rauh - Furnace Golem Area
   Tags: dlc exclude:spectralsteedwhistle
 - Name: rauhruins_limited
   Text: Ancient Ruins of Rauh
-  Comment: Technically has tree parkour from rauhruins_east
-  Req: rauhruins_west OR (scadualtus AND imbued_dlc)
+  Req: rauhruins OR (scadualtus AND imbued_dlc)
   Maps: m61_46_46_00 m61_46_47_00
   MapNames:
   - m61_46_46_00 Ancient Ruins of Rauh - South Belfry Area, Divine Beast Pantheon
   - m61_46_47_00 Ancient Ruins of Rauh - North Belfry Area, East Ruins Grace and Cave Entrance, Scorpion Cave
   Tags: dlc
-- Name: scaduview_gaius
+- Name: scaduview
   Text: Scaduview
-  FullText: Scaduview - Commander Gaius
   Req: storehouse_back
-  Maps: m61_49_48_00
-  Tags: dlc
-- Name: scaduview_chalice
-  Text: Scaduview
-  FullText: Scaduview - Scadutree Chalice
-  Req: scaduview_gaius
-  KeyBase: scaduview_gaius
   Maps: m61_48_49_00 m61_49_48_00 m61_49_49_00
+  MapNames:
+  - m61_48_49_00 Scaduview - Far West Cliffside
+  - m61_49_48_00 Scaduview - Specimen Storehouse Exit, Commander Gaius' Arena
+  - m61_49_49_00 Scaduview - Scadutree Chalice, Albinauric's Shack
   Tags: dlc
 - Name: abyssal
   Text: Abyssal Woods
-  Req: scadualtus_catacombs_boss AND jori
+  Req: scadualtus_catacombs AND jori
   Maps: m61_48_40_00 m61_48_41_00 m61_48_42_00 m61_48_43_00 m61_49_40_00 m61_49_41_00 m61_49_42_00 m61_49_43_00 m61_50_41_00 m61_50_42_00 m61_50_43_00 m61_51_41_00 m61_51_42_00 m61_51_43_00 m61_52_40_00 m61_52_41_00 m61_52_42_00 m61_52_43_00 m61_53_40_00 m61_53_41_00
   MapNames:
   - m61_48_40_00 Abyssal Woods - Southwest Corner
@@ -2897,16 +1814,9 @@ Areas:
   MapNames:
   - m28_00_00_00 Midra's Manse
   Tags: dlc
-- Name: midramanse_boss
-  Text: Midra's Manse
-  FullText: Midra's Manse - Midra, Lord of Frenzied Flame
-  Req: midramanse
-  KeyBase: midramanse
-  Maps: m28_00_00_00
-  Tags: dlc
 - Name: jaggedpeak_foot
   Text: Foot of the Jagged Peak
-  Req: gravesite_dragonpit_boss AND ancientdragonman
+  Req: gravesite_dragonpit AND ancientdragonman
   Maps: m61_49_38_00 m61_49_39_00 m61_49_40_00 m61_49_41_00 m61_50_40_00 m61_50_41_00 m61_51_40_00 m61_51_41_00 m61_52_39_00 m61_52_40_00
   MapNames:
   - m61_49_38_00 Foot of the Jagged Peak - South of Grand Altar
@@ -2931,13 +1841,6 @@ Areas:
   - m61_54_40_00 Jagged Peak - Jagged Peak Mountainside
   - m61_55_39_00 Jagged Peak - Bayle Arena East Wall, Rest of the Dread Dragon
   Tags: dlc exclude:spectralsteedwhistle
-- Name: jaggedpeak_bayle
-  Text: Jagged Peak
-  FullText: Jagged Peak - Bayle
-  Req: jaggedpeak
-  KeyBase: jaggedpeak
-  Maps: m61_54_39_00
-  Tags: dlc
 - Name: charo
   Text: Charo's Hidden Grave
   Req: jaggedpeak_foot
@@ -2984,7 +1887,7 @@ Areas:
   Tags: dlc
 - Name: scadualtus_miyr
   Text: Finger Ruins of Miyr
-  Req: scadualtus_lower AND cerulean_rhia AND hinterland_dheo AND holeladennecklace
+  Req: scadualtus AND cerulean_rhia AND hinterland_dheo AND holeladennecklace
   Maps: m61_51_45_00 m61_51_46_00
   MapNames:
   - m61_51_45_00 Scadu Altus - Cathedral of Manus Metyr, Finger Ruins of Miyr, Second Furnace Golem Area
@@ -2999,24 +1902,10 @@ Areas:
   Tags: dlc
 - Name: enirilim
   Text: Enir-Ilim
-  Req: rauhruins_romina AND unsealed
+  Req: rauhruins AND unsealed
   Maps: m20_01_00_00
   MapNames:
   - m20_01_00_00 Enir-Ilim
-  Tags: dlc
-- Name: enirilim_stairs
-  Text: Enir-Ilim
-  FullText: Enir-Ilim - After Leda
-  Req: enirilim
-  KeyBase: enirilim
-  Maps: m20_01_00_00
-  Tags: dlc
-- Name: enirilim_radahn
-  Text: Enir-Ilim
-  FullText: Enir-Ilim - Promised Consort Radahn
-  Req: enirilim_stairs
-  KeyBase: enirilim
-  Maps: m20_01_00_00
   Tags: dlc
 - Name: belurat_enirilim
   Text: Enir-Ilim
@@ -3032,13 +1921,6 @@ Areas:
   MapNames:
   - m40_00_00_00 Fog Rift Catacombs
   Tags: dlc minidungeon catacomb
-- Name: gravesite_catacombs_boss
-  Text: Gravesite Plain - Fog Rift Catacombs
-  FullText: Gravesite Plain - Fog Rift Catacombs - Death Knight
-  Req: gravesite_catacombs
-  KeyBase: gravesite_catacombs
-  Maps: m40_00_00_00
-  Tags: dlc
 - Name: rauhbase_catacombs
   Text: Rauh Base - Scorpion River Catacombs
   Req: rauhbase
@@ -3046,13 +1928,6 @@ Areas:
   MapNames:
   - m40_01_00_00 Scorpion River Catacombs
   Tags: dlc minidungeon catacomb
-- Name: rauhbase_catacombs_boss
-  Text: Rauh Base - Scorpion River Catacombs
-  FullText: Rauh Base - Scorpion River Catacombs - Death Knight
-  Req: rauhbase_catacombs
-  KeyBase: rauhbase_catacombs
-  Maps: m40_01_00_00
-  Tags: dlc
 - Name: scadualtus_catacombs
   Text: Scadu Altus - Darklight Catacombs
   Req: scadualtus_recluse
@@ -3060,13 +1935,6 @@ Areas:
   MapNames:
   - m40_02_00_00 Darklight Catacombs
   Tags: dlc minidungeon catacomb
-- Name: scadualtus_catacombs_boss
-  Text: Scadu Altus - Darklight Catacombs
-  FullText: Scadu Altus - Darklight Catacombs - Jori, Elder Inquisitor
-  Req: scadualtus_catacombs
-  KeyBase: scadualtus_catacombs
-  Maps: m61_52_43_00
-  Tags: dlc
 - Name: gravesite_gaol
   Text: Gravesite Plain - Belurat Gaol
   Req: gravesite
@@ -3074,27 +1942,13 @@ Areas:
   MapNames:
   - m41_00_00_00 Belurat Gaol
   Tags: dlc minidungeon gaol
-- Name: gravesite_gaol_boss
-  Text: Gravesite Plain - Belurat Gaol
-  FullText: Gravesite Plain - Belurat Gaol - Demi-Human Swordmaster Onze
-  Req: gravesite_gaol
-  KeyBase: gravesite_gaol
-  Maps: m41_00_00_00
-  Tags: dlc
 - Name: scadualtus_gaol
   Text: Scadu Altus - Bonny Gaol
-  Req: scadualtus_lower
+  Req: scadualtus
   Maps: m41_01_00_00
   MapNames:
   - m41_01_00_00 Bonny Gaol
   Tags: dlc minidungeon gaol
-- Name: scadualtus_gaol_boss
-  Text: Scadu Altus - Bonny Gaol
-  FullText: Scadu Altus - Bonny Gaol - Curseblade Labirith
-  Req: scadualtus_gaol
-  KeyBase: scadualtus_gaol
-  Maps: m41_01_00_00
-  Tags: dlc
 - Name: charo_gaol
   Text: Charo's Hidden Grave - Lamenter's Gaol
   Req: charo
@@ -3144,13 +1998,6 @@ Areas:
   MapNames:
   - m43_00_00_00 Rivermouth Cave
   Tags: dlc minidungeon cave
-- Name: ellac_cave_boss
-  Text: Ellac River - Rivermouth Cave
-  FullText: Ellac River - Rivermouth Cave - Chief Bloodfiend
-  Req: ellac_cave
-  KeyBase: ellac_cave
-  Maps: m43_00_00_00
-  Tags: dlc
 - Name: gravesite_dragonpit
   Text: Gravesite Plain - Dragon's Pit
   Comment: Possible other DLC areas are Ellac Downstream, Recluse Downstream, Scaduview Chalice, Tree Worship Sanctum (Scadutree Base but Shadow Keep), enirilim_Gate
@@ -3159,191 +2006,6 @@ Areas:
   MapNames:
   - m43_01_00_00 Dragon's Pit
   Tags: dlc minidungeon cave
-- Name: gravesite_dragonpit_boss
-  Text: Gravesite Plain - Dragon's Pit
-  FullText: Gravesite Plain - Dragon's Pit - Ancient Dragon-Man
-  Req: gravesite_dragonpit
-  KeyBase: gravesite_dragonpit
-  Maps: m43_01_00_00
-  Tags: dlc
-NewItems:
-- Name: Stonesword Master Key
-  Switch: stoneswordall
-  BaseID: 7830000
-  Area: altus
-- Name: Limgrave Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830100
-  Logic:
-  - BlockArea: graveyard_grave
-  - BlockArea: limgrave_summonwater_seal
-- Name: Roundtable Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830101
-  Logic:
-  - BlockArea: roundtable_seal
-- Name: Weeping Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830102
-  Logic:
-  - BlockArea: peninsula_tombswardcatacombs_seal
-  - BlockArea: peninsula_evergaol
-- Name: Stormveil Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830103
-  Logic:
-  - BlockArea: stormveil_pantry_seal
-  - BlockArea: stormveil_armory_seal
-- Name: Siofra Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830104
-  Logic:
-  - BlockArea: caelid_greatjar
-- Name: Liurnia Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830105
-  Logic:
-  - BlockArea: liurnia_academycave
-  - BlockArea: liurnia_cliffbottomcatacombs_seal
-  - BlockArea: liurnia_blackknifecatacombs_seal
-- Name: Altus Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830106
-  Logic:
-  - BlockArea: altus_oldtunnel
-  - BlockArea: altus_catacombs
-  - BlockArea: altus_evergaol
-  - BlockArea: altus_wyndhamruins_seal
-  - BlockArea: altus_grave_seal_start
-  - BlockArea: altus_grave_seal_other
-- Name: Caelid Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830107
-  Logic:
-  - BlockArea: caelid_gaolcave
-  - BlockArea: caelid_forsaken_seal
-- Name: Nokron Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830108
-  Logic:
-  - BlockArea: siofra_nokron_grounds_seal
-- Name: Mt. Gelmir Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830109
-  Logic:
-  - BlockArea: gelmir_seethewatercave
-  - BlockArea: gelmir_wyndhamcatacombs_seal
-- Name: Volcano Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830110
-  Logic:
-  - BlockArea: volcano_town_seal
-  - BlockArea: volcano_hallway
-- Name: Capital Outskirts Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830111
-  Logic:
-  - BlockArea: outskirts_grave_seal
-- Name: Nokstella Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830112
-  Logic:
-  - BlockArea: ainsel_seal
-- Name: Moonlight Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830113
-  Logic:
-  - BlockArea: moonlight_seal
-- Name: Mountaintops Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830114
-  Logic:
-  - BlockArea: mountaintops_cave
-  - BlockArea: flamepeak_grave_seal_start
-  - BlockArea: flamepeak_grave_seal_other
-- Name: Farum Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830115
-  Logic:
-  - BlockArea: farumazula_lift
-- Name: Snowfield Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830116
-  Logic:
-  - BlockArea: snowfield_cave
-- Name: Haligtree Master Key
-  Switch: stoneswordregion
-  Parent: stoneswordmasterkey
-  BaseID: 7830117
-  Logic:
-  - BlockArea: haligtree_elphael_seal_upper
-  - BlockArea: haligtree_elphael_seal_lower
-- Name: Fort of Reprimand Spiritspring Stone
-  Switch: springsanity
-  BaseID: 7830500
-  NewLocation:
-    Map: m61_49_42_00
-    Location: 2049421600
-    Text: Breaking the spiritspring seal from Gravesite Plain to Scadu Altus
-    Area: gravesite
-  Logic:
-  - BlockArea: scadualtus
-- Name: Scadu Altus Spiritspring Stone
-  Switch: springsanity
-  BaseID: 7830501
-  NewLocation:
-    Map: m61_49_44_00
-    Location: 2049441600
-    Text: Breaking the spiritspring seal in Scadu Altus to Scaduview Cross
-    Area: scadualtus
-  Logic:
-  - BlockArea: scadualtus_high
-- Name: Rabbath's Rise Spiritspring Stone
-  Comment: Rise item could be a separate region in randomizer, for now it's classified as part of Hinterland
-  Switch: springsanity
-  BaseID: 7830502
-  NewLocation:
-    Map: m61_51_47_00
-    Location: 2051471600
-    Text: Breaking the spiritspring seal in Scadu Altus up Rabbath's Rise
-    Area: scadualtus_lower
-- Name: Northern Nameless Mausoleum Spiritsping Stone
-  Switch: springsanity
-  BaseID: 7830503
-  NewLocation:
-    Map: m61_46_46_00
-    Location: 2046461500
-    Text: Breaking the spiritspring seal in Rauh Base to Northern Nameless Mausoleum
-    Area: rauhbase
-  Logic:
-  - BlockArea: rauhbase_high
-- Name: Ancient Ruins of Rauh Spiritspring Stone
-  Switch: springsanity
-  BaseID: 7830504
-  NewLocation:
-    Map: m61_44_46_00
-    Location: 2044461500
-    Text: Breaking the spiritspring seal in Rauh Ruins
-    Area: rauhruins_west
-  Logic:
-  - BlockArea: rauhruins_high
 PlacementRestrictions:
 - Name: Rusty Key
   Switch: earlylegacy
@@ -3372,7 +2034,7 @@ PlacementRestrictions:
     UseGroups: true
     Comment: 1 in Limgrave, 3 in Peninsula, 3 in Liurnia, 1 in Caelid
   - Amount: 10
-    Before: farumazula_prestart snowfield
+    Before: farumazula_start snowfield
     UseGroups: true
     Comment: 2 in Altus, 2 in Mountaintops
 - Name: Talisman Pouch
@@ -3447,14 +2109,14 @@ PlacementRestrictions:
 - Name: Smithing-Stone Miner's Bell Bearing [3]
   Comment: Zamor Ruins
   Unique:
-  - Before: farumazula_prestart
+  - Before: farumazula_start
     UpTo: mountaintops
     After: mountaintops
     UseGroups: true
 - Name: Smithing-Stone Miner's Bell Bearing [4]
   Comment: Godskin Duo
   Unique:
-  - Inside: farumazula* godskinduo maliketh
+  - Inside: farumazula farumazula_start godskinduo maliketh
 - Name: Somberstone Miner's Bell Bearing [1]
   Comment: Sellia Crystal Tunnel
   Switch: nocrawl
@@ -3484,18 +2146,18 @@ PlacementRestrictions:
 - Name: Somberstone Miner's Bell Bearing [3]
   Comment: Mountaintops of the Giants - First Church of Marika
   Unique:
-  - Before: farumazula_prestart
+  - Before: farumazula_start
     UpTo: mountaintops
     After: mountaintops
     UseGroups: true
 - Name: Somberstone Miner's Bell Bearing [4]
   Comment: Farum Azula - Tempest-Facing Balcony
   Unique:
-  - Inside: farumazula* godskinduo maliketh
+  - Inside: farumazula farumazula_start godskinduo maliketh
 - Name: Somberstone Miner's Bell Bearing [5]
   Comment: Farum Azula - Beside the Great Bridge
   Unique:
-  - Inside: farumazula* godskinduo maliketh
+  - Inside: farumazula farumazula_start godskinduo maliketh
 - Name: Glovewort Picker's Bell Bearing [1]
   Comment: Wyndham Catacombs
   Switch: norandomania
@@ -3511,7 +2173,7 @@ PlacementRestrictions:
 - Name: Glovewort Picker's Bell Bearing [2]
   Comment: Giants' Mountaintop Catacombs
   Unique:
-  - Before: farumazula_prestart
+  - Before: farumazula_start
     UpTo: mountaintops
     After: mountaintops
     UseGroups: true
@@ -3519,7 +2181,7 @@ PlacementRestrictions:
   Comment: Farum Azula - Wormface Area
   Unique:
   - UpTo: farumazula
-    After: farumazula_prestart
+    After: farumazula_start
     UseGroups: true
 - Name: Ghost-Glovewort Picker's Bell Bearing [1]
   Comment: Nokron Start
@@ -3772,7 +2434,7 @@ PlacementRestrictions:
     After: mountaintops
     UseGroups: true
   - Percent: 40
-    After: farumazula_prestart snowfield
+    After: farumazula snowfield
 - Name: Somber Smithing Stone [8]
   Comment: 11 locations, 11 total, 0 mats
   Switch: weaponprogression
@@ -3786,7 +2448,7 @@ PlacementRestrictions:
     After: mountaintops
     UseGroups: true
   - Percent: 50
-    After: farumazula_prestart snowfield
+    After: farumazula snowfield
 - Name: Somber Smithing Stone [9]
   Comment: 13 locations, 13 total, 0 mats
   Switch: weaponprogression
@@ -3802,7 +2464,7 @@ PlacementRestrictions:
   Switch: weaponprogression
   Unique:
   - Percent: 50
-    After: snowfield farumazula_prestart mohgwyn
+    After: snowfield farumazula mohgwyn
 - Name: Grave Glovewort [1]
   Comment: When materials are randomized, include heuristics for placement and add a handful into the world. TODO add underground areas for graveworts?
   Switch: mats
@@ -3951,7 +2613,7 @@ PlacementRestrictions:
     Name: Miniature Ranni
     ID: 3:8146
   Unique:
-  - Before: moonlight farumazula_prestart
+  - Before: moonlight farumazula
     UseGroups: true
 - Name: Fingerslayer Blade
   Unique:

@@ -430,7 +430,7 @@ namespace RandomizerCommon
 #if DEBUG
             explain = options["explain"];
             copydrops = options["copydrops"];
-            // debugPlacement = game.ItemForName("Glovewort Picker's Bell Bearing [1]");
+            // debugPlacement = game.ItemForName("Somberstone Miner's Bell Bearing [2]");
             // debugPlacement = game.ItemForName("O Mother");
             // debugPlacement = game.ItemForName("Rya's Necklace");
             // debugPlacement = new ItemKey(ItemType.GOOD, 8109);
@@ -709,6 +709,7 @@ namespace RandomizerCommon
                         }
                     }
                 }
+                bool debugNonEventAreas = false;
                 List<PendingItemSlot> pendingSlotsFromPlacement(List<PlacementSlotAnnotation> slots, ItemKey key, string excludeTag)
                 {
                     List<PendingItemSlot> ret = new List<PendingItemSlot>();
@@ -727,6 +728,23 @@ namespace RandomizerCommon
                             Expected = slot.Amount,
                             AdditionalExcludeTag = excludeTag,
                         });
+#if DEBUG
+                        if (debugNonEventAreas)
+                        {
+                            // These are placements that would need to be change to start moving away from events
+                            HashSet<string> allowed = slot.AllowedAreas(assign.IncludedAreas, assign.CombinedWeights, key.Equals(debugPlacement));
+                            List<(string, string)> noEventAreas = allowed
+                                .SelectMany(a =>
+                                    ann.AreaEvents.TryGetValue(a, out List<string> evs)
+                                        ? evs.Where(ev => !allowed.Contains(ev)).Select(ev => (a, ev))
+                                        : Enumerable.Empty<(string, string)>())
+                                .ToList();
+                            if (noEventAreas.Count > 0)
+                            {
+                                Console.WriteLine($"{game.Name(key)} areas missing events: {string.Join(", ", noEventAreas)}");
+                            }
+                        }
+#endif
                     }
                     return ret;
                 };
@@ -1547,6 +1565,7 @@ namespace RandomizerCommon
             // debug = location == "altus_oldtunnel"; // messmerskindling16
             // debug = location == "dungeon_oldcell" && game.Name(item) == "Easterner's Ashes";
             // debug = location == "firelink_cemetery";
+            // debug = game.Name(item) == "Somberstone Miner's Bell Bearing [2]" && slotAnn.Event == "elemer";
 
             bool result = pending.TryPlaceItemInLocation(slotAnn.TagList, location, slotAnn.GetArea(), slotAnn.Event, sourceName, minQuant, targetLoc.DLC, debug);
             // Additional condition: pending.Explain

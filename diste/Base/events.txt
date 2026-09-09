@@ -11372,6 +11372,16 @@ EnemyEvents:
       Params: X0
       PreSegment: setup
       Commands:
+      - ForceAnimationPlayback(2051450300, 30000, false, false, false, ComparisonType.Equal, 1)
+      - ForceAnimationPlayback(2051450301, 30000, false, false, false, ComparisonType.Equal, 1)
+      - ForceAnimationPlayback(2051450302, 30000, false, false, false, ComparisonType.Equal, 1)
+      - ForceAnimationPlayback(2051450303, 30000, false, false, false, ComparisonType.Equal, 1)
+      - ForceAnimationPlayback(2051450304, 30000, false, false, false, ComparisonType.Equal, 1)
+      - ForceAnimationPlayback(2051450305, 30000, false, false, false, ComparisonType.Equal, 1)
+      - ForceAnimationPlayback(2051450306, 30000, false, false, false, ComparisonType.Equal, 1)
+      - ForceAnimationPlayback(2051450307, 30000, false, false, false, ComparisonType.Equal, 1)
+      - ForceAnimationPlayback(2051450308, 30000, false, false, false, ComparisonType.Equal, 1)
+      - ForceAnimationPlayback(2051450309, 30000, false, false, false, ComparisonType.Equal, 1)
       - WaitFixedTimeSeconds(4)
       - ClearSpEffect(X0_4, 18677)
       - SetCharacterInvincibility(X0_4, Enabled)
