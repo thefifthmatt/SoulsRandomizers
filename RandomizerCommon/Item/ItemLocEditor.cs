@@ -101,7 +101,7 @@ namespace RandomizerCommon
         public Dictionary<int, float> GetDropChances(ItemKey key, ItemLocation itemLoc)
         {
             Dictionary<int, float> chances = new Dictionary<int, float>();
-            foreach (Location loc in itemLoc.Keys.Where(k => k.Type == LocationType.Lot))
+            foreach (Location loc in itemLoc.Locs.Where(k => k.Type == LocationType.Lot))
             {
                 float chance = chances.TryGetValue(loc.Quantity, out float c) ? c : 1;
                 chances[loc.Quantity] = Math.Min(chance, loc.Chance);
@@ -309,19 +309,15 @@ namespace RandomizerCommon
             // Elden Ring just needs eligible price
         }
 
-        public abstract class ItemRow<T> where T : ItemRow<T>, new()
+        public abstract class ItemRow
         {
             public GameData Game { get; set; }
             public Dictionary<string, object> Cells { get; set; }
-            public T DeepCopy()
-            {
-                return new T { Game = Game, Cells = new Dictionary<string, object>(Cells) };
-            }
         }
 
         // Some of this could be moved into class-specific item editors. There's also overlap with the location data scrapers.
         // The solution to both of these is maybe generated param row interfaces.
-        public class ShopCells : ItemRow<ShopCells>
+        public class ShopCells : ItemRow
         {
             public ItemKey Item
             {
@@ -370,9 +366,14 @@ namespace RandomizerCommon
                     Cells["value"] = value;
                 }
             }
+
+            public ShopCells DeepCopy()
+            {
+                return new ShopCells { Game = Game, Cells = new Dictionary<string, object>(Cells) };
+            }
         }
 
-        public class LotCells : ItemRow<LotCells>
+        public class LotCells : ItemRow
         {
             public int EventFlag
             {
@@ -476,6 +477,11 @@ namespace RandomizerCommon
                 {
                     Cells[$"LotItemNum{i}"] = (byte)quantity;
                 }
+            }
+
+            public LotCells DeepCopy()
+            {
+                return new LotCells { Game = Game, Cells = new Dictionary<string, object>(Cells) };
             }
         }
     }

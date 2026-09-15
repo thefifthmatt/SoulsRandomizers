@@ -145,7 +145,7 @@ namespace RandomizerCommon
             locationIndex = Enumerable.Range(0, locationOrder.Count()).ToDictionary(i => locationOrder[i], i => i);
         }
 
-        public void Load(RandomizerOptions opt, ItemPreset itemPreset = null, bool processSlots = true, MergeModManifest merge = null)
+        public void Load(RandomizerOptions opt, ItemPreset itemPreset = null, bool processSlots = true, MergeModManifest merge = null, ExternalItemPreset externalPreset = null)
         {
             // Maintain stable(r) copy of config to allow feature development while game updates are still ongoing.
             // If it becomes too much to maintain both at once then scrap it
@@ -782,6 +782,17 @@ namespace RandomizerCommon
                 Console.WriteLine($"RaceModeItems: {string.Join(", ", RaceModeItems.Select(game.Name))}");
             }
 
+            Dictionary<ItemKey, int> externalShards = new();
+            if (externalPreset?.RequiredShardCounts != null)
+            {
+                foreach ((string shardName, int count) in externalPreset.RequiredShardCounts)
+                {
+                    if (!shardName.EndsWith(" Shard")) throw new Exception($"Unrecognized configured shard {shardName}");
+                    string itemName = shardName.Substring(0, shardName.Length - " Shard".Length);
+                    externalShards[game.ItemForName(itemName)] = count;
+                }
+            }
+
             // Fill in Items and MultiItems for logic. This can be done earlier, but can't be done while processing items as multi-items depends on both multikey group and preset.
             foreach (ConfigItemAnnotation configItems in ann.ConfigItems)
             {
@@ -801,8 +812,16 @@ namespace RandomizerCommon
                         // Adding an item to MultiItem causes rewriting later, so avoid doing that for DLC-only key items
                         // But still add the config name in case that comes in up in logic somewhere
                         bool noMulti = game.EldenRing && game.IsEldenDlcItem(key) && !opt["dlc"];
-                        // Use preset before it's processed because processing requires mapping groups to
-                        if (itemPreset != null)
+                        if (externalPreset?.RequiredShardCounts != null)
+                        {
+                            if (externalShards.TryGetValue(key, out int req))
+                            {
+                                // TODO get exact count? It's available in options. For now, rely on this not actually being used.
+                                item.KeyCount = req;
+                                shardReq = req;
+                            }
+                        }
+                        else if (itemPreset != null)
                         {
                             if (itemPreset.ItemShards != null && !noMulti)
                             {
@@ -1104,7 +1123,7 @@ namespace RandomizerCommon
                     // Warn about this. Except for merging mods, as mods can't add slots yet
                     if (!game.HasMods)
                     {
-                        Console.WriteLine($"Warning: No annotation for slot {key}, with slots {string.Join(", ", entry.Value.Select(s => $"{s} at {string.Join(", ", data.GetItemLoc(s).Keys)}"))}");
+                        Console.WriteLine($"Warning: No annotation for slot {key}, with slots {string.Join(", ", entry.Value.Select(s => $"{s} at {string.Join(", ", data.GetItemLoc(s).Locs)}"))}");
                     }
                     continue;
                 }
@@ -1988,7 +2007,7 @@ namespace RandomizerCommon
             {
                 SortedSet<string> models = new SortedSet<string>();
                 SortedSet<string> locs = new SortedSet<string>();
-                List<Entity> entities = loc.Keys
+                List<Entity> entities = loc.Locs
                     .SelectMany(k => k.Entities)
                     .Where(e => !string.IsNullOrEmpty(e.MapName))
                     .ToList();
@@ -2103,7 +2122,7 @@ namespace RandomizerCommon
                 {
                     // TODO: This will overcount slots where scopes share a base loc, so this may require something like BaseLocations in Permutation. Keep the max count lower for now.
                     count = 4;
-                    foreach (Location loc in locKeys.SelectMany(key => data.GetItemLoc(key).Keys))
+                    foreach (Location loc in locKeys.SelectMany(key => data.GetItemLoc(key).Locs))
                     {
                         Location baseLoc = loc.BaseLocation;
                         count = Math.Min(count, baseLoc.MaxSlots);

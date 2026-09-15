@@ -540,7 +540,7 @@ namespace RandomizerCommon
                 foreach (ItemLocKey key in data.GetBaseItemLocs(entry.Key))
                 {
                     ItemLocation itemLoc = data.GetItemLoc(key);
-                    foreach (Location loc in itemLoc.Keys)
+                    foreach (Location loc in itemLoc.Locs)
                     {
                         foreach (Entity id in loc.Entities)
                         {
@@ -620,7 +620,7 @@ namespace RandomizerCommon
                     if (areaAnn.Maps == null) continue;
                     List<string> eligibleMaps = areaAnn.Maps.Split(' ').ToList();
                     // Console.WriteLine($"{game.Name(source.Item)} = {entry.Key}");
-                    foreach (Entity id in itemLoc.Keys.SelectMany(loc => loc.Entities))
+                    foreach (Entity id in itemLoc.Locs.SelectMany(loc => loc.Entities))
                     {
                         if (!string.IsNullOrEmpty(id.MapName) && eligibleMaps.Contains(id.MapName))
                         {
@@ -1424,7 +1424,7 @@ namespace RandomizerCommon
                     foreach (ItemLocKey key in entry.Value)
                     {
                         ItemLocation itemLoc = data.GetItemLoc(key);
-                        foreach (Location loc in itemLoc.Keys)
+                        foreach (Location loc in itemLoc.Locs)
                         {
                             foreach (Entity id in loc.Entities)
                             {

@@ -10,6 +10,7 @@ using System.Numerics;
 using System.Text;
 using static RandomizerCommon.AnnotationData;
 using static RandomizerCommon.EventConfig;
+using static RandomizerCommon.ExternalItemPreset;
 using static RandomizerCommon.ItemEventConfig;
 using static RandomizerCommon.ItemLocEditor;
 using static RandomizerCommon.LocationData;
@@ -25,7 +26,8 @@ namespace RandomizerCommon
         private readonly GameData game;
         private readonly LocationData data;
         private readonly AnnotationData ann;
-        private readonly ItemLocEditor locEditor;
+        private readonly ExternalItemPreset externalPreset;
+        private readonly ExternalLocationData externalData;
         private readonly Events events;
         private readonly ItemEventConfig eventConfig;
         private readonly Messages messages;
@@ -34,7 +36,8 @@ namespace RandomizerCommon
             GameData game,
             LocationData data,
             AnnotationData ann,
-            ItemLocEditor locEditor,
+            ExternalItemPreset externalPreset,
+            ExternalLocationData externalData,
             Events events,
             ItemEventConfig eventConfig,
             Messages messages)
@@ -42,7 +45,8 @@ namespace RandomizerCommon
             this.game = game;
             this.data = data;
             this.ann = ann;
-            this.locEditor = locEditor;
+            this.externalPreset = externalPreset;
+            this.externalData = externalData;
             this.events = events;
             this.eventConfig = eventConfig;
             this.messages = messages;
@@ -62,6 +66,147 @@ namespace RandomizerCommon
         private static readonly Text thopsKeyText = new Text("{0} (Thops)", "GameMenu_thopsKey");
         [Localize]
         private static readonly Text ashenGraceText = new Text("{0} (Ashen)", "GameMenu_ashenGrace");
+
+        // (event flag, location) which should be mapped in param data
+        private SortedSet<(uint, long)> trackedLotLocations = new();
+        private SortedSet<(uint, long)> trackedShopLocations = new();
+        // By item id, to include quantity changes
+        private Dictionary<long, ItemKey> fakeLocalItems = new();
+        private HashSet<ItemKey> copiedItems = new();
+        private Dictionary<ItemType, int> fakeIds = new()
+        {
+            [ItemType.Weapon] = 81_000_000,
+            [ItemType.Protector] = 8_100_000,
+            [ItemType.Accessory] = 8_100_000,
+            [ItemType.Goods] = 8_100_000,
+            [ItemType.Gem] = 8_100_000,
+            [ItemType.Custom] = 8_100_000,
+        };
+
+        private int GetNewFakeID(ItemKey item)
+        {
+            if (!fakeIds.TryGetValue(item.Type, out int baseId))
+            {
+                throw new Exception($"Rewrite for {item} is not implemented");
+            }
+            int newId;
+            if (item.Type == ItemType.Weapon)
+            {
+                newId = baseId + (item.ID % 10000);
+                baseId += 10000;
+            }
+            else if (item.Type == ItemType.Protector)
+            {
+                newId = baseId + (item.ID % 1000);
+                baseId += 1000;
+            }
+            else
+            {
+                newId = baseId++;
+            }
+            fakeIds[item.Type] = baseId;
+            return newId;
+        }
+
+        public override void ExternalItemOverride(ItemLocation source, Location target, ItemRow row)
+        {
+            if (externalPreset == null)
+            {
+                return;
+            }
+            // Use the original location data
+            Location loc = source.Locs.Find(l => l.Type == LocationType.External);
+            if (loc == null)
+            {
+                return;
+            }
+            long locationId = loc.ExternalID;
+            long itemId = externalPreset.FiniteItemMapping[locationId];
+            ItemKey fakeItem = null;
+            if (externalPreset.LocalItems.TryGetValue(itemId, out LocalItem localItem) && !externalPreset.ExternalItems.ContainsKey(locationId))
+            {
+                if (!source.Item.Equals(localItem.Key))
+                {
+                    throw new Exception($"Mismatch for location {locationId}<-{itemId}, assigned {source.Item} but expected {localItem.Key}");
+                }
+                // All items are 'realistic' items because both item popups and shops use item metadata.
+                // This indirection is only for safety if the randomizer is enabled without the dll.
+                // The items should be made unusable, though.
+                ItemKey baseItem = game.NormalizeWeapon(source.Item);
+                if (!fakeLocalItems.TryGetValue(itemId, out fakeItem))
+                {
+                    int newId = GetNewFakeID(baseItem);
+                    copiedItems.Add(baseItem);
+                    if (baseItem.Type == ItemType.Custom)
+                    {
+                        copiedItems.Add(game.GetBaseWeapon(baseItem));
+                    }
+                    fakeLocalItems[itemId] = fakeItem = new ItemKey(baseItem.Type, newId);
+                }
+            }
+            // These error messages are bad
+            void validate(ItemKey rowKey, int eventFlag)
+            {
+                if (rowKey == null)
+                {
+                    throw new Exception($"No item in lot");
+                }
+                if (!source.Item.Equals(rowKey))
+                {
+                    throw new Exception($"Item [{game.Name(rowKey)}] found in lot where only [{source.Item}] was expected");
+                }
+                if (eventFlag <= 0)
+                {
+                    throw new Exception($"Item [{source.Item}] assigned to location with no event flag");
+                }
+            }
+            if (row is LotCells lotCells)
+            {
+                if (fakeItem != null)
+                {
+                    ItemKey rowKey = lotCells[1];
+                    validate(rowKey, lotCells.EventFlag);
+                    lotCells[1] = fakeItem;
+                    lotCells.SetQuantity(1, 1);
+                }
+                for (int i = 2; i <= 8; i++)
+                {
+                    if (lotCells[i] != null)
+                    {
+                        throw new Exception($"Lot cell {i} filled");
+                    }
+                }
+                // Add extra data, for now not using API
+                (int embed1, uint embed2) = EmbedLong(locationId);
+                lotCells.Cells["lotItemId08"] = embed1;
+                lotCells.Cells["getItemFlagId08"] = embed2;
+                trackedLotLocations.Add(((uint)lotCells.EventFlag, locationId));
+            }
+            else if (row is ShopCells shopCells)
+            {
+                if (fakeItem != null)
+                {
+                    ItemKey rowKey = shopCells.Item;
+                    validate(rowKey, shopCells.EventFlag);
+                    if (shopCells.Quantity <= 0)
+                    {
+                        throw new Exception($"Shop cell invalid quantity");
+                    }
+                    shopCells.Item = fakeItem;
+                    shopCells.Value *= shopCells.Quantity;
+                    shopCells.Quantity = 1;
+                }
+                trackedShopLocations.Add(((uint)shopCells.EventFlag, locationId));
+            }
+        }
+
+        // Turn given id using fewer than 56 into (item id, event flag) pair
+        private (int, uint) EmbedLong(long id)
+        {
+            if (id < 0 || id >= (1 << 56)) throw new Exception($"Location id {id} out of range and not supported");
+            // For the event flag, make sure it's an invalid range just in case. Investigate _ResetCumulativeNum
+            return ((int)id, (uint)(id >> 32) | 0xE000_0000);
+        }
 
         public override void EditLocations(RandomizerOptions opt, ItemFlagMapping mapping)
         {
@@ -89,12 +234,14 @@ namespace RandomizerCommon
                 fakeGesture["showDialogCondType"].Value = (byte)0; // 0 or 2
             }
 
-            // TODO: Put earlier if necessary
+            // From Dectus Medallion (Left)
+            ItemKey baseKeyItem = new ItemKey(ItemType.Goods, 8105);
+            PARAM.Row baseKeyItemRow = game.Item(baseKeyItem);
             foreach (NewItemAnnotation newItem in ann.NewItems.Values)
             {
                 // TODO: sortId, correct icon
                 int id = newItem.Key.ID;
-                PARAM.Row row = game.AddRow("EquipParamGoods", id, 8105);
+                PARAM.Row row = GameEditor.AddRow(game.ItemParam(baseKeyItem), id, baseKeyItemRow);
                 row["iconId"].Value = 228;
                 row["rarity"].Value = (byte)2;
                 // TODO: Localize name and maybe description. This routine only works for Stonesword Master Keys
@@ -115,19 +262,151 @@ namespace RandomizerCommon
                 }
             }
 
-            // Synthetic Rold lot. The location flag is still 40001, but the item's flag is changed.
-            // This is deprecated now so remove all of that stuff after more testing.
-            int roldFlag = GameData.EldenRingBase + 11;
-            int roldEventId = GameData.EldenRingBase + 10;
-            if (opt.GetInt(RandomizerOptions.IntOpt.RunesRold, out _))
+            if (externalPreset != null)
             {
-                ItemKey rold = ann.ItemGroups["removerold"][0];
-                if (!(mapping.ItemEventFlags.TryGetValue(rold, out int flag) && flag > 0))
+                // TODO: Copy rarity from other souls games?
+                Dictionary<ExternalRarity, byte> rarityMapping = new()
                 {
-                    // Rold being used as an item is mainly for Gideon check
-                    // mapping.ItemEventFlags[rold] = roldFlag;
+                    [ExternalRarity.Common] = 1,
+                    [ExternalRarity.Rare] = 2,
+                    [ExternalRarity.Legendary] = 3,
+                };
+                foreach ((long locationId, ItemKey itemKey) in externalData.ExternalItemKeys)
+                {
+                    // Maybe ItemKey should be in the preset as state added later? Stateful but easier to handle than multiple mappings
+                    if (externalPreset.ExternalItems.TryGetValue(locationId, out ExternalItem extItem))
+                    {
+                        int id = itemKey.ID;
+                        PARAM.Row row = GameEditor.AddRow(game.ItemParam(baseKeyItem), id, baseKeyItemRow);
+                        row["iconId"].Value = 90;
+                        if (!rarityMapping.TryGetValue(extItem.Rarity, out byte rarity))
+                        {
+                            if (extItem.Rarity == ExternalRarity.Trap)
+                            {
+                                uint bucket = Util.XxStringHash(locationId.ToString()) % 100;
+                                if (bucket < 45) rarity = 1;
+                                else if (bucket < 90) rarity = 2;
+                                else rarity = 3;
+                            }
+                        }
+                        row["rarity"].Value = (byte)2;
+                        // TODO: What starting index to use?
+                        row["sortId"].Value = 2000000 + extItem.SortOffset;
+                        // TODO: Localize name and maybe description. This routine only works for Stonesword Master Keys
+                        foreach (FMGDictionary fmgs in game.AllItemFMGs.Values)
+                        {
+                            fmgs["GoodsName"][id] = extItem.Name;
+                            fmgs["GoodsInfo"][id] = extItem.Desc;
+                            fmgs["GoodsCaption"][id] = extItem.Desc;
+                        }
+                    }
+                }
+                // For Elden Ring, potentially a *lot* of items are getting added so prefer to make it not quadratic
+                // Some of this could be shared between games
+                Dictionary<ItemKey, PARAM.Row> itemCache = new();
+                foreach (ItemType copyType in fakeIds.Keys)
+                {
+                    foreach (PARAM.Row row in game.ItemParam(copyType).Rows)
+                    {
+                        ItemKey key = new ItemKey(copyType, row.ID);
+                        if (copiedItems.Contains(key))
+                        {
+                            itemCache.TryAdd(key, row);
+                        }
+                    }
+                }
+                Dictionary<int, PARAM.Row> magicDict = GameEditor.ParamToDictionary(game.Params["Magic"]);
+                Dictionary<ItemType, List<string>> copyFmgNames = new()
+                {
+                    // DLC variants are automatically used where necessary
+                    [ItemType.Weapon] = new() { "WeaponName", "WeaponInfo", "WeaponCaption" },
+                    [ItemType.Protector] = new() { "ProtectorName", "ProtectorInfo", "ProtectorCaption" },
+                    [ItemType.Accessory] = new() { "AccessoryName", "AccessoryInfo", "AccessoryCaption" },
+                    [ItemType.Goods] = new() { "GoodsName", "GoodsInfo", "GoodsCaption" },
+                    [ItemType.Gem] = new() { "GemName", "GemInfo", "GemCaption" },
+                };
+                void copyFmgs(ItemKey from, ItemKey to, int quantity = 1)
+                {
+                    if (!copyFmgNames.TryGetValue(from.Type, out List<string> fmgNames))
+                    {
+                        return;
+                    }
+                    foreach (FMGDictionary itemFmgs in game.AllItemFMGs.Values)
+                    {
+                        foreach (string fmgName in fmgNames)
+                        {
+                            string entry = itemFmgs[fmgName][from.ID];
+                            if (entry != null)
+                            {
+                                if (quantity > 1 && fmgName == fmgNames[0])
+                                {
+                                    // More recognizable to put (x{quantity}) in front but make it consistent with external items
+                                    entry = $"{entry} x{quantity}";
+                                }
+                                itemFmgs[fmgName][to.ID] = entry;
+                            }
+                        }
+                    }
+                }
+                foreach ((long itemId, ItemKey targetItem) in fakeLocalItems)
+                {
+                    LocalItem localItem = externalPreset.LocalItems[itemId];
+                    ItemKey baseItem = game.NormalizeWeapon(localItem.Key);
+                    if (baseItem.Type != targetItem.Type || !itemCache.TryGetValue(baseItem, out PARAM.Row baseRow))
+                    {
+                        throw new Exception($"Internal error: did not track {baseItem}->{targetItem} from {itemId}");
+                    }
+                    PARAM.Row newRow = GameEditor.AddRow(game.ItemParam(targetItem), targetItem.ID, baseRow);
+                    copyFmgs(baseItem, targetItem, localItem.Quantity);
+                    // Duplicate aux rows for descriptions and other metadata
+                    // TODO: These fake items are too real. Make them not actually work.
+                    if (baseItem.Type == ItemType.Goods && magicDict.TryGetValue(baseItem.ID, out PARAM.Row magicRow))
+                    {
+                        GameEditor.AddRow(game.Params["Magic"], targetItem.ID, magicRow);
+                    }
+                    if (baseItem.Type == ItemType.Custom)
+                    {
+                        // This is untested as currently gem-attached weapons are not added as sources
+                        ItemKey baseWeapon = game.GetBaseWeapon(baseItem);
+                        if (baseWeapon.Type != ItemType.Weapon || !itemCache.TryGetValue(baseWeapon, out PARAM.Row baseWepRow))
+                        {
+                            throw new Exception($"Internal error: did not track {baseItem} {baseWeapon} from {itemId}");
+                        }
+                        ItemKey newWeapon = new ItemKey(ItemType.Weapon, GetNewFakeID(baseWeapon));
+                        GameEditor.AddRow(game.ItemParam(targetItem), targetItem.ID, baseWepRow);
+                        newRow["baseWepId"].Value = newWeapon.ID;
+                        copyFmgs(baseWeapon, newWeapon);
+                    }
+                }
+                bool debugMapping = false;
+                if (debugMapping)
+                {
+                    SortedSet<(uint, long)> trackedFlagLocations = new(trackedLotLocations.Union(trackedShopLocations));
+                    Dictionary<uint, List<long>> multiFlagLocs = trackedFlagLocations
+                        .GroupBy(e => e.Item1)
+                        .Where(g => g.Count() > 1)
+                        .ToDictionary(g => g.Key, g => g.Select(e => e.Item2).ToList());
+                    Console.WriteLine($"{multiFlagLocs.Count} overloaded flags (expected): {string.Join(" ", multiFlagLocs.Keys)}");
+                    Dictionary<long, List<uint>> multiLocFlags = trackedFlagLocations
+                        .GroupBy(e => e.Item2)
+                        .Where(g => g.Count() > 1)
+                        .ToDictionary(g => g.Key, g => g.Select(e => e.Item1).ToList());
+                    Console.WriteLine($"{multiLocFlags.Count} overloaded locs (should be shops only): {string.Join(" ", multiLocFlags.Select(e => $"[{e.Key}->{string.Join(",", e.Value)}]"))}");
+                }
+                // Shops aren't big enough to fit a long in Elden Ring so just make fake lots instead
+                SortedSet<(uint, long)> untrackedLocations = new(trackedShopLocations.Except(trackedLotLocations));
+                int extraRowId = 1_810_000_001;
+                foreach ((uint eventFlag, long location) in untrackedLocations)
+                {
+                    PARAM.Row row = game.AddRow("ItemLotParam_enemy", extraRowId);
+                    extraRowId += 2;
+                    (int embed1, uint embed2) = EmbedLong(location);
+                    row["getItemFlagId"].Value = eventFlag;
+                    row["lotItemId08"].Value = embed1;
+                    row["getItemFlagId08"].Value = embed2;
                 }
             }
+
             int shardFlag = GameData.EldenRingBase + 2050;
 
             // Get current way of acquiring item corresponding to given flag.
@@ -1654,7 +1933,7 @@ namespace RandomizerCommon
                     if (location.Scope.Type != ScopeType.Event) continue;
                     int eventFlag = location.Scope.EventID;
                     if (eventFlag <= 0) continue;
-                    foreach (Location locKey in location.Keys)
+                    foreach (Location locKey in location.Locs)
                     {
                         if (locKey.Type != LocationType.Lot || locKey.Subtype != "map") continue;
                         int lotId = locKey.BaseID;

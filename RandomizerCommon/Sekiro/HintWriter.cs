@@ -220,7 +220,7 @@ namespace RandomizerCommon
                 {
                     types.Add(HintType.Carp);
                 }
-                else if (itemLoc.Keys.Any(k => k.Type == Location.LocationType.Shop && k.ID / 100 != 11005))
+                else if (itemLoc.Locs.Any(k => k.Type == Location.LocationType.Shop && k.ID / 100 != 11005))
                 {
                     // Exclude offering box in Sekiro
                     types.Add(HintType.Shop);
@@ -231,7 +231,7 @@ namespace RandomizerCommon
                     {
                         types.Add(HintType.Underwater);
                     }
-                    if (itemLoc.Keys.Any(k => k.Type == Location.LocationType.Lot && k.Entities.Any(e => chests.Contains(e.ModelName))))
+                    if (itemLoc.Locs.Any(k => k.Type == Location.LocationType.Lot && k.Entities.Any(e => chests.Contains(e.ModelName))))
                     {
                         types.Add(HintType.Chest);
                     }

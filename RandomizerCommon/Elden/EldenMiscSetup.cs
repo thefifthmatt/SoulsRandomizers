@@ -62,6 +62,8 @@ namespace RandomizerCommon
             {
                 GameEditor.CopyRow(baseSp, game.AddRow("SpEffectParam", 6950 + i));
             }
+            PARAM.Row presenceSp = GameEditor.AddRow(game.Params["SpEffectParam"], 81000001, baseSp);
+            presenceSp["effectEndurance"].Value = 3f;
 
             HashSet<(int, int)> deleteCommands = new HashSet<(int, int)>
             {

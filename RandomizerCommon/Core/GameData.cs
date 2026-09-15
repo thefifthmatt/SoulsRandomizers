@@ -27,8 +27,8 @@ namespace RandomizerCommon
             .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitDefaults)
             .Build();
         // Permanent flags
-        // 0010: Rold event id
-        // 0011: Auto-Rold lot event flag
+        // 0010: Rold event id (obsolete)
+        // 0011: Auto-Rold lot event flag (obsolete)
         // 0020: warped to dlc
         // 0021: dlc inited items + levels etc
         // 0022: currently doing dlc init
@@ -131,13 +131,15 @@ namespace RandomizerCommon
             { "senpou", "Senpou Temple" },
             { "fountainhead", "Fountainhead Palace" },
         };
-        private readonly static Dictionary<uint, ItemType> MaskLotItemTypes = new Dictionary<uint, ItemType>
+        private readonly static Dictionary<uint, ItemType> MaskItemTypes = new Dictionary<uint, ItemType>
         {
-            [0x00000000] = ItemType.Weapon,
-            [0x10000000] = ItemType.Protector,
-            [0x20000000] = ItemType.Accessory,
-            [0x40000000] = ItemType.Goods,
+            [0x0000_0000] = ItemType.Weapon,
+            [0x1000_0000] = ItemType.Protector,
+            [0x2000_0000] = ItemType.Accessory,
+            [0x4000_0000] = ItemType.Goods,
+            [0x8000_0000] = ItemType.Gem,
         };
+        private readonly static Dictionary<ItemType, uint> ItemTypeMasks = MaskItemTypes.ToDictionary(e => e.Value, e => e.Key);
         private readonly static Dictionary<uint, ItemType> ErLotItemTypes = new Dictionary<uint, ItemType>
         {
             [1] = ItemType.Goods,
@@ -275,7 +277,7 @@ namespace RandomizerCommon
             Editor.Spec.LayoutDir = null;
             Editor.Spec.DefDir = $@"{dir}\Defs";
             EnglishName = DS1 ? "ENGLISH" : "engus";
-            LotItemTypes = EldenRing ? ErLotItemTypes : MaskLotItemTypes;
+            LotItemTypes = EldenRing ? ErLotItemTypes : MaskItemTypes;
             LotValues = LotItemTypes.ToDictionary(e => e.Value, e => e.Key);
             ShopTypeItems = ShopItemTypes.ToDictionary(e => e.Value, e => e.Key);
             NeighborMaps = EldenRing ? eldenNeighborMaps : new();
@@ -475,6 +477,36 @@ namespace RandomizerCommon
             return false;
         }
 
+        public bool TryItemAsUint(ItemKey key, out uint item)
+        {
+            if (ItemTypeMasks.TryGetValue(key.Type, out uint mask) && key.ID >= 0 && key.ID <= 0x0FFF_FFFF)
+            {
+                item = mask | (uint)key.ID;
+                return true;
+            }
+            else
+            {
+                item = 0xFFFF_FFFF;
+                return false;
+            }
+        }
+
+        public bool TryUintAsItem(uint val, out ItemKey item)
+        {
+            uint mask = val & 0xF000_0000;
+            uint id = val & 0x0FFF_FFFF;
+            if (MaskItemTypes.TryGetValue(mask, out ItemType type))
+            {
+                item = new ItemKey(type, (int)id);
+                return true;
+            }
+            else
+            {
+                item = null;
+                return false;
+            }
+        }
+
         public string Name(ItemKey key)
         {
             string suffix = "";
@@ -587,7 +619,7 @@ namespace RandomizerCommon
             return AutoUpgrade(new ItemKey(ItemType.Weapon, id), level).ID;
         }
 
-        private static readonly int customWepBase = 91200;
+        private readonly int customWepBase = 91200;
         private readonly Dictionary<(ItemKey, int), ItemKey> customWeaponRelevel = new();
         public ItemKey AutoUpgrade(ItemKey item, int level)
         {

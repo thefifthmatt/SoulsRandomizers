@@ -29,14 +29,14 @@ namespace RandomizerCommon
             }
             if (!itemLocs.Locations.TryGetValue(locScope, out ItemLocation itemLoc))
             {
-                itemLocs.Locations[locScope] = itemLoc = new ItemLocation(scope, locScope);
+                itemLocs.Locations[locScope] = itemLoc = new ItemLocation(item, scope, locScope);
             }
-            itemLoc.Keys.AddRange(locs);
+            itemLoc.Locs.AddRange(locs);
             if (!Locations.TryGetValue(locScope, out List<ItemLocKey> keys))
             {
                 Locations[locScope] = keys = new List<ItemLocKey>();
             }
-            keys.Add(new ItemLocKey(item, locScope));
+            keys.Add(itemLoc.Key);
             return itemLoc;
         }
 
@@ -81,7 +81,7 @@ namespace RandomizerCommon
         public List<ItemLocKey> GetBaseItemLocs(LocationScope scope)
         {
             // Is this actually correct? (Does it exclude items with different event flags in non-base lots?)
-            Func<ItemLocKey, bool> isTarget = targetKey => GetItemLoc(targetKey).Keys.Any(k => k.OtherBase == null);
+            Func<ItemLocKey, bool> isTarget = targetKey => GetItemLoc(targetKey).Locs.Any(k => k.OtherBase == null);
             List<ItemLocKey> bases = Locations[scope].Where(isTarget).ToList();
             if (bases.Count() == 0)
             {
@@ -108,7 +108,8 @@ namespace RandomizerCommon
         // One way to get a specific item. When the LocationKeys here are changed, they are all changed together.
         public class ItemLocation
         {
-            public readonly List<Location> Keys;
+            public readonly ItemKey Item;
+            public readonly List<Location> Locs;
             // Forms the ItemLocKey for this item (which is just the double-key for lookup in Items dict), and is used for slot annotations.
             public readonly LocationScope LocScope;
             // This is used within the data scraper but could be removed if desired.
@@ -122,18 +123,24 @@ namespace RandomizerCommon
             // Name for this source, if KeyCount is set for the item. If this is set for one location for a finite item, it's set for all of them.
             public string ItemName { get; set; }
 
-            public ItemLocation(ItemScope Scope, LocationScope LocScope)
+            internal ItemLocation(ItemKey item, ItemScope Scope, LocationScope LocScope)
             {
-                Keys = new List<Location>();
+                Item = item;
+                Locs = new List<Location>();
                 this.Scope = Scope;
                 this.LocScope = LocScope;
             }
+
+            // TODO: Use this
+            public ItemLocKey Key => new ItemLocKey(Item, LocScope);
+
             public SortedSet<string> GetLocations()
             {
-                return new SortedSet<string>(Keys.SelectMany(k => k.Entities.Select(e => e.MapName)).Where(m => m != ""));
+                return new SortedSet<string>(Locs.SelectMany(k => k.Entities.Select(e => e.MapName)).Where(m => m != ""));
             }
-            public int Quantity => Math.Max(1, Keys.Select(k => k.Quantity).DefaultIfEmpty().Min());
-            public override string ToString() => string.Join(", ", Keys);
+
+            public int Quantity => Math.Max(1, Locs.Select(k => k.Quantity).DefaultIfEmpty().Min());
+            public override string ToString() => string.Join(", ", Locs);
         }
 
         // Silos
@@ -313,7 +320,7 @@ namespace RandomizerCommon
         {
             public enum LocationType
             {
-                Lot, Shop
+                Lot, Shop, External
             }
             public readonly LocationType Type;
             public readonly int ID;
@@ -324,12 +331,13 @@ namespace RandomizerCommon
             public readonly int Quantity;
             public readonly float Chance;
             public readonly string Subtype;
+            public readonly long ExternalID;
             // For a lot, the base lot location, if this is an additional draw. Otherwise null
             public readonly Location OtherBase;
 
             public Location(
                 LocationType Type, int ID, string Text,
-                List<Entity> Entities, int Quantity, float Chance, Location OtherBase, string Subtype = null)
+                List<Entity> Entities, int Quantity, float Chance, Location OtherBase, string Subtype = null, long ExternalID = 0)
             {
                 this.Type = Type;
                 this.ID = ID;
@@ -339,18 +347,19 @@ namespace RandomizerCommon
                 this.Chance = Chance;
                 this.OtherBase = OtherBase;
                 this.Subtype = Subtype;
+                this.ExternalID = ExternalID;
                 if (OtherBase != null && OtherBase.Type != Type)
                 {
                     throw new Exception($"Bad base {OtherBase} for {Text}");
                 }
-                this.maxSlots = 1;
+                _maxSlots = 1;
             }
 
             public int BaseID => BaseLocation.ID;
             public Location BaseLocation => OtherBase ?? this;
 
             // The available slots in this location. If this is a non-base item in an item lot, this forwards to the base lot.
-            private int maxSlots;
+            private int _maxSlots;
             public int MaxSlots
             {
                 get
@@ -358,9 +367,9 @@ namespace RandomizerCommon
                     if (OtherBase != null)
                     {
                         // Access field directly - these should only be one deep
-                        return OtherBase.maxSlots;
+                        return OtherBase._maxSlots;
                     }
-                    return maxSlots;
+                    return _maxSlots;
                 }
                 set
                 {
@@ -372,11 +381,18 @@ namespace RandomizerCommon
                     {
                         throw new Exception($"Cannot set {this} to {value} slots");
                     }
-                    maxSlots = value;
+                    _maxSlots = value;
                 }
             }
 
-            public string ParamName => (Type == LocationType.Lot ? "ItemLotParam" : "ShopLineupParam") + (Subtype == null ? "" : $"_{Subtype}");
+            public string ParamName
+            {
+                get
+                {
+                    if (Type == LocationType.External) throw new Exception($"External location has no param has no param: {this}");
+                    return (Type == LocationType.Lot ? "ItemLotParam" : "ShopLineupParam") + (Subtype == null ? "" : $"_{Subtype}");
+                }
+            }
 
             public override string ToString() => Text;
             // Are these really needed?

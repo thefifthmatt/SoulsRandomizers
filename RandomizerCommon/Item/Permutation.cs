@@ -10,10 +10,11 @@ namespace RandomizerCommon
 {
     public class Permutation
     {
-        private GameData game;
-        private LocationData data;
-        private AnnotationData ann;
-        private Messages messages;
+        private readonly GameData game;
+        private readonly LocationData data;
+        private readonly AnnotationData ann;
+        private readonly ExternalLocationData externalData;
+        private readonly Messages messages;
 
         private bool explain;
         private bool copydrops;
@@ -43,17 +44,18 @@ namespace RandomizerCommon
             "Could not place all important items... giving up now. Try rerolling the seed, reducing the number of important items or item restrictions, or increasing the number of important locations.",
             "Randomizer_keyItemError");
 
-        public Permutation(GameData game, LocationData data, AnnotationData ann, Messages messages)
+        public Permutation(GameData game, LocationData data, AnnotationData ann, Messages messages, ExternalLocationData externalData)
         {
             this.game = game;
             this.data = data;
             this.ann = ann;
             this.messages = messages;
+            this.externalData = externalData;
         }
 
         public void LoadLocations(RandomizerOptions opt, MergeModManifest merge = null)
         {
-            HashSet<ItemKey> removeGlobal = ann.RemoveItems; // new HashSet<ItemKey>(ann.ItemGroups["remove"]);
+            HashSet<ItemKey> removeGlobal = ann.RemoveItems;
             ann.ItemGroups.TryGetValue("norandomshop", out List<ItemKey> norandomShop);
 
             SiloPermutation getSilo(LocationSilo type)
@@ -63,17 +65,6 @@ namespace RandomizerCommon
                     Silos[type] = silo = new SiloPermutation { Type = type };
                 }
                 return silo;
-            }
-
-            // Hardcoded parameterized silos based on params
-            Dictionary<ItemKey, int> weaponTypes = new();
-            if (game.EldenRing)
-            {
-                foreach (SoulsFormats.PARAM.Row row in game.Param("EquipParamWeapon").Rows)
-                {
-                    int weaponType = (ushort)row["wepType"].Value;
-                    weaponTypes[new ItemKey(ItemType.Weapon, row.ID)] = weaponType;
-                }
             }
 
             foreach (KeyValuePair<LocationScope, List<ItemLocKey>> entry in data.Locations)
@@ -150,13 +141,39 @@ namespace RandomizerCommon
                 {
                     ItemLocation location = data.GetItemLoc(itemLocKey);
                     ItemScope scope = location.Scope;
-                    // TODO: Randomize these as items? but not as lots
+                    // These can be are randomized in the map but remain tied to the asset id
                     if (scope.Type == ScopeType.Asset) continue;
+
+                    ItemKey item = itemLocKey.Item;
+                    RandomSilo mainSilo = canPermuteTo[scope.Type];
+                    if (mainSilo == RandomSilo.Finite && externalData.IsActive)
+                    {
+                        // Simplified version of below routine for effective complete plando
+                        if (scope.Type == ScopeType.Special)
+                        {
+                            // Locations without targets are not relevant
+                            continue;
+                        }
+                        LocationSilo extSilo = LocationSilo.Of(mainSilo);
+                        if (externalData.FiniteItemMapping.TryGetValue(itemLocKey, out List<ItemLocKey> sources))
+                        {
+                            AddMulti(getSilo(extSilo).Mapping, itemLocKey, sources);
+                        }
+                        else
+                        {
+                            // Everything else is not randomized. If something shouldn't go here, it should be validated in ExternalLocationData
+                            extSilo = LocationSilo.Of(RandomSilo.Self);
+                            AddMulti(getSilo(extSilo).Mapping, itemLocKey, itemLocKey);
+                            norandomSlots.Add(itemLocKey);
+                        }
+                        continue;
+                    }
+
                     // Calculate for per-location norandom
                     bool norandomLoc = false;
                     if (norandomLocs)
                     {
-                        foreach (Location locKey in location.Keys)
+                        foreach (Location locKey in location.Locs)
                         {
                             if (locKey.Type == Location.LocationType.Lot)
                             {
@@ -178,8 +195,6 @@ namespace RandomizerCommon
                         norandomLoc = true;
                     }
 
-                    ItemKey item = itemLocKey.Item;
-                    RandomSilo mainSilo = canPermuteTo[scope.Type];
                     LocationSilo defaultSilo = LocationSilo.Of(mainSilo);
                     if (location.Silo == null) throw new Exception($"Internal error: unset silo for {game.Name(item)} in {itemLocKey}");
                     defaultSilo.Area = location.Silo;
@@ -238,7 +253,7 @@ namespace RandomizerCommon
                         {
                             newType = gearSilo;
                         }
-                        if (scope.Type == ScopeType.Model && location.Keys.All(k => k.Chance >= 0.99))
+                        if (scope.Type == ScopeType.Model && location.Locs.All(k => k.Chance >= 0.99))
                         {
                             newType = RandomSilo.InfiniteCertain;
                         }
@@ -278,8 +293,8 @@ namespace RandomizerCommon
                         foreach (ItemLocKey key in sourceKeys)
                         {
                             if (norandomSlots.Contains(key)) continue;
-                            List<Location> baseLocs = data.GetItemLoc(key).Keys.Select(k => k.BaseLocation).ToList();
-                            bool otherBase = data.GetItemLoc(key).Keys.Any(k => bases.Contains(k.OtherBase));
+                            List<Location> baseLocs = data.GetItemLoc(key).Locs.Select(k => k.BaseLocation).ToList();
+                            bool otherBase = data.GetItemLoc(key).Locs.Any(k => bases.Contains(k.OtherBase));
                             if (!otherBase || targetSilo.Item.Type != ItemSiloType.None)
                             {
                                 newKeys.Add(key);
@@ -304,7 +319,7 @@ namespace RandomizerCommon
                 foreach (ItemLocKey target in silo.Targets)
                 {
                     TargetSilos[target] = siloType;
-                    foreach (Location loc in data.GetItemLoc(target).Keys)
+                    foreach (Location loc in data.GetItemLoc(target).Locs)
                     {
                         AddMulti(BaseTargets, loc.BaseLocation, target);
                         // Console.WriteLine($"Adding {baseLoc} -> {target}");
@@ -1027,6 +1042,7 @@ namespace RandomizerCommon
             Dictionary<ItemKey, string> uniqueItemNames = ann.Items.GroupBy(e => e.Value).Where(g => g.Count() == 1).ToDictionary(g => g.Key, g => g.First().Key);
             foreach ((LocationSilo siloType, SiloPermutation silo) in GetSilos(RandomSilo.Finite))
             {
+                bool allowRingOrder = !game.Sekiro && !options["fog"] && !externalData.IsActive;
                 Dictionary<int, List<(ItemLocKey, ItemLocKey)>> ringGroups = new Dictionary<int, List<(ItemLocKey, ItemLocKey)>>();
                 foreach (KeyValuePair<ItemLocKey, List<ItemLocKey>> entry in silo.Mapping)
                 {
@@ -1044,7 +1060,7 @@ namespace RandomizerCommon
                         {
                             specialAssign[itemName] = target;
                         }
-                        if (source.Item.Type == ItemType.Accessory && !game.Sekiro && !options["fog"] && game.GetBaseAccessory(source.Item) is int baseAcc)
+                        if (source.Item.Type == ItemType.Accessory && allowRingOrder && game.GetBaseAccessory(source.Item) is int baseAcc)
                         {
                             AddMulti(ringGroups, baseAcc, (source, target));
                         }
@@ -1529,7 +1545,7 @@ namespace RandomizerCommon
             }
             SlotAnnotation slotAnn = ann.Slot(loc);
             ItemLocation sourceLoc = data.GetItemLoc(sourceKey);
-            int minQuant = sourceLoc.Keys.Select(k => k.Quantity).Where(k => k > 0).DefaultIfEmpty(1).Min();
+            int minQuant = sourceLoc.Locs.Select(k => k.Quantity).Where(k => k > 0).DefaultIfEmpty(1).Min();
             // Also, premium shop items should have quantity 1, so only 1 can be sold. Restrict amount of premiums as a result
             if (slotAnn.TagList.Contains("premium") && minQuant > 1) return false;
             // Ignore quantities for Elden Ring, because the main objective is to ensure sufficient coverage across locations
@@ -1840,8 +1856,7 @@ namespace RandomizerCommon
                     {
                         fodderItem = Choice(random, cands);
                         ItemLocation fodderLoc = data.AddLocationlessItem(fodderItem);
-                        ItemLocKey sourceKey = new ItemLocKey(fodderItem, fodderLoc.LocScope);
-                        PlaceItemInSilo(silo, sourceKey, targetKey, "fodder");
+                        PlaceItemInSilo(silo, fodderLoc.Key, targetKey, "fodder");
                     }
                     if (explain) Console.WriteLine($"Unable to satisfy location {sn?.Area}: {sn?.Text}. Using fodder {(fodderItem == null ? "<nothing>" : game.Name(fodderItem))}");
                 }
@@ -1863,7 +1878,7 @@ namespace RandomizerCommon
                 maxSlots = 1;
             }
             // This mapping could be precomputed, since it's just one-to-one in most cases, but could be a unique list for other ones
-            foreach (Location loc in data.GetItemLoc(potential).Keys)
+            foreach (Location loc in data.GetItemLoc(potential).Locs)
             {
                 Location baseLoc = loc.BaseLocation;
                 maxSlots = Math.Min(maxSlots, baseLoc.MaxSlots);
@@ -1911,7 +1926,7 @@ namespace RandomizerCommon
             if (potential.Scope.UniqueID >= 65290 && potential.Scope.UniqueID <= 65310 && false)
             {
                 Console.WriteLine($"^^^^^ Target {potential}: {existingSources} sources");
-                foreach (Location loc in data.GetItemLoc(potential).Keys)
+                foreach (Location loc in data.GetItemLoc(potential).Locs)
                 {
                     Location baseLoc = loc.OtherBase ?? loc;
                     if (!BaseTargets.TryGetValue(baseLoc, out List<ItemLocKey> ts)) ts = new();
@@ -1929,7 +1944,7 @@ namespace RandomizerCommon
                     }
                 }
             }
-            if (data.GetItemLoc(potential).Keys.All(k => existingSources < k.MaxSlots))
+            if (data.GetItemLoc(potential).Locs.All(k => existingSources < k.MaxSlots))
             {
                 return true;
             }

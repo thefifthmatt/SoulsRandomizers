@@ -20,6 +20,7 @@ namespace RandomizerCommon
         private readonly GameData game;
         private readonly LocationData data;
         private readonly AnnotationData ann;
+        private readonly ExternalLocationData externalData;
         private readonly ItemEditor editor;
         private readonly ItemLocEditor locEditor;
         private readonly ItemEventConfig eventConfig;
@@ -62,6 +63,7 @@ namespace RandomizerCommon
             GameData game,
             LocationData data,
             AnnotationData ann,
+            ExternalLocationData externalData,
             ItemEditor editor,
             ItemLocEditor locEditor,
             ItemEventConfig eventConfig,
@@ -70,6 +72,7 @@ namespace RandomizerCommon
             this.game = game;
             this.data = data;
             this.ann = ann;
+            this.externalData = externalData;
             this.editor = editor;
             this.locEditor = locEditor;
             this.eventConfig = eventConfig;
@@ -141,7 +144,7 @@ namespace RandomizerCommon
                     PARAM.Row row = game.Item(item);
                     foreach (ItemLocation itemLoc in entry.Value.Locations.Values)
                     {
-                        foreach (Location loc in itemLoc.Keys.Where(k => k.Type == LocationType.Shop))
+                        foreach (Location loc in itemLoc.Locs.Where(k => k.Type == LocationType.Shop))
                         {
                             // No Promissory note
                             if (loc.ID % 100 >= 50) continue;
@@ -168,7 +171,7 @@ namespace RandomizerCommon
                     PriceCategory cat = GetPriceCategory(item);
                     foreach (ItemLocation itemLoc in entry.Value.Locations.Values)
                     {
-                        foreach (Location loc in itemLoc.Keys.Where(k => k.Type == LocationType.Shop))
+                        foreach (Location loc in itemLoc.Locs.Where(k => k.Type == LocationType.Shop))
                         {
                             PARAM.Row shop = shops[loc.ID];
                             if (shop == null) continue;
@@ -368,7 +371,7 @@ namespace RandomizerCommon
                             if (isPermanent(eventFlag))
                             {
                                 // Console.WriteLine($"Permanent {eventFlag}: {game.Name(item.Key)}");
-                                ItemLocKey source = new ItemLocKey(item.Key, loc.LocScope);
+                                ItemLocKey source = loc.Key;
                                 if (permanentSlots.ContainsKey(source)) throw new Exception($"{eventFlag}");
                                 permanentSlots[source] = eventFlag;
                             }
@@ -453,25 +456,40 @@ namespace RandomizerCommon
             // Dump all target data per-source, before wiping it out
             foreach (SiloPermutation silo in permutation.Silos.Values)
             {
-                Console.WriteLine($"{silo.Type}");
+                if (externalData.IsActive && silo.Type.Type == RandomSilo.Finite)
+                {
+                    // TODO: This should probably be done per-target and not per-source across the board, but limit it to this case for now
+                    // This is because sources don't automatically become targets for external mapping
+                    foreach (ItemLocKey targetKey in silo.Mapping.Keys)
+                    {
+                        ItemLocation target = data.GetItemLoc(targetKey);
+                        foreach (Location locKey in target.Locs)
+                        {
+                            if (locKey.Type == LocationType.Lot)
+                            {
+                                AddMulti(deleteRows, locKey.ParamName, locKey.ID);
+                            }
+                        }
+                    }
+                }
                 foreach (ItemLocKey sourceKey in silo.Mapping.Values.SelectMany(v => v))
                 {
                     ItemLocation source = data.GetItemLoc(sourceKey);
-                    foreach (Location locKey in source.Keys)
+                    foreach (Location locKey in source.Locs)
                     {
                         if (locKey.Type == LocationType.Lot)
                         {
                             AddMulti(deleteRows, locKey.ParamName, locKey.ID);
                         }
                     }
-                    // Synthetic items, like Path of the Dragon
-                    if (source.Keys.Count() == 0)
+                    // Pick one of the source for item data - they should be equivalent.
+                    Location key = source.Locs.Find(l => l.Type == LocationType.Lot || l.Type == LocationType.Shop);
+                    if (key == null)
                     {
+                        // Synthetic items, like Path of the Dragon, or external items
                         newRows[sourceKey] = new ItemSource(source, null);
                         continue;
                     }
-                    // Pick one of the source for item data - they should be equivalent.
-                    Location key = source.Keys[0];
                     object itemRow;
                     if (key.Type == LocationType.Lot)
                     {
@@ -479,11 +497,12 @@ namespace RandomizerCommon
                         PARAM.Row row = game.Params[key.ParamName][key.ID];
                         itemRow = new LotCells { Game = game, Cells = row.Cells.ToDictionary(c => c.Def.InternalName, c => c.Value) };
                     }
-                    else
+                    else if (key.Type == LocationType.Shop)
                     {
                         PARAM.Row row = game.Params[key.ParamName][key.ID];
                         itemRow = new ShopCells { Game = game, Cells = row.Cells.ToDictionary(c => c.Def.InternalName, c => c.Value) };
                     }
+                    else throw new Exception($"Unknown source location {key}");
                     newRows[sourceKey] = new ItemSource(source, itemRow);
                 }
             }
@@ -558,7 +577,7 @@ namespace RandomizerCommon
                     if (ann.Slots.TryGetValue(targetKey.Scope, out AnnotationData.SlotAnnotation slotAnn) && slotAnn.HasTag("partdlc"))
                     {
                         autoUpgrade = false;
-                        Location shopTarget = targetLocation.Keys.Find(l => l.Type == LocationType.Shop);
+                        Location shopTarget = targetLocation.Locs.Find(l => l.Type == LocationType.Shop);
                         // Prior heuristic is (targetLocation.DLC && opt["dlcsilo"]) || opt["dlcstart"])
                         // But this can be done more precisely
                         if (upgradeDlc && shopTarget != null && mapping.BossShopItems.TryGetValue(shopTarget.ID, out ItemKey soulItem))
@@ -573,7 +592,8 @@ namespace RandomizerCommon
                     foreach (ItemLocKey sourceKey in sourceKeys)
                     {
                         ItemKey item = sourceKey.Item;
-                        int quantity = data.GetItemLoc(sourceKey).Quantity;
+                        ItemLocation sourceLoc = data.GetItemLoc(sourceKey);
+                        int quantity = sourceLoc.Quantity;
                         string quantityStr = quantity == 1 ? "" : $" {quantity}x";
                         string desc = ann.GetLocationDescription(targetKey, excludeTags: defaultFilter, coord: coord);
                         bool writeSwitch = globalSwitch;
@@ -613,6 +633,7 @@ namespace RandomizerCommon
                         bool isGesture = item.Equals(mapping.GestureItem);
                         // Don't need to add own item if there is a separate carrier for the event flag
                         // In DS3 at least - Elden Ring hides it
+                        // TODO: Add item even in normal DS3
                         if (game.DS3 && isGesture && sourceKeys.Count > 1)
                         {
                             mapping.GestureFlag = eventFlag;
@@ -623,33 +644,34 @@ namespace RandomizerCommon
                         {
                             throw new Exception($"Error: Expected a param row for {sourceKey} in {siloType}");
                         }
-                        ShopCells shopCells = null;
-                        LotCells lotCells = null;
+                        ShopCells shopSource = null;
+                        LotCells lotSource = null;
                         int price = -1;
                         bool originalShop = false;
                         if (source.Row == null)
                         {
                             // Synthetic item - make up shop entry
-                            shopCells = locEditor.ShopCellsForItem(item);
+                            shopSource = locEditor.ShopCellsForItem(item);
                             locEditor.MakeSellable(item);
                         }
                         else if (source.Row is ShopCells)
                         {
-                            shopCells = (ShopCells)source.Row;
+                            shopSource = (ShopCells)source.Row;
                             originalShop = true;
                         }
                         else if (source.Row is LotCells)
                         {
-                            lotCells = (LotCells)source.Row;
+                            lotSource = (LotCells)source.Row;
                         }
                         else throw new Exception($"Unknown item source");
                         // TODO: Assigning enemy drops to other enemy drops/infinite shops, should scope which item is being referred to
                         int setEventFlag = -1;
-                        foreach (Location target in targetLocation.Keys)
+                        foreach (Location target in targetLocation.Locs)
                         {
                             // Console.WriteLine($"{game.Name(item)}: {source.Loc} -> {target.Text}");
                             if (target.Type == LocationType.Lot)
                             {
+                                LotCells lotCells = lotSource?.DeepCopy();
                                 // Console.WriteLine($"{game.Name(item)}: setting lot target, source is {source.Loc}. lotCells {lotCells} shopCells {shopCells}.");
                                 if (siloType.Type == RandomSilo.Mixed)
                                 {
@@ -658,22 +680,22 @@ namespace RandomizerCommon
                                 }
                                 if (lotCells == null)
                                 {
-                                    ShopCells sourceShop = shopCells;
+                                    ShopCells lotShop = shopSource;
                                     if (isGesture && game.DS3)
                                     {
                                         // If path of the dragon, there is an additional scripted award, so change base to ember to avoid confusing duplication
                                         // This path is probably not taken in Elden Ring? Since it's a fake lot, but still a lot
-                                        sourceShop = sourceShop.DeepCopy();
-                                        sourceShop.Item = game.DS3 ? game.ItemForName("Ember") : game.ItemForName("Rune Arc");
+                                        lotShop = lotShop.DeepCopy();
+                                        lotShop.Item = game.DS3 ? game.ItemForName("Ember") : game.ItemForName("Rune Arc");
                                         // sourceShop["EquipId"] = 500;
                                     }
-                                    lotCells = locEditor.ShopToItemLot(sourceShop, item, chooseDropChances, writeSwitch);
+                                    lotCells = locEditor.ShopToItemLot(lotShop, item, chooseDropChances, writeSwitch);
                                 }
                                 else if (targetLocation.Scope.Type == ScopeType.Model)
                                 {
                                     if (originalShop)
                                     {
-                                        lotCells = locEditor.ShopToItemLot(shopCells, item, chooseDropChances, writeSwitch);
+                                        lotCells = locEditor.ShopToItemLot(shopSource, item, chooseDropChances, writeSwitch);
                                     }
                                     else
                                     {
@@ -715,11 +737,16 @@ namespace RandomizerCommon
                                         }
                                     }
                                 }
+                                if (externalData.IsActive)
+                                {
+                                    editor.ExternalItemOverride(sourceLoc, target, lotCells);
+                                }
                                 // Crow sources are special items so they won't be removed, they must be overwritten
                                 locEditor.AddLot(target.ParamName, target.BaseID, lotCells, itemRarity, siloType.Type == RandomSilo.Crow);
                             }
                             else
                             {
+                                ShopCells shopCells = shopSource?.DeepCopy();
                                 // Do some filtering for RandomSilo.MIXED
                                 if (shopCells == null)
                                 {
@@ -728,7 +755,7 @@ namespace RandomizerCommon
                                         Warn($"Mixed silo {source.Loc} going to {target}");
                                         continue;
                                     }
-                                    shopCells = locEditor.ItemLotToShop(lotCells, item);
+                                    shopCells = locEditor.ItemLotToShop(lotSource, item);
                                 }
                                 // If mixed, event flag is present or not based on which shop entry this is (infinite or not)
                                 bool infiniteMixed = siloType.Type == RandomSilo.Mixed && shopCells.Quantity <= 0;
@@ -808,6 +835,10 @@ namespace RandomizerCommon
                                 {
                                     shopCells.Item = game.AutoUpgrade(shopCells.Item, 25);
                                 }
+                                if (externalData.IsActive)
+                                {
+                                    editor.ExternalItemOverride(sourceLoc, target, shopCells);
+                                }
                                 locEditor.SetShop(target, shopCells);
                             }
                         }
@@ -827,6 +858,7 @@ namespace RandomizerCommon
                         if (isGesture)
                         {
                             if (setEventFlag == -1) throw new Exception($"Gesture key item added to lot without event flag ({sourceKey} -> {targetKey})");
+                            // TODO: Track using ItemEventFlags instead
                             mapping.GestureFlag = setEventFlag;
                         }
                         // Use sourceKey.Item, instead of item, for synthetic item tracking per source
@@ -967,7 +999,7 @@ namespace RandomizerCommon
                 foreach (ItemLocation itemLoc in itemLocs.Locations.Values)
                 {
                     if (!itemLoc.DLC) continue;
-                    foreach (Location loc in itemLoc.Keys)
+                    foreach (Location loc in itemLoc.Locs)
                     {
                         if (!allRows.TryGetValue(loc.ParamName, out var paramRows)) continue;
                         if (loc.Type == LocationType.Lot && paramRows.TryGetValue(loc.ID, out PARAM.Row row))
@@ -1053,7 +1085,7 @@ namespace RandomizerCommon
                     {
                         infiniteLot = true;
                     }
-                    else if (loc.Scope.Type == ScopeType.Material || (loc.Scope.Type == ScopeType.Event && loc.Keys.Any(k => k.Type == LocationType.Shop)))
+                    else if (loc.Scope.Type == ScopeType.Material || (loc.Scope.Type == ScopeType.Event && loc.Locs.Any(k => k.Type == LocationType.Shop)))
                     {
                         finiteShop = true;
                     }
@@ -1128,7 +1160,7 @@ namespace RandomizerCommon
                 {
                     if (row == null)
                     {
-                        throw new Exception($"{item} was randomized but it doesn't exist in params, likely due to a merged mod");
+                        // throw new Exception($"{item} was randomized but it doesn't exist in params, likely due to a merged mod");
                     }
                     else
                     {

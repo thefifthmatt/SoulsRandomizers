@@ -57,7 +57,7 @@ namespace RandomizerCommon
                 foreach (ItemLocation itemLoc in entry.Value.Locations.Values)
                 {
                     if (itemLoc.Scope.Type != ScopeType.Asset) continue;
-                    foreach (Location loc in itemLoc.Keys)
+                    foreach (Location loc in itemLoc.Locs)
                     {
                         // Console.WriteLine($"asset: {loc.Text}");
                         foreach (int asset in loc.Entities.Where(e => e.AssetID > 0).Select(e => e.AssetID).Distinct())

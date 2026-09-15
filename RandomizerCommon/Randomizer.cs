@@ -69,6 +69,17 @@ namespace RandomizerCommon
             [FromGame.NR] = "distnr",
         };
 
+        public record Input(
+            RandomizerOptions Options,
+            Action<string> Notify = null,
+            string OutPath = null,
+            EnemyPreset EnemyPreset = null,
+            ItemPreset ItemPreset = null,
+            ExternalItemPreset ExternalItemPreset = null,
+            Messages Messages = null,
+            string GameExe = null,
+            MergedMods ModDirs = null);
+
         public void Randomize(
             RandomizerOptions opt,
             FromGame type,
@@ -80,7 +91,36 @@ namespace RandomizerCommon
             string gameExe = null,
             MergedMods modDirs = null)
         {
-            messages = messages ?? new Messages(null);
+            if (opt.Game != type)
+            {
+                throw new Exception($"Mismatched game {type} for options {opt.Game}");
+            }
+            Randomize(new Input(
+                Options: opt,
+                Notify: notify,
+                OutPath: outPath,
+                EnemyPreset: enemyPreset,
+                ItemPreset: itemPreset,
+                Messages: messages,
+                GameExe: gameExe,
+                ModDirs: modDirs
+            ));
+        }
+
+        public void Randomize(Input input)
+        {
+            RandomizerOptions opt = input.Options;
+            FromGame type = opt.Game;
+            // Other parameters may be null
+            Action<string> notify = input.Notify;
+            string outPath = input.OutPath;
+            string gameExe = input.GameExe;
+            EnemyPreset enemyPreset = input.EnemyPreset;
+            ItemPreset itemPreset = input.ItemPreset;
+            ExternalItemPreset externalItems = input.ExternalItemPreset;
+            MergedMods modDirs = input.ModDirs;
+            Messages messages = input.Messages ?? new Messages(null);
+
             string distDir = distDirs[type];
             string gameDir = Path.GetDirectoryName(gameExe);
             if (!Directory.Exists(distDir))
@@ -117,6 +157,14 @@ namespace RandomizerCommon
                 if (opt.SeedStr != null)
                 {
                     Console.WriteLine($"Real seed: {opt.Seed}");
+                }
+                if (externalItems?.LogInfo != null)
+                {
+                    Console.WriteLine(externalItems.LogInfo);
+                }
+                if (type == FromGame.ER)
+                {
+                    Console.WriteLine($"Version: {EldenVersion}");
                 }
                 Console.WriteLine();
             }
@@ -204,10 +252,6 @@ namespace RandomizerCommon
                 {
                     Console.WriteLine("Ctrl+F 'Hints' to see item placement hints, or Ctrl+F for a specific item name.");
                 }
-                if (type == FromGame.ER)
-                {
-                    Console.WriteLine($"Version: {EldenVersion}");
-                }
                 if (enemyPreset != null)
                 {
                     Console.WriteLine();
@@ -238,14 +282,16 @@ namespace RandomizerCommon
             ServiceContainer container = new ServiceContainer(new ContainerOptions { EnablePropertyInjection = false });
             container.EnableAnnotatedConstructorInjection();
 
-            // Some of these can maybe use type-based registration as DI scope grows, but this is fine for this setup.
+            // Some of these can maybe use non-instance-based registration as DI scope grows, but this is fine for this setup.
             container.RegisterInstance(game);
             container.RegisterInstance(opt);
             container.RegisterInstance(messages);
-            // Currently nullable, so instance cannot be registered directly
+            // Nullable, so instance cannot be registered directly
             container.RegisterSingleton(_ => merge);
+            container.RegisterSingleton(_ => input.ExternalItemPreset);
             // To be constructed during randomization (shared)
             container.RegisterSingleton<AnnotationData>();
+            container.RegisterSingleton<ExternalLocationData>();
             container.Register<Permutation>();
             container.Register<PermutationWriter>();
             container.Register<ItemLocEditor>();
@@ -441,6 +487,7 @@ namespace RandomizerCommon
                     {
                         ann.AddRandomaniaItems();
                     }
+                    container.GetInstance<ExternalLocationData>().LoadLocations();
 
                     Random random = new Random(seed);
                     Permutation perm = container.GetInstance<Permutation>();
