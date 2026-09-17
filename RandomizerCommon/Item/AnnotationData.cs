@@ -1398,7 +1398,7 @@ namespace RandomizerCommon
             // TODO: Region silo
         }
 
-        public void AddSpecialItems()
+        public void AddSpecialItems(RandomizerOptions opt)
         {
             // Add special unique items into game
             foreach (ItemKey addItem in ItemGroups["add"])
@@ -1411,10 +1411,41 @@ namespace RandomizerCommon
                 itemLoc.DLC = game.IsEldenDlcItem(addItem);
                 SetAreaSilo(itemLoc, null);
             }
+            // This can go up to +17000 but that should be fine
+            int baseLot = GameData.EldenRingBase + 7000;
             foreach (NewItemAnnotation newItem in NewItems.Values)
             {
+                // Requires ItemEditor support and also lot ranges for new locations
+                if (!game.EldenRing) throw new NotImplementedException($"New items not supported");
                 game.AddItemName(newItem.Key, newItem.Name);
-                ItemLocation itemLoc = data.AddLocationlessItem(newItem.Key);
+                ItemLocation itemLoc;
+                NewLocation newLoc = newItem.NewLocation;
+                if (newLoc == null)
+                {
+                    itemLoc = data.AddLocationlessItem(newItem.Key);
+                }
+                else
+                {
+                    newLoc.ItemLot = baseLot;
+                    baseLot += 10;
+                    ItemScope scope = new ItemScope(ScopeType.Event, (int)newLoc.Flag);
+                    LocationScope locScope = new LocationScope(game.Type, ScopeType.Event, (int)newLoc.Flag, new(), new(), false);
+                    Location newLot = new Location(Location.LocationType.Lot, newLoc.ItemLot, "New item " + newItem.Name, new(), 1, 1, null, "map");
+                    itemLoc = data.AddLocations(newItem.Key, scope, locScope, new[] { newLot });
+                    itemLoc.CreateLocation = true;
+                    if (!Areas.TryGetValue(newLoc.Area, out AreaAnnotation areaAnn)) throw new Exception($"Unrecognized {newLoc.Area}");
+                    SlotAnnotation slot = new SlotAnnotation()
+                    {
+                        Key = locScope.ToString(),
+                        Text = newLoc.Text,
+                        Area = newLoc.Area,
+                    };
+                    slot.AreaUntil = areaAnn?.Until;
+                    slot.SetTags(false, opt, areaAnn.TagList);
+                    Slots.Add(locScope, slot);
+                    // TODO: Add tags for location to allow it to be a key item location and update AllAreas/AllTags accordingly.
+                    // This may get simplified with getting rid of counts hopefully.
+                }
                 itemLoc.DLC = Areas[newItem.InferredArea].HasTag("dlc");
                 SetAreaSilo(itemLoc, null);
             }
@@ -2453,6 +2484,7 @@ namespace RandomizerCommon
             public string Comment { get; set; }
             // Derived from Name if not set
             public string OverrideConfigName { get; set; }
+            public string Desc { get; set; }
             public string Switch { get; set; }
             // ConfigName for item which includes this one. The parent includes the logic conditions of all children recursively.
             public string Parent { get; set; }
@@ -2480,8 +2512,13 @@ namespace RandomizerCommon
             public string Map { get; set; }
             // Entity id, or part name if necessary
             public string Location { get; set; }
+            // Saved event flag to use for item
+            public uint Flag { get; set; }
             public string Text { get; set; }
             public string Area { get; set; }
+
+            [YamlIgnore]
+            public int ItemLot { get; set; }
         }
 
         public class SlotAnnotation

@@ -2641,12 +2641,20 @@ Areas:
   Tags: dlc
 - Name: scadualtus_high
   Text: Scadu Altus
+  FullText: Scadu Altus - Scaduview Cross
   Req: scadualtus
   Maps: m61_49_43_00 m61_50_43_00
   MapNames:
   - m61_49_43_00 Scadu Altus - Moorth Highway South, Fort of Reprimand
   - m61_50_43_00 Scadu Altus - Scaduview Cross, Bonny Gaol Entrance, Path to Village of Flies
   Tags: dlc exclude:spectralsteedwhistle
+- Name: scadualtus_rabbath
+  Text: Scadu Altus
+  FullText: Scadu Altus - Rabbath's Rise
+  Req: scadualtus_lower
+  KeyBase: scadualtus_lower
+  Maps: m61_51_46_00
+  Tags: dlc
 - Name: scadualtus_recluse
   Text: Lower Scadu Altus
   Req: shadowkeep
@@ -3296,54 +3304,63 @@ NewItems:
   - BlockArea: haligtree_elphael_seal_upper
   - BlockArea: haligtree_elphael_seal_lower
 - Name: Fort of Reprimand Spiritspring Stone
+  Comment: Does not impact logic as Ensis is assumed as main path, and Scadu Altus Lock covers the gate as well
   Switch: springsanity
   BaseID: 7830500
   NewLocation:
     Map: m61_49_42_00
     Location: 2049421600
+    Flag: 1032507000
     Text: Breaking the spiritspring seal from Gravesite Plain to Scadu Altus
     Area: gravesite
-  Logic:
-  - BlockArea: scadualtus
-- Name: Scadu Altus Spiritspring Stone
+- Name: Scaduview Cross Spiritspring Stone
   Switch: springsanity
   BaseID: 7830501
   NewLocation:
     Map: m61_49_44_00
     Location: 2049441600
+    Flag: 1032507001
     Text: Breaking the spiritspring seal in Scadu Altus to Scaduview Cross
     Area: scadualtus
   Logic:
   - BlockArea: scadualtus_high
 - Name: Rabbath's Rise Spiritspring Stone
-  Comment: Rise item could be a separate region in randomizer, for now it's classified as part of Hinterland
   Switch: springsanity
   BaseID: 7830502
   NewLocation:
     Map: m61_51_47_00
     Location: 2051471600
+    Flag: 1032507002
     Text: Breaking the spiritspring seal in Scadu Altus up Rabbath's Rise
     Area: scadualtus_lower
-- Name: Northern Nameless Mausoleum Spiritsping Stone
+  Logic:
+  - BlockArea: scadualtus_rabbath
+- Name: Rauh Base Spiritspring Stone
   Switch: springsanity
   BaseID: 7830503
   NewLocation:
     Map: m61_46_46_00
     Location: 2046461500
+    Flag: 1032507003
     Text: Breaking the spiritspring seal in Rauh Base to Northern Nameless Mausoleum
     Area: rauhbase
   Logic:
   - BlockArea: rauhbase_high
-- Name: Ancient Ruins of Rauh Spiritspring Stone
+- Name: Rauh Ruins Spiritspring Stone
   Switch: springsanity
   BaseID: 7830504
   NewLocation:
     Map: m61_44_46_00
     Location: 2044461500
+    Flag: 1032507004
     Text: Breaking the spiritspring seal in Rauh Ruins
     Area: rauhruins_west
   Logic:
   - BlockArea: rauhruins_high
+- Name: NG+ Trap
+  Switch: traps
+  BaseID: 7830600
+  Area: altus
 PlacementRestrictions:
 - Name: Rusty Key
   Switch: earlylegacy

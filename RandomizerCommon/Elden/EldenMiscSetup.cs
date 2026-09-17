@@ -361,7 +361,7 @@ namespace RandomizerCommon
             }
             // Map from stone unlock to
             Dictionary<int, int> unlockSpringFlags = new();
-            if (opt["dlc"] && opt["springseals"])
+            if (opt["dlc"] && opt["springseals"] && !(opt["item"] && opt["springsanity"]))
             {
                 if (opt["printjumps"])
                 {

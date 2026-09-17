@@ -379,6 +379,7 @@ namespace RandomizerCommon
                             {
                                 // This is pretty hacky: only record the first item, using ItemKey order.
                                 // This distinguishes between Fingerslayer Blade (preferred) and Great Ghost Glovewort (not).
+                                // However, TODO: This doesn't work for ashdupe multi-drops as the first item is generally not the AoW
                                 mapping.TrackedFlagItems[eventFlag] = item.Key;
                                 mapping.ItemEventFlags[item.Key] = -1;
                                 // Console.WriteLine($"Tracking {game.Name(item.Key)} for {eventFlag}");
@@ -484,7 +485,7 @@ namespace RandomizerCommon
                     }
                     // Pick one of the source for item data - they should be equivalent.
                     Location key = source.Locs.Find(l => l.Type == LocationType.Lot || l.Type == LocationType.Shop);
-                    if (key == null)
+                    if (key == null || source.CreateLocation)
                     {
                         // Synthetic items, like Path of the Dragon, or external items
                         newRows[sourceKey] = new ItemSource(source, null);

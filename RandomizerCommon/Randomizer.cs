@@ -400,7 +400,7 @@ namespace RandomizerCommon
 
                 if (opt["item"])
                 {
-                    ann.AddSpecialItems();
+                    ann.AddSpecialItems(opt);
                     if (opt["copydrops"])
                     {
                         ann.AddFiniteEquipmentCopies();
@@ -475,7 +475,7 @@ namespace RandomizerCommon
                     }
 #endif
                     ann.ProcessRestrictions(opt, null);
-                    ann.AddSpecialItems();
+                    ann.AddSpecialItems(opt);
                     ann.AddMaterialItems(opt["mats"]);
                     // This isn't very useful normally
                     if (Omit && opt["fog"] && opt["crawl"]) ann.WeaponSpam(game);

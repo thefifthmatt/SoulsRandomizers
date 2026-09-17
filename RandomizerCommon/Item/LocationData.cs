@@ -119,6 +119,8 @@ namespace RandomizerCommon
             // Silo info goes here, though it's only filled in in the AnnotationData pass.
             // Sometimes the same LocationScope can be split across different silos, like in Elden Ring remembrance shop.
             public bool DLC { get; set; }
+            // This could be in Location instead
+            public bool CreateLocation { get; set; }
             public AreaSilo Silo { get; set; } = AreaSilo.Default;
             // Name for this source, if KeyCount is set for the item. If this is set for one location for a finite item, it's set for all of them.
             public string ItemName { get; set; }

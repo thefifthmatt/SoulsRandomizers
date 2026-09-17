@@ -17,6 +17,7 @@ namespace RandomizerCommon
         public List<ItemEventSpec> ItemEvents { get; set; }
         public List<LogicFlag> LogicFlags { get; set; }
         public List<LogicGate> LogicGates { get; set; }
+        public List<int> StableFlagList { get; set; }
 
         // Currently for one-off init events, not common_func events
         public class NewItemEvent
@@ -79,8 +80,8 @@ namespace RandomizerCommon
             public string SetArg { get; set; }
 
             // -- Event edits based on different item conditions
-            // Flag to replace with new condition flag, based on Filter.Gate
-            public int CondFlag { get; set; }
+            // Flag to replace with new condition flag, based on Filter.Gate. Can be arg as well
+            public string CondFlag { get; set; }
             // List of item accesses to replace with flag accesses. If they are params, also add a loc event with ItemArg.
             public List<string> ItemUse { get; set; }
 
@@ -100,7 +101,12 @@ namespace RandomizerCommon
         public class DynamicEdit
         {
             public List<string> BeforeCmds { get; set; }
-            public int ItemCond { get; set; }
+            // Lowest free condition group to use for filter conditions (having item or misc gate condition)
+            public int FilterCond { get; set; }
+            // For a new item location, adds a condition for the flag associated with it
+            public int ItemLocCond { get; set; }
+            // Gives the given item, 'gate' for gate item
+            public string GiveItem { get; set; }
             public List<string> AfterCmds { get; set; }
             public string Before { get; set; }
             public string After { get; set; }

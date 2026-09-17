@@ -1533,6 +1533,17 @@ ItemEvents:
   DebugInfo:
   - EventFlags 520040
   - common - SkipIfEventFlag(520040) - Banished Knight Engvall
+- ID: 6911
+  Map: common
+  Comment: Fix event for Tarnished Pack
+  FlagTemplate:
+  - Type: fixeditem
+    EventFlag: 60101 60102 60103
+  DebugInfo:
+  - EventFlags 60101 60102 60103
+  - 'common - SetEventFlag(60101) - Spectral Steed Regalia: Tree Sentinel'
+  - 'common - SetEventFlag(60102) - Spectral Steed Regalia: Carian Silver'
+  - 'common - SetEventFlag(60103) - Spectral Steed Regalia: Funereal Night'
 - ID: 65810
   Map: common
   Comment: Ash of War dupe flags. X8_4 could be used if there's both an AoW and custom weapon but that seems to be not the case
@@ -2595,10 +2606,8 @@ ItemEvents:
     - BlockArea: mountaintops_cave
       Args:
         X0_4: 1053560570
-    Removes:
-    - RemoveItemFromPlayer
     Edits:
-    - ItemCond: 8
+    - FilterCond: 8
       AfterCmds:
       - GotoIfConditionGroupStateUncompiled(Label.Label17, FAIL, AND_08)
       After: Label1()
@@ -2609,6 +2618,8 @@ ItemEvents:
       Before: GotoIfUnsignedComparison(Label.Label2, ComparisonType.NotEqual, X12_4, 0)
     - Cmd: Label17()
       Before: ForceAnimationPlayback(10000, 50050, false, false, false, ComparisonType.Equal, 1)
+    Removes:
+    - RemoveItemFromPlayer
   DebugCommands:
   - SetNetworkSyncState(Disabled)
   - GotoIfEventFlag(Label.Label0, OFF, TargetEventFlagType.EventFlag, X0_4)
@@ -2757,6 +2768,104 @@ ItemEvents:
   - m60_50_56_00 (Mountaintops of the Giants - Shack of the Lofty; Consecrated Snowfield - Minor Erdtree, Albinauric Rise, Cave of the Forlorn Entrance) - IfEventFlag(X4_4 = 580030) - "Sorcerer" Painting
   - "m60_51_40_00 (Greyoll's Dragonbarrow - Minor Erdtree, Dragonbarrow Cave Entrance) - EndIfEventFlag(X0_4 = 580360) - Ash of War: Rain of Arrows"
   - m60_51_40_00 (Greyoll's Dragonbarrow - Minor Erdtree, Dragonbarrow Cave Entrance) - IfEventFlag(X4_4 = 580060) - "Redmane" Painting
+- ID: 90005638
+  Map: common_func
+  Comment: X0_4 is flag, X4_4 is seal asset, X8_4 is spring asset.
+  Template:
+  - Type: copyloc
+    Comment: For seal, when it becomes an explicit item. The spring flag is irrelevant here
+    Filter:
+    - Gate: fortofreprimandspiritspringstone
+      Args:
+        X0_4: 2049420600
+    - Gate: scaduviewcrossspiritspringstone
+      Args:
+        X0_4: 2049440600
+    - Gate: rabbathsrisespiritspringstone
+      Args:
+        X0_4: 2051470600
+    - Gate: rauhbasespiritspringstone
+      Args:
+        X0_4: 2046460500
+    - Gate: rauhruinsspiritspringstone
+      Args:
+        X0_4: 2044460500
+    CondFlag: X0_4
+    Edits:
+    - ItemLocCond: 10
+      AfterCmds:
+      - GotoIfConditionGroupStateUncompiled(Label.Label0, FAIL, AND_10)
+      Replace: GotoIfEventFlag(Label.Label0, OFF, TargetEventFlagType.EventFlag, X0_4)
+    - BeforeCmds:
+      - WaitFixedTimeSeconds(0.5)
+      GiveItem: gate
+      Replace: SetEventFlag(TargetEventFlagType.EventFlag, X0_4, ON)
+    Removes:
+    - X8_4
+    - DisplayGenericDialog
+  - Type: copyloc
+    Comment: For spring based on gate/block flag. This does use spring's original event flag. Auto-activate when close to keep that effect (uses flag, not item)
+    Filter:
+    - Gate: fortofreprimandspiritspringstone
+      Args:
+        X0_4: 2049420600
+    - BlockArea: scadualtus
+      Args:
+        X0_4: 2049420600
+    - Gate: scaduviewcrossspiritspringstone
+      Args:
+        X0_4: 2049440600
+    - Gate: rabbathsrisespiritspringstone
+      Args:
+        X0_4: 2051470600
+    - Gate: rauhbasespiritspringstone
+      Args:
+        X0_4: 2046460500
+    - Gate: rauhruinsspiritspringstone
+      Args:
+        X0_4: 2044460500
+    Edits:
+    - FilterCond: 10
+      AfterCmds:
+      - IfConditionGroup(AND_01, PASS, AND_10)
+      - IfEntityInoutsideRadiusOfEntity(AND_01, InsideOutsideState.Inside, 10000, X8_4, 30, 1)
+      Replace: IfAssetHitBy(AND_01, X4_4, 20000)
+    Removes:
+    - X4_4
+    - WaitFixedTimeSeconds(2)
+  DebugCommands:
+  - GotoIfEventFlag(Label.Label0, OFF, TargetEventFlagType.EventFlag, X0_4)
+  - ChangeAssetEnableState(X4_4, Disabled)
+  - ChangeAssetEnableState(X8_4, Disabled)
+  - EndUnconditionally(EventEndType.End)
+  - Label0()
+  - SetAssetInvulnerability(X4_4, Enabled)
+  - SetAssetInvulnerability(X8_4, Enabled)
+  - DeleteAssetfollowingSFX(X4_4, true)
+  - CreateAssetfollowingSFX(X4_4, 100, 841075)
+  - DeleteAssetfollowingSFX(X8_4, true)
+  - CreateAssetfollowingSFX(X8_4, 100, 841076)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfAssetHitBy(AND_01, X4_4, 20000)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - SetAssetInvulnerability(X4_4, Disabled)
+  - RequestAssetDestruction(X4_4, 0)
+  - DeleteAssetfollowingSFX(X4_4, true)
+  - DeleteAssetfollowingSFX(X8_4, true)
+  - CreateAssetfollowingSFX(X4_4, 100, 841072)
+  - CreateAssetfollowingSFX(X8_4, 100, 841072)
+  - SetAssetInvulnerability(X8_4, Disabled)
+  - WaitFixedTimeRealFrames(1)
+  - RequestAssetDestruction(X8_4, 0)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X0_4, ON)
+  - WaitFixedTimeSeconds(2)
+  - DisplayGenericDialog(2020030, PromptType.OKCANCEL, NumberofOptions.OneButton, 0, 100)
+  DebugOtherInits:
+  - m61_44_46_00 InitializeCommonEvent(0, 90005638, 2044460500, 2044461500, 2044461501)
+  - m61_46_46_00 InitializeCommonEvent(0, 90005638, 2046460500, 2046461500, 2046461501)
+  - m61_49_42_00 InitializeCommonEvent(0, 90005638, 2049420600, 2049421600, 2049421601)
+  - m61_49_44_00 InitializeCommonEvent(0, 90005638, 2049440600, 2049441600, 2049441601)
+  - m61_51_47_00 InitializeCommonEvent(0, 90005638, 2051470600, 2051471600, 2051471601)
 - ID: 90005646
   Map: common_func
   Comment: Warp portal after forge. Because flag is always set, this can stay as-is
@@ -3855,3 +3964,153 @@ LogicGates:
   ObjAct: true
 - Name: welldepthskey
   ObjAct: true
+- Name: ngtrap
+  Cond: none
+StableFlagList:
+- 114
+- 9500
+- 9502
+- 9504
+- 100750
+- 100760
+- 100770
+- 100780
+- 100790
+- 100800
+- 100810
+- 100820
+- 100830
+- 100840
+- 100850
+- 100860
+- 120000
+- 120010
+- 120020
+- 130340
+- 280990
+- 290150
+- 290290
+- 290320
+- 400001
+- 400031
+- 400033
+- 400061
+- 400073
+- 400074
+- 400075
+- 400130
+- 400163
+- 400180
+- 400235
+- 400239
+- 400290
+- 400300
+- 400309
+- 400358
+- 400394
+- 400594
+- 400696
+- 400712
+- 400730
+- 400740
+- 510100
+- 510140
+- 510810
+- 530855
+- 530965
+- 540100
+- 540104
+- 540108
+- 540112
+- 540116
+- 540118
+- 540120
+- 540140
+- 540170
+- 540172
+- 540200
+- 540202
+- 540204
+- 540206
+- 540208
+- 540210
+- 540224
+- 540238
+- 540272
+- 540300
+- 540302
+- 540304
+- 540306
+- 540308
+- 540310
+- 540314
+- 540316
+- 540318
+- 540332
+- 540334
+- 540372
+- 540402
+- 540404
+- 540406
+- 540408
+- 540410
+- 540412
+- 540414
+- 540418
+- 540510
+- 540516
+- 540524
+- 540630
+- 540646
+- 540660
+- 540686
+- 540900
+- 540902
+- 540904
+- 540906
+- 540910
+- 540916
+- 580000
+- 580010
+- 580020
+- 580030
+- 580040
+- 580050
+- 580060
+- 580100
+- 580110
+- 580120
+- 580360
+- 12027080
+- 16007020
+- 20007410
+- 21017150
+- 21017991
+- 21027020
+- 30107100
+- 40007900
+- 1035467700
+- 1035507090
+- 1036487400
+- 1039437400
+- 1039517200
+- 1042377110
+- 1043357500
+- 1043377400
+- 1043397500
+- 1044327410
+- 1046367500
+- 1046367700
+- 1047387700
+- 1048517700
+- 1049377100
+- 1051397900
+- 1051537600
+- 1051587800
+- 1052417100
+- 2045437700
+- 2045447010
+- 2046477150
+- 2047407980
+- 2047427700
+- 2048447810

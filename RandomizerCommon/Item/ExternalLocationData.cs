@@ -131,36 +131,37 @@ namespace RandomizerCommon
                 int quantity = 1;
                 if (!ExternalItemKeys.TryGetValue(locId, out ItemKey itemKey))
                 {
+                    ItemKey localKey = null;
+                    if (externalPreset.LocalItems.TryGetValue(itemId, out LocalItem locItem))
+                    {
+                        localKey = locItem.Key;
+                        if (localKey == null)
+                        {
+                            quantity = locItem.Quantity;
+                            if (!game.TryUintAsItem(locItem.ID, out localKey))
+                            {
+                                errors.Add($"Item id {locItem.ID} ({locItem.ID:X8}) not recognized as valid item key");
+                                continue;
+                            }
+                            if (!game.ItemNames.ContainsKey(game.GetBaseWeapon(localKey)))
+                            {
+                                errors.Add($"Unknown local item {localKey} [{locItem.Name}] given in external item data");
+                                continue;
+                            }
+                            locItem.Key = localKey;
+                        }
+                    }
                     if (externalPreset.ExternalItems.TryGetValue(locId, out ExternalItem extItem))
                     {
                         if (externalId >= maxExternalId) throw new Exception($"{maxExternalId - externalId} external item limit exceeded");
                         // TODO: Can potentially share key by name if location id doesn't need to be encoded there
                         extItem.Key = itemKey = new ItemKey(ItemType.Goods, externalId++);
+                        extItem.LocalKey = localKey;
                         game.AddItemName(itemKey, extItem.Name);
                     }
-                    else if (externalPreset.LocalItems.TryGetValue(itemId, out LocalItem locItem))
+                    else if (localKey != null)
                     {
-                        itemKey = locItem.Key;
-                        if (itemKey == null)
-                        {
-                            quantity = locItem.Quantity;
-                            if (!game.TryUintAsItem(locItem.ID, out itemKey))
-                            {
-                                errors.Add($"Item id {locItem.ID} ({locItem.ID:X8}) not recognized as valid item key");
-                                continue;
-                            }
-                            // TODO: Support randomizing this
-                            if (itemKey.Equals(new ItemKey(ItemType.Goods, 20090)))
-                            {
-                                continue;
-                            }
-                            if (!game.ItemNames.ContainsKey(itemKey))
-                            {
-                                errors.Add($"Unknown local item {itemKey} [{locItem.Name}] given in external item data");
-                                continue;
-                            }
-                            locItem.Key = itemKey;
-                        }
+                        itemKey = localKey;
                     }
                     // TODO: Better error message
                     else throw new Exception($"Unknown {locId}");

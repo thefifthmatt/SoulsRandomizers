@@ -34,7 +34,9 @@ namespace RandomizerCommon
         // 0022: currently doing dlc init
         // 0030: O Mother replacement event flag (for DLC)
         // 0100: bonfire flags (1 currently)
-        // 0200: logic gate flags (<20 currently)
+        // 0200: logic gate flags (<30 currently)
+        // 7000: New item checks (manually assigned)
+        // 8000: External item checks
         // Temporary flags
         // 2001: param flag
         // 2010: old rold flag
@@ -42,7 +44,7 @@ namespace RandomizerCommon
         // 2030 2031 2032: tibia mariner random flags
         // 2040: dlc warp flag
         // 2050: event value for item count check
-        // 2100 up: enemy randomizer
+        // 2100 up and 5000: enemy randomizer
         public static readonly int EldenRingBase = 1032500000;
 
         public readonly GameEditor Editor;

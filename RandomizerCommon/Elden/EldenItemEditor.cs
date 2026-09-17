@@ -210,12 +210,7 @@ namespace RandomizerCommon
 
         public override void EditLocations(RandomizerOptions opt, ItemFlagMapping mapping)
         {
-            // Gesture key item
-            if (opt["dlc"] && mapping.GestureFlag <= 0 && !ann.NorandomItems.Contains(mapping.GestureItem))
-            {
-                throw new Exception("Error: O Mother was not assigned to any location, but key items are randomized");
-            }
-            // Should this use GestureItem?
+            // TODO this could be generic for all gestures
             messages.SetFMGEntry(game, FMGCategory.Item, "GoodsInfo", 2009004, IdentityMessage, messages.Get(oMotherDesc));
             messages.SetFMGEntry(game, FMGCategory.Item, "GoodsCaption", 2009004, IdentityMessage, FMGArg.Menu("BloodMsg", 3050, "Lore"));
             PARAM.Row fakeGesture = game.Params["EquipParamGoods"][2009004];
@@ -234,6 +229,52 @@ namespace RandomizerCommon
                 fakeGesture["showDialogCondType"].Value = (byte)0; // 0 or 2
             }
 
+            List<EMEVD.Event> flagSyncEvents = new();
+            uint entityIdBase = 1324030000;
+            int extSyncEventBase = 1324036000;
+            int gateEventBase = 1324037000;
+            int miscEventBase = 1324038000;
+            HashSet<ItemType> scriptCheckableTypes = new() { ItemType.Weapon, ItemType.Protector, ItemType.Accessory, ItemType.Goods };
+            bool tryScriptCheck(ItemKey key, out int itemType)
+            {
+                // Dependency on ItemType value
+                itemType = (int)key.Type;
+                return scriptCheckableTypes.Contains(key.Type);
+            };
+
+            Dictionary<ItemType, List<string>> copyFmgNames = new()
+            {
+                // DLC variants are automatically used where necessary
+                [ItemType.Weapon] = new() { "WeaponName", "WeaponInfo", "WeaponCaption" },
+                [ItemType.Protector] = new() { "ProtectorName", "ProtectorInfo", "ProtectorCaption" },
+                [ItemType.Accessory] = new() { "AccessoryName", "AccessoryInfo", "AccessoryCaption" },
+                [ItemType.Goods] = new() { "GoodsName", "GoodsInfo", "GoodsCaption" },
+                [ItemType.Gem] = new() { "GemName", "GemInfo", "GemCaption" },
+            };
+            void copyFmgs(ItemKey from, ItemKey to, int quantity = 1, string overrideName = null)
+            {
+                if (!copyFmgNames.TryGetValue(from.Type, out List<string> fmgNames))
+                {
+                    return;
+                }
+                foreach (FMGDictionary itemFmgs in game.AllItemFMGs.Values)
+                {
+                    foreach (string fmgName in fmgNames)
+                    {
+                        string entry = itemFmgs[fmgName][from.ID];
+                        if (entry != null)
+                        {
+                            if ((overrideName != null || quantity > 1) && fmgName == fmgNames[0])
+                            {
+                                // More recognizable to put (x{quantity}) in front but make it consistent with external items
+                                entry = overrideName ?? $"{entry} x{quantity}";
+                            }
+                            itemFmgs[fmgName][to.ID] = entry;
+                        }
+                    }
+                }
+            }
+
             // From Dectus Medallion (Left)
             ItemKey baseKeyItem = new ItemKey(ItemType.Goods, 8105);
             PARAM.Row baseKeyItemRow = game.Item(baseKeyItem);
@@ -242,23 +283,44 @@ namespace RandomizerCommon
                 // TODO: sortId, correct icon
                 int id = newItem.Key.ID;
                 PARAM.Row row = GameEditor.AddRow(game.ItemParam(baseKeyItem), id, baseKeyItemRow);
-                row["iconId"].Value = 228;
                 row["rarity"].Value = (byte)2;
-                // TODO: Localize name and maybe description. This routine only works for Stonesword Master Keys
-                string areaInfo = null;
-                if (newItem.Logic != null)
+                if (newItem.Switch == "traps")
                 {
-                    IEnumerable<string> areas = newItem.Logic
-                        .Select(l => l.BlockArea != null && ann.Areas.TryGetValue(l.BlockArea, out AreaAnnotation area) ? (area.FullText ?? area.Text) : null)
-                        .Where(name => name != null)
-                        .Distinct();
-                    areaInfo = $"\n\nGrants access to the following areas:\n{string.Join("\n", areas.Select(a => $"- {a}"))}";
+                    // This should probably be done as tag, combined with shard-editing
+                    row["isConsume"].Value = (byte)1;
+                    row["maxNum"].Value = (short)999;
+                    row["maxRepositoryNum"].Value = (short)999;
                 }
-                foreach (FMGDictionary fmgs in game.AllItemFMGs.Values)
+                // Hardcoded routine for now for Stonesword Master Keys
+                // TODO: Can be localized? Requires config support
+                if (newItem.Switch != null && newItem.Switch.StartsWith("stonesword"))
                 {
-                    fmgs["GoodsName"][id] = newItem.Name;
-                    fmgs["GoodsInfo"][id] = "Breaks many imp statue seals";
-                    fmgs["GoodsCaption"][id] = $"Breaks many imp statue seals.{areaInfo}";
+                    row["iconId"].Value = 228;
+                    string areaInfo = null;
+                    if (newItem.Logic != null)
+                    {
+                        IEnumerable<string> areas = newItem.Logic
+                            .Select(l => l.BlockArea != null && ann.Areas.TryGetValue(l.BlockArea, out AreaAnnotation area) ? (area.FullText ?? area.Text) : null)
+                            .Where(name => name != null)
+                            .Distinct();
+                        areaInfo = $"\n\nGrants access to the following areas:\n{string.Join("\n", areas.Select(a => $"- {a}"))}";
+                    }
+                    foreach (FMGDictionary fmgs in game.AllItemFMGs.Values)
+                    {
+                        fmgs["GoodsName"][id] = newItem.Name;
+                        fmgs["GoodsInfo"][id] = "Breaks many imp statue seals";
+                        fmgs["GoodsCaption"][id] = $"Breaks many imp statue seals.{areaInfo}";
+                    }
+                }
+                else
+                {
+                    row["iconId"].Value = 448;
+                    foreach (FMGDictionary fmgs in game.AllItemFMGs.Values)
+                    {
+                        fmgs["GoodsName"][id] = newItem.Name;
+                        fmgs["GoodsInfo"][id] = newItem.Desc ?? "";
+                        fmgs["GoodsCaption"][id] = newItem.Desc ?? "";
+                    }
                 }
             }
 
@@ -277,9 +339,18 @@ namespace RandomizerCommon
                     if (externalPreset.ExternalItems.TryGetValue(locationId, out ExternalItem extItem))
                     {
                         int id = itemKey.ID;
+                        ItemKey paramKey = extItem.LocalKey == null ? null : game.GetBaseWeapon(extItem.LocalKey);
+                        PARAM.Row localRow = paramKey == null ? null : game.Item(paramKey);
                         PARAM.Row row = GameEditor.AddRow(game.ItemParam(baseKeyItem), id, baseKeyItemRow);
                         row["iconId"].Value = 90;
-                        if (!rarityMapping.TryGetValue(extItem.Rarity, out byte rarity))
+                        row["isDiscard"].Value = (byte)1;
+                        byte rarity;
+                        if (localRow != null)
+                        {
+                            // Items from Elden Ring keep rarity. This could be done for other souls games in theory, and more could be copied.
+                            rarity = (byte)row["rarity"].Value;
+                        }
+                        else if (!rarityMapping.TryGetValue(extItem.Rarity, out rarity))
                         {
                             if (extItem.Rarity == ExternalRarity.Trap)
                             {
@@ -288,20 +359,29 @@ namespace RandomizerCommon
                                 else if (bucket < 90) rarity = 2;
                                 else rarity = 3;
                             }
+                            // Otherwise rarity 0 is fine
                         }
-                        row["rarity"].Value = (byte)2;
+                        row["rarity"].Value = rarity;
                         // TODO: What starting index to use?
                         row["sortId"].Value = 2000000 + extItem.SortOffset;
-                        // TODO: Localize name and maybe description. This routine only works for Stonesword Master Keys
-                        foreach (FMGDictionary fmgs in game.AllItemFMGs.Values)
+                        if (paramKey != null)
                         {
-                            fmgs["GoodsName"][id] = extItem.Name;
-                            fmgs["GoodsInfo"][id] = extItem.Desc;
-                            fmgs["GoodsCaption"][id] = extItem.Desc;
+                            // Also have local description for other Elden Ring instances I guess. This could be skipped
+                            copyFmgs(paramKey, itemKey, overrideName: extItem.Name);
+                        }
+                        else
+                        {
+                            // TODO: Localize somehow
+                            foreach (FMGDictionary fmgs in game.AllItemFMGs.Values)
+                            {
+                                fmgs["GoodsName"][id] = extItem.Name;
+                                fmgs["GoodsInfo"][id] = extItem.Desc;
+                                fmgs["GoodsCaption"][id] = extItem.Desc;
+                            }
                         }
                     }
                 }
-                // For Elden Ring, potentially a *lot* of items are getting added so prefer to make it not quadratic
+                // For Elden Ring, potentially a *lot* of items are getting added so prefer to make lookup not quadratic
                 // Some of this could be shared between games
                 Dictionary<ItemKey, PARAM.Row> itemCache = new();
                 foreach (ItemType copyType in fakeIds.Keys)
@@ -316,38 +396,6 @@ namespace RandomizerCommon
                     }
                 }
                 Dictionary<int, PARAM.Row> magicDict = GameEditor.ParamToDictionary(game.Params["Magic"]);
-                Dictionary<ItemType, List<string>> copyFmgNames = new()
-                {
-                    // DLC variants are automatically used where necessary
-                    [ItemType.Weapon] = new() { "WeaponName", "WeaponInfo", "WeaponCaption" },
-                    [ItemType.Protector] = new() { "ProtectorName", "ProtectorInfo", "ProtectorCaption" },
-                    [ItemType.Accessory] = new() { "AccessoryName", "AccessoryInfo", "AccessoryCaption" },
-                    [ItemType.Goods] = new() { "GoodsName", "GoodsInfo", "GoodsCaption" },
-                    [ItemType.Gem] = new() { "GemName", "GemInfo", "GemCaption" },
-                };
-                void copyFmgs(ItemKey from, ItemKey to, int quantity = 1)
-                {
-                    if (!copyFmgNames.TryGetValue(from.Type, out List<string> fmgNames))
-                    {
-                        return;
-                    }
-                    foreach (FMGDictionary itemFmgs in game.AllItemFMGs.Values)
-                    {
-                        foreach (string fmgName in fmgNames)
-                        {
-                            string entry = itemFmgs[fmgName][from.ID];
-                            if (entry != null)
-                            {
-                                if (quantity > 1 && fmgName == fmgNames[0])
-                                {
-                                    // More recognizable to put (x{quantity}) in front but make it consistent with external items
-                                    entry = $"{entry} x{quantity}";
-                                }
-                                itemFmgs[fmgName][to.ID] = entry;
-                            }
-                        }
-                    }
-                }
                 foreach ((long itemId, ItemKey targetItem) in fakeLocalItems)
                 {
                     LocalItem localItem = externalPreset.LocalItems[itemId];
@@ -356,6 +404,7 @@ namespace RandomizerCommon
                     {
                         throw new Exception($"Internal error: did not track {baseItem}->{targetItem} from {itemId}");
                     }
+                    // This is still quadratic, however
                     PARAM.Row newRow = GameEditor.AddRow(game.ItemParam(targetItem), targetItem.ID, baseRow);
                     copyFmgs(baseItem, targetItem, localItem.Quantity);
                     // Duplicate aux rows for descriptions and other metadata
@@ -378,6 +427,7 @@ namespace RandomizerCommon
                         copyFmgs(baseWeapon, newWeapon);
                     }
                 }
+#if DEBUG
                 bool debugMapping = false;
                 if (debugMapping)
                 {
@@ -393,6 +443,7 @@ namespace RandomizerCommon
                         .ToDictionary(g => g.Key, g => g.Select(e => e.Item1).ToList());
                     Console.WriteLine($"{multiLocFlags.Count} overloaded locs (should be shops only): {string.Join(" ", multiLocFlags.Select(e => $"[{e.Key}->{string.Join(",", e.Value)}]"))}");
                 }
+#endif
                 // Shops aren't big enough to fit a long in Elden Ring so just make fake lots instead
                 SortedSet<(uint, long)> untrackedLocations = new(trackedShopLocations.Except(trackedLotLocations));
                 int extraRowId = 1_810_000_001;
@@ -404,6 +455,49 @@ namespace RandomizerCommon
                     row["getItemFlagId"].Value = eventFlag;
                     row["lotItemId08"].Value = embed1;
                     row["getItemFlagId08"].Value = embed2;
+                }
+
+                // It should be safe to populate the entire mapping. Doing this eagerly is probably more stable
+                int extSyncFlagBase = GameData.EldenRingBase + 8000;
+                // Bounded by size of static config so this shouldn't happen from *only* getting unlucky. If it gets close to the limit then reconsider
+                if (mapping.TrackedFlagItems.Count > 1000 || eventConfig.StableFlagList == null)
+                {
+                    throw new Exception($"Cannot allocate flags external tracked items ({mapping.TrackedFlagItems.Count} items, {eventConfig.StableFlagList?.Count} mapped flags)");
+                }
+                Dictionary<int, int> stableFlagIndex = eventConfig.StableFlagList.Select((f, i) => (f, i)).ToDictionary(e => e.Item1, e => e.Item2);
+                foreach ((int flag, ItemKey item) in mapping.TrackedFlagItems.OrderBy(e => e.Key))
+                {
+                    if (!stableFlagIndex.TryGetValue(flag, out int index))
+                    {
+                        throw new Exception($"Internal error: Unknown tracked flag {flag}");
+                    }
+                    if (item == null || (mapping.ItemEventFlags.TryGetValue(item, out int existFlag) && existFlag > 0))
+                    {
+                        continue;
+                    }
+                    // Script checks can't handle Ashes of War at this point, nor custom weapons, nor weapons which are pre-upgraded. Maybe client should do this
+                    // Current behavior is to use original location as fallback
+                    if (tryScriptCheck(item, out int itemType))
+                    {
+                        // Some overlap with gate item checks below, but make this 'sticky' because items can be consumed or dropped
+                        // It will very likely cause Seamless Co-op sync issues if it makes items unacquirable
+                        int targetFlag = extSyncFlagBase + index;
+                        EMEVD.Event newEvent = events.GetSimpleEvent(
+                            extSyncEventBase + index,
+                            new[]
+                            {
+                                $"IfPlayerHasdoesntHaveItem(MAIN, {itemType}, {item.ID}, OwnershipState.Owns)",
+                                $"SetEventFlag(TargetEventFlagType.EventFlag, {targetFlag}, ON)",
+                            },
+                            EMEVD.Event.RestBehaviorType.Restart);
+                        flagSyncEvents.Add(newEvent);
+                        // As an alternative to modifying these, could use a separate editor-local mapping
+                        mapping.ItemEventFlags[item] = targetFlag;
+                        if (item.Equals(mapping.GestureItem) && mapping.GestureFlag <= 0)
+                        {
+                            mapping.GestureFlag = targetFlag;
+                        }
+                    }
                 }
             }
 
@@ -513,24 +607,28 @@ namespace RandomizerCommon
             {
                 blockGates.Add("leyndell");
             }
+
+            foreach (NewItemAnnotation newItem in ann.NewItems.Values)
+            {
+                // Everything in the ann dictionary is to be enabled in-game. TODO add any extra information if needed
+                itemGates[newItem.Key] = newItem.ConfigName;
+            }
+
             Dictionary<string, ItemKey> gateItems = itemGates.ToDictionary(e => e.Value, e => e.Key);
-            HashSet<string> enabledGates = new(shardItems.Keys.Concat(blockGates));
+            HashSet<string> enabledGates = new(shardItems.Keys.Concat(blockGates).Concat(ann.NewItems.Keys));
 
             // Lazily initialized flags, to create events as needed
             Dictionary<string, int> gateFlags = new();
-            List<EMEVD.Event> gateCheckEvents = new();
             int gateBase = GameData.EldenRingBase + 200;
-            uint entityIdBase = 1324030000;
-            int gateEventBase = 1324037000;
-            int miscEventBase = 1324038000;
-            // This should probably return the flag since I don't think it can return false? Or else allow disabled gates
-            bool getGateFlag(string gate, out int targetFlag)
+            // Check enabledGates before calling
+            int getGateFlag(string gate)
             {
-                if (gateFlags.TryGetValue(gate, out targetFlag))
+                if (gateFlags.TryGetValue(gate, out int existFlag))
                 {
-                    return true;
+                    return existFlag;
                 }
                 EMEVD.Event newEvent = null;
+                int targetFlag;
                 if (shardItems.TryGetValue(gate, out MultiItem multiItem))
                 {
                     if (logicFlagIndices.TryGetValue(gate, out int index))
@@ -555,15 +653,41 @@ namespace RandomizerCommon
                             },
                             EMEVD.Event.RestBehaviorType.Restart);
                     }
+                    else
+                    {
+                        throw new Exception($"Internal error: Cannot create flag for item {gate} without config defined");
+                    }
+                }
+                else if (ann.NewItems.TryGetValue(gate, out NewItemAnnotation newItem))
+                {
+                    if (logicFlagIndices.TryGetValue(gate, out int index) && tryScriptCheck(newItem.Key, out int itemType))
+                    {
+                        targetFlag = gateBase + index;
+                        newEvent = events.GetSimpleEvent(
+                            gateEventBase + index,
+                            new[]
+                            {
+                                $"IfPlayerHasdoesntHaveItem(AND_10, {itemType}, {newItem.Key.ID}, OwnershipState.Owns)",
+                                $"SkipIfConditionGroupStateUncompiled(2, PASS, AND_10)",
+                                $"SetEventFlag(TargetEventFlagType.EventFlag, {targetFlag}, OFF)",
+                                $"IfPlayerHasdoesntHaveItem(MAIN, {itemType}, {newItem.Key.ID}, OwnershipState.Owns)",
+                                $"SetEventFlag(TargetEventFlagType.EventFlag, {targetFlag}, ON)",
+                            },
+                            EMEVD.Event.RestBehaviorType.Restart);
+                    }
+                    // TODO: Replace with function for Archipelago etc
+                    else if (!mapping.ItemEventFlags.TryGetValue(newItem.Key, out targetFlag))
+                    {
+                        throw new Exception($"Internal error: Item {gate} not tracked");
+                    }
                 }
                 else if (blockGates.Contains(gate))
                 {
-                    if (!gates.TryGetValue(gate, out LogicGate logicGate) || logicGate.Cond == null)
+                    if (!gates.TryGetValue(gate, out LogicGate logicGate) || logicGate.Cond == null || logicGate.Cond == "none")
                     {
                         // Just require explicitly set for now
-                        throw new Exception($"Internal error: no condition for gate {gate}");
+                        throw new Exception($"Internal error: no flag condition for gate {gate}");
                     }
-                    if (logicGate.Cond == "none") return false;
                     // At this point, flag must exist
                     if (!int.TryParse(logicGate.Cond, out targetFlag) && logicGate.Cond == "custom")
                     {
@@ -578,9 +702,9 @@ namespace RandomizerCommon
                             // (unless this can use BlockExpr instead?)
                             int gateOrItemFlag(string item)
                             {
-                                if (enabledGates.Contains(item) && getGateFlag(item, out int subFlag))
+                                if (enabledGates.Contains(item))
                                 {
-                                    return subFlag;
+                                    return getGateFlag(item);
                                 }
                                 else if (ann.Items.TryGetValue(item, out ItemKey key) && mapping.ItemEventFlags.TryGetValue(key, out int getFlag) && getFlag > 0)
                                 {
@@ -633,24 +757,21 @@ namespace RandomizerCommon
                     }
                 }
                 else throw new Exception($"Internal error: Attempting to use disabled or unknown gate {gate}");
-                if (targetFlag == 0)
-                {
-                    return false;
-                }
                 if (newEvent != null)
                 {
-                    gateCheckEvents.Add(newEvent);
+                    flagSyncEvents.Add(newEvent);
                 }
                 processedGates.Add(gate);
                 gateFlags[gate] = targetFlag;
-                return true;
+                return targetFlag;
             }
             // Condition for item use, if tracked. This is for all-or-nothing cases and does not support non-shard multi-items
             bool getItemUseFlag(ItemKey key, out int useFlag)
             {
                 if (itemGates.TryGetValue(key, out string shardGate))
                 {
-                    return getGateFlag(shardGate, out useFlag);
+                    useFlag = getGateFlag(shardGate);
+                    return true;
                 }
                 return mapping.ItemEventFlags.TryGetValue(key, out useFlag) && useFlag > 0;
             }
@@ -685,6 +806,14 @@ namespace RandomizerCommon
                         return true;
                     }
                 }
+#if DEBUG
+                bool debugUntrackedItems = false;
+                if (debugUntrackedItems && type.StartsWith("item"))
+                {
+                    getFlagAcquire(flag, debugId, out ItemKey supItem, out int itemFlag);
+                    Console.WriteLine($"Tracked flag not found for {type} {debugId}: {flag} -> {itemFlag} (item: {(supItem == null ? "none" : game.Name(supItem))})");
+                }
+#endif
                 return false;
             }
 
@@ -720,13 +849,6 @@ namespace RandomizerCommon
                 "ashdupe", "singleton", "removecheck", "runearg", "forge",
                 "volcanoreq", "leyndell",
             };
-            HashSet<ItemType> scriptCheckableTypes = new() { ItemType.Weapon, ItemType.Protector, ItemType.Accessory, ItemType.Goods };
-            bool tryScriptCheck(ItemKey key, out int itemType)
-            {
-                // Dependency on ItemType value
-                itemType = (int)key.Type;
-                return scriptCheckableTypes.Contains(key.Type);
-            };
 
             // Area gates. This could probably handle cases currently handled by custom conditions, mainly dependent on extracting it from logic.
             // Item logic names become item checks (no shards currently). This should handle boss defeats and GR requirements as well
@@ -753,6 +875,7 @@ namespace RandomizerCommon
                         {
                             throw new Exception($"Internal error: ineligible {name} {item} in {blockExpr}");
                         }
+                        processedGates.Add(name);
                         cmds.Add($"IfPlayerHasdoesntHaveItem({cond}, {itemType}, {item.ID}, OwnershipState.Owns)");
                     }
                     // Try to use existing cond
@@ -792,16 +915,16 @@ namespace RandomizerCommon
                 Dictionary<uint, EMEVD.Event> fileEvents = entry.Value.Events.ToDictionary(e => (uint)e.ID, e => e);
                 // TODO: Genericize enemy rando system for event passes (or combine them haha)
                 List<EMEVD.Event> newEvents = new();
+                List<EMEVD.Instruction> newInits = new();
                 foreach (EMEVD.Event e in emevd.Events)
                 {
-                    OldParams initOld = OldParams.Preprocess(e);
+                    OldParams initPre = OldParams.Preprocess(e);
                     for (int i = 0; i < e.Instructions.Count; i++)
                     {
-                        EMEVD.Instruction init = e.Instructions[i];
-                        if (!(init.Bank == 2000 && (init.ID == 0 || init.ID == 6))) continue;
-                        List<object> initArgs = init.UnpackArgs(Enumerable.Repeat(ArgType.Int32, init.ArgData.Length / 4));
-                        int offset = 2;
-                        uint callee = (uint)(int)initArgs[1];
+                        Instr originalInit = events.Parse(e.Instructions[i], initPre);
+                        if (!originalInit.Init) continue;
+                        int offset = originalInit.Offset;
+                        uint callee = originalInit.Callee;
                         if (!templates.TryGetValue(callee, out ItemEventSpec ev))
                         {
                             continue;
@@ -814,17 +937,24 @@ namespace RandomizerCommon
 
                         // Collect templates. Some of this should possibly be merged with other games to avoid duplication, but this requires standard configs at this point.
                         bool forceRemove = false;
-                        List<(EMEVD.Event, ItemTemplate, TemplateFilter)> mainPasses = new();
+                        void registerEventEdit(bool inplace)
+                        {
+                            if (inplaceEdited.TryGetValue(callee, out bool existInplace) && inplace != existInplace)
+                            {
+                                throw new Exception($"Internal error: inplace and non-inplace edit both performed for {callee}");
+                            }
+                            inplaceEdited[callee] = inplace;
+                        }
+                        List<(EMEVD.Event, ItemTemplate, List<TemplateFilter>)> mainPasses = new();
                         foreach (ItemTemplate t in ev.Template ?? new())
                         {
                             if (t.Type == "default")
                             {
                                 continue;
                             }
-                            TemplateFilter selected = null;
+                            List<TemplateFilter> selected = new();
                             if (t.Filter != null)
                             {
-                                bool anyEligible = false;
                                 foreach (TemplateFilter filter in t.Filter)
                                 {
                                     bool eligible = true;
@@ -852,7 +982,7 @@ namespace RandomizerCommon
                                             {
                                                 throw new Exception($"Internal error: Bad {argName}");
                                             }
-                                            int arg = (int)initArgs[offset + pos];
+                                            int arg = (int)originalInit[offset + pos];
                                             if (arg != (int)val)
                                             {
                                                 eligible = false;
@@ -861,11 +991,10 @@ namespace RandomizerCommon
                                     }
                                     if (eligible)
                                     {
-                                        selected = filter;
-                                        anyEligible = true;
+                                        selected.Add(filter);
                                     }
                                 }
-                                if (!anyEligible)
+                                if (selected.Count == 0)
                                 {
                                     continue;
                                 }
@@ -881,25 +1010,19 @@ namespace RandomizerCommon
                             }
                             else if (fileEvents.TryGetValue(callee, out EMEVD.Event theEvent) || commonEvents.TryGetValue(callee, out theEvent))
                             {
-                                bool inplace;
                                 if (t.Type == "copyloc")
                                 {
-                                    inplace = false;
                                     mainPasses.Add((events.CopyEvent(theEvent, miscEventBase++), t, selected));
+                                    registerEventEdit(inplace: false);
                                 }
                                 else
                                 {
-                                    inplace = true;
                                     if (completedTemplates.Add((t, 0)))
                                     {
                                         mainPasses.Add((theEvent, t, selected));
                                     }
+                                    registerEventEdit(inplace: true);
                                 }
-                                if (inplaceEdited.TryGetValue(callee, out bool existInplace) && inplace != existInplace)
-                                {
-                                    throw new Exception($"Internal error: inplace and non-inplace edit both performed for {callee}");
-                                }
-                                inplaceEdited[callee] = inplace;
                             }
                             else
                             {
@@ -933,7 +1056,7 @@ namespace RandomizerCommon
                                 {
                                     throw new Exception($"Internal error: Bad argspec {callee}");
                                 }
-                                int argFlag = (int)initArgs[offset + pos];
+                                int argFlag = (int)originalInit[offset + pos];
                                 if (!templateFlags.Contains(argFlag))
                                 {
                                     // Console.WriteLine($"{callee}: {t.EventFlagArg} {argFlag} not an item flag");
@@ -944,6 +1067,10 @@ namespace RandomizerCommon
                             else
                             {
                                 flags = templateFlags;
+                            }
+                            if (!t.Type.Contains("arg"))
+                            {
+                                registerEventEdit(inplace: true);
                             }
                             foreach (int flag in flags)
                             {
@@ -969,16 +1096,29 @@ namespace RandomizerCommon
                             game.WriteEmevds.Add(entry.Key);
                             continue;
                         }
+                        bool copyRemoved = false;
+                        if (inplaceEdited.TryGetValue(callee, out bool inplace) && !inplace)
+                        {
+                            e.Instructions[i] = new EMEVD.Instruction(1014, 69);
+                            copyRemoved = true;
+                        }
 
                         // Passes
-                        foreach ((EMEVD.Event e2, ItemTemplate t, TemplateFilter filter) in mainPasses)
+                        foreach ((EMEVD.Event e2, ItemTemplate t, List<TemplateFilter> filters) in mainPasses)
                         {
-                            string gate = filter?.Gate;
-                            int gateFlag()
+                            string filterGate()
                             {
+                                if (filters.Count != 1) throw new Exception($"Internal error: Cond flag required in {callee} but {filters.Count} logic gates defined");
+                                string gate = filters[0].Gate;
                                 if (gate == null) throw new Exception($"Internal error: Cond flag required in {callee} but no logic gate defined");
-                                if (!getGateFlag(gate, out int flag)) throw new Exception($"Internal error: No flag for enabled logic gate {gate}");
-                                return flag;
+                                return gate;
+                            }
+                            int filterGateFlag() => getGateFlag(filterGate());
+                            Instr newInit = null;
+                            void editInit(Action<Instr> edit)
+                            {
+                                newInit ??= events.Parse(events.CopyInstruction(originalInit.Val), initPre);
+                                edit(newInit);
                             }
                             if (e2 == null)
                             {
@@ -987,19 +1127,18 @@ namespace RandomizerCommon
                                     string[] parts = t.SetArg.Split(' ');
                                     if (parts.Length != 2 || !TryArgSpec(parts[0], out int pos)) throw new Exception($"Internal error: Bad {t.SetArg} in config");
                                     // This happens due to imprecise callee resolution and duplicate map ids
-                                    if (offset + pos > initArgs.Count) continue;
-                                    int flag = parts[1] == "gate" ? gateFlag() : int.Parse(parts[1]);
-                                    initArgs[offset + pos] = flag;
-                                    init.PackArgs(initArgs);
+                                    if (pos > originalInit.Count) continue;
+                                    int flag = parts[1] == "gate" ? filterGateFlag() : int.Parse(parts[1]);
+                                    editInit(init => init[offset + pos] = flag);
                                 }
                                 if (t.ItemArg != null)
                                 {
-                                    // This could probably use copyloc alongside reading args from ItemUse per-init
+                                    // TODO: Replace this copyloc alongside reading args from ItemUse per-init
                                     foreach (string part in t.ItemArg.Split(' '))
                                     {
                                         if (!TryArgSpec(part, out int pos)) throw new Exception($"Internal error: Bad {t.ItemArg} in config");
-                                        if (offset + pos > initArgs.Count) throw new Exception($"Too big: {entry.Key} {callee}, pos {pos} in ({string.Join(", ", initArgs)})");
-                                        int itemId = (int)initArgs[offset + pos];
+                                        if (pos > originalInit.Count) throw new Exception($"Too big: {entry.Key} {callee}, pos {pos} in ({originalInit})");
+                                        int itemId = (int)originalInit[offset + pos];
                                         if (itemId == 0)
                                         {
                                             continue;
@@ -1011,9 +1150,13 @@ namespace RandomizerCommon
                                             // It may cause issues merging mods where key items are removed, but at least for lifts, these events must either be all edited or none edited
                                             throw new Exception($"Item {game.Name(itemKey)} was missing or not tracked, but must be present for editing game logic");
                                         }
-                                        initArgs[offset + pos] = useFlag;
-                                        init.PackArgs(initArgs);
+                                        editInit(init => init[offset + pos] = useFlag);
                                     }
+                                }
+                                if (newInit != null)
+                                {
+                                    newInit.Save(initPre);
+                                    e.Instructions[i] = newInit.Val;
                                 }
                                 game.WriteEmevds.Add(entry.Key);
                                 continue;
@@ -1026,18 +1169,57 @@ namespace RandomizerCommon
                                 foreach (DynamicEdit edit in t.Edits)
                                 {
                                     List<string> newCmds = edit.BeforeCmds?.ToList() ?? new();
-                                    if (edit.ItemCond != 0)
+                                    if (edit.FilterCond != 0)
                                     {
-                                        // TODO: Handle conditions other than key items with gates etc merge into that system
-                                        if (filter?.BlockArea == null)
+                                        if (filters.Count == 0) throw new Exception($"Internal error: no condition defined for editing gate in {callee}");
+                                        // To have other combinations, integrate that into BlockExpr (which could also be per-gate)
+                                        if (filters.Count > 1 && edit.FilterCond < 0) throw new Exception($"Internal error: {edit.FilterCond} cannot have multiple conditions in {callee}");
+                                        // BlockArea helps ensure consistency with logic but it might be a lot simpler if everything is a gate
+                                        foreach (TemplateFilter filter in filters)
                                         {
-                                            throw new Exception($"Internal error: area required for editing gate in {callee} but none set in filter");
+                                            if (filter.BlockArea != null)
+                                            {
+                                                if (!ann.GetAreaBlock(filter.BlockArea, out Expr blockExpr))
+                                                {
+                                                    throw new Exception($"Internal(?) error: area {filter.BlockArea} is is blocked but is missing or has no associated block condition");
+                                                }
+                                                addAreaGateInstructions(blockExpr, edit.FilterCond, newCmds, addedConds);
+                                            }
+                                            else if (filter.Gate != null)
+                                            {
+                                                int flag = getGateFlag(filter.Gate);
+                                                newCmds.Add($"IfEventFlag({edit.FilterCond}, ON, TargetEventFlagType.EventFlag, {flag})");
+                                                addedConds.Add(edit.FilterCond);
+                                            }
+                                            else throw new Exception($"Internal error: filter for {callee} has no usable condition defined");
                                         }
-                                        if (!ann.GetAreaBlock(filter.BlockArea, out Expr blockExpr))
+                                    }
+                                    // Giving items is only supported for new items given a location source in AddSpecialItems
+                                    if (edit.ItemLocCond != 0)
+                                    {
+                                        string gate = filterGate();
+                                        if (!ann.NewItems.TryGetValue(gate, out NewItemAnnotation newItem) || newItem.NewLocation == null)
                                         {
-                                            throw new Exception($"Internal(?) error: area {filter.BlockArea} is is blocked but is missing or has no associated block condition");
+                                            throw new Exception($"Internal error: new item drops not supported for {gate}");
                                         }
-                                        addAreaGateInstructions(blockExpr, edit.ItemCond, newCmds, addedConds);
+                                        int locFlag = (int)newItem.NewLocation.Flag;
+                                        if (mapping.RewrittenFlags.TryGetValue(locFlag, out int newFlag))
+                                        {
+                                            locFlag = newFlag;
+                                        }
+                                        newCmds.Add($"IfEventFlag({edit.ItemLocCond}, ON, TargetEventFlagType.EventFlag, {locFlag})");
+                                        addedConds.Add(edit.ItemLocCond);
+                                    }
+                                    if (edit.GiveItem != null)
+                                    {
+                                        // Currently only supported for new items which have a standardized location source in AddSpecialItems
+                                        string gate = edit.GiveItem == "gate" ? filterGate() : edit.GiveItem;
+                                        if (!ann.NewItems.TryGetValue(gate, out NewItemAnnotation newItem) || newItem.NewLocation == null || newItem.NewLocation.ItemLot <= 0)
+                                        {
+                                            throw new Exception($"Internal error: new item drops not supported for {gate}");
+                                        }
+                                        newCmds.Add($"AwardItemLot({newItem.NewLocation.ItemLot})");
+                                        processedGates.Add(gate);
                                     }
                                     if (edit.AfterCmds != null)
                                     {
@@ -1080,9 +1262,9 @@ namespace RandomizerCommon
                                     events.IdentityMacro(edits, check);
                                 }
                             }
-                            if (t.CondFlag > 0)
+                            if (t.CondFlag != null)
                             {
-                                events.ReplaceMacro(edits, t.CondFlag.ToString(), gateFlag().ToString(), EventValueType.Flag);
+                                events.ReplaceMacro(edits, t.CondFlag, filterGateFlag().ToString(), EventValueType.Flag);
                             }
                             if (t.ItemUse != null)
                             {
@@ -1094,7 +1276,7 @@ namespace RandomizerCommon
                                         // This doesn't give much feedback, potentially it could show a dialog
                                         events.AddMacro(edits, new EventAddCommand
                                         {
-                                            Cmd = $"IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, {gateFlag()})",
+                                            Cmd = $"IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, {filterGateFlag()})",
                                             Before = "start",
                                         });
                                         continue;
@@ -1114,7 +1296,7 @@ namespace RandomizerCommon
                                     else
                                     {
                                         int item = (int)ins[2];
-                                        events.ReplaceMacro(edits, useCmd, $"IfEventFlag({ins[0]}, {check}, TargetEventFlagType.EventFlag, {gateFlag()})");
+                                        events.ReplaceMacro(edits, useCmd, $"IfEventFlag({ins[0]}, {check}, TargetEventFlagType.EventFlag, {filterGateFlag()})");
                                     }
                                 }
                             }
@@ -1128,19 +1310,29 @@ namespace RandomizerCommon
                                 if (addedConds.Count > 0)
                                 {
                                     // Should be extra argument? Ideally Events should help identify unused conds in the first place
-                                    string newCondStr = string.Join(' ', addedConds.Select(c => $"+{c}"));
+                                    string newCondStr = string.Join(' ', addedConds.Distinct().Select(c => $"+{c}"));
                                     condOrder = condOrder == null ? newCondStr : $"{condOrder} {newCondStr}";
                                 }
                                 events.AdjustConditionGroups(edits, e2, pre, condOrder, !game.HasMods, callee);
                             }
-                            events.ApplyAllEdits(e2, edits, () => $"{debugId} has unapplied edits in item randomizer" + (gate == null ? "" : $" (to edit {gate} logic)"));
+                            events.ApplyAllEdits(e2, edits, () => $"{debugId} has unapplied edits in item randomizer");
                             if (e2.ID != callee)
                             {
-                                Instr initInstr = events.Parse(init, initOld);
-                                initInstr = events.CopyInit(initInstr, e2, initOld);
-                                initInstr.Save(initOld);
-                                e.Instructions[i] = initInstr.Val;
+                                // Event is moved, ensure init removed and add new init
+                                if (!copyRemoved)
+                                {
+                                    throw new Exception($"Internal error: Expected {callee} to be removed for non-in-place edit");
+                                }
+                                Instr initInstr = newInit ?? originalInit;
+                                initInstr = events.CopyInit(initInstr, e2, initPre);
+                                initInstr.Save(initPre);
+                                newInits.Add(initInstr.Val);
                                 newEvents.Add(e2);
+                            }
+                            else if (newInit != null)
+                            {
+                                newInit.Save(initPre);
+                                e.Instructions[i] = newInit.Val;
                             }
                             game.WriteEmevds.Add(entry.Key);
                         }  // Main pass
@@ -1256,12 +1448,14 @@ namespace RandomizerCommon
                                 {
                                     throw new Exception($"Internal error: Invalid runearg format {t.EventFlagArg}");
                                 }
-                                int activateFlag = (int)initArgs[offset + activatePos];
+                                int activateFlag = (int)originalInit[offset + activatePos];
                                 if (activateFlag >= 191 && activateFlag <= 196)
                                 {
                                     int getFlag = activateFlag - 20;
-                                    initArgs[offset + showPos] = getFlag;
-                                    init.PackArgs(initArgs);
+                                    // TODO: Unify system here and in enemy randomizer
+                                    originalInit[offset + showPos] = getFlag;
+                                    originalInit.Save();
+                                    e.Instructions[i] = originalInit.Val;
                                     game.WriteEmevds.Add(entry.Key);
                                 }
                                 continue;
@@ -1297,6 +1491,7 @@ namespace RandomizerCommon
 
                             if (!getFlagEdit(t.Type, flag, debugId, out int targetFlag, out ItemKey item))
                             {
+                                // TODO: In some of these cases, the event should probably be removed? Like if item is removed, don't activate based on location flag
                                 continue;
                             }
 
@@ -1309,8 +1504,9 @@ namespace RandomizerCommon
                                     {
                                         throw new Exception($"Internal error: Bad argspec {callee}");
                                     }
-                                    initArgs[offset + pos] = targetFlag;
-                                    init.PackArgs(initArgs);
+                                    originalInit[offset + pos] = targetFlag;
+                                    originalInit.Save();
+                                    e.Instructions[i] = originalInit.Val;
                                     edited = true;
                                 }
                             }
@@ -1435,14 +1631,18 @@ namespace RandomizerCommon
                     // Event for O Mother in shops, and now also drops
                     // In base game, added by InitializeCommonEvent(0, 90005570, getFlag 60864, gesture 115, asset 2050451680, actionButton 2, sfx 2, unk 0)
                     // The flag is not actually used, just used to mark a drop
+                    if (opt["dlc"] && mapping.GestureFlag <= 0 && !ann.NorandomItems.Contains(mapping.GestureItem))
+                    {
+                        throw new Exception("Error: O Mother was not assigned to any location, but key items are randomized");
+                    }
                     if (mapping.GestureFlag > 0)
                     {
-                        if (enabledGates.Contains("omother") && getGateFlag("omother", out int targetFlag))
+                        if (enabledGates.Contains("omother"))
                         {
                             events.AddSimpleEvent(emevd, 19003131, new[]
                             {
                                 "EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 60864)",
-                                $"IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, {targetFlag})",
+                                $"IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, {getGateFlag("omother")})",
                                 "AwardGesture(115)",
                                 "SetEventFlag(TargetEventFlagType.EventFlag, 60864, ON)",
                             });
@@ -1484,6 +1684,10 @@ namespace RandomizerCommon
                 }
 
                 emevd.Events.AddRange(newEvents);
+                if (newInits.Count > 0)
+                {
+                    emevd.Events[0].Instructions.AddRange(newInits);
+                }
             }
 
             // Now ESDs. AST should make this a lot simpler than the Sekiro case
@@ -1559,14 +1763,14 @@ namespace RandomizerCommon
                             AST.Expr configExpr;
                             if (shardItems.TryGetValue(gate, out MultiItem multiItem))
                             {
+                                // Slightly cleaner shard condition can be used in ESD
                                 configExpr = esdFunction("f47", new() { 3, itemId, (int)ESDEdits.ComparisonType.GreaterOrEqual, multiItem.ReqCount, 0 });
                                 processedGates.Add(gate);
                             }
-                            else if (getGateFlag(gate, out int gateFlag))
+                            else
                             {
-                                configExpr = esdFunction("f15", new List<int> { gateFlag });
+                                configExpr = esdFunction("f15", new List<int> { getGateFlag(gate) });
                             }
-                            else throw new Exception($"Internal error: No flag for enabled logic gate {gate}");
                             if (!check)
                             {
                                 configExpr = AST.NegateCond(configExpr);
@@ -1677,8 +1881,8 @@ namespace RandomizerCommon
                 }
                 if (logicGate.ObjAct)
                 {
-                    if (!getGateFlag(gate, out int flag)) throw new Exception($"Internal error: No flag for enabled logic gate {gate}");
                     if (!gateItems.TryGetValue(gate, out ItemKey key)) throw new Exception($"Internal error: logic gate {gate} must be an item to edit locks");
+                    int flag = getGateFlag(gate);
                     // It's not the most efficient thing to go through ObjAct n times but better to be sure the edit worked
                     int edits = 0;
                     foreach (PARAM.Row row in game.Params["ObjActParam"].Rows)
@@ -1713,8 +1917,9 @@ namespace RandomizerCommon
 #if DEBUG
                         if (opt["alwaysblock"]) continue;
 #endif
-                        if (getGateFlag(gate, out int flag))
+                        if (logicGate.Cond != "none")
                         {
+                            int flag = getGateFlag(gate);
                             string eventMap = mapEdits.GetEventMap(parts[0], obj.Name);
                             if (!game.Emevds.TryGetValue(eventMap, out EMEVD emevd)) throw new Exception($"Event script {eventMap} is not usable for gate {gate}");
                             events.AddSimpleEvent(
@@ -1727,16 +1932,13 @@ namespace RandomizerCommon
                                 },
                                 EMEVD.Event.RestBehaviorType.Restart);
                         }
-                        else if (logicGate.Cond != "none")
-                        {
-                            throw new Exception($"Internal error: No flag for enabled logic gate {gate} with cond {logicGate.Cond}");
-                        }
                     }
                 }
                 // Additional edits
                 if (gate == "dragonbarrow")
                 {
-                    if (!getGateFlag(gate, out int flag)) throw new Exception($"Internal error: No flag for enabled logic gate {gate}");
+                    // TODO: This will need to incorporate item
+                    int flag = getGateFlag(gate);
                     MSBE msb = game.EldenMaps["m60_50_39_00"];
                     MSBE.Region.MountJump jump = msb.Regions.MountJumps.FirstOrDefault();
                     MSBE.Region.MountJumpFall jumpFall = msb.Regions.MountJumpFalls.FirstOrDefault();
@@ -1754,10 +1956,11 @@ namespace RandomizerCommon
             }
 
             // These events are lazily added from various calls to getGateFlag
-            foreach (EMEVD.Event checkEvent in gateCheckEvents.OrderBy(e => e.ID))
-            {
-                AddSimpleEventAndInit(game.Emevds["common"], checkEvent);
-            }
+            flagSyncEvents.Sort((a, b) => a.ID.CompareTo(b.ID));
+            game.Emevds["common"].Events.AddRange(flagSyncEvents);
+            // Add instructions to the start to make sure flags are updated before any usages of them
+            game.Emevds["common"].Events[0].Instructions.InsertRange(
+                0, flagSyncEvents.Select(ev => new EMEVD.Instruction(2000, 0, new List<object> { 0, (uint)ev.ID, (uint)0 })));
 
             List<string> missingGates = enabledGates.Except(processedGates).Where(gate => !(gates.TryGetValue(gate, out LogicGate lg) && lg.Cond == "none")).ToList();
             if (missingGates.Count > 0)

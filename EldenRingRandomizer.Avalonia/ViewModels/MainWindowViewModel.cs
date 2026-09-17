@@ -961,6 +961,7 @@ namespace EldenRingRandomizer.ViewModels
             Crashfix = opt["crashfix"];
             Helper = opt["helper"];
             Uxm = opt["uxm"];
+            Hideseed = Hideseed || opt["hideseed"];
         }
 
         public RandomizerOptions MakeDefaultOptions()
@@ -1074,6 +1075,7 @@ namespace EldenRingRandomizer.ViewModels
             opt["crashfix"] = Crashfix;
             opt["helper"] = Helper;
             opt["uxm"] = Uxm;
+            opt["hideseed"] = Hideseed;
             return opt;
         }
 

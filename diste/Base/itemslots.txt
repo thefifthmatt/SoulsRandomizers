@@ -33410,7 +33410,7 @@ Slots:
   - By Rabbath's Rise (Marker) - 22.07 away, 9.61 o'clock, 43.16 height offset
   Text: In a chest in Rabbath's Rise, accessible by unsealing the spiritspring outside or by dropping down from Shaman Village
   Comment: Assume springseals does not affect logic (TODO special area)
-  Area: hinterland
+  Area: scadualtus_rabbath
   FullArea: scadualtus scadualtus_miyr
   Tags: chest rise weapon
 - Key: '615147,0:2051477010::'

@@ -56,6 +56,7 @@ namespace RandomizerCommon
 
             // Added after loading locations
             public ItemKey Key { get; set; }
+            public ItemKey LocalKey { get; set; }
         }
 
         public enum ExternalRarity
