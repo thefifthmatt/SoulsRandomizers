@@ -2509,6 +2509,8 @@ namespace RandomizerCommon
 
         public class NewLocation
         {
+            // Not used except for display/validation purposes
+            public string Key { get; set; }
             public string Map { get; set; }
             // Entity id, or part name if necessary
             public string Location { get; set; }

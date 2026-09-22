@@ -3308,6 +3308,7 @@ NewItems:
   Switch: springsanity
   BaseID: 7830500
   NewLocation:
+    Key: '614942,0:1032507000::'
     Map: m61_49_42_00
     Location: 2049421600
     Flag: 1032507000
@@ -3317,6 +3318,7 @@ NewItems:
   Switch: springsanity
   BaseID: 7830501
   NewLocation:
+    Key: '614944,0:1032507001::'
     Map: m61_49_44_00
     Location: 2049441600
     Flag: 1032507001
@@ -3328,6 +3330,7 @@ NewItems:
   Switch: springsanity
   BaseID: 7830502
   NewLocation:
+    Key: '615147,0:1032507002::'
     Map: m61_51_47_00
     Location: 2051471600
     Flag: 1032507002
@@ -3339,6 +3342,7 @@ NewItems:
   Switch: springsanity
   BaseID: 7830503
   NewLocation:
+    Key: '614646,0:1032507003::'
     Map: m61_46_46_00
     Location: 2046461500
     Flag: 1032507003
@@ -3350,6 +3354,7 @@ NewItems:
   Switch: springsanity
   BaseID: 7830504
   NewLocation:
+    Key: '614446,0:1032507004::'
     Map: m61_44_46_00
     Location: 2044461500
     Flag: 1032507004
@@ -4053,6 +4058,7 @@ DefaultPreset:
   - Name: Gaol Upper Level Key
     ID: goods:2008005
     Switch: '!gaolkeys'
+  NorandomLocations: []
   RemoveItems:
   - Name: Furlcalling Finger Remedy
     ID: goods:150
@@ -4251,6 +4257,35 @@ DefaultPreset:
     - Tag: nodlc
       SwitchOn: dlc
       SwitchOff: '!dlc'
+  PremiumGroups:
+  - Type: PremiumShop
+    Locations:
+    - Tag: bosssoulshop
+    - Tag: dragonshop
+    Items:
+    - Group: accessories
+    - Group: weapons
+    - Group: gems
+    - Group: crystaltears
+    - Group: sorceries
+    - Group: incantations
+    - Name: Ancient Dragon Smithing Stone
+      ID: goods:10140
+    - Name: Somber Ancient Dragon Smithing Stone
+      ID: goods:10168
+  - Type: SorceryShop
+    Switch: spellshops
+    Locations:
+    - Tag: sorceryshop
+    Items:
+    - Group: sorceries
+  - Type: MiracleShop
+    Switch: spellshops
+    Locations:
+    - Tag: incantationshop
+    Items:
+    - Group: incantations
+  CustomSilos: []
   LocationGroups:
   - Requires:
     - Tag: racemode
@@ -4289,35 +4324,8 @@ DefaultPreset:
       Switch: nocaves
     - Tag: night
       Switch: display
-  PremiumGroups:
-  - Type: PremiumShop
-    Locations:
-    - Tag: bosssoulshop
-    - Tag: dragonshop
-    Items:
-    - Group: accessories
-    - Group: weapons
-    - Group: gems
-    - Group: crystaltears
-    - Group: sorceries
-    - Group: incantations
-    - Name: Ancient Dragon Smithing Stone
-      ID: goods:10140
-    - Name: Somber Ancient Dragon Smithing Stone
-      ID: goods:10168
-  - Type: SorceryShop
-    Switch: spellshops
-    Locations:
-    - Tag: sorceryshop
-    Items:
-    - Group: sorceries
-  - Type: MiracleShop
-    Switch: spellshops
-    Locations:
-    - Tag: incantationshop
-    Items:
-    - Group: incantations
-  Version: 1
+  ItemShards: []
+  Version: 2
 ItemExcludes:
 - ExcludeTags: missable norandom nokey end
   Includes: keyitems
