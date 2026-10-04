@@ -681,9 +681,11 @@ namespace EldenRingRandomizer.ViewModels
                 });
             // Make the relationship between these pairs more obvious. This could also be done as a style rule.
             // Other things are disabled in the UI without unchecking the option. In all cases, randomizer *should* always check for first before checking the second.
-            this.WhenAnyValue(x => x.Markareas, markareas => !(bool)markareas)
+            this.WhenAnyValue(x => x.Markareas)
+                .Where(markareas => !markareas)
                 .Subscribe(_ => Markitems = false);
-            this.WhenAnyValue(x => x.Fog, fog => !(bool)fog)
+            this.WhenAnyValue(x => x.Fog)
+                .Where(fog => !fog)
                 .Subscribe(_ => Crawl = false);
             // Labels
             this.WhenAnyValue(x => x.Bias).CombineLatest(langChange).Subscribe(_ => UpdateBiasText());
