@@ -58,7 +58,7 @@ namespace RandomizerCommon
             // -- These are only used for filtering, not by templates
             // Space-separated list of gates. If any are enabled, run the template.
             public string Gates { get; set; }
-            // Edit made based on in-scope content, currently just dlc
+            // Edit made based on in-scope content, currently dlc, local, external (could be a nullable bool as well)
             public string Content { get; set; }
             // Map from to param name to arg value (integer width only)
             public Dictionary<string, long> Args { get; set; }
@@ -101,9 +101,13 @@ namespace RandomizerCommon
         public class DynamicEdit
         {
             public List<string> BeforeCmds { get; set; }
-            // Lowest free condition group to use for filter conditions (having item or misc gate condition)
+            // Condition group to use for filter conditions (having item or misc gate condition)
             public int FilterCond { get; set; }
-            // For a new item location, adds a condition for the flag associated with it
+            // Adds instruction showing popup with 'needs item' message for BlockArea
+            // With 'basic', just adds 1 instructions for the popup
+            // With 'restart', requires FilterCond to be set and restarts if cond false.
+            public string FilterMessage { get; set; }
+            // For a new item location, adds a condition for the flag associated with it. Cannot be used with FilterCond (why?)
             public int ItemLocCond { get; set; }
             // Gives the given item, 'gate' for gate item
             public string GiveItem { get; set; }
@@ -111,6 +115,8 @@ namespace RandomizerCommon
             public string Before { get; set; }
             public string After { get; set; }
             public string Replace { get; set; }
+            // Alternative to FilterCond to use as a base
+            public int CondBase { get; set; }
         }
 
         public class LogicFlag
@@ -126,15 +132,23 @@ namespace RandomizerCommon
         {
             // Item or gate name
             public string Name { get; set; }
+            // TODO: Allow this as key
+            public string BlockArea { get; set; }
             public string Comment { get; set; }
-            // For gate, preexisting flag to use or other custom value
-            // int is flag, 'none' means always block, and 'custom' is resolved in code based on options
-            public string Cond { get; set; }
-            // For item, expect to find it in ObjAct and change to flag edit
-            public bool ObjAct { get; set; }
-            // List of objects to add
-            // Format is: <map> <model> <base> <x> <y> <z> <y rot> [<x rot> <z rot>]
+            // For any gate, <map> <part> to require a door to have this flag. Could be a list if needed.
+            // Otherwise, 'item' to edit all applicable rows in ObjActParam associated with an item gate
+            public string ObjAct { get; set; }
+            // List of objects to add until gate
+            // <map> <model> <base> <x> <y> <z> <y rot> [<x rot> <z rot>]
+            // wall <overworld map> <x> <y> <z> <y rot> <left dist> <right dist>
             public List<string> Block { get; set; }
+            // List of objects to hide until gate, mainly those allowing parkour or which are 'moved'
+            // Format is: <map> <part>
+            public List<string> Hide { get; set; }
+            // Seal all spiritsprings in this map
+            public string SealMap { get; set; }
+            // Where to add messages so features can be self-tutorializing
+            public List<string> Messages { get; set; }
         }
 
         public class ItemFlagTemplate

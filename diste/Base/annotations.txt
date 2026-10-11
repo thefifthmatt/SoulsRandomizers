@@ -3303,9 +3303,158 @@ NewItems:
   Logic:
   - BlockArea: haligtree_elphael_seal_upper
   - BlockArea: haligtree_elphael_seal_lower
+- Name: Weeping Lock
+  Comment: Locks. Leave space for individual imp seal keys I guess
+  Switch: regionlock
+  BaseID: 7830300
+  Logic:
+  - BlockArea: peninsula
+- Name: Stormveil Lock
+  Switch: regionlock stormveillock
+  BaseID: 7830301
+  Logic:
+  - BlockArea: stormveil_start
+  - BlockArea: stormveil_throne
+- Name: Liurnia Lock
+  Switch: regionlock
+  BaseID: 7830302
+  Logic:
+  - BlockArea: liurnia
+- Name: Siofra Lock
+  Switch: regionlock
+  BaseID: 7830303
+  Logic:
+  - BlockArea: siofrabank_prenokron
+  - BlockArea: siofra
+- Name: Ainsel Lock
+  Switch: regionlock
+  BaseID: 7830304
+  Logic:
+  - BlockArea: ainsel_start
+  - BlockArea: ainsel
+- Name: Deeproot Lock
+  Switch: regionlock
+  BaseID: 7830305
+  Logic:
+  - BlockArea: deeproot_start
+  - BlockArea: deeproot
+- Name: Caelid Lock
+  Switch: regionlock
+  BaseID: 7830306
+  Logic:
+  - BlockArea: caelid
+  - BlockArea: caelid_greatjar
+  - BlockArea: caelid_selliatunnel
+  - BlockArea: dragonbarrow
+- Name: Mt. Gelmir Lock
+  Comment: TODO where is this exactly? Probably doesn't include Volcano Manor exit
+  Switch: regionlock
+  BaseID: 7830307
+  Logic:
+  - BlockArea: gelmir
+- Name: Volcano Lock
+  Switch: regionlock
+  BaseID: 7830308
+  Logic:
+  - BlockArea: volcano
+  - BlockArea: volcano_town
+- Name: Sewer Lock
+  Switch: regionlock
+  BaseID: 7830309
+  Logic:
+  - BlockArea: sewer
+  - BlockArea: sewer_ashen
+- Name: Mohgwyn Lock
+  Switch: regionlock
+  BaseID: 7830310
+  Logic:
+  - BlockArea: mohgwyn
+- Name: Farum Azula Lock
+  Switch: regionlock
+  BaseID: 7830311
+  Logic:
+  - BlockArea: farumazula_prestart
+- Name: Ashen Lock
+  Switch: regionlock
+  BaseID: 7830312
+  Logic:
+  - BlockArea: leyndell2
+  - BlockArea: leyndell2_pretower
+- Name: Haligtree Lock
+  Switch: regionlock
+  BaseID: 7830313
+  Logic:
+  - BlockArea: haligtree
+- Name: Gravesite Lock
+  Switch: regionlock
+  Area: mohgwyn
+  BaseID: 7830350
+  Logic:
+  - BlockArea: gravesite
+- Name: Belurat Lock
+  Comment: Doesn't try to prevent Enir-Ilim dropdown currently, via rise and via swamp
+  Switch: regionlock dlc
+  BaseID: 7830351
+  Logic:
+  - BlockArea: belurat
+  - BlockArea: belurat_enirilim
+- Name: Ensis & Scadu Altus Lock
+  Switch: regionlock dlc
+  BaseID: 7830352
+  Logic:
+  - BlockArea: ensis
+  - BlockArea: scadualtus
+- Name: Ellac Lock
+  Switch: regionlock dlc
+  BaseID: 7830353
+  Logic:
+  - BlockArea: ellac
+- Name: Cerulean & Charo Lock
+  Switch: regionlock dlc
+  BaseID: 7830354
+  Logic:
+  - BlockArea: charo
+  - BlockArea: cerulean
+- Name: Stone Coffin Lock
+  Switch: regionlock dlc
+  BaseID: 7830355
+  Logic:
+  - BlockArea: fissure
+- Name: Jagged Peak Lock
+  Switch: regionlock dlc
+  BaseID: 7830356
+  Logic:
+  - BlockArea: jaggedpeak_foot
+- Name: Rauh Base Lock
+  Switch: regionlock dlc
+  BaseID: 7830357
+  Logic:
+  - BlockArea: rauhbase
+- Name: Shadow Keep Lock
+  Switch: regionlock dlc
+  BaseID: 7830358
+  Logic:
+  - BlockArea: shadowkeep_boss
+  - BlockArea: shadowkeep_church
+- Name: Recluses' Lock
+  Switch: regionlock dlc
+  BaseID: 7830359
+  Logic:
+  - BlockArea: scadualtus_recluse
+- Name: Abyssal Lock
+  Switch: regionlock dlc
+  BaseID: 7830360
+  Logic:
+  - BlockArea: abyssal
+- Name: Ancient Ruins Lock
+  Comment: rauhruins_limited to block Imbued Sword Key too
+  Switch: regionlock dlc
+  BaseID: 7830361
+  Logic:
+  - BlockArea: rauhruins_east
 - Name: Fort of Reprimand Spiritspring Stone
   Comment: Does not impact logic as Ensis is assumed as main path, and Scadu Altus Lock covers the gate as well
-  Switch: springsanity
+  Switch: springsanity dlc
   BaseID: 7830500
   NewLocation:
     Key: '614942,0:1032507000::'
@@ -3315,7 +3464,7 @@ NewItems:
     Text: Breaking the spiritspring seal from Gravesite Plain to Scadu Altus
     Area: gravesite
 - Name: Scaduview Cross Spiritspring Stone
-  Switch: springsanity
+  Switch: springsanity dlc
   BaseID: 7830501
   NewLocation:
     Key: '614944,0:1032507001::'
@@ -3327,7 +3476,7 @@ NewItems:
   Logic:
   - BlockArea: scadualtus_high
 - Name: Rabbath's Rise Spiritspring Stone
-  Switch: springsanity
+  Switch: springsanity dlc
   BaseID: 7830502
   NewLocation:
     Key: '615147,0:1032507002::'
@@ -3339,7 +3488,7 @@ NewItems:
   Logic:
   - BlockArea: scadualtus_rabbath
 - Name: Rauh Base Spiritspring Stone
-  Switch: springsanity
+  Switch: springsanity dlc
   BaseID: 7830503
   NewLocation:
     Key: '614646,0:1032507003::'
@@ -3351,7 +3500,7 @@ NewItems:
   Logic:
   - BlockArea: rauhbase_high
 - Name: Rauh Ruins Spiritspring Stone
-  Switch: springsanity
+  Switch: springsanity dlc
   BaseID: 7830504
   NewLocation:
     Key: '614446,0:1032507004::'

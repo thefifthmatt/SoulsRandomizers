@@ -41,7 +41,7 @@
                 </i:BehaviorCollectionTemplate>
             </Setter>
         </Style>
-        <Style Selector="StackPanel.splat > :is(Control)[IsVisible=true]:not(:nth-child(1))">
+        <Style Selector="StackPanel.topsplat > :is(Control)[IsVisible=true]:not(:nth-child(1))">
             <Setter Property="Margin" Value="0,10,0,0" />
         </Style>
     </UserControl.Styles>
@@ -85,7 +85,7 @@
             </TreeView.ItemTemplate>
         </TreeView>
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="10,5" DataContext="{Binding SelectedItem}" IsVisible="{Binding ., Converter={x:Static ObjectConverters.IsNotNull}}" x:Name="Panel" Classes="splat">
+        <StackPanel Margin="10,5" DataContext="{Binding SelectedItem}" IsVisible="{Binding ., Converter={x:Static ObjectConverters.IsNotNull}}" x:Name="Panel" Classes="topsplat">
             <WrapPanel>
                 <loc:Message From="{Binding NameText}" FontSize="18" IsVisible="{Binding !IsCustom}" Classes.struckout="{Binding IsDisabled}" />
                 <!-- Undo must be disabled because there's no way of resetting it when SelectedItem changes -->
@@ -126,12 +126,12 @@
                     <loc:Message Key="ItemPreset_itemSiloAdd" Text="Add custom item silo" />
                 </Button>
             </ContentControl>
-            <StackPanel IsVisible="{Binding ExplainLabel, Converter={x:Static ObjectConverters.IsNotNull}}" Classes="splat">
+            <StackPanel IsVisible="{Binding ExplainLabel, Converter={x:Static ObjectConverters.IsNotNull}}" Classes="topsplat">
                 <loc:Message From="{Binding ExplainLabel}" />
                 <Separator />
             </StackPanel>
             <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ItemPanelViewModel+TabType.Overview}}">
-                <StackPanel DataContext="{Binding Preset}" Classes="splat">
+                <StackPanel DataContext="{Binding Preset}" Classes="topsplat">
                     <Button Command="{Binding ResetCommand}" HorizontalAlignment="Left">
                         <loc:Message Key="ItemPreset_reset" Text="Reset custom placement settings" />
                     </Button>

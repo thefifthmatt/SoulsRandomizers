@@ -20,17 +20,24 @@ namespace RandomizerCommon
 {
     public class EnemyRandomizer
     {
-        private GameData game;
-        private Events events;
-        private EventConfig eventConfig;
-        private MergeModManifest merge;
+        private readonly GameData game;
+        private readonly Events events;
+        private readonly EventConfig eventConfig;
+        private readonly MergeModManifest merge;
+        private readonly ExternalItemPreset externalPreset;
 
-        public EnemyRandomizer(GameData game, Events events, EventConfig eventConfig, MergeModManifest merge = null)
+        public EnemyRandomizer(
+            GameData game,
+            Events events,
+            EventConfig eventConfig,
+            MergeModManifest merge = null,
+            ExternalItemPreset externalPreset = null)
         {
             this.game = game;
             this.events = events;
             this.eventConfig = eventConfig;
             this.merge = merge;
+            this.externalPreset = externalPreset;
         }
 
         private int tmpBase = 11315000;
@@ -321,6 +328,11 @@ namespace RandomizerCommon
                 preset = null;
             }
 #endif
+            // If locations are uniquely globally forced, use a preset for it to handle all cases consistently
+            if (externalPreset?.ForceBossTargets != null)
+            {
+                preset = EnemyPreset.MakeClassBasedDefault(ann);
+            }
             if (preset != null)
             {
                 preset.ProcessParents(ann);
@@ -1388,13 +1400,33 @@ namespace RandomizerCommon
                     }
                 }
             }
+            HashSet<uint> forceGlobalUnique = new();
             if (preset != null)
             {
+                // First, preprocessing to handle unique bosses placed externally
+                if (externalPreset?.ForceBossTargets != null)
+                {
+                    foreach ((uint target, uint source) in externalPreset.ForceBossTargets)
+                    {
+                        forceMap[target] = source;
+                        forceGlobalUnique.Add(source);
+                        preset.RemoveSourceIDs.Add(source);
+                    }
+                }
                 // Specific enemies in specific locations
                 Random forcemapRandom = new Random((int)seed);
-                foreach (KeyValuePair<uint, List<uint>> transfer in preset.EnemyIDs.OrderBy(e => e.Key))
+                foreach ((uint target, List<uint> baseSources) in preset.EnemyIDs.OrderBy(e => e.Key))
                 {
-                    forceMap[transfer.Key] = transfer.Value.Count == 1 ? transfer.Value[0] : Choice(forcemapRandom, transfer.Value);
+                    List<uint> sources = baseSources;
+                    if (forceGlobalUnique.Count > 0)
+                    {
+                        sources.RemoveAll(i => forceGlobalUnique.Contains(i));
+                        if (sources.Count == 0 || forceMap.ContainsKey(target))
+                        {
+                            throw new Exception($"Cannot manually place [{string.Join("; ", baseSources.Select(enemies.Name))}] -> [{enemies.Name(target)}] because it is forced by item placement");
+                        }
+                    }
+                    forceMap[target] = sources.Count == 1 ? sources[0] : Choice(forcemapRandom, sources);
                 }
                 if (anyDupeEnabled)
                 {
@@ -1471,15 +1503,6 @@ namespace RandomizerCommon
             {
                 AddMulti(reverseForceMap, transfer.Value, transfer.Key);
             }
-            /*SortedDictionary<EnemySiloType, EnemySilo> silos = new();
-            IEnumerable<KeyValuePair<EnemySiloType, EnemySilo>> getSilos(EnemyClass type)
-            {
-                return silos.Where(e => e.Key.Type == type);
-            }
-            IEnumerable<KeyValuePair<uint, uint>> getSiloMappings(EnemyClass type)
-            {
-                return silos.Where(e => e.Key.Type == type).SelectMany(e => e.Value.Mapping);
-            }*/
 
             Random reducePassiveRandom = new Random(seed);
             Random forceSwapRandom = new Random(seed);
@@ -1985,7 +2008,9 @@ namespace RandomizerCommon
                 return true;
             }
             // Assume forceMap enemies are already placed and shouldn't be placed again.
-            Dictionary<uint, bool> singletons = infos.Values.Where(i => i.HasTag("singleton")).ToDictionary(i => i.ID, i => reverseForceMap.ContainsKey(i.ID));
+            Dictionary<uint, bool> singletons = infos.Values
+                .Where(i => i.HasTag("singleton") || forceGlobalUnique.Contains(i.ID))
+                .ToDictionary(i => i.ID, i => reverseForceMap.ContainsKey(i.ID));
 
             // TODO: Order this from most important to least important classes, mainly for the remaining singleton cases
             foreach ((EnemySiloType siloInfo, EnemySilo silo) in perm.Silos)

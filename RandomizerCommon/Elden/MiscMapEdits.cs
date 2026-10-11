@@ -14,7 +14,8 @@ namespace RandomizerCommon
         private readonly GameData game;
         // This may cause collisions if multiple instances of this are created,
         // but can be avoided by adding all new instances of a particular model in one place.
-        private int partIndex = 4000;
+        // Was previously 4000 until m61_47_44_00 AEG099_029_4066 caused issues
+        private int partIndex = 18000;
 
         public MiscMapEdits(GameData game)
         {
@@ -140,6 +141,22 @@ namespace RandomizerCommon
             game.EldenMaps[map].Parts.Assets.Add(target);
             game.WriteMSBs.Add(map);
             return target;
+        }
+
+        private MSBE.Region.Message baseMessage;
+        public MSBE.Region.Message AddMessage(string targetMap)
+        {
+            if (baseMessage == null)
+            {
+                // For messages, copy from Stranded Graveyard, a lot of fields are supposed to be -1
+                // It's not too bad to make from scratch if needed
+                baseMessage = game.EldenMaps["m18_00_00_00"].Regions.Messages.FirstOrDefault();
+                if (baseMessage == null) throw new Exception($"Can't move items to dungeons, missing Message region in m18");
+            }
+            MSBE.Region.Message message = (MSBE.Region.Message)baseMessage.DeepCopy();
+            game.EldenMaps[targetMap].Regions.Messages.Add(message);
+            game.WriteMSBs.Add(targetMap);
+            return message;
         }
 
         public void AddOverworldMountJump(string map, Vector3 pos, float jumpHeight, float fallRadius, float fallHeight, Vector3? jumpRot = null)

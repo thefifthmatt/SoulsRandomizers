@@ -13,7 +13,9 @@ namespace RandomizerCommon
         // -- Initial state before writing the permutation
         // Flags to items for Elden Ring, for flags tracked in event config
         public Dictionary<int, ItemKey> TrackedFlagItems = new();
-        // Items to track all slots for, currently just for hints
+        // Mapping from slot key to old permanent event flag in Sekiro and Elden Ring
+        public Dictionary<ItemLocKey, int> PermanentSlotFlags = new();
+        // Items to track all slots for, currently for hints and external permanent item placements
         public HashSet<ItemKey> TrackedSlotItems = new();
         // Gesture item in DS3 and Elden Ring
         public ItemKey GestureItem { get; set; }

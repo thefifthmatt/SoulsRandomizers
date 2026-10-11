@@ -29,6 +29,14 @@ namespace RandomizerCommon
             "Error: Tarnished Pack was enabled in randomizer but your game doesn't have it.\nEnable it on Steam or else uncheck it in the DLC tab.",
             "GameMenu_dlcMissingTarnished");
         [Localize]
+        private static readonly Text archipelagoClientMissing = new Text(
+            "Error: er_archipelago.dll is not detected.\nIt must be used for Archipelago or else item pickups won't work.",
+            "GameMenu_archipelagoClientMissing");
+        [Localize]
+        private static readonly Text archipelagoClientError = new Text(
+            "Error: er_archipelago.dll is not currently processing items.\nFix errors in the console before continuing.",
+            "GameMenu_archipelagoClientError");
+        [Localize]
         private static readonly Text springsealIn = new Text(
             "A spiritspring has been unsealed in {0}",
             "GameMenu_springsealIn");
@@ -64,6 +72,9 @@ namespace RandomizerCommon
             }
             PARAM.Row presenceSp = GameEditor.AddRow(game.Params["SpEffectParam"], 81000001, baseSp);
             presenceSp["effectEndurance"].Value = 3f;
+            presenceSp = GameEditor.AddRow(game.Params["SpEffectParam"], 81000002, baseSp);
+            presenceSp["effectEndurance"].Value = 3f;
+            // presenceSp["vfxId"].Value = 51901;
 
             HashSet<(int, int)> deleteCommands = new HashSet<(int, int)>
             {
@@ -601,6 +612,12 @@ namespace RandomizerCommon
             messages.SetFMGEntry(
                 game, FMGCategory.Menu, "EventTextForMap",
                 RuntimeParamChecker.TarnishedMessageId, dlcMissingTarnished);
+            messages.SetFMGEntry(
+                game, FMGCategory.Menu, "EventTextForMap",
+                RuntimeParamChecker.ClientMissingMessageId, archipelagoClientMissing);
+            messages.SetFMGEntry(
+                game, FMGCategory.Menu, "EventTextForMap",
+                RuntimeParamChecker.ClientErrorMessageId, archipelagoClientError);
             // Just english for now
             // Failed to save game.\nSave data is corrupted.\n\nSelect "OK" to try again.
             game.MenuFMGs["GR_System_Message_win64"][401106] = "Failed to save game. Save data is corrupted.\n\nIf there was a recent Elden Ring update, you must first launch\nElden Ring WITHOUT randomizer to migrate your save data.\n\nAlternatively, use RandomizerCrashFix.dll to patch out this check.";
@@ -879,6 +896,21 @@ namespace RandomizerCommon
                         {
                             "EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 6953)",
                             $"DisplayGenericDialog({RuntimeParamChecker.TarnishedMessageId}, PromptType.OKCANCEL, NumberofOptions.NoButtons, 0, 5)",
+                        });
+                    }
+                    if (opt["archipelago"])
+                    {
+                        events.AddSimpleEvent(emevd, 19003122, new[]{
+                            "WaitFixedTimeSeconds(1)",
+                            "SkipIfCharacterHasSpEffect(3, 10000, 81000001, true, ComparisonType.Equal, 1)",
+                            $"DisplayGenericDialog({RuntimeParamChecker.ClientMissingMessageId}, PromptType.OKCANCEL, NumberofOptions.NoButtons, 0, 5)",
+                            "WaitFixedTimeSeconds(19)",
+                            "EndUnconditionally(EventEndType.Restart)",
+                            "WaitFixedTimeSeconds(9)",
+                            "SkipIfCharacterHasSpEffect(1, 10000, 81000002, true, ComparisonType.Equal, 1)",
+                            $"DisplayGenericDialog({RuntimeParamChecker.ClientErrorMessageId}, PromptType.OKCANCEL, NumberofOptions.NoButtons, 0, 5)",
+                            "WaitFixedTimeSeconds(15)",
+                            "EndUnconditionally(EventEndType.Restart)",
                         });
                     }
 

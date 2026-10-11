@@ -31,7 +31,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YamlDotNet.Serialization;
-using static RandomizerCommon.ItemPreset;
 using static RandomizerCommon.Messages;
 using static SoulsIds.GameSpec;
 using Application = Avalonia.Application;
@@ -47,12 +46,14 @@ namespace EldenRingRandomizer.ViewModels
 
         public static readonly string HelperConfigPath = @"dll\RandomizerHelper_config.ini";
         public static readonly string HelperLogPath = @"dll\RandomizerHelper_log.txt";
+        public static readonly string Me3LauncherPath = @"diste\me3\me3.exe";
 
         private readonly Messages messages;
         private readonly ModRunner runner;
         private readonly string helperPath;
         private readonly string crashfixPath;
-        
+        private readonly string? archPath;
+
         [Reactive]
         private RandomizerOptions _options = new RandomizerOptions(FromGame.ER);
         // Only updated when randomizer is run
@@ -137,7 +138,21 @@ namespace EldenRingRandomizer.ViewModels
         private bool _mats;
         [Reactive]
         private bool _copydrops;
-        
+
+        // Currently Archipelago-only options, to be added to normal runs at some point
+        [Reactive]
+        private bool _stoneswordregion;
+        [Reactive]
+        private bool _stoneswordall;
+        [Reactive]
+        private bool _regionlock;
+        [Reactive]
+        private bool _springsanity;
+        [Reactive]
+        private bool _traps;
+        [Reactive]
+        private bool _invertautohunt;
+
         [Reactive]
         private bool _customitem;
 
@@ -317,9 +332,28 @@ namespace EldenRingRandomizer.ViewModels
         private bool _crashfix;
         [Reactive]
         private bool _helper;
-        
+
+        [Reactive]
+        private bool _me2_default;
+        [Reactive]
+        private bool _me3;
         [Reactive]
         private bool _uxm;
+        [Reactive]
+        private bool _me3Local;
+
+        // -- Archipelago
+        [Reactive]
+        private bool _archipelago;
+        private IObservable<bool> archipelagoDisabled;
+        [Reactive]
+        private bool _archipelagoOnly;
+        [Reactive]
+        private string? _archipelagoDesc;
+        [Reactive]
+        private ArchipelagoData? _archipelagoData;
+        [Reactive]
+        private LoadArchipelagoViewModel? _lastArchipelagoViewModel;
 
         // Preset state
         [Reactive]
@@ -421,6 +455,7 @@ namespace EldenRingRandomizer.ViewModels
         public Interaction<MergeModViewModel, string?> ShowMergeModDialog { get; } = new();
         public Interaction<DllViewModel, ImmutableList<string>?> ShowDllDialog { get; } = new();
         public Interaction<EnemyPresetViewModel, EnemyPreset?> ShowEnemyPreset { get; } = new();
+        public Interaction<LoadArchipelagoViewModel, ArchipelagoData?> ShowLoadArchipelago { get; } = new();
         public Interaction<Unit, Unit?> ShowHelperWindow { get; } = new();
 
         private readonly string DefaultOpts = "allmaps bossbgm changestats crashfix dlc dlcblessing dlckeysilo earlylegacy editnames enemy item mats phasehp raceloc_health raceloc_scadu raceloc_shops racemode_health racemode_key racemode_scadu racemode_upgrades scale spellshops weaponprogression bias:20";
@@ -428,15 +463,30 @@ namespace EldenRingRandomizer.ViewModels
         public MainWindowViewModel()
         {
             messages = Messages.GetInstance();
-            runner = new ModRunner(FromGame.ER, "config_eldenringrandomizer.toml", @"diste\ModEngine\modengine2_launcher.exe");
             helperPath = new FileInfo(@"dll\RandomizerHelper.dll").FullName;
             crashfixPath = new FileInfo(@"dll\RandomizerCrashFix.dll").FullName;
+            // Not present in all randomizer versions currently
+            FileInfo archInfo = new FileInfo(@"dll\er_archipelago.dll");
+            archPath = archInfo.Exists ? archInfo.FullName : null;
+
             string optStr = RandomizerOptions.ReadOptions();
             if (string.IsNullOrEmpty(optStr))
             {
                 optStr = DefaultOpts;
             }
             SetOptionsFromString(optStr);
+#if ARCHIPELAGO_ONLY
+            Archipelago = true;
+            ArchipelagoOnly = true;
+            Title = $"Elden Ring Archipelago Randomizer v{Randomizer.EldenApVersion}";
+#endif
+            string? me3Launcher = File.Exists(Me3LauncherPath) ? Me3LauncherPath : null;
+            Me3Local = me3Launcher != null;
+            runner = new ModRunner(
+                FromGame.ER,
+                modengineConfig: "config_eldenringrandomizer.toml", modengineLauncher: @"diste\ModEngine\modengine2_launcher.exe",
+                me3Config: "randomizer-launcher.me3", me3Launcher: me3Launcher, me3: Me3);
+
             string? exeStr = RandomizerOptions.ReadExe();
             if (string.IsNullOrEmpty(exeStr) || !IsValidExe(exeStr))
             {
@@ -455,6 +505,7 @@ namespace EldenRingRandomizer.ViewModels
             // Don't validate if it was valid at some point in the past
             PrevMod = Mod = RandomizerOptions.ReadMod() ?? "";
             launchEnabled = this.WhenAnyValue(x => x.CanLaunch, c => (bool)c);
+            archipelagoDisabled = this.WhenAnyValue(x => x.Archipelago, c => !(bool)c);
             // Language pref was already loaded before app initialization
             string language = messages.GetCurrentLanguageName();
             Languages = new(messages.GetLanguageList().Select(l => new LangOption(l.Item1, l.Item2, language)));
@@ -488,6 +539,12 @@ namespace EldenRingRandomizer.ViewModels
                 this.WhenAnyValue(x => x.Weaponprogression).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Mats).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Copydrops).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Stoneswordregion).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Stoneswordall).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Regionlock).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Springsanity).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Traps).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Invertautohunt).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Customitem).Select(_ => Unit.Default),
                 // Logic
                 this.WhenAnyValue(x => x.Runes_end).Select(_ => Unit.Default),
@@ -569,7 +626,10 @@ namespace EldenRingRandomizer.ViewModels
                 this.WhenAnyValue(x => x.Snowfast).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Crashfix).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Helper).Select(_ => Unit.Default),
-                this.WhenAnyValue(x => x.Uxm).Select(_ => Unit.Default))
+                this.WhenAnyValue(x => x.Me2_default).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Me3).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Uxm).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Archipelago).Select(_ => Unit.Default))
                 .Select(_ => MakeOptions())
                 .Subscribe(opt =>
                 {
@@ -724,7 +784,7 @@ namespace EldenRingRandomizer.ViewModels
                     bool valid = uint.TryParse(Seed2, out uint val) && val != 0;
                     MustRerollSeed2 = RerollSeed2 = !string.IsNullOrWhiteSpace(Seed2) && !valid;
                 });
-            this.WhenAnyValue(x => x.Working, x => x.Item, x => x.Enemy, x => x.RerollSeed, x => x.RerollSeed2, x => x.Seed2).CombineLatest(langChange)
+            this.WhenAnyValue(x => x.Working, x => x.Item, x => x.Enemy, x => x.RerollSeed, x => x.RerollSeed2, x => x.Seed2, x => x.Archipelago).CombineLatest(langChange)
                 .Subscribe(_ => RandomizeText = GetRandomizeButtonText());
             this.WhenAnyValue(x => x.Crashfix, x => x.Helper)
                 .Subscribe(_ =>
@@ -766,8 +826,15 @@ namespace EldenRingRandomizer.ViewModels
                         UpdateCanLaunch();
                     }
                 });
+            this.WhenAnyValue(x => x.Me3)
+                .Subscribe(mod =>
+                {
+                    runner.SetMe3(Me3);
+                    UpdateCanLaunch();
+                });
             // Attempt to GC after randomization. Unfortunately this doesn't actually reclaim any memory.
-            this.WhenAnyValue(x => x.Collect, collect => (bool)collect)
+            this.WhenAnyValue(x => x.Collect)
+                .Where(collect => collect)
                 .Throttle(TimeSpan.FromMilliseconds(100))
                 .Subscribe(_ =>
                 {
@@ -867,6 +934,12 @@ namespace EldenRingRandomizer.ViewModels
             Weaponprogression = opt["weaponprogression"];
             Mats = opt["mats"];
             Copydrops = opt["copydrops"];
+            Stoneswordregion = opt["stoneswordregion"];
+            Stoneswordall = opt["stoneswordall"];
+            Regionlock = opt["regionlock"];
+            Springsanity = opt["springsanity"];
+            Traps = opt["traps"];
+            Invertautohunt = opt["invertautohunt"];
             // This loads the item preset from Customitem subscription above
             Customitem = opt["customitem"];
             // Logic
@@ -960,7 +1033,12 @@ namespace EldenRingRandomizer.ViewModels
             Snowfast = opt["snowfast"];
             Crashfix = opt["crashfix"];
             Helper = opt["helper"];
+            Me3 = opt["me3"];
             Uxm = opt["uxm"];
+#if ARCHIPELAGO
+            Archipelago = opt["archipelago"];
+#endif
+            Me2_default = !opt["me3"] && !opt["uxm"];
             Hideseed = Hideseed || opt["hideseed"];
         }
 
@@ -993,6 +1071,12 @@ namespace EldenRingRandomizer.ViewModels
             opt["weaponprogression"] = Weaponprogression;
             opt["mats"] = Mats;
             opt["copydrops"] = Copydrops;
+            opt["stoneswordregion"] = Stoneswordregion;
+            opt["stoneswordall"] = Stoneswordall;
+            opt["regionlock"] = Regionlock;
+            opt["springsanity"] = Springsanity;
+            opt["traps"] = Traps;
+            opt["invertautohunt"] = Invertautohunt;
             opt["customitem"] = Customitem;
             // Logic
             opt.SetNonDefaultInt(RandomizerOptions.IntOpt.RunesEnd, Runes_end);
@@ -1074,7 +1158,11 @@ namespace EldenRingRandomizer.ViewModels
             opt["snowfast"] = Snowfast;
             opt["crashfix"] = Crashfix;
             opt["helper"] = Helper;
+            opt["me3"] = Me3;
             opt["uxm"] = Uxm;
+#if ARCHIPELAGO
+            opt["archipelago"] = Archipelago;
+#endif
             opt["hideseed"] = Hideseed;
             return opt;
         }
@@ -1515,6 +1603,29 @@ namespace EldenRingRandomizer.ViewModels
             }
             RandomizerOptions rand = OptionsWithSeed();
             RandomizerOptions.SaveOptions(rand);
+
+            // Bunch of Archipelago settings validation. Not sure how this will work in the long term.
+            string? apConfigPath = null;
+            string? savefile = null;
+            if (GetArchipelagoError(out string? archError))
+            {
+                SetError(archError);
+                SetStatus(messages.Get(runErrorGeneric), failure: true);
+                return;
+            }
+            if (ArchipelagoData != null)
+            {
+                // This is where validation could go for changes to options, but trust UI for now
+                apConfigPath = GetArchipelagoConfigPath();
+                if (apConfigPath == null)
+                {
+                    SetError("er_archipelago.dll not found");
+                    SetStatus(messages.Get(runErrorGeneric), failure: true);
+                    return;
+                }
+                savefile = $"ap-{ArchipelagoData.RunID}.sl2";
+            }
+
             Working = true;
             SetError();
             Seed = RunSeed.ToString();
@@ -1557,13 +1668,22 @@ namespace EldenRingRandomizer.ViewModels
                 try
                 {
                     MergedMods mods = MergedMods.FromPath(Mod);
-                    randomizer.Randomize(
-                        rand, FromGame.ER, status => Dispatcher.UIThread.Post(() => SetStatus(status)),
-                        enemyPreset: selectedEnemyPreset, itemPreset: ItemPresetViewModel?.Preset,
-                        messages: messages, gameExe: Exe, modDirs: mods);
+                    randomizer.Randomize(new Randomizer.Input(
+                        rand,
+                        Notify: status => Dispatcher.UIThread.Post(() => SetStatus(status)),
+                        EnemyPreset: selectedEnemyPreset,
+                        ItemPreset: ItemPresetViewModel?.Preset,
+                        ExternalItemPreset: ArchipelagoData?.ExternalPreset,
+                        Messages: messages,
+                        GameExe: Exe,
+                        ModDirs: mods));
+                    if (ArchipelagoData != null && apConfigPath != null)
+                    {
+                        ArchipelagoData.LoadConfig.Update(apConfigPath, Randomizer.EldenApVersion);
+                    }
                     if (useLaunchFile)
                     {
-                        CreateLaunchFile(rand, mods);
+                        CreateLaunchFile(rand, mods, savefile);
                     }
                     return (displayFile, null);
                 }
@@ -1699,6 +1819,10 @@ namespace EldenRingRandomizer.ViewModels
         private static readonly Text randomizeEnemyOnly = new Text(
             "Reroll enemies (same items)",
             "EldenForm_randomizeEnemyOnly");
+        [Localize]
+        private static readonly Text randomizeArchipelago = new Text(
+            "Randomize for Archipelago",
+            "EldenForm_randomizeArchipelago");
 
         private Text GetRandomizeButtonText()
         {
@@ -1707,7 +1831,11 @@ namespace EldenRingRandomizer.ViewModels
             {
                 return runningText;
             }
-            if (Enemy && Item)
+            if (Archipelago)
+            {
+                text = randomizeArchipelago;
+            }
+            else if (Enemy && Item)
             {
                 text = randomizeBoth;
                 if (RerollSeed)
@@ -1773,7 +1901,40 @@ namespace EldenRingRandomizer.ViewModels
         private static readonly Text launchFailed = new Text(
             "Automatic Mod Engine launcher appeared to fail.\n\nMake sure Steam is running. If the game is currently running, close it and wait until it is fully shut down.\n\nCheck Troubleshooting on https://www.nexusmods.com/eldenring/mods/428/ to see when Mod Engine might fail. You may need to try using a manual Mod Engine launcher or Nuxe installation.", "EldenForm_launchFailed");
 
-        private void CreateLaunchFile(RandomizerOptions options, MergedMods mods)
+        private bool GetArchipelagoError([NotNullWhen(true)] out string? error)
+        {
+            error = null;
+            if (Archipelago && ArchipelagoData == null)
+            {
+                error = "Refresh Archipelago data first to run randomizer for Archipelago";
+            }
+#if !ARCHIPELAGO
+            if (Archipelago)
+            {
+                error = "Archipelago randomization is not supported in this randomizer version";
+            }
+#endif
+#if ARCHIPELAGO_ONLY
+            if (!Archipelago)
+            {
+                error = "Only Archipelago randomization is supported in this randomizer version";
+            }
+#endif
+            return error != null;
+        }
+
+        private string? GetArchipelagoConfigPath()
+        {
+            string? dllPath = Dlls.Find(f => Path.GetFileName(f).Equals("er_archipelago.dll", StringComparison.OrdinalIgnoreCase));
+            FileInfo? dllFile = dllPath == null ? null : new FileInfo(dllPath);
+            if (dllFile == null || !dllFile.Exists)
+            {
+                return null;
+            }
+            return Path.Combine(dllFile.Directory!.FullName, "apconfig.json");
+        }
+
+        private void CreateLaunchFile(RandomizerOptions options, MergedMods mods, string? savefile)
         {
             StringWriter writer = new StringWriter();
             RandomizerOptionsFile.Create(Randomizer.EldenVersion, options).Save(writer);
@@ -1783,7 +1944,7 @@ namespace EldenRingRandomizer.ViewModels
                 $"Produced by Elden Ring Randomizer {Randomizer.EldenVersion}",
                 $"<hash>{hash}</hash>",
             };
-            runner.CreateLaunchFile(comments, MiscSetup.GetModEngineOutputDirectory(), mods, Dlls.ToList());
+            runner.CreateLaunchFile(comments, MiscSetup.GetModEngineOutputDirectory(), mods, Dlls.ToList(), savefile);
         }
 
         [ReactiveCommand(CanExecute = nameof(launchEnabled))]
@@ -1831,7 +1992,7 @@ namespace EldenRingRandomizer.ViewModels
             "Zipped {0}", "EldenForm_zipStatusDone");
         private static readonly FilePickerFileType ZipFileType = new("Zip file") { Patterns = ["*.zip"] };
 
-        [ReactiveCommand]
+        [ReactiveCommand(CanExecute = nameof(archipelagoDisabled))]
         public async void Zip()
         {
             // This is a lot of logic but most of it is interactive
@@ -1984,6 +2145,62 @@ namespace EldenRingRandomizer.ViewModels
         }
 #endif
 
+        [ReactiveCommand]
+        public async void LoadArchipelago()
+        {
+            LoadArchipelagoViewModel loadModel = new();
+            string? apConfigPath = GetArchipelagoConfigPath();
+            if (LastArchipelagoViewModel != null)
+            {
+                loadModel.Host = LastArchipelagoViewModel.Host;
+                loadModel.Player = LastArchipelagoViewModel.Player;
+                loadModel.Password = LastArchipelagoViewModel.Password;
+            }
+            else if (apConfigPath != null)
+            {
+                // Best effort
+                // This could also remember the previously used model in the case of repeatedly running into errors
+                try
+                {
+                    ClientArchipelagoConfig config = ClientArchipelagoConfig.Read(apConfigPath);
+                    loadModel.Host = config?.Host ?? "";
+                    loadModel.Player = config?.Player ?? "";
+                    loadModel.Password = config?.Password ?? "";
+                }
+                catch { }
+            }
+            ArchipelagoData data = await ShowLoadArchipelago.Handle(loadModel);
+            LastArchipelagoViewModel = loadModel;
+            if (data == null)
+            {
+                return;
+            }
+            Archipelago = true;
+            ArchipelagoData = data;
+            ArchipelagoDesc = data.ExternalPreset.LogInfo;
+            // Simplified version of ImportOptions
+            RandomizerOptionsFile newOpts = data.Options;
+            SetOptionsFromString(newOpts.Options, true);
+            if (newOpts.HelperConfig != null)
+            {
+                try
+                {
+                    HelperOptions.ImportSettings(HelperConfigPath, newOpts.HelperConfig);
+                }
+                catch (Exception) { }
+            }
+        }
+
+        [ReactiveCommand]
+        public void UnloadArchipelago()
+        {
+#if !ARCHIPELAGO_ONLY
+            Archipelago = false;
+            ArchipelagoData = null;
+            ArchipelagoDesc = null;
+#endif
+        }
+
         private static bool IsValidExe(string path) => File.Exists(path) && Path.GetFileName(path).Equals(ExeName, StringComparison.OrdinalIgnoreCase);
         private static readonly FilePickerFileType ExeType = new("Elden Ring") { Patterns = [ExeName] };
         [ReactiveCommand]
@@ -2042,31 +2259,36 @@ namespace EldenRingRandomizer.ViewModels
         {
             bool helperPresent = Dlls.Any(f => f.Equals(helperPath, StringComparison.OrdinalIgnoreCase));
             bool crashfixPresent = Dlls.Any(f => f.Equals(crashfixPath, StringComparison.OrdinalIgnoreCase));
+            bool archPresent = Dlls.Any(f => f.Equals(archPath, StringComparison.OrdinalIgnoreCase));
             if (dllsAuthoritative)
             {
                 Helper = helperPresent;
                 Crashfix = crashfixPresent;
+                // Don't enable Archipelago just by adding the dll or vice versa (this will later error out).
             }
             else
             {
                 // Option authoritative
                 ImmutableList<string> newDlls = Dlls;
-                if (helperPresent && !Helper)
+                void editDllPath(bool present, bool shouldHave, string path)
                 {
-                    newDlls = newDlls.RemoveAll(f => f.Equals(helperPath, StringComparison.OrdinalIgnoreCase));
+                    if (present && !shouldHave)
+                    {
+                        newDlls = newDlls.RemoveAll(f => f.Equals(path, StringComparison.OrdinalIgnoreCase));
+                    }
+                    else if (!present && shouldHave)
+                    {
+                        newDlls = newDlls.Add(path);
+                    }
                 }
-                else if (!helperPresent && Helper)
+                editDllPath(helperPresent, Helper, helperPath);
+                editDllPath(crashfixPresent, Crashfix, crashfixPath);
+#if ARCHIPELAGO
+                if (archPath != null)
                 {
-                    newDlls = newDlls.Add(helperPath);
+                    editDllPath(archPresent, Archipelago, archPath);
                 }
-                if (crashfixPresent && !Crashfix)
-                {
-                    newDlls = newDlls.RemoveAll(f => f.Equals(crashfixPath, StringComparison.OrdinalIgnoreCase));
-                }
-                else if (!crashfixPresent && Crashfix)
-                {
-                    newDlls = newDlls.Add(crashfixPath);
-                }
+#endif
                 Dlls = newDlls;
             }
         }
@@ -2088,6 +2310,12 @@ namespace EldenRingRandomizer.ViewModels
         }
 
         [ReactiveCommand]
+        public void OpenMe3()
+        {
+            Process.Start(new ProcessStartInfo("https://github.com/garyttierney/me3/releases/latest") { UseShellExecute = true });
+        }
+
+        [ReactiveCommand]
         public void ToggleDarkMode()
         {
             // Why not
@@ -2101,7 +2329,7 @@ namespace EldenRingRandomizer.ViewModels
             }
         }
 
-        [ReactiveCommand]
+        [ReactiveCommand(CanExecute = nameof(archipelagoDisabled))]
         public async void ShowOptions()
         {
             string str = OptionsWithSeed().FullString();
@@ -2128,7 +2356,7 @@ namespace EldenRingRandomizer.ViewModels
             RandomizerOptions.SaveOptions(saved);
         }
 
-        [ReactiveCommand]
+        [ReactiveCommand(CanExecute = nameof(archipelagoDisabled))]
         public async void ResetOptions()
         {
             ButtonResult result = await Modal(MessageBoxManager.GetMessageBoxStandard(
@@ -2238,7 +2466,7 @@ namespace EldenRingRandomizer.ViewModels
         // Probably temporary until this lives in a better place
         private static readonly FilePickerFileType EnemyJsonType = new("Enemy localization files") { Patterns = ["*.enemy.json"] };
 
-        [ReactiveCommand]
+        [ReactiveCommand(CanExecute = nameof(archipelagoDisabled))]
         private async void ExportOptions()
         {
             if (MainWindow()?.StorageProvider is not IStorageProvider storageProvider)
@@ -2286,7 +2514,7 @@ namespace EldenRingRandomizer.ViewModels
         private static readonly Text confirmCreatePreset = new Text(
             "Create preset file?\n{0}", "EldenForm_confirmCreatePreset");
 
-        [ReactiveCommand]
+        [ReactiveCommand(CanExecute = nameof(archipelagoDisabled))]
         private async void ImportOptions()
         {
             if (MainWindow()?.StorageProvider is not IStorageProvider storageProvider)

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.ExternalItemPreset;
 
@@ -88,19 +86,22 @@ namespace RandomizerCommon
                     errors.Add($"No lot/shop data for ambiguous location key from external data: {key} with candidates [{string.Join(", ", candidates)}]\n-> {locName}");
                     continue;
                 }
-                // This is not strictly an issue e.g. if a shop or drop has multiple instances of an item, but handle that only if needed
-                if (mappedKeys.TryGetValue(itemLocKey, out string existDesc))
+                // Multiple items per ItemLocKey is not strictly an issue, but validate as much as possible.
+                // It is mainly possible for new locations derived from existing ones to place more key items there.
+                // TODO: Avoid relying on string parsing if possible and get dupe status from slot data.
+                string baseLocName = loc.BaseDesc ?? loc.Desc;
+                if (mappedKeys.TryGetValue(itemLocKey, out string existDesc) && !(existDesc == baseLocName && existDesc != null))
                 {
                     errors.Add($"Multiple external locations mapped to same key {itemLocKey}:\n-> {existDesc}\n-> {locName}");
                     continue;
                 }
-                mappedKeys[itemLocKey] = locName;
+                mappedKeys[itemLocKey] = baseLocName;
                 mappedLocIds[id] = itemLocKey;
             }
             bool validate = true;
             if (errors.Count > 0 && validate)
             {
-                throw new Exception($"{errors.Count} Archipelago locations could not be mapped to static randomizer locations. See spoiler logs for details.\n\n" + string.Join("\n\n", errors));
+                throw new Exception($"{errors.Count} Archipelago locations could not be mapped to static randomizer locations. See spoiler logs for details.\n" + string.Join("\n\n", errors));
             }
 
             FiniteItemMapping = new();

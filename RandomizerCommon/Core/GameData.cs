@@ -361,11 +361,16 @@ namespace RandomizerCommon
             {
                 // This can get quadratic, but good to check
                 // If the contents are getting overwritten anyway, probably fine not to throw on this.
-                throw new Exception($"Trying to add id {id} in {name} but already exists");
+                throw new Exception($"Trying to add row {id} in {name} but already exists");
             }
             if (oldId >= 0)
             {
-                GameEditor.CopyRow(param[oldId], row);
+                PARAM.Row baseRow = param[oldId];
+                if (baseRow == null)
+                {
+                    throw new Exception($"Could not find {name} {oldId} needed to add row {id}");
+                }
+                GameEditor.CopyRow(baseRow, row);
             }
             return row;
         }
@@ -1711,7 +1716,7 @@ namespace RandomizerCommon
 
         public void AddItemName(ItemKey item, string name)
         {
-            ItemNames[item] = name;
+            ItemNames.Add(item, name);
             AddMulti(RevItemNames, name, item);
         }
 

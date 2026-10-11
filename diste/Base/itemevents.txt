@@ -218,7 +218,7 @@ ItemTalks:
   DebugInfo:
   - t331006000_x40 - f15(400300) == 0 && f47(3, 8136, 1, 1, 0) == 1 - Rya's Necklace (400300)
 - ID: 402002000
-  Comment: Turned on when talking to the Hornsent Grandam with the armor, turned off right before her gift of the item. Maybe cut NPC drop management
+  Comment: Turned on when talking to the Hornsent Grandam with the armor, turned off right before her gift of the item. Maybe cut NPC drop management. TODO will cause external item issues
   FlagTemplate:
   - Type: loc
     EventFlag: 400721
@@ -394,6 +394,50 @@ ItemEvents:
   - common - IfCountEventFlags(170, 179) - Mohg's Great Rune (175)
   - common - IfCountEventFlags(170, 179) - Malenia's Great Rune (176)
   - common - IfCountEventFlags(170, 179) - Great Rune of the Unborn (177)
+- ID: 900
+  Map: common
+  Comment: Maliketh to Ashen world state (there is a independent royalaccess edit in this event). If boss is not defeated, wait for it and trap in arena with respawn point near arena center. Then 5s later or on reload, if defeated but not world state yet, warp to Ashen Capital and enable Maliketh grace. Both parts should be blocked by BlockArea, and require presence in arena to not mess up cutscene. show message when grace activates? 13001950
+  Template:
+  - Type: loc
+    Filter:
+    - BlockArea: leyndell2
+    Edits:
+    - FilterCond: 10
+      AfterCmds:
+      - IfConditionGroup(MAIN, PASS, AND_10)
+      Before: start
+    Add:
+    - Cmd: IfInoutsideArea(MAIN, InsideOutsideState.Inside, 10000, 13002805, 1)
+      After: Label1()
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - GotoIfEventFlag(Label.Label0, OFF, TargetEventFlagType.EventFlag, 9116)
+  - GotoIfEventFlag(Label.Label1, OFF, TargetEventFlagType.EventFlag, 118)
+  - EndUnconditionally(EventEndType.End)
+  - Label0()
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 9116)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - SetSpEffect(10000, 4280)
+  - SetSpEffect(10000, 4282)
+  - SetPlayerRespawnPoint(13002020)
+  - SaveRequest(0)
+  - WaitFixedTimeSeconds(5.2)
+  - Label1()
+  - IfCharacterDeadalive(AND_02, 10000, DeathState.Dead, ComparisonType.Equal, 1)
+  - EndIfConditionGroupStateUncompiled(EventEndType.End, PASS, AND_02)
+  - SetCharacterDefaultBackreadState(13000800, Disabled)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 300, ON)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 301, ON)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 302, OFF)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 71300, ON)
+  - BatchSetEventFlags(71100, 71110, OFF)
+  - ShowTextOnLoadingScreen(Disabled)
+  - PlayCutsceneToPlayerAndWarp(13000050, CutscenePlayMode.Skippable, 11052010, 11050000, 10000, 13000, true)
+  - WaitFixedTimeRealFrames(1)
+  - SetPlayerRespawnPoint(11052010)
+  - SaveRequest(0)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 118, ON)
 - ID: 916
   Map: common
   Comment: Using Messmer's Kindling. This switches between action buttons so flag is necessary without merging them, and necessary in other cases anyway
@@ -455,13 +499,15 @@ ItemEvents:
   - EndUnconditionally(EventEndType.Restart)
 - ID: 922
   Map: common
-  Comment: Pureblood Knight's Medal warp to Mohgwyn
+  Comment: Pureblood Knight's Medal warp to Mohgwyn. This doesn't work with purebloodknightsmedal gate anymore
   Template:
   - Type: loc
     Filter:
-    - Gate: purebloodknightsmedal
-    ItemUse:
-    - start
+    - BlockArea: mohgwyn
+    Edits:
+    - FilterCond: 10
+      FilterMessage: restart
+      Before: WarpPlayer(12, 5, 0, 0, 12052021, 0)
   DebugCommands:
   - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
   - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
@@ -1124,6 +1170,12 @@ ItemEvents:
 - ID: 3719
   Map: common
   Comment: Roderika's quest (is unset in a different event)
+  Template:
+  - Type: loc
+    Filter:
+    - Content: external
+    Removes:
+    - 10007452
   FlagTemplate:
   - Type: loc
     EventFlag: 10007452
@@ -1695,6 +1747,14 @@ ItemEvents:
 - ID: 10010792
   Map: m10_01_00_00
   Comment: Makes world pots inaccessible if picked as a starting item
+  Template:
+  - Type: loc
+    Filter:
+    - Content: external
+    Removes:
+    - 66150
+    - 66170
+    - 66180
   FlagTemplate:
   - Type: fixeditem
     EventFlag: 66150 66170 66180
@@ -1745,6 +1805,13 @@ ItemEvents:
 - ID: 11100704
   Map: m11_10_00_00
   Comment: Makes memento inaccessible and hood accessible (both in Stormveil). This might mean memento spot could be inaccessible if you give it elsewhere
+  Template:
+  - Type: loc
+    Filter:
+    - Content: external
+    Removes:
+    - 10007450
+    - 10007452
   FlagTemplate:
   - Type: loc
     EventFlag: 10007450 10007452
@@ -1764,6 +1831,12 @@ ItemEvents:
 - ID: 11100750
   Map: m11_10_00_00
   Comment: Rogier states at roundable. Makes letter inaccessible if not 11109522 ("so you've met D"), and shows treasure based on having his items or not.
+  Template:
+  - Type: loc
+    Filter:
+    - Content: external
+    Removes:
+    - 400359
   FlagTemplate:
   - Type: loc
     Comment: This is a range so it should be collapsed. 400356 400357 400358 are not listed as second one takes precedence
@@ -1921,6 +1994,67 @@ ItemEvents:
   - DeleteAssetfollowingSFX(12031500, true)
   - IfEventFlag(MAIN, OFF, TargetEventFlagType.EventFlag, 12032870)
   - EndUnconditionally(EventEndType.Restart)
+- ID: 12032504
+  Map: m12_03_00_00
+  Comment: Coffin to Ainsel
+  Template:
+  - Type: loc
+    Filter:
+    - BlockArea: ainsel
+    Edits:
+    - FilterCond: 10
+      FilterMessage: restart
+      Before: SetEventFlag(TargetEventFlagType.EventFlag, 9021, ON)
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - SetNetworkSyncState(Disabled)
+  - SetSpEffect(10000, 191)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfActionButtonInArea(AND_01, 9710, 12031504)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - SetSpEffect(10000, 190)
+  - WaitFixedTimeSeconds(0.1)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 9021, ON)
+  - SendAllPhantomsHome(0)
+  - Label5()
+  - WaitFixedTimeSeconds(1)
+  - GotoIfMultiplayerState(Label.Label5, MultiplayerState.Multiplayer)
+  - SetPlayerRespawnPoint(12012504)
+  - SaveRequest(0)
+  - PlayCutsceneToPlayerAndWarp(12030010, CutscenePlayMode.Skippable, 12012504, 12010000, 10000, 12030000, false)
+  - WaitFixedTimeRealFrames(1)
+  - PlayCutsceneToPlayer(12030011, CutscenePlayMode.SkippableWithFadeOutSkip, 10000)
+  - WaitFixedTimeRealFrames(1)
+  - SetSpEffect(10000, 191)
+  - WaitFixedTimeSeconds(1)
+  - DisplayAreaWelcomeMessage(12010)
+- ID: 12032509
+  Map: m12_03_00_00
+  Comment: Coffin to Deeproot
+  Template:
+  - Type: loc
+    Filter:
+    - BlockArea: deeproot
+    Edits:
+    - FilterCond: 10
+      FilterMessage: restart
+      Before: SetEventFlag(TargetEventFlagType.EventFlag, 12020502, ON)
+  DebugCommands:
+  - SetNetworkSyncState(Disabled)
+  - IfEventFlag(AND_02, ON, TargetEventFlagType.EventFlag, 12020800)
+  - IfPlayerIsInWorldType(AND_02, WorldType.OwnWorld)
+  - IfActionButtonInArea(AND_02, 9710, 12021502)
+  - IfConditionGroup(MAIN, PASS, AND_02)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 12020502, ON)
+  - WaitFixedTimeSeconds(0.1)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 9021, ON)
+  - SetPlayerRespawnPoint(12032502)
+  - SaveRequest(0)
+  - PlayCutsceneToPlayerAndWarp(12020000, CutscenePlayMode.Skippable, 12032502, 12030000, 10000, 12020000, false)
+  - PlayCutsceneToPlayer(12020001, CutscenePlayMode.SkippableWithFadeOutSkip, 10000)
+  - WaitFixedTimeFrames(1)
+  - WaitFixedTimeSeconds(1)
+  - DisplayAreaWelcomeMessage(12030)
 - ID: 12042400
   Map: m12_04_00_00
   Comment: Allows player to pass to Moonlight Altar. This can't use item id since you give it to Ranni. This is also the only key item use of flags.
@@ -1932,9 +2066,71 @@ ItemEvents:
   - EventFlags 114
   - m12_04_00_00 (Ainsel River - Boss) - GotoIfEventFlag(114) - Dark Moon Ring
   - m12_04_00_00 (Ainsel River - Boss) - IfEventFlag(114) - Dark Moon Ring
+- ID: 12052500
+  Map: m12_05_00_00
+  Comment: Miquella's arm
+  Template:
+  - Type: loc
+    Filter:
+    - BlockArea: gravesite
+    Edits:
+    - FilterCond: 10
+      FilterMessage: restart
+      Before: DisplayGenericDialogAndSetEventFlags
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 12052501, OFF)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 12052502, OFF)
+  - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 6951)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 9112)
+  - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 9130)
+  - IfActionButtonInArea(AND_01, 209500, 12051500)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - DisplayGenericDialogAndSetEventFlags(2020000, PromptType.YESNO, NumberofOptions.TwoButtons, 12051500, 3, 12052501, 12052502, 12052502)
+  - GotoIfEventFlag(Label.Label0, ON, TargetEventFlagType.EventFlag, 12052501)
+  - WaitFixedTimeSeconds(3)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label0()
+  - SendAllPhantomsHome(0)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 62002, ON)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 82002, ON)
+  - SetPlayerRespawnPoint(2046402020)
+  - SaveRequest(0)
+  - ShowTextOnLoadingScreen(Disabled)
+  - RotateCharacter(10000, 12052500, 60550, false)
+  - WaitFixedTimeSeconds(2)
+  - WarpPlayer(61, 46, 40, 0, 2046402020, 120500)
+- ID: 90005792
+  Comment: Remove tarnished pack invasion drops without tarnished opt. Enemy rando could also disable invasion with flag change if it chose to
+  Template:
+  - Type: arg
+    Filter:
+    - Content: '!tarnished'
+      Args:
+        X16_4: 11001952
+    - Content: '!tarnished'
+      Args:
+        X16_4: 1052390500
+    SetArg: X16_4 0
+- ID: 900005590
+  Comment: Disable various tarnished pack item pickups without tarnished opt
+  Template:
+  - Type: arg
+    Filter:
+    - Content: '!tarnished'
+      Args:
+        X0_4: 6953
+    SetArg: X0_4 6000
 - ID: 13003711
   Map: m13_00_00_00
   Comment: Once fighting Alexander, makes Warrior Jar Shard inaccessible. Then if not already gotten, make his innards etc accessible via treasure
+  Template:
+  - Type: loc
+    Filter:
+    - Content: external
+    Removes:
+    - 400175
   FlagTemplate:
   - Type: loc
     EventFlag: 400174 400175
@@ -1969,6 +2165,12 @@ ItemEvents:
   - Type: remove
     Filter:
     - Gate: deathless
+  - Type: loc
+    Filter:
+    - BlockArea: volcano_town
+    Edits:
+    - FilterCond: 1
+      Before: IfInoutsideArea(AND_01, InsideOutsideState.Inside, 10000, 14002080, 1)
   DebugCommands:
   - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
   - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
@@ -2000,13 +2202,37 @@ ItemEvents:
   - m15_00_00_00 (Miquella's Haligtree) - EndIfEventFlag(400323) - Millicent's Prosthesis
 - ID: 16002690
   Map: m16_00_00_00
-  Comment: Unsets Serpent-Hunter get flag when showing the treasure (flag 16002696, also used by checked item award event, checks for weapon). TODO don't randomize
+  Comment: Unsets Serpent-Hunter get flag when showing the treasure if allowed and disable treasure otherwise. This is determined by 16002696, set near fog gate only if Rykard alive and SH not in possession. When randomizing it, these conditions must be removed, so use flag for location check instead. Ideally only do this when randomized but it can be cheated in if discarded for some reason.
+  Template:
+  - Type: loc
+    Replaces:
+    - From: IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, X0_4)
+      To: IfEventFlag(AND_01, OFF, TargetEventFlagType.EventFlag, 16007690)
+    Removes:
+    - EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 16000800)
+    - SetEventFlag(TargetEventFlagType.EventFlag, 16007690, OFF)
   FlagTemplate:
   - Type: loc
     EventFlag: 16007690
   DebugInfo:
   - EventFlags 16007690
   - m16_00_00_00 (Volcano Manor) - SetEventFlag(16007690) - Serpent-Hunter
+- ID: 16002691
+  Map: m16_00_00_00
+  Comment: To perform the actual SH acquisition, use same condition as prior event
+  Template:
+  - Type: loc
+    Replaces:
+    - From: IfEventFlag(AND_02, ON, TargetEventFlagType.EventFlag, 16002696)
+      To: IfEventFlag(AND_02, OFF, TargetEventFlagType.EventFlag, 16007690)
+    Removes:
+    - IfEventFlag(OR_15, ON, TargetEventFlagType.EventFlag, 16000800)
+  FlagTemplate:
+  - Type: loc
+    EventFlag: 16007690
+- ID: 16002695
+  Map: m16_00_00_00
+  Comment: This is what sets the flag, and the event ending is required to show the item. Use the same condition as before (region check if Rykard still alive)
 - ID: 16002855
   Map: m16_00_00_00
   Comment: Enabling treasure if flag not set
@@ -2415,6 +2641,46 @@ ItemEvents:
   - m34_14_00_00 (Divine Tower of East Altus) - SetEventFlag(X0_4 = 195) - Mohg's Great Rune
   - m34_15_00_00 (Isolated Divine Tower) - EndIfEventFlag(X0_4 = 196) - Malenia's Great Rune
   - m34_15_00_00 (Isolated Divine Tower) - SetEventFlag(X0_4 = 196) - Malenia's Great Rune
+- ID: 90005500
+  Map: common_func
+  Comment: Elevator
+  Template:
+  - Type: arg
+    Filter:
+    - Gate: siofra
+      Args:
+        X12_4: 12021525
+    - Gate: siofra
+      Args:
+        X12_4: 12071525
+    - Gate: ainsel_start
+      Args:
+        X12_4: 1038461650
+    - Gate: shadowkeep_boss
+      Args:
+        X12_4: 21001510
+    - Gate: rauhruins_east
+      Args:
+        X12_4: 21021510
+    - Gate: belurat_enirilim
+      Args:
+        X12_4: 20001520
+    SetArg: X48_4 gate
+- ID: 90005525
+  Map: common_func
+  Comment: Illusory wall
+  Template:
+  - Type: copyloc
+    Filter:
+    - BlockArea: deeproot_start
+      Args:
+        X0_4: 35000574
+    Edits:
+    - FilterCond: 1
+      After: IfDamageType(AND_01, X4_4, 20000, DamageType.Unspecified)
+    Add:
+    - Cmd: SetAssetInvulnerability(X4_4, Enabled)
+      Before: start
 - ID: 90005555
   Map: common_func
   Comment: Common event for forge awards. We need to set the flag since it's used for warp trap, so don't change the flag here, and actually set it
@@ -2465,6 +2731,46 @@ ItemEvents:
         X0_4: 60864
   FlagTemplate:
   - Type: removegesture
+- ID: 90005605
+  Map: common_func
+  Comment: Common sending gate. 4th to last arg is condition flag
+  Template:
+  - Type: arg
+    Filter:
+    - Gate: ainsel
+      Args:
+        X0_4: 1034511620
+    - Gate: mohgwyn
+      Args:
+        X0_4: 1047561500
+    - Gate: haligtree
+      Args:
+        X0_4: 1048571500
+    SetArg: X28_4 gate
+  DebugOtherInits:
+  - m11_00_00_00 InitializeCommonEvent(0, 90005605, 11001692, 3874, 34152692, 11000000, 11002692, 11002693, 11002694, 11000600, 30040, 0, 0)
+  - m11_05_00_00 InitializeCommonEvent(0, 90005605, 11051680, 3874, 34152692, 11050000, 11052680, 11052681, 11052682, 0, 0, 0, 0)
+  - m12_02_00_00 InitializeCommonEvent(0, 90005605, 12021203, 524, 12022203, 12020000, 12022203, 12022210, 12022211, 0, 0, 0, 0)
+  - m12_02_00_00 InitializeCommonEvent(0, 90005605, 12021204, 524, 12022204, 12020000, 12022204, 12022212, 12022213, 0, 0, 0, 0)
+  - m12_02_00_00 InitializeCommonEvent(0, 90005605, 12021205, 524, 12022205, 12020000, 12022205, 12022215, 12022206, 0, 0, 0, 0)
+  - m14_00_00_00 InitializeCommonEvent(0, 90005605, 14001660, 3024188, 1037462650, 14000000, 14002660, 14002661, 14002662, 0, 0, 0, 0)
+  - m34_10_00_00 InitializeCommonEvent(0, 90005605, 34101600, 2594, 34102600, 0, 34102610, 34102611, 34102612, 0, 0, 0, 0)
+  - m60_33_46_00 InitializeCommonEvent(0, 90005605, 1033461610, 13, 13002509, 0, 1033462610, 1033462611, 1033462612, 1033460610, 0, 0, 0)
+  - m60_33_47_00 InitializeCommonEvent(0, 90005605, 1033471610, 524, 12022210, 0, 1033472610, 1033472611, 1033472612, 1033470610, 0, 0, 0)
+  - m60_34_47_00 InitializeCommonEvent(0, 90005605, 1034471610, 266, 10012690, 0, 1034472610, 1034472611, 1034472612, 1034470610, 0, 0, 0)
+  - m60_34_51_00 InitializeCommonEvent(0, 90005605, 1034511620, 268, 12012480, 0, 1034512620, 1034512621, 1034512622, 0, 0, 0, 0)
+  - m60_36_45_00 InitializeCommonEvent(0, 90005605, 1036451620, 3154492, 1034482620, 0, 1036452620, 1036452621, 1036452622, 0, 0, 0, 0)
+  - m60_37_42_00 InitializeCommonEvent(0, 90005605, 1037421610, 2958140, 1035452630, 0, 1037422610, 1037422611, 1037422612, 0, 0, 0, 0)
+  - m60_39_42_00 InitializeCommonEvent(0, 90005605, 1039421610, 2958140, 1035452630, 0, 1035452610, 1039422611, 1039422612, 0, 0, 0, 0)
+  - m60_40_52_00 InitializeCommonEvent(0, 90005605, 1040521640, 3614780, 1040552650, 0, 1040552651, 1040552652, 1040552653, 0, 0, 0, 0)
+  - m60_47_38_00 InitializeCommonEvent(0, 90005605, 1047381610, 2372156, 1050360602, 0, 1047382650, 1047382654, 1047382655, 0, 0, 0, 0)
+  - m60_47_56_00 InitializeCommonEvent(0, 90005605, 1047561500, 1292, 12052020, 0, 1047562501, 1047562502, 1047562503, 0, 0, 0, 0)
+  - m60_48_57_00 InitializeCommonEvent(0, 90005605, 1048571500, 15, 15002600, 0, 1048572501, 1048572502, 1048572503, 0, 0, 0, 0)
+  - m60_50_36_00 InitializeCommonEvent(0, 90005605, 1050361610, 2372412, 1051360600, 0, 1050362650, 1050362651, 1050362652, 9410, 30040, 0, 0)
+  - m60_50_36_00 InitializeCommonEvent(0, 90005605, 1050361612, 2372412, 1051360600, 0, 1050362653, 1050362654, 1050362655, 9410, 30040, 0, 0)
+  - m60_50_56_00 InitializeCommonEvent(0, 90005605, 1050561510, 3682876, 1050562510, 0, 1050562511, 1050562512, 1050562513, 0, 0, 0, 0)
+  - m60_51_36_00 InitializeCommonEvent(0, 90005605, 1051361600, 2372156, 1050360600, 0, 1051362650, 1051362651, 1051362652, 9410, 30040, 0, 0)
+  - m61_47_44_00 InitializeCommonEvent(0, 90005605, 2047441610, 3026493, 2046464500, 0, 2047442650, 2047442654, 2047442655, 2047440610, 0, 0, 0)
 - ID: 90005616
   Map: common_func
   Comment: Beast eye quivers
@@ -2611,6 +2917,12 @@ ItemEvents:
       AfterCmds:
       - GotoIfConditionGroupStateUncompiled(Label.Label17, FAIL, AND_08)
       After: Label1()
+    - BeforeCmds:
+      - WaitFixedTimeSeconds(1.4)
+      FilterMessage: basic
+      AfterCmds:
+      - EndUnconditionally(EventEndType.Restart)
+      After: ForceAnimationPlayback(10000, 50050, false, false, false, ComparisonType.Equal, 1)
     Add:
     - Cmds:
       - GotoIfUnsignedComparison(Label.Label4, ComparisonType.NotEqual, X12_4, 0)
@@ -2981,6 +3293,27 @@ ItemEvents:
   - 'm20_00_00_00 (Belurat, Tower Settlement) - IfEventFlag(X16_4 = 400696) - Prayer Room Key, Ash of War: Flame Skewer'
   - m61_47_46_00 (Scadu Altus - Church of the Crusade; Gravesite Plain - Fog Rift Catacombs Entrance; Rauh Base - Above Fog Rift; Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside) - IfEventFlag(X8_4 = 400694) - Crusade Insignia
   - 'm61_47_46_00 (Scadu Altus - Church of the Crusade; Gravesite Plain - Fog Rift Catacombs Entrance; Rauh Base - Above Fog Rift; Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside) - IfEventFlag(X16_4 = 400696) - Prayer Room Key, Ash of War: Flame Skewer'
+- ID: 90005771
+  Map: common_func
+  Comment: Grace menu, used for warp to Farum Azula
+  Template:
+  - Type: copyloc
+    Filter:
+    - BlockArea: farumazula_prestart
+      Args:
+        X0_4: 1054531950
+    Edits:
+    - FilterCond: 10
+      AfterCmds:
+      - IfConditionGroup(MAIN, PASS, AND_10)
+      After: SetEventFlag(TargetEventFlagType.EventFlag, X4_4, OFF)
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X4_4, OFF)
+  - IfEntityInoutsideRadiusOfEntity(MAIN, InsideOutsideState.Inside, 10000, X0_4, 3, 1)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X4_4, ON)
+  - IfEntityInoutsideRadiusOfEntity(MAIN, InsideOutsideState.Outside, 10000, X0_4, 3, 1)
+  - EndUnconditionally(EventEndType.Restart)
 - ID: 90005774
   Map: common_func
   Comment: Award item based on other separate event flag
@@ -3519,6 +3852,99 @@ ItemEvents:
   - EventFlags 62031
   - 'm60_42_51_00 (Capital Outskirts - Outer Wall Phantom Tree) - GotoIfEventFlag(X8_4 = 62031) - Map: Leyndell, Royal Capital'
   - 'm60_42_51_00 (Capital Outskirts - Outer Wall Phantom Tree) - IfEventFlag(X8_4 = 62031) - Map: Leyndell, Royal Capital'
+- ID: 1043362510
+  Map: m60_43_36_00
+  Comment: Agheel Lake to Sellia Crystal Tunnel
+  Template:
+  - Type: copyloc
+    Filter:
+    - BlockArea: caelid
+      Args:
+        X0_4: 1043361510
+    Edits:
+    - FilterCond: 10
+      Before: GotoIfInoutsideArea(Label.Label20, InsideOutsideState.Outside, 10000, X4_4, 1)
+    - BeforeCmds:
+      - SkipIfConditionGroupStateUncompiled(2, PASS, AND_10)
+      FilterMessage: basic
+      AfterCmds:
+      - GotoUnconditionally(Label.Label20)
+      Before: GotoIfInoutsideArea(Label.Label20, InsideOutsideState.Outside, 10000, X4_4, 1)
+  DebugInit:
+  - m60_43_36_00 InitializeEvent(0, 1043362510, 1043361510, 1043362510, 1043362500, 1043363600)
+  DebugCommands:
+  - SetNetworkSyncState(Disabled)
+  - GotoIfMultiplayerState(Label.Label1, MultiplayerState.MultiplayerPending)
+  - GotoIfMultiplayerState(Label.Label1, MultiplayerState.Multiplayer)
+  - GotoIfEventFlag(Label.Label0, ON, TargetEventFlagType.EventFlag, X8_4)
+  - IfObjactEventFlag(OR_01, X12_4)
+  - IfMultiplayerState(OR_01, MultiplayerState.MultiplayerPending)
+  - IfMultiplayerState(OR_01, MultiplayerState.Multiplayer)
+  - IfConditionGroup(MAIN, PASS, OR_01)
+  - GotoIfMultiplayerState(Label.Label1, MultiplayerState.MultiplayerPending)
+  - GotoIfMultiplayerState(Label.Label1, MultiplayerState.Multiplayer)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X8_4, ON)
+  - WaitFixedTimeSeconds(1.3)
+  - WaitFixedTimeSeconds(0.9)
+  - GotoIfMultiplayerState(Label.Label2, MultiplayerState.MultiplayerPending)
+  - GotoIfMultiplayerState(Label.Label2, MultiplayerState.Multiplayer)
+  - IfCharacterHPValue(AND_01, 10000, ComparisonType.Equal, 0, ComparisonType.Equal, 1)
+  - GotoIfConditionGroupStateUncompiled(Label.Label20, PASS, AND_01)
+  - GotoIfInoutsideArea(Label.Label20, InsideOutsideState.Outside, 10000, X4_4, 1)
+  - GotoIfMultiplayerState(Label.Label2, MultiplayerState.MultiplayerPending)
+  - GotoIfMultiplayerState(Label.Label2, MultiplayerState.Multiplayer)
+  - FadeToBlack(0, 0, true, -1)
+  - DisplayGenericDialog(20700, PromptType.YESNO, NumberofOptions.NoButtons, 0, 5)
+  - WaitFixedTimeSeconds(0.7)
+  - SetSpEffect(10000, 4090)
+  - PlaySE(10000, SoundType.CharacterMotion, 8700)
+  - WaitFixedTimeSeconds(2.7)
+  - ChangeCharacterEnableState(10000, Disabled)
+  - IfCharacterHPValue(AND_03, 10000, ComparisonType.Equal, 0, ComparisonType.Equal, 1)
+  - GotoIfConditionGroupStateUncompiled(Label.Label20, PASS, AND_03)
+  - GotoIfMultiplayerState(Label.Label3, MultiplayerState.MultiplayerPending)
+  - GotoIfMultiplayerState(Label.Label3, MultiplayerState.Multiplayer)
+  - SetSpEffect(10000, 4091)
+  - FadeToBlack(0, 0, false, -1)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 32080650, ON)
+  - WarpPlayer(32, 8, 0, 0, 32082650, 60)
+  - SaveRequest(0)
+  - SetPlayerRespawnPoint(32082650)
+  - EndUnconditionally(EventEndType.End)
+  - Label20()
+  - SetSpEffect(10000, 4091)
+  - ChangeCharacterEnableState(10000, Enabled)
+  - FadeToBlack(0, 0, false, -1)
+  - WaitFixedTimeSeconds(4.4)
+  - Label19()
+  - ForceAnimationPlayback(X0_4, 2, false, true, false, ComparisonType.Equal, 1)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X8_4, OFF)
+  - SetObjactState(X0_4, -1, Enabled)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label0()
+  - ReproduceAssetAnimation(X0_4, 2)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X8_4, OFF)
+  - SetObjactState(X0_4, -1, Enabled)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label3()
+  - SetObjactState(X0_4, -1, Disabled)
+  - SetSpEffect(10000, 4091)
+  - ChangeCharacterEnableState(10000, Enabled)
+  - ForceAnimationPlayback(10000, 60131, false, false, false, ComparisonType.Equal, 1)
+  - FadeToBlack(0, 0, false, -1)
+  - Label2()
+  - SetObjactState(X0_4, -1, Disabled)
+  - ForceAnimationPlayback(X0_4, 2, false, true, false, ComparisonType.Equal, 1)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X8_4, OFF)
+  - Label1()
+  - SetObjactState(X0_4, -1, Disabled)
+  - IfMultiplayerState(OR_02, MultiplayerState.MultiplayerPending)
+  - IfConditionGroup(AND_02, FAIL, OR_02)
+  - IfMultiplayerState(OR_03, MultiplayerState.Multiplayer)
+  - IfConditionGroup(AND_02, FAIL, OR_03)
+  - IfConditionGroup(MAIN, PASS, AND_02)
+  - SetObjactState(X0_4, -1, Enabled)
+  - EndUnconditionally(EventEndType.Restart)
 - ID: 1044363713
   Map: m60_44_36_00
   Comment: Flags when purchasing 3 and then 6 of Sellen's sorceries
@@ -3683,6 +4109,47 @@ ItemEvents:
   - EventFlags 580110 580410
   - m61_46_45_00 (Rauh Base - Temple Town Ruins; Gravesite Plain - Northern Nameless Mausoleum, Ellac River Start) - EndIfEventFlag(X0_4 = 580410) - Spiraltree Seal
   - m61_46_45_00 (Rauh Base - Temple Town Ruins; Gravesite Plain - Northern Nameless Mausoleum, Ellac River Start) - IfEventFlag(X4_4 = 580110) - "The Sacred Tower" Painting
+- ID: 2047351500
+  Map: m61_47_35_00
+  Comment: Miquella seal
+  Template:
+  - Type: loc
+    Filter:
+    - BlockArea: fissure
+    Edits:
+    - FilterCond: 2
+      Before: IfEventFlag(AND_02, ON, TargetEventFlagType.EventFlag, 4927)
+      CondBase: 10
+  DebugCommands:
+  - GotoIfEventFlag(Label.Label0, OFF, TargetEventFlagType.EventFlag, 2047350500)
+  - ChangeAssetEnableState(2047351500, Disabled)
+  - EndUnconditionally(EventEndType.End)
+  - Label0()
+  - GotoIfPlayerIsInWorldType(Label.Label1, WorldType.OtherWorld)
+  - GotoIfEventFlag(Label.Label2, ON, TargetEventFlagType.EventFlag, 2047352550)
+  - DeleteAssetfollowingSFX(2047351500, true)
+  - CreateAssetfollowingSFX(2047351500, 101, 1550)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 2047352550, ON)
+  - Label2()
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfActionButtonInArea(AND_01, 209504, 2047351500)
+  - IfEventFlag(AND_02, ON, TargetEventFlagType.EventFlag, 4927)
+  - IfConditionGroup(OR_03, PASS, AND_01)
+  - IfConditionGroup(OR_03, PASS, AND_02)
+  - IfConditionGroup(MAIN, PASS, OR_03)
+  - GotoIfConditionGroupStateCompiled(Label.Label3, PASS, AND_02)
+  - DisplayGenericDialog(2020004, PromptType.YESNO, NumberofOptions.NoButtons, 2047351500, 3)
+  - WaitFixedTimeSeconds(1)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label3()
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 2047350500, ON)
+  - DeleteAssetfollowingSFX(2047351500, true)
+  - ChangeAssetEnableState(2047351500, Disabled)
+  - EndUnconditionally(EventEndType.End)
+  - Label1()
+  - DeleteAssetfollowingSFX(2047351500, true)
+  - CreateAssetfollowingSFX(2047351500, 101, 1550)
+  - EndUnconditionally(EventEndType.End)
 - ID: 2047422550
   Map: m61_47_42_00
   Comment: Getting painting object, copy of 90005632
@@ -3713,9 +4180,16 @@ ItemEvents:
 - ID: 2048450704
   Map: m61_48_45_00
   Comment: Default state for Hornsent's drop
-  FlagTemplate:
+  Template:
   - Type: loc
+    Filter:
+    - Content: external
+    Removes:
+    - SetEventFlag(TargetEventFlagType.EventFlag, X4_4, ON)
+  FlagTemplate:
+  - Type: locarg
     EventFlag: 400612
+    EventFlagArg: X4_4
   DebugInfo:
   - EventFlags 400612
   - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - SetEventFlag(X4_4 = 400612) - Furnace Visage
@@ -3743,6 +4217,33 @@ ItemEvents:
   - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - IfBatchEventFlags(X12_4 = 400610, X16_4 = 400612) - Furnace Visage (400612)
   - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - IfEventFlag(X32_4 = 400610) - Cross Map
   - m61_48_45_00 (Scadu Altus - Highroad Cross, Highway Fork) - IfEventFlag(X36_4 = 400611) - New Cross Map
+- ID: 2049472505
+  Map: m61_49_47_00
+  Comment: Coffin to Castle Watering Hole
+  Template:
+  - Type: loc
+    Filter:
+    - BlockArea: scadualtus_recluse
+    Edits:
+    - FilterCond: 10
+      FilterMessage: restart
+      Before: SetEventFlag(TargetEventFlagType.EventFlag, 9021, ON)
+  DebugCommands:
+  - SetNetworkSyncState(Disabled)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfMultiplayerState(AND_02, MultiplayerState.Multiplayer)
+  - IfConditionGroup(AND_01, FAIL, AND_02)
+  - IfActionButtonInArea(AND_01, 209620, 21001576)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - WaitFixedTimeSeconds(0.1)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 9021, ON)
+  - SetPlayerRespawnPoint(2049472020)
+  - SaveRequest(0)
+  - PlayCutsceneToPlayerAndWarp(21000000, CutscenePlayMode.Skippable, 2049472020, 61494700, 10000, 21000000, false)
+  - WaitFixedTimeRealFrames(1)
+  - PlayCutsceneToPlayer(21000010, CutscenePlayMode.SkippableWithFadeOutSkip, 10000)
+  - WaitFixedTimeFrames(1)
+  - WaitFixedTimeSeconds(1)
 - ID: 2050402600
   Map: m61_50_40_00
   Comment: Using Hole-Laden Necklace in Rhia
@@ -3928,44 +4429,274 @@ LogicFlags:
   Index: 19
 - Name: dragonbarrow
   Index: 20
+- Name: ainsel
+  Index: 21
+- Name: ainsel_start
+  Index: 22
+- Name: haligtree
+  Index: 23
+- Name: mohgwyn
+  Index: 24
+- Name: rauhruins_east
+  Index: 25
+- Name: shadowkeep_boss
+  Index: 26
+- Name: siofra
+  Index: 27
+- Name: peninsula
+  Index: 28
+- Name: belurat_enirilim
+  Index: 29
+- Name: belurat
+  Index: 30
+- Name: volcano
+  Index: 31
+- Name: sewer
+  Index: 32
+- Name: liurnia
+  Index: 33
 LogicGates:
 - Name: altus
-  Cond: custom
   Block:
   - m16_00_00_00 AEG270_328 AEG270_613_2000 285.186 -129.523 -261.656 -59.392 -72.231 6.762
   - m39_20_00_00 AEG021_163 AEG021_162_8000 -135.800 369.770 -1263.600 -122.500
-- Name: deathless
-  Cond: none
 - Name: dragonbarrow
-  Comment: Wall from m60_47_41_00 (also add reverse dir?)
-  Cond: custom
+  Comment: Wall from m60_47_41_00. This also activates from Caelid Lock BlockArea
   Block:
-  - m60_48_40_00 AEG099_029 AEG004_043_1008 29.765 169.235 1.571 0
-- Name: leyndell
-  Cond: custom
+  - m60_48_40_00 AEG099_029 overworld 29.765 169.235 1.571 0
+  SealMap: m60_50_39_00
 - Name: liurnia
-  Comment: Unblock after Godrick
-  Cond: 10008540
   Block:
   - m60_10_09_02 AEG004_161 m60_40_39_00-AEG004_161_1029 -323.622 254.341 384.099 76.268
-  - m60_40_39_00 AEG099_028 AEG001_290_7124 -9.655 296.437 110.195 0
-- Name: roldmedallion
-  Comment: Same as item name, applies GR requirement when no item shard
-  Cond: custom
+  - m60_40_39_00 AEG099_028 overworld -9.655 296.437 110.195 0
+  Messages:
+  - m60_40_39_00 68.081 254.134 6.798 18.955
+- Name: peninsula
+  Block:
+  - m60_44_34_00 AEG099_029 overworld 123.723 42.806 39.761 156.000
+  - // m60_43_34_00 AEG099_029 overworld 109.245 26.535 21.242 -152.053
+  - wall m60_43_34_00 109.349 21.206 20.269 -150.447 40 40 25
+  SealMap: m60_44_34_00
+  Messages:
+  - m60_44_34_00 123.623 44.553 42.046 -18.675
+  - m60_44_34_00 -17.395 65.264 33.270 -89.744
+- BlockArea: stormveil_start
+  Block:
+  - m10_00_00_00 AEG464_015 AEG210_123_2000 -35.803 -0.317 -17.841 -78.344
+- BlockArea: stormveil_throne
+  Block:
+  - m10_00_00_00 AEG099_220 AEG099_230_9000 -325.780 68.190 457.650 -40.000
+  Messages:
+  - m10_00_00_00 -33.877 -0.872 -17.584 -86.780 10000850
+- BlockArea: liurnia
+  Comment: From Stormveil, different from gate
+  Block:
+  - m10_00_00_00 AEG099_220 AEG099_230_9000 -325.780 68.190 457.650 -40.000
+- BlockArea: siofra
+  Messages:
+  - m60_45_37_00 91.923 27.033 10.826 -111.494
+- BlockArea: siofrabank_prenokron
+  Block:
+  - m12_07_00_00 AEG099_029 AEG099_231_9000 602.554 -497.836 980.839 17.197
+  Hide:
+  - m60_11_09_12 m60_45_36_10-AEG004_109_1079
+  - m60_11_09_12 m60_45_36_10-AEG004_114_1002
+  - m60_11_09_12 m60_45_36_10-AEG004_114_1005
+  - m60_11_09_12 m60_45_36_10-AEG004_114_1068
+  - m60_11_09_12 m60_45_36_10-AEG004_114_1072
+  - m60_22_18_11 m60_45_36_10-AEG100_001_1032
+  - m60_22_18_11 m60_45_36_10-AEG100_001_1072
+  - m60_22_18_11 m60_45_36_10-AEG100_001_1073
+  - m60_22_18_11 m60_45_36_10-AEG100_001_1074
+  - m60_22_18_11 m60_45_36_10-AEG100_001_1075
+  - m60_22_18_11 m60_45_36_10-AEG100_001_1076
+  - m60_22_18_11 m60_45_36_10-AEG100_001_1077
+  - m60_22_18_11 m60_45_36_10-AEG100_001_1078
+  Messages:
+  - m60_45_36_10 -71.814 -17.627 45.881 -83.307
+- BlockArea: ainsel_start
+  Messages:
+  - m60_38_46_00 90.767 248.855 72.890 157.497
+- BlockArea: caelid
+  Comment: Limgrave wall from mpw
+  Block:
+  - m60_46_39_00 AEG099_220 overworld -10.010 128.629 115.990 0.000
+  - m60_46_39_00 AEG099_220 overworld -6.010 129.317 115.990 0.000
+  - m60_46_39_00 AEG099_220 overworld -12.010 128.629 117.990 90.000
+  - m60_46_39_00 AEG099_220 overworld -22.010 130.235 123.990 0.000
+  - m60_46_39_00 AEG099_220 overworld -18.010 133.435 123.990 0.000
+  - m60_46_39_00 AEG099_220 overworld -14.010 133.609 123.990 0.000
+  - m60_46_39_00 AEG099_220 overworld -12.010 131.976 121.990 90.000
+  - m60_46_39_00 AEG099_220 overworld -24.010 130.373 125.990 90.000
+  - m60_46_40_00 AEG099_220 overworld -34.010 130.257 -124.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -30.010 130.834 -124.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -26.010 131.483 -124.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -24.010 131.002 -126.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -38.010 130.824 -120.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -36.010 130.257 -122.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -46.010 130.921 -116.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -42.010 131.397 -116.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -40.010 130.824 -118.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -50.010 131.488 -112.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -48.010 130.921 -114.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -54.010 132.055 -108.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -52.010 131.488 -110.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -62.010 133.834 -104.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -58.010 132.930 -104.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -56.010 132.055 -106.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -70.010 134.334 -100.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -66.010 133.962 -100.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -64.010 133.962 -102.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -72.010 132.216 -98.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -82.010 131.462 -92.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -78.010 131.918 -92.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -74.010 132.511 -92.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -72.010 132.669 -94.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -84.010 131.462 -90.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -90.010 133.442 -84.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -86.010 133.516 -84.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -84.010 132.537 -86.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -94.010 134.606 -80.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -92.010 133.442 -82.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -98.010 135.906 -76.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -96.010 134.833 -78.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -100.010 136.394 -74.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -100.010 137.661 -70.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -102.010 139.434 -64.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -100.010 138.698 -66.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -104.010 139.434 -62.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -106.010 141.215 -56.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -104.010 140.345 -58.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -108.010 141.382 -54.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -110.010 143.062 -48.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -108.010 142.091 -50.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -112.010 143.199 -46.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -118.010 146.718 -40.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -114.010 146.718 -40.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -112.010 146.718 -42.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -120.010 146.718 -38.010 90.000
+  - m60_46_40_00 AEG099_220 overworld -122.010 146.718 -36.010 0.000
+  - m60_46_40_00 AEG099_220 overworld -124.010 146.718 -34.010 90.000
+  Messages:
+  - m60_46_40_00 -85.173 130.941 -93.818 43.173
+- BlockArea: gelmir
+  Block:
+  - m60_37_53_00 AEG099_029 overworld 74.756 792.401 -90.319 -0.810
+  - m60_39_53_00 AEG099_028 overworld -51.088 805.978 45.133 -81.500
+  Hide:
+  - m60_39_53_00 AEG004_787_1000
+  - m60_19_26_01 m60_39_53_00-AEG004_544_1000
+- BlockArea: deeproot_start
+  Messages:
+  - m35_00_00_00 141.600 -408.735 -102.864 -30.000
+- BlockArea: sewer_ashen
+  Block:
+  - m11_05_00_00 AEG228_161 AEG228_161_1000 -157.426 -45.500 -201.754 45.000
+  Hide:
+  - m11_05_00_00 AEG228_161_1000
+- BlockArea: ensis
+  Block:
+  - m61_47_44_00 AEG099_029 overworld -11.253 310.885 -16.192 35.472
+  Messages:
+  - m61_47_44_00 -11.760 313.880 -17.070 -150.000
+- BlockArea: ellac
+  Block:
+  - m61_47_43_00 AEG099_028 overworld 94.502 167.810 -14.801 -130.000
+  - col m61_46_45_00 h900100 -180.369 -1.350 3.217 -90.000
+  - col m61_46_45_00 h900120 -180.369 -1.350 3.217 -90.000
+  Hide:
+  - m61_11_11_02 m61_46_45_00-AEG064_173_6000
+  - m61_46_45_00 AEG050_126_6001
+  - m61_46_45_00 AEG050_126_6014
+  - m61_46_45_00 AEG050_125_6009
+  - m61_46_45_00 AEG050_126_6015
+  - m61_46_45_00 AEG050_126_6016
+  - m61_46_45_00 AEG050_125_6010
+  - m61_46_45_00 AEG050_126_6017
+  - m61_46_45_00 AEG050_125_6011
+  - m61_46_45_00 AEG050_126_6018
+  - m61_46_45_00 AEG050_125_6002
+  - m61_46_45_00 AEG050_126_6020
+  - m61_46_45_00 AEG050_126_6010
+  - m61_46_45_00 AEG050_126_6003
+  - m61_46_45_00 AEG050_126_6006
+  - m61_46_45_00 AEG050_125_6008
+  - m61_46_45_00 AEG050_126_6013
+  - m61_46_45_00 AEG050_125_6012
+  - // m61_46_45_00 AEG050_551_6007
+  - // m61_46_45_00 AEG050_552_6000
+  - // m61_46_45_00 AEG050_552_6001
+  - // m61_46_45_00 AEG050_549_6000
+  Messages:
+  - m61_47_43_00 96.077 167.932 -13.695 52.578
+  - m61_46_45_00 -52.138 294.266 -113.198 -70.000
+- BlockArea: jaggedpeak_foot
+  Block:
+  - m43_01_00_00 AEG099_028 AEG099_090_9001 99.100 97.123 -61.538 110.000
+  Messages:
+  - m43_01_00_00 97.374 98.423 -58.534 -61.778
+- BlockArea: cerulean
+  Block:
+  - m61_48_39_00 AEG099_029 overworld -88.559 51.867 -7.060 -128.133
+  Hide:
+  - m61_49_39_00 AEG050_337_3500
+  - m61_49_39_00 AEG050_341_3502
+  Messages:
+  - m61_48_39_00 -90.349 50.939 -2.332 22.680
+- BlockArea: charo
+  Block:
+  - // wall m61_49_38_00 -53.789 86.803 4.931 91.361 42 65 10
+  - wall m61_49_38_00 -53.789 86.803 4.931 91.361 14 9 25
+  - wall m61_49_38_00 -54.169 91.057 -11.064 91.361 34 0 25
+  - wall m61_49_38_00 -53.504 94.171 16.928 91.361 0 50 10
+  - wall m61_49_39_00 -79.466 90.640 -109.532 -105.690 25 25 25
+  Messages:
+  - m61_49_38_00 -50.291 86.143 2.069 91.361
+- BlockArea: rauhbase
+  Block:
+  - m61_48_46_00 AEG099_029 overworld -3.863 330.997 127.704 -76.706
+- BlockArea: shadowkeep_church
+  Block:
+  - m21_00_00_00 AEG099_028 AEG420_057_3003 387.532 45.493 201.765 -60.000
+  Messages:
+  - m21_00_00_00 387.478 50.015 199.849 -53.404
+- BlockArea: shadowkeep_boss
+  Messages:
+  - m21_00_00_00 47.710 7.005 82.784 -150.000
+- BlockArea: rauhruins_east
+  Messages:
+  - m21_02_00_00 -393.922 144.000 216.789 48.319
+- BlockArea: abyssal
+  Comment: Manse door for now (nonfunctional)
+  Block:
+  - m61_52_43_00 AEG464_013 overworld -69.569 -512.117 49.988 9.528
+  Messages:
+  - m61_52_43_00 -69.314 -512.117 51.505 9.528 2052430800
+- BlockArea: belurat_enirilim
+  Messages:
+  - m20_00_00_00 -119.517 163.380 275.253 -36.458
+- BlockArea: leyndell2
+  Messages:
+  - m13_00_00_00 223.097 -32.700 363.319 75.239 13000800
+- Name: belurat
+  ObjAct: m20_00_00_00 AEG417_013_0500
+- Name: volcano
+  ObjAct: m16_00_00_00 AEG277_017_0500
+- Name: sewer
+  Comment: ObjAct can also be disabled with royalaccess
+  ObjAct: m11_00_00_00 AEG227_032_0500
 - Name: discardedpalacekey
-  ObjAct: true
+  ObjAct: item
 - Name: drawingroomkey
-  ObjAct: true
+  ObjAct: item
 - Name: gaollowerlevelkey
-  ObjAct: true
+  ObjAct: item
 - Name: gaolupperlevelkey
-  ObjAct: true
+  ObjAct: item
 - Name: rustykey
-  ObjAct: true
+  ObjAct: item
 - Name: welldepthskey
-  ObjAct: true
-- Name: ngtrap
-  Cond: none
+  ObjAct: item
 StableFlagList:
 - 114
 - 9500

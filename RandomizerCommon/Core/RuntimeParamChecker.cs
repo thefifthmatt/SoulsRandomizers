@@ -15,6 +15,8 @@ namespace RandomizerCommon
         public static readonly int FogMessageId = 666401;
         public static readonly int DlcMessageId = 666402;
         public static readonly int TarnishedMessageId = 666403;
+        public static readonly int ClientMissingMessageId = 666404;
+        public static readonly int ClientErrorMessageId = 666405;
         private readonly int AlertFlag;
 
         private Dictionary<string, List<uint>> mapEntities = new Dictionary<string, List<uint>>();

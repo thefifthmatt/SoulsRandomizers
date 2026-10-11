@@ -74,6 +74,7 @@ namespace RandomizerCommon
         public RandomizerOptions Copy()
         {
             // Copies most things, except not the seed and preset (maybe can revisit this when revisiting DS3)
+            // TODO: It now copies these things, verify all call sites.
             return new RandomizerOptions(Game)
             {
                 opt = new SortedDictionary<string, bool>(opt),
@@ -443,7 +444,7 @@ namespace RandomizerCommon
         // Options which are purely aesthetic or related to installation
         private static HashSet<string> logiclessOptions = new HashSet<string>
         {
-            "mergemods", "mergegame", "uxm", "loose", "hideseed", "bossbgm", "noenvbgm", "crashfix",
+            "mergemods", "mergegame", "uxm", "me3", "loose", "hideseed", "bossbgm", "noenvbgm", "crashfix",
             // Nightreign, grouping or runtime only
             "utility", "patchseed", "runseed",
         };

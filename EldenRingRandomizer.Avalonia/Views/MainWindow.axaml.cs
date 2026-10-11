@@ -5,6 +5,7 @@ using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using EldenRingRandomizer.ViewModels;
 using RandomizerCommon;
+using RandomizerCommon.Models;
 using RandomizerCommon.ViewModels;
 using RandomizerCommon.Views;
 using ReactiveUI;
@@ -23,10 +24,11 @@ namespace EldenRingRandomizer.Views
             if (Design.IsDesignMode) return;
 
             this.WhenActivated(action => action(RegisterDialog<OptionsWindow, OptionsViewModel, OptionsViewModel.Result?>(ViewModel!.ShowOptionsDialog)));
-            // TODO: Convert nonspecific output types to inner result classes
+            // TODO: Convert nonspecific output types to result classes
             this.WhenActivated(action => action(RegisterDialog<MergeModWindow, MergeModViewModel, string?>(ViewModel!.ShowMergeModDialog)));
             this.WhenActivated(action => action(RegisterDialog<DllWindow, DllViewModel, ImmutableList<string>?>(ViewModel!.ShowDllDialog)));
             this.WhenActivated(action => action(RegisterDialog<EnemyPresetWindow, EnemyPresetViewModel, EnemyPreset?>(ViewModel!.ShowEnemyPreset)));
+            this.WhenActivated(action => action(RegisterDialog<LoadArchipelagoWindow, LoadArchipelagoViewModel, ArchipelagoData?>(ViewModel!.ShowLoadArchipelago)));
             this.WhenActivated(action => action(ViewModel!.ShowHelperWindow.RegisterHandler(DoShowHelperWindow)));
         }
 

@@ -27,6 +27,7 @@ namespace RandomizerCommon
 
         private GameData game;
         private LocationData data;
+        private ExternalItemPreset externalPreset;
         private List<ConfigAnnotation> configVars = new List<ConfigAnnotation>();
         private bool tagslot;
 
@@ -137,20 +138,21 @@ namespace RandomizerCommon
         private Dictionary<string, List<string>> mapIdAreas = new Dictionary<string, List<string>>();
         private HashSet<string> bigMultiAreas = new HashSet<string>();
 
-        public AnnotationData(GameData game, LocationData data)
+        public AnnotationData(GameData game, LocationData data, ExternalItemPreset externalPreset)
         {
             this.game = game;
             this.data = data;
+            this.externalPreset = externalPreset;
             locationOrder = game.Sekiro ? sekiroLocationOrder : ds3LocationOrder;
             locationIndex = Enumerable.Range(0, locationOrder.Count()).ToDictionary(i => locationOrder[i], i => i);
         }
 
-        public void Load(RandomizerOptions opt, ItemPreset itemPreset = null, bool processSlots = true, MergeModManifest merge = null, ExternalItemPreset externalPreset = null)
+        public void Load(RandomizerOptions opt, ItemPreset itemPreset = null, bool processSlots = true, MergeModManifest merge = null)
         {
             // Maintain stable(r) copy of config to allow feature development while game updates are still ongoing.
             // If it becomes too much to maintain both at once then scrap it
             bool stable = true;
-            if (opt["stoneswordregion"] || opt["stoneswordall"] || opt["unstable"])
+            if (externalPreset != null || opt["stoneswordregion"] || opt["stoneswordall"] || opt["unstable"])
             {
                 stable = false;
             }
@@ -264,7 +266,8 @@ namespace RandomizerCommon
                     newItem.ConfigName = newItem.OverrideConfigName ?? toConfigName(newItem.Name);
                     // TODO: Check uniqueness
                     newItem.Key = new ItemKey(ItemType.Goods, newItem.BaseID);
-                    if (newItem.Switch != null && opt[newItem.Switch])
+                    // TODO: General options switch
+                    if (newItem.Switch != null && newItem.Switch.Split(' ').All(s => opt[s]))
                     {
                         items.Add(new ItemAnnotation
                         {
@@ -814,7 +817,7 @@ namespace RandomizerCommon
                         bool noMulti = game.EldenRing && game.IsEldenDlcItem(key) && !opt["dlc"];
                         if (externalPreset?.RequiredShardCounts != null)
                         {
-                            if (externalShards.TryGetValue(key, out int req))
+                            if (externalShards.TryGetValue(key, out int req) && !noMulti)
                             {
                                 // TODO get exact count? It's available in options. For now, rely on this not actually being used.
                                 item.KeyCount = req;
@@ -1436,7 +1439,7 @@ namespace RandomizerCommon
                     if (!Areas.TryGetValue(newLoc.Area, out AreaAnnotation areaAnn)) throw new Exception($"Unrecognized {newLoc.Area}");
                     SlotAnnotation slot = new SlotAnnotation()
                     {
-                        Key = locScope.ToString(),
+                        Key = newLoc.Key,
                         Text = newLoc.Text,
                         Area = newLoc.Area,
                     };
@@ -2509,7 +2512,6 @@ namespace RandomizerCommon
 
         public class NewLocation
         {
-            // Not used except for display/validation purposes
             public string Key { get; set; }
             public string Map { get; set; }
             // Entity id, or part name if necessary

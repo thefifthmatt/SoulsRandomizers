@@ -22,10 +22,12 @@ namespace RandomizerCommon
         };
 
         private readonly GameData game;
+        private readonly ExternalItemPreset externalPreset;
 
-        public ItemLocEditor(GameData game)
+        public ItemLocEditor(GameData game, ExternalItemPreset externalPreset)
         {
             this.game = game;
+            this.externalPreset = externalPreset;
         }
 
         public void AddLot(string paramName, int baseLot, LotCells cells, Dictionary<int, byte> itemRarity = null, bool overwrite = false)
@@ -45,8 +47,14 @@ namespace RandomizerCommon
                 }
                 row = game.AddRow(paramName, targetLot);
             }
+            // Low-level validation for external locations which don't have exact size data. Excludes partial drops for Varre and Rya
+            // TODO: This can happen with ItemLotParam_enemy like seed 2532403591
+            if (externalPreset != null && game.EldenRing && paramName == "ItemLotParam_map"
+                && targetLot != 110300 && targetLot != 100910 && itemLots[targetLot + 1] != null)
+            {
+                throw new Exception($"Cannot fit items at {paramName} {baseLot}: just added {targetLot} but {targetLot + 1} already exists");
+            }
             SetLot(row, cells);
-            // Console.WriteLine($"Setting lot {baseLot}: {string.Join(", ", cells.Cells)}");
             if (itemRarity != null && itemRarity.ContainsKey(baseLot))
             {
                 row["lotItem_Rarity"].Value = itemRarity[baseLot];

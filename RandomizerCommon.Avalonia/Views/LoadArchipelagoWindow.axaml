@@ -1,0 +1,32 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RandomizerCommon.ViewModels"
+        xmlns:loc="using:RandomizerCommon.Localization"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="250"
+        x:Class="RandomizerCommon.Views.LoadArchipelagoWindow"
+        x:DataType="vm:LoadArchipelagoViewModel"
+        WindowStartupLocation="CenterOwner"
+        Width="500" Height="250"
+        MinWidth="300" MinHeight="250"
+        Title="{Binding Title^}">
+
+    <Design.DataContext>
+        <vm:LoadArchipelagoViewModel/>
+    </Design.DataContext>
+
+    <Window.Styles>
+        <StyleInclude Source="avares://RandomizerCommon.Avalonia/Styles/MainStyles.axaml"/>
+    </Window.Styles>
+
+    <StackPanel Spacing="5" Margin="5">
+        <TextBox Text="{Binding Host}" Watermark="{Binding HostPlaceholder^}" />
+        <TextBox Text="{Binding Player}" Watermark="{Binding PlayerPlaceholder^}" />
+        <TextBox Text="{Binding Password}" Watermark="{Binding PasswordPlaceholder^}" PasswordChar="•" />
+        <Button Command="{Binding LoadCommand}" IsDefault="True" HorizontalAlignment="Right" HorizontalContentAlignment="Center" MinWidth="70">
+            <loc:Message Key="LoadArchipelagoForm_load" Text="Load" />
+        </Button>
+        <SelectableTextBlock Text="{Binding Error}" Name="message" Classes.error="True" />
+    </StackPanel>
+</Window>

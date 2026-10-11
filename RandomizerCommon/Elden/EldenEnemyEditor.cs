@@ -850,6 +850,32 @@ namespace RandomizerCommon
                 }
             }
 
+            // Infinite Serpent-Hunter, not added when Archipelago which has placement logic for Rykard
+            if (!opt["noautohunt"])
+            {
+                PARAM.Row newItem = game.AddRow("ItemLotParam_map", 16000670);
+                newItem["lotItemId01"].Value = 17030000;
+                newItem["lotItemCategory01"].Value = (int)game.LotValues[LocationData.ItemType.Weapon];
+                newItem["lotItemBasePoint01"].Value = 1000;
+                newItem["lotItemNum01"].Value = 1;
+            }
+
+#if DEBUG
+            if (opt["norykardflat"])
+            {
+                // Used in event 16002842. TODO edit those effects to add flat damage
+                HashSet<int> shSp = new() { 1929, 1930, 1931, 1932 };
+                foreach (PARAM.Row atk in game.Params["AtkParam_Pc"].Rows)
+                {
+                    if (shSp.Contains((int)atk["spEffectId1"].Value))
+                    {
+                        atk["atkPhysCorrection"].Value = (ushort)0;
+                        atk["atkObj"].Value = (ushort)0;
+                    }
+                }
+            }
+#endif
+
             SortedSet<int> humanThinks = new(
                 infos.Values.Where(i => i.Class == EnemyClass.HostileNPC).Select(i => defaultData[i.ID].Think));
 

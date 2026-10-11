@@ -357,31 +357,29 @@ namespace RandomizerCommon
             }
             // foreach (int flag in shops.Rows.Select(r => (int)r["EventFlag"].Value).Where(f => f > 1000).Distinct().OrderBy(f => f)) Console.WriteLine($"shop {flag}");
 
-            // Mapping from old permanent event flag to slot key
-            Dictionary<ItemLocKey, int> permanentSlots = new Dictionary<ItemLocKey, int>();
             if (isPermanent != null)
             {
-                foreach (KeyValuePair<ItemKey, ItemLocations> item in data.Items)
+                foreach ((ItemKey item, ItemLocations itemLocs) in data.Items)
                 {
-                    foreach (ItemLocation loc in item.Value.Locations.Values)
+                    foreach (ItemLocation loc in itemLocs.Locations.Values)
                     {
                         if (loc.Scope.Type == ScopeType.Event)
                         {
                             int eventFlag = loc.Scope.ID;
                             if (isPermanent(eventFlag))
                             {
-                                // Console.WriteLine($"Permanent {eventFlag}: {game.Name(item.Key)}");
-                                ItemLocKey source = loc.Key;
-                                if (permanentSlots.ContainsKey(source)) throw new Exception($"{eventFlag}");
-                                permanentSlots[source] = eventFlag;
+                                // Console.WriteLine($"Permanent {eventFlag}: {game.Name(item)}");
+                                mapping.PermanentSlotFlags.Add(loc.Key, eventFlag);
+                                // Also track final flags for tracking externally received fixed items
+                                mapping.TrackedSlotItems.Add(item);
                             }
                             else if (mapping.TrackedFlagItems.TryGetValue(eventFlag, out ItemKey assign) && assign == null)
                             {
                                 // This is pretty hacky: only record the first item, using ItemKey order.
                                 // This distinguishes between Fingerslayer Blade (preferred) and Great Ghost Glovewort (not).
                                 // However, TODO: This doesn't work for ashdupe multi-drops as the first item is generally not the AoW
-                                mapping.TrackedFlagItems[eventFlag] = item.Key;
-                                mapping.ItemEventFlags[item.Key] = -1;
+                                mapping.TrackedFlagItems[eventFlag] = item;
+                                mapping.ItemEventFlags[item] = -1;
                                 // Console.WriteLine($"Tracking {game.Name(item.Key)} for {eventFlag}");
                             }
                         }
@@ -706,13 +704,13 @@ namespace RandomizerCommon
                                         printChances = false;
                                     }
                                 }
-                                if (permanentSlots.TryGetValue(sourceKey, out int permanentFlag))
+                                if (mapping.PermanentSlotFlags.TryGetValue(sourceKey, out int permanentFlag))
                                 {
                                     if (debugPerm) Console.WriteLine($"Changing lot flag from temp {eventFlag} to permanent {permanentFlag}");
                                     mapping.RewrittenFlags[eventFlag] = permanentFlag;
                                     lotCells.EventFlag = permanentFlag;
                                 }
-                                else if (permanentSlots.TryGetValue(targetKey, out int flagToClear))
+                                else if (mapping.PermanentSlotFlags.TryGetValue(targetKey, out int flagToClear))
                                 {
                                     if (!mapping.RewrittenFlags.TryGetValue(eventFlag, out int tempFlag))
                                     {
@@ -764,7 +762,7 @@ namespace RandomizerCommon
                                 string flagField = !game.Sekiro ? "eventFlag_forStock" : "eventFlag";
                                 object originalFlag = game.Params[target.ParamName][target.ID][flagField].Value;
                                 int shopEventFlag = game.EldenRing ? (int)(uint)originalFlag : (int)originalFlag;
-                                if (permanentSlots.TryGetValue(sourceKey, out int permanentFlag))
+                                if (mapping.PermanentSlotFlags.TryGetValue(sourceKey, out int permanentFlag))
                                 {
                                     if (shopFlagForFixedFlag != null)
                                     {
@@ -781,7 +779,7 @@ namespace RandomizerCommon
                                     mapping.RewrittenFlags[shopEventFlag] = permanentFlag;
                                     shopEventFlag = permanentFlag;
                                 }
-                                else if (permanentSlots.TryGetValue(targetKey, out int flagToClear))
+                                else if (mapping.PermanentSlotFlags.TryGetValue(targetKey, out int flagToClear))
                                 {
                                     if (!mapping.RewrittenFlags.TryGetValue(shopEventFlag, out int tempFlag))
                                     {

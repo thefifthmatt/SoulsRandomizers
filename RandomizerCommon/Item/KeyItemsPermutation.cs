@@ -14,6 +14,8 @@ namespace RandomizerCommon
         private AnnotationData ann;
         private bool explain;
 
+        private bool dummyPlacement;
+
         // Initial state
         private SortedSet<string> areas = new();
         // Mapping from areas to equivalent other areas. TODO still look into if these should be different
@@ -36,6 +38,9 @@ namespace RandomizerCommon
             this.data = data;
             this.ann = ann;
             this.explain = explain;
+
+            // TODO: Use ExternalItemPreset here
+            dummyPlacement = opt["archipelago"];
 
             Dictionary<string, Expr> configExprs = new(ann.DefaultConfigExprs);
             foreach ((string name, bool value) in ann.GetConfig(opt.GetLogicOptions()))
@@ -83,7 +88,7 @@ namespace RandomizerCommon
                 // runes_leyndell, runes_rold, runes_rold_event can be replaced. runes_end is also dynamic, but does not affect logic.
                 List<string> runes;
                 List<string> vanillaRunes = ann.Items.Keys.Where(i => i.StartsWith("rune")).ToList();
-                if (opt["norandom"] || vanillaRunes.Any(r => ann.NorandomItems.Contains(ann.Items[r])))
+                if (opt["norandom"] || vanillaRunes.Any(r => ann.NorandomItems.Contains(ann.Items[r])) || dummyPlacement)
                 {
                     // Use vanilla ordering or else we may have late-game Great Runes being required to enter Leyndell
                     runes = vanillaRunes;
@@ -512,7 +517,7 @@ namespace RandomizerCommon
             foreach (string item in itemOrder)
             {
                 ItemKey itemKey = ann.Items[item];
-                if (ann.NorandomItems.Contains(itemKey))
+                if (ann.NorandomItems.Contains(itemKey) || dummyPlacement)
                 {
                     if (opt["latedragonbarrow"] && item == "dectusmedallionright")
                     {
@@ -644,7 +649,7 @@ namespace RandomizerCommon
                     preferredAreas.IntersectWith(siloAreas);
                 }
                 // Special check to prevent error message with WeightedChoice
-                if (preferredAreas.Count == 0)
+                if (preferredAreas.Count == 0 && !dummyPlacement)
                 {
                     throw new Exception($"Nowhere to place item with extra restrictions {item}");
                 }

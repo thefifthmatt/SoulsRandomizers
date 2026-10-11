@@ -53,10 +53,11 @@ namespace RandomizerCommon
 #endif
         };
 
-        public static readonly string EldenVersion = "v0.12.2";
+        public static readonly string EldenVersion = "v0.13pre6";
         public static readonly string DS1Version = "v0.1.3";
         public static readonly string DS3Version = "v0.4.1";
         public static readonly string NightreignVersion = "v0.1.6";
+        public static readonly string EldenApVersion = "0.1.0";
         public const bool Omit = false;
 
         private static readonly Dictionary<FromGame, string> distDirs = new Dictionary<FromGame, string>

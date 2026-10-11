@@ -33,5 +33,9 @@
     <ProjectReference Include="..\..\SoulsIds\SoulsIds\SoulsIds.csproj" />
     <ProjectReference Include="..\RandomizerCommon\RandomizerCommon.csproj" />
   </ItemGroup>
+  <ItemGroup Condition="$(DefineConstants.Contains(';ARCHIPELAGO;'))">
+    <PackageReference Include="Archipelago.MultiClient.Net" Version="6.7.1" />
+    <PackageReference Include="SemanticVersioning" Version="2.0.2" />
+  </ItemGroup>
     
 </Project>

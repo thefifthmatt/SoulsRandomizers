@@ -44,15 +44,18 @@ namespace RandomizerCommon
                 Game = opt.GameNameForFile,
                 Version = version,
                 Options = opt.FullString(),
+                OptionsValue = opt,
                 HelperConfig = helperConfig,
             };
             if (enemyPreset != null)
             {
                 val.EnemyPreset = enemyPreset.ToYamlString();
+                val.EnemyPresetValue = enemyPreset;
             }
             if (itemPreset != null)
             {
                 val.ItemPreset = itemPreset.ToYamlString();
+                val.ItemPresetValue = itemPreset;
             }
             return val;
         }

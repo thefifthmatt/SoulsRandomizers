@@ -3354,33 +3354,47 @@ EnemyEvents:
   - Type: chrboss
     Entity: 16000800
     DefeatFlag: 16000800
-    Add:
-    - Cmd: IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 16002697)
-      Before: IfConditionGroup(MAIN, PASS, AND_01)
-    - Cmd: EndIfConditionGroupStateUncompiled(EventEndType.End, PASS, OR_04)
-      Before: SkipIfConditionGroupStateUncompiled(1, PASS, OR_04)
-    - Cmd: SetEventFlag(TargetEventFlagType.EventFlag, 16007690, OFF)
-    - Cmd: AwardItemLot(16000690)
-    Removes:
-    - IfInoutsideArea(AND_01, InsideOutsideState.Inside, 10000, 16002165, 1)
-    - SetEventFlag(TargetEventFlagType.EventFlag, 16002696, ON)
-    CondIdentity:
+    NewEvent:
+    - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+    - EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 16000800)
+    - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+    - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 16002697)
+    - IfConditionGroup(MAIN, PASS, AND_01)
     - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030000, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030001, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030002, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030003, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030004, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030005, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030006, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030007, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030008, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030009, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030010, OwnershipState.Owns)
+    - EndIfConditionGroupStateUncompiled(EventEndType.End, PASS, OR_04)
+    - AwardItemLot(16000670)
   - Type: chrboss
     Entity: 16000801
     DefeatFlag: 16000800
-    Add:
-    - Cmd: IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 16002697)
-      Before: IfConditionGroup(MAIN, PASS, AND_01)
-    - Cmd: EndIfConditionGroupStateUncompiled(EventEndType.End, PASS, OR_04)
-      Before: SkipIfConditionGroupStateUncompiled(1, PASS, OR_04)
-    - Cmd: SetEventFlag(TargetEventFlagType.EventFlag, 16007690, OFF)
-    - Cmd: AwardItemLot(16000690)
-    Removes:
-    - IfInoutsideArea(AND_01, InsideOutsideState.Inside, 10000, 16002165, 1)
-    - SetEventFlag(TargetEventFlagType.EventFlag, 16002696, ON)
-    CondIdentity:
+    NewEvent:
+    - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+    - EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 16000800)
+    - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+    - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 16002697)
+    - IfConditionGroup(MAIN, PASS, AND_01)
     - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030000, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030001, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030002, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030003, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030004, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030005, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030006, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030007, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030008, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030009, OwnershipState.Owns)
+    - IfPlayerHasdoesntHaveItemIncludingBbox(OR_04, ItemType.Weapon, 17030010, OwnershipState.Owns)
+    - EndIfConditionGroupStateUncompiled(EventEndType.End, PASS, OR_04)
+    - AwardItemLot(16000670)
 - ID: 16002800
   Map: m16_00_00_00
   Template:
