@@ -1787,9 +1787,13 @@ namespace EldenRingRandomizer.ViewModels
         private static readonly Text overviewText = new Text(
             "Check the mod page or README for a full list of all key items, important locations, and other details. Find hints and spoilers for item locations in the spoiler_logs directory.",
             "EldenForm_overviewL");
+        [Localize]
+        private static readonly Text overviewApText = new Text(
+            "Check the Elden Ring Archipelago game guide linked from the release page for important setup and usage info. This implementation uses the apworld by Bedrock and client dll by Duck.",
+            "EldenForm_overviewAp");
         private void SetError(string? err = null)
         {
-            Message = err ?? messages.Get(overviewText);
+            Message = err ?? messages.Get(Archipelago ? overviewApText : overviewText);
             MessageError = err != null;
         }
 

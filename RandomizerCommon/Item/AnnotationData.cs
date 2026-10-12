@@ -266,8 +266,9 @@ namespace RandomizerCommon
                     newItem.ConfigName = newItem.OverrideConfigName ?? toConfigName(newItem.Name);
                     // TODO: Check uniqueness
                     newItem.Key = new ItemKey(ItemType.Goods, newItem.BaseID);
+                    newItem.Enabled = newItem.Switch != null && newItem.Switch.Split(' ').All(s => opt[s]);
                     // TODO: General options switch
-                    if (newItem.Switch != null && newItem.Switch.Split(' ').All(s => opt[s]))
+                    if (newItem.Enabled || externalPreset != null)
                     {
                         items.Add(new ItemAnnotation
                         {
@@ -923,10 +924,11 @@ namespace RandomizerCommon
             Dictionary<string, Expr> blockExprs = new();
             if (ann.NewItems != null)
             {
+                bool newItemEnabled(string name) => NewItems.TryGetValue(name, out NewItemAnnotation newItem) && newItem.Enabled;
                 foreach (NewItemAnnotation newItem in ann.NewItems)
                 {
-                    bool selfPresent = NewItems.ContainsKey(newItem.ConfigName);
-                    bool parentPresent = newItem.Parent != null && NewItems.ContainsKey(newItem.Parent);
+                    bool selfPresent = newItemEnabled(newItem.ConfigName);
+                    bool parentPresent = newItem.Parent != null && newItemEnabled(newItem.Parent);
                     if (newItem.Logic == null || !(selfPresent || parentPresent))
                     {
                         continue;
@@ -2496,6 +2498,8 @@ namespace RandomizerCommon
             public NewLocation NewLocation { get; set; }
             public List<NewItemLogic> Logic { get; set; }
 
+            [YamlIgnore]
+            public bool Enabled { get; set; }
             [YamlIgnore]
             public string ConfigName { get; set; }
             [YamlIgnore]

@@ -119,6 +119,7 @@ namespace RandomizerCommon
             long locationId = loc.ExternalID;
             long itemId = externalPreset.FiniteItemMapping[locationId];
             ItemKey fakeItem = null;
+            int newQuantity = -1;
             if (externalPreset.LocalItems.TryGetValue(itemId, out LocalItem localItem) && !externalPreset.ExternalItems.ContainsKey(locationId))
             {
                 if (!source.Item.Equals(localItem.Key))
@@ -139,6 +140,7 @@ namespace RandomizerCommon
                     }
                     fakeLocalItems[itemId] = fakeItem = new ItemKey(baseItem.Type, newId);
                 }
+                newQuantity = localItem.Quantity;
             }
             // These error messages are bad
             void validate(ItemKey rowKey, int eventFlag)
@@ -190,7 +192,10 @@ namespace RandomizerCommon
                         throw new Exception($"Shop cell invalid quantity");
                     }
                     shopCells.Item = fakeItem;
-                    shopCells.Value *= shopCells.Quantity;
+                    if (newQuantity > 0)
+                    {
+                        shopCells.Value *= newQuantity;
+                    }
                     shopCells.Quantity = 1;
                 }
                 trackedShopLocations.Add(((uint)shopCells.EventFlag, locationId));
@@ -332,7 +337,7 @@ namespace RandomizerCommon
                     desc = "Breaks many imp statue seals";
                 }
                 string areaInfo = null;
-                if (newItem.Logic != null)
+                if (newItem.Logic != null && newItem.Enabled)
                 {
                     IEnumerable<string> areas = newItem.Logic
                         .Select(l => l.BlockArea != null && ann.Areas.TryGetValue(l.BlockArea, out AreaAnnotation area) ? (area.FullText ?? area.Text) : null)
@@ -693,7 +698,7 @@ namespace RandomizerCommon
             }
 
             Dictionary<string, ItemKey> gateItems = itemGates.ToDictionary(e => e.Value, e => e.Key);
-            HashSet<string> enabledGates = new(shardItems.Keys.Concat(blockGates).Concat(ann.NewItems.Keys));
+            HashSet<string> enabledGates = new(shardItems.Keys.Concat(blockGates).Concat(ann.NewItems.Where(e => e.Value.Enabled).Select(e => e.Key)));
 
             // Lazily initialized flags, to create events as needed
             Dictionary<string, int> gateFlags = new();
@@ -736,7 +741,7 @@ namespace RandomizerCommon
                         throw new Exception($"Internal error: Cannot create flag for item {gate} without config defined");
                     }
                 }
-                else if (ann.NewItems.TryGetValue(gate, out NewItemAnnotation newItem))
+                else if (ann.NewItems.TryGetValue(gate, out NewItemAnnotation newItem) && newItem.Enabled)
                 {
                     if (logicFlagIndices.TryGetValue(gate, out int index) && tryScriptCheck(newItem.Key, out int itemType))
                     {
