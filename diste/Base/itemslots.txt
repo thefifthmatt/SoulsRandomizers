@@ -28034,8 +28034,9 @@ Slots:
   - Primal Glintstone Blade - lot 1051560900[asset AEG099_630_9000 (Chest - id 1051561900) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins)] Primal Glintstone Blade
   - By Stargazers' Ruins (Ruins) - 79.77 away, 2.27 o'clock, -9.60 height offset
   Text: aaaaaaaaaaaaaaaaa
+  Comment: Jellyfish quest requirements
   Area: mountaintops
-  Tags: auto chest
+  Tags: auto chest missable
 - Key: '605156,3:0000000000:100900:'
   DebugText:
   - Shop item in [m11_10_00_00 (Roundtable Hold), m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins)]

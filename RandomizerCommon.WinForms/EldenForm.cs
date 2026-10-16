@@ -1670,12 +1670,12 @@ namespace RandomizerCommon
         {
             return EnemyPreset.DefaultDescription(
                 messages,
-                new()
+                new List<EnemyAnnotations.EnemyClass>()
                 {
                     EnemyAnnotations.EnemyClass.Basic, EnemyAnnotations.EnemyClass.Boss, EnemyAnnotations.EnemyClass.MinorBoss,
                     EnemyAnnotations.EnemyClass.Miniboss, EnemyAnnotations.EnemyClass.NightMiniboss, EnemyAnnotations.EnemyClass.DragonMiniboss,
                     EnemyAnnotations.EnemyClass.Evergaol, EnemyAnnotations.EnemyClass.Wildlife, EnemyAnnotations.EnemyClass.HostileNPC,
-                },
+                }.Select(c => new List<EnemyAnnotations.EnemyClass>() { c }).ToList(),
                 new() { EnemyAnnotations.EnemyClass.Scarab },
                 options["dlcsilo"]);
         }

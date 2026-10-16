@@ -459,7 +459,7 @@ namespace RandomizerCommon
             return $"{val:0.##}";
         }
 
-        public static string DefaultDescription(Messages messages, List<EnemyClass> selfClasses, List<EnemyClass> norandomClasses, bool dlcSeparate, string randomEnemies = null)
+        public static string DefaultDescription(Messages messages, List<List<EnemyClass>> selfClasses, List<EnemyClass> norandomClasses, bool dlcSeparate, string randomEnemies = null)
         {
             // DLC enemies and bosses randomized separately
             // DLC randomized separately
@@ -471,9 +471,10 @@ namespace RandomizerCommon
             {
                 return ClassNames.TryGetValue(cl, out Text t) ? messages.Get(t) : cl.ToString();
             }
-            foreach (EnemyClass cl in selfClasses)
+            string sepClass = messages.Get(PoolDelimitTypeText);
+            foreach (List<EnemyClass> cls in selfClasses)
             {
-                string classes = classText(cl);
+                string classes = string.Join(sepClass, cls.Select(classText));
                 ret.AppendLine(messages.Get(poolDescOneLineText, classes, classes));
             }
             foreach (EnemyClass cl in norandomClasses)

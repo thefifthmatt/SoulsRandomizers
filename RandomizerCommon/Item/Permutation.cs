@@ -453,8 +453,22 @@ namespace RandomizerCommon
 #endif
 
             // Calculate key items, including area lateness ranking
-            KeyItemsPermutation keyItems = new KeyItemsPermutation(options, data, ann, explain);
-            assign = keyItems.AssignItems(random, options, preset);
+            if (!externalData.IsActive)
+            {
+                KeyItemsPermutation keyItems = new KeyItemsPermutation(options, data, ann, explain);
+                assign = keyItems.AssignItems(random, options, preset);
+            }
+            else
+            {
+                // TODO: Don't run this routine at all for external presets if possible.
+                // The main value of this is spoiler logs, to show key item hints and have log order
+                RandomizerOptions fakeOptions = new RandomizerOptions(options.Game);
+                fakeOptions["norandom"] = true;
+                fakeOptions["archipelago"] = true;
+                fakeOptions["dlc"] = options["dlc"];
+                KeyItemsPermutation keyItems = new KeyItemsPermutation(fakeOptions, data, ann, explain);
+                assign = keyItems.AssignItems(random, fakeOptions, preset);
+            }
             foreach ((string item, HashSet<string> areas) in assign.Assign)
             {
                 ItemKey key = ann.Items[item];

@@ -322,9 +322,9 @@ namespace RandomizerCommon
             opt["swaprewards"] = false;
             opt["swapboss"] = false;
             opt["nightday"] = apOpt("night_bosses");
+            opt["mergeboss"] = apOpt("merge_bosses");
             opt["ignoresize"] = !apOpt("restrictive_bosses");
             // TODO: Random enemy preset with customenemy
-            // TODO: Option for merge bosses
             if (slotData.TryGetValue("random_enemy_preset", out object presetObj) && presetObj is string preset
                 && !string.IsNullOrWhiteSpace(preset) && preset != "{}")
             {

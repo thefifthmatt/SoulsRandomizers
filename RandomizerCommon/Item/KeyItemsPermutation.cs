@@ -610,9 +610,12 @@ namespace RandomizerCommon
 
             // Assign key items
             bool zeroWeights = false;
-            bool debugChoices = false;
+            bool debugChoices = opt["debugchoice"];
             float scaling = ann.Weights.KeyItemChain;
             float spreadScaling = ann.Weights.KeyItemRegionSpread;
+            // Additional lateness mechanic, but this overweights late areas with very few items, especially with fog areas in Elden Ring.
+            // It used to be 0.1 for key items regardless of bias.
+            float lateFactor = ann.Stable ? 0.1f : 0; // (float)Math.Clamp(Math.Log2(scaling) / 5, 0, 0.1);
             Dictionary<string, Expr> reqs = CollapseReqs();
             foreach (string item in itemOrder)
             {
@@ -655,7 +658,7 @@ namespace RandomizerCommon
                 }
                 Dictionary<string, float> weights = allowedAreas.ToDictionary(
                     area => area,
-                    area => Weight(area) * (!preferredAreas.Contains(area) ? 0 : (specialScaling.TryGetValue(area, out float sp) ? sp : 1)));
+                    area => Weight(area, lateFactor: lateFactor) * (!preferredAreas.Contains(area) ? 0 : (specialScaling.TryGetValue(area, out float sp) ? sp : 1)));
 
                 if (debugChoices)
                 {
@@ -912,7 +915,7 @@ namespace RandomizerCommon
                 }
                 bool itemAllowMissable = ann.ExcludeTags.TryGetValue(itemKey, out HashSet<string> excludeTags) ? !excludeTags.Contains("missable") : true;
                 bool allowQuest = itemAllowMissable || ann.NoQuestTags.Contains("missable");
-                string selected = WeightedChoice(random, allowedAreas, a => Weight(a, allowQuest, 0.01f, questAreas.ContainsKey(a) ? questAreas[a] : 0));
+                string selected = WeightedChoice(random, allowedAreas, a => Weight(a, allowQuest, lateFactor / 10, questAreas.ContainsKey(a) ? questAreas[a] : 0));
                 if (explain) Console.WriteLine($"Selecting {questItem} to go in {selected} ({string.Join(" ", nodes[selected].Counts)})");
                 // if (selected == "volcano" || true) Console.WriteLine($"  can miss {allowMissable}, areas {string.Join(" ", questAreas)}. weights {string.Join(", ", allowedAreas.Select(a => $"{a}={Weight(a, allowMissable, 0.01f, questAreas.ContainsKey(a) ? questAreas[a] : 0)}"))}");
                 // if (selected == "volcano" || true) Console.WriteLine($"  areas {string.Join(" ", questAreas)}. weights {string.Join(", ", allowedAreas.Where(a => nodes[a].Count(true, true) >= 0).Select(a => $"{a}={nodes[a].Count(true, true)}"))}");
@@ -971,7 +974,7 @@ namespace RandomizerCommon
             return ret;
         }
 
-        public float Weight(string area, bool quest = false, float lateFactor = 0.1f, int removeQuest = 0)
+        public float Weight(string area, bool quest = false, float lateFactor = 0, int removeQuest = 0)
         {
             Node node = nodes[area];
             int count = node.Count(quest) - removeQuest;

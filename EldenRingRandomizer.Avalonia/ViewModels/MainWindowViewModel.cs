@@ -32,6 +32,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YamlDotNet.Serialization;
 using static RandomizerCommon.Messages;
+using static RandomizerCommon.EnemyAnnotations;
 using static SoulsIds.GameSpec;
 using Application = Avalonia.Application;
 using Icon = MsBox.Avalonia.Enums.Icon;
@@ -222,6 +223,8 @@ namespace EldenRingRandomizer.ViewModels
         private bool _swapboss;
         [Reactive]
         private bool _nightday;
+        [Reactive]
+        private bool _mergeboss;
         [Reactive]
         private bool _ignoresize;
 
@@ -577,6 +580,7 @@ namespace EldenRingRandomizer.ViewModels
                 this.WhenAnyValue(x => x.Swapboss).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Nightday).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Ignoresize).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Mergeboss).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Customenemy).Select(_ => Unit.Default),
                 // DLC
                 this.WhenAnyValue(x => x.Dlc).Select(_ => Unit.Default),
@@ -703,7 +707,7 @@ namespace EldenRingRandomizer.ViewModels
                         Bias = ItemPresetViewModel.Bias;
                     }
                 });
-            this.WhenAnyValue(x => x.Customenemy).CombineLatest(langChange)
+            this.WhenAnyValue(x => x.Customenemy, x => x.Mergeboss).CombineLatest(langChange)
                 .Subscribe(_ =>
                 {
                     if (Customenemy)
@@ -982,6 +986,7 @@ namespace EldenRingRandomizer.ViewModels
             Swaprewards = opt["swaprewards"];
             Swapboss = opt["swapboss"];
             Nightday = opt["nightday"];
+            Mergeboss = opt["mergeboss"];
             Ignoresize = opt["ignoresize"];
             // Migrate from presets having names, which is not as relevant with a custom editor
             // If it would be helpful, create a dialog which allows selecting a preset by name and then copying it into CustomEnemy
@@ -1113,6 +1118,7 @@ namespace EldenRingRandomizer.ViewModels
             opt["swaprewards"] = Swaprewards;
             opt["swapboss"] = Swapboss;
             opt["nightday"] = Nightday;
+            opt["mergeboss"] = Mergeboss;
             opt["ignoresize"] = Ignoresize;
             opt["customenemy"] = Customenemy;
             // DLC
@@ -1179,7 +1185,7 @@ namespace EldenRingRandomizer.ViewModels
             if (preset == null && selectedEnemyPreset == null && !createIfAbsent)
             {
                 // Nothing to do here, aside from initializing EnemyPresetText
-                UpdateEnemyPresetText();
+                // UpdateEnemyPresetText();
             }
             if (preset != null || createIfAbsent)
             {
@@ -1256,17 +1262,25 @@ namespace EldenRingRandomizer.ViewModels
         [Localize]
         private static readonly Text agingUntouchableText = new Text("Aging Untouchable", "EldenForm_nerflanternEnemy");
 
+        private readonly List<EnemyClass> defaultEldenClasses =
+        [
+            EnemyClass.Basic, EnemyClass.Boss, EnemyClass.MinorBoss,
+            EnemyClass.Miniboss, EnemyClass.NightMiniboss, EnemyClass.DragonMiniboss,
+            EnemyClass.Evergaol, EnemyClass.Wildlife, EnemyClass.HostileNPC,
+        ];
+        private readonly List<List<EnemyClass>> mergedEldenClasses =
+        [
+            [EnemyClass.Basic],
+            [EnemyClass.Boss, EnemyClass.MinorBoss, EnemyClass.Miniboss, EnemyClass.NightMiniboss, EnemyClass.DragonMiniboss, EnemyClass.Evergaol],
+            [EnemyClass.Wildlife],
+            [EnemyClass.HostileNPC],
+        ];
         private string DefaultEnemyPresetDesc()
         {
             return EnemyPreset.DefaultDescription(
                 messages,
-                new()
-                {
-                    EnemyAnnotations.EnemyClass.Basic, EnemyAnnotations.EnemyClass.Boss, EnemyAnnotations.EnemyClass.MinorBoss,
-                    EnemyAnnotations.EnemyClass.Miniboss, EnemyAnnotations.EnemyClass.NightMiniboss, EnemyAnnotations.EnemyClass.DragonMiniboss,
-                    EnemyAnnotations.EnemyClass.Evergaol, EnemyAnnotations.EnemyClass.Wildlife, EnemyAnnotations.EnemyClass.HostileNPC,
-                },
-                new() { EnemyAnnotations.EnemyClass.Scarab },
+                Mergeboss ? mergedEldenClasses : defaultEldenClasses.Select(c => new List<EnemyClass>() { c }).ToList(),
+                [EnemyClass.Scarab],
                 Dlcsilo,
                 messages.Get(agingUntouchableText));
         }

@@ -886,6 +886,15 @@ namespace RandomizerCommon
             // Done during randomization if there's no specific preset defined, also used as backup if required fields are missing from a defined preset.
             // While editing, disabled builtins should be shown but disabled, but are mostly a suggestion at that point.
             ItemPreset o = Clone();
+            if (opt.Game == SoulsIds.GameSpec.FromGame.ER)
+            {
+                // This logic could be in the config, but the values are not set directly in the text config because it's conditional
+                if (opt["dlc"])
+                {
+                    OverallSilo = opt["dlcsilo"] ? AreaSiloType.DLC : AreaSiloType.None;
+                    KeyItemSilo = opt["dlcstart"] || opt["dlckeysilo"] ? AreaSiloType.DLC : OverallSilo;
+                }
+            }
             bool deleteItem(ItemRef item) => item.FilterRemove(opt);
             bool deleteLoc(LocationRef loc) => loc.FilterRemove(opt);
             o.NorandomItems?.RemoveAll(deleteItem);

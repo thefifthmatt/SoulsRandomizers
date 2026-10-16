@@ -107,7 +107,7 @@ namespace RandomizerCommon.ViewModels
                     "EldenRing",
                     Player,
                     ItemsHandlingFlags.NoItems,
-                    tags: ["StaticRandomizer"],
+                    tags: ["StaticRandomizer", "TextOnly"],
                     password: Password,
                     version: new Version(0, 6, 7),
                     requestSlotData: false);

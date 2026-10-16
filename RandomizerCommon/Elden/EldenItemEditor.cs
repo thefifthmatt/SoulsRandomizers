@@ -758,7 +758,7 @@ namespace RandomizerCommon
                             },
                             EMEVD.Event.RestBehaviorType.Restart);
                     }
-                    else if (!mapping.ItemEventFlags.TryGetValue(newItem.Key, out targetFlag))
+                    else if (!mapping.ItemEventFlags.TryGetValue(newItem.Key, out targetFlag) || targetFlag <= 0)
                     {
                         throw new Exception($"Internal error: Item {gate} not tracked");
                     }
@@ -1255,7 +1255,6 @@ namespace RandomizerCommon
                                 if (gate == null) throw new Exception($"Internal error: Cond flag required in {callee} but no logic gate defined");
                                 return gate;
                             }
-                            int filterGateFlag() => getGateFlag(filterGate());
                             Instr newInit = null;
                             void editInit(Action<Instr> edit)
                             {
@@ -1270,7 +1269,7 @@ namespace RandomizerCommon
                                     if (parts.Length != 2 || !TryArgSpec(parts[0], out int pos)) throw new Exception($"Internal error: Bad {t.SetArg} in config");
                                     // This happens due to imprecise callee resolution and duplicate map ids
                                     if (pos > originalInit.Count) continue;
-                                    int flag = parts[1] == "gate" ? filterGateFlag() : int.Parse(parts[1]);
+                                    int flag = parts[1] == "gate" ? getGateFlag(filterGate()) : int.Parse(parts[1]);
                                     editInit(init => init[offset + pos] = flag);
                                 }
                                 if (t.ItemArg != null)
@@ -1329,8 +1328,16 @@ namespace RandomizerCommon
                                             }
                                             else if (filter.Gate != null)
                                             {
-                                                int flag = getGateFlag(filter.Gate);
-                                                newCmds.Add($"IfEventFlag({edit.FilterCond}, ON, TargetEventFlagType.EventFlag, {flag})");
+                                                // New items might not have dedicated flags if they're from external locations, and item is more stable, so prefer direct item check
+                                                if (gateItems.TryGetValue(filter.Gate, out ItemKey item) && !ann.MultiItems.ContainsKey(item) && tryScriptCheck(item, out int itemType))
+                                                {
+                                                    newCmds.Add($"IfPlayerHasdoesntHaveItem({edit.FilterCond}, {itemType}, {item.ID}, OwnershipState.Owns)");
+                                                }
+                                                else
+                                                {
+                                                    int flag = getGateFlag(filter.Gate);
+                                                    newCmds.Add($"IfEventFlag({edit.FilterCond}, ON, TargetEventFlagType.EventFlag, {flag})");
+                                                }
                                                 addedConds.Add(edit.FilterCond);
                                             }
                                             else throw new Exception($"Internal error: filter for {callee} has no usable condition defined");
@@ -1433,7 +1440,7 @@ namespace RandomizerCommon
                             }
                             if (t.CondFlag != null)
                             {
-                                events.ReplaceMacro(edits, t.CondFlag, filterGateFlag().ToString(), EventValueType.Flag);
+                                events.ReplaceMacro(edits, t.CondFlag, getGateFlag(filterGate()).ToString(), EventValueType.Flag);
                             }
                             if (t.ItemUse != null)
                             {
@@ -1445,7 +1452,7 @@ namespace RandomizerCommon
                                         // This doesn't give much feedback, potentially it could show a dialog
                                         events.AddMacro(edits, new EventAddCommand
                                         {
-                                            Cmd = $"IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, {filterGateFlag()})",
+                                            Cmd = $"IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, {getGateFlag(filterGate())})",
                                             Before = "start",
                                         });
                                         continue;
@@ -1465,7 +1472,7 @@ namespace RandomizerCommon
                                     else
                                     {
                                         int item = (int)ins[2];
-                                        events.ReplaceMacro(edits, useCmd, $"IfEventFlag({ins[0]}, {check}, TargetEventFlagType.EventFlag, {filterGateFlag()})");
+                                        events.ReplaceMacro(edits, useCmd, $"IfEventFlag({ins[0]}, {check}, TargetEventFlagType.EventFlag, {getGateFlag(filterGate())})");
                                     }
                                 }
                             }

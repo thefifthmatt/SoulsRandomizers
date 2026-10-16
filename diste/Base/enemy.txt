@@ -3705,7 +3705,7 @@ Enemies:
     NpcName: 904750000
   DeathLine: 207101000
   Outfit: Aristocrat Headband; Godrick Knight Armor; Godrick Knight Gauntlets; Godrick Knight Greaves
-  Tags: exclude:unkillable perceptive nomodelname exclude:fallout excludemultiphase proper size:2
+  Tags: exclude:unkillable perceptive nomodelname exclude:fallout excludemultiphase proper size:2 exclude:2054390800
   BuddyGroup: 10005106
   ExtraName: Godrick the Grafted
 - ID: 10000720
@@ -12905,7 +12905,7 @@ Enemies:
       PartialTemplate: Godskin $1
     NpcName: 903575000
   Outfit: Godskin Apostle Hood; Godskin Apostle Robe; Godskin Apostle Bracelets; Godskin Apostle Trousers
-  Tags: multi exclude:unkillable nomodelname noplace partial size:2
+  Tags: multi exclude:unkillable nomodelname noplace partial size:2 exclude:2054390800
   BuddyGroup: 13005100
   ExtraName: Godskin Duo
   Regions:
@@ -13471,7 +13471,7 @@ Enemies:
       FullTemplate: $1, Queen of the Full Moon
     NpcName: 902030000
   Outfit: Queen's Crescent Crown; Queen's Robe; Queen's Bracelets; Queen's Leggings
-  Tags: multi exclude:unkillable perceptive exclude:strand uniquearena scalephase singleton manualname proper size:2
+  Tags: multi exclude:unkillable perceptive exclude:strand uniquearena scalephase singleton manualname proper size:2 exclude:2054390800
   Groups:
   - 14005810
   - 14005811
@@ -13831,7 +13831,7 @@ Enemies:
       FullTemplate: $1 of Radagon
     NpcName: 903181000
   Outfit: Karolos Glintstone Crown; Raya Lucarian Robe; Sorcerer Manchettes; Sorcerer Leggings
-  Tags: exclude:unkillable perceptive back exclude:strand size:2
+  Tags: exclude:unkillable perceptive back exclude:strand size:2 exclude:2054390800
   BuddyGroup: 14005102
   ExtraName: Red Wolf of Radagon
 - ID: 14000680

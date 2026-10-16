@@ -3102,7 +3102,6 @@ ItemEvents:
     - Gate: rauhruinsspiritspringstone
       Args:
         X0_4: 2044460500
-    CondFlag: X0_4
     Edits:
     - ItemLocCond: 10
       AfterCmds:

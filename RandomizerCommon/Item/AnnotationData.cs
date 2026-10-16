@@ -83,6 +83,8 @@ namespace RandomizerCommon
         // Bias weights, which may come from preset
         public RandomizerOptions.BiasWeights Weights { get; private set; }
 
+        public bool Stable { get; private set; }
+
         // Tag stuff, more customizable with ItemPreset
         // Forbidden placement flags for various items
         public readonly Dictionary<ItemKey, HashSet<string>> ExcludeTags = new();
@@ -151,16 +153,13 @@ namespace RandomizerCommon
         {
             // Maintain stable(r) copy of config to allow feature development while game updates are still ongoing.
             // If it becomes too much to maintain both at once then scrap it
-            bool stable = true;
-            if (externalPreset != null || opt["stoneswordregion"] || opt["stoneswordall"] || opt["unstable"])
-            {
-                stable = false;
-            }
+            string[] stableOpts = new[] { "stoneswordregion", "stoneswordall", "regionlock", "springsanity","unstable" };
+            Stable = stableOpts.All(name => !opt[name]) && externalPreset == null;
 
             Annotations ann;
             IDeserializer deserializer = new DeserializerBuilder().Build();
 
-            string stableSuffix = stable ? "_stable" : "";
+            string stableSuffix = Stable ? "_stable" : "";
             string annPath = $@"{game.Dir}\Base\annotations{stableSuffix}.txt";
             using (var reader = File.OpenText(annPath))
             {
@@ -440,16 +439,7 @@ namespace RandomizerCommon
             }
             ItemPriority.AddRange(ann.ItemPriority.Where(priority => !priority.NoPriority));
 
-            // The below stuff can be augmented by presets, so load it now
-            bool usePreset = game.EldenRing;
-            if (game.EldenRing)
-            {
-                OverallSilo = opt["dlc"] && opt["dlcsilo"] ? AreaSiloType.DLC : AreaSiloType.None;
-                // TODO: Make this come from preset processing
-                bool dlcKeySilo = itemPreset == null && opt["dlckeysilo"];
-                KeyItemSilo = opt["dlc"] && (opt["dlcstart"] || dlcKeySilo) ? AreaSiloType.DLC : OverallSilo;
-            }
-            else if (game.DS3)
+            if (game.DS3)
             {
                 OverallSilo = AreaSiloType.None;
                 if ((opt["dlc1"] || opt["dlc2"]) && opt["dlckeysilo"])
@@ -458,6 +448,8 @@ namespace RandomizerCommon
                 }
             }
 
+            // The below stuff can be augmented by presets, so load it now
+            bool usePreset = game.EldenRing;
             bool explainPreset = false;
             if (usePreset)
             {
@@ -478,6 +470,7 @@ namespace RandomizerCommon
                     // Config silo must be *more* specific than options-based silo.
                     // As a result, if options-based silo is DLC, it can't changed back to None.
                     // We already check consistency between overall/key config silo in Resolve.
+                    // It is also important that the default preset has KeyItemSilo None if dlckeysilo is not enabled.
                     if (OverallSilo == AreaSiloType.None)
                     {
                         OverallSilo = ConfigPreset.OverallSilo;

@@ -548,7 +548,7 @@ namespace RandomizerCommon
             { new ItemKey(ItemType.Goods, 8127), "Letter from Volcano Manor (Istvan)" },
             { new ItemKey(ItemType.Goods, 8132), "Letter from Volcano Manor (Rileigh)" },
             { new ItemKey(ItemType.Goods, 8174), "Academy Glintstone Key (Thops)" },
-            { new ItemKey(ItemType.Goods, 8196), "Unalloyed Gold Needle (Milicent)" },
+            { new ItemKey(ItemType.Goods, 8196), "Unalloyed Gold Needle (Millicent)" },
             { new ItemKey(ItemType.Goods, 8975), "Unalloyed Gold Needle (Broken)" },
             { new ItemKey(ItemType.Goods, 8976), "Unalloyed Gold Needle (Fixed)" },
             { new ItemKey(ItemType.Goods, 191), "Godrick's Great Rune (Restored)" },

@@ -587,7 +587,9 @@
                                 <CheckBox IsChecked="{Binding Customenemy}">
                                     <loc:Message Key="EldenForm_default_custom" Text="Custom enemy placement" />
                                 </CheckBox>
-                                <!-- TODO: Merge boss option without using preset -->
+                                <CheckBox IsChecked="{Binding Mergeboss}" IsVisible="{Binding !Customenemy}">
+                                    <loc:Message Key="EldenForm_mergeboss" Text="Merge all boss categories" />
+                                </CheckBox>
                                 <CheckBox IsChecked="{Binding Ignoresize}">
                                     <loc:Message Key="EldenForm_ignoresize" Text="Ignore arena size for boss placement" />
                                 </CheckBox>

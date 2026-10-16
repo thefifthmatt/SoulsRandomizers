@@ -2672,7 +2672,6 @@ SpecialModes:
   NorandomSwitch: norandom_upgrades
   Includes: upgradeashes
 DefaultPreset:
-  KeyItemSilo: DLC
   NorandomItems:
   - Name: Spectral Steed Whistle
     ID: goods:130

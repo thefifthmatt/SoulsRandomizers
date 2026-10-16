@@ -901,12 +901,17 @@ namespace RandomizerCommon
                     if (opt["archipelago"])
                     {
                         events.AddSimpleEvent(emevd, 19003122, new[]{
-                            "WaitFixedTimeSeconds(1)",
+                            "IfCharacterHasSpEffect(OR_01, 10000, 81000001, true, ComparisonType.Equal, 1)",
+                            "IfElapsedSeconds(OR_01, 5)",
+                            "IfConditionGroup(MAIN, PASS, OR_01)",
                             "SkipIfCharacterHasSpEffect(3, 10000, 81000001, true, ComparisonType.Equal, 1)",
                             $"DisplayGenericDialog({RuntimeParamChecker.ClientMissingMessageId}, PromptType.OKCANCEL, NumberofOptions.NoButtons, 0, 5)",
-                            "WaitFixedTimeSeconds(19)",
+                            "WaitFixedTimeSeconds(15)",
                             "EndUnconditionally(EventEndType.Restart)",
-                            "WaitFixedTimeSeconds(9)",
+                            "IfCharacterHasSpEffect(OR_02, 10000, 81000002, true, ComparisonType.Equal, 1)",
+                            "IfElapsedSeconds(OR_02, 10)",
+                            "IfConditionGroup(MAIN, PASS, OR_02)",
+                            "EndIfCharacterHasSpEffect(EventEndType.Restart, 10000, 81000001, false, ComparisonType.Equal, 1)",
                             "SkipIfCharacterHasSpEffect(1, 10000, 81000002, true, ComparisonType.Equal, 1)",
                             $"DisplayGenericDialog({RuntimeParamChecker.ClientErrorMessageId}, PromptType.OKCANCEL, NumberofOptions.NoButtons, 0, 5)",
                             "WaitFixedTimeSeconds(15)",

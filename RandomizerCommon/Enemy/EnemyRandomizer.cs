@@ -328,15 +328,28 @@ namespace RandomizerCommon
                 preset = null;
             }
 #endif
-            // If locations are uniquely globally forced, use a preset for it to handle all cases consistently
-            if (externalPreset?.ForceBossTargets != null)
+            // Always use a preset in Elden Ring always for consistent handling of ForceBossTargets and merged bosses
+            if (game.EldenRing && preset == null)
             {
                 preset = EnemyPreset.MakeClassBasedDefault(ann);
+                // Still require no preset for the simple merge switch.
+                if (opt["mergeboss"])
+                {
+                    List<EnemyClass> overrideMergeCats = new()
+                    {
+                        EnemyClass.MinorBoss, EnemyClass.Miniboss, EnemyClass.DragonMiniboss, EnemyClass.NightMiniboss, EnemyClass.Evergaol
+                    };
+                    foreach ((EnemyClass cl, ClassAssignment assign) in preset.Classes)
+                    {
+                        if (overrideMergeCats.Contains(cl))
+                        {
+                            assign.MergeParent = true;
+                        }
+                    }
+                }
             }
-            if (preset != null)
-            {
-                preset.ProcessParents(ann);
-            }
+
+            preset?.ProcessParents(ann);
             bool presetOpt(string name, bool defaultTrue = false)
             {
                 if (opt[name]) return true;
@@ -1767,7 +1780,7 @@ namespace RandomizerCommon
                         return false;
                     }
                 }
-                if (targetInfo.IsImportantTarget && sourceInfo.IsImportantTarget && !opt["ignoresize"])
+                if (targetInfo.IsImportantTarget && sourceInfo.IsImportantTarget && (source == 2054390800 || !opt["ignoresize"]))
                 {
                     int arena = targetInfo.GetNamedTag("arena", out string arenaStr) && int.TryParse(arenaStr, out int arenaVal) ? arenaVal : (sourceInfo.IsBossTarget ? 2 : 3);
                     int size = sourceInfo.GetNamedTag("size", out string sizeStr) && int.TryParse(sizeStr, out int sizeVal) ? sizeVal : 0;
@@ -1780,6 +1793,12 @@ namespace RandomizerCommon
                     else if (Randomizer.Omit && (source == 16000800 || source == 16000801) && (arena < 3 || !targetInfo.IsBossTarget))
                     {
                         if (explain) Console.WriteLine($"Not adding {ename(source)} to {ename(target)} in safe mode because arena size {arena} or boss status {targetInfo.IsBossTarget}");
+                        return false;
+                    }
+                    // size:2 is too broad of a range for Bayle. Some arenas are just not good, but at least major boss ones have been manually tested
+                    else if (source == 2054390800 && arena < (targetInfo.Class == EnemyClass.Boss || targetInfo.Class == EnemyClass.Evergaol ? 2 : 3))
+                    {
+                        if (explain) Console.WriteLine($"Not adding {ename(source)} to {ename(target)} in safe mode because arena {arena} will cause frame issues");
                         return false;
                     }
                 }

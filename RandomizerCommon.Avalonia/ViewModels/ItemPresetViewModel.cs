@@ -366,7 +366,7 @@ namespace RandomizerCommon.ViewModels
             {
                 return;
             }
-            RandomizerOptions current = OptionsProvider.MakeOptions();
+            RandomizerOptions current = OptionsProvider.MakeDefaultOptions();
             // Try doing this in-place
             Preset = Repo.DefaultPreset.ProcessBuiltins(current);
             InitializePanels();
