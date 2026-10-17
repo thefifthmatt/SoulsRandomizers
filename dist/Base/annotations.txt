@@ -1130,7 +1130,7 @@ Slots:
 - Key: '00,0:54000120::'
   DebugText:
   - Ember - 4000120[Corpse [o000250_0012] @ firelink]
-  Text: Above the Firelink Shrine entrance, up stairs/slope from either left or right of the entrance
+  Text: Above the Firelink Shrine entrance, up the stairs/slope from either left or right of the entrance
   Area: firelink
 - Key: '00,0:54000140::'
   DebugText:
@@ -1173,18 +1173,18 @@ Slots:
 - Key: '00,0:54000220::'
   DebugText:
   - Titanite Chunk - 4000220[Corpse [o000250_0022] @ firelink]
-  Text: In a path to the left of where Ashen Estus Flask was in Cemetary of Ash
+  Text: In a path to the left of where Ashen Estus Flask was in Cemetery of Ash
   Area: untended
   Tags: outoftheway
 - Key: '00,0:54000230::'
   DebugText:
   - Soul of a Crestfallen Knight - 4000230[Corpse [o000250_0023] @ firelink]
-  Text: Close to where Ashen Estus Flask was in Cemetary of Ash
+  Text: Close to where Ashen Estus Flask was in Cemetery of Ash
   Area: untended
 - Key: '00,0:54000240::'
   DebugText:
   - Titanite Chunk - 4000240[Corpse [o000250_0024] @ firelink]
-  Text: In a path to the right of where Ashen Estus Flask was in Cemetary of Ash
+  Text: In a path to the right of where Ashen Estus Flask was in Cemetery of Ash
   Area: untended
   Tags: outoftheway
 - Key: '00,0:54000250::'
@@ -1202,7 +1202,7 @@ Slots:
 - Key: '00,0:54000270::'
   DebugText:
   - Hidden Blessing - 4000270[Corpse [o000250_0027] @ firelink]
-  Text: Behind the coffin that had a Titanite Shard in Cemetary of Ash
+  Text: Behind the coffin that had a Titanite Shard in Cemetery of Ash
   Area: untended
 - Key: '00,0:54000280::'
   DebugText:
@@ -1213,7 +1213,7 @@ Slots:
 - Key: '00,0:54000290::'
   DebugText:
   - Soul of a Crestfallen Knight - 4000290[Corpse [o000250_0029] @ firelink]
-  Text: Above the Firelink Shrine entrance, up stairs/slope from either left or right of the entrance
+  Text: Above the Firelink Shrine entrance, up the stairs/slope from either left or right of the entrance
   Area: untended
   Tags: late
 - Key: '00,0:54000300::'
@@ -2289,7 +2289,7 @@ Slots:
 - Key: '02,0:53100860::'
   DebugText:
   - Poisonbite Ring+1 - 3100860[Corpse [o000250_0086] @ settlement]
-  Text: Behind the well in the back of area where the Giant shoots arrows, nearby where the flamerge-wielding thrall drops down.
+  Text: Behind the well in the back of area where the Giant shoots arrows, nearby where the flamberge-wielding thrall drops down.
   Area: settlement
   Tags: mid outoftheway ng+
 - Key: '02,0:53100870::'
@@ -2500,7 +2500,7 @@ Slots:
 - Key: '03,0:53300100::'
   DebugText:
   - Soul of an Unknown Traveler - 3300100[Corpse [o000250_0010] @ farronkeep]
-  Text: Out in the open to the right of the building before Crystal Sage, as entered from Crufixion Woods bonfire
+  Text: Out in the open to the right of the building before Crystal Sage, as entered from Crucifixion Woods bonfire
   Area: farronkeep_road
 - Key: '03,0:53300110::'
   DebugText:
@@ -2578,7 +2578,7 @@ Slots:
 - Key: '03,0:53300270::'
   DebugText:
   - Undead Bone Shard - 3300270[Corpse [o000250_0027] @ farronkeep]
-  Text: In a standalone pavillion down the ramp from Keep Ruins bonfire and to the right
+  Text: In a standalone pavilion down the ramp from Keep Ruins bonfire and to the right
   Area: farronkeep
   Tags: ambush health late
 - Key: '03,0:53300280::'
@@ -2606,7 +2606,7 @@ Slots:
 - Key: '03,0:53300320::'
   DebugText:
   - Stone Parma - 3300320[Corpse [o000250_0032] @ farronkeep]
-  Text: Along the inner wall of the keep, making an left from Farron Keep bonfire but before the area with the Darkwraith, guarded by a slug
+  Text: Along the inner wall of the keep, making a left from Farron Keep bonfire but before the area with the Darkwraith, guarded by a slug
   Area: farronkeep
 - Key: '03,0:53300340::'
   DebugText:
@@ -2716,7 +2716,7 @@ Slots:
 - Key: '03,0:53300510::'
   DebugText:
   - Rotten Pine Resin - 3300510[Corpse [o000250_0051] @ farronkeep] (4)
-  Text: From the Farron Keep bonfire straight ahead to the pavillion guarded by the Darkwraith, just to the left of the ritual fire stairs
+  Text: From the Farron Keep bonfire straight ahead to the pavilion guarded by the Darkwraith, just to the left of the ritual fire stairs
   Area: farronkeep
   Tags: mid
 - Key: '03,0:53300520::'
@@ -2745,7 +2745,7 @@ Slots:
 - Key: '03,0:53300540::'
   DebugText:
   - Titanite Shard - 3300540[Corpse [o000250_0054] @ farronkeep]
-  Text: Along the inner wall of the keep, making an left from Farron Keep bonfire, by the second group of four slugs
+  Text: Along the inner wall of the keep, making a left from Farron Keep bonfire, by the second group of four slugs
   Area: farronkeep
 - Key: '03,0:53300545::'
   DebugText:
@@ -2772,7 +2772,7 @@ Slots:
 - Key: '03,0:53300570::'
   DebugText:
   - Sage's Coal - 3300570[Corpse [o000250_0057] @ farronkeep]
-  Text: In the pavillion guarded by a Darkwraith, straight ahead from the Farron Keep bonfire to the left of the ritual fire stairs
+  Text: In the pavilion guarded by a Darkwraith, straight ahead from the Farron Keep bonfire to the left of the ritual fire stairs
   Area: farronkeep
   Tags: ambush racemode
 - Key: '03,0:53300590::'
@@ -3097,7 +3097,7 @@ Slots:
 - Key: '04,0:50006092::'
   DebugText:
   - Black Eye Orb - 60920[Invisible [o000499_0001] @ cathedral]
-  Text: On Rosaria's corpse after joining Rosaria's Fingers, exhausing Leonhard's dialogue there and reaching the Profaned Capital bonfire.
+  Text: On Rosaria's corpse after joining Rosaria's Fingers, exhausting Leonhard's dialogue there and reaching the Profaned Capital bonfire.
   Area: cathedral
   Tags: missable late exclusive
   QuestReqs: highwall_darkwraith irithyll
@@ -3765,7 +3765,7 @@ Slots:
 - Key: '05,0:53800340::'
   DebugText:
   - Chaos Gem - 3800340[Corpse [o000250_0034] @ catacombs]
-  Text: In Smouldering Lake along the wall underneath the balista, all the way to the left past two crabs
+  Text: In Smouldering Lake along the wall underneath the ballista, all the way to the left past two crabs
   Area: catacombs_lake
   Tags: outoftheway
 - Key: '05,0:53800350::'
@@ -4764,7 +4764,7 @@ Slots:
 - Key: '07,0:53900110::'
   DebugText:
   - Soul of a Weary Warrior - 3900110[Corpse [o000250_0011] @ dungeon]
-  Text: At the end of the room with many peasant hollows after the Estus Shard minic
+  Text: At the end of the room with many peasant hollows after the Estus Shard mimic
   Area: dungeon
   Tags: mid
 - Key: '07,0:53900120::'
@@ -5895,7 +5895,7 @@ Slots:
 - Key: '09,1:3410373::'
   DebugText:
   - Titanite Scale - 21505030[Crystal Lizard [c2150_0003] @ archives] (2)
-  Text: Dropped by a Crystal Lizard on first floor bookshelves. Can be acessed by dropping down to the left at the end of the bridge which is the Crystal Sage's final location
+  Text: Dropped by a Crystal Lizard on first floor bookshelves. Can be accessed by dropping down to the left at the end of the bridge which is the Crystal Sage's final location
   Area: archives
   Tags: mid lizard hidden
 - Key: '09,1:3410374::'
@@ -6800,7 +6800,7 @@ Slots:
 - Key: '12,0:55000110::'
   DebugText:
   - Murky Longstaff - 5000110[Corpse [o000250_0011] @ dregheap]
-  Text: After exiting the building with the Lothric Knights where the front crumbles, in the third furthest room in the building to the right.
+  Text: After exiting the building with the Lothric Knights where the front crumbles, in the third-furthest room in the building to the right.
   Area: dregheap
 - Key: '12,0:55000120::'
   DebugText:
@@ -8445,7 +8445,7 @@ Slots:
 - Key: '99,0:50006131::'
   DebugText:
   - Slumbering Dragoncrest Ring - 61310[?EVENT?]
-  Text: Given by Orbeck after purchasing the shop items corresponding to Aural Decoy, Farron Flashsword, Spook (starting items), and Pestlient Mist (after giving one scroll).
+  Text: Given by Orbeck after purchasing the shop items corresponding to Aural Decoy, Farron Flashsword, Spook (starting items), and Pestilent Mist (after giving one scroll).
   Area: firelink
   Tags: missable
   QuestReqs: farronkeep_road
