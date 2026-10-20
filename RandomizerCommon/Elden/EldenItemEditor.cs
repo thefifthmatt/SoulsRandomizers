@@ -648,8 +648,6 @@ namespace RandomizerCommon
             }
 
             HashSet<string> noCondGates = new() { "deathless" };
-            // For the moment, these may not be implemented in randomizer
-            noCondGates.UnionWith(ann.NewItems.Where(e => e.Value.Switch == "traps").Select(e => e.Key));
             HashSet<string> blockGates = new();
             if (opt["altusgate"])
             {
@@ -1668,7 +1666,16 @@ namespace RandomizerCommon
                             if (!getFlagEdit(t.Type, flag, debugId, out int targetFlag, out ItemKey item))
                             {
                                 // TODO: In some of these cases, the event should probably be removed? Like if item is removed, don't activate based on location flag
-                                continue;
+                                // For Ashes of War, explicitly disallow dupes if the item was not found (custom weapon ids must match exactly as well)
+                                if (ev.FlagTemplate.Any(t => t.Type == "ashdupe") && item != null && mapping.ItemEventFlags.TryGetValue(item, out int ashFlag) && ashFlag <= 0)
+                                {
+                                    item = null;
+                                    targetFlag = 6000;
+                                }
+                                else
+                                {
+                                    continue;
+                                }
                             }
 
                             bool edited = false;
@@ -2375,6 +2382,85 @@ namespace RandomizerCommon
                 }
             }
 
+            // Final custom pass for traps, add them all
+            if (opt["traps"])
+            {
+                // Nothing to do here
+                processedGates.Add("ngtrap");
+
+                // This could be done in an event but use dll for now
+                Dictionary<string, (int, int)> instantStatusEffects = new()
+                {
+                    ["curseAttackPower"] = (1789, 81000010),
+                    ["poizonAttackPower"] = (3370, 81000011),
+                    ["diseaseAttackPower"] = (6605, 81000012),
+                    ["bloodAttackPower"] = (870, 81000013),
+                    ["freezeAttackPower"] = (107825, 81000014), // Requires non-self
+                    ["sleepAttackPower"] = (102306, 81000015),
+                    ["madnessAttackPower"] = (503314, 81000016),
+                };
+                foreach ((string field, (int status, int newStatus)) in instantStatusEffects)
+                {
+                    PARAM.Row statusSp = GameEditor.AddRow(game.Params["SpEffectParam"], newStatus, status);
+                    statusSp[field].Value = 99999;
+                    statusSp["effectTargetSelf"].Value = (byte)1;
+                    statusSp["effectTargetSelfTarget"].Value = (byte)1;
+                }
+                PARAM.Row trackSp = GameEditor.AddRow(game.Params["SpEffectParam"], 81000018, 5020);
+                trackSp["effectEndurance"].Value = 1f;
+                PARAM.Row trackSp2 = GameEditor.AddRow(game.Params["SpEffectParam"], 81000019, 5020);
+                trackSp2["effectEndurance"].Value = 60f;
+                // trackSp2["vfxId"].Value = 51901;
+                processedGates.Add("statustrap");
+
+                // These could be part of the event config
+                EMEVD common = game.Emevds["common"];
+                game.WriteEmevds.Add("common");
+                if (ann.NewItems.TryGetValue("blindnesstrap", out NewItemAnnotation blindnessTrap))
+                {
+                    int id = blindnessTrap.Key.ID;
+                    events.AddSimpleEvent(common, miscEventBase++, new[]
+                    {
+                        $"IfPlayerHasdoesntHaveItem(MAIN, ItemType.Goods, {id}, OwnershipState.Owns)",
+                        "SetSpEffect(10000, 1653001)",
+                        "WaitFixedTimeSeconds(1.3)",
+                        "FadeToBlack(1, 1, false, false)",
+                        "WaitFixedTimeSeconds(5)",
+                        "FadeToBlack(0, 1, false, false)",
+                        // Be merciful and remove all, especially if some are received during the trap
+                        $"RemoveItemFromPlayer(ItemType.Goods, {id}, 999)",
+                        "WaitFixedTimeSeconds(1)",
+                        "EndUnconditionally(EventEndType.Restart)",
+                    }, EMEVD.Event.RestBehaviorType.Default);
+                    processedGates.Add("blindnesstrap");
+                }
+                if (ann.NewItems.TryGetValue("blizzardtrap", out NewItemAnnotation blizzardTrap))
+                {
+                    int id = blizzardTrap.Key.ID;
+                    events.AddSimpleEvent(common, miscEventBase++, new[]
+                    {
+                        $"IfPlayerHasdoesntHaveItem(MAIN, ItemType.Goods, {id}, OwnershipState.Owns)",
+                        // Require to be on continuously. This could be broken up if needed
+                        "IfElapsedSeconds(OR_01, 90)",
+                        "IfCharacterDeadalive(OR_01, 10000, DeathState.Dead, ComparisonType.Equal, 1)",
+                        "IfConditionGroup(MAIN, PASS, OR_01)",
+                        $"RemoveItemFromPlayer(ItemType.Goods, {id}, 1)",
+                        // I guess it's fine to remove all if dead?
+                        "WaitFixedTimeSeconds(0.1)",
+                        "EndUnconditionally(EventEndType.Restart)",
+                    }, EMEVD.Event.RestBehaviorType.Default);
+                    events.AddSimpleEvent(common, miscEventBase++, new[]
+                    {
+                        "WaitFixedTimeSeconds(0.1)",
+                        $"IfPlayerHasdoesntHaveItem(MAIN, ItemType.Goods, {id}, OwnershipState.Owns)",
+                        "ChangeWeather(Weather.SnowyHeavyFog, -1, true)",
+                        "WaitFixedTimeSeconds(5)",
+                        "EndUnconditionally(EventEndType.Restart)",
+                    }, EMEVD.Event.RestBehaviorType.Default);
+                    processedGates.Add("blizzardtrap");
+                }
+            }
+
             // These events are lazily added from various calls to getGateFlag
             flagSyncEvents.Sort((a, b) => a.ID.CompareTo(b.ID));
             game.Emevds["common"].Events.AddRange(flagSyncEvents);
@@ -2517,15 +2603,16 @@ namespace RandomizerCommon
             foreach (PARAM.Row row in game.Params["ShopLineupParam"].Rows)
             {
                 // Replace duplication boss defeat flags with soul get flags.
-                if (mapping.BossDupeItems.TryGetValue(row.ID, out ItemKey soul) && mapping.ItemEventFlags.TryGetValue(soul, out int soulFlag) && soulFlag > 0)
+                if (mapping.BossDupeItems.TryGetValue(row.ID, out ItemKey soul) && mapping.ItemEventFlags.TryGetValue(soul, out int soulFlag))
                 {
-                    row["eventFlag_forRelease"].Value = (uint)soulFlag;
+                    // TODO: This doesn't work with external items. They need item-specific flags.
+                    row["eventFlag_forRelease"].Value = soulFlag <= 0 ? 6000u : (uint)soulFlag;
                 }
                 // Hide Tarnished Pack items if option not enabled, which seems to be the expected behavior from users.
                 // Custom item placement can be used to keep them and not randomize if that's desired.
                 if (!opt["tarnished"] && (uint)row["eventFlag_forRelease"].Value == 6953)
                 {
-                    row["eventFlag_forRelease"].Value = (uint)6000;
+                    row["eventFlag_forRelease"].Value = 6000u;
                 }
             }
 

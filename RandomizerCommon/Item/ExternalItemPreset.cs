@@ -390,7 +390,7 @@ namespace RandomizerCommon
             opt["crashfix"] = true;
             string helperConfig = null;
             bool autoEquip = apOpt("auto_equip");
-            bool autoUpgrade = apOpt("auto_upgrade") || apOpt("dlc_max_level_weapons");
+            bool autoUpgrade = apOpt("auto_upgrade") || (opt["dlcstart"] && apOpt("dlc_max_level_weapons"));
             if (autoEquip || autoUpgrade)
             {
                 // The mechanism for this can be finetuned in the future but for now, use RandomizerHelper as-is

@@ -373,14 +373,16 @@ namespace RandomizerCommon
                                 // Also track final flags for tracking externally received fixed items
                                 mapping.TrackedSlotItems.Add(item);
                             }
-                            else if (mapping.TrackedFlagItems.TryGetValue(eventFlag, out ItemKey assign) && assign == null)
+                            else if (mapping.TrackedFlagItems.TryGetValue(eventFlag, out ItemKey assign))
                             {
-                                // This is pretty hacky: only record the first item, using ItemKey order.
-                                // This distinguishes between Fingerslayer Blade (preferred) and Great Ghost Glovewort (not).
-                                // However, TODO: This doesn't work for ashdupe multi-drops as the first item is generally not the AoW
-                                mapping.TrackedFlagItems[eventFlag] = item;
-                                mapping.ItemEventFlags[item] = -1;
-                                // Console.WriteLine($"Tracking {game.Name(item.Key)} for {eventFlag}");
+                                // Only record the first item, using ItemKey order. This gives Fingerslayer Blade (preferred) and not Great Ghost Glovewort.
+                                // Add an exception of AoW for duping purposes, so it counts Black Flame Tornado and not the Bell Bearing.
+                                // This logic WILL result in bugs because flag->new location is fundamentally not 1:1.
+                                if (assign == null || item.Type == ItemType.Gem || item.Type == ItemType.Custom)
+                                {
+                                    mapping.TrackedFlagItems[eventFlag] = item;
+                                    mapping.ItemEventFlags[item] = -1;
+                                }
                             }
                         }
                     }
@@ -400,7 +402,7 @@ namespace RandomizerCommon
                         {
                             ItemKey matItem = new ItemKey(ItemType.Goods, matGood);
                             mapping.BossShopItems[row.ID] = matItem;
-                            mapping.ItemEventFlags[matItem] = -1;
+                            mapping.ItemEventFlags[matItem] = 0;
                         }
                     }
                 }

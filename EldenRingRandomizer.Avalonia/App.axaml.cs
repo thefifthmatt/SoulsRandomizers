@@ -23,6 +23,9 @@ namespace EldenRingRandomizer
 
         public override void OnFrameworkInitializationCompleted()
         {
+            Dispatcher.UIThread.UnhandledException += OnUnhandledException;
+            RxApp.DefaultExceptionHandler = Observer.Create<Exception>(HandleException);
+
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop && desktop.Args != null)
             {
                 if (CommandRunner.Run(desktop.Args, FromGame.ER))
@@ -51,9 +54,6 @@ namespace EldenRingRandomizer
             {
                 throw new NotSupportedException($"Invalid {ApplicationLifetime}");
             }
-
-            Dispatcher.UIThread.UnhandledException += OnUnhandledException;
-            RxApp.DefaultExceptionHandler = Observer.Create<Exception>(HandleException);
 
             base.OnFrameworkInitializationCompleted();
         }

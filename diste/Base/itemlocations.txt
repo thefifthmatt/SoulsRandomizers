@@ -302,4 +302,5 @@ DisplayEntities:
   12090800: 12021629  # Regal Ancestral Spirit
   14000800: 14000801  # Rennala 2
   19000800: 19000810  # Elden Beast
+  2050480800: 2050480802  # Scadutree Avatar
 # TODO: 106400 106410 double call

@@ -13,7 +13,7 @@ using YamlDotNet.Serialization;
 namespace RandomizerCommon
 {
     // No business logic allowed
-    public class Util
+    public static class Util
     {
         public static void Warn(string text)
         {
@@ -186,6 +186,13 @@ namespace RandomizerCommon
         public static List<T> GetEnumValues<T>()
         {
             return ((T[])Enum.GetValues(typeof(T))).ToList();
+        }
+
+        public static IEnumerable<KeyValuePair<TKey, TResult>> SelectValues<TKey, TValue, TResult>(
+            this IEnumerable<KeyValuePair<TKey, TValue>> source,
+            Func<KeyValuePair<TKey, TValue>, TResult> selector)
+        {
+            return source.Select(e => KeyValuePair.Create(e.Key, selector(e)));
         }
 
         public abstract class Taggable

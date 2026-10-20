@@ -44,6 +44,7 @@ namespace RandomizerCommon
         // 2030 2031 2032: tibia mariner random flags
         // 2040: dlc warp flag
         // 2050: event value for item count check
+        // 2060: random range of 10
         // 2100 up and 5000: enemy randomizer
         public static readonly int EldenRingBase = 1032500000;
 

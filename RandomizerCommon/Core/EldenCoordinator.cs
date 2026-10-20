@@ -1,11 +1,13 @@
-﻿using System;
+﻿using SoulsFormats;
+using SoulsIds;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using SoulsFormats;
-using SoulsIds;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using static RandomizerCommon.Util;
 
 namespace RandomizerCommon
@@ -366,6 +368,24 @@ namespace RandomizerCommon
             Finger_Ruins = 255,
             Nameless_Mausoleum = 256,
             DLC_Shack = 259,
+        }
+
+        private record DungeonInfo(
+            [property: JsonPropertyName("area")] int Area,
+            [property: JsonPropertyName("grid_x")] int GridX,
+            [property: JsonPropertyName("grid_z")] int GridZ,
+            [property: JsonPropertyName("x")] float X,
+            [property: JsonPropertyName("y")] float Y,
+            [property: JsonPropertyName("z")] float Z);
+
+        internal void DumpJSON()
+        {
+            SortedDictionary<string, DungeonInfo> infos = new();
+            foreach ((string mapId, (Tile tile, Vector3 pos)) in dungeonOffsets)
+            {
+                infos[mapId] = new DungeonInfo(tile.Type, tile.X, tile.Z, pos.X, pos.Y, pos.Z);
+            }
+            File.WriteAllText("offsets.json", JsonSerializer.Serialize(infos, new JsonSerializerOptions() { WriteIndented = true }));
         }
 
         internal void DumpJS(GameData game)

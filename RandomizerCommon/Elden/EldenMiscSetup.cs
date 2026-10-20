@@ -70,11 +70,13 @@ namespace RandomizerCommon
             {
                 GameEditor.CopyRow(baseSp, game.AddRow("SpEffectParam", 6950 + i));
             }
+
             PARAM.Row presenceSp = GameEditor.AddRow(game.Params["SpEffectParam"], 81000001, baseSp);
             presenceSp["effectEndurance"].Value = 3f;
             presenceSp = GameEditor.AddRow(game.Params["SpEffectParam"], 81000002, baseSp);
             presenceSp["effectEndurance"].Value = 3f;
             // presenceSp["vfxId"].Value = 51901;
+            // Other speffects in the same range are created in EldenItemEditor
 
             HashSet<(int, int)> deleteCommands = new HashSet<(int, int)>
             {

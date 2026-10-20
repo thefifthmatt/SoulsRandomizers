@@ -912,6 +912,7 @@ Areas:
   Req: graveyard
   KeyBase: graveyard
   Maps: m18_00_00_00
+  Tags: minidungeon cave
 - Name: graveyard_grave
   Text: Limgrave - Fringefolk Hero's Grave
   Req: graveyard AND limgrave
@@ -924,6 +925,7 @@ Areas:
   Req: graveyard_grave
   KeyBase: graveyard_grave
   Maps: m18_00_00_00
+  Tags: minidungeon grave
 - Name: limgrave
   Text: Limgrave
   Req: graveyard
@@ -972,6 +974,7 @@ Areas:
   Req: limgrave_coastalcave
   KeyBase: limgrave_coastalcave
   Maps: m31_15_00_00
+  Tags: minidungeon cave
 - Name: limgrave_dragonchurch
   Text: Limgrave - Church of Dragon Communion
   Req: limgrave_coastalcave_boss AND demihumanchief
@@ -1086,7 +1089,7 @@ Areas:
   FullText: Academy of Raya Lucaria Main Entrance
   Req: liurnia AND academyglintstonekey
   KeyBase: academy
-  Maps: m14_00_00_00
+  Maps: m14_00_00_00 m60_35_45_00 m60_35_46_00
 - Name: academy
   Text: Academy of Raya Lucaria
   Req: academy_entrance
@@ -1355,6 +1358,7 @@ Areas:
   Req: sewer_catacombs
   KeyBase: sewer_catacombs
   Maps: m35_00_00_00
+  Tags: minidungeon catacomb
 - Name: deeproot_start
   Text: Deeproot Depths
   Req: sewer_flame
@@ -1548,12 +1552,14 @@ Areas:
   Req: outskirts_sealedtunnel
   KeyBase: outskirts_sealedtunnel
   Maps: m34_12_00_00
+  Tags: minidungeon tunnel
 - Name: outskirts_sealedtunnel_boss
   Text: Capital Outskirts - Sealed Tunnel
   FullText: Capital Outskirts - Sealed Tunnel - Onyx Lord
   Req: outskirts_sealedtunnel_preboss
   KeyBase: outskirts_sealedtunnel
   Maps: m34_12_00_00
+  Tags: minidungeon tunnel
 - Name: altus_tower_inner
   Text: Divine Tower of West Altus
   Req: outskirts_sealedtunnel_boss AND onyxlord AND runerykard
@@ -1608,7 +1614,7 @@ Areas:
 - Name: mountaintops_sol
   Text: Mountaintops of the Giants
   Req: mountaintops
-  Maps: m60_51_58_00
+  Maps: m60_51_57_00 m60_51_58_00
   MainMaps: m60_51_58_00
 - Name: mountaintops_sol_boss
   Text: Mountaintops of the Giants
@@ -1715,6 +1721,7 @@ Areas:
   Req: snowfield_hiddenpath
   KeyBase: snowfield_hiddenpath
   Maps: m30_20_00_00
+  Tags: minidungeon catacomb
 - Name: snowfield
   Text: Consecrated Snowfield
   Req: snowfield_hiddenpath
@@ -1830,6 +1837,7 @@ Areas:
   Req: peninsula_tombswardcatacombs
   KeyBase: peninsula_tombswardcatacombs
   Maps: m30_00_00_00
+  Tags: minidungeon catacomb
 - Name: peninsula_impalerscatacombs
   Text: Weeping Peninsula - Impaler's Catacombs
   Req: peninsula
@@ -1841,6 +1849,7 @@ Areas:
   Req: peninsula_impalerscatacombs
   KeyBase: peninsula_impalerscatacombs
   Maps: m30_01_00_00
+  Tags: minidungeon catacomb
 - Name: limgrave_stormfootcatacombs
   Text: Limgrave - Stormfoot Catacombs
   Req: limgrave
@@ -1852,6 +1861,7 @@ Areas:
   Req: limgrave_stormfootcatacombs
   KeyBase: limgrave_stormfootcatacombs
   Maps: m30_02_00_00
+  Tags: minidungeon catacomb
 - Name: liurnia_roadsendcatacombs
   Text: Liurnia - Road's End Catacombs
   Req: liurnia
@@ -1863,6 +1873,7 @@ Areas:
   Req: liurnia_roadsendcatacombs
   KeyBase: liurnia_roadsendcatacombs
   Maps: m30_03_00_00
+  Tags: minidungeon catacomb
 - Name: limgrave_murkwatercatacombs
   Text: Limgrave - Murkwater Catacombs
   Req: limgrave
@@ -1874,6 +1885,7 @@ Areas:
   Req: limgrave_murkwatercatacombs
   KeyBase: limgrave_murkwatercatacombs
   Maps: m30_04_00_00
+  Tags: minidungeon catacomb
 - Name: liurnia_blackknifecatacombs
   Text: Liurnia - Black Knife Catacombs
   Req: liurnia
@@ -1892,12 +1904,14 @@ Areas:
   Req: liurnia_blackknifecatacombs
   KeyBase: liurnia_blackknifecatacombs
   Maps: m30_05_00_00
+  Tags: minidungeon catacomb
 - Name: liurnia_blackknifecatacombs_boss2
   Text: Liurnia - Black Knife Catacombs
   FullText: Liurnia - Black Knife Catacombs - Black Knife Assassin
   Req: liurnia_blackknifecatacombs
   KeyBase: liurnia_blackknifecatacombs
   Maps: m30_05_00_00
+  Tags: minidungeon catacomb
 - Name: liurnia_cliffbottomcatacombs
   Text: Liurnia - Cliffbottom Catacombs
   Req: liurnia
@@ -1916,6 +1930,7 @@ Areas:
   Req: liurnia_cliffbottomcatacombs
   KeyBase: liurnia_cliffbottomcatacombs
   Maps: m30_06_00_00
+  Tags: minidungeon catacomb
 - Name: gelmir_wyndhamcatacombs
   Text: Mt. Gelmir - Wyndham Catacombs
   Req: gelmir
@@ -1934,6 +1949,7 @@ Areas:
   Req: gelmir_wyndhamcatacombs
   KeyBase: gelmir_wyndhamcatacombs
   Maps: m30_07_00_00
+  Tags: minidungeon catacomb
 - Name: altus_grave
   Text: Altus Plateau - Sainted Hero's Grave
   Req: altus
@@ -1959,6 +1975,7 @@ Areas:
   Req: altus_grave
   KeyBase: altus_grave
   Maps: m30_08_00_00
+  Tags: minidungeon grave
 - Name: gelmir_grave
   Text: Mt. Gelmir - Gelmir Hero's Grave
   Req: gelmir
@@ -1970,6 +1987,7 @@ Areas:
   Req: gelmir_grave
   KeyBase: gelmir_grave
   Maps: m30_09_00_00
+  Tags: minidungeon grave
 - Name: outskirts_grave
   Text: Capital Outskirts - Auriza Hero's Grave
   Req: outskirts
@@ -1988,6 +2006,7 @@ Areas:
   Req: outskirts_grave
   KeyBase: outskirts_grave
   Maps: m30_10_00_00
+  Tags: minidungeon grave
 - Name: stormhill_catacombs
   Text: Stormhill - Deathtouched Catacombs
   Req: stormhill
@@ -1999,6 +2018,7 @@ Areas:
   Req: stormhill_catacombs
   KeyBase: stormhill_catacombs
   Maps: m30_11_00_00
+  Tags: minidungeon catacomb
 - Name: altus_catacombs
   Text: Altus Plateau - Unsightly Catacombs
   Req: altus
@@ -2010,6 +2030,7 @@ Areas:
   Req: altus_catacombs
   KeyBase: altus_catacombs
   Maps: m30_12_00_00
+  Tags: minidungeon catacomb
 - Name: outskirts_sidetomb
   Text: Capital Outskirts - Auriza Side Tomb
   Comment: For now treat all tomb subareas as flat dependencies. This gets much more complicated with logic changes
@@ -2022,36 +2043,42 @@ Areas:
   Req: outskirts_sidetomb
   KeyBase: outskirts_sidetomb
   Maps: m30_13_00_00
+  Tags: minidungeon catacomb
 - Name: outskirts_sidetomb_boss
   Text: Capital Outskirts - Auriza Side Tomb
   FullText: Capital Outskirts - Auriza Side Tomb - Grave Warden Duelist
   Req: outskirts_sidetomb
   KeyBase: outskirts_sidetomb
   Maps: m30_13_00_00
+  Tags: minidungeon catacomb
 - Name: outskirts_sidetomb_dupeentrance
   Text: Capital Outskirts - Auriza Side Tomb
   FullText: Capital Outskirts - Auriza Side Tomb - Dupe Entrance
   Req: outskirts_sidetomb
   KeyBase: outskirts_sidetomb
   Maps: m30_13_00_00
+  Tags: minidungeon catacomb
 - Name: outskirts_sidetomb_dupehallway
   Text: Capital Outskirts - Auriza Side Tomb
   FullText: Capital Outskirts - Auriza Side Tomb - Dupe First Floor
   Req: outskirts_sidetomb
   KeyBase: outskirts_sidetomb
   Maps: m30_13_00_00
+  Tags: minidungeon catacomb
 - Name: outskirts_sidetomb_jail
   Text: Capital Outskirts - Auriza Side Tomb
   FullText: Capital Outskirts - Auriza Side Tomb - Main Jail
   Req: outskirts_sidetomb
   KeyBase: outskirts_sidetomb
   Maps: m30_13_00_00
+  Tags: minidungeon catacomb
 - Name: outskirts_sidetomb_dupejail
   Text: Capital Outskirts - Auriza Side Tomb
   FullText: Capital Outskirts - Auriza Side Tomb - Dupe Jail and Lever
   Req: outskirts_sidetomb
   KeyBase: outskirts_sidetomb
   Maps: m30_13_00_00
+  Tags: minidungeon catacomb
 - Name: caelid_erdtreecatacombs
   Text: Caelid - Minor Erdtree Catacombs
   Req: caelid
@@ -2063,6 +2090,7 @@ Areas:
   Req: caelid_erdtreecatacombs
   KeyBase: caelid_erdtreecatacombs
   Maps: m30_14_00_00
+  Tags: minidungeon catacomb
 - Name: caelid_catacombs
   Text: Caelid Catacombs
   Req: caelid
@@ -2074,6 +2102,7 @@ Areas:
   Req: caelid_catacombs
   KeyBase: caelid_catacombs
   Maps: m30_15_00_00
+  Tags: minidungeon catacomb
 - Name: caelid_wardead
   Text: Caelid - War-Dead Catacombs
   Req: caelid_postradahn
@@ -2085,6 +2114,7 @@ Areas:
   Req: caelid_wardead
   KeyBase: caelid_wardead
   Maps: m30_16_00_00
+  Tags: minidungeon catacomb
 - Name: flamepeak_grave
   Text: Flame Peak - Giant-Conquering Hero's Grave
   Req: flamepeak
@@ -2110,6 +2140,7 @@ Areas:
   Req: flamepeak_grave
   KeyBase: flamepeak_grave
   Maps: m30_17_00_00
+  Tags: minidungeon grave
 - Name: mountaintops_catacombs
   Text: Flame Peak - Giants' Mountaintop Catacombs
   Comment: Technically not accessible with the rest of Flame Peak
@@ -2122,6 +2153,7 @@ Areas:
   Req: mountaintops_catacombs
   KeyBase: mountaintops_catacombs
   Maps: m30_18_00_00
+  Tags: minidungeon catacomb
 - Name: snowfield_catacombs
   Text: Consecrated Snowfield Catacombs
   Req: snowfield
@@ -2133,6 +2165,7 @@ Areas:
   Req: snowfield_catacombs
   KeyBase: snowfield_catacombs
   Maps: m30_19_00_00
+  Tags: minidungeon catacomb
 - Name: limgrave_murkwatercave
   Text: Limgrave - Murkwater Cave
   Req: limgrave
@@ -2144,6 +2177,7 @@ Areas:
   Req: limgrave_murkwatercave
   KeyBase: limgrave_murkwatercave
   Maps: m31_00_00_00
+  Tags: minidungeon cave
 - Name: peninsula_earthborecave
   Text: Weeping Peninsula - Earthbore Cave
   Req: peninsula
@@ -2155,6 +2189,7 @@ Areas:
   Req: peninsula_earthborecave
   KeyBase: peninsula_earthborecave
   Maps: m31_01_00_00
+  Tags: minidungeon cave
 - Name: peninsula_tombswardcave
   Text: Weeping Peninsula - Tombsward Cave
   Req: peninsula
@@ -2166,6 +2201,7 @@ Areas:
   Req: peninsula_tombswardcave
   KeyBase: peninsula_tombswardcave
   Maps: m31_02_00_00
+  Tags: minidungeon cave
 - Name: limgrave_grovesidecave
   Text: Limgrave - Groveside Cave
   Req: limgrave
@@ -2177,6 +2213,7 @@ Areas:
   Req: limgrave_grovesidecave
   KeyBase: limgrave_grovesidecave
   Maps: m31_03_00_00
+  Tags: minidungeon cave
 - Name: liurnia_stillwatercave
   Text: Liurnia - Stillwater Cave
   Req: liurnia
@@ -2188,6 +2225,7 @@ Areas:
   Req: liurnia_stillwatercave
   KeyBase: liurnia_stillwatercave
   Maps: m31_04_00_00
+  Tags: minidungeon cave
 - Name: liurnia_lakesidecave
   Text: Liurnia - Lakeside Crystal Cave
   Req: liurnia
@@ -2199,6 +2237,7 @@ Areas:
   Req: liurnia_lakesidecave
   KeyBase: liurnia_lakesidecave
   Maps: m31_05_00_00
+  Tags: minidungeon cave
 - Name: liurnia_academycave
   Text: Liurnia - Academy Crystal Cave
   Req: liurnia
@@ -2210,12 +2249,14 @@ Areas:
   Req: liurnia_academycave
   KeyBase: liurnia_academycave
   Maps: m31_06_00_00
+  Tags: minidungeon cave
 - Name: academy_cavetower
   Text: Liurnia - Academy Crystal Cave
   FullText: Academy of Raya Lucaria - After Academy Crystal Cave
   Req: liurnia_academycave
   KeyBase: liurnia_academycave
   Maps: m14_00_00_00
+  Tags: minidungeon cave
 - Name: gelmir_seethewatercave
   Text: Mt. Gelmir - Seethewater Cave
   Req: gelmir
@@ -2227,6 +2268,7 @@ Areas:
   Req: gelmir_seethewatercave
   KeyBase: gelmir_seethewatercave
   Maps: m31_07_00_00
+  Tags: minidungeon cave
 - Name: gelmir_volcanocave
   Text: Mt. Gelmir - Volcano Cave
   Req: gelmir
@@ -2238,6 +2280,7 @@ Areas:
   Req: gelmir_volcanocave
   KeyBase: gelmir_volcanocave
   Maps: m31_09_00_00
+  Tags: minidungeon cave
 - Name: dragonbarrow_cave
   Text: Dragonbarrow Cave
   Req: dragonbarrow
@@ -2249,6 +2292,7 @@ Areas:
   Req: dragonbarrow_cave
   KeyBase: dragonbarrow_cave
   Maps: m31_10_00_00
+  Tags: minidungeon cave
 - Name: dragonbarrow_selliahideaway
   Text: Dragonbarrow - Sellia Hideaway
   Req: dragonbarrow
@@ -2260,6 +2304,7 @@ Areas:
   Req: dragonbarrow_selliahideaway
   KeyBase: dragonbarrow_selliahideaway
   Maps: m31_11_00_00
+  Tags: minidungeon cave
 - Name: snowfield_cave
   Text: Consecrated Snowfield - Cave of the Forlorn
   Req: snowfield
@@ -2271,6 +2316,7 @@ Areas:
   Req: snowfield_cave
   KeyBase: snowfield_cave
   Maps: m31_12_00_00
+  Tags: minidungeon cave
 - Name: limgrave_highroadcave
   Text: Limgrave - Highroad Cave
   Req: limgrave
@@ -2282,6 +2328,7 @@ Areas:
   Req: limgrave_highroadcave
   KeyBase: limgrave_highroadcave
   Maps: m31_17_00_00
+  Tags: minidungeon cave
 - Name: altus_grotto
   Text: Altus Plateau - Perfumer's Grotto
   Req: altus
@@ -2293,6 +2340,7 @@ Areas:
   Req: altus_grotto
   KeyBase: altus_grotto
   Maps: m31_18_00_00
+  Tags: minidungeon cave
 - Name: altus_sagescave
   Text: Altus Plateau - Sage's Cave
   Req: altus
@@ -2304,12 +2352,14 @@ Areas:
   Req: altus_sagescave
   KeyBase: altus_sagescave
   Maps: m31_19_00_00
+  Tags: minidungeon cave
 - Name: altus_sagescave_boss
   Text: Altus Plateau - Sage's Cave
   FullText: Altus Plateau - Sage's Cave - Black Knife Assassin
   Req: altus_sagescave
   KeyBase: altus_sagescave
   Maps: m31_19_00_00
+  Tags: minidungeon cave
 - Name: caelid_abandonedcave
   Text: Caelid - Abandoned Cave
   Req: caelid
@@ -2321,6 +2371,7 @@ Areas:
   Req: caelid_abandonedcave
   KeyBase: caelid_abandonedcave
   Maps: m31_20_00_00
+  Tags: minidungeon cave
 - Name: caelid_gaolcave
   Text: Caelid - Gaol Cave
   Req: caelid
@@ -2332,6 +2383,7 @@ Areas:
   Req: caelid_gaolcave
   KeyBase: caelid_gaolcave
   Maps: m31_21_00_00
+  Tags: minidungeon cave
 - Name: mountaintops_cave
   Text: Mountaintops - Spiritcaller Cave
   Req: mountaintops
@@ -2343,6 +2395,7 @@ Areas:
   Req: mountaintops_cave
   KeyBase: mountaintops_cave
   Maps: m31_22_00_00
+  Tags: minidungeon cave
 - Name: peninsula_tunnel
   Text: Weeping Peninsula - Morne Tunnel
   Req: peninsula
@@ -2354,6 +2407,7 @@ Areas:
   Req: peninsula_tunnel
   KeyBase: peninsula_tunnel
   Maps: m32_00_00_00
+  Tags: minidungeon tunnel
 - Name: limgrave_tunnels
   Text: Limgrave Tunnels
   Req: limgrave
@@ -2365,6 +2419,7 @@ Areas:
   Req: limgrave_tunnels
   KeyBase: limgrave_tunnels
   Maps: m32_01_00_00
+  Tags: minidungeon tunnel
 - Name: liurnia_tunnel
   Text: Liurnia - Raya Lucaria Crystal Tunnel
   Req: liurnia
@@ -2376,6 +2431,7 @@ Areas:
   Req: liurnia_tunnel
   KeyBase: liurnia_tunnel
   Maps: m32_02_00_00
+  Tags: minidungeon tunnel
 - Name: altus_oldtunnel
   Text: Old Altus Tunnel
   Req: altus
@@ -2387,6 +2443,7 @@ Areas:
   Req: altus_oldtunnel
   KeyBase: altus_oldtunnel
   Maps: m32_04_00_00
+  Tags: minidungeon tunnel
 - Name: altus_tunnel
   Text: Altus Tunnel
   Req: altus
@@ -2398,6 +2455,7 @@ Areas:
   Req: altus_tunnel
   KeyBase: altus_tunnel
   Maps: m32_05_00_00
+  Tags: minidungeon tunnel
 - Name: caelid_gaeltunnel
   Text: Caelid - Gael Tunnel
   Req: caelid
@@ -2409,12 +2467,14 @@ Areas:
   Req: caelid_gaeltunnel
   KeyBase: caelid_gaeltunnel
   Maps: m32_07_00_00
+  Tags: minidungeon tunnel
 - Name: caelid_gaeltunnel_boss
   Text: Caelid - Gael Tunnel
   FullText: Caelid - Gael Tunnel - Magma Wyrm
   Req: caelid_gaeltunnel
   KeyBase: caelid_gaeltunnel
   Maps: m32_07_00_00
+  Tags: minidungeon tunnel
 - Name: caelid_selliatunnel
   Text: Caelid - Sellia Crystal Tunnel
   Req: caelid
@@ -2426,6 +2486,7 @@ Areas:
   Req: caelid_selliatunnel
   KeyBase: caelid_selliatunnel
   Maps: m32_08_00_00
+  Tags: minidungeon tunnel
 - Name: snowfield_tunnel
   Text: Consecrated Snowfield - Yelough Anix Tunnel
   Req: snowfield
@@ -2437,6 +2498,7 @@ Areas:
   Req: snowfield_tunnel
   KeyBase: snowfield_tunnel
   Maps: m32_11_00_00
+  Tags: minidungeon tunnel
 - Name: gravesite
   Text: Gravesite Plain
   Req: dlcopen
@@ -2932,7 +2994,7 @@ Areas:
 - Name: jaggedpeak
   Text: Jagged Peak
   Req: jaggedpeak_foot
-  Maps: m61_53_39_00 m61_53_40_00 m61_54_39_00 m61_54_40_00 m61_55_39_00
+  Maps: m61_52_40_00 m61_53_39_00 m61_53_40_00 m61_54_39_00 m61_54_40_00 m61_55_39_00
   MapNames:
   - m61_53_39_00 Jagged Peak - Between Jagged Peak Mountainside and Summit, Before Senessax Lake
   - m61_53_40_00 Jagged Peak - East of Drake Duo Area
@@ -3048,6 +3110,7 @@ Areas:
   KeyBase: gravesite_catacombs
   Maps: m40_00_00_00
   Tags: dlc
+  Tags: dlc minidungeon catacomb
 - Name: rauhbase_catacombs
   Text: Rauh Base - Scorpion River Catacombs
   Req: rauhbase
@@ -3062,6 +3125,7 @@ Areas:
   KeyBase: rauhbase_catacombs
   Maps: m40_01_00_00
   Tags: dlc
+  Tags: dlc minidungeon catacomb
 - Name: scadualtus_catacombs
   Text: Scadu Altus - Darklight Catacombs
   Req: scadualtus_recluse
@@ -3076,6 +3140,7 @@ Areas:
   KeyBase: scadualtus_catacombs
   Maps: m61_52_43_00
   Tags: dlc
+  Tags: dlc minidungeon catacomb
 - Name: gravesite_gaol
   Text: Gravesite Plain - Belurat Gaol
   Req: gravesite
@@ -3089,7 +3154,7 @@ Areas:
   Req: gravesite_gaol
   KeyBase: gravesite_gaol
   Maps: m41_00_00_00
-  Tags: dlc
+  Tags: dlc minidungeon gaol
 - Name: scadualtus_gaol
   Text: Scadu Altus - Bonny Gaol
   Req: scadualtus_lower
@@ -3103,7 +3168,7 @@ Areas:
   Req: scadualtus_gaol
   KeyBase: scadualtus_gaol
   Maps: m41_01_00_00
-  Tags: dlc
+  Tags: dlc minidungeon gaol
 - Name: charo_gaol
   Text: Charo's Hidden Grave - Lamenter's Gaol
   Req: charo
@@ -3159,7 +3224,7 @@ Areas:
   Req: ellac_cave
   KeyBase: ellac_cave
   Maps: m43_00_00_00
-  Tags: dlc
+  Tags: dlc minidungeon cave
 - Name: gravesite_dragonpit
   Text: Gravesite Plain - Dragon's Pit
   Comment: Possible other DLC areas are Ellac Downstream, Recluse Downstream, Scaduview Chalice, Tree Worship Sanctum (Scadutree Base but Shadow Keep), enirilim_Gate
@@ -3174,7 +3239,7 @@ Areas:
   Req: gravesite_dragonpit
   KeyBase: gravesite_dragonpit
   Maps: m43_01_00_00
-  Tags: dlc
+  Tags: dlc minidungeon cave
 NewItems:
 - Name: Stonesword Master Key
   Switch: stoneswordall
@@ -3515,6 +3580,18 @@ NewItems:
 - Name: NG+ Trap
   Switch: traps
   BaseID: 7830600
+  Area: altus
+- Name: Status Trap
+  Switch: traps
+  BaseID: 7830601
+  Area: altus
+- Name: Blindness Trap
+  Switch: traps
+  BaseID: 7830602
+  Area: altus
+- Name: Blizzard Trap
+  Switch: traps
+  BaseID: 7830603
   Area: altus
 PlacementRestrictions:
 - Name: Rusty Key

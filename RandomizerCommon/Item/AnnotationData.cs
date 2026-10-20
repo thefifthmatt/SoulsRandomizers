@@ -1435,6 +1435,7 @@ namespace RandomizerCommon
                     SlotAnnotation slot = new SlotAnnotation()
                     {
                         Key = newLoc.Key,
+                        Location = $"{newLoc.Map} {newLoc.Location}",
                         Text = newLoc.Text,
                         Area = newLoc.Area,
                     };
@@ -2525,6 +2526,7 @@ namespace RandomizerCommon
         public class SlotAnnotation
         {
             public string Key { get; set; }
+            public string Location { get; set; }
             public List<string> DebugText { get; set; }
             public string Text { get; set; }
             public string Comment { get; set; }

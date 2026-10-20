@@ -29,7 +29,11 @@ namespace RandomizerCommon.Models
         [JsonExtensionData]
         public IDictionary<string, object>? UnknownFields { get; set; }
 
-        public static ClientArchipelagoConfig Read(string path) => Read(File.OpenRead(path));
+        public static ClientArchipelagoConfig Read(string path)
+        {
+            using FileStream stream = File.OpenRead(path);
+            return Read(stream);
+        }
         public static ClientArchipelagoConfig Read(FileStream reader) => JsonSerializer.Deserialize<ClientArchipelagoConfig>(reader)!;
 
         public void Write(FileStream writer)

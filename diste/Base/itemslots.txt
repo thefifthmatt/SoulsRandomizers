@@ -3,6 +3,7 @@ ConfigItems: []
 Areas: []
 Slots:
 - Key: '100000,0:0000000000:100000,10009516:'
+  Location: 10000707
   DebugText:
   - Ancient Dragon Smithing Stone - shop 100018[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c3665_9001 (Gatekeeper Gostoc - id 10000700 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9002 (Gatekeeper Gostoc - id 10000701 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9003 (Gatekeeper Gostoc - id 10000702 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9004 (Gatekeeper Gostoc - id 10000703 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9005 (Gatekeeper Gostoc - id 10000704 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9006 (Gatekeeper Gostoc - id 10000706 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9007 (Gatekeeper Gostoc - id 10000707 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle)] 1x for 20000 runes - flag 100180 - unlock 10009516 - after completing Gostoc's quest
   Text: Sold by Gostoc after finishing Nepheli and Kenneth Haight's quests
@@ -11,6 +12,7 @@ Slots:
   FullArea: stormveil stormhill stormveil_start stormveil_throne roundtable
   Tags: missable questreward
 - Key: '100000,0:0000000000:100000:'
+  Location: 10000700
   DebugText:
   - Unique location in [m10_00_00_00 (Stormveil Castle), m11_10_00_00 (Roundtable Hold)]
   - Caestus - shop 100012[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c3665_9001 (Gatekeeper Gostoc - id 10000700 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9002 (Gatekeeper Gostoc - id 10000701 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9003 (Gatekeeper Gostoc - id 10000702 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9004 (Gatekeeper Gostoc - id 10000703 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9005 (Gatekeeper Gostoc - id 10000704 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9006 (Gatekeeper Gostoc - id 10000706 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9007 (Gatekeeper Gostoc - id 10000707 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle)] 1x for 800 runes - flag 100120
@@ -26,7 +28,7 @@ Slots:
   - Ruin Fragment - shop 100002[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c3665_9001 (Gatekeeper Gostoc - id 10000700 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9002 (Gatekeeper Gostoc - id 10000701 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9003 (Gatekeeper Gostoc - id 10000702 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9004 (Gatekeeper Gostoc - id 10000703 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9005 (Gatekeeper Gostoc - id 10000704 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9006 (Gatekeeper Gostoc - id 10000706 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9007 (Gatekeeper Gostoc - id 10000707 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle)] 5x for 100 runes - flag 100020
   - Stormhawk Feather - shop 100011[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c3665_9001 (Gatekeeper Gostoc - id 10000700 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9002 (Gatekeeper Gostoc - id 10000701 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9003 (Gatekeeper Gostoc - id 10000702 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9004 (Gatekeeper Gostoc - id 10000703 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9005 (Gatekeeper Gostoc - id 10000704 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9006 (Gatekeeper Gostoc - id 10000706 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9007 (Gatekeeper Gostoc - id 10000707 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle)] 5x for 500 runes - flag 100110
   Text: Sold by Gostoc after opening the Stormveil Castle main gate
-  Comment: His shop shouldn't be missable now that he was patched at Godrick
+  Comment: His shop shouldn't be missable now that he was patched at Godrick (as 10000706)
   Area: stormveil
   FullArea: stormveil stormhill stormveil_start stormveil_throne roundtable
   Tags: ''
@@ -99,6 +101,7 @@ Slots:
   FullArea: stormveil stormhill stormveil_start stormveil_throne
   Tags: cookbook
 - Key: '100000,0:0000400050::'
+  Location: 10000700
   DebugText:
   - Grace Mimic - lot 100500[enemy c3665_9001 (Gatekeeper Gostoc - id 10000700 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), ESD 302001000, enemy c3665_9002 (Gatekeeper Gostoc - id 10000701 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), ESD 302011000, enemy c3665_9003 (Gatekeeper Gostoc - id 10000702 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), ESD 302021000, enemy c3665_9004 (Gatekeeper Gostoc - id 10000703 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), ESD 302031000, enemy c3665_9005 (Gatekeeper Gostoc - id 10000704 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), ESD 302041000, enemy c3665_9006 (Gatekeeper Gostoc - id 10000706 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), ESD 302051000, enemy c3665_9007 (Gatekeeper Gostoc - id 10000707 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), ESD 302061000] Grace Mimic
   Text: Given by Gostoc when confronted in one of his stalking spots in Stormveil Castle
@@ -107,6 +110,7 @@ Slots:
   FullArea: stormveil stormhill stormveil_start stormveil_throne
   Tags: missable questreward
 - Key: '100000,0:0000400051::'
+  Location: 10000700
   DebugText:
   - Unique location in [m10_00_00_00 (Stormveil Castle)]
   - Silver-Pickled Fowl Foot - lot 110502[enemy c3665_9001 (Gatekeeper Gostoc - id 10000700 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9002 (Gatekeeper Gostoc - id 10000701 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9003 (Gatekeeper Gostoc - id 10000702 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9004 (Gatekeeper Gostoc - id 10000703 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9005 (Gatekeeper Gostoc - id 10000704 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9006 (Gatekeeper Gostoc - id 10000706 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle), enemy c3665_9007 (Gatekeeper Gostoc - id 10000707 - [Gatekeeper Gostoc]) in m10_00_00_00 (Stormveil Castle)] Silver-Pickled Fowl Foot
@@ -124,6 +128,7 @@ Slots:
   FullArea: stormveil stormhill stormveil_start stormveil_throne limgrave
   Tags: missable death
 - Key: '100000,0:0000400221::'
+  Location: 1046360700
   DebugText:
   - Erdsteel Dagger - lot 102200[enemy c0000_9030 (Kenneth Haight - id 10000725 - [Kenneth Haight, Limgrave Heir]) in m10_00_00_00 (Stormveil Castle), ESD 321001000, enemy c0000_9000 (Kenneth Haight - id 1045380700 - [Kenneth Haight, Limgrave Heir]) in m60_45_38_00 (Limgrave - South of Summonwater Village), enemy c0000_9000 (Kenneth Haight - id 1046360700 - [Kenneth Haight, Limgrave Heir]) in m60_46_36_00 (Limgrave - Fort Haight), ESD 321006000] Erdsteel Dagger
   Text: Given by Kenneth Haight after killing the Knight Commander in Fort Haight
@@ -147,22 +152,25 @@ Slots:
   FullArea: stormveil stormhill stormveil_start stormveil_throne roundtable
   Tags: missable questreward
 - Key: '100000,0:0000400420::'
+  Location: 11100780
   DebugText:
   - Arsenal Charm - lot 104200[enemy c0000_9035 (Nepheli Loux - id 10000730 - [Nepheli Loux, Warrior]) in m10_00_00_00 (Stormveil Castle), enemy c0000_9036 (Nepheli Loux - id 10000732 - [Nepheli Loux, Warrior]) in m10_00_00_00 (Stormveil Castle), ESD 334001000, enemy c0000_9028 (Nepheli Loux - id 11100780 - [Nepheli Loux, Warrior]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9029 (Nepheli Loux - id 11100781 - [Nepheli Loux, Warrior]) in m11_10_00_00 (Roundtable Hold), ESD 334001110, enemy c0000_9010 (Nepheli Loux - id 1034420700 - [Nepheli Loux, Warrior]) in m60_34_42_00 (Liurnia of the Lakes - Village of the Albinaurics), ESD 334006000] Arsenal Charm
   Text: Given by Nepheli after defeating Godrick if you speak to her beforehand
-  Area: stormveil
+  Area: roundtable
   QuestReqs: godrick
   FullArea: stormveil stormhill stormveil_start stormveil_throne moonlight liurnia roundtable
   Tags: missable questreward
 - Key: '100000,0:0000400421::'
+  Location: 10000730
   DebugText:
   - Stormhawk Axe - lot 114210[enemy c0000_9035 (Nepheli Loux - id 10000730 - [Nepheli Loux, Warrior]) in m10_00_00_00 (Stormveil Castle), enemy c0000_9010 (Nepheli Loux - id 1034420700 - [Nepheli Loux, Warrior]) in m60_34_42_00 (Liurnia of the Lakes - Village of the Albinaurics), enemy c0000_9028 (Nepheli Loux - id 11100780 - [Nepheli Loux, Warrior]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9029 (Nepheli Loux - id 11100781 - [Nepheli Loux, Warrior]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9036 (Nepheli Loux - id 10000732 - [Nepheli Loux, Warrior]) in m10_00_00_00 (Stormveil Castle)] Stormhawk Axe, lot 114211[enemy c0000_9035 (Nepheli Loux - id 10000730 - [Nepheli Loux, Warrior]) in m10_00_00_00 (Stormveil Castle), enemy c0000_9010 (Nepheli Loux - id 1034420700 - [Nepheli Loux, Warrior]) in m60_34_42_00 (Liurnia of the Lakes - Village of the Albinaurics), enemy c0000_9028 (Nepheli Loux - id 11100780 - [Nepheli Loux, Warrior]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9029 (Nepheli Loux - id 11100781 - [Nepheli Loux, Warrior]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9036 (Nepheli Loux - id 10000732 - [Nepheli Loux, Warrior]) in m10_00_00_00 (Stormveil Castle)] Stormhawk Axe
   Text: Dropped by Nepheli
-  Comment: This may also be found in her location in the village after she leaves? TODO needs verification
-  Area: liurnia
+  Comment: This may also be found in her location in the village after she leaves? TODO needs verification. Changed from liurnia
+  Area: stormveil
   FullArea: stormveil stormhill stormveil_start stormveil_throne moonlight liurnia roundtable
   Tags: missable death
 - Key: '100000,0:0000400422::'
+  Location: 10000732
   DebugText:
   - Ancient Dragon Smithing Stone - lot 104220[enemy c0000_9035 (Nepheli Loux - id 10000730 - [Nepheli Loux, Warrior]) in m10_00_00_00 (Stormveil Castle), enemy c0000_9036 (Nepheli Loux - id 10000732 - [Nepheli Loux, Warrior]) in m10_00_00_00 (Stormveil Castle), ESD 334001000, enemy c0000_9010 (Nepheli Loux - id 1034420700 - [Nepheli Loux, Warrior]) in m60_34_42_00 (Liurnia of the Lakes - Village of the Albinaurics), ESD 334006000] Ancient Dragon Smithing Stone
   Text: Given by Nepheli in Stormveil Castle after completing her and Kenneth's questlines
@@ -1085,6 +1093,7 @@ Slots:
   FullArea: chapel chapel_start
   Tags: chest fogchange
 - Key: '110000,0:0000000000:100350,100425,11109874,1037469305:'
+  Location: 11100770
   DebugText:
   - Unique location in [m11_00_00_00 (Leyndell, Royal Capital), m11_05_00_00 (Leyndell, Ashen Capital), m11_10_00_00 (Roundtable Hold), m60_37_46_00 (Liurnia of the Lakes - Church of Vows), m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins)]
   - O, Flame! - shop 100362[enemy c0000_9001 (Brother Corhyn - id 1040520705 - [Brother Corhyn]) in m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), enemy c0000_9001 (Brother Corhyn - id 1040540705 - [Scribe Corhyn]) in m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), enemy c0000_9002 (Brother Corhyn - id 1051560720 - [Scribe Corhyn]) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins), enemy c0000_9023 (Brother Corhyn - id 11100770 - [Brother Corhyn]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9025 (Brother Corhyn - id 11000725 - [Scribe Corhyn]) in m11_00_00_00 (Leyndell, Royal Capital), enemy c0000_9030 (Brother Corhyn - id 11050710 - [Scribe Corhyn]) in m11_05_00_00 (Leyndell, Ashen Capital), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 6000 runes - flag 130620 - unlock 11109874 - after giving Fire Monks' Prayerbook, shop 100426[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c6091_9000 (Giant Turtle - id 1037460710 - [Miriel, Pastor of Vows]) in m60_37_46_00 (Liurnia of the Lakes - Church of Vows)] 1x for 6000 runes - flag 140260 - unlock 1037469305 - after giving Fire Monk's Prayerbook
@@ -1095,6 +1104,7 @@ Slots:
   FullArea: leyndell leyndell_divinebridge leyndell_throne leyndell_erdtree leyndell2 leyndell2_throne liurnia altus mountaintops roundtable
   Tags: missable incantationshop
 - Key: '110000,0:0000000000:100350,100425,11109875,1037469306:'
+  Location: 11100770
   DebugText:
   - Unique location in [m11_00_00_00 (Leyndell, Royal Capital), m11_05_00_00 (Leyndell, Ashen Capital), m11_10_00_00 (Roundtable Hold), m60_37_46_00 (Liurnia of the Lakes - Church of Vows), m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins)]
   - Flame, Fall Upon Them - shop 100365[enemy c0000_9001 (Brother Corhyn - id 1040520705 - [Brother Corhyn]) in m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), enemy c0000_9001 (Brother Corhyn - id 1040540705 - [Scribe Corhyn]) in m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), enemy c0000_9002 (Brother Corhyn - id 1051560720 - [Scribe Corhyn]) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins), enemy c0000_9023 (Brother Corhyn - id 11100770 - [Brother Corhyn]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9025 (Brother Corhyn - id 11000725 - [Scribe Corhyn]) in m11_00_00_00 (Leyndell, Royal Capital), enemy c0000_9030 (Brother Corhyn - id 11050710 - [Scribe Corhyn]) in m11_05_00_00 (Leyndell, Ashen Capital), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 10000 runes - flag 130650 - unlock 11109875 - after giving Giant's Prayerbook, shop 100430[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c6091_9000 (Giant Turtle - id 1037460710 - [Miriel, Pastor of Vows]) in m60_37_46_00 (Liurnia of the Lakes - Church of Vows)] 1x for 10000 runes - flag 140300 - unlock 1037469306 - after giving Giant's Prayerbook
@@ -1105,6 +1115,7 @@ Slots:
   FullArea: leyndell leyndell_divinebridge leyndell_throne leyndell_erdtree leyndell2 leyndell2_throne liurnia altus mountaintops roundtable
   Tags: missable incantationshop
 - Key: '110000,0:0000000000:100350,100425,11109876,1037469307:'
+  Location: 11100770
   DebugText:
   - Unique location in [m11_00_00_00 (Leyndell, Royal Capital), m11_05_00_00 (Leyndell, Ashen Capital), m11_10_00_00 (Roundtable Hold), m60_37_46_00 (Liurnia of the Lakes - Church of Vows), m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins)]
   - Black Flame - shop 100366[enemy c0000_9001 (Brother Corhyn - id 1040520705 - [Brother Corhyn]) in m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), enemy c0000_9001 (Brother Corhyn - id 1040540705 - [Scribe Corhyn]) in m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), enemy c0000_9002 (Brother Corhyn - id 1051560720 - [Scribe Corhyn]) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins), enemy c0000_9023 (Brother Corhyn - id 11100770 - [Brother Corhyn]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9025 (Brother Corhyn - id 11000725 - [Scribe Corhyn]) in m11_00_00_00 (Leyndell, Royal Capital), enemy c0000_9030 (Brother Corhyn - id 11050710 - [Scribe Corhyn]) in m11_05_00_00 (Leyndell, Ashen Capital), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 7500 runes - flag 130660 - unlock 11109876 - after giving Godskin Prayerbook, shop 100431[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c6091_9000 (Giant Turtle - id 1037460710 - [Miriel, Pastor of Vows]) in m60_37_46_00 (Liurnia of the Lakes - Church of Vows)] 1x for 7500 runes - flag 140310 - unlock 1037469307 - after giving Godskin Prayerbook
@@ -1115,6 +1126,7 @@ Slots:
   FullArea: leyndell leyndell_divinebridge leyndell_throne leyndell_erdtree leyndell2 leyndell2_throne liurnia altus mountaintops roundtable
   Tags: missable incantationshop
 - Key: '110000,0:0000000000:100350,100425,11109877,1037469308:'
+  Location: 11100770
   DebugText:
   - Unique location in [m11_00_00_00 (Leyndell, Royal Capital), m11_05_00_00 (Leyndell, Ashen Capital), m11_10_00_00 (Roundtable Hold), m60_37_46_00 (Liurnia of the Lakes - Church of Vows), m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins)]
   - Lord's Heal - shop 100368[enemy c0000_9001 (Brother Corhyn - id 1040520705 - [Brother Corhyn]) in m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), enemy c0000_9001 (Brother Corhyn - id 1040540705 - [Scribe Corhyn]) in m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), enemy c0000_9002 (Brother Corhyn - id 1051560720 - [Scribe Corhyn]) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins), enemy c0000_9023 (Brother Corhyn - id 11100770 - [Brother Corhyn]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9025 (Brother Corhyn - id 11000725 - [Scribe Corhyn]) in m11_00_00_00 (Leyndell, Royal Capital), enemy c0000_9030 (Brother Corhyn - id 11050710 - [Scribe Corhyn]) in m11_05_00_00 (Leyndell, Ashen Capital), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 8000 runes - flag 130680 - unlock 11109877 - after giving Two Fingers' Prayerbook, shop 100433[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c6091_9000 (Giant Turtle - id 1037460710 - [Miriel, Pastor of Vows]) in m60_37_46_00 (Liurnia of the Lakes - Church of Vows)] 1x for 8000 runes - flag 140330 - unlock 1037469308 - after giving Two Fingers' Prayerbook
@@ -1125,6 +1137,7 @@ Slots:
   FullArea: leyndell leyndell_divinebridge leyndell_throne leyndell_erdtree leyndell2 leyndell2_throne liurnia altus mountaintops roundtable
   Tags: missable incantationshop
 - Key: '110000,0:0000000000:100350,100425,11109878,1037469309:'
+  Location: 11100770
   DebugText:
   - Unique location in [m11_00_00_00 (Leyndell, Royal Capital), m11_05_00_00 (Leyndell, Ashen Capital), m11_10_00_00 (Roundtable Hold), m60_37_46_00 (Liurnia of the Lakes - Church of Vows), m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins)]
   - Assassin's Approach - shop 100370[enemy c0000_9001 (Brother Corhyn - id 1040520705 - [Brother Corhyn]) in m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), enemy c0000_9001 (Brother Corhyn - id 1040540705 - [Scribe Corhyn]) in m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), enemy c0000_9002 (Brother Corhyn - id 1051560720 - [Scribe Corhyn]) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins), enemy c0000_9023 (Brother Corhyn - id 11100770 - [Brother Corhyn]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9025 (Brother Corhyn - id 11000725 - [Scribe Corhyn]) in m11_00_00_00 (Leyndell, Royal Capital), enemy c0000_9030 (Brother Corhyn - id 11050710 - [Scribe Corhyn]) in m11_05_00_00 (Leyndell, Ashen Capital), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 2000 runes - flag 130700 - unlock 11109878 - after giving Assassin's Prayerbook, shop 100435[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c6091_9000 (Giant Turtle - id 1037460710 - [Miriel, Pastor of Vows]) in m60_37_46_00 (Liurnia of the Lakes - Church of Vows)] 1x for 2000 runes - flag 140350 - unlock 1037469309 - after giving Assassin's Prayerbook
@@ -1135,6 +1148,7 @@ Slots:
   FullArea: leyndell leyndell_divinebridge leyndell_throne leyndell_erdtree leyndell2 leyndell2_throne liurnia altus mountaintops roundtable
   Tags: missable incantationshop
 - Key: '110000,0:0000000000:100350,100425,11109881,1037469312:'
+  Location: 11100770
   DebugText:
   - Unique location in [m11_00_00_00 (Leyndell, Royal Capital), m11_05_00_00 (Leyndell, Ashen Capital), m11_10_00_00 (Roundtable Hold), m60_37_46_00 (Liurnia of the Lakes - Church of Vows), m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins)]
   - Radagon's Rings of Light - shop 100372[enemy c0000_9001 (Brother Corhyn - id 1040520705 - [Brother Corhyn]) in m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), enemy c0000_9001 (Brother Corhyn - id 1040540705 - [Scribe Corhyn]) in m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), enemy c0000_9002 (Brother Corhyn - id 1051560720 - [Scribe Corhyn]) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins), enemy c0000_9023 (Brother Corhyn - id 11100770 - [Brother Corhyn]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9025 (Brother Corhyn - id 11000725 - [Scribe Corhyn]) in m11_00_00_00 (Leyndell, Royal Capital), enemy c0000_9030 (Brother Corhyn - id 11050710 - [Scribe Corhyn]) in m11_05_00_00 (Leyndell, Ashen Capital), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 7500 runes - flag 130720 - unlock 11109881 - after giving Golden Order Principia, shop 100437[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c6091_9000 (Giant Turtle - id 1037460710 - [Miriel, Pastor of Vows]) in m60_37_46_00 (Liurnia of the Lakes - Church of Vows)] 1x for 7500 runes - flag 140370 - unlock 1037469312 - after giving Golden Order Principia
@@ -1145,6 +1159,7 @@ Slots:
   FullArea: leyndell leyndell_divinebridge leyndell_throne leyndell_erdtree leyndell2 leyndell2_throne liurnia altus mountaintops roundtable
   Tags: missable incantationshop
 - Key: '110000,0:0000000000:100350,100425,11109883,1037469314:'
+  Location: 11100770
   DebugText:
   - Unique location in [m11_00_00_00 (Leyndell, Royal Capital), m11_05_00_00 (Leyndell, Ashen Capital), m11_10_00_00 (Roundtable Hold), m60_37_46_00 (Liurnia of the Lakes - Church of Vows), m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins)]
   - Lightning Spear - shop 100374[enemy c0000_9001 (Brother Corhyn - id 1040520705 - [Brother Corhyn]) in m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), enemy c0000_9001 (Brother Corhyn - id 1040540705 - [Scribe Corhyn]) in m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), enemy c0000_9002 (Brother Corhyn - id 1051560720 - [Scribe Corhyn]) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins), enemy c0000_9023 (Brother Corhyn - id 11100770 - [Brother Corhyn]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9025 (Brother Corhyn - id 11000725 - [Scribe Corhyn]) in m11_00_00_00 (Leyndell, Royal Capital), enemy c0000_9030 (Brother Corhyn - id 11050710 - [Scribe Corhyn]) in m11_05_00_00 (Leyndell, Ashen Capital), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 6000 runes - flag 130740 - unlock 11109883 - after giving Dragon Cult Prayerbook, shop 100439[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c6091_9000 (Giant Turtle - id 1037460710 - [Miriel, Pastor of Vows]) in m60_37_46_00 (Liurnia of the Lakes - Church of Vows)] 1x for 6000 runes - flag 140390 - unlock 1037469314 - after giving Dragon Cult Prayerbook
@@ -1156,6 +1171,7 @@ Slots:
   FullArea: leyndell leyndell_divinebridge leyndell_throne leyndell_erdtree leyndell2 leyndell2_throne liurnia altus mountaintops roundtable
   Tags: missable incantationshop
 - Key: '110000,0:0000000000:100350,100425,11109884,1037469315:'
+  Location: 11100770
   DebugText:
   - Unique location in [m11_00_00_00 (Leyndell, Royal Capital), m11_05_00_00 (Leyndell, Ashen Capital), m11_10_00_00 (Roundtable Hold), m60_37_46_00 (Liurnia of the Lakes - Church of Vows), m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins)]
   - Ancient Dragons' Lightning Strike - shop 100378[enemy c0000_9001 (Brother Corhyn - id 1040520705 - [Brother Corhyn]) in m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), enemy c0000_9001 (Brother Corhyn - id 1040540705 - [Scribe Corhyn]) in m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), enemy c0000_9002 (Brother Corhyn - id 1051560720 - [Scribe Corhyn]) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins), enemy c0000_9023 (Brother Corhyn - id 11100770 - [Brother Corhyn]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9025 (Brother Corhyn - id 11000725 - [Scribe Corhyn]) in m11_00_00_00 (Leyndell, Royal Capital), enemy c0000_9030 (Brother Corhyn - id 11050710 - [Scribe Corhyn]) in m11_05_00_00 (Leyndell, Ashen Capital), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 10000 runes - flag 130780 - unlock 11109884 - after giving Ancient Dragon Prayerbook, shop 100443[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c6091_9000 (Giant Turtle - id 1037460710 - [Miriel, Pastor of Vows]) in m60_37_46_00 (Liurnia of the Lakes - Church of Vows)] 1x for 10000 runes - flag 140430 - unlock 1037469315 - after giving Ancient Dragon Prayerbook
@@ -1166,6 +1182,7 @@ Slots:
   FullArea: leyndell leyndell_divinebridge leyndell_throne leyndell_erdtree leyndell2 leyndell2_throne liurnia altus mountaintops roundtable
   Tags: missable incantationshop
 - Key: '110000,0:0000000000:100350,1040529255:'
+  Location: 1040520705
   DebugText:
   - Unique location in [m11_00_00_00 (Leyndell, Royal Capital), m11_05_00_00 (Leyndell, Ashen Capital), m11_10_00_00 (Roundtable Hold), m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins)]
   - Great Heal - shop 100358[enemy c0000_9001 (Brother Corhyn - id 1040520705 - [Brother Corhyn]) in m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), enemy c0000_9001 (Brother Corhyn - id 1040540705 - [Scribe Corhyn]) in m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), enemy c0000_9002 (Brother Corhyn - id 1051560720 - [Scribe Corhyn]) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins), enemy c0000_9023 (Brother Corhyn - id 11100770 - [Brother Corhyn]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9025 (Brother Corhyn - id 11000725 - [Scribe Corhyn]) in m11_00_00_00 (Leyndell, Royal Capital), enemy c0000_9030 (Brother Corhyn - id 11050710 - [Scribe Corhyn]) in m11_05_00_00 (Leyndell, Ashen Capital), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 9000 runes - flag 130580 - unlock 1040529255 - after Corhyn first moves to Altus Plateau
@@ -1175,6 +1192,7 @@ Slots:
   FullArea: leyndell leyndell_divinebridge leyndell_throne leyndell_erdtree leyndell2 leyndell2_throne altus mountaintops roundtable
   Tags: missable incantationshop
 - Key: '110000,0:0000000000:100350,1040549205:'
+  Location: 1040540705
   DebugText:
   - Discus of Light - shop 100360[enemy c0000_9001 (Brother Corhyn - id 1040520705 - [Brother Corhyn]) in m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), enemy c0000_9001 (Brother Corhyn - id 1040540705 - [Scribe Corhyn]) in m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), enemy c0000_9002 (Brother Corhyn - id 1051560720 - [Scribe Corhyn]) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins), enemy c0000_9023 (Brother Corhyn - id 11100770 - [Brother Corhyn]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9025 (Brother Corhyn - id 11000725 - [Scribe Corhyn]) in m11_00_00_00 (Leyndell, Royal Capital), enemy c0000_9030 (Brother Corhyn - id 11050710 - [Scribe Corhyn]) in m11_05_00_00 (Leyndell, Ashen Capital), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 11000 runes - flag 130600 - unlock 1040549205 - after Corhyn moves to Goldmask in Altus Plateau
   Text: Sold by Brother Corhyn after he moves to Goldmask in Altus Plateau
@@ -1189,6 +1207,7 @@ Slots:
   FullArea: leyndell leyndell_divinebridge leyndell_throne leyndell_erdtree leyndell2 leyndell2_throne altus mountaintops roundtable
   Tags: missable incantationshop
 - Key: '110000,0:0000000000:100350:'
+  Location: 11100770
   DebugText:
   - Unique location in [m11_00_00_00 (Leyndell, Royal Capital), m11_05_00_00 (Leyndell, Ashen Capital), m11_10_00_00 (Roundtable Hold), m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins)]
   - Catch Flame - shop 100356[enemy c0000_9001 (Brother Corhyn - id 1040520705 - [Brother Corhyn]) in m60_40_52_00 (Altus Plateau - Forest-Spanning Greatbridge, St. Trina's Hideaway, Sainted Hero's Grave Entrance), enemy c0000_9001 (Brother Corhyn - id 1040540705 - [Scribe Corhyn]) in m60_40_54_00 (Altus Plateau - Road of Iniquity Side Path), enemy c0000_9002 (Brother Corhyn - id 1051560720 - [Scribe Corhyn]) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins), enemy c0000_9023 (Brother Corhyn - id 11100770 - [Brother Corhyn]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9025 (Brother Corhyn - id 11000725 - [Scribe Corhyn]) in m11_00_00_00 (Leyndell, Royal Capital), enemy c0000_9030 (Brother Corhyn - id 11050710 - [Scribe Corhyn]) in m11_05_00_00 (Leyndell, Ashen Capital), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 600 runes - flag 130560
@@ -2784,6 +2803,7 @@ Slots:
   Area: roundtable_balcony
   Tags: enemy invader
 - Key: '111000,0:0000060500:101800,11109777:'
+  Location: 11100705
   DebugText:
   - Talisman Pouch - lot 101100[enemy c2170_9000 (Finger Reader Enia - id 11100705 - [Finger Reader Enia]) in m11_10_00_00 (Roundtable Hold), ESD 102001110] Talisman Pouch, shop 101881[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 500 runes - flag 60500 - unlock 11109777 - after Finger Reader Enia dies, if not already gotten
   - By Table of Lost Grace (Roundtable Hold) - 23.87 away, 0.60 o'clock, -2.62 height offset
@@ -2794,6 +2814,7 @@ Slots:
   QuestReqs: leyndell
   Tags: missable
 - Key: '111000,0:0000068210:101800,11109772:'
+  Location: 11100751
   DebugText:
   - Fevor's Cookbook [3] - lot 102840[enemy c0000_9020 (Sir Gideon Ofnir - id 11100750 - [Sir Gideon Ofnir, the All-Knowing]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9021 (Sir Gideon Ofnir - id 11100751 - [Sir Gideon Ofnir, the All-Knowing]) in m11_10_00_00 (Roundtable Hold), ESD 324001110] Fevor's Cookbook [3], shop 101806[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 2000 runes - flag 68210 - unlock 11109772 - after defeating Maliketh, if not already gotten
   Text: Given by Gideon, or sold by Twin Maiden Husks
@@ -2801,18 +2822,21 @@ Slots:
   Area: roundtable
   Tags: missable cookbook questreward
 - Key: '111000,0:0000400282:101800,11109770:'
+  Location: 11100751
   DebugText:
   - Black Flame's Protection - lot 102820[enemy c0000_9020 (Sir Gideon Ofnir - id 11100750 - [Sir Gideon Ofnir, the All-Knowing]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9021 (Sir Gideon Ofnir - id 11100751 - [Sir Gideon Ofnir, the All-Knowing]) in m11_10_00_00 (Roundtable Hold), ESD 324001110] Black Flame's Protection, shop 101804[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 2500 runes - flag 280040 - unlock 11109770 - after defeating Maliketh, if not already gotten
   Text: Given by Gideon, or sold by Twin Maiden Husks
   Area: roundtable
   Tags: missable questreward
 - Key: '111000,0:0000400283:101800,11109771:'
+  Location: 11100751
   DebugText:
   - Lord's Divine Fortification - lot 102830[enemy c0000_9020 (Sir Gideon Ofnir - id 11100750 - [Sir Gideon Ofnir, the All-Knowing]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9021 (Sir Gideon Ofnir - id 11100751 - [Sir Gideon Ofnir, the All-Knowing]) in m11_10_00_00 (Roundtable Hold), ESD 324001110] Lord's Divine Fortification, shop 101805[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 3500 runes - flag 280050 - unlock 11109771 - after defeating Maliketh, if not already gotten
   Text: Given by Gideon, or sold by Twin Maiden Husks
   Area: roundtable
   Tags: missable questreward
 - Key: '111000,0:0000400285:101800,11109773:'
+  Location: 11100751
   DebugText:
   - Law of Causality - lot 102850[enemy c0000_9020 (Sir Gideon Ofnir - id 11100750 - [Sir Gideon Ofnir, the All-Knowing]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9021 (Sir Gideon Ofnir - id 11100751 - [Sir Gideon Ofnir, the All-Knowing]) in m11_10_00_00 (Roundtable Hold), ESD 324001110] Law of Causality, shop 101807[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 5000 runes - flag 280070 - unlock 11109773 - after defeating Maliketh, if not already gotten
   Text: Given by Gideon, or sold by Twin Maiden Husks
@@ -4118,6 +4142,7 @@ Slots:
   FullArea: siofra_nokron siofra siofrabank_nokron siofra_limited
   Tags: cookbook
 - Key: '120200,0:0000400150::'
+  Location: 1044350700
   DebugText:
   - Somber Smithing Stone [2] - lot 101500[enemy c2010_9000 (Blaidd - id 12020720 - [Blaidd the Half-Wolf]) in m12_02_00_00 (Siofra River), ESD 216001202, enemy c2010_9001 (Blaidd - id 1034500741 - [Blaidd the Half-Wolf]) in m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise), enemy c2010_9000 (Blaidd - id 1044340710 - [Blaidd the Half-Wolf]) in m60_44_34_00 (Weeping Peninsula - Bridge of Sacrifice, Forest Lookout Tower, Earthbore Cave Entrance), enemy c2010_9000 (Blaidd - id 1044350700 - [Blaidd the Half-Wolf]) in m60_44_35_00 (Limgrave - Agheel Lake South, Forlorn Hound Evergaol), enemy c2010_9000 (Blaidd - id 1045370700 - [Blaidd the Half-Wolf]) in m60_45_37_00 (Limgrave - Siofra River Well, Mistwood Ruins, Minor Erdtree, Nokron Entrance), enemy c2010_9000 (Blaidd - id 1051360720 - [Blaidd the Half-Wolf]) in m60_51_36_00 (Caelid - Redmane Castle), enemy c2010_9002 (Blaidd - id 1052380726 - [Blaidd the Half-Wolf]) in m60_52_38_00 (Caelid - Central Radahn Arena), ESD 216006000] Somber Smithing Stone [2]
   Text: Given by Blaidd after you defeat Bloodhound Knight Darriwil, if he's still in Limgrave
@@ -5015,6 +5040,7 @@ Slots:
   FullArea: deeproot deeproot_start deeproot_dream
   Tags: auto
 - Key: '120300,0:0000400331::'
+  Location: 11100740
   DebugText:
   - Weathered Dagger - lot 103310[enemy c0000_9017 (Fia, Deathbed Companion - id 11100740 - [Fia, Deathbed Companion]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9018 (Fia, Deathbed Companion - id 11100741 - [Fia, Deathbed Companion]) in m11_10_00_00 (Roundtable Hold), ESD 322001110, enemy c0000_9010 (Fia, Deathbed Companion - id 12030700 - [Fia, Deathbed Companion]) in m12_03_00_00 (Deeproot Depths), ESD 322001203, enemy c0000_9018 (Fia, Deathbed Companion - id 12030702 - [Fia, Deathbed Companion]) in m12_03_00_00 (Deeproot Depths), ESD 322011203] Weathered Dagger
   Text: Given by Fia after reaching Altus Plateau
@@ -5024,6 +5050,7 @@ Slots:
   FullArea: deeproot deeproot_start deeproot_dream roundtable
   Tags: missable questreward fogchange
 - Key: '120300,0:0000400332::'
+  Location: 11100740
   DebugText:
   - Sacrificial Twig - lot 103320[enemy c0000_9017 (Fia, Deathbed Companion - id 11100740 - [Fia, Deathbed Companion]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9018 (Fia, Deathbed Companion - id 11100741 - [Fia, Deathbed Companion]) in m11_10_00_00 (Roundtable Hold), ESD 322001110, enemy c0000_9010 (Fia, Deathbed Companion - id 12030700 - [Fia, Deathbed Companion]) in m12_03_00_00 (Deeproot Depths), ESD 322001203, enemy c0000_9018 (Fia, Deathbed Companion - id 12030702 - [Fia, Deathbed Companion]) in m12_03_00_00 (Deeproot Depths), ESD 322011203] Sacrificial Twig
   Text: Given by Fia as you talk to her in secret after progressing Rogier's questline
@@ -5040,6 +5067,7 @@ Slots:
   FullArea: deeproot deeproot_start deeproot_dream roundtable
   Tags: norandom fogchange
 - Key: '120300,0:0000400334::'
+  Location: 11100740
   DebugText:
   - Knifeprint Clue - lot 103340[enemy c0000_9017 (Fia, Deathbed Companion - id 11100740 - [Fia, Deathbed Companion]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9018 (Fia, Deathbed Companion - id 11100741 - [Fia, Deathbed Companion]) in m11_10_00_00 (Roundtable Hold), ESD 322001110, enemy c0000_9010 (Fia, Deathbed Companion - id 12030700 - [Fia, Deathbed Companion]) in m12_03_00_00 (Deeproot Depths), ESD 322001203, enemy c0000_9018 (Fia, Deathbed Companion - id 12030702 - [Fia, Deathbed Companion]) in m12_03_00_00 (Deeproot Depths), ESD 322011203] Knifeprint Clue
   Text: Given by Fia to progress Rogier's questline
@@ -5725,6 +5753,7 @@ Slots:
   Area: mohgwyn
   Tags: auto scarab enemy enemygem
 - Key: '120500,0:0012057010::'
+  Location: m12_05_00_00 AEG099_990_9000
   DebugText:
   - Golden Seed - lot 12050010[asset AEG099_990_9000 (Shiny Item) in m12_05_00_00 (Mohgwyn Palace), asset AEG099_620_9001 (Robed Corpse) in m12_05_00_00 (Mohgwyn Palace)] Golden Seed
   - By Dynasty Mausoleum Midpoint (Mohgwyn Palace) - 92.00 away, 4.69 o'clock, -8.79 height offset
@@ -7216,6 +7245,7 @@ Slots:
   FullArea: academy academy_courtyard academy_library academy_chest liurnia_postmanor liurnia limgrave roundtable
   Tags: missable sorceryshop fogchange
 - Key: '140000,0:0000000000:100050,14009267:'
+  Location: 14000710
   DebugText:
   - Shard Spiral - shop 100056[enemy c0000_9000 (Sorceress Sellen - id 1044360700 - [Sorceress Sellen]) in m60_44_36_00 (Limgrave - Waypoint Ruins), enemy c0000_9005 (Sorceress Sellen - id 1034500705 - [Sorceress Sellen]) in m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise), enemy c0000_9015 (Sorceress Sellen - id 14000710 - [Sorceress Sellen]) in m14_00_00_00 (Academy of Raya Lucaria), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c3730_9000 (Graven School - id 14000711 - [Sorceress Sellen]) in m14_00_00_00 (Academy of Raya Lucaria)] 1x for 8000 runes - flag 100560 - unlock 14009267 - after siding with Sellen in her questline
   Text: Sold by Sellen after progressing her questline
@@ -7329,10 +7359,11 @@ Slots:
   - By Raya Lucaria Grand Library (Academy of Raya Lucaria) - 9.67 away, 3.70 o'clock, 0.08 height offset
   - By Ranni's Chamber (Liurnia of the Lakes) - 56.11 away, 2.39 o'clock, -67.48 height offset
   Text: Dropped by Sellen
-  Area: limgrave
+  Area: academy_library
   FullArea: academy academy_courtyard academy_library academy_chest liurnia_postmanor liurnia
   Tags: norandom
 - Key: '140000,0:0000400107::'
+  Location: 14001711
   DebugText:
   - Witch's Glintstone Crown - lot 101061[event enemy c0000_9017 (Sorceress Sellen - id 14000713 - [Sorceress Sellen]) in m14_00_00_00 (Academy of Raya Lucaria), event 14000731 in m14_00_00_00] Witch's Glintstone Crown, lot 101070[event asset AEG099_090_9003 (Shiny Item - id 14001711) in m14_00_00_00 (Academy of Raya Lucaria), event 90005750 in m14_00_00_00] Witch's Glintstone Crown, lot 111001[enemy c0000_9005 (Sorceress Sellen - id 1034500705 - [Sorceress Sellen]) in m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise)] Witch's Glintstone Crown
   Text: In front of Sellen at the end of her questline when she has attained her final form
@@ -7376,6 +7407,7 @@ Slots:
   FullArea: academy academy_courtyard academy_library academy_chest peninsula caelid
   Tags: missable exclusive questreward
 - Key: '140000,0:0000400401::'
+  Location: 14000716
   DebugText:
   - Unique location in [m14_00_00_00 (Academy of Raya Lucaria), m60_41_33_00 (Weeping Peninsula - Fourth Church of Marika, Witchbane Ruins), m60_51_36_00 (Caelid - Redmane Castle)]
   - Eccentric's Hood - lot 104010[event enemy c0000_9031 (Witch-Hunter Jerren - id 14000716 - [Witch-Hunter Jerren]) in m14_00_00_00 (Academy of Raya Lucaria), event 14000712 in m14_00_00_00] Eccentric's Hood, lot 114000[enemy c0000_9002 (Witch-Hunter Jerren - id 1041330710 - [Castellan Jerren]) in m60_41_33_00 (Weeping Peninsula - Fourth Church of Marika, Witchbane Ruins), enemy c0000_9005 (Witch-Hunter Jerren - id 1051360700 - [Castellan Jerren]) in m60_51_36_00 (Caelid - Redmane Castle), enemy c0000_9032 (Witch-Hunter Jerren - id 14000717 - [Witch-Hunter Jerren]) in m14_00_00_00 (Academy of Raya Lucaria), enemy c0000_9006 (Witch-Hunter Jerren - id 1051360701 - [Castellan Jerren]) in m60_51_36_00 (Caelid - Redmane Castle)] Eccentric's Hood
@@ -7957,6 +7989,7 @@ Slots:
   Event: malenia
   Tags: boss deadend remembranceboss
 - Key: '150000,0:0000400320::'
+  Location: 1050380710
   DebugText:
   - Prosthesis-Wearer Heirloom - lot 103200[enemy c0000_9015 (Millicent - id 15000700 - [Millicent]) in m15_00_00_00 (Miquella's Haligtree - Elphael), enemy c0000_9018 (Millicent - id 15000703 - [Millicent]) in m15_00_00_00 (Miquella's Haligtree - Elphael), ESD 348001500, enemy c0000_9002 (Millicent - id 1038510705 - [Millicent]) in m60_38_51_00 (Altus Plateau - Erdtree-Gazing Hill, Lux Ruins), enemy c0000_9001 (Millicent - id 1042550700 - [Millicent]) in m60_42_55_00 (Altus Plateau - Windmill Heights), enemy c0000_9001 (Millicent - id 1050380705 - [Millicent]) in m60_50_38_00 (Caelid - Gowry's Shack), enemy c0000_9003 (Millicent - id 1050380706 - [Millicent]) in m60_50_38_00 (Caelid - Gowry's Shack), enemy c0000_9006 (Millicent - id 1050380710 - [Millicent]) in m60_50_38_00 (Caelid - Gowry's Shack), enemy c0000_9001 (Millicent - id 1051560705 - [Millicent]) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins), ESD 348006000] Prosthesis-Wearer Heirloom
   Text: Given by Millicent after giving her the fixed Unalloyed Gold Needle
@@ -7976,6 +8009,7 @@ Slots:
   FullArea: haligtree haligtree_elphael
   Tags: missable exclusive questreward
 - Key: '150000,0:0000400323::'
+  Location: 15000702
   DebugText:
   - Millicent's Prosthesis - lot 103220[event enemy c0000_9017 (Millicent - id 15000702 - [Millicent]) in m15_00_00_00 (Miquella's Haligtree - Elphael), event 15000714 in m15_00_00_00, event enemy c0000_9017 (Millicent - id 15000702 - [Millicent]) in m15_00_00_00 (Miquella's Haligtree - Elphael), event 90005774 in m15_00_00_00] Millicent's Prosthesis, lot 113200[enemy c0000_9001 (Millicent - id 1051560705 - [Millicent]) in m60_51_56_00 (Mountaintops of the Giants - Ancient Snow Valley Ruins, Stargazers' Ruins), enemy c0000_9015 (Millicent - id 15000700 - [Millicent]) in m15_00_00_00 (Miquella's Haligtree - Elphael), enemy c0000_9001 (Millicent - id 1042550700 - [Millicent]) in m60_42_55_00 (Altus Plateau - Windmill Heights)] Millicent's Prosthesis
   Text: Dropped by Millicent
@@ -8847,6 +8881,7 @@ Slots:
   FullArea: volcano_town volcano volcano_drawingroom volcano_temple fissure limgrave_murkwatercave liurnia gelmir altus roundtable
   Tags: missable nodlc fogchange
 - Key: '160000,0:0000000000:100100:'
+  Location: 31000703
   DebugText:
   - Unique location in [m11_10_00_00 (Roundtable Hold), m16_00_00_00 (Volcano Manor), m22_00_00_00 (Stone Coffin Fissure), m31_00_00_00 (Murkwater Cave), m60_37_42_00 (Liurnia of the Lakes - Scenic Isle, Laskyar Ruins), m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance), m60_39_54_00 (Altus Plateau - Shaded Castle)]
   - Parrying Dagger - shop 100108[enemy c0000_9000 (Patches - id 1037540700 - [Patches]) in m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance), enemy c0000_9000 (Patches - id 31000800 - group 31005100,31005800 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9001 (Patches - id 31000701 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9002 (Patches - id 1037420720 - [Patches]) in m60_37_42_00 (Liurnia of the Lakes - Scenic Isle, Laskyar Ruins), enemy c0000_9002 (Patches - id 1037540701 - [Patches]) in m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance), enemy c0000_9002 (Patches - id 31000850 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9003 (Patches - id 1039540700 - [Patches]) in m60_39_54_00 (Altus Plateau - Shaded Castle), enemy c0000_9003 (Patches - id 31000703 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9005 (Thiollier - id 22000700 - [Thiollier]) in m22_00_00_00 (Stone Coffin Fissure), enemy c0000_9007 (Thiollier - id 22000701 - [Thiollier]) in m22_00_00_00 (Stone Coffin Fissure), enemy c0000_9020 (Patches - id 16000710 - [Patches]) in m16_00_00_00 (Volcano Manor), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 1600 runes - flag 110080
@@ -8907,6 +8942,7 @@ Slots:
   FullArea: volcano_town volcano volcano_drawingroom volcano_temple
   Tags: auto cookbook
 - Key: '160000,0:0000400070::'
+  Location: 16000700
   DebugText:
   - Tonic of Forgetfulness - lot 100700[enemy c0000_9000 (Tanith - id 16000700 - [Tanith, Volcano Manor Proprietress]) in m16_00_00_00 (Volcano Manor), enemy c0000_9024 (Tanith - id 16000701 - [Tanith, Volcano Manor Proprietress]) in m16_00_00_00 (Volcano Manor), ESD 300001600, enemy c0000_9005 (Thiollier - id 22000700 - [Thiollier]) in m22_00_00_00 (Stone Coffin Fissure), enemy c0000_9007 (Thiollier - id 22000701 - [Thiollier]) in m22_00_00_00 (Stone Coffin Fissure), ESD 419002200] Tonic of Forgetfulness, lot 100726[event asset AEG099_990_9003 (Shiny Item - id 16001708) in m16_00_00_00 (Volcano Manor), event 90005750 in m16_00_00_00] Tonic of Forgetfulness
   Text: Given by Tanith after progressing Rya's questline
@@ -8926,6 +8962,7 @@ Slots:
   FullArea: volcano_town volcano volcano_drawingroom volcano_temple
   Tags: missable death
 - Key: '160000,0:0000400072::'
+  Location: 16000700
   DebugText:
   - Drawing-Room Key - lot 100720[enemy c0000_9000 (Tanith - id 16000700 - [Tanith, Volcano Manor Proprietress]) in m16_00_00_00 (Volcano Manor), enemy c0000_9024 (Tanith - id 16000701 - [Tanith, Volcano Manor Proprietress]) in m16_00_00_00 (Volcano Manor), ESD 300001600] Drawing-Room Key, lot 100725[event asset AEG099_990_9003 (Shiny Item - id 16001708) in m16_00_00_00 (Volcano Manor), event 90005750 in m16_00_00_00] Drawing-Room Key
   Text: Given by Tanith upon joining Volcano Manor, or in her chair after defeating Rykard
@@ -8957,6 +8994,7 @@ Slots:
   FullArea: volcano_town volcano volcano_drawingroom volcano_temple
   Tags: missable questreward
 - Key: '160000,0:0000400076::'
+  Location: 16000700
   DebugText:
   - Magma Shot - lot 100760[enemy c0000_9000 (Tanith - id 16000700 - [Tanith, Volcano Manor Proprietress]) in m16_00_00_00 (Volcano Manor), enemy c0000_9024 (Tanith - id 16000701 - [Tanith, Volcano Manor Proprietress]) in m16_00_00_00 (Volcano Manor), ESD 300001600, event asset AEG099_090_9000 (Shiny Item - id 16001702) in m16_00_00_00 (Volcano Manor), event 90005750 in m16_00_00_00] Magma Shot
   Text: aaaaaaaaaaaaaaaaa
@@ -8964,6 +9002,7 @@ Slots:
   FullArea: volcano_town volcano volcano_drawingroom volcano_temple
   Tags: missable questreward
 - Key: '160000,0:0000400077::'
+  Location: 16000700
   DebugText:
   - Serpentbone Blade - lot 100770[enemy c0000_9000 (Tanith - id 16000700 - [Tanith, Volcano Manor Proprietress]) in m16_00_00_00 (Volcano Manor), enemy c0000_9024 (Tanith - id 16000701 - [Tanith, Volcano Manor Proprietress]) in m16_00_00_00 (Volcano Manor), ESD 300001600, event asset AEG099_090_9001 (Shiny Item - id 16001703) in m16_00_00_00 (Volcano Manor), event 90005750 in m16_00_00_00] Serpentbone Blade
   Text: aaaaaaaaaaaaaaaaa
@@ -8971,6 +9010,7 @@ Slots:
   FullArea: volcano_town volcano volcano_drawingroom volcano_temple
   Tags: missable questreward
 - Key: '160000,0:0000400078::'
+  Location: 16000700
   DebugText:
   - Taker's Cameo - lot 100780[enemy c0000_9000 (Tanith - id 16000700 - [Tanith, Volcano Manor Proprietress]) in m16_00_00_00 (Volcano Manor), enemy c0000_9024 (Tanith - id 16000701 - [Tanith, Volcano Manor Proprietress]) in m16_00_00_00 (Volcano Manor), ESD 300001600, event asset AEG099_090_9002 (Shiny Item - id 16001704) in m16_00_00_00 (Volcano Manor), event 90005750 in m16_00_00_00] Taker's Cameo
   Text: aaaaaaaaaaaaaaaaa
@@ -8978,6 +9018,7 @@ Slots:
   FullArea: volcano_town volcano volcano_drawingroom volcano_temple
   Tags: missable questreward
 - Key: '160000,0:0000400090::'
+  Location: 1037420700
   DebugText:
   - Volcano Manor Invitation - lot 100900[enemy c0000_9021 (Rya the Scout - id 16000720 - [Rya the Scout]) in m16_00_00_00 (Volcano Manor), enemy c0000_9026 (Rya the Scout - id 16000722 - [Zorayas the Scout]) in m16_00_00_00 (Volcano Manor), enemy c3950_9015 (Man-Serpent - id 16000721 - [Zorayas the Scout]) in m16_00_00_00 (Volcano Manor), enemy c3950_9016 (Man-Serpent - id 16000723 - [Zorayas the Scout]) in m16_00_00_00 (Volcano Manor), ESD 313001600, enemy c0000_9000 (Rya the Scout - id 1037420700 - [Rya the Scout]) in m60_37_42_00 (Liurnia of the Lakes - Scenic Isle, Laskyar Ruins), enemy c0000_9004 (Rya the Scout - id 1038500700 - [Rya the Scout]) in m60_38_50_00 (Liurnia of the Lakes - Ravine-Veiled Village; Bellum Highway - Grand Lift of Dectus; Altus Plateau - Altus Plateau; Ruin-Strewn Precipice Entrance), enemy c0000_9001 (Rya the Scout - id 1038510700 - [Rya the Scout]) in m60_38_51_00 (Altus Plateau - Erdtree-Gazing Hill, Lux Ruins), ESD 313006000] Volcano Manor Invitation
   Text: Given by Rya in Liurnia after returning Rya's Necklace to her
@@ -8986,6 +9027,7 @@ Slots:
   FullArea: volcano_town volcano volcano_drawingroom volcano_temple liurnia bellum altus
   Tags: missable questreward
 - Key: '160000,0:0000400091::'
+  Location: 16001720
   DebugText:
   - Unique location in [m16_00_00_00 (Volcano Manor)]
   - Daedicar's Woe - lot 100911[event asset AEG099_090_9009 (Shiny Item - id 16001721) in m16_00_00_00 (Volcano Manor), event 90005750 in m16_00_00_00] Daedicar's Woe, lot 110910[enemy c0000_9026 (Rya the Scout - id 16000722 - [Zorayas the Scout]) in m16_00_00_00 (Volcano Manor)] Daedicar's Woe
@@ -9016,6 +9058,7 @@ Slots:
   FullArea: volcano_town volcano volcano_drawingroom volcano_temple limgrave_murkwatercave liurnia gelmir altus
   Tags: missable questreward fogchange
 - Key: '160000,0:0000400189::'
+  Location: 31000800
   DebugText:
   - Unique location in [m16_00_00_00 (Volcano Manor), m31_00_00_00 (Murkwater Cave), m60_37_42_00 (Liurnia of the Lakes - Scenic Isle, Laskyar Ruins), m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance), m60_39_54_00 (Altus Plateau - Shaded Castle)]
   - Spear +7 - lot 111801[enemy c0000_9000 (Patches - id 31000800 - group 31005100,31005800 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9002 (Patches - id 1037420720 - [Patches]) in m60_37_42_00 (Liurnia of the Lakes - Scenic Isle, Laskyar Ruins), enemy c0000_9000 (Patches - id 1037540700 - [Patches]) in m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance), enemy c0000_9020 (Patches - id 16000710 - [Patches]) in m16_00_00_00 (Volcano Manor), enemy c0000_9001 (Patches - id 31000701 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9002 (Patches - id 1037540701 - [Patches]) in m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance), enemy c0000_9002 (Patches - id 31000850 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9003 (Patches - id 31000703 - [Patches]) in m31_00_00_00 (Murkwater Cave)] Spear +7, lot 111811[enemy c0000_9003 (Patches - id 1039540700 - [Patches]) in m60_39_54_00 (Altus Plateau - Shaded Castle)] Spear +7
@@ -9037,6 +9080,7 @@ Slots:
   FullArea: volcano_town volcano volcano_drawingroom volcano_temple limgrave stormhill
   Tags: missable
 - Key: '160000,0:0000400451::'
+  Location: 1039440711
   DebugText:
   - Unique location in [m11_10_00_00 (Roundtable Hold), m16_00_00_00 (Volcano Manor), m60_37_44_00 (Liurnia of the Lakes - Gate Town Southeast), m60_39_44_00 (Liurnia of the Lakes - Jarburg, Divine Tower of Liurnia Entrance)]
   - Hoslow's Petal Whip - lot 104510[enemy c0000_9001 (Knight Diallos - id 1039440711 - [Potentate Diallos]) in m60_39_44_00 (Liurnia of the Lakes - Jarburg, Divine Tower of Liurnia Entrance)] Hoslow's Petal Whip, lot 114500[enemy c0000_9000 (Knight Diallos - id 1037440700 - [Knight Diallos]) in m60_37_44_00 (Liurnia of the Lakes - Gate Town Southeast), enemy c0000_9022 (Knight Diallos - id 16000730 - [Knight Diallos]) in m16_00_00_00 (Volcano Manor), enemy c0000_9013 (Knight Diallos - id 11100725 - [Knight Diallos]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9000 (Knight Diallos - id 1039440710 - [Potentate Diallos]) in m60_39_44_00 (Liurnia of the Lakes - Jarburg, Divine Tower of Liurnia Entrance), enemy c0000_9014 (Knight Diallos - id 11100726 - [Knight Diallos]) in m11_10_00_00 (Roundtable Hold)] Hoslow's Petal Whip
@@ -9579,10 +9623,11 @@ Slots:
   DebugText:
   - Fan Daggers - shop 100118[enemy c0000_9000 (Patches - id 1037540700 - [Patches]) in m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance), enemy c0000_9000 (Patches - id 31000800 - group 31005100,31005800 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9001 (Patches - id 31000701 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9002 (Patches - id 1037420720 - [Patches]) in m60_37_42_00 (Liurnia of the Lakes - Scenic Isle, Laskyar Ruins), enemy c0000_9002 (Patches - id 1037540701 - [Patches]) in m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance), enemy c0000_9002 (Patches - id 31000850 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9003 (Patches - id 1039540700 - [Patches]) in m60_39_54_00 (Altus Plateau - Shaded Castle), enemy c0000_9003 (Patches - id 31000703 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9005 (Thiollier - id 22000700 - [Thiollier]) in m22_00_00_00 (Stone Coffin Fissure), enemy c0000_9007 (Thiollier - id 22000701 - [Thiollier]) in m22_00_00_00 (Stone Coffin Fissure), enemy c0000_9020 (Patches - id 16000710 - [Patches]) in m16_00_00_00 (Volcano Manor), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] for 160 runes - flag 110180 - unlock 1038419271 - after Patches moves to Volcano Manor
   Text: Sold by Patches after he moves to Volcano Manor
-  Area: volcano
+  Area: volcano_drawingroom
   FullArea: volcano_town volcano volcano_drawingroom volcano_temple fissure limgrave_murkwatercave liurnia gelmir altus roundtable
   Tags: norandom nodlc fogchange
 - Key: '160000,3:0000000000:100100:'
+  Location: 31000703
   DebugText:
   - Glass Shard - shop 100104[enemy c0000_9000 (Patches - id 1037540700 - [Patches]) in m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance), enemy c0000_9000 (Patches - id 31000800 - group 31005100,31005800 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9001 (Patches - id 31000701 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9002 (Patches - id 1037420720 - [Patches]) in m60_37_42_00 (Liurnia of the Lakes - Scenic Isle, Laskyar Ruins), enemy c0000_9002 (Patches - id 1037540701 - [Patches]) in m60_37_54_00 (Mt. Gelmir - Minor Erdtree, Seethewater Cave Entrance), enemy c0000_9002 (Patches - id 31000850 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9003 (Patches - id 1039540700 - [Patches]) in m60_39_54_00 (Altus Plateau - Shaded Castle), enemy c0000_9003 (Patches - id 31000703 - [Patches]) in m31_00_00_00 (Murkwater Cave), enemy c0000_9005 (Thiollier - id 22000700 - [Thiollier]) in m22_00_00_00 (Stone Coffin Fissure), enemy c0000_9007 (Thiollier - id 22000701 - [Thiollier]) in m22_00_00_00 (Stone Coffin Fissure), enemy c0000_9020 (Patches - id 16000710 - [Patches]) in m16_00_00_00 (Volcano Manor), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] for 100 runes - flag 110040
   Text: Sold by Patches
@@ -9715,6 +9760,7 @@ Slots:
   FullArea: belurat belurat_swamp belurat_stairs belurat_enirilim shadowkeep shadowkeep_church shadowkeep_church_lower
   Tags: missable
 - Key: '200000,0:0000400696::'
+  Location: m61_47_46_00 c0000_9000
   DebugText:
   - Unique location in [m20_00_00_00 (Belurat, Tower Settlement), m21_00_00_00 (Shadow Keep)]
   - Prayer Room Key - lot 106931[event enemy c0000_9000 (Fire Knight Queelign - id 20000700 - [Fire Knight Queelign]) in m20_00_00_00 (Belurat, Tower Settlement), event 90005768 in m20_00_00_00, event enemy c0000_9021 (Fire Knight Queelign - id 21000710 - [Fire Knight Queelign]) in m21_00_00_00 (Shadow Keep - Church District), event 90005768 in m61_47_46_00] Prayer Room Key
@@ -15237,6 +15283,7 @@ Slots:
   FullArea: sewer sewer_flame sewer_catacombs
   Tags: talisman outoftheway
 - Key: '350000,0:0035007040::'
+  Location: m35_00_00_00 AEG099_090_9004
   DebugText:
   - Golden Rune [11] - lot 35000040[asset AEG099_090_9004 (Shiny Item) in m35_00_00_00 (Subterranean Shunning-Grounds), asset AEG099_610_9098 (Corpse) in m35_00_00_00 (Subterranean Shunning-Grounds)] Golden Rune [11]
   - By Underground Roadside (Subterranean Shunning-Grounds) - 36.24 away, 2.74 o'clock, -0.36 height offset
@@ -18317,7 +18364,7 @@ Slots:
   - By Table of Lost Grace (Roundtable Hold) - 23.87 away, 0.60 o'clock, -2.62 height offset
   - By South Raya Lucaria Gate (Liurnia of the Lakes) - 110.07 away, 11.82 o'clock, 16.53 height offset
   Text: Sold by Isolated Merchant southeast of Main Academy Gate
-  Area: academy
+  Area: academy_entrance
   FullArea: liurnia roundtable
   Tags: ''
 - Key: '603546,0:0000400161::'
@@ -19303,7 +19350,7 @@ Slots:
   - By Table of Lost Grace (Roundtable Hold) - 23.87 away, 0.60 o'clock, -2.62 height offset
   - By Bellum Church (Bellum Highway) - 81.82 away, 0.22 o'clock, -24.96 height offset
   Text: Sold by Nomadic Merchant down the cliffside pathway from Bellum Church with Tarnished Pack installed
-  Area: liurnia
+  Area: bellum
   FullArea: liurnia bellum roundtable
   Tags: tarnished
 - Key: '603649,0:0000400908::'
@@ -19913,6 +19960,7 @@ Slots:
   FullArea: liurnia bellum liurnia_postmanor
   Tags: seedtree
 - Key: '603751,0:0000530300::'
+  Location: 1041520800
   DebugText:
   - Lansseax's Glaive - lot 30300[event enemy c4510_9000 (Ancient Dragon - id 1037510800 - group 1037515100 - [Ancient Dragon Lansseax]) in m60_37_51_00 (Altus Plateau - Abandoned Coffin, Ruin-Strewn Precipice Exit), event 90005860 in m60_37_51_00, event enemy c4510_9000 (Ancient Dragon - id 1041520800 - group 1041525100,1041525800 - [Ancient Dragon Lansseax]) in m60_41_52_00 (Altus Plateau - Rampartside Path, Altus Tunnel Entrance), event 90005860 in m60_41_52_00] Lansseax's Glaive
   - By Erdtree-Gazing Hill (Altus Plateau) - 123.42 away, 8.99 o'clock, -53.56 height offset
@@ -24002,7 +24050,7 @@ Slots:
   - By Table of Lost Grace (Roundtable Hold) - 23.87 away, 0.60 o'clock, -2.62 height offset
   - By Hermit Merchant's Shack (Capital Outskirts) - 20.26 away, 8.10 o'clock, 0.32 height offset
   Text: Sold by the Hermit Merchant at the Hermit's Merchant Shack
-  Area: altus
+  Area: outskirts
   FullArea: altus outskirts roundtable
   Tags: ''
 - Key: '604431,0:1044317010::'
@@ -24490,6 +24538,7 @@ Slots:
   Area: limgrave
   Tags: auto
 - Key: '604439,0:0000000000:100125:'
+  Location: 11100735
   DebugText:
   - Unique location in [m11_10_00_00 (Roundtable Hold), m60_44_39_00 (Limgrave - Summonwater Village Outskirts), m60_45_39_00 (Limgrave - Summonwater Village)]
   - Litany of Proper Death - shop 100126[enemy c0000_9000 (D, Hunter of the Dead - id 1044390700 - [D, Hunter of the Dead]) in m60_44_39_00 (Limgrave - Summonwater Village Outskirts), enemy c0000_9000 (D, Hunter of the Dead - id 1045390700 - [D, Hunter of the Dead]) in m60_45_39_00 (Limgrave - Summonwater Village), enemy c0000_9015 (D, Hunter of the Dead - id 11100735 - [D, Hunter of the Dead]) in m11_10_00_00 (Roundtable Hold), enemy c0000_9016 (D, Hunter of the Dead - id 11100736 - [D, Hunter of the Dead]) in m11_10_00_00 (Roundtable Hold), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 2500 runes - flag 110260
@@ -24704,6 +24753,7 @@ Slots:
   Area: limgrave
   Tags: auto
 - Key: '604536,0:0000000000:100550:'
+  Location: 1045360700
   DebugText:
   - Unique location in [m11_10_00_00 (Roundtable Hold), m60_45_36_00 (Limgrave - Fort Haight West), m60_45_36_10 (Limgrave - Fort Haight West (Meteored))]
   - Hand Axe - shop 100563[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c3200_9000 (Merchant - id 1045360702 - [Nomadic Merchant]) in m60_45_36_10 (Limgrave - Fort Haight West (Meteored)), enemy c3200_9001 (Merchant - id 1045360700 - [Nomadic Merchant]) in m60_45_36_00 (Limgrave - Fort Haight West)] 1x for 600 runes - flag 150630
@@ -24723,6 +24773,7 @@ Slots:
   FullArea: limgrave roundtable
   Tags: raceshop cookbook
 - Key: '604536,0:0000000000:6953,100550:'
+  Location: 1045360700
   DebugText:
   - Hefty Scimitar - shop 100568[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c3200_9000 (Merchant - id 1045360702 - [Nomadic Merchant]) in m60_45_36_10 (Limgrave - Fort Haight West (Meteored)), enemy c3200_9001 (Merchant - id 1045360700 - [Nomadic Merchant]) in m60_45_36_00 (Limgrave - Fort Haight West)] 1x for 2400 runes - flag 150680 - unlock 6953 - with Tarnished Pack
   Text: Sold by the Nomadic Merchant in the Mistwood along the road to Fort Haight with Tarnished Pack installed
@@ -24730,6 +24781,7 @@ Slots:
   FullArea: limgrave roundtable
   Tags: tarnished
 - Key: '604536,0:0000400902::'
+  Location: 1045360700
   DebugText:
   - Nomadic Merchant's Bell Bearing [2] - lot 119005[enemy c3200_9001 (Merchant - id 1045360700 - [Nomadic Merchant]) in m60_45_36_00 (Limgrave - Fort Haight West), enemy c3200_9000 (Merchant - id 1045360702 - [Nomadic Merchant]) in m60_45_36_10 (Limgrave - Fort Haight West (Meteored))] Nomadic Merchant's Bell Bearing [2]
   - By Minor Erdtree (Erdtree) - 94.45 away, 6.12 o'clock, -13.84 height offset
@@ -24738,6 +24790,7 @@ Slots:
   Area: limgrave
   Tags: norandom merchantgift
 - Key: '604536,3:0000000000:100550:'
+  Location: 1045360700
   DebugText:
   - Shop item in [m11_10_00_00 (Roundtable Hold), m60_45_36_00 (Limgrave - Fort Haight West), m60_45_36_10 (Limgrave - Fort Haight West (Meteored))]
   - Arrow - shop 100557[enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold), enemy c3200_9000 (Merchant - id 1045360702 - [Nomadic Merchant]) in m60_45_36_10 (Limgrave - Fort Haight West (Meteored)), enemy c3200_9001 (Merchant - id 1045360700 - [Nomadic Merchant]) in m60_45_36_00 (Limgrave - Fort Haight West)] for 20 runes - flag 150570
@@ -28769,6 +28822,7 @@ Slots:
   Area: rauhruins_west
   Tags: talisman nocrawl chest
 - Key: '614445,0:2044457950::'
+  Location: m61_44_45_00 c5240_9017
   DebugText:
   - Spirit Calculus - enemy lot 524094724[enemy c5240_9017 (Shadow Commoner) in m61_44_45_00 (Ancient Ruins of Rauh - West Ruins Cave Upper Levels, Grand Stairway), enemy c5240_9017 (Shadow Commoner) in m61_44_45_10 (Ancient Ruins of Rauh - South Church of the Bud, Sealing Tree, Grand Stairway, West Ruins Cave Upper Levels (Unsealed))] Spirit Calculus, 3x
   - By Ancient Ruins, Grand Stairway (Ancient Ruins of Rauh) - 33.46 away, 1.58 o'clock, -54.46 height offset
@@ -28952,6 +29006,7 @@ Slots:
   Area: gravesite
   Tags: cookbook missable
 - Key: '614541,0:0000400645::'
+  Location: 2045421710
   DebugText:
   - Unique location in [m61_45_41_00 (Gravesite Plain - Cliffroad Terminus, Prospect Town), m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross), m61_47_46_00 (Scadu Altus - Church of the Crusade; Gravesite Plain - Fog Rift Catacombs Entrance; Rauh Base - Above Fog Rift; Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside), m61_48_40_00 (Gravesite Plain - South of Church of Consolation, Ellac River End; Charo's Hidden Grave - Central Lake Northeast Cliffside; Abyssal Woods - Southwest Corner), m61_48_44_00 (Gravesite Plain - East Castle Ensis, Exit to Scadu Altus; Scadu Altus - Ruined Forge of Starfall Past Entrance), m61_49_46_00 (Scadu Altus - Poison Swamp, North Bear Woods, Castle Watering Hole Southwest), m61_50_47_00 (Scadu Altus - Castle Watering Hole Northeast, North Ruins of Unte, Above Shadow Keep East Tunnel)]
   - Verdigris Greatshield - lot 106421[event asset AEG099_990_9000 (Shiny Item - id 2045421710) in m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross), event 90005750 in m61_45_42_00, event asset AEG099_990_9001 (Shiny Item - id 2047461730) in m61_47_46_00 (Scadu Altus - Church of the Crusade), event 90005750 in m61_47_46_00] Verdigris Greatshield, lot 116401[event enemy c0000_9001 (Moore - id 2045410700 - [Moore]) in m61_45_41_00 (Gravesite Plain - Cliffroad Terminus, Prospect Town), event 90005774 in m61_45_41_00, event enemy c0000_9001 (Moore - id 2045410700 - [Moore]) in m61_45_41_00 (Gravesite Plain - Cliffroad Terminus, Prospect Town), event 90005774 in m61_45_41_00, event enemy c0000_9001 (Moore - id 2047460720 - [Moore]) in m61_47_46_00 (Scadu Altus - Church of the Crusade), event 90005774 in m61_47_46_00, event enemy c0000_9001 (Moore - id 2045410700 - [Moore]) in m61_45_41_00 (Gravesite Plain - Cliffroad Terminus, Prospect Town), event 90005774 in m61_47_46_00, event enemy c0000_9000 (Moore - id 2048400700 - [Moore]) in m61_48_40_00 (Gravesite Plain - Ellac River End), event 90005774 in m61_48_40_00, event enemy c0000_9001 (Moore - id 2045410700 - [Moore]) in m61_45_41_00 (Gravesite Plain - Cliffroad Terminus, Prospect Town), event 90005774 in m61_48_40_00, event enemy c0000_9003 (Moore - id 2048440750 - [Moore]) in m61_48_44_00 (Scadu Altus - Castle Ensis Exit, Ruined Forge of Starfall Past Entrance), event 90005774 in m61_48_44_00, event enemy c0000_9001 (Moore - id 2045410700 - [Moore]) in m61_45_41_00 (Gravesite Plain - Cliffroad Terminus, Prospect Town), event 90005774 in m61_48_44_00, event enemy c0000_9000 (Moore - id 2049460710 - [Moore]) in m61_49_46_00 (Scadu Altus - Poison Swamp), event 90005774 in m61_49_46_00, event enemy c0000_9001 (Moore - id 2045410700 - [Moore]) in m61_45_41_00 (Gravesite Plain - Cliffroad Terminus, Prospect Town), event 90005774 in m61_49_46_00, event enemy c0000_9000 (Moore - id 2050470710 - [Moore]) in m61_50_47_00 (Scadu Altus - Above Shadow Keep East Tunnel), event 90005774 in m61_50_47_00, event enemy c0000_9001 (Moore - id 2045410700 - [Moore]) in m61_45_41_00 (Gravesite Plain - Cliffroad Terminus, Prospect Town), event 90005774 in m61_50_47_00] Verdigris Greatshield
@@ -29050,6 +29105,7 @@ Slots:
   Area: gravesite
   Tags: enemy enemyweapon
 - Key: '614542,0:0000000000:102250,102270,2045429330:'
+  Location: 2048430700
   DebugText:
   - Unique location in [m11_10_00_00 (Roundtable Hold), m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross), m61_47_46_00 (Scadu Altus - Church of the Crusade; Gravesite Plain - Fog Rift Catacombs Entrance; Rauh Base - Above Fog Rift; Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside), m61_48_43_00 (Gravesite Plain - Pillar Path Cross; Abyssal Woods - Divided Falls; Scadu Altus - West of Moorth Highway South)]
   - Deadly Poison Perfume Bottle - shop 102270[enemy c0000_9002 (Moore - id 2045420710 - [Moore]) in m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross), enemy c0000_9002 (Thiollier - id 2048430700 - group 2049445810 - [Thiollier]) in m61_48_43_00 (Gravesite Plain - Pillar Path Cross), enemy c0000_9003 (Moore - id 2047460730 - [Moore]) in m61_47_46_00 (Scadu Altus - Church of the Crusade), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 1x for 6000 runes - flag 320700 - unlock 2045429330 - from Thiollier or after Moore takes over
@@ -29069,6 +29125,7 @@ Slots:
   FullArea: gravesite scadualtus rauhbase rauhruins abyssal roundtable
   Tags: missable
 - Key: '614542,0:0000000000:102250:'
+  Location: 2045420710
   DebugText:
   - Unique location in [m11_10_00_00 (Roundtable Hold), m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross), m61_47_46_00 (Scadu Altus - Church of the Crusade; Gravesite Plain - Fog Rift Catacombs Entrance; Rauh Base - Above Fog Rift; Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside)]
   - Rune Arc - shop 102250[enemy c0000_9002 (Moore - id 2045420710 - [Moore]) in m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross), enemy c0000_9003 (Moore - id 2047460730 - [Moore]) in m61_47_46_00 (Scadu Altus - Church of the Crusade), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] 3x for 8000 runes - flag 320500
@@ -29090,6 +29147,7 @@ Slots:
   FullArea: gravesite scadualtus rauhbase rauhruins roundtable
   Tags: raceshop
 - Key: '614542,0:0000068830::'
+  Location: 2045420710
   DebugText:
   - Forager Brood Cookbook [7] - lot 106400[enemy c0000_9002 (Moore - id 2045420710 - [Moore]) in m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross), enemy c0000_9003 (Moore - id 2047460730 - [Moore]) in m61_47_46_00 (Scadu Altus - Church of the Crusade), ESD 415006100] Forager Brood Cookbook [7]
   - By Main Gate Cross (Gravesite Plain) - 6.09 away, 7.72 o'clock, -0.01 height offset
@@ -29100,6 +29158,7 @@ Slots:
   FullArea: gravesite scadualtus rauhbase rauhruins
   Tags: missable cookbook questreward
 - Key: '614542,0:0000400642::'
+  Location: 2045420710
   DebugText:
   - Black Syrup - lot 106410[enemy c0000_9002 (Moore - id 2045420710 - [Moore]) in m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross), enemy c0000_9003 (Moore - id 2047460730 - [Moore]) in m61_47_46_00 (Scadu Altus - Church of the Crusade), ESD 415006100] Black Syrup
   - By Main Gate Cross (Gravesite Plain) - 6.09 away, 7.72 o'clock, -0.01 height offset
@@ -29123,6 +29182,7 @@ Slots:
   Area: gravesite
   Tags: cross
 - Key: '614542,3:0000000000:102250,102270,2045429331:'
+  Location: 2048430700
   DebugText:
   - Thiollier's Concoction - shop 102282[enemy c0000_9002 (Moore - id 2045420710 - [Moore]) in m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross), enemy c0000_9002 (Thiollier - id 2048430700 - group 2049445810 - [Thiollier]) in m61_48_43_00 (Gravesite Plain - Pillar Path Cross), enemy c0000_9003 (Moore - id 2047460730 - [Moore]) in m61_47_46_00 (Scadu Altus - Church of the Crusade), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] for 30000 runes - flag 320820 - unlock 2045429331
   Text: Sold by Thiollier after giving him Black Syrup
@@ -29131,6 +29191,7 @@ Slots:
   FullArea: gravesite scadualtus rauhbase rauhruins abyssal roundtable
   Tags: missable
 - Key: '614542,3:0000000000:102250:'
+  Location: 2045420710
   DebugText:
   - Shop item in [m11_10_00_00 (Roundtable Hold), m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross), m61_47_46_00 (Scadu Altus - Church of the Crusade; Gravesite Plain - Fog Rift Catacombs Entrance; Rauh Base - Above Fog Rift; Ancient Ruins of Rauh - Bloodfiend Ruins Southeast Cliffside)]
   - Arrow - shop 102251[enemy c0000_9002 (Moore - id 2045420710 - [Moore]) in m61_45_42_00 (Gravesite Plain - Belurat Main Gate Cross), enemy c0000_9003 (Moore - id 2047460730 - [Moore]) in m61_47_46_00 (Scadu Altus - Church of the Crusade), enemy c1000_9005 (Talk Dummy - id 11100700 - [Twin Maiden Husks]) in m11_10_00_00 (Roundtable Hold)] for 20 runes - flag 320510
@@ -31320,6 +31381,7 @@ Slots:
   FullArea: cerulean charo
   Tags: sorcery
 - Key: '614840,0:0000065400::'
+  Location: 2248400200
   DebugText:
   - Viridian Hidden Tear - lot 2048400021[asset AEG099_090_9000 (Shiny Item - id 2048401502) in m61_48_40_00 (Gravesite Plain - Ellac River End), event enemy m61_48_40_00-c5170_9000 (Furnace Golem - id 2248400200) in m61_12_10_02 (Gravesite Plain - Ellac River End), event 90005301 in m61_48_40_00] Viridian Hidden Tear
   - By Ellac River Downstream (Gravesite Plain) - 133.17 away, 6.08 o'clock, -53.60 height offset
@@ -31362,6 +31424,7 @@ Slots:
   FullArea: gravesite ellac abyssal charo
   Tags: weapon
 - Key: '614840,0:2048407020::'
+  Location: 2248400200
   DebugText:
   - Furnace Visage - lot 2048400020[asset AEG099_090_9000 (Shiny Item - id 2048401502) in m61_48_40_00 (Gravesite Plain - Ellac River End), event enemy m61_48_40_00-c5170_9000 (Furnace Golem - id 2248400200) in m61_12_10_02 (Gravesite Plain - Ellac River End), event 90005301 in m61_48_40_00] Furnace Visage
   - By Ellac River Downstream (Gravesite Plain) - 133.17 away, 6.08 o'clock, -53.60 height offset
@@ -31434,6 +31497,7 @@ Slots:
   FullArea: gravesite abyssal jaggedpeak_foot
   Tags: missable exclude:spectralsteedwhistle questreward
 - Key: '614842,0:0000400712::'
+  Location: 2052401700
   DebugText:
   - Unique location in [m61_48_42_00 (Gravesite Plain - Pillar Path Waypoint, Ruined Forge Lava Intake Entrance; Abyssal Woods - West Edge), m61_52_40_00 (Foot of the Jagged Peak - Foot of the Jagged Peak, Drake Duo Area; Abyssal Woods - Southwest of Church)]
   - Igon's Greatbow - lot 107120[event asset AEG099_990_9000 (Shiny Item - id 2052401700) in m61_52_40_00 (Foot of the Jagged Peak - Foot of the Jagged Peak, Drake Duo Area), event 90005750 in m61_52_40_00] Igon's Greatbow, lot 117101[enemy c0000_9000 (Igon - id 2048420700 - [Igon]) in m61_48_42_00 (Gravesite Plain - Pillar Path Waypoint, Ruined Forge Lava Intake Entrance)] Igon's Greatbow
@@ -33624,6 +33688,7 @@ Slots:
   Area: jaggedpeak
   Tags: cookbook exclude:spectralsteedwhistle
 - Key: '999999,0:0000060000::'
+  Location: m18_00_00_00 AEG024_024_1005
   DebugText:
   - Flask of Crimson Tears - lot 2000[unknown entity event 18000020 in m18_00_00_00] Flask of Crimson Tears (Goods 1001), 3x
   - Flask of Cerulean Tears - lot 2001[unknown entity event 18000020 in m18_00_00_00] Flask of Cerulean Tears (Goods 1051)
@@ -33631,12 +33696,14 @@ Slots:
   Area: graveyard_cave
   Tags: norandom
 - Key: '999999,0:0000060100::'
+  Location: m60_42_37_00 c1000_9002
   DebugText:
   - Spectral Steed Whistle - lot 100000[Melina, ESD 3000] Spectral Steed Whistle (Goods 130)
   Text: Given by Melina when you accept her accord
   Area: limgrave
   Tags: ''
 - Key: '999999,0:0000400001::'
+  Location: m11_00_00_00 c1000_9000
   DebugText:
   - Rold Medallion - lot 100010[Melina, ESD 3000] Rold Medallion
   Text: Given by Melina after defeating Morgott
