@@ -1960,8 +1960,8 @@ namespace RandomizerCommon
             // State: Open doors to Enia, Progress Roderika quest
             ESDEdits.MakeMenuTree(graceMachine, startShopId, loopId, menus, str => throw new Exception($"Internal error: no localization for {str}"), makeShop);
 
-            MiscMapEdits edits = new MiscMapEdits(game);
-            edits.AddGrace(
+            // TODO: Inject common instance of MiscMapEdits (do not use this aside from the grace edit)
+            new MiscMapEdits(game).AddGrace(
                 "m10_01_00_00", new Vector3(-26.904f, 39.146f, -175.466f), new Vector3(0, -120, 0),
                 10001950, "AEG210_375_2000", "c0000_0000", "c0000_9010",
                 GameData.EldenRingBase + 100, 10010, 9999, 10011953, 100103);

@@ -371,6 +371,9 @@
                                         <CheckBox IsChecked="{Binding Regionlock}">
                                             <loc:Message Key="EldenForm_regionlock" Text="Require a special region lock item to access each region" />
                                         </CheckBox>
+                                        <CheckBox IsChecked="{Binding Imbuedsplit}">
+                                            <loc:Message Key="EldenForm_imbuedsplit" Text="Link each Imbued Sword Key to a specific sending gate" />
+                                        </CheckBox>
                                         <CheckBox IsChecked="{Binding Invertautohunt}">
                                             <loc:Message Key="EldenForm_autohunt" Text="Give Serpent-Hunter upon encountering Rykard" />
                                         </CheckBox>
@@ -379,6 +382,16 @@
                                         </CheckBox>
                                         <CheckBox IsChecked="{Binding Traps}">
                                             <loc:Message Key="EldenForm_traps" Text="Add trap items" />
+                                        </CheckBox>
+                                    </StackPanel>
+                                </HeaderedContentControl>
+                                <HeaderedContentControl Classes="groupbox">
+                                    <HeaderedContentControl.Header>
+                                        <loc:Message Key="EldenForm_hintGroup" Text="Hints" />
+                                    </HeaderedContentControl.Header>
+                                    <StackPanel>
+                                        <CheckBox IsChecked="{Binding Markchecks}">
+                                            <loc:Message Key="EldenForm_markchecksap" Text="Add markers for all unchecked priority locations" />
                                         </CheckBox>
                                     </StackPanel>
                                 </HeaderedContentControl>

@@ -97,6 +97,7 @@ namespace RandomizerCommon
             public Dictionary<ItemKey, int> ItemEventFlags { get; set; }
             public Dictionary<ItemLocKey, int> SlotEventFlags { get; set; }
             public Dictionary<int, int> MerchantGiftFlags { get; set; }
+            public Dictionary<int, int> RewrittenFlags { get; set; }
         }
 
         public Result Write(Random random, Permutation permutation, RandomizerOptions opt)
@@ -984,7 +985,13 @@ namespace RandomizerCommon
             // Very game-specific stuff here
             editor.EditLocations(opt, mapping);
 
-            return new Result { ItemEventFlags = mapping.ItemEventFlags, SlotEventFlags = mapping.SlotEventFlags, MerchantGiftFlags = mapping.MerchantGiftFlags };
+            return new Result
+            {
+                ItemEventFlags = mapping.ItemEventFlags,
+                SlotEventFlags = mapping.SlotEventFlags,
+                MerchantGiftFlags = mapping.MerchantGiftFlags,
+                RewrittenFlags = mapping.RewrittenFlags,
+            };
         }
 
         public void AutoUpgradeDlc()

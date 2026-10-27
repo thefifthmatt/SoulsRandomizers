@@ -8,8 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
-using static RandomizerCommon.Messages;
 using RandomizerCommon.Models;
+using static RandomizerCommon.Messages;
 
 #if ARCHIPELAGO
 using Archipelago.MultiClient.Net;
@@ -63,10 +63,10 @@ namespace RandomizerCommon.ViewModels
             Working = false;
         }
 
+#if ARCHIPELAGO
         [ReactiveCommand]
         public async void Load()
         {
-#if ARCHIPELAGO
             if (Working)
             {
                 return;
@@ -163,7 +163,6 @@ namespace RandomizerCommon.ViewModels
                 SetError($"Failed to load data: {ex}");
             }
             Working = false;
-#endif
         }
 
         private record DisposeSession(ArchipelagoSession Session) : IDisposable
@@ -174,5 +173,9 @@ namespace RandomizerCommon.ViewModels
                 Session.Socket.DisconnectAsync();
             }
         }
+#else
+        [ReactiveCommand]
+        public async void Load() { }
+#endif
     }
 }

@@ -315,6 +315,10 @@ namespace RandomizerCommon
                 {
                     ItemGroups["remove"].AddRange(ItemGroups["removecraft"]);
                 }
+                if (opt["imbuedsplit"])
+                {
+                    ItemGroups["remove"].AddRange(ItemGroups["removeimbued"]);
+                }
                 if (opt["dlc"] && (opt["dlcstart"] || opt["quickstart"]))
                 {
                     foreach (string group in new[] { "maxflask", "maxflasknum", "maxpouch", "maxmemslot", "maxwhetblade", "maxbb" })
@@ -2484,6 +2488,7 @@ namespace RandomizerCommon
             // Derived from Name if not set
             public string OverrideConfigName { get; set; }
             public string Desc { get; set; }
+            public string Desc2 { get; set; }
             public string Switch { get; set; }
             // ConfigName for item which includes this one. The parent includes the logic conditions of all children recursively.
             public string Parent { get; set; }

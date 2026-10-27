@@ -38,7 +38,16 @@ namespace RandomizerCommon
 
         public static readonly List<Option> OptionList = new()
         {
-            new() { Name = "autoEquip", Text = "Auto-equip" },
+            new() { Name = "autoUpgrade", Text = "Auto-upgrade", Default = false },
+            new() { Name = "autoUpgradeWeapons", Parent = "autoUpgrade", Text = "Auto-upgrade weapons to the player's max weapon level" },
+            new() { Name = "regionLockWeapons", Parent = "autoUpgradeWeapons", Default = false, Text = "Limit max auto-upgrade level based on the region where the weapon is acquired" },
+            new() { Name = "weaponLevelsBelowMax", Parent = "autoUpgradeWeapons", Type = OptionType.Int, Max = 25, Text = "Nerf auto-upgrade by reducing weapons' levels by a fixed amount. If set to 3, an auto-upgrade level of +20 (+8 somber) gives a +17 weapon (+7 somber)" },
+            new() { Name = "weaponLevelRange", Parent = "autoUpgradeWeapons", Type = OptionType.Int, Max = 25, Text = "Nerf auto-upgrade by reducing weapons' levels by a random amount. If set to 3, an auto-upgrade level of +10 (+4 somber) gives a +8 +9 or +10 weapon (+3 or +4 somber)" },
+            new() { Name = "autoUpgradeSpiritAshes", Parent = "autoUpgrade", Text = "Auto-upgrade spirit ashes to the highest level achieved so far" },
+            new() { Name = "autoUpgradeEquipped", Parent = "autoUpgrade", Default = false, Text = "Auto-upgrade items in equipment slots to match the highest level achieved so far" },
+            new() { Name = "autoUpgradeDropped", Parent = "autoUpgrade", Default = false, Text = "Auto-upgrade items which are left on the ground and picked up" },
+
+            new() { Name = "autoEquip", Text = "Auto-equip", Default = false },
             new() { Name = "equipShop", Parent = "autoEquip", Text = "Auto-equip items purchased from shops" },
             new() { Name = "equipWeapons", Parent = "autoEquip", Text = "Auto-equip weapons" },
             new() { Name = "bowLeft", Parent = "equipWeapons", Default = false, Text = "Equip bows in the left hand" },
@@ -47,14 +56,8 @@ namespace RandomizerCommon
             new() { Name = "equipAccessory", Parent = "autoEquip", Text = "Auto-equip talismans" },
             new() { Name = "equipSpells", Parent = "autoEquip", Text = "Auto-equip spells" },
             new() { Name = "equipCrystalTears", Parent = "autoEquip", Text = "Auto-equip crystal tears" },
-            new() { Name = "autoUpgrade", Text = "Auto-upgrade" },
-            new() { Name = "autoUpgradeWeapons", Parent = "autoUpgrade", Text = "Auto-upgrade weapons to the player's max weapon level" },
-            new() { Name = "regionLockWeapons", Parent = "autoUpgradeWeapons", Default = false, Text = "Limit max auto-upgrade level based on the region where the weapon is acquired" },
-            new() { Name = "weaponLevelsBelowMax", Parent = "autoUpgradeWeapons", Type = OptionType.Int, Max = 25, Text = "Nerf auto-upgrade by reducing weapons' levels by a fixed amount. If set to 3, an auto-upgrade level of +20 (+8 somber) gives a +17 weapon (+7 somber)" },
-            new() { Name = "weaponLevelRange", Parent = "autoUpgradeWeapons", Type = OptionType.Int, Max = 25, Text = "Nerf auto-upgrade by reducing weapons' levels by a random amount. If set to 3, an auto-upgrade level of +10 (+4 somber) gives a +8 +9 or +10 weapon (+3 or +4 somber)" },
-            new() { Name = "autoUpgradeSpiritAshes", Parent = "autoUpgrade", Text = "Auto-upgrade spirit ashes to the highest level achieved so far" },
-            new() { Name = "autoUpgradeEquipped", Parent = "autoUpgrade", Default = false, Text = "Auto-upgrade items in equipment slots to match the highest level achieved so far" },
-            new() { Name = "autoUpgradeDropped", Parent = "autoUpgrade", Default = false, Text = "Auto-upgrade items which are left on the ground and picked up" },
+
+            new() { Name = "noHeavyLoad", Text = "Use light or medium equip load regardless of equipment", Default = false },
         };
         public static readonly Dictionary<string, Option> Options = OptionList.ToDictionary(o => o.Name, o => o);
 

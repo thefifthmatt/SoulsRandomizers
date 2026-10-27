@@ -314,16 +314,22 @@ namespace RandomizerCommon
                 row["rarity"].Value = (byte)2;
                 row["sortGroupId"].Value = (byte)42;
                 row["sortId"].Value = baseSortId++;
-                if (newItem.Switch == "traps")
+                // Custom logic for each category, can be added to config eventually
+                bool switchPrefix(string cat) => newItem.Switch != null && newItem.Switch.StartsWith(cat);
+                if (switchPrefix("traps"))
                 {
                     // This should probably be done as tag, combined with shard-editing
                     row["isConsume"].Value = (byte)1;
                     row["maxNum"].Value = (short)999;
                     row["maxRepositoryNum"].Value = (short)999;
                 }
-                if (newItem.Switch != null && newItem.Switch.StartsWith("stonesword"))
+                if (switchPrefix("stonesword"))
                 {
                     row["iconId"].Value = altIcons ? 2601 : 228;
+                }
+                else if (switchPrefix("imbuedsplit"))
+                {
+                    row["iconId"].Value = 3198;
                 }
                 else
                 {
@@ -331,25 +337,29 @@ namespace RandomizerCommon
                 }
                 // Hardcoded routine for now for Stonesword Master Keys
                 // TODO: Can be localized? Requires config support
-                string desc = newItem.Desc;
-                if (desc == null && newItem.Switch != null && newItem.Switch.StartsWith("stonesword"))
+                string desc = newItem.Desc?.TrimEnd('.') ?? "";
+                if (desc == null && switchPrefix("stonesword"))
                 {
                     desc = "Breaks many imp statue seals";
                 }
-                string areaInfo = null;
+                string desc2 = newItem.Desc ?? "";
+                if (newItem.Desc2 != null)
+                {
+                    desc2 += $"\n\n{newItem.Desc2}";
+                }
                 if (newItem.Logic != null && newItem.Enabled)
                 {
                     IEnumerable<string> areas = newItem.Logic
                         .Select(l => l.BlockArea != null && ann.Areas.TryGetValue(l.BlockArea, out AreaAnnotation area) ? (area.FullText ?? area.Text) : null)
                         .Where(name => name != null)
                         .Distinct();
-                    areaInfo = $"\n\nGrants access to the following areas:\n{string.Join("\n", areas.Select(a => $"- {a}"))}";
+                    desc2 += $"\n\nGrants access to the following areas:\n{string.Join("\n", areas.Select(a => $"- {a}"))}";
                 }
                 foreach (FMGDictionary fmgs in game.AllItemFMGs.Values)
                 {
                     fmgs["GoodsName"][id] = newItem.Name;
-                    fmgs["GoodsInfo"][id] = desc ?? "";
-                    fmgs["GoodsCaption"][id] = $"{desc}{areaInfo}".Trim();
+                    fmgs["GoodsInfo"][id] = desc;
+                    fmgs["GoodsCaption"][id] = desc2.Trim();
                 }
             }
 
@@ -1023,6 +1033,20 @@ namespace RandomizerCommon
                 }
                 return true;
             }
+            bool getTextForGateBlock(string gate, out string text)
+            {
+                // This could be combined into above function if needed
+                text = null;
+                if (!gateItems.TryGetValue(gate, out ItemKey item))
+                {
+                    return false;
+                }
+                // Real key items use <?gdsparam@8000?>
+                text = ann.MultiItems.ContainsKey(item)
+                    ? $"Not enough {game.Name(item)}"
+                    : $"No {game.Name(item)} in inventory";
+                return true;
+            }
 
             foreach (KeyValuePair<string, EMEVD> entry in game.Emevds)
             {
@@ -1330,6 +1354,7 @@ namespace RandomizerCommon
                                                 if (gateItems.TryGetValue(filter.Gate, out ItemKey item) && !ann.MultiItems.ContainsKey(item) && tryScriptCheck(item, out int itemType))
                                                 {
                                                     newCmds.Add($"IfPlayerHasdoesntHaveItem({edit.FilterCond}, {itemType}, {item.ID}, OwnershipState.Owns)");
+                                                    processedGates.Add(filter.Gate);
                                                 }
                                                 else
                                                 {
@@ -1343,11 +1368,21 @@ namespace RandomizerCommon
                                     }
                                     if (edit.FilterMessage != null)
                                     {
-                                        List<TemplateFilter> areaFilters = filters.Where(f => f.BlockArea != null).ToList();
-                                        if (areaFilters.Count != 1 || !getTextForAreaBlock(areaFilters[0].BlockArea, out string blockMsg))
+                                        if (filters.Count != 1)
                                         {
-                                            throw new Exception($"Internal error: no unique BlockArea to show no item message for {callee}");
+                                            throw new Exception($"Internal error: no unique filter to show required item message for {callee}");
                                         }
+                                        TemplateFilter filter = filters[0];
+                                        string filterMsg;
+                                        if (filter.BlockArea != null && getTextForAreaBlock(filter.BlockArea, out string blockMsg))
+                                        {
+                                            filterMsg = blockMsg;
+                                        }
+                                        else if (filter.Gate != null && getTextForGateBlock(filter.Gate, out blockMsg))
+                                        {
+                                            filterMsg = blockMsg;
+                                        }
+                                        else throw new Exception($"Internal error: no filter to show required item message for {callee}");
                                         int messageId = baseMapMsgId++;
                                         messages.SetFMGEntry(game, FMGCategory.Menu, "EventTextForMap", messageId, IdentityMessage, blockMsg);
                                         string msgCommand = $"DisplayGenericDialog({messageId}, PromptType.OKCANCEL, NumberofOptions.NoButtons, 0, 5)";
@@ -2105,6 +2140,34 @@ namespace RandomizerCommon
                     throw new Exception($"Could not edit conditions for Volcano Manor lock");
                 }
             }
+            // Additional edit for Ymir softlock, TODO see if this can be made programmatic
+            if (opt["dlc"])
+            {
+                ESD ymir = game.Talk["m61_00_00_00"]["t420006100"];
+                game.WriteESDs.Add("m61_00_00_00");
+                bool checkBell2Flag(AST.Expr expr)
+                {
+                    return expr is AST.FunctionCall func && func.Name == "f15" && func.Args.Count == 1 && func.Args[0].IsInt(2053460600);
+                }
+                int edits = 0;
+                ESDEdits.ForEachCondition(ymir, cond =>
+                {
+                    // This edits conditions and subconditions independently, but this should be top-level anyway
+                    AST.Expr expr = AST.DisassembleExpression(cond.Evaluator);
+                    // Require flag check to be anywhere, and then modify the whole condition.
+                    // This is meant to match (bell1 or bell2) and (bell1 and bell2)
+                    if (ESDEdits.CheckExpression(expr, checkBell2Flag))
+                    {
+                        expr = AST.Binop(expr, "&&", esdGetFlag(2051459220));
+                        cond.Evaluator = AST.AssembleExpression(expr);
+                        edits++;
+                    }
+                });
+                if (edits == 0)
+                {
+                    throw new Exception("Could not find condition for Ymir Hole-Laden Necklace dialogue fix");
+                }
+            }
 
             // Misc map and params edits for blocks
             MiscMapEdits mapEdits = new MiscMapEdits(game);
@@ -2282,7 +2345,7 @@ namespace RandomizerCommon
 #if DEBUG
                         if (opt["alwaysblock"]) continue;
 #endif
-                        string eventMap = mapEdits.GetEventMap(map, basePart);
+                        string eventMap = game.GetEventMap(map, basePart);
                         if (!game.Emevds.TryGetValue(eventMap, out EMEVD emevd)) throw new Exception($"Event script {eventMap} is not usable for gate {gate}");
                         List<string> cmds = new();
                         addCommands(cmds, 1);
@@ -2321,7 +2384,7 @@ namespace RandomizerCommon
                             obj.EntityID = entityIdBase++;
                             game.WriteMSBs.Add(map);
                         }
-                        string eventMap = mapEdits.GetEventMap(map, obj.Name);
+                        string eventMap = game.GetEventMap(map, obj.Name);
                         if (!game.Emevds.TryGetValue(eventMap, out EMEVD emevd)) throw new Exception($"Event script {eventMap} is not usable for gate {gate}");
                         List<string> cmds = new();
                         addCommands(cmds, 2);
@@ -2385,6 +2448,8 @@ namespace RandomizerCommon
             // Final custom pass for traps, add them all
             if (opt["traps"])
             {
+                PARAM.Row baseSp = game.Params["SpEffectParam"][5020];
+
                 // Nothing to do here
                 processedGates.Add("ngtrap");
 
@@ -2406,9 +2471,9 @@ namespace RandomizerCommon
                     statusSp["effectTargetSelf"].Value = (byte)1;
                     statusSp["effectTargetSelfTarget"].Value = (byte)1;
                 }
-                PARAM.Row trackSp = GameEditor.AddRow(game.Params["SpEffectParam"], 81000018, 5020);
+                PARAM.Row trackSp = GameEditor.AddRow(game.Params["SpEffectParam"], 81000018, baseSp);
                 trackSp["effectEndurance"].Value = 1f;
-                PARAM.Row trackSp2 = GameEditor.AddRow(game.Params["SpEffectParam"], 81000019, 5020);
+                PARAM.Row trackSp2 = GameEditor.AddRow(game.Params["SpEffectParam"], 81000019, baseSp);
                 trackSp2["effectEndurance"].Value = 60f;
                 // trackSp2["vfxId"].Value = 51901;
                 processedGates.Add("statustrap");
@@ -2416,6 +2481,7 @@ namespace RandomizerCommon
                 // These could be part of the event config
                 EMEVD common = game.Emevds["common"];
                 game.WriteEmevds.Add("common");
+
                 if (ann.NewItems.TryGetValue("blindnesstrap", out NewItemAnnotation blindnessTrap))
                 {
                     int id = blindnessTrap.Key.ID;
@@ -2458,6 +2524,24 @@ namespace RandomizerCommon
                         "EndUnconditionally(EventEndType.Restart)",
                     }, EMEVD.Event.RestBehaviorType.Default);
                     processedGates.Add("blizzardtrap");
+                }
+                PARAM.Row heavySp = GameEditor.AddRow(game.Params["SpEffectParam"], 81000020, baseSp);
+                if (ann.NewItems.TryGetValue("heavytrap", out NewItemAnnotation heavyTrap))
+                {
+                    int id = heavyTrap.Key.ID;
+                    events.AddSimpleEvent(common, miscEventBase++, new[]
+                    {
+                        $"IfPlayerHasdoesntHaveItem(MAIN, ItemType.Goods, {id}, OwnershipState.Owns)",
+                        "SetSpEffect(10000, 81000020)",
+                        "IfCharacterDeadalive(OR_01, 10000, DeathState.Dead, ComparisonType.Equal, 1)",
+                        $"IfPlayerHasdoesntHaveItem(OR_01, ItemType.Goods, {id}, OwnershipState.DoesntOwn)",
+                        "IfConditionGroup(MAIN, PASS, OR_01)",
+                        $"RemoveItemFromPlayer(ItemType.Goods, {id}, 999)",
+                        "ClearSpEffect(10000, 81000020)",
+                        "WaitFixedTimeSeconds(1)",
+                        "EndUnconditionally(EventEndType.Restart)",
+                    }, EMEVD.Event.RestBehaviorType.Restart);
+                    processedGates.Add("heavytrap");
                 }
             }
 

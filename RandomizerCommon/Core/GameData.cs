@@ -911,6 +911,25 @@ namespace RandomizerCommon
             return eldenFrameMaps;
         }
 
+        public string GetEventMap(string eventMap, string eventPart)
+        {
+            // Parse out low-level map using Elden Ring convention.
+            // Can also select neighbor maps here if the emevd does not exist in those cases, but it should for fog gates.
+            if (eventMap.StartsWith("m6") && !eventMap.EndsWith("0"))
+            {
+                if (!eventPart.StartsWith("m") || !eventPart.Contains("-"))
+                {
+                    throw new Exception($"Entity {eventPart} in {eventMap} is missing a prefix specifying a low-level map");
+                }
+                eventMap = eventPart.Split('-')[0];
+            }
+            if (NeighborMaps.TryGetValue(eventMap, out string neighborMap))
+            {
+                eventMap = neighborMap;
+            }
+            return eventMap;
+        }
+
 #if SDT
         public void SaveSekiro(string outPath)
         {
@@ -1852,7 +1871,7 @@ namespace RandomizerCommon
                 // Set up copying dupe maps which are not included in our vanilla files.
                 MapDupes = dupeMsbs
                     .Where(m => !EldenMaps.ContainsKey(m))
-                    .ToDictionary(m => EldenDupeMap(m), m => m);
+                    .ToDictionary(m => EldenBaseMap(m), m => m);
                 if (MapDupes.Any(e => e.Key == e.Value))
                 {
                     throw new Exception($"Invalid dupe map {string.Join(" ", MapDupes)}");
@@ -1860,8 +1879,10 @@ namespace RandomizerCommon
             }
         }
 
-        private static readonly Regex lastRe = new Regex(@"_1([0-2])$");
-        public static string EldenDupeMap(string mapId) => lastRe.Replace(mapId, @"_0$1");
+        private static readonly Regex lastBaseRe = new Regex(@"_0([0-2])$");
+        private static readonly Regex lastDupeRe = new Regex(@"_1([0-2])$");
+        public static string EldenBaseMap(string mapId) => lastDupeRe.Replace(mapId, @"_0$1");
+        public static string EldenDupeMap(string mapId) => lastBaseRe.Replace(mapId, @"_1$1");
 
         private void LoadTalk()
         {

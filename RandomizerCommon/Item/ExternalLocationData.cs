@@ -17,6 +17,7 @@ namespace RandomizerCommon
         // Comprehensive override for finite silo. This could be extended to other silos if needed.
         // All targets must be explicitly given sources, and everything not covered here is not randomized.
         // This could be usable for non-external item plando, but it might be more convenient for most targets to also be sources there.
+
         // Mapping from target to source items
         public Dictionary<ItemLocKey, List<ItemLocKey>> FiniteItemMapping { get; private set; }
         // Mapping from location id to either real local item or new external item proxy (limit 100k)
@@ -41,8 +42,7 @@ namespace RandomizerCommon
                 return;
             }
 
-            // All external target locations must map to an existing slot + item scraped from game data
-            Dictionary<long, ItemLocKey> mappedLocIds = new();
+            // All external target locations must map to an existing slot, and require unique reverse mapping as well
             Dictionary<ItemLocKey, string> mappedKeys = new();
             Dictionary<string, LocationScope> keyLocScopes = ann.Slots.ToDictionary(e => e.Value.Key, e => e.Key);
             // Name, quantity, disambiguation (the extra part does not match items except Winged Misbegotten Ashes + 1)
@@ -96,7 +96,7 @@ namespace RandomizerCommon
                     continue;
                 }
                 mappedKeys[itemLocKey] = baseLocName;
-                mappedLocIds[id] = itemLocKey;
+                loc.Key = itemLocKey;
             }
             bool validate = true;
             if (errors.Count > 0 && validate)
@@ -121,7 +121,7 @@ namespace RandomizerCommon
             errors = new();
             foreach ((long locId, long itemId) in externalPreset.FiniteItemMapping)
             {
-                if (!mappedLocIds.TryGetValue(locId, out ItemLocKey targetKey))
+                if (!externalPreset.LocalLocations.TryGetValue(locId, out LocalLocation localLoc) || localLoc.Key == null)
                 {
                     if (validate)
                     {
@@ -130,44 +130,42 @@ namespace RandomizerCommon
                     continue;
                 }
                 int quantity = 1;
-                if (!ExternalItemKeys.TryGetValue(locId, out ItemKey itemKey))
+                ItemKey localKey = null;
+                if (externalPreset.LocalItems.TryGetValue(itemId, out LocalItem locItem))
                 {
-                    ItemKey localKey = null;
-                    if (externalPreset.LocalItems.TryGetValue(itemId, out LocalItem locItem))
+                    localKey = locItem.Key;
+                    if (localKey == null)
                     {
-                        localKey = locItem.Key;
-                        if (localKey == null)
+                        quantity = locItem.Quantity;
+                        if (!game.TryUintAsItem(locItem.ID, out localKey))
                         {
-                            quantity = locItem.Quantity;
-                            if (!game.TryUintAsItem(locItem.ID, out localKey))
-                            {
-                                errors.Add($"Item id {locItem.ID} ({locItem.ID:X8}) not recognized as valid item key");
-                                continue;
-                            }
-                            if (!game.ItemNames.ContainsKey(game.GetBaseWeapon(localKey)))
-                            {
-                                errors.Add($"Unknown local item {localKey} [{locItem.Name}] given in external item data");
-                                continue;
-                            }
-                            locItem.Key = localKey;
+                            errors.Add($"Item id {locItem.ID} ({locItem.ID:X8}) not recognized as valid item key");
+                            continue;
                         }
+                        if (!game.ItemNames.ContainsKey(game.GetBaseWeapon(localKey)))
+                        {
+                            errors.Add($"Unknown local item {localKey} [{locItem.Name}] given in external item data");
+                            continue;
+                        }
+                        locItem.Key = localKey;
                     }
-                    if (externalPreset.ExternalItems.TryGetValue(locId, out ExternalItem extItem))
-                    {
-                        if (externalId >= maxExternalId) throw new Exception($"{maxExternalId - externalId} external item limit exceeded");
-                        // TODO: Can potentially share key by name if location id doesn't need to be encoded there
-                        extItem.Key = itemKey = new ItemKey(ItemType.Goods, externalId++);
-                        extItem.LocalKey = localKey;
-                        game.AddItemName(itemKey, extItem.Name);
-                    }
-                    else if (localKey != null)
-                    {
-                        itemKey = localKey;
-                    }
-                    // TODO: Better error message
-                    else throw new Exception($"Unknown {locId}");
-                    ExternalItemKeys[locId] = itemKey;
                 }
+                ItemKey itemKey;
+                if (externalPreset.ExternalItems.TryGetValue(locId, out ExternalItem extItem))
+                {
+                    if (externalId >= maxExternalId) throw new Exception($"{maxExternalId - externalId} external item limit exceeded");
+                    // TODO: Can potentially share key by name if location id doesn't need to be encoded there
+                    extItem.Key = itemKey = new ItemKey(ItemType.Goods, externalId++);
+                    extItem.LocalKey = localKey;
+                    game.AddItemName(itemKey, extItem.Name);
+                }
+                else if (localKey != null)
+                {
+                    itemKey = localKey;
+                }
+                // TODO: Better error message
+                else throw new Exception($"Unknown {locId}");
+                ExternalItemKeys.Add(locId, itemKey);
                 // Special scope should be fine here, but can make a new scope type if needed.
                 ItemLocation itemLoc = data.AddLocationlessItem(itemKey);
                 // Except it's not locationless, this is used in PermutationWriter.
@@ -175,7 +173,7 @@ namespace RandomizerCommon
                 string text = externalPreset.LocalLocations.GetValueOrDefault(locId)?.Desc ?? locId.ToString();
                 Location newLoc = new Location(Location.LocationType.External, (int)locId, text, new(), quantity, 1, null, ExternalID: locId);
                 itemLoc.Locs.Add(newLoc);
-                Util.AddMulti(FiniteItemMapping, targetKey, itemLoc.Key);
+                Util.AddMulti(FiniteItemMapping, localLoc.Key, itemLoc.Key);
             }
             if (errors.Count > 0)
             {

@@ -121,10 +121,11 @@ Slots:
   FullArea: stormveil stormhill stormveil_start stormveil_throne
   Tags: missable death
 - Key: '100000,0:0000400220::'
+  Location: 1045380700
   DebugText:
   - Golden Seed - lot 112200[enemy c0000_9000 (Kenneth Haight - id 1045380700 - [Kenneth Haight, Limgrave Heir]) in m60_45_38_00 (Limgrave - South of Summonwater Village), enemy c0000_9030 (Kenneth Haight - id 10000725 - [Kenneth Haight, Limgrave Heir]) in m10_00_00_00 (Stormveil Castle), enemy c0000_9000 (Kenneth Haight - id 1046360700 - [Kenneth Haight, Limgrave Heir]) in m60_46_36_00 (Limgrave - Fort Haight)] Golden Seed
   Text: aaaaaaaaaaaaaaaaa
-  Area: stormveil
+  Area: limgrave
   FullArea: stormveil stormhill stormveil_start stormveil_throne limgrave
   Tags: missable death
 - Key: '100000,0:0000400221::'
@@ -18375,10 +18376,11 @@ Slots:
   FullArea: liurnia altus limgrave peninsula mountaintops mountaintops_start roundtable
   Tags: missable
 - Key: '603546,0:0000400163::'
+  Location: 1039521703
   DebugText:
   - "Nagakiba - lot 101630[event asset AEG099_090_9000 (Shiny Item - id 1039521703) in m60_39_52_00 (Altus Plateau - Second Church of Marika), event 90005750 in m60_39_52_00] Nagakiba with Ash of War: Piercing Fang, lot 111600[enemy c0000_9002 (Yura, Hunter of Bloody Fingers - id 1043350710 - [Yura, Hunter of Bloody Fingers]) in m60_43_35_00 (Limgrave - Seaside Ruins), enemy c0000_9010 (Yura, Hunter of Bloody Fingers - id 1035460710 - [Yura, Hunter of Bloody Fingers]) in m60_35_46_00 (Liurnia of the Lakes - Main Academy Gate, Academy of Raya Lucaria Entrance), enemy c0000_9000 (Yura, Hunter of Bloody Fingers - id 1044380710 - [Yura, Hunter of Bloody Fingers]) in m60_44_38_00 (Limgrave - Artist's Shack), enemy c0000_9000 (Yura, Hunter of Bloody Fingers - id 1039520701 - [Yura, Hunter of Bloody Fingers]) in m60_39_52_00 (Altus Plateau - Second Church of Marika)] Nagakiba with Ash of War: Piercing Fang"
   Text: aaaaaaaaaaaaaaaaa
-  Area: liurnia
+  Area: altus
   FullArea: liurnia altus limgrave peninsula
   Tags: missable
 - Key: '603546,0:1035467020::'
@@ -19973,7 +19975,7 @@ Slots:
   - 'Ash of War: Barbaric Roar - lot 40224[event enemy c4191_9000 (Small Scarab - id 1037510210) in m60_37_51_00 (Altus Plateau - Abandoned Coffin, Ruin-Strewn Precipice Exit), event 90005300 in m60_37_51_00] Ash of War: Barbaric Roar'
   - By Ravine-Veiled Village (Liurnia of the Lakes) - 55.70 away, 11.14 o'clock, -3.12 height offset
   Text: aaaaaaaaaaaaaaaaa
-  Area: altus
+  Area: liurnia
   Tags: auto scarab enemy enemygem
 - Key: '603751,0:0000540300::'
   DebugText:

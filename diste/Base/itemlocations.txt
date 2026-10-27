@@ -303,4 +303,8 @@ DisplayEntities:
   14000800: 14000801  # Rennala 2
   19000800: 19000810  # Elden Beast
   2050480800: 2050480802  # Scadutree Avatar
+  28000800: 28000801  # Midra
+  20010800: 20011199  # PCR
+  12020850: 12020860 # Mimic Tear
+  1051360800: 1051360801 # Redmane Duo
 # TODO: 106400 106410 double call

@@ -22,25 +22,6 @@ namespace RandomizerCommon
             this.game = game;
         }
 
-        public string GetEventMap(string eventMap, string eventPart)
-        {
-            // Parse out low-level map using Elden Ring convention.
-            // Can also select neighbor maps here if the emevd does not exist in those cases, but it should for fog gates.
-            if (eventMap.StartsWith("m6") && !eventMap.EndsWith("0"))
-            {
-                if (!eventPart.StartsWith("m") || !eventPart.Contains("-"))
-                {
-                    throw new Exception($"Entity {eventPart} in {eventMap} is missing a prefix specifying a low-level map");
-                }
-                eventMap = eventPart.Split('-')[0];
-            }
-            if (game.NeighborMaps.TryGetValue(eventMap, out string neighborMap))
-            {
-                eventMap = neighborMap;
-            }
-            return eventMap;
-        }
-
         private string NewPartName(string model, string other)
         {
             string name = $"{model}_{partIndex++:d4}";

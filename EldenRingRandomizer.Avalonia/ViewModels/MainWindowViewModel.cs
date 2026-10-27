@@ -148,6 +148,8 @@ namespace EldenRingRandomizer.ViewModels
         [Reactive]
         private bool _regionlock;
         [Reactive]
+        private bool _imbuedsplit;
+        [Reactive]
         private bool _springsanity;
         [Reactive]
         private bool _traps;
@@ -184,6 +186,8 @@ namespace EldenRingRandomizer.ViewModels
         private bool _markareas;
         [Reactive]
         private bool _markitems;
+        [Reactive]
+        private bool _markchecks;
 
         [Reactive]
         private bool _earlylegacy;
@@ -545,6 +549,7 @@ namespace EldenRingRandomizer.ViewModels
                 this.WhenAnyValue(x => x.Stoneswordregion).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Stoneswordall).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Regionlock).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Imbuedsplit).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Springsanity).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Traps).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Invertautohunt).Select(_ => Unit.Default),
@@ -562,6 +567,7 @@ namespace EldenRingRandomizer.ViewModels
                 this.WhenAnyValue(x => x.Deathless).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Markareas).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Markitems).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Markchecks).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Earlylegacy).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Earlymedal).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Moremaxslots).Select(_ => Unit.Default),
@@ -943,6 +949,7 @@ namespace EldenRingRandomizer.ViewModels
             Stoneswordregion = opt["stoneswordregion"];
             Stoneswordall = opt["stoneswordall"];
             Regionlock = opt["regionlock"];
+            Imbuedsplit = opt["imbuedsplit"];
             Springsanity = opt["springsanity"];
             Traps = opt["traps"];
             Invertautohunt = opt["invertautohunt"];
@@ -962,6 +969,7 @@ namespace EldenRingRandomizer.ViewModels
             Deathless = opt["deathless"];
             Markareas = opt["markareas"];
             Markitems = opt["markitems"];
+            Markchecks = opt["markchecks"];
             Earlylegacy = opt["earlylegacy"];
             Earlymedal = opt["earlymedal"];
             Moremaxslots = opt["moremaxslots"];
@@ -1081,6 +1089,7 @@ namespace EldenRingRandomizer.ViewModels
             opt["stoneswordregion"] = Stoneswordregion;
             opt["stoneswordall"] = Stoneswordall;
             opt["regionlock"] = Regionlock;
+            opt["imbuedsplit"] = Imbuedsplit;
             opt["springsanity"] = Springsanity;
             opt["traps"] = Traps;
             opt["invertautohunt"] = Invertautohunt;
@@ -1100,6 +1109,7 @@ namespace EldenRingRandomizer.ViewModels
             opt["deathless"] = Deathless;
             opt["markareas"] = Markareas;
             opt["markitems"] = Markitems;
+            opt["markchecks"] = Markchecks;
             opt["earlylegacy"] = Earlylegacy;
             opt["earlymedal"] = Earlymedal;
             opt["moremaxslots"] = Moremaxslots;

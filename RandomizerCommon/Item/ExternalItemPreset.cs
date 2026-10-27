@@ -85,7 +85,11 @@ namespace RandomizerCommon
             // Param row ids for resolving the item in the case of ambiguities within a SlotKey.
             // Currently this is formatted like lot:<id> and slot:<id> with no subtype support at present.
             public List<string> LocationIDs { get; set; }
-            // Some item ID could be useful here (stable id might would be preferable to name because of ambiguities)
+            // Whether the location can have a progression item in current settings.
+            public bool Priority { get; set; }
+
+            // Added after loading locations
+            public ItemLocKey Key {get; set;}
         }
 
 #if ARCHIPELAGO
@@ -154,6 +158,19 @@ namespace RandomizerCommon
 
             GetSlotData(slotData, "duplicatedLocations", out Dictionary<string, string> baseDescs);
 
+            JObject options = (JObject)slotData["options"];
+            HashSet<string> priorityLocationGroups = new();
+            if (options.TryGetValue("important_at_priority_only", out JToken priorityUsed)
+                && priorityUsed.ToObject<int>() == 1
+                && options.TryGetValue("priority_location_groups", out JToken priorityList))
+            {
+                priorityLocationGroups = new(priorityList.ToObject<List<string>>());
+                if (options.TryGetValue("exclude_locations", out JToken excludeList))
+                {
+                    priorityLocationGroups.ExceptWith(excludeList.ToObject<List<string>>());
+                }
+            }
+
             // Look at all locations meant for this slot to populate local mapping and necessary external items
             List<string> errors = new();
             foreach ((long id, ScoutedItemInfo info) in locations)
@@ -175,6 +192,7 @@ namespace RandomizerCommon
                     LocationIDs = locationLocs?.GetValueOrDefault(id),
                     Desc = info.LocationName,
                     BaseDesc = baseDescs?.GetValueOrDefault(info.LocationName),
+                    Priority = priorityLocationGroups.Contains(info.LocationName),
                 };
                 ret.LocalLocations[id] = local;
                 ExternalRarity rarity = ExternalRarity.Common;
@@ -303,11 +321,14 @@ namespace RandomizerCommon
                     opt["stoneswordall"] = true;
                 }
             }
+            opt["imbuedsplit"] = apOpt("seperate_imbued_key");
             // Does nothing except maybe affect location lateness
             opt["dlckeysilo"] = apOpt("separate_progression");
             // It is harmless to always create the items, but try to use option naming convention for clarity in the UI.
             opt["traps"] = apOptions.Properties().Any(prop => prop.Name.EndsWith("_trap_count") && apInt(prop.Name, out int count) && count > 0);
             opt["invertautohunt"] = apOpt("rykard_encounter");
+            // Can be turned off, but requires this to be turned on
+            opt["markchecks"] = apOpt("important_at_priority_only");
             // -- Enemy
             opt["enemy"] = apOpt("enemy_rando");
             // Some of these can be configured independent of slot data mid-run
@@ -391,14 +412,16 @@ namespace RandomizerCommon
             string helperConfig = null;
             bool autoEquip = apOpt("auto_equip");
             bool autoUpgrade = apOpt("auto_upgrade") || (opt["dlcstart"] && apOpt("dlc_max_level_weapons"));
-            if (autoEquip || autoUpgrade)
+            bool noHeavyLoad = apOpt("no_equip_load");
+            if (autoEquip || autoUpgrade || noHeavyLoad || opt["traps"])
             {
                 // The mechanism for this can be finetuned in the future but for now, use RandomizerHelper as-is
                 // and set only the configured fields. The rest will be filled in with defaults.
                 helperConfig = @$"
 [settings]
-autoEquip = {(autoEquip ? "true" : "false")}
 autoUpgrade = {(autoUpgrade ? "true" : "false")}
+noHeavyLoad = {(noHeavyLoad ? "true" : "false")}
+autoEquip = {(autoEquip ? "true" : "false")}
 ";
             }
             opt["helper"] = helperConfig != null;

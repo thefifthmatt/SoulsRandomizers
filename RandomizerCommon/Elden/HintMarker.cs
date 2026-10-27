@@ -1,13 +1,15 @@
-﻿using System;
+﻿using SoulsFormats;
+using SoulsIds;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using SoulsFormats;
-using SoulsIds;
 using YamlDotNet.Serialization;
 using static RandomizerCommon.AnnotationData;
+using static RandomizerCommon.ExternalItemPreset;
 using static RandomizerCommon.LocationData;
 using static RandomizerCommon.Messages;
 using static RandomizerCommon.Util;
@@ -19,19 +21,33 @@ namespace RandomizerCommon
         private static readonly Regex phraseRe = new Regex(@"\s*;\s*");
         private static readonly Regex miniRe = new Regex(@"^m3[0-2]|^m18");
 
-        private GameData game;
-        private LocationData data;
-        private AnnotationData ann;
-        private Messages messages;
-        private EldenCoordinator coord;
+        private readonly GameData game;
+        private readonly LocationData data;
+        private readonly AnnotationData ann;
+        private readonly Messages messages;
+        private readonly Events events;
+        private readonly EldenCoordinator coord;
+        private readonly ExternalItemPreset externalPreset;
+        private readonly ExternalLocationData externalData;
 
-        public HintMarker(GameData game, LocationData data, AnnotationData ann, Messages messages, EldenCoordinator coord)
+        public HintMarker(
+            GameData game,
+            LocationData data,
+            AnnotationData ann,
+            Messages messages,
+            Events events,
+            EldenCoordinator coord,
+            ExternalItemPreset externalPreset,
+            ExternalLocationData externalData)
         {
             this.game = game;
             this.data = data;
             this.ann = ann;
             this.messages = messages;
+            this.events = events;
             this.coord = coord;
+            this.externalPreset = externalPreset;
+            this.externalData = externalData;
         }
 
         public class HintMarkerConfig
@@ -139,6 +155,12 @@ namespace RandomizerCommon
             public string AltItem { get; set; }
         }
 
+        public record MarkerKey(string Item = null, ItemLocKey Key = null)
+        {
+            public static MarkerKey FromItem(string item) => new MarkerKey(Item: item);
+            public static MarkerKey FromLoc(ItemLocKey key) => new MarkerKey(Key: key);
+        }
+
         public enum MarkerType
         {
             Other = 0,
@@ -227,6 +249,9 @@ namespace RandomizerCommon
         [Localize]
         private static readonly Text hintLabelArea =
             new Text("Somewhere in {0}", "GameMenu_hintLabelArea");
+        [Localize]
+        private static readonly Text hintMarkedArea =
+            new Text("A mark was made in {0}", "GameMenu_hintMarkedArea");
 
         [Localize]
         private static readonly Text hintRequiredItem =
@@ -295,38 +320,6 @@ namespace RandomizerCommon
                 AddMulti(bonfiresByNames, name, row.ID);
             }
 
-            // Use Melina's red mark as a basis
-            PARAM.Row rold = game.Params["WorldMapPointParam"][85495300];
-            int rowStart = 85606000;
-            bool ignoreDisappear = false;
-            Dictionary<int, uint> allMarkerFlags = new();
-            void addConditionalMark(int placeNameId, string mapId, Vector3 pos, uint appearFlag, uint disappearFlag, bool ignore = false)
-            {
-                PARAM.Row row = game.AddRow("WorldMapPointParam", rowStart++);
-                GameEditor.CopyRow(rold, row);
-                // eventFlagId=11109687, iconId=87, dispMask00=1,
-                // textId3=placename, textEnableFlagId3=11109687, textDisableFlagId3=62528
-                row["eventFlagId"].Value = ignore ? 6001u : appearFlag;
-                row["textEnableFlagId3"].Value = ignore ? 6001u : appearFlag;
-                row["textDisableFlagId3"].Value = ignore && ignoreDisappear ? 0u : disappearFlag;
-                if (appearFlag != 6001)
-                {
-                    allMarkerFlags[row.ID] = appearFlag;
-                }
-                // Aboveground, underground
-                bool dlc = game.IsEldenDlcMap(mapId);
-                row["dispMask00"].Value = (byte)(dlc ? 0 : 1);
-                row["dispMask01"].Value = (byte)(dlc ? 0 : 1);
-                row["dispMask02"].Value = (byte)(dlc ? 1 : 0);
-                row["textId3"].Value = placeNameId;
-                List<byte> mapParts = parseMap(mapId);
-                row["areaNo"].Value = mapParts[0];
-                row["gridXNo"].Value = mapParts[1];
-                row["gridZNo"].Value = mapParts[2];
-                row["posX"].Value = pos.X;
-                row["posY"].Value = pos.Y;
-                row["posZ"].Value = pos.Z;
-            }
             if (opt["markbonfires"])
             {
                 // Test for global position mapping (not needed for any other markers, at least)
@@ -341,7 +334,7 @@ namespace RandomizerCommon
                     (Vector3 pos, EldenCoordinator.Tile tile) = coord.ToGlobalCoords(mapParts, mapPos);
                     List<byte> toMap = new List<byte> { (byte)tile.Type, (byte)tile.X, (byte)tile.Z, 0 };
                     Vector3 mapPos2 = coord.ToLocalCoords(toMap, pos);
-                    addConditionalMark((int)row["textId1"].Value, formatMap(toMap), mapPos2, 6001, 6001);
+                    AddConditionalMark((int)row["textId1"].Value, formatMap(toMap), mapPos2, 6001, 6001);
                 }
             }
 
@@ -726,7 +719,7 @@ namespace RandomizerCommon
                         bonfireSlots[(area.MainBonfireId, slotName)] = slot;
                     }
                 }
-                addConditionalMark(
+                AddConditionalMark(
                     placeNameId, mapId, mapPos + new Vector3(20, 0, -20 * slot),
                     appearFlag, disappearFlag, ignore);
             }
@@ -746,7 +739,7 @@ namespace RandomizerCommon
                 }
                 else
                 {
-                    addConditionalMark(
+                    AddConditionalMark(
                         vagueNameId, area.BossId.MapName, (Vector3)area.BossId.Position,
                         markerFlag, area.BossFlag, false);
                 }
@@ -756,15 +749,19 @@ namespace RandomizerCommon
             // TODO DLC: Do the config
             bool ignoreMissing = false;
 
-            // Item markers by item, with the item EntityId and item get flag
-            Dictionary<string, uint> itemMarkers = new();
-            // Area markers by item, with the item's area's bonfire and item get flag
-            Dictionary<string, uint> itemAreaMarkers = new();
+            // Item marker flags by item, with the item EntityId and item get flag
+            Dictionary<MarkerKey, uint> itemMarkers = new();
+            // Area marker flags by item, with the item's area's bonfire and item get flag
+            Dictionary<MarkerKey, uint> itemAreaMarkers = new();
             // Like boss markers but with the item disappear flag
-            Dictionary<string, uint> itemAreaBossMarkers = new();
+            Dictionary<MarkerKey, uint> itemAreaBossMarkers = new();
+            // Place names for later reference in menus
+            Dictionary<MarkerKey, int> markerPlaceNameIds = new();
+
             foreach (KeyValuePair<string, HintItem> entry in items)
             {
                 string item = entry.Key;
+                MarkerKey markerKey = MarkerKey.FromItem(item);
                 ItemKey key = ann.Items[item];
                 if (!itemSlots.TryGetValue(key, out List<ItemLocKey> slots)) continue;
                 if (!slotAreas.TryGetValue(slots[0], out string place)) continue;
@@ -773,11 +770,15 @@ namespace RandomizerCommon
                 uint itemFlag = (uint)signedItemFlag;
                 if (ignoreMissing && !areas.ContainsKey(place)) continue;
                 HintArea area = areas[place];
+                if (revNameIds.TryGetValue(area.DisplayName, out int placeNameId))
+                {
+                    markerPlaceNameIds[markerKey] = placeNameId;
+                }
                 if (area.MainBonfireId > 0)
                 {
                     int vagueNameId = getVagueNameId(area.DisplayName);
                     placeBonfireMarker(area, vagueNameId, markerFlag, itemFlag, false, null);
-                    itemAreaMarkers[item] = markerFlag++;
+                    itemAreaMarkers[markerKey] = markerFlag++;
                 }
                 if (itemBossFlags && area.BossId?.Position != null && area.BossFlag > 0)
                 {
@@ -789,18 +790,18 @@ namespace RandomizerCommon
                     }
                     else
                     {
-                        addConditionalMark(
+                        AddConditionalMark(
                             vagueNameId, area.BossId.MapName, (Vector3)area.BossId.Position,
                             markerFlag, itemFlag, false);
                     }
-                    itemAreaBossMarkers[item] = markerFlag++;
+                    itemAreaBossMarkers[markerKey] = markerFlag++;
                 }
                 if (slotLocations.TryGetValue(slots[0], out Entity id) && id.Position is Vector3 pos)
                 {
-                    addConditionalMark(
+                    AddConditionalMark(
                         revNameIds[area.DisplayName], id.MapName, pos,
                         markerFlag, itemFlag, false);
-                    itemMarkers[item] = markerFlag++;
+                    itemMarkers[markerKey] = markerFlag++;
                 }
             }
             for (uint i = startMarkerFlag; i < markerFlag; i++)
@@ -809,8 +810,6 @@ namespace RandomizerCommon
             }
 
             // Very similar, but for multiple items in slots
-            Dictionary<ItemLocKey, uint> slotMarkers = new();
-            Dictionary<ItemLocKey, uint> slotAreaMarkers = new();
             foreach (KeyValuePair<string, ItemKey> entry in upgradeItems)
             {
                 string itemName = entry.Key;
@@ -820,24 +819,29 @@ namespace RandomizerCommon
                 uint slotMarkerFlag = markerFlag;
                 foreach (ItemLocKey slot in slots)
                 {
+                    MarkerKey markerKey = MarkerKey.FromLoc(slot);
                     if (!slotAreas.TryGetValue(slot, out string place)) continue;
                     if (!permResult.SlotEventFlags.TryGetValue(slot, out int signedItemFlag)) continue;
                     uint itemFlag = (uint)signedItemFlag;
                     if (ignoreMissing && !areas.ContainsKey(place)) continue;
                     HintArea area = areas[place];
+                    if (revNameIds.TryGetValue(area.DisplayName, out int placeNameId))
+                    {
+                        markerPlaceNameIds[markerKey] = placeNameId;
+                    }
                     if (area.MainBonfireId > 0)
                     {
                         int nameId = getItemInAreaId(key, area.DisplayName, true);
                         placeBonfireMarker(area, nameId, markerFlag, itemFlag, false, itemName);
-                        slotAreaMarkers[slot] = markerFlag++;
+                        itemAreaMarkers[markerKey] = markerFlag++;
                     }
                     if (slotLocations.TryGetValue(slot, out Entity id) && id.Position is Vector3 pos)
                     {
                         int nameId = getItemInAreaId(key, area.DisplayName, false);
-                        addConditionalMark(
+                        AddConditionalMark(
                             nameId, id.MapName, pos,
                             markerFlag, itemFlag, false);
-                        slotMarkers[slot] = markerFlag++;
+                        itemMarkers[markerKey] = markerFlag++;
                     }
                 }
                 for (uint i = slotMarkerFlag; i < markerFlag; i++)
@@ -845,6 +849,49 @@ namespace RandomizerCommon
                     markerFlagClearRange[i] = (slotMarkerFlag, markerFlag);
                 }
             }
+
+            // 23331000 Donate <?evntAcquittalPrice?> runes
+            int donateAmtMsg = 23331000;
+            // 23331001 Don't donate runes
+            int donateNoMsg = 23331001;
+            // 23331003 Not enough runes to donate
+            int donateLackMsg = 23331003;
+            // 23241004 A red mark was made on the map
+            int redMarkMsg = 23241004;
+
+            int kaleBaseNewMsg = 28000050;
+            int addMsg(Text text)
+            {
+                int msgId = kaleBaseNewMsg++;
+                game.WriteFMGs = true;
+                messages.SetFMGEntry(game, FMGCategory.Menu, "EventTextForTalk", msgId, text);
+                return msgId;
+            }
+            Dictionary<int, int> placeNameMarkMsgIds = new();
+            int addMarkMsg(int placeNameId)
+            {
+                if (placeNameId <= 0)
+                {
+                    return redMarkMsg;
+                }
+                if (placeNameMarkMsgIds.TryGetValue(placeNameId, out int msgId))
+                {
+                    return msgId;
+                }
+                msgId = kaleBaseNewMsg++;
+                game.WriteFMGs = true;
+                FMGArg name = new FMGArg { Category = FMGCategory.Item, Name = "PlaceName", ID = placeNameId, BaseText = "a location" };
+                messages.SetFMGEntry(game, FMGCategory.Menu, "EventTextForTalk", msgId, hintMarkedArea, name);
+                return msgId;
+            }
+            int talkListMsg = addMsg(hintPurchase);
+            int markNoMsg = addMsg(hintRequirementFailed);
+            int markAreaMsg = addMsg(hintMarkArea);
+            int markItemMsg = addMsg(hintMarkItem);
+            int noItemsMsg = addMsg(hintNoItems);
+            int markNoBossMsg = addMsg(hintRequirementFailedBoss);
+            int markNoOptionMsg = addMsg(hintRequirementFailedOption);
+            int talkListUpgradeMsg = addMsg(hintUpgradePurchase);
 
             Dictionary<string, List<string>> includedItems = new Dictionary<string, List<string>>();
             HashSet<string> flaggedItems = new HashSet<string>(ann.Items
@@ -919,7 +966,7 @@ namespace RandomizerCommon
                 return chainExprs("||", alts);
             }
             // Returns check expression and machine args for purchasing the marker variants.
-            // The args are (item marker, area marker, boss marker, boss flag, start clear flag, clear flag count)
+            // The args are (item marker, area marker, boss marker, boss flag, start clear flag, clear flag count, marker msg id)
             (AST.Expr, object[]) checkItemHint(string item, bool onlyRequired)
             {
                 ItemKey key = ann.Items[item];
@@ -927,9 +974,13 @@ namespace RandomizerCommon
                 {
                     return (null, null);
                 }
+                // TODO: Can MarkerKey just be ItemLocKey?
                 slotAreas.TryGetValue(slots[0], out string area);
-                itemMarkers.TryGetValue(item, out uint itemMarker);
-                itemAreaMarkers.TryGetValue(item, out uint itemAreaMarker);
+                MarkerKey markerKey = MarkerKey.FromItem(item);
+                itemMarkers.TryGetValue(markerKey, out uint itemMarker);
+                itemAreaMarkers.TryGetValue(markerKey, out uint itemAreaMarker);
+                markerPlaceNameIds.TryGetValue(markerKey, out int markId);
+                markId = addMarkMsg(markId);
                 if (area == null || (itemMarker == 0 && itemAreaMarker == 0))
                 {
                     return (null, null);
@@ -964,43 +1015,16 @@ namespace RandomizerCommon
                 if (itemAreaMarker == 0) itemAreaMarker = itemMarker;
                 uint bossMarker = hintArea.BossMarker;
                 uint bossFlag = hintArea.BossFlag;
-                if (itemAreaBossMarkers.TryGetValue(item, out uint itemBossMarker))
+                if (itemAreaBossMarkers.TryGetValue(MarkerKey.FromItem(item), out uint itemBossMarker))
                 {
                     bossMarker = itemBossMarker;
                 }
                 object[] machineArgs = new uint[]
                 {
-                    itemMarker, itemAreaMarker, bossMarker, bossFlag,
-                    startClearFlag, endClearFlag - startClearFlag
+                    itemMarker, itemAreaMarker, bossMarker, bossFlag, startClearFlag, endClearFlag - startClearFlag, (uint)markId,
                 }.Select(i => (object)(int)i).ToArray();
                 return (chainExprs("&&", checks), machineArgs);
             }
-
-            // 23331000 Donate <?evntAcquittalPrice?> runes
-            int donateAmtMsg = 23331000;
-            // 23331001 Don't donate runes
-            int donateNoMsg = 23331001;
-            // 23331003 Not enough runes to donate
-            int donateLackMsg = 23331003;
-            // 23241004 A red mark was made on the map
-            int redMarkMsg = 23241004;
-
-            int kaleBaseNewMsg = 28000050;
-            int addMsg(Text text)
-            {
-                int msgId = kaleBaseNewMsg++;
-                game.WriteFMGs = true;
-                messages.SetFMGEntry(game, FMGCategory.Menu, "EventTextForTalk", msgId, text);
-                return msgId;
-            }
-            int talkListMsg = addMsg(hintPurchase);
-            int markNoMsg = addMsg(hintRequirementFailed);
-            int markAreaMsg = addMsg(hintMarkArea);
-            int markItemMsg = addMsg(hintMarkItem);
-            int noItemsMsg = addMsg(hintNoItems);
-            int markNoBossMsg = addMsg(hintRequirementFailedBoss);
-            int markNoOptionMsg = addMsg(hintRequirementFailedOption);
-            int talkListUpgradeMsg = addMsg(hintUpgradePurchase);
 
             string kaleTalkId = "t800006000";
             ESD kale = null;
@@ -1046,7 +1070,7 @@ namespace RandomizerCommon
                 return AST.AllocateBranch(states, selectState, condExprs, ref optId);
             }
 
-            void ShowDialog(ESD.State state, long nextId, int msg)
+            void ShowExprDialog(ESD.State state, long nextId, AST.Expr msg)
             {
                 // c1_17 OpenGenericDialog
                 state.EntryCommands.Add(AST.MakeCommand(1, 17, 7, msg, 1, 0, 1));
@@ -1054,6 +1078,7 @@ namespace RandomizerCommon
                 AST.Expr noDialogExpr = new AST.BinaryExpr { Op = "==", Lhs = AST.MakeFunction("f58", 0), Rhs = AST.MakeVal(0) };
                 state.Conditions.Add(new ESD.Condition(nextId, AST.AssembleExpression(noDialogExpr)));
             }
+            void ShowDialog(ESD.State state, long nextId, int msg) => ShowExprDialog(state, nextId, AST.MakeVal(msg));
 
             // Just hardcode this one for now
             bool freehints = false;
@@ -1187,7 +1212,7 @@ namespace RandomizerCommon
                     if (upgrade.Keys == null) continue;
                     List<(ItemLocKey, int)> keys = upgrade.Keys
                         .SelectMany(key => itemSlots.TryGetValue(key, out List<ItemLocKey> keys) ? keys : new List<ItemLocKey>())
-                        .Where(slot => slotMarkers.ContainsKey(slot) || slotAreaMarkers.ContainsKey(slot))
+                        .Where(slot => itemMarkers.ContainsKey(MarkerKey.FromLoc(slot)) || itemAreaMarkers.ContainsKey(MarkerKey.FromLoc(slot)))
                         .Select(slot => (slot, permResult.SlotEventFlags.TryGetValue(slot, out int itemFlag) ? itemFlag : 0))
                         .Where(e => e.Item2 > 0)
                         .ToList();
@@ -1207,14 +1232,21 @@ namespace RandomizerCommon
                         // c1_19 AddTalkListData(id, msg, -1)
                         talkListCmds.Add(AST.MakeCommand(1, 19, talkListId, msgId, -1));
                         // When the talk list entry is selected
-                        // (item marker, area marker, boss marker, boss flag, start clear flag, clear flag count)
-                        slotMarkers.TryGetValue(key, out uint itemMarker);
-                        slotAreaMarkers.TryGetValue(key, out uint itemAreaMarker);
+                        // TODO: Now that MarkerKey has been added, there's duplication with regular items
+                        // (item marker, area marker, boss marker, boss flag, start clear flag, clear flag count, marker msg id)
+                        MarkerKey markerKey = MarkerKey.FromLoc(key);
+                        itemMarkers.TryGetValue(markerKey, out uint itemMarker);
+                        itemAreaMarkers.TryGetValue(markerKey, out uint itemAreaMarker);
+                        markerPlaceNameIds.TryGetValue(markerKey, out int markId);
+                        markId = addMarkMsg(markId);
                         uint mainMarker = itemMarker == 0 ? itemAreaMarker : itemMarker;
                         (uint startClearFlag, uint endClearFlag) = markerFlagClearRange[mainMarker];
                         if (itemMarker == 0) itemMarker = itemAreaMarker;
                         if (itemAreaMarker == 0) itemAreaMarker = itemMarker;
-                        object[] machineArgs = new uint[] { itemMarker, itemAreaMarker, 0, 0, startClearFlag, endClearFlag - startClearFlag }.Select(i => (object)(int)i).ToArray();
+                        object[] machineArgs = new uint[]
+                        {
+                            itemMarker, itemAreaMarker, 0, 0, startClearFlag, endClearFlag - startClearFlag, (uint)markId,
+                        }.Select(i => (object)(int)i).ToArray();
                         checkMachineArgs.Add(machineArgs);
                     }
                     itemGetConds.Add(AST.Pass);
@@ -1262,7 +1294,7 @@ namespace RandomizerCommon
                 }
             }
 
-            // Make a machine that offers a hint for an item location (item marker, area marker, boss marker, boss flag, start clear flag, clear flag count)
+            // Make a machine that offers a hint for an item location (item marker, area marker, boss marker, boss flag, start clear flag, clear flag count, mark msg id)
             // More boring (but reliable) procedural ESD writing
             {
                 /*
@@ -1320,7 +1352,7 @@ namespace RandomizerCommon
                 }
             }
 
-            // Finally, a machine to pay some amount of runes for a marker (marker flag, rune amount multiplier, start clear flag, clear flag count)
+            // Finally, a machine to pay some amount of runes for a marker (marker flag, rune amount multiplier, start clear flag, clear flag count, mark msg id)
             // Basically ripped off from Thops, but with significantly more math
             {
                 (Dictionary<long, ESD.State> payMachine, ESD.State payStartState) = AddMachine(122);
@@ -1328,6 +1360,7 @@ namespace RandomizerCommon
                 AST.Expr costMultArg = AST.MakeArg(1);
                 AST.Expr startClearFlagArg = AST.MakeArg(2);
                 AST.Expr flagCountArg = AST.MakeArg(3);
+                AST.Expr markMsgIdArg = AST.MakeArg(4);
                 (long payReturnId, ESD.State payReturnState) = AST.AllocateState(payMachine, ref baseId);
                 AST.CallReturn(payReturnState, 0);
                 (long payPromptId, ESD.State payPromptState) = AST.AllocateState(payMachine, ref baseId);
@@ -1372,7 +1405,7 @@ namespace RandomizerCommon
                 flagCountAlts[1].EntryCommands.Add(AST.MakeCommand(1, 47, 8, 1, costExpr));
                 // c1_11 SetEventFlag
                 flagCountAlts[1].EntryCommands.Add(AST.MakeCommand(1, 11, markerFlagArg, 1));
-                ShowDialog(flagCountAlts[1], payReturnId, redMarkMsg);
+                ShowExprDialog(flagCountAlts[1], payReturnId, markMsgIdArg);
                 AST.CallState(menuAlts[1], payReturnId);
                 AST.CallState(menuAlts[2], payReturnId);
             }
@@ -1453,7 +1486,306 @@ namespace RandomizerCommon
                 areas.Add(mark);
             }
             Console.WriteLine(GameData.Serializer.Serialize(areas));
+        }
 
+        // Use Melina's red mark as a basis
+        private PARAM.Row rold;
+        private int rowStart = 85606000;
+        private Dictionary<int, uint> allMarkerFlags = new();
+        private void AddConditionalMark(int placeNameId, string mapId, Vector3 pos, uint appearFlag, uint disappearFlag, bool ignoreFlags = false, int iconId = -1, int placeNameId2 = -1)
+        {
+            rold ??= game.Params["WorldMapPointParam"][85495300];
+            PARAM.Row row = game.AddRow("WorldMapPointParam", rowStart++);
+            GameEditor.CopyRow(rold, row);
+            // eventFlagId=11109687, iconId=87, dispMask00=1,
+            // textId3=placename, textEnableFlagId3=11109687, textDisableFlagId3=62528
+            bool ignoreDisappear = false;
+            if (ignoreFlags)
+            {
+                appearFlag = 6001u;
+                if (ignoreDisappear)
+                {
+                    disappearFlag = 0u;
+                }
+            }
+            row["eventFlagId"].Value = appearFlag;
+            row["textId3"].Value = placeNameId;
+            row["textEnableFlagId3"].Value = appearFlag;
+            row["textDisableFlagId3"].Value = disappearFlag;
+            if (placeNameId2 > 0)
+            {
+                row["textId4"].Value = placeNameId2;
+                row["textEnableFlagId4"].Value = appearFlag;
+                row["textDisableFlagId4"].Value = disappearFlag;
+            }
+            if (appearFlag != 6001)
+            {
+                allMarkerFlags[row.ID] = appearFlag;
+            }
+            // Aboveground, underground
+            bool dlc = game.IsEldenDlcMap(mapId);
+            bool underground = mapId.StartsWith("m12");
+            row["dispMask00"].Value = (byte)(!dlc && !underground ? 1 : 0);
+            row["dispMask01"].Value = (byte)(!dlc && underground ? 1 : 0);
+            row["dispMask02"].Value = (byte)(dlc ? 1 : 0);
+            if (iconId > 0)
+            {
+                row["iconId"].Value = (ushort)iconId;
+            }
+            List<byte> mapParts = parseMap(mapId);
+            row["areaNo"].Value = mapParts[0];
+            row["gridXNo"].Value = mapParts[1];
+            row["gridZNo"].Value = mapParts[2];
+            row["posX"].Value = pos.X;
+            row["posY"].Value = pos.Y;
+            row["posZ"].Value = pos.Z;
+        }
+
+        private record CheckLocation(string Desc, string Area, int IconId, bool Shop, uint Flag);
+
+        public void AddCheckMarks(PermutationWriter.Result permResult)
+        {
+            if (externalPreset == null) return;
+
+            // Utilities
+            int newPlaceBase = 9504000;
+            int getPlaceNameId(string text)
+            {
+                int newId = newPlaceBase++;
+                messages.SetFMGEntry(game, FMGCategory.Item, "PlaceName", newId, IdentityMessage, text);
+                return newId;
+            }
+            uint markFlagBase = 1032490000;
+            int markEventBase = 1932490000;
+            Dictionary<uint, List<uint>> customMerchantFlags = new()
+            {
+                // Gostoc: bell bearing, talk after dark room, talk after Godrick
+                [10000700] = new() { 400051, 10009353, 10009399 },
+                // Patches: bell bearing, boss flag set on kill or spare
+                [31000703] = new() { 400189, 31000800 },
+            };
+            uint getProximityFlag(Entity entity)
+            {
+                // Shops: Bernahl, Patches, Pidia, Moore, Ymir, spell shops, etc
+                // This does not work for entities with multiple ids like Mistwood merchant, but those are handled with gift flags
+                // The flags are also not stable at all across runs, but should require changing fundamental settings to change
+                string map = game.GetEventMap(entity.MapName, entity.Name);
+                uint flag = markFlagBase++;
+                List<string> commands = new()
+                {
+                    $"EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, {flag})",
+                };
+                if (customMerchantFlags.TryGetValue(entity.EntityID, out List<uint> accessFlags))
+                {
+                    foreach (uint accessFlag in accessFlags)
+                    {
+                        commands.Add($"IfEventFlag(OR_01, ON, TargetEventFlagType.EventFlag, {accessFlag})");
+                    }
+                    commands.Add("IfConditionGroup(MAIN, PASS, OR_01)");
+                }
+                else
+                {
+                    // Non-standard action button for Iji. There is also 1034490711 but radius check still works
+                    float radius = entity.EntityID == 1034490700 ? 6 : 2.5f;
+                    commands.Add($"IfEntityInoutsideRadiusOfEntity(MAIN, InsideOutsideState.Inside, 10000, {entity.EntityID}, {radius}, 1)");
+                }
+                commands.Add($"SetEventFlag(TargetEventFlagType.EventFlag, {flag}, ON)");
+                events.AddSimpleEvent(game.Emevds[map], markEventBase++, commands);
+                return flag;
+            }
+            Regex apDescRe = new Regex(@"^([^:]*): (.*?) - (.*)");
+            string deitem(string desc)
+            {
+                Match match = apDescRe.Match(desc);
+                if (!match.Success)
+                {
+                    Warn($"Unrecognized AP item description: {desc}");
+                }
+                string area = match.Groups[1].Value;
+                string item = match.Groups[2].Value;
+                string text = match.Groups[3].Value;
+                string prefix = "";
+                // Hardcode for some hard-to-read locations, TODO standardize those locations
+                if (item != null && item.StartsWith("Map:") && !text.Contains("map"))
+                {
+                    prefix = "map pillar ";
+                }
+                return $"{area}: {prefix}{text}";
+            }
+
+            // Currently, only works with external priority locations. TODO work for important locations
+            SortedDictionary<Entity, List<CheckLocation>> priorityByEntity = new();
+            foreach ((long id, LocalLocation loc) in externalPreset.LocalLocations)
+            {
+                if (loc.Key == null) continue;
+                if (!loc.Priority) continue;
+                LocationScope locScope = loc.Key.Scope;
+                Entity entity = GetLocationEntity(locScope);
+                if (entity == null)
+                {
+                    Warn($"No entity found for priority location {locScope} - {loc.Desc}");
+                    continue;
+                }
+                if (entity.MapName == "m11_10_00_00") continue;
+                SlotAnnotation slotAnn = ann.Slots[locScope];
+                AreaAnnotation areaAnn = ann.Areas[slotAnn.Area];
+                bool shop = locScope.OnlyShops;
+                int iconId = 280;
+                if (slotAnn.HasTag("scarab"))
+                {
+                    iconId = 284;
+                }
+                else if (slotAnn.HasTag("chest"))
+                {
+                    iconId = 281;
+                }
+                else if (slotAnn.HasTag("boss") || slotAnn.HasTag("altboss") || slotAnn.HasTag("enemy"))
+                {
+                    iconId = 282;
+                }
+                else if (shop)
+                {
+                    iconId = 283;
+                }
+                uint flag = 0;
+                if (shop)
+                {
+                    if (permResult.MerchantGiftFlags.TryGetValue(entity.NameID, out int giftFlag))
+                    {
+                        flag = (uint)giftFlag;
+                    }
+                    else if (entity.EntityID <= 0)
+                    {
+                        Warn($"No entity id for shop at {locScope} - {loc.Desc}");
+                        continue;
+                    }
+                }
+                else if (locScope.Type == ScopeType.Event)
+                {
+                    int locFlag = locScope.UniqueID;
+                    if (permResult.RewrittenFlags.TryGetValue(locFlag, out int newFlag))
+                    {
+                        locFlag = newFlag;
+                    }
+                    flag = (uint)locFlag;
+                }
+                else
+                {
+                    Warn($"No flag to add marker for priority location {locScope} - {loc.Desc}");
+                    continue;
+                }
+                AddMulti(priorityByEntity, entity, new CheckLocation(deitem(loc.Desc), areaAnn.Text, iconId, shop, flag));
+            }
+            if (priorityByEntity.Count == 0)
+            {
+                return;
+            }
+            // Make markers for all of them
+            foreach ((Entity entity, List<CheckLocation> locs) in priorityByEntity)
+            {
+#if DEBUG
+                if (locs.Select(l => $"{l.Desc} {l.Area} {l.IconId} {l.Shop}").Distinct().Count() > 1)
+                {
+                    // TODO: Correct these
+                    Console.WriteLine($"Ambiguous marker entity: {game.EntityName(entity, mapName: true)}");
+                    foreach (CheckLocation dloc in locs) Console.WriteLine($"- {dloc}");
+                }
+#endif
+                CheckLocation loc = locs.Last();
+                int locNameId = getPlaceNameId(loc.Desc);
+                int areaNameId = getPlaceNameId(loc.Area);
+                uint checkFlag = loc.Flag;
+                if (checkFlag == 0 && loc.Shop && entity.EntityID > 0)
+                {
+                    checkFlag = getProximityFlag(entity);
+                }
+                if (checkFlag == 0)
+                {
+                    Warn($"No item acquisition flag found for marker {entity} - {loc.Desc}");
+                }
+                AddConditionalMark(areaNameId, entity.MapName, (Vector3)entity.Position, 6001, checkFlag, iconId: loc.IconId, placeNameId2: locNameId);
+            }
+            game.Params["WorldMapPointParam"].Rows = game.Params["WorldMapPointParam"].Rows.OrderBy(r => r.ID / 1000 == 85606 ? 0 : 1).ToList();
+        }
+
+        private Entity GetLocationEntity(LocationScope locScope)
+        {
+            // Pile of heuristics for finding map locations. This can be standardized or baked in if needed.
+            if (!ann.Slots.TryGetValue(locScope, out SlotAnnotation slotAnn)
+                || !ann.Areas.TryGetValue(slotAnn.Area, out AreaAnnotation areaAnn)
+                || !data.Locations.TryGetValue(locScope, out List<ItemLocKey> locKeys))
+            {
+                return null;
+            }
+            if (areaAnn.Maps == null)
+            {
+                Warn($"No maps for {slotAnn.Key} {slotAnn.Area}");
+                return null;
+            }
+            List<string> eligibleMaps = areaAnn.Maps.Split(' ').ToList();
+            List<Entity> allEntities = locKeys.Select(data.GetItemLoc)
+                .SelectMany(itemLoc => itemLoc.Locs)
+                .SelectMany(loc => loc.Entities)
+                .Where(e => e.Type != null && (e.Type.Contains("asset") || e.Type.Contains("enemy")))
+                .Distinct().ToList();
+            List<Entity> mapEntities = allEntities.Where(id => eligibleMaps.Contains(id.MapName)).ToList();
+            Entity uniqueEntity = null;
+            // Default to unique entity
+            if (mapEntities.Count == 1)
+            {
+                uniqueEntity = mapEntities[0];
+            }
+            else if (mapEntities.Count == 0 && allEntities.Count == 1)
+            {
+                uniqueEntity = allEntities[0];
+            }
+            if (slotAnn.Location != null)
+            {
+                if (uint.TryParse(slotAnn.Location, out uint locId))
+                {
+                    uniqueEntity = mapEntities.Find(id => id.EntityID == locId);
+                }
+                else
+                {
+                    string[] parts = slotAnn.Location.Split(' ');
+                    string mapName = parts[0];
+                    string partName = parts[1];
+                    uniqueEntity = mapEntities.Find(id => id.MapName == mapName && id.Name == partName);
+                    if (uniqueEntity == null)
+                    {
+                        // Entity id is new locations only currently
+                        MSBE.Part part = uint.TryParse(partName, out locId)
+                            ? game.EldenMaps[mapName].Parts.GetEntries().Find(e => e.EntityID == locId)
+                            : game.EldenMaps[mapName].Parts.GetEntries().Find(e => e.Name == partName);
+                        if (part != null)
+                        {
+                            uniqueEntity = new Entity(mapName, part.Name, part.EntityID, Type: part.GetType().Name.ToLowerInvariant());
+                            uniqueEntity.Position = part.Position;
+                        }
+                    }
+                }
+                if (uniqueEntity == null)
+                {
+                    Warn($"Unknown location {slotAnn.Location} for {slotAnn.Key}");
+                    return null;
+                }
+            }
+            if (uniqueEntity == null && mapEntities.Count > 1)
+            {
+                Entity first = mapEntities.FirstOrDefault();
+                static string dedupeMap(string map) => map.Length > 8 ? map.Substring(0, map.Length - 3) : map;
+                if (first.Position is Vector3 firstPos
+                    && mapEntities.Skip(1).All(id =>
+                        dedupeMap(id.MapName) == dedupeMap(first.MapName)
+                        && id.Position is Vector3 secondPos
+                        && Vector3.DistanceSquared(firstPos, secondPos) < 100))
+                {
+                    // With 5 meter distance, this excludes Dung-Eater, Pidia, Varre in Mohgwyn. It's fine
+                    // If all close, go for one with lowest non-zero entity id. This also prefers characters to shiny items
+                    uniqueEntity = mapEntities.Where(id => id.EntityID > 0).OrderBy(m => m.EntityID).FirstOrDefault() ?? first;
+                }
+            }
+            return uniqueEntity?.Position is null ? null : uniqueEntity;
         }
 
         internal void AnalyzeMapPoints()

@@ -3444,25 +3444,58 @@ ItemEvents:
   - m61_50_43_00 (Scadu Altus - Scaduview Cross, Bonny Gaol Entrance, Path to Village of Flies; Abyssal Woods - Alcove North of Central Woods) - IfEventFlag(X0_4 = 580600) - Message from Leda
 - ID: 1033462611
   Map: m60_33_46_00
-  Comment: Using Imbued Sword Key
+  Comment: Using Imbued Sword Key (Farum Azula)
+  Template:
+  - Type: loc
+    Filter:
+    - Gate: crumblingswordkey
+    Edits:
+    - FilterCond: 2
+      Replace: IfPlayerHasdoesntHaveItem(AND_02, ItemType.Goods, 8186, OwnershipState.Owns)
+    - FilterMessage: basic
+      Replace: DisplayGenericDialog(308186, PromptType.OKCANCEL, NumberofOptions.NoButtons, X4_4, 3)
+    Removes:
+    - RemoveItemFromPlayer(ItemType.Goods, 8186, 1)
   DebugInfo:
   - m60_33_46_00 (Liurnia of the Lakes - Foot of the Four Belfries) - IfPlayerHasdoesntHaveItem(8186) - Imbued Sword Key
   - m60_33_46_00 (Liurnia of the Lakes - Foot of the Four Belfries) - RemoveItemFromPlayer(8186) - Imbued Sword Key
 - ID: 1033472610
   Map: m60_33_47_00
-  Comment: Using Imbued Sword Key
+  Comment: Using Imbued Sword Key (Unused)
   DebugInfo:
   - m60_33_47_00 (Liurnia of the Lakes - The Four Belfries, Giant's Caravan Below) - IfPlayerHasdoesntHaveItem(8186) - Imbued Sword Key
   - m60_33_47_00 (Liurnia of the Lakes - The Four Belfries, Giant's Caravan Below) - RemoveItemFromPlayer(8186) - Imbued Sword Key
 - ID: 1033472611
   Map: m60_33_47_00
-  Comment: Using Imbued Sword Key
+  Comment: Using Imbued Sword Key (Siofra)
+  Template:
+  - Type: loc
+    Filter:
+    - Gate: eternalswordkey
+    Edits:
+    - FilterCond: 2
+      Replace: IfPlayerHasdoesntHaveItem(AND_02, ItemType.Goods, 8186, OwnershipState.Owns)
+    - FilterMessage: basic
+      Replace: DisplayGenericDialog(308186, PromptType.OKCANCEL, NumberofOptions.NoButtons, X4_4, 3)
+    Removes:
+    - RemoveItemFromPlayer(ItemType.Goods, 8186, 1)
   DebugInfo:
   - m60_33_47_00 (Liurnia of the Lakes - The Four Belfries, Giant's Caravan Below) - IfPlayerHasdoesntHaveItem(8186) - Imbued Sword Key
   - m60_33_47_00 (Liurnia of the Lakes - The Four Belfries, Giant's Caravan Below) - RemoveItemFromPlayer(8186) - Imbued Sword Key
 - ID: 1034472611
   Map: m60_34_47_00
-  Comment: Using Imbued Sword Key
+  Comment: Using Imbued Sword Key (Chapel)
+  Template:
+  - Type: loc
+    Filter:
+    - Gate: chapelswordkey
+    Edits:
+    - FilterCond: 2
+      Replace: IfPlayerHasdoesntHaveItem(AND_02, ItemType.Goods, 8186, OwnershipState.Owns)
+    - FilterMessage: basic
+      Replace: DisplayGenericDialog(308186, PromptType.OKCANCEL, NumberofOptions.NoButtons, X4_4, 3)
+    Removes:
+    - RemoveItemFromPlayer(ItemType.Goods, 8186, 1)
   DebugInfo:
   - m60_34_47_00 (Liurnia of the Lakes - Sorcerer's Isle West, East Belfry) - IfPlayerHasdoesntHaveItem(8186) - Imbued Sword Key
   - m60_34_47_00 (Liurnia of the Lakes - Sorcerer's Isle West, East Belfry) - RemoveItemFromPlayer(8186) - Imbued Sword Key
@@ -4161,7 +4194,18 @@ ItemEvents:
   - m61_47_42_00 (Gravesite Plain - North of Scorched Ruins, Downstream of Ellac River Cave) - EndIfEventFlag(X0_4 = 580110) - "The Sacred Tower" Painting
 - ID: 2047442611
   Map: m61_47_44_00
-  Comment: Using Imbued Sword Key
+  Comment: Using Imbued Sword Key (DLC)
+  Template:
+  - Type: loc
+    Filter:
+    - Gate: ancientswordkey
+    Edits:
+    - FilterCond: 2
+      Replace: IfPlayerHasdoesntHaveItem(AND_02, ItemType.Goods, 8186, OwnershipState.Owns)
+    - FilterMessage: basic
+      Replace: DisplayGenericDialog(308186, PromptType.OKCANCEL, NumberofOptions.NoButtons, X4_4, 3)
+    Removes:
+    - RemoveItemFromPlayer(ItemType.Goods, 8186, 1)
   DebugInfo:
   - m61_47_44_00 (Gravesite Plain - West Castle Ensis, South Fog Rift Fort; Scadu Altus - Belfry) - IfPlayerHasdoesntHaveItem(8186) - Imbued Sword Key
   - m61_47_44_00 (Gravesite Plain - West Castle Ensis, South Fog Rift Fort; Scadu Altus - Belfry) - RemoveItemFromPlayer(8186) - Imbued Sword Key

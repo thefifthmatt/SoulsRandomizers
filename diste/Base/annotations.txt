@@ -88,6 +88,10 @@ ConfigItems:
     Comment: Cookbooks
   - ID: 3:2009300
     EndID: 3:2009349
+- GroupName: removeimbued
+  NoConfigNames: true
+  Items:
+  - Name: Imbued Sword Key
 - GroupName: multikey
   Comment: Pureblood Knight's Medal has the downside of disappearing when you use it so figure that out
   NoConfigNames: true
@@ -792,6 +796,9 @@ Config:
 - Oneof:
   - noliurniagate
   - liurniagate
+- Oneof:
+  - noimbuedsplit
+  - imbuedsplit
 ConfigVars:
   runes_leyndell: runegodrick runerennala
   runes_rold: roldmedallion
@@ -1691,7 +1698,7 @@ Areas:
   Maps: m13_00_00_00
 - Name: chapel
   Text: Chapel of Anticipation
-  Req: liurnia AND imbued_base
+  Req: liurnia AND ((imbuedsplit AND chapelswordkey) OR (noimbuedsplit AND imbued_base))
   Maps: m10_01_00_00
   MainMaps: m10_01_00_00
 - Name: chapel_boss
@@ -1703,12 +1710,12 @@ Areas:
 - Name: farumazula_limited
   Text: Farum Azula via Belfries
   Comment: Pearldrake Talisman
-  Req: liurnia AND imbued_base
+  Req: liurnia AND ((imbuedsplit AND crumblingswordkey) OR (noimbuedsplit AND imbued_base))
   Maps: m13_00_00_00
 - Name: siofra_limited
   Text: Siofra River via Belfries
   Comment: Mottled Necklace
-  Req: liurnia AND imbued_base
+  Req: liurnia AND ((imbuedsplit AND starcrossedswordkey) OR (noimbuedsplit AND imbued_base))
   Maps: m12_02_00_00
 - Name: snowfield_hiddenpath
   Text: Hidden Path to the Haligtree
@@ -1933,7 +1940,7 @@ Areas:
   Tags: minidungeon catacomb
 - Name: gelmir_wyndhamcatacombs
   Text: Mt. Gelmir - Wyndham Catacombs
-  Req: gelmir
+  Req: altus
   Maps: m30_07_00_00
   Tags: minidungeon catacomb
 - Name: gelmir_wyndhamcatacombs_seal
@@ -2916,7 +2923,7 @@ Areas:
 - Name: rauhruins_limited
   Text: Ancient Ruins of Rauh
   Comment: Technically has tree parkour from rauhruins_east
-  Req: rauhruins_west OR (scadualtus AND imbued_dlc)
+  Req: rauhruins_west OR (scadualtus AND ((imbuedsplit AND ancientswordkey) OR (noimbuedsplit AND imbued_dlc)))
   Maps: m61_46_46_00 m61_46_47_00
   MapNames:
   - m61_46_46_00 Ancient Ruins of Rauh - South Belfry Area, Divine Beast Pantheon
@@ -3297,6 +3304,7 @@ NewItems:
   - BlockArea: altus_wyndhamruins_seal
   - BlockArea: altus_grave_seal_start
   - BlockArea: altus_grave_seal_other
+  - BlockArea: gelmir_wyndhamcatacombs_seal
 - Name: Caelid Master Key
   Switch: stoneswordregion
   Parent: stoneswordmasterkey
@@ -3316,7 +3324,6 @@ NewItems:
   BaseID: 7830109
   Logic:
   - BlockArea: gelmir_seethewatercave
-  - BlockArea: gelmir_wyndhamcatacombs_seal
 - Name: Volcano Master Key
   Switch: stoneswordregion
   Parent: stoneswordmasterkey
@@ -3593,6 +3600,34 @@ NewItems:
   Switch: traps
   BaseID: 7830603
   Area: altus
+- Name: Heavy Trap
+  Switch: traps
+  BaseID: 7830604
+  Area: altus
+- Name: Chapel Sword Key
+  Desc: Stone key linked to a sending gate.
+  Desc2: Unseals the belfry to the Precipice of Anticipation.
+  Switch: imbuedsplit
+  BaseID: 7830700
+  Area: liurnia
+- Name: Eternal Sword Key
+  Desc: Stone key linked to a sending gate.
+  Desc2: Unseals the belfry to Night Sky Unceasing.
+  Switch: imbuedsplit
+  BaseID: 7830701
+  Area: academy_courtyard
+- Name: Crumbling Sword Key
+  Desc: Stone key linked to a sending gate.
+  Desc2: Unseals the belfry to the Crumbling Lands.
+  Switch: imbuedsplit
+  BaseID: 7830702
+  Area: caelid
+- Name: Ancient Sword Key
+  Desc: Stone key linked to a sending gate.
+  Desc2: Unseals the belfry to the Ancient Ruins.
+  Switch: imbuedsplit dlc
+  BaseID: 7830703
+  Area: ensis
 PlacementRestrictions:
 - Name: Rusty Key
   Switch: earlylegacy

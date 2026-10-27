@@ -57,7 +57,7 @@ namespace RandomizerCommon
         public static readonly string DS1Version = "v0.1.3";
         public static readonly string DS3Version = "v0.4.1";
         public static readonly string NightreignVersion = "v0.1.6";
-        public static readonly string EldenApVersion = "0.1.3";
+        public static readonly string EldenApVersion = "0.1.4";
         public const bool Omit = false;
 
         private static readonly Dictionary<FromGame, string> distDirs = new Dictionary<FromGame, string>
@@ -502,6 +502,10 @@ namespace RandomizerCommon
                     if (opt["markareas"])
                     {
                         container.GetInstance<HintMarker>().Write(opt, perm, permResult);
+                    }
+                    if (opt["markchecks"])
+                    {
+                        container.GetInstance<HintMarker>().AddCheckMarks(permResult);
                     }
                     if (opt["mats"])
                     {

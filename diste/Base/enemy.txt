@@ -15962,7 +15962,7 @@ Enemies:
       PartialTemplate: Godskin $1
     NpcName: 903570000
   Outfit: Godskin Noble Hood; Godskin Noble Robe; Godskin Noble Bracelets; Godskin Noble Trousers
-  Tags: exclude:unkillable perceptive exclude:strand partial size:2
+  Tags: exclude:unkillable perceptive exclude:strand partial size:2 exclude:2054390800
   BuddyGroup: 16005850
   ExtraName: Godskin Noble Boss
 - ID: 16000202

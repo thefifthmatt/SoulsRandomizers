@@ -6403,9 +6403,12 @@ namespace RandomizerCommon
                                             duals.Add(data.Segments.ContainsKey("end") ? "end" : "endphase");
                                         }
                                         // Only support dead segment for this for now. These commands are removed from endphase in ER
-                                        else if (segment.Type == "phasedisable" && data.Segments.ContainsKey("dead"))
+                                        else if (segment.Type == "phasedisable")
                                         {
-                                            duals.Add("dead");
+                                            if (data.Segments.ContainsKey("dead"))
+                                            {
+                                                duals.Add("dead");
+                                            }
                                         }
                                         else if (encounterSegmentTypes.Contains(segment.Type))
                                         {
@@ -6486,7 +6489,6 @@ namespace RandomizerCommon
                                                 duals.Add("dead");
                                             }
                                         }
-                                        // TODO: This may fail in DS3
                                         else throw new Exception($"Internal error: unknown target segment {segment.Type} in {callee}");
 
                                         // Entry commands
