@@ -25,8 +25,8 @@ namespace RandomizerCommon
         public bool AnyDupeEnabled { get; set; }
         public Dictionary<uint, List<uint>> DupeEnemyMap = new();
 
-        // Map from ESD id to defeat flag (better to calculate in actual pass?)
-        public Dictionary<int, int> DeathLineFlags = new();
+        // Map from ESD id to defeat flag, entity id (better to calculate in actual pass?)
+        public Dictionary<int, (int, uint)> DeathLineFlags = new();
         // For later convenience, enemies to edit talk lines for
         public List<uint> TalkLineEdits = new();
 

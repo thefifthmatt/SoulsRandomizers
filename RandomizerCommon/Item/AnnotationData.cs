@@ -108,6 +108,7 @@ namespace RandomizerCommon
         public readonly HashSet<string> NorandomTags = new();
         // Misc named options only configured in preset
         public readonly HashSet<string> PresetOpts = new();
+        private readonly ItemOptions ItemOpts = new();
 
         public AreaSiloType OverallSilo { get; private set; } = AreaSiloType.None;
         public AreaSiloType KeyItemSilo { get; private set; } = AreaSiloType.None;
@@ -153,8 +154,20 @@ namespace RandomizerCommon
         {
             // Maintain stable(r) copy of config to allow feature development while game updates are still ongoing.
             // If it becomes too much to maintain both at once then scrap it
-            string[] stableOpts = new[] { "stoneswordregion", "stoneswordall", "regionlock", "springsanity","unstable" };
-            Stable = stableOpts.All(name => !opt[name]) && externalPreset == null;
+            string[] stableOpts = new[] { "stoneswordregion", "stoneswordall", "regionlock", "springsanity", "unstable", "endbase", "enddlc" };
+            bool canStable = stableOpts.All(name => !opt[name]) && externalPreset == null;
+            Stable = opt["stable"];
+            if (Stable && !canStable)
+            {
+                // TODO: Phrasing
+                // Use stable version of item location metadata
+                // This will result in the same item placement as v0.12. It prevents using new features and fixes added since then and is not recommended unless you're continuing an older run.
+                throw new Exception($"Can't use new features while using older stable item location metadata");
+            }
+            if (!Stable && opt["fog"])
+            {
+                throw new Exception("To use fog gate randomizer, you must select the option to use stable item location metadata (and some incompatibilites may come up)");
+            }
 
             Annotations ann;
             IDeserializer deserializer = new DeserializerBuilder().Build();
@@ -191,9 +204,21 @@ namespace RandomizerCommon
             }
 
             // Config vars
+            // ItemOpts.Source = opt;
+            ItemOpts.AddAll(opt.GetLogicOptions());
+            if (itemPreset?.Options != null)
+            {
+                // Early use of preset before validation and processing
+                PresetOpts.UnionWith(itemPreset.Options);
+                ItemOpts.AddAll(PresetOpts);
+            }
             foreach (ConfigAnnotation config in ann.Config)
             {
-                config.UpdateOptions(opt);
+                if (ItemOpts.Source != null)
+                {
+                    config.UpdateOptions(opt);
+                }
+                config.UpdateOptions(ItemOpts);
             }
             configVars = ann.Config;
             // Items
@@ -263,10 +288,10 @@ namespace RandomizerCommon
                 foreach (NewItemAnnotation newItem in ann.NewItems)
                 {
                     newItem.ConfigName = newItem.OverrideConfigName ?? toConfigName(newItem.Name);
-                    // TODO: Check uniqueness
+                    // Uniqueness is checked by AddItemName
                     newItem.Key = new ItemKey(ItemType.Goods, newItem.BaseID);
-                    newItem.Enabled = newItem.Switch != null && newItem.Switch.Split(' ').All(s => opt[s]);
                     // TODO: General options switch
+                    newItem.Enabled = newItem.Switch != null && newItem.Switch.Split(' ').All(s => opt[s]);
                     if (newItem.Enabled || externalPreset != null)
                     {
                         items.Add(new ItemAnnotation
@@ -538,7 +563,7 @@ namespace RandomizerCommon
 
             foreach (PlacementRestrictionAnnotation placement in ann.PlacementRestrictions)
             {
-                if (!opt.IsSwitchEnabled(placement.Switch))
+                if (!ItemOpts.IsSwitchEnabled(placement.Switch))
                 {
                     continue;
                 }
@@ -741,8 +766,8 @@ namespace RandomizerCommon
             {
                 foreach (SpecialModeAnnotation group in ann.SpecialModes)
                 {
-                    bool raceMode = group.RaceSwitch != null && opt.IsSwitchEnabled(group.RaceSwitch);
-                    bool norandomMode = group.NorandomSwitch != null && opt.IsSwitchEnabled(group.NorandomSwitch);
+                    bool raceMode = group.RaceSwitch != null && ItemOpts.IsSwitchEnabled(group.RaceSwitch);
+                    bool norandomMode = group.NorandomSwitch != null && ItemOpts.IsSwitchEnabled(group.NorandomSwitch);
                     if (!raceMode && !norandomMode)
                     {
                         continue;
@@ -1012,7 +1037,9 @@ namespace RandomizerCommon
                     }
                 }
             }
-            HashSet<string> configVarNames = new HashSet<string>(GetConfig(new HashSet<string>()).Keys);
+            HashSet<string> configVarNames = new HashSet<string>(GetConfig(opt.GetLogicOptions()).Keys);
+            HashSet<string> configVarNames2 = new(configVars.SelectMany(var => var.GetVariableNames()));
+            if (!configVarNames.SetEquals(configVarNames2)) throw new Exception("Configs not same");
             foreach (AreaAnnotation area in ann.Events)
             {
                 parseReq(area);
@@ -1151,7 +1178,7 @@ namespace RandomizerCommon
                     throw new Exception($"Slot {scope} has unknown area \"{slot.Area}\"");
                 }
                 slot.AreaUntil = areaAnn?.Until;
-                slot.SetTags(scope.OnlyShops, opt, areaAnn?.TagList, KeyItemSilo);
+                slot.SetTags(scope.OnlyShops, ItemOpts, areaAnn?.TagList, KeyItemSilo);
                 foreach (string tag in slot.TagList)
                 {
                     if (tag.Contains(':'))
@@ -1444,7 +1471,7 @@ namespace RandomizerCommon
                         Area = newLoc.Area,
                     };
                     slot.AreaUntil = areaAnn?.Until;
-                    slot.SetTags(false, opt, areaAnn.TagList);
+                    slot.SetTags(false, ItemOpts, areaAnn.TagList);
                     Slots.Add(locScope, slot);
                     // TODO: Add tags for location to allow it to be a key item location and update AllAreas/AllTags accordingly.
                     // This may get simplified with getting rid of counts hopefully.
@@ -2197,15 +2224,75 @@ namespace RandomizerCommon
         {
             SortedSet<string> enabledSet = new SortedSet<string>(enabled);
             Dictionary<string, bool> config = new Dictionary<string, bool>();
+            Dictionary<string, bool> config2 = new Dictionary<string, bool>();
             foreach (ConfigAnnotation vars in configVars)
             {
-                vars.UpdateConfig(config, enabledSet);
+                if (ItemOpts.Source != null)
+                {
+                    vars.UpdateConfig(config, enabledSet);
+                }
+                vars.UpdateConfig(config2, ItemOpts);
             }
-            if (enabledSet.Count() != 0)
+            if (ItemOpts.Source != null)
             {
-                // These are options which are passed in
+                // Some messy code but important that this remains stable
+                SortedSet<string> dictEntries(Dictionary<string, bool> c) => new(c.Select(e => $"{e.Key}={e.Value}"));
+                SortedSet<string> x = dictEntries(config);
+                SortedSet<string> x2 = dictEntries(config2);
+                if (!x.SetEquals(x2)) throw new Exception($"Config mismatch:\nOld {string.Join(", ", x)}\nNew {string.Join(", ", x2)}");
             }
-            return config;
+            return config2;
+        }
+
+        internal class ItemOptions
+        {
+            public RandomizerOptions Source { get; set; }
+            private readonly HashSet<string> opt = new();
+
+            public void AddAll(IEnumerable<string> names)
+            {
+                opt.UnionWith(names);
+            }
+
+            public bool this[string name]
+            {
+                get
+                {
+                    bool value = opt.Contains(name);
+                    return value;
+                }
+                set
+                {
+                    if (value)
+                    {
+                        opt.Add(name);
+                    }
+                    else
+                    {
+                        opt.Remove(name);
+                    }
+                }
+            }
+
+            public bool IsSwitchEnabled(string sw)
+            {
+                bool enabled = IsSwitchEnabledInner(sw);
+                if (Source != null && enabled != Source.IsSwitchEnabled(sw)) throw new Exception($"Switch mismatch: {sw}");
+                return enabled;
+            }
+
+            // Copied directly from RandomizerOptions, but used for switches in annotations (not in preset)
+            private bool IsSwitchEnabledInner(string sw)
+            {
+                if (sw == "always" || string.IsNullOrEmpty(sw)) return true;
+                string[] parts = sw.Split(' ');
+                return parts[0] == "all" ? sw.Split(' ').Skip(1).All(OptEnabled) : sw.Split(' ').Any(OptEnabled);
+            }
+
+            private bool OptEnabled(string optName)
+            {
+                return optName.StartsWith('!') ? !this[optName.Substring(1)] : this[optName];
+            }
         }
 
         public class Annotations
@@ -2551,7 +2638,7 @@ namespace RandomizerCommon
             public string AreaUntil { get; set; }
             // TODO: Replace uses with TagList directly.
             public HashSet<string> GetTags() => TagList;
-            internal void SetTags(bool shopOnly, RandomizerOptions opt = null, List<string> areaTags = null, AreaSiloType keyItemSilo = AreaSiloType.None)
+            internal void SetTags(bool shopOnly, ItemOptions opt = null, List<string> areaTags = null, AreaSiloType keyItemSilo = AreaSiloType.None)
             {
                 string tagsStr = Tags;
                 if (tagsStr != null && tagsStr.Contains("aaaaa"))
@@ -2617,10 +2704,28 @@ namespace RandomizerCommon
                     // This is ignored when PremiumGroups is present
                     TagList.Add("restrict");
                 }
-                // TODO: Do this for any key item silo
-                if (TagList.Contains("dlcend") && keyItemSilo == AreaSiloType.DLC)
+                if (opt == null || opt["stable"])
                 {
-                    TagList.Add("end");
+                    if (TagList.Contains("dlcend") && keyItemSilo == AreaSiloType.DLC)
+                    {
+                        TagList.Add("end");
+                    }
+                    if (TagList.Contains("baseend"))
+                    {
+                        TagList.Add("end");
+                    }
+                }
+                else
+                {
+                    // As of v0.13, end bosses can't have important items unless one depends on the other
+                    if (TagList.Contains("dlcend") && !opt["endbase"])
+                    {
+                        TagList.Add("end");
+                    }
+                    if (TagList.Contains("baseend") && !opt["enddlc"])
+                    {
+                        TagList.Add("end");
+                    }
                 }
                 // Boss implies late, unless specified otherwise
                 if (TagList.Contains("boss") && !TagList.Contains("early") && !TagList.Contains("mid"))
@@ -2714,6 +2819,11 @@ namespace RandomizerCommon
             public List<string> Oneof { get; set; }
             public string Num { get; set; }
 
+            public IEnumerable<string> GetVariableNames()
+            {
+                return Oneof != null ? Oneof : new[] { Opt };
+            }
+
             public void UpdateOptions(RandomizerOptions options)
             {
                 // Select first oneof value if none selected
@@ -2735,9 +2845,9 @@ namespace RandomizerCommon
                 if (Opt != null)
                 {
                     config[Opt] = enabled.Contains(Opt);
-                    enabled.Remove(Opt);
+                    enabled.Remove(Opt);  // Why?
                 }
-                if (Oneof != null && Oneof.Count() > 0)
+                else if (Oneof != null && Oneof.Count() > 0)
                 {
                     string chosen = null;
                     foreach (string opt in Oneof)
@@ -2755,6 +2865,49 @@ namespace RandomizerCommon
                     {
                         config[opt] = opt == chosen;
                         enabled.Remove(opt);
+                    }
+                }
+            }
+
+            internal void UpdateOptions(ItemOptions options)
+            {
+                // Select first oneof value if none selected
+                if (Oneof != null && Oneof.Count > 0)
+                {
+                    if (!Oneof.Any(opt => options[opt]))
+                    {
+                        foreach (string opt in Oneof)
+                        {
+                            options[opt] = false;
+                        }
+                        options[Oneof[0]] = true;
+                    }
+                }
+            }
+
+            internal void UpdateConfig(Dictionary<string, bool> config, ItemOptions enabled)
+            {
+                if (Opt != null)
+                {
+                    config[Opt] = enabled[Opt];
+                }
+                else if (Oneof != null && Oneof.Count() > 0)
+                {
+                    string chosen = null;
+                    foreach (string opt in Oneof)
+                    {
+                        if (chosen == null)
+                        {
+                            chosen = opt;
+                        }
+                        if (enabled[opt])
+                        {
+                            chosen = opt;
+                        }
+                    }
+                    foreach (string opt in Oneof)
+                    {
+                        config[opt] = opt == chosen;
                     }
                 }
             }

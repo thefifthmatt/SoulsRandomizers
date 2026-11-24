@@ -69,7 +69,7 @@ namespace RandomizerCommon
             // loc, arg, remove, default (ignore)
             public string Type { get; set; }
             public string Comment { get; set; }
-            // Condition for the edit. If needed this could be a list to allow any condition.
+            // Condition for the edit. If present, at least one must be met.
             public List<TemplateFilter> Filter { get; set; }
 
             // -- Arg edits
@@ -141,9 +141,11 @@ namespace RandomizerCommon
             // List of objects to add until gate
             // <map> <model> <base> <x> <y> <z> <y rot> [<x rot> <z rot>]
             // wall <overworld map> <x> <y> <z> <y rot> <left dist> <right dist>
+            // interact <map> <base> <x> <y> <z> <y rot>
+            // col <map> <base> <x> <y> <z> <y rot>
             public List<string> Block { get; set; }
             // List of objects to hide until gate, mainly those allowing parkour or which are 'moved'
-            // Format is: <map> <part>
+            // <map> <part>
             public List<string> Hide { get; set; }
             // Seal all spiritsprings in this map
             public string SealMap { get; set; }

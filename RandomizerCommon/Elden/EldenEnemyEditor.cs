@@ -1104,7 +1104,7 @@ namespace RandomizerCommon
             // But Ymir has runes anyway?
 
             // Fix animation blending bug for bosses with lip sync, by disabling it if the source can't support it
-            // This should mainly only apply when presets are present, but it does affect Fortissax, so check it for everyone.
+            // This should mainly only apply when bosses are merged, but it does affect Fortissax, so check it for everyone.
             // TalkParam is pretty big and expensive to write, but that's mainly a PARAM impl problem.
             {
                 HashSet<int> talkPrefixes = new HashSet<int>();
@@ -1135,7 +1135,7 @@ namespace RandomizerCommon
             }
 
             // Look at deathline cases, probably just always
-            // TODO: This doesn't work
+            bool newDeathline = true;
             foreach (KeyValuePair<string, Dictionary<string, ESD>> entry in game.Talk)
             {
                 bool modified = false;
@@ -1145,39 +1145,42 @@ namespace RandomizerCommon
                     int esdId = int.Parse(esdEntry.Key.Substring(1));
                     if (esdId == 324001105)
                     {
-                        // Try to remove animations or whatever
-
-                        // x35 RequestAnimation
-                        if (AST.ParseMachine("x35", out int mid) && esd.StateGroups.TryGetValue(mid, out Dictionary<long, ESD.State> m))
-                        {
-                            // m[6].WhileCommands.RemoveRange(0, 1);
-                            modified = true;
-                        }
-                        if (AST.ParseMachine("x30", out mid) && esd.StateGroups.TryGetValue(mid, out m))
-                        {
-                            // m[1].EntryCommands.RemoveRange(0, 3);
-                            modified = true;
-                        }
-                        if (AST.ParseMachine("x28", out mid) && esd.StateGroups.TryGetValue(mid, out m))
-                        {
-                            // The actual talk command
-                            // m[1].EntryCommands.RemoveRange(0, 1);
-                            modified = true;
-                        }
-                        if (esd.StateGroups.TryGetValue(1102, out m))
+                        // Try to remove animations
+                        if (esd.StateGroups.TryGetValue(1102, out Dictionary<long, ESD.State>  m))
                         {
                             m[3].WhileCommands.RemoveRange(0, 1);
                             modified = true;
                         }
                     }
-                    if (!enemies.DeathLineFlags.TryGetValue(esdId, out int defeatFlag)) continue;
+
+                    if (!enemies.DeathLineFlags.TryGetValue(esdId, out var info)) continue;
+                    (int defeatFlag, uint entityId) = info;
                     if (!esd.StateGroups.TryGetValue(1103, out Dictionary<long, ESD.State> machine)) continue;
-                    if (!machine.TryGetValue(0, out ESD.State esdState) || esdState.Conditions.Count != 1) continue;
-                    ESD.Condition cond = esdState.Conditions[0];
-                    if (cond.Evaluator == null || !(AST.DisassembleExpression(cond.Evaluator).TryAsInt(out int val) && val == 1)) continue;
-                    // GetEventFlag f15
-                    cond.Evaluator = AST.AssembleExpression(AST.MakeFunction("f15", defeatFlag));
                     modified = true;
+                    if (newDeathline)
+                    {
+                        if (machine.TryGetValue(0, out ESD.State esdState) && esdState.Conditions.Count == 1)
+                        {
+                            // Godrick and Malenia have WhileCommands, but none in state 0
+                            ESD.Condition cond = esdState.Conditions[0];
+                            if (cond.Evaluator != null && AST.DisassembleExpression(cond.Evaluator).IsInt(1))
+                            {
+                                // f211 GetEntityID() == entityId && f60 not DoesSelfHasSpEffect(60094000)
+                                cond.Evaluator = AST.AssembleExpression(AST.Binop(
+                                    AST.Binop(AST.MakeFunction("f211"), "==", (int)entityId),
+                                    "&&",
+                                    AST.NegateCond(AST.MakeFunction("f60", 60094000))));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!machine.TryGetValue(0, out ESD.State esdState) || esdState.Conditions.Count != 1) continue;
+                        ESD.Condition cond = esdState.Conditions[0];
+                        if (cond.Evaluator == null || !(AST.DisassembleExpression(cond.Evaluator).TryAsInt(out int val) && val == 1)) continue;
+                        // GetEventFlag f15
+                        cond.Evaluator = AST.AssembleExpression(AST.MakeFunction("f15", defeatFlag));
+                    }
                 }
                 if (modified)
                 {

@@ -462,6 +462,25 @@ namespace RandomizerCommon
                 itemOrder = itemOrder.OrderBy(i => i == "shinobiprosthetic" || i == "younglordsbellcharm" ? 0 : 1).ToList();
             }
 
+            if (opt["keycount"])
+            {
+                SortedDictionary<string, int> keyCounts = new();
+                foreach (Node node in nodes.Values)
+                {
+                    int count = node.KeyCount;
+                    if (count == 0 || !ann.Areas.TryGetValue(node.Name, out AreaAnnotation areaAnn)) continue;
+                    AddCount(keyCounts, areaAnn.Text, count);
+                }
+                Console.WriteLine("Number of checks per area:");
+                foreach ((string name, int count) in keyCounts)
+                {
+                    Console.WriteLine($"{name}: {count}");
+                }
+                Console.WriteLine($"Total: {keyCounts.Values.Sum()}");
+                Console.WriteLine();
+                Console.WriteLine($"Item placement order:");
+            }
+
             // Pass for classifying key item locations
             Dictionary<string, string> vanillaAreas = new();
             void setVanillaArea(string item)
@@ -668,6 +687,13 @@ namespace RandomizerCommon
                         .Select(a => $"{a} {weights[a]}")));
                 }
                 string selected = WeightedChoice(random, allowedAreas, a => weights[a]);
+                if (opt["keycount"])
+                {
+                    Dictionary<string, int> keyCounts = allowedAreas.Where(area => preferredAreas.Contains(area)).ToDictionary(
+                        area => area,
+                        area => nodes[area].KeyCount);
+                    Console.WriteLine($"{item} has {keyCounts.Values.Sum()} eligible locations, placed in {selected} with {keyCounts[selected]} locations ({weights[selected]} weight)");
+                }
 
                 if (forcemap.TryGetValue(item, out string forced))
                 {

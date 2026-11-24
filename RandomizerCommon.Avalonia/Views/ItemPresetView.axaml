@@ -210,6 +210,11 @@
                     </views:ItemList.Label>
                 </views:ItemList>
             </WrapPanel>
+            <ContentControl IsVisible="{Binding PlaceType, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:ItemPreset+PlacementType.UpgradeBellBearings}}">
+                <CheckBox IsChecked="{Binding Bbprogression}" DataContext="{Binding Preset}">
+                    <loc:Message Key="ItemPreset_bbprogression" Text="Place Bell Bearings in their vanilla regions" />
+                </CheckBox>
+            </ContentControl>
             <ContentControl IsVisible="{Binding Type, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ItemPanelViewModel+TabType.Placements}}">
                 <StackPanel Spacing="10" DataContext="{Binding Preset}">
                     <views:ItemList DataContext="{Binding NorandomItems}" Items="{Binding Items}" Source="{Binding Source}" IsEditable="{Binding IsEditable}">

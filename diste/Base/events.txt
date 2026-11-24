@@ -78,7 +78,6 @@ EnemyEvents:
     Segments:
     - Type: remove
       Commands:
-      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
       - IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 10000800)
     - Type: end
       Commands:
@@ -89,6 +88,7 @@ EnemyEvents:
       - PlaySE(10000800, SoundType.SFX, 888880000)
       - IfPlayerIsInWorldType(AND_02, WorldType.OwnWorld)
       - IfCharacterDeadalive(AND_02, 10000800, DeathState.Dead, ComparisonType.Equal, 1)
+      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
       - IfConditionGroup(OR_02, PASS, AND_02)
       - IfConditionGroup(MAIN, PASS, OR_02)
       - HandleBossDefeatAndDisplayBanner(10000800, TextBannerType.DemigodFelled)
@@ -761,7 +761,7 @@ EnemyEvents:
     Add:
     - Cmds:
       - SetCharacterDefaultBackreadState(11050850, Enabled)
-      - WaitFixedTimeSeconds(30)
+      - WaitFixedTimeSeconds(60)
       - SetCharacterDefaultBackreadState(11050850, Disabled)
     Removes:
     - SetCharacterDefaultBackreadState(11050850, Disabled)
@@ -786,6 +786,8 @@ EnemyEvents:
   Template:
   - Type: segment
     Entity: 11050850
+    Add:
+    - Cmd: SetCharacterDefaultBackreadState(11050850, Enabled)
     CondIdentity:
     - IfDamageType(OR_11, 11050850, 0, DamageType.Unspecified)
     - IfInoutsideArea(OR_12, InsideOutsideState.Inside, 10000, 11052850, 1)
@@ -2454,7 +2456,6 @@ EnemyEvents:
       Commands:
       - IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 14000800)
       - ForceCharacterDeath(14005810, false)
-      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
     - Type: end
       Commands:
       - IfCharacterHPValue(MAIN, 14000800, ComparisonType.LessOrEqual, 0, ComparisonType.Equal, 1)
@@ -2462,6 +2463,7 @@ EnemyEvents:
       - PlaySE(14008000, SoundType.SFX, 888880000)
       - IfPlayerIsInWorldType(AND_02, WorldType.OwnWorld)
       - IfCharacterDeadalive(AND_02, 14000800, DeathState.Dead, ComparisonType.Equal, 1)
+      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
       - IfConditionGroup(OR_02, PASS, AND_02)
       - IfConditionGroup(MAIN, PASS, OR_02)
       - HandleBossDefeatAndDisplayBanner(14000800, TextBannerType.LegendFelled)
@@ -3995,7 +3997,6 @@ EnemyEvents:
     Segments:
     - Type: remove
       Commands:
-      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
       - IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 20000800)
     - Type: end
       Commands:
@@ -4004,6 +4005,7 @@ EnemyEvents:
       - PlaySE(20008000, SoundType.SFX, 888880000)
       - IfPlayerIsInWorldType(AND_02, WorldType.OwnWorld)
       - IfCharacterDeadalive(AND_02, 20000800, DeathState.Dead, ComparisonType.Equal, 1)
+      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
       - IfConditionGroup(OR_02, PASS, AND_02)
       - IfConditionGroup(MAIN, PASS, OR_02)
       - HandleBossDefeatAndDisplayBanner(20000800, TextBannerType.LegendFelled)
@@ -4113,7 +4115,6 @@ EnemyEvents:
     Segments:
     - Type: remove
       Commands:
-      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
       - IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 20010800)
     - Type: end
       Commands:
@@ -4122,6 +4123,7 @@ EnemyEvents:
       - PlaySE(20018000, SoundType.SFX, 888880000)
       - IfPlayerIsInWorldType(AND_02, WorldType.OwnWorld)
       - IfCharacterDeadalive(AND_02, 20010800, DeathState.Dead, ComparisonType.Equal, 1)
+      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
       - IfConditionGroup(OR_02, PASS, AND_02)
       - IfConditionGroup(MAIN, PASS, OR_02)
       - SetSpEffect(10000, 19684)
@@ -10416,7 +10418,6 @@ EnemyEvents:
     Segments:
     - Type: remove
       Commands:
-      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
       - IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 2044450800)
     - Type: end
       Commands:
@@ -10425,6 +10426,7 @@ EnemyEvents:
       - PlaySE(2044450800, SoundType.SFX, 888880000)
       - IfPlayerIsInWorldType(AND_02, WorldType.OwnWorld)
       - IfCharacterDeadalive(AND_02, 2044450800, DeathState.Dead, ComparisonType.Equal, 1)
+      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
       - IfConditionGroup(OR_02, PASS, AND_02)
       - IfConditionGroup(MAIN, PASS, OR_02)
       - HandleBossDefeatAndDisplayBanner(2044450800, TextBannerType.LegendFelled)
@@ -10495,7 +10497,6 @@ EnemyEvents:
     Segments:
     - Type: remove
       Commands:
-      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
       - IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 2044450800)
     - Type: end
       Commands:
@@ -10504,6 +10505,7 @@ EnemyEvents:
       - PlaySE(2044450800, SoundType.SFX, 888880000)
       - IfPlayerIsInWorldType(AND_02, WorldType.OwnWorld)
       - IfCharacterDeadalive(AND_02, 2044450800, DeathState.Dead, ComparisonType.Equal, 1)
+      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
       - IfConditionGroup(OR_02, PASS, AND_02)
       - IfConditionGroup(MAIN, PASS, OR_02)
       - HandleBossDefeatAndDisplayBanner(2044450800, TextBannerType.LegendFelled)
@@ -10925,7 +10927,6 @@ EnemyEvents:
     Segments:
     - Type: remove
       Commands:
-      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
       - IfEventFlag(OR_02, ON, TargetEventFlagType.EventFlag, 2050480800)
     - Type: end
       MoveOnly:
@@ -10940,6 +10941,7 @@ EnemyEvents:
       - PlaySE(2050480800, SoundType.SFX, 888880000)
       - IfPlayerIsInWorldType(AND_02, WorldType.OwnWorld)
       - IfCharacterDeadalive(AND_02, 2050480800, DeathState.Dead, ComparisonType.Equal, 1)
+      - IfCharacterHasSpEffect(AND_02, 10000, 9646, false, ComparisonType.Equal, 1)
       - IfConditionGroup(OR_02, PASS, AND_02)
       - IfConditionGroup(MAIN, PASS, OR_02)
       - HandleBossDefeatAndDisplayBanner(2050480800, TextBannerType.LegendFelled)
@@ -11327,6 +11329,7 @@ EnemyEvents:
       - SkipIfCharacterHasSpEffect(1, 2051450720, 6959, false, ComparisonType.Equal, 1)
       - ForceCharacterDeath(2051450309, false)
       - WaitFixedTimeSeconds(3)
+      - IfCharacterHasSpEffect(MAIN, 10000, 9646, false, ComparisonType.Equal, 1)
       - HandleBossDefeatAndDisplayBanner(X0_4, TextBannerType.EnemyFelled)
 - ID: 2051452812
   Map: m61_51_45_00
@@ -14039,6 +14042,8 @@ EnemyEvents:
   Map: m20_01_00_00
   Template:
   - Type: loc
+    Filter:
+    - Switch: '!ledatalk'
     Add:
     - Cmd: SetEventFlag(TargetEventFlagType.EventFlag, X16_4, ON)
       Before: start
@@ -14079,6 +14084,8 @@ EnemyEvents:
   Map: m20_01_00_00
   Template:
   - Type: loc
+    Filter:
+    - Switch: '!ledatalk'
     Add:
     - Cmds:
       - SetEventFlag(TargetEventFlagType.EventFlag, 20019255, ON)

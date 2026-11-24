@@ -452,6 +452,16 @@
                                 </CheckBox>
                             </StackPanel>
                         </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox" IsVisible="False">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_newKeyGroup" Text="New key items" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Rykardlock}">
+                                    <loc:Message Key="EldenForm_rykardlock" Text="Add new key item to access Rykard" />
+                                </CheckBox>
+                            </StackPanel>
+                        </HeaderedContentControl>
                     </StackPanel>
                     <StackPanel Grid.Column="2" Grid.Row="0">
                         <HeaderedContentControl Classes="groupbox">
@@ -483,6 +493,22 @@
                                     <loc:Message Key="EldenForm_deathless" Text="Deathless routing" />
                                 </CheckBox>
                                 <loc:Message Classes="moreinfo" Key="EldenForm_deathlessL" Text="Remove Volcano Manor abduction. Otherwise, it may be required, and is possible in enemy randomizer by dying nearby the abductor replacement." />
+                            </StackPanel>
+                        </HeaderedContentControl>
+                        <HeaderedContentControl Classes="groupbox">
+                            <HeaderedContentControl.Header>
+                                <loc:Message Key="EldenForm_endGroup" Text="Win condition" />
+                            </HeaderedContentControl.Header>
+                            <StackPanel>
+                                <RadioButton IsChecked="{Binding End_default}">
+                                    <loc:Message Key="EldenForm_end_default" Text="Allow completing either final boss first" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Enddlc}">
+                                    <loc:Message Key="EldenForm_enddlc" Text="Require base game final boss first" />
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Endbase}">
+                                    <loc:Message Key="EldenForm_endbase" Text="Require DLC final boss first" />
+                                </RadioButton>
                             </StackPanel>
                         </HeaderedContentControl>
                     </StackPanel>

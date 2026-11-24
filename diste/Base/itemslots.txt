@@ -9750,7 +9750,7 @@ Slots:
   Text: Dropped by Elden Beast
   Area: erdtree
   Event: radagon
-  Tags: boss end remembranceboss
+  Tags: boss baseend remembranceboss
 - Key: '200000,0:0000400694::'
   DebugText:
   - Crusade Insignia - lot 106920[event enemy c0000_9000 (Fire Knight Queelign - id 20000700 - [Fire Knight Queelign]) in m20_00_00_00 (Belurat, Tower Settlement), event 90005768 in m20_00_00_00, event enemy c0000_9021 (Fire Knight Queelign - id 21000710 - [Fire Knight Queelign]) in m21_00_00_00 (Shadow Keep - Church District), event 90005768 in m61_47_46_00] Crusade Insignia

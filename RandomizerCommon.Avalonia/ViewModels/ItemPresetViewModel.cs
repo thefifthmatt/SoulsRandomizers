@@ -47,23 +47,17 @@ namespace RandomizerCommon.ViewModels
         [Reactive] private DisplayItemList _remove;
         [Reactive] private DisplayItemList _multiKeyItems;
         [Reactive] private ObservableCollection<DisplayItemShard> _itemShards;
+        [Reactive] private bool _bbprogression = true;
         // Bias is synced with main viewmodel
         [Reactive] private int _bias;
         [Reactive] private string _biasLabel;
         [Reactive] private bool _manualBias;
-        // The exponent for the weight of the most difficult and late location in the game, for placing most items. The lowest weight is 1 and highest weight is 2^spread, and other weights are gradually spaced in between them.
-        // If this is 0, all locations have the same weight. If it's 1, the most desirable location is twice as likely for the most desirable item.
+        // Slider weights
         [Reactive] private double? _itemSpread = 0;
-        // The exponent for the weight of the most difficult and late location in the game, for placing important items.
-        // This makes major key items more likely to be placed at bosses.
-        // It works the same way as item spread, but has a higher max value because major key items are limited to specific areas by logic, and locations within specific areas have closer weights.
         [Reactive] private double? _keyItemSpread = 0;
-        // Every time a major key item is placed, the key item selection weight for areas blocked by the item are multiplied by this value, leading to key item chains.
-        // The weight for areas is also divided by this amount when an item is placed there, cancelling out the chain multiplier and overall spreading out key items.
         [Reactive] private double? _keyItemChain = 1;
-        // Alternative to chain weight which can spread out key items without also chaining them.
-        // The weight for areas is divided by this amount when an item is placed there. This stacks multiplicatively with chain weight if both are present.
         [Reactive] private double? _keyItemRegionSpread = 1;
+        [Reactive] private double? _keyItemRegionLateness = 0; // TODO: Use
         
         public ItemPresetViewModel(ItemRepository repo, ItemPreset preset, IOptionsProvider optionsProvider)
         {
@@ -119,6 +113,7 @@ namespace RandomizerCommon.ViewModels
                 this.WhenAnyValue(x => x.OverallSilo).Select(_ => Unit.Default).Skip(1),
                 this.WhenAnyValue(x => x.KeyItemSilo).Select(_ => Unit.Default).Skip(1),
                 this.WhenAnyValue(x => x.ManualBias).Select(_ => Unit.Default).Skip(1),
+                this.WhenAnyValue(x => x.Bbprogression).Select(_ => Unit.Default).Skip(1),
                 this.WhenAnyValue(x => x.NorandomItems).SelectMany(DisplayItemList.WhenModified),
                 this.WhenAnyValue(x => x.NorandomLocs).SelectMany(DisplayItemList.WhenModified),
                 this.WhenAnyValue(x => x.Remove).SelectMany(DisplayItemList.WhenModified),
@@ -314,6 +309,15 @@ namespace RandomizerCommon.ViewModels
             {
                 Preset.BiasWeights = null;
             }
+            // For now, only two states
+            if (Bbprogression)
+            {
+                Preset.Options = null;
+            }
+            else
+            {
+                Preset.Options = ["nobbprogression"];
+            }
 
             foreach (ItemPanelViewModel panel in Panels)
             {
@@ -451,6 +455,15 @@ namespace RandomizerCommon.ViewModels
                     KeyItemSpread = Preset.BiasWeights.KeyItemSpread;
                     KeyItemChain = Preset.BiasWeights.KeyItemChain;
                     KeyItemRegionSpread = Preset.BiasWeights.KeyItemRegionSpread;
+                }
+                if (Preset.Options != null)
+                {
+                    Bbprogression = !Preset.Options.Contains("nobbprogression");
+                }
+                else
+                {
+                    // Defaults
+                    Bbprogression = true;
                 }
             }
 

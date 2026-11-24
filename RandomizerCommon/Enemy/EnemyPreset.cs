@@ -401,6 +401,7 @@ namespace RandomizerCommon
             ["scalerandom"] = new Text("Randomly scale enemies", "EldenForm_scalerandom"),
             ["scaleup"] = new Text("Only scale enemies up", "EldenForm_scaleup"),
             ["impolite"] = new Text("Impolite enemies", "EldenForm_impolite"),
+            ["ledatalk"] = new Text("Keep Leda's speech in Enir-Ilim", "EldenForm_ledatalk"),
         };
         [Localize]
         public static readonly Dictionary<string, Text> PresetOptionsLabels = new Dictionary<string, Text>

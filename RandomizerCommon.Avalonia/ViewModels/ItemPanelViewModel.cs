@@ -137,6 +137,7 @@ namespace RandomizerCommon.ViewModels
         [Reactive] private Text? _locationLabel;
         [Reactive] private Text? _explainLabel;
         [Reactive] private Text? _locationsWarning;
+        [Reactive] private PlacementType? _placeType;
         [Reactive] private bool _isCustom;  // Can remove, can move, can edit name
         [Reactive] private bool _canAddChildren;
         [Reactive] private bool _canShowMode;
@@ -195,6 +196,7 @@ namespace RandomizerCommon.ViewModels
                     ItemListType exType = meta.GlobalLocs ? ItemListType.NonRegionLocations : ItemListType.AllLocations;
                     Excludes = Preset.ToDisplayList(exType, Placement.Excludes, def?.Excludes, meta.EditLocs);
                 }
+                PlaceType = Placement.Type;
                 IsCustom = Placement.Type == PlacementType.Custom;
                 if (IsCustom)
                 {
@@ -204,7 +206,7 @@ namespace RandomizerCommon.ViewModels
                 {
                     NameText = PlacementTypeNames[Placement.Type];
                 }
-                if (PlacementTypeDesc.TryGetValue(Placement.Type, out Text explain))
+                if (PlacementTypeDesc.TryGetValue(Placement.Type, out Text? explain))
                 {
                     ExplainLabel = explain;
                 }

@@ -30,7 +30,7 @@ namespace RandomizerCommon
             "GameMenu_dlcMissingTarnished");
         [Localize]
         private static readonly Text archipelagoClientMissing = new Text(
-            "Error: er_archipelago.dll is not detected.\nIt must be used for Archipelago or else item pickups won't work.",
+            "Error: er_archipelago.dll is not detected or connected.\nIt must be used for Archipelago or else item pickups won't work.",
             "GameMenu_archipelagoClientMissing");
         [Localize]
         private static readonly Text archipelagoClientError = new Text(
@@ -938,7 +938,7 @@ namespace RandomizerCommon
                 {
                     endRunes = runeOpt;
                 }
-                if (entry.Key == "m19_00_00_00" && endRunes > 0)
+                if (entry.Key == "m19_00_00_00" && endRunes > 0 && false)
                 {
                     int runeFlag = 180 + endRunes;
                     EMEVD.Event fog = emevd.Events.Find(ev => ev.ID == 19002500);

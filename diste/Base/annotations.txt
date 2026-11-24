@@ -282,10 +282,10 @@ ConfigItems:
   - ID: 3:2002950
     EndID: 3:2002960
 - GroupName: healthhints
-  Comment: HintName is "healing item" but too many of these
+  Comment: Leave out Golden Seeds for hints, too many of them
+  HintName: healing items
   NoConfigNames: true
   Items:
-  - Name: Golden Seed
   - Name: Sacred Tear
 - GroupName: regularstones
   NoConfigNames: true
@@ -385,6 +385,13 @@ ConfigItems:
     KeyCount: 2
   - Name: Divine Beast Head
   - Name: Thiollier's Concoction
+- GroupName: extraquesthints
+  HintName: quest items
+  NoConfigNames: true
+  Items:
+  - Name: Shabriri Grape
+  - Name: Seedbed Curse
+  - Name: Deathroot
 - GroupName: paintings
   NoConfigNames: true
   Items:
@@ -799,6 +806,15 @@ Config:
 - Oneof:
   - noimbuedsplit
   - imbuedsplit
+- Oneof:
+  - noendbase
+  - endbase
+- Oneof:
+  - noenddlc
+  - enddlc
+- Oneof:
+  - bbprogression
+  - nobbprogression
 ConfigVars:
   runes_leyndell: runegodrick runerennala
   runes_rold: roldmedallion
@@ -1715,7 +1731,7 @@ Areas:
 - Name: siofra_limited
   Text: Siofra River via Belfries
   Comment: Mottled Necklace
-  Req: liurnia AND ((imbuedsplit AND starcrossedswordkey) OR (noimbuedsplit AND imbued_base))
+  Req: liurnia AND ((imbuedsplit AND eternalswordkey) OR (noimbuedsplit AND imbued_base))
   Maps: m12_02_00_00
 - Name: snowfield_hiddenpath
   Text: Hidden Path to the Haligtree
@@ -1824,7 +1840,7 @@ Areas:
 - Name: erdtree
   Text: Stone Platform
   Comment: runereq is used to actually enforce this, but put these in good positions regardless of requirement or not
-  Req: leyndell2_throne AND godfrey2 AND runegodrick AND runerennala AND runeradahn AND runemorgott AND runerykard AND runemohg AND runemalenia
+  Req: leyndell2_throne AND godfrey2 AND runegodrick AND runerennala AND runeradahn AND runemorgott AND runerykard AND runemohg AND runemalenia AND (noendbase OR enirilim_radahn)
   Maps: m19_00_00_00
 - Name: peninsula_tombswardcatacombs
   Text: Weeping Peninsula - Tombsward Catacombs
@@ -3092,7 +3108,7 @@ Areas:
 - Name: enirilim_radahn
   Text: Enir-Ilim
   FullText: Enir-Ilim - Promised Consort Radahn
-  Req: enirilim_stairs
+  Req: enirilim_stairs AND (noenddlc OR erdtree)
   KeyBase: enirilim
   Maps: m20_01_00_00
   Tags: dlc
@@ -3525,6 +3541,11 @@ NewItems:
   BaseID: 7830361
   Logic:
   - BlockArea: rauhruins_east
+- Name: God-Devouring Invitation
+  Switch: rykardlock
+  BaseID: 7830405
+  Logic:
+  - BlockArea: volcano_rykard
 - Name: Fort of Reprimand Spiritspring Stone
   Comment: Does not impact logic as Ensis is assumed as main path, and Scadu Altus Lock covers the gate as well
   Switch: springsanity dlc
@@ -3708,6 +3729,7 @@ PlacementRestrictions:
   - Before: leyndell
     UseGroups: true
 - Name: Smithing-Stone Miner's Bell Bearing [1]
+  Switch: bbprogression
   Comment: Raya Lucaria Crystal Tunnel
   Unique:
   - Before: ainsel_start precipice
@@ -3716,7 +3738,7 @@ PlacementRestrictions:
     UseGroups: true
 - Name: Smithing-Stone Miner's Bell Bearing [2]
   Comment: Sealed Tunnel
-  Switch: norandomania
+  Switch: all bbprogression norandomania
   Unique:
   - Before: gelmir
     UpTo: altus
@@ -3724,12 +3746,13 @@ PlacementRestrictions:
     UseGroups: true
 - Name: Smithing-Stone Miner's Bell Bearing [2]
   Comment: Because UpTo and After aren't the same region, this could include key item chains, so use Inside instead, plus groups to add events.
-  Switch: randomania
+  Switch: all bbprogression randomania
   Unique:
   - Inside: altus* outskirts* gelmir* volcano*
     UseGroups: true
 - Name: Smithing-Stone Miner's Bell Bearing [3]
   Comment: Zamor Ruins
+  Switch: bbprogression
   Unique:
   - Before: farumazula_prestart
     UpTo: mountaintops
@@ -3737,36 +3760,38 @@ PlacementRestrictions:
     UseGroups: true
 - Name: Smithing-Stone Miner's Bell Bearing [4]
   Comment: Godskin Duo
+  Switch: bbprogression
   Unique:
   - Inside: farumazula* godskinduo maliketh
 - Name: Somberstone Miner's Bell Bearing [1]
   Comment: Sellia Crystal Tunnel
-  Switch: nocrawl
+  Switch: all bbprogression nocrawl
   Unique:
   - UpTo: caelid
     After: caelid
     UseGroups: true
 - Name: Somberstone Miner's Bell Bearing [1]
   Comment: This has no possible items with min options
-  Switch: crawl
+  Switch: all bbprogression crawl
   Unique:
   - Inside: caelid* dragonbarrow*
     UseGroups: true
 - Name: Somberstone Miner's Bell Bearing [2]
   Comment: Altus Tunnel
-  Switch: norandomania
+  Switch: all bbprogression norandomania
   Unique:
   - Before: gelmir
     UpTo: altus
     After: altus
     UseGroups: true
 - Name: Somberstone Miner's Bell Bearing [2]
-  Switch: randomania
+  Switch: all bbprogression randomania
   Unique:
   - Inside: altus* outskirts* gelmir* volcano*
     UseGroups: true
 - Name: Somberstone Miner's Bell Bearing [3]
   Comment: Mountaintops of the Giants - First Church of Marika
+  Switch: bbprogression
   Unique:
   - Before: farumazula_prestart
     UpTo: mountaintops
@@ -3774,26 +3799,29 @@ PlacementRestrictions:
     UseGroups: true
 - Name: Somberstone Miner's Bell Bearing [4]
   Comment: Farum Azula - Tempest-Facing Balcony
+  Switch: bbprogression
   Unique:
   - Inside: farumazula* godskinduo maliketh
 - Name: Somberstone Miner's Bell Bearing [5]
   Comment: Farum Azula - Beside the Great Bridge
+  Switch: bbprogression
   Unique:
   - Inside: farumazula* godskinduo maliketh
 - Name: Glovewort Picker's Bell Bearing [1]
   Comment: Wyndham Catacombs
-  Switch: norandomania
+  Switch: all bbprogression norandomania
   Unique:
   - UpTo: gelmir
     After: gelmir
     UseGroups: true
 - Name: Glovewort Picker's Bell Bearing [1]
-  Switch: randomania
+  Switch: all bbprogression randomania
   Unique:
   - Inside: altus* outskirts* gelmir* volcano*
     UseGroups: true
 - Name: Glovewort Picker's Bell Bearing [2]
   Comment: Giants' Mountaintop Catacombs
+  Switch: bbprogression
   Unique:
   - Before: farumazula_prestart
     UpTo: mountaintops
@@ -3801,24 +3829,28 @@ PlacementRestrictions:
     UseGroups: true
 - Name: Glovewort Picker's Bell Bearing [3]
   Comment: Farum Azula - Wormface Area
+  Switch: bbprogression
   Unique:
   - UpTo: farumazula
     After: farumazula_prestart
     UseGroups: true
 - Name: Ghost-Glovewort Picker's Bell Bearing [1]
   Comment: Nokron Start
+  Switch: bbprogression
   Unique:
   - UpTo: siofra_nokron
     After: siofrabank_nokron
     UseGroups: true
 - Name: Ghost-Glovewort Picker's Bell Bearing [2]
   Comment: Nokstella
+  Switch: bbprogression
   Unique:
   - UpTo: ainsel
     After: ainsel
     UseGroups: true
 - Name: Ghost-Glovewort Picker's Bell Bearing [3]
   Comment: Haligtree - Bug Church
+  Switch: bbprogression
   Unique:
   - UpTo: haligtree_elphael
     After: haligtree

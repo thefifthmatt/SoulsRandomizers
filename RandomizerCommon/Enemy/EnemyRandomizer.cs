@@ -532,8 +532,8 @@ namespace RandomizerCommon
             Dictionary<uint, List<EnemyInfo>> copyTo = new();
             // Map from owner enemy to total healthbars used. If missing, assume this is 1.
             Dictionary<uint, int> totalHealthbars = new();
-            // Map from ESD id to defeat flag
-            Dictionary<int, int> deathLineFlags = new();
+            // Map from ESD id to (defeat flag, entity id)
+            Dictionary<int, (int, uint)> deathLineFlags = new();
             // For later convenience, enemies to edit talk lines for
             List<uint> talkLineEdits = new();
             // Map from RemoveGroup to an acceptable substitute group
@@ -582,7 +582,7 @@ namespace RandomizerCommon
                 if (info.DeathLine > 0 && info.DefeatFlag > 0)
                 {
                     // Slight hack - no line for first phase with never-true flag. (Change this if it's relied upon)
-                    deathLineFlags[info.DeathLine] = info.NextPhase > 0 ? 6000 : info.DefeatFlag;
+                    deathLineFlags.Add(info.DeathLine, info.NextPhase > 0 ? (6000, info.NextPhase) : (info.DefeatFlag, info.ID));
                 }
                 if (info.TalkLine != null)
                 {
@@ -5347,7 +5347,7 @@ namespace RandomizerCommon
                 Random bossBgmRandom = new Random(seed + 420);
                 // A few weird cases use an invalid id but still work in-game (900000 in side tomb -> soldier of godrick)
                 HashSet<int> paramIds = new HashSet<int>(Params["WwiseValueToStrParam_BgmBossChrIdConv"].Rows.Select(r => r.ID));
-                if (opt["bossbgmexplain"])
+                if (opt["explainbossbgm"])
                 {
                     foreach ((int flag, int bgm) in defeatFlagBgmIds)
                     {
@@ -5392,6 +5392,43 @@ namespace RandomizerCommon
                     {
                         break;
                     }
+                }
+            }
+            else
+            {
+                // Keep BGM wherever the boss goes, where possible.
+                // Mapping from model id to BGM id, for the handful of cases with overlap. This can be manually filled in in the future, alongside threat BGM ids
+                Dictionary<string, int> modelBgmIds = new();
+                foreach ((int flag, int bgm) in defeatFlagBgmIds)
+                {
+                    EnemyInfo info = infos[defeatFlagIds[flag]];
+                    modelBgmIds[info.ModelID] = bgm;
+                }
+                // Rely on NextPhase being unique and create a secondary map of the secondary map
+                Dictionary<uint, uint> prevPhase = multiPhase.Where(e => e.Key != e.Value).ToDictionary(e => e.Value, e => e.Key);
+                foreach ((int flag, int bgm) in defeatFlagBgmIds)
+                {
+                    uint target = defeatFlagIds[flag];
+                    // Use first phase where possible to avoid spoilers
+                    uint mappingTarget = prevPhase.GetValueOrDefault(target, target);
+                    if (!mapping.GetSource(mappingTarget, out uint source))
+                    {
+                        continue;
+                    }
+                    EnemyInfo sourceInfo = infos[source];
+                    int sourceFlag = sourceInfo.DefeatFlag;
+                    // Again Malenia has different target flag for BGM
+                    if (sourceFlag == 15000800)
+                    {
+                        sourceFlag = 15002800;
+                    }
+                    if (!defeatFlagBgmIds.TryGetValue(sourceFlag, out int sourceBgm)
+                        && !modelBgmIds.TryGetValue(sourceInfo.ModelID, out sourceBgm))
+                    {
+                        if (opt["explainbossbgm"]) Console.WriteLine($"Missing BGM defeat flag for {ename(source)} ({sourceFlag})");
+                        continue;
+                    }
+                    assignedDefeatFlagBgmIds[flag] = sourceBgm;
                 }
             }
 
@@ -5444,6 +5481,30 @@ namespace RandomizerCommon
             {
                 // The args should still be ints if it comes from Instr, but cast it
                 return args.SelectMany(o => o is int oi ? new[] { (uint)oi } : Array.Empty<uint>()).ToList();
+            }
+            bool checkTemplate(EnemyTemplate t, Instr init)
+            {
+                if (t.Filter == null)
+                {
+                    return true;
+                }
+                List<EnemyFilter> selected = new();
+                foreach (EnemyFilter filter in t.Filter)
+                {
+                    bool eligible = true;
+                    if (filter.Switch != null)
+                    {
+                        if (filter.Switch.StartsWith('!') ? presetOpt(filter.Switch.Substring(1)) : !presetOpt(filter.Switch))
+                        {
+                            eligible = false;
+                        }
+                    }
+                    if (eligible)
+                    {
+                        selected.Add(filter);
+                    }
+                }
+                return selected.Count > 0;
             }
             (int, List<int>) getDupeEntityArgPositions(string spec)
             {
@@ -5515,7 +5576,8 @@ namespace RandomizerCommon
                 // Use full offsets!
                 return targetIndex;
             }
-            int dupeSpEffectBase = 6095000;
+            int deathLineSpEffect = 60094000;
+            int dupeSpEffectBase = 60095000;
             int getDupeSpEffect(int dupeIndex, bool start)
             {
                 if (dupeIndex == -1) throw new Exception($"Internal error: boss start/end speffect ({start}) only available for copies");
@@ -5550,6 +5612,12 @@ namespace RandomizerCommon
                         Instr originalInit = events.Parse(e.Instructions[i], initOld);
                         if (!originalInit.Init) continue;
                         if (!originalInit.TryCalleeValue(templates, entry.Key, out EventKey callee, out EventSpec ev)) continue;
+
+                        if (ev.Template.Any(t => t.Filter != null))
+                        {
+                            // For some features, we may want the list of applicable filters, so this could be moved later
+                            ev.Template = ev.Template.Where(t => checkTemplate(t, originalInit)).ToList();
+                        }
 #if DEBUG
                         ev.Template = ev.Template.Where(t => !t.Type.Contains("xx")).ToList();
 #endif
@@ -6288,6 +6356,10 @@ namespace RandomizerCommon
                                 {
                                     addDefeatFlagLabel(t.DefeatFlagLabel, infos[segTarget].DefeatFlag);
                                 }
+                                // Add death line check condition (could also be done at config level)
+                                bool deathLineTarget = infos[segTarget].DeathLine > 0 && infos[segTarget].NextPhase <= 0;
+                                // Appropriately timing for death line trigger. This doesn't work for onslaught or weird cases like godskin snail (TODO rewrite it)
+                                bool suppressDeathLineSource = deathLineTarget && mapping.GetHelperTargets(segTarget).Count > 0;
 
                                 bool encounterTarget = targetSegments.ContainsKey("presetup");
                                 bool minibossTarget = targetSegments.ContainsKey("quickstart");
@@ -6559,6 +6631,7 @@ namespace RandomizerCommon
                                         }
 
                                         // Main commands, based on dual list earlier
+                                        string firstMainCond = null;
                                         string lastMainCond = null;
                                         foreach (string dual in duals)
                                         {
@@ -6799,6 +6872,7 @@ namespace RandomizerCommon
                                                     && (cmdArgs[0] == "MAIN" || (int.TryParse(cmdArgs[0], out int group) && group == 0)))
                                                 {
                                                     // This doesn't save the index, so make sure this is unique if it has to be
+                                                    firstMainCond ??= newCmd;
                                                     lastMainCond = newCmd;
                                                 }
                                             }
@@ -6931,7 +7005,7 @@ namespace RandomizerCommon
                                             else if (dupeEndIds.Count > 0)
                                             {
                                                 // Special edit for adding flags to end condition
-                                                int mainIndex = editedCmds.IndexOf(lastMainCond);
+                                                int mainIndex = editedCmds.LastIndexOf(lastMainCond);
                                                 if (mainIndex == -1) throw new Exception($"No MAIN condition found in {segment.Type} segment for {data.Source} [{lastMainCond}]");
 
                                                 string waitForTrigger(int f) => useDupeFlag
@@ -6939,6 +7013,38 @@ namespace RandomizerCommon
                                                     : $"IfCharacterHasSpEffect(MAIN, {dupeHolder}, {f}, true, ComparisonType.Equal, 1)";
                                                 editedCmds.InsertRange(mainIndex + 1, dupeEndIds.Select(waitForTrigger));
                                             }
+                                        }
+                                        // Several hacky edits to make here, a few of them complicated in-place
+                                        if (deathLineTarget && segment.Type == "end")
+                                        {
+                                            int mainIndex = editedCmds.LastIndexOf(lastMainCond);
+                                            if (mainIndex == -1) throw new Exception($"No MAIN condition found in {segment.Type} segment for {data.Source} death line");
+                                            if (!editedCmds.Any(c => c.Contains("10000, 9646")))
+                                            {
+                                                // Some pattern matching to avoid very long waits. Ymir is the most complicated case.
+                                                // Ideally this goes before HandleBossDefeatAndDisplayBanner but some segments have multiple of them.
+                                                if (editedCmds.Count >= mainIndex + 1 && editedCmds[mainIndex + 1].StartsWith("WaitFixedTimeSeconds"))
+                                                {
+                                                    mainIndex++;
+                                                }
+                                                editedCmds.Insert(mainIndex + 1, "IfCharacterHasSpEffect(MAIN, 10000, 9646, false, ComparisonType.Equal, 1)");
+                                            }
+                                        }
+                                        if (suppressDeathLineSource && segment.Type == "start")
+                                        {
+                                            editedCmds.Add($"SetSpEffect({segTarget}, {deathLineSpEffect})");
+                                        }
+                                        else if (suppressDeathLineSource && segment.Type == "end")
+                                        {
+                                            int lastMainIndex = editedCmds.LastIndexOf(lastMainCond);
+                                            int mainIndex = editedCmds.IndexOf(firstMainCond);
+                                            if (mainIndex == -1) throw new Exception($"No MAIN condition found in {segment.Type} segment for {data.Source} death line");
+                                            // This goes before the speffect check, so if both are the same (e.g. for endphase), add a delay for the ESD to give 9646
+                                            if (mainIndex == lastMainIndex)
+                                            {
+                                                editedCmds.Insert(mainIndex + 1, "WaitFixedTimeFrames(2)");
+                                            }
+                                            editedCmds.Insert(mainIndex + 1, $"ClearSpEffect({segTarget}, {deathLineSpEffect})");
                                         }
                                         if (game.EldenRing && guardrailConditions)
                                         {
@@ -7476,7 +7582,7 @@ namespace RandomizerCommon
                                     }
                                 }
                             }
-                            if (t.BossBgmArg != null && opt["bossbgm"])
+                            if (t.BossBgmArg != null && assignedDefeatFlagBgmIds.Count > 0)
                             {
                                 string[] parts = t.BossBgmArg.Split(' ');
                                 if (!events.ParseArgSpec(parts[0], out int defeatFlagPos) || !events.ParseArgSpec(parts[1], out int bgmIdPos))
@@ -9683,6 +9789,7 @@ namespace RandomizerCommon
                 {
                     GameEditor.CopyRow(baseSp, game.AddRow("SpEffectParam", dupeSpEffectBase + i));
                 }
+                GameEditor.CopyRow(baseSp, game.AddRow("SpEffectParam", deathLineSpEffect));
             }
 #endif
 

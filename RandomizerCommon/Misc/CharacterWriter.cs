@@ -715,7 +715,7 @@ namespace RandomizerCommon
                 ItemKey key = game.GetBaseWeapon(dataKey);
                 if (!processedKeys.Add(key)) continue;
                 string name = game.Name(key);
-                bool disallowStarting = opt["nerfsh"] && name == "Serpent-Hunter";
+                bool disallowStarting = (opt["nerfsh"] || opt["noautohunt"]) && name == "Serpent-Hunter";
                 PARAM.Row row = game.Item(key);
                 if (row == null)
                 {

@@ -295,7 +295,7 @@ namespace RandomizerCommon
             {
                 opt.SetNonDefaultInt(RandomizerOptions.IntOpt.RunesLeyndell, runesLeyndell);
             }
-            if (apInt("great_runes_required_mountain", out int runesRold))
+            if (apInt("great_runes_required_mountain", out int runesRold) && runesRold != -1)
             {
                 opt.SetNonDefaultInt(RandomizerOptions.IntOpt.RunesRold, runesRold);
             }
@@ -308,6 +308,17 @@ namespace RandomizerCommon
             bool regionlock = !apOpt("world_logic");
             opt["regionlock"] = regionlock;
             opt["altusgate"] = regionlock;
+            if (apInt("final_boss_order", out int finalBossOrder))
+            {
+                if (finalBossOrder == 1)
+                {
+                    opt["enddlc"] = true;
+                }
+                else if (finalBossOrder == 2)
+                {
+                    opt["endbase"] = true;
+                }
+            }
             // This could be a separate AP option, but still better for AP to make the item work as intended
             opt["rustykey"] = true;
             if (apInt("use_master_key", out int useMasterKey))
@@ -366,6 +377,7 @@ namespace RandomizerCommon
                 }
                 else if (dlcStart == 2)
                 {
+                    // Currently not used
                     opt["quickstart"] = true;
                 }
             }
@@ -409,22 +421,17 @@ namespace RandomizerCommon
             opt["sombermode"] = apOpt("reduce_non_somber_upgrade_cost");
             opt["snowfast"] = apOpt("snowfast");
             opt["crashfix"] = true;
-            string helperConfig = null;
             bool autoEquip = apOpt("auto_equip");
             bool autoUpgrade = apOpt("auto_upgrade") || (opt["dlcstart"] && apOpt("dlc_max_level_weapons"));
             bool noHeavyLoad = apOpt("no_equip_load");
-            if (autoEquip || autoUpgrade || noHeavyLoad || opt["traps"])
-            {
-                // The mechanism for this can be finetuned in the future but for now, use RandomizerHelper as-is
-                // and set only the configured fields. The rest will be filled in with defaults.
-                helperConfig = @$"
+            // Use RandomizerHelper as-is and set only the configured fields. The rest will be filled in with defaults.
+            string helperConfig = @$"
 [settings]
 autoUpgrade = {(autoUpgrade ? "true" : "false")}
 noHeavyLoad = {(noHeavyLoad ? "true" : "false")}
 autoEquip = {(autoEquip ? "true" : "false")}
 ";
-            }
-            opt["helper"] = helperConfig != null;
+            opt["helper"] = true;
             opt["me3"] = true;
 
             if (errors.Count > 0)

@@ -2,6 +2,7 @@
 using SoulsIds;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -387,10 +388,14 @@ namespace RandomizerCommon
                 excludedItems.UnionWith(hintItemKeys.Where(i => game.IsEldenDlcItem(i)));
                 hintItemKeys.RemoveWhere(i => game.IsEldenDlcItem(i));
             }
+            if (ann.NewItems.Count > 0)
+            {
+                excludedItems.UnionWith(ann.NewItems.Values.Where(e => e.Enabled).Select(e => e.Key));
+            }
             List<ItemKey> missingItems = ann.ItemGroups["keyitems"].Where(i => !hintItemKeys.Contains(i) && !excludedItems.Contains(i)).ToList();
             if (missingItems.Count > 0)
             {
-                throw new Exception($"Internal error: missing key items {string.Join(", ", missingItems.Select(game.DisplayName))}");
+                throw new Exception($"Internal error: missing key items {string.Join(", ", missingItems.Select(i => game.DisplayName(i)))}");
             }
             if (!perm.IncludedItems.TryGetValue(opt["runereq"] ? "erdtree" : "leyndell2_throne", out HashSet<string> erdtree))
             {
@@ -526,11 +531,10 @@ namespace RandomizerCommon
             }
 
             // Infer some boss locations and flags
-            foreach (KeyValuePair<LocationScope, SlotAnnotation> entry in ann.Slots)
+            foreach ((LocationScope locScope, SlotAnnotation slotAnn) in ann.Slots)
             {
-                SlotAnnotation slotAnn = entry.Value;
                 if (!slotAnn.HasTag("boss") && !slotAnn.HasTag("altboss")) continue;
-                foreach (ItemLocKey key in data.GetBaseItemLocs(entry.Key))
+                foreach (ItemLocKey key in data.GetBaseItemLocs(locScope))
                 {
                     ItemLocation itemLoc = data.GetItemLoc(key);
                     foreach (Location loc in itemLoc.Locs)
@@ -859,7 +863,7 @@ namespace RandomizerCommon
             // 23241004 A red mark was made on the map
             int redMarkMsg = 23241004;
 
-            int kaleBaseNewMsg = 28000050;
+            int kaleBaseNewMsg = 28000080;
             int addMsg(Text text)
             {
                 int msgId = kaleBaseNewMsg++;
@@ -882,6 +886,7 @@ namespace RandomizerCommon
                 game.WriteFMGs = true;
                 FMGArg name = new FMGArg { Category = FMGCategory.Item, Name = "PlaceName", ID = placeNameId, BaseText = "a location" };
                 messages.SetFMGEntry(game, FMGCategory.Menu, "EventTextForTalk", msgId, hintMarkedArea, name);
+                placeNameMarkMsgIds[placeNameId] = msgId;
                 return msgId;
             }
             int talkListMsg = addMsg(hintPurchase);
@@ -1310,6 +1315,7 @@ namespace RandomizerCommon
                 AST.Expr bossFlagArg = AST.MakeArg(3);
                 AST.Expr startClearFlagArg = AST.MakeArg(4);
                 AST.Expr flagCountArg = AST.MakeArg(5);
+                AST.Expr msgArg = AST.MakeArg(6);
                 (long markReturnId, ESD.State markReturnState) = AST.AllocateState(markMachine, ref baseId);
                 AST.CallReturn(markReturnState, 0);
                 int cheap = freehints ? 2 : 200;
@@ -1328,15 +1334,15 @@ namespace RandomizerCommon
                     // Choose between item and area
                     List<ESD.State> itemAlts = OpenOptionMenu(
                         markMachine, markAlts[0], new List<int> { markAreaMsg, markItemMsg, donateNoMsg }, ref baseId);
-                    AST.CallMachine(itemAlts[0], markReturnId, 122, areaMarkerArg, cheap, startClearFlagArg, flagCountArg);
-                    AST.CallMachine(itemAlts[1], markReturnId, 122, itemMarkerArg, expensive, startClearFlagArg, flagCountArg);
+                    AST.CallMachine(itemAlts[0], markReturnId, 122, areaMarkerArg, cheap, startClearFlagArg, flagCountArg, msgArg);
+                    AST.CallMachine(itemAlts[1], markReturnId, 122, itemMarkerArg, expensive, startClearFlagArg, flagCountArg, msgArg);
                     AST.CallState(itemAlts[2], markReturnId);
                     AST.CallState(itemAlts[3], markReturnId);
                     // Show boss location
                     // Except for now, for UI simplicity, just show it as a limited option.
                     List<ESD.State> bossAlts = OpenOptionMenu(
                         markMachine, markAlts[1], new List<int> { markAreaMsg, markItemMsg, donateNoMsg }, ref baseId);
-                    AST.CallMachine(bossAlts[0], markReturnId, 122, bossMarkerArg, cheap, startClearFlagArg, flagCountArg);
+                    AST.CallMachine(bossAlts[0], markReturnId, 122, bossMarkerArg, cheap, startClearFlagArg, flagCountArg, msgArg);
                     ShowDialog(bossAlts[1], markReturnId, markNoBossMsg);
                     AST.CallState(bossAlts[2], markReturnId);
                     AST.CallState(bossAlts[3], markReturnId);
@@ -1345,7 +1351,7 @@ namespace RandomizerCommon
                 {
                     List<ESD.State> areaAlts = OpenOptionMenu(
                         markMachine, markStartState, new List<int> { markAreaMsg, markItemMsg, donateNoMsg }, ref baseId);
-                    AST.CallMachine(areaAlts[0], markReturnId, 122, areaMarkerArg, cheap, startClearFlagArg, flagCountArg);
+                    AST.CallMachine(areaAlts[0], markReturnId, 122, areaMarkerArg, cheap, startClearFlagArg, flagCountArg, msgArg);
                     ShowDialog(areaAlts[1], markReturnId, markNoOptionMsg);
                     AST.CallState(areaAlts[2], markReturnId);
                     AST.CallState(areaAlts[3], markReturnId);
@@ -1587,7 +1593,7 @@ namespace RandomizerCommon
                 {
                     // Non-standard action button for Iji. There is also 1034490711 but radius check still works
                     float radius = entity.EntityID == 1034490700 ? 6 : 2.5f;
-                    commands.Add($"IfEntityInoutsideRadiusOfEntity(MAIN, InsideOutsideState.Inside, 10000, {entity.EntityID}, {radius}, 1)");
+                    commands.Add($"IfEntityInoutsideRadiusOfEntity(MAIN, InsideOutsideState.Inside, 10000, {entity.EntityID}, {radius.ToString(CultureInfo.InvariantCulture)}, 1)");
                 }
                 commands.Add($"SetEventFlag(TargetEventFlagType.EventFlag, {flag}, ON)");
                 events.AddSimpleEvent(game.Emevds[map], markEventBase++, commands);

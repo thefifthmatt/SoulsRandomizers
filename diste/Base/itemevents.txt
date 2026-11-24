@@ -14,7 +14,7 @@ ItemTalks:
   - Type: loc
     EventFlag: 400001
     Machine: x50
-  - Type: item
+  - Type: itemflag
     EventFlag: 400394
     Machine: x52
   - Type: loc
@@ -2101,27 +2101,6 @@ ItemEvents:
   - RotateCharacter(10000, 12052500, 60550, false)
   - WaitFixedTimeSeconds(2)
   - WarpPlayer(61, 46, 40, 0, 2046402020, 120500)
-- ID: 90005792
-  Comment: Remove tarnished pack invasion drops without tarnished opt. Enemy rando could also disable invasion with flag change if it chose to
-  Template:
-  - Type: arg
-    Filter:
-    - Content: '!tarnished'
-      Args:
-        X16_4: 11001952
-    - Content: '!tarnished'
-      Args:
-        X16_4: 1052390500
-    SetArg: X16_4 0
-- ID: 900005590
-  Comment: Disable various tarnished pack item pickups without tarnished opt
-  Template:
-  - Type: arg
-    Filter:
-    - Content: '!tarnished'
-      Args:
-        X0_4: 6953
-    SetArg: X0_4 6000
 - ID: 13003711
   Map: m13_00_00_00
   Comment: Once fighting Alexander, makes Warrior Jar Shard inaccessible. Then if not already gotten, make his innards etc accessible via treasure
@@ -2200,17 +2179,91 @@ ItemEvents:
   DebugInfo:
   - EventFlags 400323
   - m15_00_00_00 (Miquella's Haligtree) - EndIfEventFlag(400323) - Millicent's Prosthesis
+- ID: 16002570
+  Map: m16_00_00_00
+  Comment: Sending gate before Rykard. Manually reset condition groups to have enough
+  Template:
+  - Type: loc
+    Filter:
+    - BlockArea: volcano_rykard
+    Edits:
+    - FilterCond: 10
+      FilterMessage: restart
+      AfterCmds:
+      - IfElapsedSeconds(MAIN, 0)
+      Before: DisplayGenericDialogAndSetEventFlags
+  DebugInit:
+  - m16_00_00_00 InitializeEvent(0, 16002570, 16001570, 16, 16002570, 0, 16002574, 16002572, 16002573)
+  DebugCommands:
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X20_4, OFF)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X24_4, OFF)
+  - DeleteAssetfollowingSFX(X0_4, true)
+  - CreateAssetfollowingSFX(X0_4, 200, 806870)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfMultiplayerState(AND_02, MultiplayerState.MultiplayerPending)
+  - IfConditionGroup(AND_01, FAIL, AND_02)
+  - IfActionButtonInArea(AND_01, 9140, X0_4)
+  - IfMultiplayerState(AND_04, MultiplayerState.MultiplayerPending)
+  - IfMultiplayerState(AND_05, MultiplayerState.Multiplayer)
+  - IfConditionGroup(AND_04, FAIL, AND_05)
+  - IfPlayerIsInWorldType(AND_07, WorldType.OwnWorld)
+  - IfMultiplayerState(AND_07, MultiplayerState.MultiplayerPending)
+  - IfMultiplayerState(AND_07, MultiplayerState.Multiplayer)
+  - IfActionButtonInArea(AND_07, 9140, X0_4)
+  - IfMultiplayerState(OR_02, MultiplayerState.InvasionPending)
+  - IfMultiplayerState(OR_02, MultiplayerState.Invasion)
+  - IfConditionGroup(AND_08, PASS, OR_02)
+  - IfConditionGroup(OR_14, PASS, AND_01)
+  - IfConditionGroup(OR_14, PASS, AND_04)
+  - IfConditionGroup(OR_14, PASS, AND_07)
+  - IfConditionGroup(OR_14, PASS, AND_08)
+  - IfConditionGroup(MAIN, PASS, OR_14)
+  - GotoIfConditionGroupStateCompiled(Label.Label3, PASS, AND_01)
+  - GotoIfConditionGroupStateCompiled(Label.Label3, PASS, AND_07)
+  - DeleteAssetfollowingSFX(X0_4, true)
+  - WaitFixedTimeSeconds(1)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label3()
+  - DisplayGenericDialogAndSetEventFlags(4300, PromptType.YESNO, NumberofOptions.TwoButtons, X0_4, 3, X20_4, X24_4, X24_4)
+  - GotoIfEventFlag(Label.Label6, ON, TargetEventFlagType.EventFlag, X20_4)
+  - WaitFixedTimeSeconds(1)
+  - EndUnconditionally(EventEndType.Restart)
+  - Label6()
+  - IfMultiplayerState(AND_10, MultiplayerState.MultiplayerPending)
+  - IfMultiplayerState(AND_10, MultiplayerState.Multiplayer)
+  - IfConditionGroup(OR_15, PASS, AND_10)
+  - IfMultiplayerState(AND_11, MultiplayerState.MultiplayerPending)
+  - IfConditionGroup(AND_12, FAIL, AND_11)
+  - IfMultiplayerState(AND_13, MultiplayerState.Multiplayer)
+  - IfConditionGroup(AND_12, FAIL, AND_13)
+  - IfConditionGroup(OR_15, PASS, AND_12)
+  - SkipIfConditionGroupStateUncompiled(1, PASS, OR_15)
+  - EndUnconditionally(EventEndType.Restart)
+  - IfMultiplayerState(OR_04, MultiplayerState.InvasionPending)
+  - IfMultiplayerState(OR_04, MultiplayerState.Invasion)
+  - EndIfConditionGroupStateUncompiled(EventEndType.Restart, PASS, OR_04)
+  - RotateCharacter(10000, X0_4, -1, true)
+  - ForceAnimationPlayback(10000, 60490, false, false, false, ComparisonType.Equal, 1)
+  - WaitFixedTimeSeconds(3)
+  - WarpCharacterAndCopyFloorWithFadeout(10000, TargetEntityType.Area, X8_4, 10, 10000, false, true)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 16002578, ON)
+  - EndUnconditionally(EventEndType.Restart)
+  - SkipUnconditionally(1)
+  - SetEventFlag(TargetEventFlagType.EventFlag, X16_4, OFF)
+  - SkipUnconditionally(1)
+  - WarpPlayer(X4_1, X5_1, X6_1, X7_1, X8_4, X12_4)
 - ID: 16002690
   Map: m16_00_00_00
   Comment: Unsets Serpent-Hunter get flag when showing the treasure if allowed and disable treasure otherwise. This is determined by 16002696, set near fog gate only if Rykard alive and SH not in possession. When randomizing it, these conditions must be removed, so use flag for location check instead. Ideally only do this when randomized but it can be cheated in if discarded for some reason.
   Template:
   - Type: loc
-    Replaces:
-    - From: IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, X0_4)
-      To: IfEventFlag(AND_01, OFF, TargetEventFlagType.EventFlag, 16007690)
     Removes:
     - EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 16000800)
     - SetEventFlag(TargetEventFlagType.EventFlag, 16007690, OFF)
+    Replaces:
+    - From: IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, X0_4)
+      To: IfEventFlag(AND_01, OFF, TargetEventFlagType.EventFlag, 16007690)
   FlagTemplate:
   - Type: loc
     EventFlag: 16007690
@@ -2222,11 +2275,11 @@ ItemEvents:
   Comment: To perform the actual SH acquisition, use same condition as prior event
   Template:
   - Type: loc
+    Removes:
+    - IfEventFlag(OR_15, ON, TargetEventFlagType.EventFlag, 16000800)
     Replaces:
     - From: IfEventFlag(AND_02, ON, TargetEventFlagType.EventFlag, 16002696)
       To: IfEventFlag(AND_02, OFF, TargetEventFlagType.EventFlag, 16007690)
-    Removes:
-    - IfEventFlag(OR_15, ON, TargetEventFlagType.EventFlag, 16000800)
   FlagTemplate:
   - Type: loc
     EventFlag: 16007690
@@ -2301,6 +2354,74 @@ ItemEvents:
   - EventFlags 60000
   - m18_00_00_00 (Stranded Graveyard) - IfEventFlag(60000) - Flask of Crimson Tears, Flask of Cerulean Tears
   - m18_00_00_00 (Stranded Graveyard) - SetEventFlag(60000) - Flask of Crimson Tears, Flask of Cerulean Tears
+- ID: 19002500
+  Map: m19_00_00_00
+  Comment: Erdtree interaction, used for adding gate
+  Template:
+  - Type: loc
+    Filter:
+    - Gate: erdtree
+    Edits:
+    - FilterCond: 10
+      AfterCmds:
+      - GotoIfConditionGroupStateUncompiled(Label.Label19, PASS, AND_10)
+      - IfActionButtonInArea(OR_05, 9320, 19001500)
+      - IfConditionGroup(OR_05, PASS, AND_10)
+      - IfConditionGroup(MAIN, PASS, OR_05)
+      - EndIfConditionGroupStateCompiled(EventEndType.Restart, PASS, AND_10)
+      After: Label1()
+    - FilterMessage: complex
+      AfterCmds:
+      - EndUnconditionally(EventEndType.Restart)
+      - Label19()
+      After: Label1()
+    CondOrder: +-5
+  DebugCommands:
+  - GotoIfEventFlag(Label.Label0, OFF, TargetEventFlagType.EventFlag, 19000800)
+  - CreateAssetfollowingSFX(19001500, 101, 1530)
+  - EndUnconditionally(EventEndType.End)
+  - Label0()
+  - GotoIfPlayerIsInWorldType(Label.Label1, WorldType.OwnWorld)
+  - GotoIfEventFlag(Label.Label1, OFF, TargetEventFlagType.EventFlag, 19002801)
+  - WarpCharacterAndCopyFloorWithFadeout(20000, TargetEntityType.Area, 19002811, -1, 20000, false, true)
+  - EndUnconditionally(EventEndType.End)
+  - Label1()
+  - CreateAssetfollowingSFX(19001500, 101, 1530)
+  - SkipIfPlayerIsInWorldType(1, WorldType.OwnWorld)
+  - GotoIfEventFlag(Label.Label2, ON, TargetEventFlagType.EventFlag, 19002500)
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfEventFlag(AND_01, OFF, TargetEventFlagType.EventFlag, 19000800)
+  - IfActionButtonInArea(AND_01, 9501, 19001500)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - SkipIfPlayerIsInWorldType(1, WorldType.OtherWorld)
+  - SendInvadingPhantomsHome(0)
+  - IfCharacterInvadeType(OR_09, 20000, 2, ComparisonType.Equal, 1)
+  - IfCharacterInvadeType(OR_09, 20000, 3, ComparisonType.Equal, 1)
+  - IfCharacterInvadeType(OR_09, 20000, 4, ComparisonType.Equal, 1)
+  - IfCharacterInvadeType(OR_09, 20000, 5, ComparisonType.Equal, 1)
+  - IfCharacterInvadeType(OR_09, 20000, 7, ComparisonType.Equal, 1)
+  - EndIfConditionGroupStateUncompiled(EventEndType.End, PASS, OR_09)
+  - ForceAnimationPlayback(10000, 67080, false, false, false, ComparisonType.Equal, 1)
+  - SkipIfPlayerIsInWorldType(1, WorldType.OwnWorld)
+  - GotoIfEventFlag(Label.Label2, ON, TargetEventFlagType.EventFlag, 19002500)
+  - WaitFixedTimeSeconds(2.4)
+  - CreateAssetfollowingSFX(19001501, 101, 1531)
+  - SkipIfPlayerIsInWorldType(1, WorldType.OwnWorld)
+  - GotoIfEventFlag(Label.Label2, ON, TargetEventFlagType.EventFlag, 19002500)
+  - WaitFixedTimeSeconds(3.6)
+  - SetNetworkconnectedEventFlag(TargetEventFlagType.EventFlag, 19002500, ON)
+  - Label2()
+  - SetEventFlag(TargetEventFlagType.EventFlag, 9021, ON)
+  - SkipIfPlayerIsInWorldType(2, WorldType.OtherWorld)
+  - PlayCutsceneToPlayerAndWarp(19000040, CutscenePlayMode.SkippableWithWhiteFadeOut, 19002810, 19000000, 10000, 19000, false)
+  - SkipUnconditionally(1)
+  - PlayCutsceneToPlayerAndWarp(19000040, CutscenePlayMode.SkippableWithWhiteFadeOut, 19002811, 19000000, 10000, 19000, false)
+  - WaitFixedTimeRealFrames(1)
+  - SkipIfEventFlag(1, ON, TargetEventFlagType.EventFlag, 119)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 119, ON)
+  - DeleteAssetfollowingSFX(19001501, false)
+  - SkipIfPlayerIsInWorldType(1, WorldType.OtherWorld)
+  - SetCameraAngle(13.06, -63.07)
 - ID: 20000732
   Map: m20_00_00_00
   Comment: Treasure SFX and award on action button for Grandam
@@ -3394,6 +3515,19 @@ ItemEvents:
   - m61_49_46_00 (Scadu Altus - Poison Swamp, North Bear Woods, Castle Watering Hole Southwest) - IfEventFlag(X8_4 = 400751) - Pearlescent Scale
   - m61_50_47_00 (Scadu Altus - Castle Watering Hole Northeast, North Ruins of Unte, Above Shadow Keep East Tunnel) - EndIfEventFlag(X8_4 = 400752) - Dewgem
   - m61_50_47_00 (Scadu Altus - Castle Watering Hole Northeast, North Ruins of Unte, Above Shadow Keep East Tunnel) - IfEventFlag(X8_4 = 400752) - Dewgem
+- ID: 90005792
+  Map: common_func
+  Comment: Remove tarnished pack invasion drops without tarnished opt. Enemy rando could also disable invasion with flag change if it chose to
+  Template:
+  - Type: arg
+    Filter:
+    - Content: '!tarnished'
+      Args:
+        X16_4: 11001952
+    - Content: '!tarnished'
+      Args:
+        X16_4: 1052390500
+    SetArg: X16_4 0
 - ID: 90005860
   Map: common_func
   Comment: Manual addition here, for item lot award event
@@ -3442,6 +3576,16 @@ ItemEvents:
   - m61_49_44_00 (Scadu Altus - Moorth Ruins, Bonny Village West Entrance) - IfEventFlag(X0_4 = 580600) - Message from Leda
   - m61_50_43_00 (Scadu Altus - Scaduview Cross, Bonny Gaol Entrance, Path to Village of Flies; Abyssal Woods - Alcove North of Central Woods) - EndIfEventFlag(X0_4 = 580600) - Message from Leda
   - m61_50_43_00 (Scadu Altus - Scaduview Cross, Bonny Gaol Entrance, Path to Village of Flies; Abyssal Woods - Alcove North of Central Woods) - IfEventFlag(X0_4 = 580600) - Message from Leda
+- ID: 900005590
+  Map: common_func
+  Comment: Disable various tarnished pack item pickups without tarnished opt
+  Template:
+  - Type: arg
+    Filter:
+    - Content: '!tarnished'
+      Args:
+        X0_4: 6953
+    SetArg: X0_4 6000
 - ID: 1033462611
   Map: m60_33_46_00
   Comment: Using Imbued Sword Key (Farum Azula)
@@ -3534,8 +3678,12 @@ ItemEvents:
   - m60_34_50_00 (Liurnia of the Lakes - Ranni's Rise, Seluvis's Rise) - IfEventFlag(120840) - Carian Slicer
 - ID: 1035422150
   Map: m60_35_42_00
-  Comment: Giving Ranni the Dark Moon Ring
+  Comment: Giving Ranni the Dark Moon Ring. Also require getting Carian Inverted Statue replacement to avoid locking out
   Template:
+  - Type: loc
+    Add:
+    - Cmd: IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 1034509421)
+      Before: IfActionButtonInArea(AND_01, 9630, 1035421152)
   - Type: loc
     Filter:
     - Gate: darkmoonring
@@ -3543,6 +3691,27 @@ ItemEvents:
     - RemoveItemFromPlayer
   DebugInfo:
   - m60_35_42_00 (Liurnia of the Lakes - West Albinauric Village; Moonlight Altar - Cathedral of Manus Celes) - RemoveItemFromPlayer(8121) - Dark Moon Ring
+- ID: 1035422151
+  Map: m60_35_42_00
+  Comment: Cosmetic for Ranni interaction
+  Template:
+  - Type: loc
+    Add:
+    - Cmds:
+      - SkipIfEventFlag(3, ON, TargetEventFlagType.EventFlag, 1034509421)
+      - ChangeAssetEnableState(1035421151, Disabled)
+      - IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, 1034509421)
+      - ChangeAssetEnableState(1035421151, Enabled)
+      After: Label0()
+  DebugCommands:
+  - GotoIfEventFlag(Label.Label0, OFF, TargetEventFlagType.EventFlag, 1035420150)
+  - ChangeAssetEnableState(1035421151, Disabled)
+  - EndUnconditionally(EventEndType.End)
+  - Label0()
+  - IfPlayerIsInWorldType(AND_01, WorldType.OwnWorld)
+  - IfEventFlag(MAIN, ON, TargetEventFlagType.EventFlag, 1035420150)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - ChangeAssetEnableState(1035421151, Disabled)
 - ID: 1035452500
   Map: m60_35_45_00
   Comment: Picking up the map, it says "You found a simple map. Check in inventory."
@@ -3813,6 +3982,48 @@ ItemEvents:
   - EventFlags 1046367500 1051397900
   - m60_38_50_00 (Liurnia of the Lakes - Ravine-Veiled Village; Bellum Highway - Grand Lift of Dectus; Altus Plateau - Altus Plateau; Ruin-Strewn Precipice Entrance) - IfEventFlag(1046367500) - Dectus Medallion (Left)
   - m60_38_50_00 (Liurnia of the Lakes - Ravine-Veiled Village; Bellum Highway - Grand Lift of Dectus; Altus Plateau - Altus Plateau; Ruin-Strewn Precipice Entrance) - IfEventFlag(1051397900) - Dectus Medallion (Right)
+- ID: 1038503703
+  Map: m60_38_50_00
+  Comment: Rya warp
+  Template:
+  - Type: loc
+    Filter:
+    - BlockArea: volcano
+    Removes:
+    - SetEventFlag(TargetEventFlagType.EventFlag, 16008540, ON)
+  DebugCommands:
+  - WaitFixedTimeFrames(1)
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - EndIfEventFlag(EventEndType.End, OFF, TargetEventFlagType.EventFlag, 3426)
+  - EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 1038519207)
+  - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 1038519205)
+  - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 1038509205)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 16008540, ON)
+  - SendAllPhantomsHome(0)
+  - WarpPlayer(16, 0, 0, 0, 16002701, 0)
+  - EndUnconditionally(EventEndType.End)
+- ID: 1038513703
+  Map: m60_38_51_00
+  Comment: Rya warp
+  Template:
+  - Type: loc
+    Filter:
+    - BlockArea: volcano
+    Removes:
+    - SetEventFlag(TargetEventFlagType.EventFlag, 16008540, ON)
+  DebugCommands:
+  - WaitFixedTimeFrames(1)
+  - EndIfPlayerIsInWorldType(EventEndType.End, WorldType.OtherWorld)
+  - EndIfEventFlag(EventEndType.End, OFF, TargetEventFlagType.EventFlag, 3426)
+  - EndIfEventFlag(EventEndType.End, ON, TargetEventFlagType.EventFlag, 1038509205)
+  - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 1038519205)
+  - IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, 1038519207)
+  - IfConditionGroup(MAIN, PASS, AND_01)
+  - SetEventFlag(TargetEventFlagType.EventFlag, 16008540, ON)
+  - SendAllPhantomsHome(0)
+  - WarpPlayer(16, 0, 0, 0, 16002701, 0)
+  - EndUnconditionally(EventEndType.End)
 - ID: 1039393701
   Map: m60_39_39_00
   Comment: When you buy all 3 sorcereries from Thops
@@ -3886,7 +4097,7 @@ ItemEvents:
   - 'm60_42_51_00 (Capital Outskirts - Outer Wall Phantom Tree) - IfEventFlag(X8_4 = 62031) - Map: Leyndell, Royal Capital'
 - ID: 1043362510
   Map: m60_43_36_00
-  Comment: Agheel Lake to Sellia Crystal Tunnel
+  Comment: Agheel Lake to Sellia Crystal Tunnel. Depends on FilterMessage adding 1 command exactly
   Template:
   - Type: copyloc
     Filter:
@@ -4498,6 +4709,10 @@ LogicFlags:
   Index: 32
 - Name: liurnia
   Index: 33
+- Name: erdtree
+  Index: 34
+- Name: enirilim_radahn
+  Index: 35
 LogicGates:
 - Name: altus
   Block:
@@ -4721,6 +4936,11 @@ LogicGates:
 - BlockArea: leyndell2
   Messages:
   - m13_00_00_00 223.097 -32.700 363.319 75.239 13000800
+- Name: enirilim_radahn
+  Block:
+  - m20_01_00_00 AEG410_901 AEG410_338_4000 -205.939 297.455 -183.685 -61.701
+  - m20_01_00_00 AEG410_905 AEG410_338_4000 -213.932 306.452 -181.432 13.218
+  - interact m20_01_00_00 AEG410_338_4000 -202.365 298.990 -185.673 118.299
 - Name: belurat
   ObjAct: m20_00_00_00 AEG417_013_0500
 - Name: volcano

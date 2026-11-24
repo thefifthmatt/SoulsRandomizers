@@ -44,7 +44,7 @@ namespace RandomizerCommon
             new() { Name = "weaponLevelsBelowMax", Parent = "autoUpgradeWeapons", Type = OptionType.Int, Max = 25, Text = "Nerf auto-upgrade by reducing weapons' levels by a fixed amount. If set to 3, an auto-upgrade level of +20 (+8 somber) gives a +17 weapon (+7 somber)" },
             new() { Name = "weaponLevelRange", Parent = "autoUpgradeWeapons", Type = OptionType.Int, Max = 25, Text = "Nerf auto-upgrade by reducing weapons' levels by a random amount. If set to 3, an auto-upgrade level of +10 (+4 somber) gives a +8 +9 or +10 weapon (+3 or +4 somber)" },
             new() { Name = "autoUpgradeSpiritAshes", Parent = "autoUpgrade", Text = "Auto-upgrade spirit ashes to the highest level achieved so far" },
-            new() { Name = "autoUpgradeEquipped", Parent = "autoUpgrade", Default = false, Text = "Auto-upgrade items in equipment slots to match the highest level achieved so far" },
+            new() { Name = "autoUpgradeEquipped", Parent = "autoUpgrade", Text = "Auto-upgrade items in equipment slots to match the highest level achieved so far" },
             new() { Name = "autoUpgradeDropped", Parent = "autoUpgrade", Default = false, Text = "Auto-upgrade items which are left on the ground and picked up" },
 
             new() { Name = "autoEquip", Text = "Auto-equip", Default = false },

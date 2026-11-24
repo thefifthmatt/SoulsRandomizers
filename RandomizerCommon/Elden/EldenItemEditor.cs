@@ -63,6 +63,12 @@ namespace RandomizerCommon
         [Localize]
         private static readonly Text ashenGraceText = new Text("{0} (Ashen)", "GameMenu_ashenGrace");
 
+        private record FilterMessage(string Text = null, FMGArg Msg = null, int SkipFlag = 0)
+        {
+            public static List<FilterMessage> ForTextList(string text) => new() { new FilterMessage(text) };
+            public static FilterMessage ForText(string text) => new FilterMessage(text);
+        }
+
         // (event flag, location) which should be mapped in param data
         private SortedSet<(uint, long)> trackedLotLocations = new();
         private SortedSet<(uint, long)> trackedShopLocations = new();
@@ -323,7 +329,12 @@ namespace RandomizerCommon
                     row["maxNum"].Value = (short)999;
                     row["maxRepositoryNum"].Value = (short)999;
                 }
-                if (switchPrefix("stonesword"))
+                if (switchPrefix("rykardlock") || switchPrefix("bosslock"))
+                {
+                    // 3065 for Rykard specifically
+                    row["iconId"].Value = 3107;
+                }
+                else if (switchPrefix("stonesword"))
                 {
                     row["iconId"].Value = altIcons ? 2601 : 228;
                 }
@@ -675,7 +686,14 @@ namespace RandomizerCommon
             {
                 blockGates.Add("liurnia");
             }
-            if (opt.GetInt(RandomizerOptions.IntOpt.RunesRold, out int roldRunes))
+            if (opt["enddlc"])
+            {
+                // Should this and other gates be combined into BlockArea at logic level? It has non-item conditions, however
+                blockGates.Add("enirilim_radahn");
+                // This will fail in logic
+                if (opt["endbase"]) throw new Exception("Cannot both require base game final boss to access DLC final boss and vice versa");
+            }
+            if (opt.GetInt(RandomizerOptions.IntOpt.RunesRold, out _))
             {
                 // Reuse item name routines
                 if (shardItems.ContainsKey("roldmedallion")) throw new Exception($"Cannot make Rold Medallion Shard if entering Mountaintops has Great Runes requirement");
@@ -683,9 +701,13 @@ namespace RandomizerCommon
                 itemGates[rold] = "roldmedallion";
                 blockGates.Add("roldmedallion");
             }
-            if (opt.GetNonDefaultInt(RandomizerOptions.IntOpt.RunesLeyndell, out int leyndellRunes))
+            if (opt.GetNonDefaultInt(RandomizerOptions.IntOpt.RunesLeyndell, out _))
             {
                 blockGates.Add("leyndell");
+            }
+            if (opt.GetNonDefaultInt(RandomizerOptions.IntOpt.RunesEnd, out _) || opt["endbase"])
+            {
+                blockGates.Add("erdtree");
             }
             // BlockAreas which double as gates to have event flags
             foreach (AreaAnnotation areaAnn in ann.Areas.Values)
@@ -710,6 +732,26 @@ namespace RandomizerCommon
 
             // Lazily initialized flags, to create events as needed
             Dictionary<string, int> gateFlags = new();
+            List<string> getFlagSyncEvent(IList<int> reqFlags, int targetFlag)
+            {
+                List<string> cmds = new();
+                if (reqFlags.Count > 0)
+                {
+                    foreach (int flag in reqFlags)
+                    {
+                        cmds.Add($"IfEventFlag(AND_10, ON, TargetEventFlagType.EventFlag, {flag})");
+                    }
+                    cmds.Add($"SkipIfConditionGroupStateUncompiled(1, PASS, AND_10)");
+                    cmds.Add($"SetEventFlag(TargetEventFlagType.EventFlag, {targetFlag}, OFF)");
+                    foreach (int flag in reqFlags)
+                    {
+                        cmds.Add($"IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, {flag})");
+                    }
+                    cmds.Add("IfConditionGroup(MAIN, PASS, AND_01)");
+                }
+                cmds.Add($"SetEventFlag(TargetEventFlagType.EventFlag, {targetFlag}, ON)");
+                return cmds;
+            }
             int gateBase = GameData.EldenRingBase + 200;
             // Check enabledGates before calling
             int getGateFlag(string gate)
@@ -793,7 +835,35 @@ namespace RandomizerCommon
                     {
                         targetFlag = 180 + opt.GetIntOrDefault(RandomizerOptions.IntOpt.RunesLeyndell);
                     }
-                    else if (gate == "altus" && logicFlagIndices.TryGetValue(gate, out int index))
+                    else if (gate == "erdtree" && logicFlagIndices.TryGetValue(gate, out int index))
+                    {
+                        List<int> erdtreeFlags = new();
+                        if (opt.GetNonDefaultInt(RandomizerOptions.IntOpt.RunesEnd, out int runesEnd))
+                        {
+                            erdtreeFlags.Add(180 + runesEnd);
+                        }
+                        if (opt["endbase"])
+                        {
+                            erdtreeFlags.Add(20010800);
+                        }
+                        if (erdtreeFlags.Count == 1)
+                        {
+                            targetFlag = erdtreeFlags[0];
+                        }
+                        else
+                        {
+                            targetFlag = gateBase + index;
+                            newEvent = events.GetSimpleEvent(
+                                gateEventBase + index,
+                                getFlagSyncEvent(erdtreeFlags, targetFlag),
+                                EMEVD.Event.RestBehaviorType.Restart);
+                        }
+                    }
+                    else if (gate == "enirilim_radahn" && opt["enddlc"])
+                    {
+                        targetFlag = 19000800;
+                    }
+                    else if (gate == "altus" && logicFlagIndices.TryGetValue(gate, out index))
                     {
                         targetFlag = gateBase + index;
                         // This is a tricky one, it requires both Dectus halves. This is effectively mutual recursion with getItemUseFlag
@@ -816,17 +886,7 @@ namespace RandomizerCommon
                         int right = gateOrItemFlag("dectusmedallionright");
                         newEvent = events.GetSimpleEvent(
                             gateEventBase + index,
-                            new[]
-                            {
-                                $"IfEventFlag(AND_10, ON, TargetEventFlagType.EventFlag, {left})",
-                                $"IfEventFlag(AND_10, ON, TargetEventFlagType.EventFlag, {right})",
-                                $"SkipIfConditionGroupStateUncompiled(1, PASS, AND_10)",
-                                $"SetEventFlag(TargetEventFlagType.EventFlag, {targetFlag}, OFF)",
-                                $"IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, {left})",
-                                $"IfEventFlag(AND_01, ON, TargetEventFlagType.EventFlag, {right})",
-                                "IfConditionGroup(MAIN, PASS, AND_01)",
-                                $"SetEventFlag(TargetEventFlagType.EventFlag, {targetFlag}, ON)",
-                            },
+                            getFlagSyncEvent(new[] { left, right }, targetFlag),
                             EMEVD.Event.RestBehaviorType.Restart);
                     }
                     else if (gate == "roldmedallion")
@@ -1011,7 +1071,7 @@ namespace RandomizerCommon
                 usedConds?.Add(startCond);
                 recAreaGate(blockExpr, startCond);
             }
-
+            // These messages are used at interaction points and on the ground
             bool getTextForAreaBlock(string area, out string text)
             {
                 text = null;
@@ -1033,19 +1093,61 @@ namespace RandomizerCommon
                 }
                 return true;
             }
-            bool getTextForGateBlock(string gate, out string text)
+            // These messages are only used at interaction points
+            bool getTextForGateBlock(string gate, out List<FilterMessage> messages)
             {
-                // This could be combined into above function if needed
-                text = null;
+                // This could be combined into above function if needed, or split into string vs List<FilterMessage> variants
+                messages = null;
+                if (gate == "enirilim_radahn")
+                {
+                    messages = FilterMessage.ForTextList("You cannot proceed without defeating a rival god");
+                    return true;
+                }
+                else if (gate == "erdtree")
+                {
+                    messages = new();
+                    // Some repetition with getGateFlag
+                    if (opt["endbase"])
+                    {
+                        messages.Add(new FilterMessage(Text: "You cannot proceed without defeating a rival god", SkipFlag: 20010800));
+                    }
+                    if (opt.GetNonDefaultInt(RandomizerOptions.IntOpt.RunesEnd, out _))
+                    {
+                        messages.Add(new FilterMessage(Msg: FMGArg.Menu("EventTextForMap", 20003, "You cannot proceed without more Great Runes")));
+                    }
+                    return true;
+                }
                 if (!gateItems.TryGetValue(gate, out ItemKey item))
                 {
                     return false;
                 }
                 // Real key items use <?gdsparam@8000?>
-                text = ann.MultiItems.ContainsKey(item)
+                string text = ann.MultiItems.ContainsKey(item)
                     ? $"Not enough {game.Name(item)}"
                     : $"No {game.Name(item)} in inventory";
+                messages = FilterMessage.ForTextList(text);
                 return true;
+            }
+            List<string> getFilterMessageInstructions(List<FilterMessage> filterMsgs)
+            {
+                List<string> reverseCmds = new();
+                foreach (FilterMessage filterMsg in Enumerable.Reverse(filterMsgs))
+                {
+                    int afterCount = reverseCmds.Count;
+                    if (afterCount > 0)
+                    {
+                        reverseCmds.Add($"SkipUnconditionally({afterCount})");
+                    }
+                    int messageId = baseMapMsgId++;
+                    messages.SetFMGEntry(game, FMGCategory.Menu, "EventTextForMap", messageId, IdentityMessage, (object)filterMsg.Text ?? filterMsg.Msg);
+                    reverseCmds.Add($"DisplayGenericDialog({messageId}, PromptType.OKCANCEL, NumberofOptions.NoButtons, 0, 5)");
+                    if (filterMsg.SkipFlag > 0)
+                    {
+                        reverseCmds.Add($"SkipIfEventFlag({(afterCount > 0 ? 2 : 1)}, ON, TargetEventFlagType.EventFlag, {filterMsg.SkipFlag})");
+                    }
+                }
+                reverseCmds.Reverse();
+                return reverseCmds;
             }
 
             foreach (KeyValuePair<string, EMEVD> entry in game.Emevds)
@@ -1373,33 +1475,33 @@ namespace RandomizerCommon
                                             throw new Exception($"Internal error: no unique filter to show required item message for {callee}");
                                         }
                                         TemplateFilter filter = filters[0];
-                                        string filterMsg;
-                                        if (filter.BlockArea != null && getTextForAreaBlock(filter.BlockArea, out string blockMsg))
+                                        List<FilterMessage> filterMsgs;
+                                        if (filter.Gate != null && getTextForGateBlock(filter.Gate, out filterMsgs))
                                         {
-                                            filterMsg = blockMsg;
+                                            // Do nothing
                                         }
-                                        else if (filter.Gate != null && getTextForGateBlock(filter.Gate, out blockMsg))
+                                        else if (filter.BlockArea != null && getTextForAreaBlock(filter.BlockArea, out string blockMsg))
                                         {
-                                            filterMsg = blockMsg;
+                                            filterMsgs = FilterMessage.ForTextList(blockMsg);
                                         }
                                         else throw new Exception($"Internal error: no filter to show required item message for {callee}");
-                                        int messageId = baseMapMsgId++;
-                                        messages.SetFMGEntry(game, FMGCategory.Menu, "EventTextForMap", messageId, IdentityMessage, blockMsg);
-                                        string msgCommand = $"DisplayGenericDialog({messageId}, PromptType.OKCANCEL, NumberofOptions.NoButtons, 0, 5)";
+                                        List<string> msgCmds = getFilterMessageInstructions(filterMsgs);
                                         if (edit.FilterMessage == "basic")
                                         {
-                                            newCmds.Add(msgCommand);
+                                            if (msgCmds.Count != 1) throw new Exception($"Internal error: incorrect command count for {callee} FilterMessage: [{string.Join("; ", msgCmds)}]");
+                                            newCmds.AddRange(msgCmds);
+                                        }
+                                        else if (edit.FilterMessage == "complex")
+                                        {
+                                            newCmds.AddRange(msgCmds);
                                         }
                                         else if (edit.FilterMessage == "restart")
                                         {
                                             if (edit.FilterCond == 0) throw new Exception($"Internal error: FilterMessage requires FilterCond in {callee}");
-                                            newCmds.AddRange(new[]
-                                            {
-                                                $"SkipIfConditionGroupStateUncompiled(3, PASS, {edit.FilterCond})",
-                                                msgCommand,
-                                                "WaitFixedTimeSeconds(1)",
-                                                "EndUnconditionally(EventEndType.Restart)",
-                                            });
+                                            newCmds.Add($"SkipIfConditionGroupStateUncompiled({msgCmds.Count + 2}, PASS, {edit.FilterCond})");
+                                            newCmds.AddRange(msgCmds);
+                                            newCmds.Add("WaitFixedTimeSeconds(1)");
+                                            newCmds.Add("EndUnconditionally(EventEndType.Restart)");
                                         }
                                         else throw new Exception($"Internal error: unknown FilterMessage {edit.FilterMessage} in {callee}");
                                     }
@@ -1673,7 +1775,7 @@ namespace RandomizerCommon
                             {
                                 // For the leyndell edit, replace the Great Runes flag with a different amount if requested
                                 // It turns out that 180 is a valid flag after 0 GRs.
-                                if (!opt.GetInt(RandomizerOptions.IntOpt.RunesLeyndell, out leyndellRunes) || leyndellRunes == 2)
+                                if (!opt.GetInt(RandomizerOptions.IntOpt.RunesLeyndell, out int leyndellRunes) || leyndellRunes == 2)
                                 {
                                     continue;
                                 }
@@ -2291,8 +2393,10 @@ namespace RandomizerCommon
                             }
                         }
                         string[] words = block.Split(' ');
-                        if (words[0] == "col")
+                        string type = words[0];
+                        if (type == "col")
                         {
+                            // col <map> <base> <x> <y> <z> <y rot>
                             map = words[1];
                             model = basePart = words[2];
                             List<float> coords = parseFloats(words.Skip(3));
@@ -2302,7 +2406,7 @@ namespace RandomizerCommon
                             col.EntityID = entityIdBase++;
                             blockIds.Add(col.EntityID);
                         }
-                        else if (words[0] == "wall")
+                        else if (type == "wall")
                         {
                             // wall <overworld map> <x> <y> <z> <y rot> <left dist> <right dist>
                             map = words[1];
@@ -2331,6 +2435,18 @@ namespace RandomizerCommon
                                 }
                             }
                         }
+                        else if (type == "interact")
+                        {
+                            // interact <map> <base> <x> <y> <z> <y rot>
+                            map = words[1];
+                            model = "AEG099_090";
+                            basePart = words[2];
+                            List<float> coords = parseFloats(words.Skip(3));
+                            Vector3 pos = new Vector3(coords[0], coords[1], coords[2]);
+                            // Does not matter currently
+                            Vector3 rot = new Vector3(0, coords[3], 0);
+                            addInstance(pos, rot);
+                        }
                         else
                         {
                             // <map> <model> <base> <x> <y> <z> <y rot> [<x rot> <z rot>]
@@ -2349,17 +2465,41 @@ namespace RandomizerCommon
                         if (!game.Emevds.TryGetValue(eventMap, out EMEVD emevd)) throw new Exception($"Event script {eventMap} is not usable for gate {gate}");
                         List<string> cmds = new();
                         addCommands(cmds, 1);
-                        cmds.Add("IfConditionGroup(MAIN, PASS, AND_01)");
-                        // When flag is on, block is disabled. Don't try to enable again also for seamless coop sync reasons
-                        foreach (uint blockId in blockIds)
+                        if (type == "interact")
                         {
-                            if (words[0] == "col")
+                            cmds.AddRange(new[]
                             {
-                                cmds.Add($"ActivateHit({blockId}, Disabled)");
+                                "EndIfConditionGroupStateUncompiled(EventEndType.End, PASS, AND_01)",
+                                "IfConditionGroup(OR_10, PASS, AND_01)",
+                                $"IfActionButtonInArea(OR_10, 209502, {blockIds[0]})",
+                                "IfConditionGroup(MAIN, PASS, OR_10)",
+                                "EndIfConditionGroupStateCompiled(EventEndType.End, PASS, AND_01)",
+                            });
+                            if (logicGate.Name == null || !getTextForGateBlock(logicGate.Name, out List<FilterMessage> filterMsgs))
+                            {
+                                throw new Exception($"Internal error: no usable block text for interact point: {block}");
                             }
-                            else
+                            cmds.AddRange(getFilterMessageInstructions(filterMsgs));
+                            cmds.AddRange(new[]
                             {
-                                cmds.Add($"ChangeAssetEnableState({blockId}, Disabled)");
+                                "WaitFixedTimeSeconds(1)",
+                                "EndUnconditionally(EventEndType.Restart)",
+                            });
+                        }
+                        else
+                        {
+                            cmds.Add("IfConditionGroup(MAIN, PASS, AND_01)");
+                            // When flag is on, block is disabled. Don't try to enable again also for seamless coop sync reasons
+                            foreach (uint blockId in blockIds)
+                            {
+                                if (type == "col")
+                                {
+                                    cmds.Add($"ActivateHit({blockId}, Disabled)");
+                                }
+                                else
+                                {
+                                    cmds.Add($"ChangeAssetEnableState({blockId}, Disabled)");
+                                }
                             }
                         }
                         events.AddSimpleEvent(emevd, miscEventBase++, cmds, EMEVD.Event.RestBehaviorType.Restart);

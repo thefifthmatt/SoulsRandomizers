@@ -723,7 +723,7 @@ Areas:
   MainBonfire: Castle Ensis Checkpoint
   DisplayName: Castle Ensis
   Boss: rellana
-- Includes: scadualtus scadualtus_lower scadualtus_ymir scadualtus_high
+- Includes: scadualtus scadualtus_lower scadualtus_ymir scadualtus_high scadualtus_rabbath
   MainBonfire: Highroad Cross
   DisplayName: Scadu Altus
   Boss: 21000850
@@ -739,7 +739,7 @@ Areas:
 - Includes: shadowkeep_church shadowkeep_church_lower shadowkeep_sanctum scadutree_base
   MainBonfire: Church District Entrance
   DisplayName: Shadow Keep
-  Boss: 2050480800
+  Boss: 2050480802
 - Includes: storehouse storehouse_premessmer storehouse_messmer storehouse_back
   MainBonfire: Storehouse, First Floor
   DisplayName: Specimen Storehouse
@@ -761,11 +761,11 @@ Areas:
   Boss: 2049480800
 - Includes: abyssal
   MainBonfire: Abyssal Woods
-  Boss: 28000800
+  Boss: 28000801
 - Includes: midramanse midramanse_boss
   MainBonfire: Manse Hall
   DisplayName: Midra's Manse
-  Boss: 28000800
+  Boss: 28000801
 - Includes: jaggedpeak_foot jaggedpeak jaggedpeak_bayle
   MainBonfire: Foot of the Jagged Peak
   Boss: 2054390800
@@ -786,7 +786,7 @@ Areas:
 - Includes: enirilim enirilim_stairs enirilim_radahn belurat_enirilim
   MainBonfire: First Rise
   DisplayName: Enir-Ilim
-  Boss: 20010800
+  Boss: 20011199
   Comment: End of DLC regular areas!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 - Includes: gravesite_catacombs gravesite_catacombs_boss
   MainBonfire: Fog Rift Catacombs

@@ -196,6 +196,18 @@ namespace EldenRingRandomizer.ViewModels
         [Reactive]
         private bool _moremaxslots;
 
+        [Reactive]
+        private bool _end_default;
+        [Reactive]
+        private bool _endbase;
+        [Reactive]
+        private bool _enddlc;
+        [Reactive]
+        private bool _bosslock;
+        // Temp
+        [Reactive]
+        private bool _rykardlock;
+
         // Simple mode only
         [Reactive]
         private bool _dlckeysilo;
@@ -571,6 +583,11 @@ namespace EldenRingRandomizer.ViewModels
                 this.WhenAnyValue(x => x.Earlylegacy).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Earlymedal).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Moremaxslots).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.End_default).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Endbase).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Enddlc).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Bosslock).Select(_ => Unit.Default),
+                this.WhenAnyValue(x => x.Rykardlock).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Dlckeysilo).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Gaolkeys).Select(_ => Unit.Default),
                 this.WhenAnyValue(x => x.Messmershard).Select(_ => Unit.Default),
@@ -946,6 +963,8 @@ namespace EldenRingRandomizer.ViewModels
             Weaponprogression = opt["weaponprogression"];
             Mats = opt["mats"];
             Copydrops = opt["copydrops"];
+            // TODO: Implement elsewhere
+#if ARCHIPELAGO
             Stoneswordregion = opt["stoneswordregion"];
             Stoneswordall = opt["stoneswordall"];
             Regionlock = opt["regionlock"];
@@ -953,6 +972,7 @@ namespace EldenRingRandomizer.ViewModels
             Springsanity = opt["springsanity"];
             Traps = opt["traps"];
             Invertautohunt = opt["invertautohunt"];
+#endif
             // This loads the item preset from Customitem subscription above
             Customitem = opt["customitem"];
             // Logic
@@ -973,6 +993,11 @@ namespace EldenRingRandomizer.ViewModels
             Earlylegacy = opt["earlylegacy"];
             Earlymedal = opt["earlymedal"];
             Moremaxslots = opt["moremaxslots"];
+            Endbase = opt["endbase"];
+            Enddlc = opt["enddlc"];
+            End_default = !opt["endbase"] && !opt["enddlc"];
+            Bosslock = opt["bosslock"];
+            Rykardlock = opt["rykardlock"];
             Dlckeysilo = opt["dlckeysilo"];
             Gaolkeys = opt["gaolkeys"];
             Messmershard_default = opt.GetInt(RandomizerOptions.IntOpt.Messmershard, out int messmerShards);
@@ -1113,6 +1138,10 @@ namespace EldenRingRandomizer.ViewModels
             opt["earlylegacy"] = Earlylegacy;
             opt["earlymedal"] = Earlymedal;
             opt["moremaxslots"] = Moremaxslots;
+            opt["endbase"] = Endbase;
+            opt["enddlc"] = Enddlc;
+            opt["bosslock"] = Bosslock;
+            opt["rykardlock"] = Rykardlock;
             opt["dlckeysilo"] = Dlckeysilo;
             opt["gaolkeys"] = Gaolkeys;
             if (Messmershard_default)
@@ -1577,8 +1606,14 @@ namespace EldenRingRandomizer.ViewModels
                 SetStatus(messages.Get(runErrorGeneric), failure: true);
                 return;
             }
-            bool newFixedSeed = false;
-            bool newEnemySeed = false;
+            if (!Helper && (Traps || Markchecks))
+            {
+                // TODO Localize
+                err = "RandomizerHelper in Misc Options must be enabled with these settings";
+                SetError(err);
+                SetStatus(messages.Get(runErrorGeneric), failure: true);
+                return;
+            }
             Random seedRandom = new Random();
             if (!RerollSeed && !string.IsNullOrWhiteSpace(Seed))
             {
@@ -1596,7 +1631,6 @@ namespace EldenRingRandomizer.ViewModels
             else
             {
                 RunSeed = (uint)seedRandom.Next();
-                newFixedSeed = true;
             }
             // TODO: Translate state defaultRerollEnemy.Enabled
             if (!RerollSeed2 && !string.IsNullOrWhiteSpace(Seed2))
@@ -1615,7 +1649,6 @@ namespace EldenRingRandomizer.ViewModels
             else if (RerollSeed2)
             {
                 RunSeed2 = (uint)seedRandom.Next();
-                newFixedSeed = true;
             }
             else
             {

@@ -2887,6 +2887,7 @@ Enemies:
       ProperName: Margit
       FullTemplate: $1, the Fell Omen
     NpcName: 902130000
+  DeathLine: 204101000
   TalkLine: 20480000
   Outfit: Omensmirk Mask; Fell Omen Cloak; Eccentric's Manchettes; Astrologer Trousers
   Tags: exclude:unkillable perceptive exclude:fallout exclude:strand proper arena:1
@@ -5038,7 +5039,7 @@ Enemies:
       ProperName: Gideon Ofnir
       FullTemplate: $1, the All-Knowing
     NpcName: 132400
-  TalkLine: 32408000
+  TalkLine: 32408000; 32480100
   Tags: multi exclude:unkillable perceptive exclude:strand exclude:fallout bossonlymulti vulntarget proper arena:1 size:2 exclude:2052430800
   Groups:
   - 11055850
@@ -11817,6 +11818,7 @@ Enemies:
       ProperName: Mohg
       FullTemplate: $1, Lord of Blood
     NpcName: 904800000
+  DeathLine: 209101205
   Outfit: Omensmirk Mask; Lord of Blood's Robe; None; Sanguine Noble Waistcloth
   Tags: exclude:unkillable perceptive exclude:fallout proper size:2
   BuddyGroup: 12055104
@@ -14786,6 +14788,7 @@ Enemies:
       ProperName: Malenia
       FullTemplate: $1, Blade of Miquella
     NpcName: 902120000
+  DeathLine: 203101500
   Outfit: Malenia's Winged Helm; Malenia's Armor; Malenia's Gauntlet; Malenia's Greaves
   Tags: multi exclude:unkillable perceptive excludemultiphase immortal manualname proper arena:3 size:2
   Groups:
@@ -16939,7 +16942,7 @@ Enemies:
       FullTemplate: $1 of Godrick
     NpcName: 904311000
   Outfit: Godrick Soldier Helm; Tree-and-Beast Surcoat; Godrick Soldier Gauntlets; Godrick Soldier Greaves
-  Tags: exclude:unkillable perceptive proper arena:0
+  Tags: exclude:unkillable perceptive proper nospeak arena:0
   ExtraName: Soldier of Godrick
   ExtraArenas:
     primary: -33.610 8.552 52.219 -140.000
@@ -70258,7 +70261,7 @@ Enemies:
       PartialTemplate: Battlemage $1
     NpcName: 903704520
   Outfit: Haima Glintstone Crown; Battlemage Robe; Battlemage Manchettes; Battlemage Legwraps
-  Tags: exclude:unkillable perceptive proper adjective
+  Tags: exclude:unkillable perceptive proper adjective exclude:2054390800
   ExtraName: Battlemage Hugues
 - ID: 2821013
   Map: m60_49_39_00

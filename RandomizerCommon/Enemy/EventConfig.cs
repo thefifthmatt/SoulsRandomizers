@@ -83,6 +83,8 @@ namespace RandomizerCommon
             public string Type { get; set; }
             // Documentation on edits being made
             public string Comment { get; set; }
+            // Condition for the edit. If present, at least one must be met.
+            public List<EnemyFilter> Filter { get; set; }
             // The affected entities, if a chr command or if conds/cmds are used below which need to be transplanted
             public uint Entity { get; set; }
             // The other entity involved. The source for locs, or the target for chrs. (Currently only works for loc)
@@ -201,6 +203,7 @@ namespace RandomizerCommon
             {
                 // Not handled here: Dupe
                 EnemyTemplate o = (EnemyTemplate)MemberwiseClone();
+                if (o.Filter != null) o.Filter = o.Filter.Select(x => x.DeepCopy()).ToList();
                 if (o.Regions != null) o.Regions = o.Regions.ToList();
                 if (o.Removes != null) o.Removes = o.Removes.ToList();
                 if (o.NewEvent != null) o.NewEvent = o.NewEvent.ToList();
@@ -209,6 +212,14 @@ namespace RandomizerCommon
                 if (o.Segments != null) o.Segments = o.Segments.Select(x => x.DeepCopy()).ToList();
                 return o;
             }
+        }
+
+        public class EnemyFilter
+        {
+            // Single option that must be enabled, from preset or regular options, with ! in front for negation
+            public string Switch { get; set; }
+
+            public EnemyFilter DeepCopy() => (EnemyFilter)MemberwiseClone();
         }
 
         public class CommandSegment
